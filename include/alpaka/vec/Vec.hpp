@@ -168,7 +168,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto operator[](TIdx const iIdx) -> TVal&
         {
             core::assertValueUnsigned(iIdx);
-            auto const idx(static_cast<typename TDim::value_type>(iIdx));
+            auto const idx = static_cast<typename TDim::value_type>(iIdx);
             core::assertGreaterThan<TDim>(idx);
             return m_data[idx];
         }
@@ -180,7 +180,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto operator[](TIdx const iIdx) const -> TVal
         {
             core::assertValueUnsigned(iIdx);
-            auto const idx(static_cast<typename TDim::value_type>(iIdx));
+            auto const idx = static_cast<typename TDim::value_type>(iIdx);
             core::assertGreaterThan<TDim>(idx);
             return m_data[idx];
         }

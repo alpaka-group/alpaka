@@ -94,7 +94,7 @@ namespace alpaka
             template<typename TDim, typename TIdx>
             ALPAKA_FN_HOST auto checkVecOnly3Dim(Vec<TDim, TIdx> const& vec) -> void
             {
-                for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i < TDim::value; ++i)
+                for(auto i = std::min(static_cast<typename TDim::value_type>(3), TDim::value); i < TDim::value; ++i)
                 {
                     if(vec[TDim::value - 1u - i] != 1)
                     {
@@ -108,7 +108,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto convertVecToUniformCudaHipDim(Vec<TDim, TIdx> const& vec) -> dim3
             {
                 dim3 dim(1, 1, 1);
-                for(auto i(static_cast<typename TDim::value_type>(0));
+                for(auto i = static_cast<typename TDim::value_type>(0);
                     i < std::min(static_cast<typename TDim::value_type>(3), TDim::value);
                     ++i)
                 {
@@ -206,12 +206,12 @@ namespace alpaka
                 // cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                 // std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #    endif
-                auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(task));
-                auto const blockThreadExtent(getWorkDiv<Block, Threads>(task));
-                auto const threadElemExtent(getWorkDiv<Thread, Elems>(task));
+                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(task);
+                auto const blockThreadExtent = getWorkDiv<Block, Threads>(task);
+                auto const threadElemExtent = getWorkDiv<Thread, Elems>(task);
 
-                dim3 const gridDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                dim3 const blockDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
+                dim3 const gridDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent);
+                dim3 const blockDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent);
                 uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -230,7 +230,7 @@ namespace alpaka
 #    endif
 
                 // Get the size of the block shared dynamic memory.
-                auto const blockSharedMemDynSizeBytes(meta::apply(
+                auto const blockSharedMemDynSizeBytes = meta::apply(
                     [&](ALPAKA_DECAY_T(TArgs) const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
@@ -238,7 +238,7 @@ namespace alpaka
                             threadElemExtent,
                             args...);
                     },
-                    task.m_args));
+                    task.m_args);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the block shared memory idx.
@@ -328,19 +328,18 @@ namespace alpaka
                 // cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                 // std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #    endif
-                auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(task));
-                auto const blockThreadExtent(getWorkDiv<Block, Threads>(task));
-                auto const threadElemExtent(getWorkDiv<Thread, Elems>(task));
+                auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(task);
+                auto const blockThreadExtent = getWorkDiv<Block, Threads>(task);
+                auto const threadElemExtent = getWorkDiv<Thread, Elems>(task);
 
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                dim3 const gridDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                dim3 const blockDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+                dim3 const gridDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent);
+                dim3 const blockDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent);
 #    else
-                dim3 gridDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                dim3 blockDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+                dim3 gridDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent);
+                dim3 blockDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent);
 #    endif
+                uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -360,7 +359,7 @@ namespace alpaka
 #    endif
 
                 // Get the size of the block shared dynamic memory.
-                auto const blockSharedMemDynSizeBytes(meta::apply(
+                auto const blockSharedMemDynSizeBytes = meta::apply(
                     [&](ALPAKA_DECAY_T(TArgs) const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
@@ -368,7 +367,7 @@ namespace alpaka
                             threadElemExtent,
                             args...);
                     },
-                    task.m_args));
+                    task.m_args);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the block shared memory idx.

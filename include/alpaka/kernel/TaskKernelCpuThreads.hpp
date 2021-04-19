@@ -87,12 +87,12 @@ namespace alpaka
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(*this));
-            auto const blockThreadExtent(getWorkDiv<Block, Threads>(*this));
-            auto const threadElemExtent(getWorkDiv<Thread, Elems>(*this));
+            auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(*this);
+            auto const blockThreadExtent = getWorkDiv<Block, Threads>(*this);
+            auto const threadElemExtent = getWorkDiv<Thread, Elems>(*this);
 
             // Get the size of the block shared dynamic memory.
-            auto const blockSharedMemDynSizeBytes(meta::apply(
+            auto const blockSharedMemDynSizeBytes = meta::apply(
                 [&](ALPAKA_DECAY_T(TArgs) const&... args) {
                     return getBlockSharedMemDynSizeBytes<AccCpuThreads<TDim, TIdx>>(
                         m_kernelFnObj,
@@ -100,7 +100,7 @@ namespace alpaka
                         threadElemExtent,
                         args...);
                 },
-                m_args));
+                m_args);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
@@ -110,11 +110,11 @@ namespace alpaka
                 *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
                 blockSharedMemDynSizeBytes);
 
-            auto const blockThreadCount(blockThreadExtent.prod());
+            auto const blockThreadCount = blockThreadExtent.prod();
             ThreadPool threadPool(blockThreadCount);
 
             // Bind the kernel and its arguments to the grid block function.
-            auto const boundGridBlockExecHost(meta::apply(
+            auto const boundGridBlockExecHost = meta::apply(
                 [this, &acc, &blockThreadExtent, &threadPool](ALPAKA_DECAY_T(TArgs) const&... args) {
                     return std::bind(
                         &TaskKernelCpuThreads::gridBlockExecHost,
@@ -125,7 +125,7 @@ namespace alpaka
                         std::ref(m_kernelFnObj),
                         std::ref(args)...);
                 },
-                m_args));
+                m_args);
 
             // Execute the blocks serially.
             meta::ndLoopIncIdx(gridBlockExtent, boundGridBlockExecHost);
@@ -148,14 +148,14 @@ namespace alpaka
             acc.m_gridBlockIdx = gridBlockIdx;
 
             // Bind the kernel and its arguments to the host block thread execution function.
-            auto boundBlockThreadExecHost(std::bind(
+            auto boundBlockThreadExecHost = std::bind(
                 &TaskKernelCpuThreads::blockThreadExecHost,
                 std::ref(acc),
                 std::ref(futuresInBlock),
                 std::placeholders::_1,
                 std::ref(threadPool),
                 std::ref(kernelFnObj),
-                std::ref(args)...));
+                std::ref(args)...);
             // Execute the block threads in parallel.
             meta::ndLoopIncIdx(blockThreadExtent, boundBlockThreadExecHost);
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
@@ -189,8 +189,8 @@ namespace alpaka
             // Bind the arguments to the accelerator block thread execution function.
             // The blockThreadIdx is required to be copied in because the variable will get changed for the next
             // iteration/thread.
-            auto boundBlockThreadExecAcc(
-                [&, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); });
+            auto boundBlockThreadExecAcc
+                = [&, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); };
             // Add the bound function to the block thread pool.
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #    if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)

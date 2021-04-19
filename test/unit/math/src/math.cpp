@@ -80,8 +80,8 @@ struct TestTemplate
         static constexpr size_t elementsPerThread = 1u;
         static constexpr size_t sizeExtent = 1u;
 
-        DevAcc const devAcc{alpaka::getDevByIdx<PltfAcc>(0u)};
-        DevHost const devHost{alpaka::getDevByIdx<PltfHost>(0u)};
+        DevAcc const devAcc = alpaka::getDevByIdx<PltfAcc>(0u);
+        DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0u);
 
         QueueAcc queue{devAcc};
 
@@ -90,12 +90,12 @@ struct TestTemplate
         Args args{devAcc};
         Results results{devAcc};
 
-        WorkDiv const workDiv{alpaka::getValidWorkDiv<TAcc>(
+        WorkDiv const workDiv = alpaka::getValidWorkDiv<TAcc>(
             devAcc,
             sizeExtent,
             elementsPerThread,
             false,
-            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
         // SETUP COMPLETED.
 
         // Fill the buffer with random test-numbers.
@@ -107,8 +107,8 @@ struct TestTemplate
         args.copyToDevice(queue);
         results.copyToDevice(queue);
 
-        auto const taskKernel(
-            alpaka::createTaskKernel<TAcc>(workDiv, kernel, results.pDevBuffer, functor, args.pDevBuffer));
+        auto const taskKernel
+            = alpaka::createTaskKernel<TAcc>(workDiv, kernel, results.pDevBuffer, functor, args.pDevBuffer);
         // Enqueue the kernel execution task.
         alpaka::enqueue(queue, taskKernel);
         // Copy back the results (encapsulated in the buffer class).

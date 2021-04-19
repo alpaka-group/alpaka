@@ -219,7 +219,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                auto spEventImpl(event.m_spEventImpl);
+                auto spEventImpl = event.m_spEventImpl;
 
                 // Setting the event state and enqueuing it has to be atomic.
                 std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
@@ -261,7 +261,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                auto spEventImpl(event.m_spEventImpl);
+                auto spEventImpl = event.m_spEventImpl;
 
                 // Setting the event state and enqueuing it has to be atomic.
                 std::unique_lock<std::mutex> lk(spEventImpl->m_mutex);

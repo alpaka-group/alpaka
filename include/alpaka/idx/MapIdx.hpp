@@ -55,7 +55,7 @@ namespace alpaka
                 Vec<DimInt<1u>, TElem> const& idx,
                 Vec<DimInt<TidxDimOut>, TElem> const& extent) -> Vec<DimInt<TidxDimOut>, TElem>
             {
-                auto idxNd(Vec<DimInt<TidxDimOut>, TElem>::all(0u));
+                auto idxNd = Vec<DimInt<TidxDimOut>, TElem>::all(0u);
 
                 constexpr std::size_t lastIdx(TidxDimOut - 1u);
 
@@ -157,9 +157,9 @@ namespace alpaka
                 Vec<DimInt<1u>, TElem> const& idx,
                 Vec<DimInt<TidxDimOut>, TElem> const& pitch) -> Vec<DimInt<TidxDimOut>, TElem>
             {
-                auto idxNd(Vec<DimInt<TidxDimOut>, TElem>::all(0u));
+                auto idxNd = Vec<DimInt<TidxDimOut>, TElem>::all(0u);
 
-                constexpr std::size_t lastIdx(TidxDimOut - 1u);
+                constexpr std::size_t lastIdx = TidxDimOut - 1u;
 
                 TElem tmp = idx[0u];
                 for(std::size_t d(0u); d < lastIdx; ++d)
@@ -187,7 +187,7 @@ namespace alpaka
                 Vec<DimInt<TidxDimIn>, TElem> const& pitch) -> Vec<DimInt<1u>, TElem>
             {
                 constexpr auto lastDim = TidxDimIn - 1;
-                TElem idx1d(idx[lastDim]);
+                TElem idx1d = idx[lastDim];
                 for(std::size_t d(0u); d < lastDim; ++d)
                 {
                     idx1d = static_cast<TElem>(idx1d + pitch[d + 1] * idx[d]);

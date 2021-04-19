@@ -66,8 +66,8 @@ namespace alpaka
                 -> Vec<TDim, TIdx>
             {
                 alpaka::ignore_unused(workDiv);
-                auto const threadId(std::this_thread::get_id());
-                auto const threadEntry(idx.m_threadToIndexMap.find(threadId));
+                auto const threadId = std::this_thread::get_id();
+                auto const threadEntry = idx.m_threadToIndexMap.find(threadId);
                 ALPAKA_ASSERT(threadEntry != idx.m_threadToIndexMap.end());
                 return threadEntry->second;
             }

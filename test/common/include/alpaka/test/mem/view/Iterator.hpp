@@ -99,15 +99,15 @@ namespace alpaka
                     Vec<Dim, Idx> const currentIdxDimx(alpaka::mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
                     // [pz, py, px] -> [py, px]
-                    auto const pitchWithoutOutermost(subVecEnd<DimMin1>(m_pitchBytes));
+                    auto const pitchWithoutOutermost = subVecEnd<DimMin1>(m_pitchBytes);
                     // [ElemSize]
-                    Vec<Dim1, Idx> const elementSizeVec(static_cast<Idx>(sizeof(Elem)));
+                    Vec<Dim1, Idx> const elementSizeVec = static_cast<Idx>(sizeof(Elem));
                     // [py, px] ++ [ElemSize] -> [py, px, ElemSize]
-                    Vec<Dim, Idx> const dstPitchBytes(concatVec(pitchWithoutOutermost, elementSizeVec));
+                    Vec<Dim, Idx> const dstPitchBytes = concatVec(pitchWithoutOutermost, elementSizeVec);
                     // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
-                    auto const dimensionalOffsetsInByte(currentIdxDimx * dstPitchBytes);
+                    auto const dimensionalOffsetsInByte = currentIdxDimx * dstPitchBytes;
                     // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
-                    auto const offsetInByte(dimensionalOffsetsInByte.foldrAll(std::plus<Idx>()));
+                    auto const offsetInByte = dimensionalOffsetsInByte.foldrAll(std::plus<Idx>());
 
                     using Byte = MimicConst<std::uint8_t, Elem>;
                     Byte* ptr(reinterpret_cast<Byte*>(m_nativePtr) + offsetInByte);

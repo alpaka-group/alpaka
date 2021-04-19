@@ -153,7 +153,7 @@ namespace alpaka
                 // Copy the shared pointer of the event implementation.
                 // This is forwarded to the lambda that is enqueued into the queue to ensure that the event
                 // implementation is alive as long as it is enqueued.
-                auto spEventImpl(event.m_spEventImpl);
+                auto spEventImpl = event.m_spEventImpl;
 
                 // Setting the event state and enqueuing it has to be atomic.
                 std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
@@ -247,7 +247,7 @@ namespace alpaka
             {
                 // Get all the queues on the device at the time of invocation.
                 // All queues added afterwards are ignored.
-                auto vQueues(dev.getAllQueues());
+                auto vQueues = dev.getAllQueues();
                 // Furthermore there should not even be a chance to enqueue something between getting the queues and
                 // adding our wait events!
                 std::vector<EventGenericThreads<TDev>> vEvents;
@@ -312,7 +312,7 @@ namespace alpaka
                 // Copy the shared pointer of the event implementation.
                 // This is forwarded to the lambda that is enqueued into the queue to ensure that the event
                 // implementation is alive as long as it is enqueued.
-                auto spEventImpl(event.m_spEventImpl);
+                auto spEventImpl = event.m_spEventImpl;
 
                 std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 

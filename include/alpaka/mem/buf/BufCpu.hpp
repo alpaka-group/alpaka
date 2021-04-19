@@ -92,7 +92,7 @@ namespace alpaka
             template<typename TExtent>
             ALPAKA_FN_HOST static auto computeElementCount(TExtent const& extent) -> TIdx
             {
-                auto const extentElementCount(extent::getExtentProduct(extent));
+                auto const extentElementCount = extent::getExtentProduct(extent);
 
                 return extentElementCount;
             }

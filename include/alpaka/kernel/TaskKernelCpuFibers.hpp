@@ -90,12 +90,12 @@ namespace alpaka
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(*this));
-            auto const blockThreadExtent(getWorkDiv<Block, Threads>(*this));
-            auto const threadElemExtent(getWorkDiv<Thread, Elems>(*this));
+            auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(*this);
+            auto const blockThreadExtent = getWorkDiv<Block, Threads>(*this);
+            auto const threadElemExtent = getWorkDiv<Thread, Elems>(*this);
 
             // Get the size of the block shared dynamic memory.
-            auto const blockSharedMemDynSizeBytes(meta::apply(
+            auto const blockSharedMemDynSizeBytes = meta::apply(
                 [&](ALPAKA_DECAY_T(TArgs) const&... args) {
                     return getBlockSharedMemDynSizeBytes<AccCpuFibers<TDim, TIdx>>(
                         m_kernelFnObj,
@@ -103,7 +103,7 @@ namespace alpaka
                         threadElemExtent,
                         args...);
                 },
-                m_args));
+                m_args);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
@@ -122,7 +122,7 @@ namespace alpaka
             auto const blockThreadCount(blockThreadExtent.prod());
             FiberPool fiberPool(blockThreadCount);
 
-            auto const boundGridBlockExecHost(meta::apply(
+            auto const boundGridBlockExecHost = meta::apply(
                 [this, &acc, &blockThreadExtent, &fiberPool](ALPAKA_DECAY_T(TArgs) const&... args) {
                     // Bind the kernel and its arguments to the grid block function.
                     return std::bind(
@@ -134,7 +134,7 @@ namespace alpaka
                         std::ref(m_kernelFnObj),
                         std::ref(args)...);
                 },
-                m_args));
+                m_args);
 
             // Execute the blocks serially.
             meta::ndLoopIncIdx(gridBlockExtent, boundGridBlockExecHost);

@@ -307,18 +307,18 @@ namespace alpaka
                 template<typename TFnObj, typename... TArgs>
                 auto enqueueTask(TFnObj&& task, TArgs&&... args)
                 {
-                    auto boundTask([=]() { return task(args...); });
-                    auto decrementNumActiveTasks([this]() { --m_numActiveTasks; });
+                    auto boundTask = [=]() { return task(args...); };
+                    auto decrementNumActiveTasks = [this]() { --m_numActiveTasks; };
 
-                    auto extendedTask([boundTask, decrementNumActiveTasks]() {
+                    auto extendedTask = [boundTask, decrementNumActiveTasks]() {
                         return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks));
-                    });
+                    };
 
                     using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
-                    auto pTaskPackage(new TaskPackage(std::move(extendedTask)));
+                    auto pTaskPackage = new TaskPackage(std::move(extendedTask));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
-                    auto future(pTaskPackage->m_Promise.get_future());
+                    auto future = pTaskPackage->m_Promise.get_future();
 
                     ++m_numActiveTasks;
                     m_qTasks.push(std::move(upTaskPackage));
@@ -477,18 +477,18 @@ namespace alpaka
                 template<typename TFnObj, typename... TArgs>
                 auto enqueueTask(TFnObj&& task, TArgs&&... args)
                 {
-                    auto boundTask([=]() { return task(args...); });
-                    auto decrementNumActiveTasks([this]() { --m_numActiveTasks; });
+                    auto boundTask = [=]() { return task(args...); };
+                    auto decrementNumActiveTasks = [this]() { --m_numActiveTasks; };
 
-                    auto extendedTask([boundTask, decrementNumActiveTasks]() {
+                    auto extendedTask = [boundTask, decrementNumActiveTasks]() {
                         return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks));
-                    });
+                    };
 
                     using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
-                    auto pTaskPackage(new TaskPackage(std::move(extendedTask)));
+                    auto pTaskPackage = new TaskPackage(std::move(extendedTask));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
-                    auto future(pTaskPackage->m_Promise.get_future());
+                    auto future = pTaskPackage->m_Promise.get_future();
 
                     ++m_numActiveTasks;
                     {

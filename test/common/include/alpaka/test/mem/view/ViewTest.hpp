@@ -65,7 +65,7 @@ namespace alpaka
             // alpaka::traits::GetPitchBytes
             {
                 // The pitches have to be at least as large as the values we calculate here.
-                auto pitchMinimum(alpaka::Vec<alpaka::DimInt<TDim::value + 1u>, TIdx>::ones());
+                auto pitchMinimum = alpaka::Vec<alpaka::DimInt<TDim::value + 1u>, TIdx>::ones();
                 // Initialize the pitch between two elements of the X dimension ...
                 pitchMinimum[TDim::value] = sizeof(TElem);
                 // ... and fill all the other dimensions.
@@ -74,7 +74,7 @@ namespace alpaka
                     pitchMinimum[i - 1] = extent[i - 1] * pitchMinimum[i];
                 }
 
-                auto const pitchView(alpaka::getPitchBytesVec(view));
+                auto const pitchView = alpaka::getPitchBytesVec(view);
 
                 for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
                 {
@@ -228,9 +228,9 @@ namespace alpaka
 
             using ViewPlainPtr = alpaka::ViewPlainPtr<DevHost, Elem, Dim, Idx>;
 
-            DevHost const devHost(alpaka::getDevByIdx<PltfHost>(0));
+            DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0);
 
-            auto const extent(alpaka::extent::getExtentVec(view));
+            auto const extent = alpaka::extent::getExtentVec(view);
 
             // Init buf with increasing values
             std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
@@ -258,7 +258,7 @@ namespace alpaka
                     "The value returned by getPtrNative has to be non-const when the view is non-const.");
             }
 
-            auto const extent(alpaka::extent::getExtentVec(view));
+            auto const extent = alpaka::extent::getExtentVec(view);
 
             // alpaka::set
             {
@@ -277,7 +277,7 @@ namespace alpaka
 
                 // alpaka::copy into given view
                 {
-                    auto srcBufAcc(alpaka::allocBuf<Elem, Idx>(devAcc, extent));
+                    auto srcBufAcc = alpaka::allocBuf<Elem, Idx>(devAcc, extent);
                     iotaFillView(queue, srcBufAcc);
                     alpaka::memcpy(queue, view, srcBufAcc, extent);
                     alpaka::wait(queue);
@@ -286,7 +286,7 @@ namespace alpaka
 
                 // alpaka::copy from given view
                 {
-                    auto dstBufAcc(alpaka::allocBuf<Elem, Idx>(devAcc, extent));
+                    auto dstBufAcc = alpaka::allocBuf<Elem, Idx>(devAcc, extent);
                     alpaka::memcpy(queue, dstBufAcc, view, extent);
                     alpaka::wait(queue);
                     verifyViewsEqual<TAcc>(dstBufAcc, view);

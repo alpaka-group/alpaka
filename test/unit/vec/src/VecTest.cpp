@@ -252,7 +252,7 @@ struct NonAlpakaVec
     operator ::alpaka::Vec<TDim, TIdx>() const
     {
         using AlpakaVector = ::alpaka::Vec<TDim, TIdx>;
-        AlpakaVector result(AlpakaVector::zeros());
+        AlpakaVector result = AlpakaVector::zeros();
 
         for(TIdx d(0); d < TDim::value; ++d)
         {
@@ -273,7 +273,7 @@ TEMPLATE_LIST_TEST_CASE("vecNDConstructionFromNonAlpakaVec", "[vec]", alpaka::te
     using Idx = std::size_t;
 
     NonAlpakaVec<Dim, Idx> nonAlpakaVec;
-    auto const alpakaVec(static_cast<alpaka::Vec<Dim, Idx>>(nonAlpakaVec));
+    auto const alpakaVec = static_cast<alpaka::Vec<Dim, Idx>>(nonAlpakaVec);
 
     for(Idx d(0); d < Dim::value; ++d)
     {

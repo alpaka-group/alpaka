@@ -118,7 +118,7 @@ namespace alpaka
                 meta::IntegerSequenceValuesUnique<std::index_sequence<Tdims...>>::value,
                 "The values in the index_sequence have to be unique!");
 
-            auto idx(Vec<Dim<TExtentVec>, Idx<TExtentVec>>::zeros());
+            auto idx = Vec<Dim<TExtentVec>, Idx<TExtentVec>>::zeros();
 
             detail::NdLoop<std::index_sequence<Tdims...>>::template ndLoop(idx, extent, f);
         }
