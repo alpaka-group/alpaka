@@ -237,7 +237,7 @@ namespace alpaka
                     });
                     data = smem.template getLatestVarPtr<T>();
                 }
-                ALPAKA_ASSERT(data == nullptr);
+                ALPAKA_ASSERT_OFFLOAD(data != nullptr);
                 return *data;
             }
         };
