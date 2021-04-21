@@ -466,9 +466,10 @@ jobs:
         - name: linux_nvcc-11.1_gcc-9_release
           os: ubuntu-latest
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 9,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.69.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.1", ALPAKA_CUDA_COMPILER: nvcc,                                                ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
-        - name: linux_nvcc-11.1_gcc-10_debug
-          os: ubuntu-latest
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.16.9,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.1", ALPAKA_CUDA_COMPILER: nvcc, ALPAKA_CUDA_ARCH: "86",                        ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+        # disabled because of an GCC 10.3 bug: https://github.com/alpaka-group/alpaka/issues/1297
+        # name: linux_nvcc-11.1_gcc-10_debug
+        #  os: ubuntu-latest
+        #  env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.16.9,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.1", ALPAKA_CUDA_COMPILER: nvcc, ALPAKA_CUDA_ARCH: "86",                        ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
         # nvcc + clang++
         - name: linux_nvcc-11.1_clang-4_release
           os: ubuntu-latest
@@ -509,9 +510,10 @@ jobs:
         - name: linux_nvcc-11.2_gcc-9_release
           os: ubuntu-latest
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 9,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.69.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.2", ALPAKA_CUDA_COMPILER: nvcc,                                                ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
-        - name: linux_nvcc-11.2_gcc-10_debug
-          os: ubuntu-latest
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.20.0,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.2", ALPAKA_CUDA_COMPILER: nvcc, ALPAKA_CUDA_ARCH: "86",                        ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+        # disabled because of an GCC 10.3 bug: https://github.com/alpaka-group/alpaka/issues/1297
+        # name: linux_nvcc-11.2_gcc-10_debug
+        #  os: ubuntu-latest
+        #  env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.20.0,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.2", ALPAKA_CUDA_COMPILER: nvcc, ALPAKA_CUDA_ARCH: "86",                        ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
         # nvcc + clang++
         - name: linux_nvcc-11.2_clang-4_release
           os: ubuntu-latest
