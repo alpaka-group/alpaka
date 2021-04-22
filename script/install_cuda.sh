@@ -82,8 +82,13 @@ then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-11-2-local
         ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.2.0-460.27.04-1_amd64.deb
         ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.2.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+    elif [ "${ALPAKA_CUDA_VERSION}" == "11.3" ]
+    then
+        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-11-3-local
+        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.3.0-465.19.01-1_amd64.deb
+        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.3.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     else
-        echo CUDA versions other than 9.0, 9.1, 9.2, 10.0, 10.1, 10.2, 11.0, 11.1 and 11.2 are not currently supported on linux!
+        echo CUDA versions other than 9.0, 9.1, 9.2, 10.0, 10.1, 10.2, 11.0, 11.1, 11.2 and 11.3 are not currently supported on linux!
     fi
     if [ -z "$(ls -A ${ALPAKA_CI_CUDA_DIR})" ]
     then
@@ -139,8 +144,12 @@ then
     then
         ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.2.0_460.89_win10.exe
         ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/11.2.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+    elif [ "${ALPAKA_CUDA_VERSION}" == "11.3" ]
+    then
+        ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.3.0_465.89_win10.exe
+        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.3.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     else
-        echo CUDA versions other than 10.0, 10.1, 10.2, 11.0, 11.1 and 11.2 are not currently supported on Windows!
+        echo CUDA versions other than 10.0, 10.1, 10.2, 11.0, 11.1, 11.2 and 11.3 are not currently supported on Windows!
     fi
 
     curl -L -o cuda_installer.exe ${ALPAKA_CUDA_PKG_FILE_PATH}
