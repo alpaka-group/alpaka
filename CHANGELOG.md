@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - unit tests: fix queue test #1266
 - fix CtxBlockOacc: SyncBlockThreads #1291
 - port macOSX CI fix from #1283
+- fix assert in DeclareSharedVar (OpenAcc) #1303
+- CI: disable GCC 10.3 + NVCC tests #1302
 
 ### Misc
 - add ALPAKA_ASSERT_OFFLOAD Macro #1260
