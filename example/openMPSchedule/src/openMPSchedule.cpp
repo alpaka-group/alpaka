@@ -35,7 +35,7 @@ struct OpenMPScheduleDefaultKernel
 {
     //-----------------------------------------------------------------------------
     template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc) const -> void
+    ALPAKA_FN_HOST auto operator()(TAcc const& acc) const -> void
     {
         // For simplicity assume 1d index space throughout this example
         using Idx = alpaka::Idx<TAcc>;
