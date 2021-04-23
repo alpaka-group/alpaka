@@ -176,12 +176,12 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> gridBlockExtent(getWorkDiv&lt;Grid, Blocks&gt;(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadExtent(getWorkDiv&lt;Block, Threads&gt;(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> threadElemExtent(getWorkDiv&lt;Thread, Elems&gt;(*<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> gridBlockExtent = getWorkDiv&lt;Grid, Blocks&gt;(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadExtent = getWorkDiv&lt;Block, Threads&gt;(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> threadElemExtent = getWorkDiv&lt;Thread, Elems&gt;(*<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes(<a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                [&amp;](<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs) <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;AccCpuThreads&lt;TDim, TIdx&gt;&gt;(</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        m_kernelFnObj,</div>
@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                        threadElemExtent,</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                        args...);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                },</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                m_args));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                m_args);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; blockSharedMemDynSizeBytes: &quot;</span> &lt;&lt; blockSharedMemDynSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
@@ -199,11 +199,11 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                *<span class="keyword">static_cast&lt;</span><a class="code" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers&lt;TDim, TIdx&gt;</a> const*<span class="keyword">&gt;</span>(<span class="keyword">this</span>),</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                blockSharedMemDynSizeBytes);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadCount(blockThreadExtent.prod());</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadCount = blockThreadExtent.prod();</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ThreadPool</a> threadPool(blockThreadCount);</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="comment">// Bind the kernel and its arguments to the grid block function.</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> boundGridBlockExecHost(<a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> boundGridBlockExecHost = <a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                [<span class="keyword">this</span>, &amp;acc, &amp;blockThreadExtent, &amp;threadPool](<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs) <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    <span class="keywordflow">return</span> std::bind(</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        &amp;TaskKernelCpuThreads::gridBlockExecHost,</div>
@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                        std::ref(m_kernelFnObj),</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                        std::ref(args)...);</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                },</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                m_args));</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                m_args);</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="comment">// Execute the blocks serially.</span></div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            <a class="code" href="namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750">meta::ndLoopIncIdx</a>(gridBlockExtent, boundGridBlockExecHost);</div>
@@ -237,14 +237,14 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            acc.m_gridBlockIdx = gridBlockIdx;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="comment">// Bind the kernel and its arguments to the host block thread execution function.</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keyword">auto</span> boundBlockThreadExecHost(std::bind(</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keyword">auto</span> boundBlockThreadExecHost = std::bind(</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                &amp;TaskKernelCpuThreads::blockThreadExecHost,</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                std::ref(acc),</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                std::ref(futuresInBlock),</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                std::placeholders::_1,</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                std::ref(threadPool),</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                std::ref(kernelFnObj),</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                std::ref(args)...));</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                std::ref(args)...);</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="comment">// Execute the block threads in parallel.</span></div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <a class="code" href="namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750">meta::ndLoopIncIdx</a>(blockThreadExtent, boundBlockThreadExecHost);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
@@ -278,8 +278,8 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="comment">// Bind the arguments to the accelerator block thread execution function.</span></div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="comment">// The blockThreadIdx is required to be copied in because the variable will get changed for the next</span></div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="comment">// iteration/thread.</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keyword">auto</span> boundBlockThreadExecAcc(</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                [&amp;, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); });</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keyword">auto</span> boundBlockThreadExecAcc</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                = [&amp;, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); };</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="comment">// Add the bound function to the block thread pool.</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor">#    if !(BOOST_COMP_CLANG_CUDA &amp;&amp; BOOST_ARCH_PTX)</span></div>
@@ -417,7 +417,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuThreads_8hpp.html">TaskKernelCpuThreads.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:08 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

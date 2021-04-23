@@ -701,7 +701,7 @@ $(document).ready(function(){initNavTree('uniformCudaHip_2Copy_8hpp_source.html'
 <div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;            {</div>
 <div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160; </div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> iDevice(<a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc).m_iDevice);</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> iDevice = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc).m_iDevice;</div>
 <div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160; </div>
 <div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip.html">alpaka::detail::TaskCopyUniformCudaHip&lt;TDim, TViewDst, TViewSrc, TExtent&gt;</a>(</div>
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;                    viewDst,</div>
@@ -724,7 +724,7 @@ $(document).ready(function(){initNavTree('uniformCudaHip_2Copy_8hpp_source.html'
 <div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;            {</div>
 <div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160; </div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> iDevice(<a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst).m_iDevice);</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> iDevice = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst).m_iDevice;</div>
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160; </div>
 <div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip.html">alpaka::detail::TaskCopyUniformCudaHip&lt;TDim, TViewDst, TViewSrc, TExtent&gt;</a>(</div>
 <div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;                    viewDst,</div>
@@ -925,7 +925,7 @@ $(document).ready(function(){initNavTree('uniformCudaHip_2Copy_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_54c2063cf9a2dba4131b4727fce3a926.html">uniformCudaHip</a></li><li class="navelem"><a class="el" href="uniformCudaHip_2Copy_8hpp.html">Copy.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:08 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

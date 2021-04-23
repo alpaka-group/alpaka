@@ -236,9 +236,9 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                <span class="comment">// \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation</span></div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                <span class="comment">// defined maximum where the creation of a new thread crashes. std::thread::hardware_concurrency can</span></div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                <span class="comment">// return 0, so 1 is the default case?</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadCountMax(<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::max</a>(</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadCountMax = <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::max</a>(</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(1),</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    alpaka::core::clipCast&lt;TIdx&gt;(std::thread::hardware_concurrency() * 8)));</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    alpaka::core::clipCast&lt;TIdx&gt;(std::thread::hardware_concurrency() * 8));</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <span class="keywordflow">return</span> {<span class="comment">// m_multiProcessorCount</span></div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                        <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(1),</div>
@@ -392,7 +392,7 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccCpuThreads_8hpp.html">AccCpuThreads.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:07 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:39 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

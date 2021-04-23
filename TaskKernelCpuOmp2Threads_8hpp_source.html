@@ -159,12 +159,12 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Threads_8hpp_source.h
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> gridBlockExtent(getWorkDiv&lt;Grid, Blocks&gt;(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadExtent(getWorkDiv&lt;Block, Threads&gt;(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> threadElemExtent(getWorkDiv&lt;Thread, Elems&gt;(*<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> gridBlockExtent = getWorkDiv&lt;Grid, Blocks&gt;(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadExtent = getWorkDiv&lt;Block, Threads&gt;(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> threadElemExtent = getWorkDiv&lt;Thread, Elems&gt;(*<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes(<a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                [&amp;](<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs) <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                    <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;AccCpuOmp2Threads&lt;TDim, TIdx&gt;&gt;(</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                        m_kernelFnObj,</div>
@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Threads_8hpp_source.h
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                        threadElemExtent,</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                        args...);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                },</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                m_args));</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                m_args);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; blockSharedMemDynSizeBytes: &quot;</span> &lt;&lt; blockSharedMemDynSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
@@ -180,11 +180,11 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Threads_8hpp_source.h
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="comment">// Bind all arguments except the accelerator.</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="comment">// TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> boundKernelFnObj(<a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> boundKernelFnObj = <a class="code" href="namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad">meta::apply</a>(</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                [<span class="keyword">this</span>](<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs) <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    <span class="keywordflow">return</span> std::bind(std::ref(m_kernelFnObj), std::placeholders::_1, std::ref(args)...);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                },</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                m_args));</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                m_args);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <a class="code" href="classalpaka_1_1AccCpuOmp2Threads.html">AccCpuOmp2Threads&lt;TDim, TIdx&gt;</a> acc(</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                *<span class="keyword">static_cast&lt;</span><a class="code" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers&lt;TDim, TIdx&gt;</a> const*<span class="keyword">&gt;</span>(<span class="keyword">this</span>),</div>
@@ -341,7 +341,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Threads_8hpp_source.h
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuOmp2Threads_8hpp.html">TaskKernelCpuOmp2Threads.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:08 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

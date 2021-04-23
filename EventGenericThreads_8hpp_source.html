@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('EventGenericThreads_8hpp_source.html',
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="comment">// Copy the shared pointer of the event implementation.</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <span class="comment">// This is forwarded to the lambda that is enqueued into the queue to ensure that the event</span></div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <span class="comment">// implementation is alive as long as it is enqueued.</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                <span class="keyword">auto</span> spEventImpl(event.m_spEventImpl);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                <span class="keyword">auto</span> spEventImpl = <span class="keyword">event</span>.m_spEventImpl;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="comment">// Setting the event state and enqueuing it has to be atomic.</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                std::lock_guard&lt;std::mutex&gt; lk(spEventImpl-&gt;m_mutex);</div>
@@ -336,7 +336,7 @@ $(document).ready(function(){initNavTree('EventGenericThreads_8hpp_source.html',
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            {</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                <span class="comment">// Get all the queues on the device at the time of invocation.</span></div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                <span class="comment">// All queues added afterwards are ignored.</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                <span class="keyword">auto</span> vQueues(dev.getAllQueues());</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                <span class="keyword">auto</span> vQueues = dev.getAllQueues();</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="comment">// Furthermore there should not even be a chance to enqueue something between getting the queues and</span></div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                <span class="comment">// adding our wait events!</span></div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                std::vector&lt;EventGenericThreads&lt;TDev&gt;&gt; vEvents;</div>
@@ -401,7 +401,7 @@ $(document).ready(function(){initNavTree('EventGenericThreads_8hpp_source.html',
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                <span class="comment">// Copy the shared pointer of the event implementation.</span></div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                <span class="comment">// This is forwarded to the lambda that is enqueued into the queue to ensure that the event</span></div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                <span class="comment">// implementation is alive as long as it is enqueued.</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                <span class="keyword">auto</span> spEventImpl(event.m_spEventImpl);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                <span class="keyword">auto</span> spEventImpl = <span class="keyword">event</span>.m_spEventImpl;</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                std::lock_guard&lt;std::mutex&gt; lk(spEventImpl-&gt;m_mutex);</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
@@ -562,7 +562,7 @@ $(document).ready(function(){initNavTree('EventGenericThreads_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cb41fd9734833cacff31b3343158f46b.html">event</a></li><li class="navelem"><a class="el" href="EventGenericThreads_8hpp.html">EventGenericThreads.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:08 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

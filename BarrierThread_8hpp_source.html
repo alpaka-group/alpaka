@@ -233,7 +233,7 @@ $(document).ready(function(){initNavTree('BarrierThread_8hpp_source.html',''); i
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                    TIdx <span class="keyword">const</span> generationWhenEnteredTheWait = m_generation;</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                    std::unique_lock&lt;std::mutex&gt; lock(m_mtxBarrier);</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    <span class="keyword">auto</span> <span class="keyword">const</span> generationMod2(m_generation % <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(2u));</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    <span class="keyword">auto</span> <span class="keyword">const</span> generationMod2 = m_generation % <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(2u);</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                    <span class="keywordflow">if</span>(m_curThreadCount == m_threadCount)</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                    {</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                        m_result[generationMod2] = TOp::InitialValue;</div>
@@ -297,7 +297,7 @@ $(document).ready(function(){initNavTree('BarrierThread_8hpp_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="BarrierThread_8hpp.html">BarrierThread.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:07 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

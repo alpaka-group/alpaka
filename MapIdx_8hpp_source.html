@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('MapIdx_8hpp_source.html',''); initResi
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;1u&gt;</a>, TElem&gt; <span class="keyword">const</span>&amp; idx,</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;TidxDimOut&gt;</a>, TElem&gt; <span class="keyword">const</span>&amp; extent) -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;DimInt&lt;TidxDimOut&gt;</a>, TElem&gt;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keyword">auto</span> idxNd(<a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;TidxDimOut&gt;</a>, TElem&gt;::<a class="code" href="namespacealpaka_1_1warp.html#a0b2d83334bcd2540baca4256ab378672">all</a>(0u));</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keyword">auto</span> idxNd = <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;DimInt&lt;TidxDimOut&gt;</a>, TElem&gt;<a class="code" href="namespacealpaka_1_1warp.html#a0b2d83334bcd2540baca4256ab378672">::all</a>(0u);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                constexpr std::size_t lastIdx(TidxDimOut - 1u);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
@@ -246,9 +246,9 @@ $(document).ready(function(){initNavTree('MapIdx_8hpp_source.html',''); initResi
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;1u&gt;</a>, TElem&gt; <span class="keyword">const</span>&amp; idx,</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;TidxDimOut&gt;</a>, TElem&gt; <span class="keyword">const</span>&amp; pitch) -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;DimInt&lt;TidxDimOut&gt;</a>, TElem&gt;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keyword">auto</span> idxNd(<a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;TidxDimOut&gt;</a>, TElem&gt;::<a class="code" href="namespacealpaka_1_1warp.html#a0b2d83334bcd2540baca4256ab378672">all</a>(0u));</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="keyword">auto</span> idxNd = <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;DimInt&lt;TidxDimOut&gt;</a>, TElem&gt;<a class="code" href="namespacealpaka_1_1warp.html#a0b2d83334bcd2540baca4256ab378672">::all</a>(0u);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                constexpr std::size_t lastIdx(TidxDimOut - 1u);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                constexpr std::size_t lastIdx = TidxDimOut - 1u;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                TElem tmp = idx[0u];</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="keywordflow">for</span>(std::size_t d(0u); d &lt; lastIdx; ++d)</div>
@@ -276,7 +276,7 @@ $(document).ready(function(){initNavTree('MapIdx_8hpp_source.html',''); initResi
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;TidxDimIn&gt;</a>, TElem&gt; <span class="keyword">const</span>&amp; pitch) -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;DimInt&lt;1u&gt;</a>, TElem&gt;</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            {</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                constexpr <span class="keyword">auto</span> lastDim = TidxDimIn - 1;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                TElem idx1d(idx[lastDim]);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                TElem idx1d = idx[lastDim];</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                <span class="keywordflow">for</span>(std::size_t d(0u); d &lt; lastDim; ++d)</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                {</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                    idx1d = <span class="keyword">static_cast&lt;</span>TElem<span class="keyword">&gt;</span>(idx1d + pitch[d + 1] * idx[d]);</div>
@@ -331,7 +331,7 @@ $(document).ready(function(){initNavTree('MapIdx_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="MapIdx_8hpp.html">MapIdx.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:08 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

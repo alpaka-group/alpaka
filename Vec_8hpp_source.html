@@ -257,7 +257,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03">  168</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03">operator[]</a>(TIdx <span class="keyword">const</span> iIdx) -&gt; TVal&amp;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        {</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            <a class="code" href="namespacealpaka_1_1core.html#a841600e3344adc10ea85eac5834e35a2">core::assertValueUnsigned</a>(iIdx);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> idx(<span class="keyword">static_cast&lt;</span>typename TDim::value_type<span class="keyword">&gt;</span>(iIdx));</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> idx = <span class="keyword">static_cast&lt;</span>typename TDim::value_type<span class="keyword">&gt;</span>(iIdx);</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            core::assertGreaterThan&lt;TDim&gt;(idx);</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            <span class="keywordflow">return</span> m_data[idx];</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div>
@@ -269,7 +269,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc">  180</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc">operator[]</a>(TIdx <span class="keyword">const</span> iIdx) <span class="keyword">const</span> -&gt; TVal</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        {</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <a class="code" href="namespacealpaka_1_1core.html#a841600e3344adc10ea85eac5834e35a2">core::assertValueUnsigned</a>(iIdx);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> idx(<span class="keyword">static_cast&lt;</span>typename TDim::value_type<span class="keyword">&gt;</span>(iIdx));</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> idx = <span class="keyword">static_cast&lt;</span>typename TDim::value_type<span class="keyword">&gt;</span>(iIdx);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            core::assertGreaterThan&lt;TDim&gt;(idx);</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <span class="keywordflow">return</span> m_data[idx];</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        }</div>
@@ -897,7 +897,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7056b9f7cd8b764aedbfcd44587c0438.html">vec</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:08 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

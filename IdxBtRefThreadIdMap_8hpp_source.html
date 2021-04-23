@@ -155,8 +155,8 @@ $(document).ready(function(){initNavTree('IdxBtRefThreadIdMap_8hpp_source.html',
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TDim, TIdx&gt;</a></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            {</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <a class="code" href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a>(workDiv);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> threadId(std::this_thread::get_id());</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> threadEntry(idx.m_threadToIndexMap.find(threadId));</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> threadId = std::this_thread::get_id();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> threadEntry = idx.m_threadToIndexMap.find(threadId);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <a class="code" href="Assert_8hpp.html#a328f757c64444f381ff6575f5caa54e8">ALPAKA_ASSERT</a>(threadEntry != idx.m_threadToIndexMap.end());</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                <span class="keywordflow">return</span> threadEntry-&gt;second;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            }</div>
@@ -202,7 +202,7 @@ $(document).ready(function(){initNavTree('IdxBtRefThreadIdMap_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="dir_d09a687214752b73c59e5dd5576fcca9.html">bt</a></li><li class="navelem"><a class="el" href="IdxBtRefThreadIdMap_8hpp.html">IdxBtRefThreadIdMap.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 22 2021 21:17:08 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 15:10:40 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
