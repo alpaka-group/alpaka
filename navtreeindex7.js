@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"meta_2Set_8hpp.html#a7007c16b361a3bbc1184a79223d884dc":[4,0,0,0,16,15,6],
+"meta_2Set_8hpp_source.html":[4,0,0,0,16,15],
+"namespacealpaka.html":[3,0,0],
 "namespacealpaka.html":[2,0,0],
 "namespacealpaka_1_1bt.html":[3,0,0,0],
 "namespacealpaka_1_1bt.html":[2,0,0,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#a8f4561f5884ab81524a4a94082b7d118":[3,0,0,2,2,0,1,0],
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html":[3,0,0,2,2,0,2],
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f":[3,0,0,2,2,0,2,0],
-"structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html":[3,0,0,2,2,0,3],
-"structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca":[3,0,0,2,2,0,3,0],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html":[3,0,0,2,3,0],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html#a1e950bc9d4d06f41c74e0c430d8f2f84":[3,0,0,2,3,0,0]
+"structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html":[3,0,0,2,2,0,3]
 };

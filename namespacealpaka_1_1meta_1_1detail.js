@@ -31,6 +31,8 @@ var namespacealpaka_1_1meta_1_1detail =
     [ "ForEachTypeHelper", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper.html", null ],
     [ "ForEachTypeHelper< TList< T, Ts... > >", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_01T_00_01Ts_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_01T_00_01Ts_8_8_8_01_4_01_4" ],
     [ "ForEachTypeHelper< TList<> >", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_4_01_4" ],
+    [ "Front", "structalpaka_1_1meta_1_1detail_1_1Front.html", null ],
+    [ "Front< List< Head, Tail... > >", "structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4" ],
     [ "IsParameterPackSetImpl", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html", null ],
     [ "IsParameterPackSetImpl< T, Ts... >", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4" ],
     [ "IsParameterPackSetImpl<>", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4.html", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4" ],

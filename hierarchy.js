@@ -291,6 +291,7 @@ var hierarchy =
     [ "alpaka::math::traits::Trunc< TruncUniformCudaHipBuiltIn, float >", "structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncUniformCudaHipBuiltIn_00_01float_01_4.html", null ],
     [ "alpaka::math::traits::Trunc< TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enaab84821241abd21bc8d0f2710f16f996.html", null ],
     [ "alpaka::MemSetKernel", "classalpaka_1_1MemSetKernel.html", null ],
+    [ "alpaka::meta::Contains< List< Head, Tail... >, Value >", "structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html", null ],
     [ "alpaka::meta::detail::ApplyImpl< TList, TApplicant >", "structalpaka_1_1meta_1_1detail_1_1ApplyImpl.html", null ],
     [ "alpaka::meta::detail::ApplyImpl< TList< T... >, TApplicant >", "structalpaka_1_1meta_1_1detail_1_1ApplyImpl_3_01TList_3_01T_8_8_8_01_4_00_01TApplicant_01_4.html", null ],
     [ "alpaka::meta::detail::CartesianProductImpl< TList, Ts >", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl.html", null ],
@@ -318,6 +319,8 @@ var hierarchy =
     [ "alpaka::meta::detail::ForEachTypeHelper< TList >", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper.html", null ],
     [ "alpaka::meta::detail::ForEachTypeHelper< TList< T, Ts... > >", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_01T_00_01Ts_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::meta::detail::ForEachTypeHelper< TList<> >", "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_4_01_4.html", null ],
+    [ "alpaka::meta::detail::Front< List >", "structalpaka_1_1meta_1_1detail_1_1Front.html", null ],
+    [ "alpaka::meta::detail::Front< List< Head, Tail... > >", "structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::meta::detail::IsParameterPackSetImpl< Ts >", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html", null ],
     [ "alpaka::meta::detail::IsParameterPackSetImpl<>", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4.html", null ],
     [ "alpaka::meta::detail::IsSetImpl< TList >", "structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html", null ],
@@ -1544,6 +1547,7 @@ var hierarchy =
       [ "alpaka::traits::Enqueue< QueueUniformCudaHipRtNonBlocking, TTask >::CallbackSynchronizationData", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html", null ]
     ] ],
     [ "false_type", null, [
+      [ "alpaka::meta::Contains< List, Value >", "structalpaka_1_1meta_1_1Contains.html", null ],
       [ "alpaka::meta::DependentFalseType< T >", "structalpaka_1_1meta_1_1DependentFalseType.html", null ],
       [ "alpaka::meta::detail::DisjunctionImpl<... >", "structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl.html", null ]
     ] ],

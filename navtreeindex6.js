@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"dir_820f4fd4051d8a4d65c2fe0dda35bb00.html":[4,0,0,0,11,1],
+"dir_8cabab45612e222288a0de47e4bdac2e.html":[4,0,0,0,14,3],
+"dir_8f34774912eadf553d3df47fd63fffd4.html":[4,0,0,0,14,13],
 "dir_978fff6d009a0eab698f51257fa3760a.html":[4,0,0,0,5],
 "dir_97c0be6c4408e2e53475dcdb95885711.html":[4,0,0,0,14,17],
 "dir_9b06e2d5421d26ecb89f5fc8cf901459.html":[4,0,0,0,16],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "mem_2view_2Traits_8hpp.html#adedb8c0a11a3096bccbd7d37481798b0":[4,0,0,0,15,2,0,13],
 "mem_2view_2Traits_8hpp_source.html":[4,0,0,0,15,2,0],
 "meta_2Set_8hpp.html":[4,0,0,0,16,15],
-"meta_2Set_8hpp.html#a232409af86c4d12e27e83406c7d6f6ca":[4,0,0,0,16,15,7],
-"meta_2Set_8hpp.html#a7007c16b361a3bbc1184a79223d884dc":[4,0,0,0,16,15,6],
-"meta_2Set_8hpp_source.html":[4,0,0,0,16,15],
-"namespacealpaka.html":[3,0,0]
+"meta_2Set_8hpp.html#a232409af86c4d12e27e83406c7d6f6ca":[4,0,0,0,16,15,7]
 };

@@ -100,6 +100,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1Contains.html">Contains</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html">Contains&lt; List&lt; Head, Tail... &gt;, Value &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1DependentFalseType.html">DependentFalseType</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A false_type being dependent on a ignored template parameter. This allows to use static_assert in uninstantiated template specializations without triggering.  <a href="structalpaka_1_1meta_1_1DependentFalseType.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,6 +163,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a65e851602fef62781ed5eb23fb1d8fd6"><td class="memTemplParams" colspan="2">template&lt;typename TList , template&lt; typename &gt; class TPred&gt; </td></tr>
 <tr class="memitem:a65e851602fef62781ed5eb23fb1d8fd6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">Filter</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1FilterImpl.html">detail::FilterImpl</a>&lt; TList, TPred &gt;::type</td></tr>
 <tr class="separator:a65e851602fef62781ed5eb23fb1d8fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa022767003bdbdb48057be42318fa982"><td class="memTemplParams" colspan="2">template&lt;typename List &gt; </td></tr>
+<tr class="memitem:aa022767003bdbdb48057be42318fa982"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#aa022767003bdbdb48057be42318fa982">Front</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1Front.html">detail::Front</a>&lt; List &gt;::type</td></tr>
+<tr class="separator:aa022767003bdbdb48057be42318fa982"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a604acd7bf1844fcc1ff303a5377bb2b0"><td class="memTemplParams" colspan="2">template&lt;typename T0 , typename T1 &gt; </td></tr>
 <tr class="memitem:a604acd7bf1844fcc1ff303a5377bb2b0"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a604acd7bf1844fcc1ff303a5377bb2b0">HigherMax</a> = std::conditional_t&lt;(sizeof(T0) &gt; sizeof(T1)), T0, std::conditional_t&lt;((sizeof(T0)==sizeof(T1)) &amp;&amp;std::is_unsigned&lt; T0 &gt;::value &amp;&amp;std::is_signed&lt; T1 &gt;::value), T0, T1 &gt; &gt;</td></tr>
 <tr class="memdesc:a604acd7bf1844fcc1ff303a5377bb2b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type that has the higher max value.  <a href="namespacealpaka_1_1meta.html#a604acd7bf1844fcc1ff303a5377bb2b0">More...</a><br /></td></tr>
@@ -360,6 +367,24 @@ template&lt;typename TList , template&lt; typename &gt; class TPred&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="Filter_8hpp_source.html#l00047">47</a> of file <a class="el" href="Filter_8hpp_source.html">Filter.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa022767003bdbdb48057be42318fa982"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa022767003bdbdb48057be42318fa982">&#9670;&nbsp;</a></span>Front</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename List &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#aa022767003bdbdb48057be42318fa982">alpaka::meta::Front</a> = typedef typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1Front.html">detail::Front</a>&lt;List&gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TypeListOps_8hpp_source.html#l00033">33</a> of file <a class="el" href="TypeListOps_8hpp_source.html">TypeListOps.hpp</a>.</p>
 
 </div>
 </div>
@@ -891,7 +916,7 @@ template&lt;typename TExtentVec , typename TFnObj &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1meta.html">meta</a></li>
-    <li class="footer">Generated on Fri Apr 23 2021 15:10:42 for alpaka by
+    <li class="footer">Generated on Fri Apr 23 2021 20:28:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

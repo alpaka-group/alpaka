@@ -1,5 +1,14 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicUniformCudaHipBuiltIn_00_01T_00_01THierarchy_01_4.html#a04f37ce62599e846b878726041abc4d1":[3,0,0,15,69,1],
+"structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicUniformCudaHipBuiltIn_00_01T_00_01THierarchy_01_4.html#a3e1944c9891acb7bcc9c7de037a2413a":[3,0,0,15,69,0],
+"structalpaka_1_1traits_1_1BlockSharedMemDynSizeBytes.html":[3,0,0,15,70],
+"structalpaka_1_1traits_1_1BlockSharedMemDynSizeBytes.html#a6befcbee5c21842e441b2159d41eb9e3":[3,0,0,15,70,0],
+"structalpaka_1_1traits_1_1BufAlloc.html":[3,0,0,15,71],
+"structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_011u_01_4_00_01TIdx_00_01DevOmp5_01_4.html":[3,0,0,15,72],
+"structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_011u_01_4_00_01TIdx_00_01DevOmp5_01_4.html#a7f8af797ffd9bdf17f663673d23f2823":[3,0,0,15,72,0],
+"structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_011u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html":[3,0,0,15,73],
+"structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_011u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html#aab8bed3ffcf3a203f0c115f01b1f8bb9":[3,0,0,15,73,0],
 "structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_012u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html":[3,0,0,15,74],
 "structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_012u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html#abcae49b684d56ec16bfd5e6910df84ab":[3,0,0,15,74,0],
 "structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_013u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html":[3,0,0,15,75],
@@ -240,14 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbLinear_3_01TDim_00_01TIdx_01_4_01_4.html#a324bb83ee6c4ba68e8e7518c9d151a80":[3,0,0,15,179,0],
 "structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbRef_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,180],
 "structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbRef_3_01TDim_00_01TIdx_01_4_01_4.html#af69a9446a25b229dfdc570d9fd8804d3":[3,0,0,15,180,0],
-"structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,181],
-"structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a7de649f5a4cadc86c20228d0b746e5fd":[3,0,0,15,181,0],
-"structalpaka_1_1traits_1_1DimType_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html":[3,0,0,15,182],
-"structalpaka_1_1traits_1_1DimType_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html#ac28767e4133e189aa7788648d48b4710":[3,0,0,15,182,0],
-"structalpaka_1_1traits_1_1DimType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html":[3,0,0,15,183],
-"structalpaka_1_1traits_1_1DimType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a60c5c5bd842dd4f0bb9a63e2c0e679d1":[3,0,0,15,183,0],
-"structalpaka_1_1traits_1_1ElemType.html":[3,0,0,15,202],
-"structalpaka_1_1traits_1_1ElemType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,203],
-"structalpaka_1_1traits_1_1ElemType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a311c380c99e3f5d664c694d53b3e9773":[3,0,0,15,203,0],
-"structalpaka_1_1traits_1_1ElemType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,204]
+"structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,181]
 };
