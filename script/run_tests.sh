@@ -29,6 +29,14 @@ if [[ ! -z "${GITLAB_CI+x}" || ("${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" && "${A
 then
     cd build/
 
+    if [ "${CMAKE_CXX_COMPILER:-}" = "nvc++" ]
+    then
+        # show gpu info in gitlab CI
+        nvidia-smi || true
+        # # enbale CUDA API logs for offload
+        # export NVCOMPILER_ACC_NOTIFY=3 # exceeds mximum log length
+    fi
+
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
     then
         ctest -V

@@ -29,3 +29,4 @@ variables:
 include:
   - local: '/script/gitlabci/job_base.yml'
   - local: '/script/gitlabci/job_cuda9.2.yml'
+  - local: '/script/gitlabci/job_cuda11.4.yml'
