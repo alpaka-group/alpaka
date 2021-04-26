@@ -2,7 +2,7 @@
 
 ## CMake Basics
 
-Alpaka requires cmake version >= 3.15.
+Alpaka requires cmake version >= 3.18.
 
 In the root of the alpaka dir, run:
 ```bash
@@ -30,15 +30,18 @@ required OpenACC flags for the compiler. Additional flags can be added, e.g:
   ```
   As of gcc 9.2 no test will compile if the nvptx backend is enabled. If cmake
   fails to set the `-fopenacc` flag, it can be set manually.
-- pgi/nvhpc, target tesla (set `$CC`, `$CXX` and `$CUDA_HOME` to appropriate values
-  for your system to use pgi):
+- nvhpc, target tesla (set `$CC`, `$CXX` and `$CUDA_HOME` to appropriate values
+  for your system to use nvhpc):
   ```bash
-    -DCMAKE_CXX_FLAGS="-ta=tesla -Minfo"
+    -DCMAKE_CXX_FLAGS="-acc -ta=tesla -Minfo"
   ```
+  - known issues: activating optimizations (other than default `-O`) and debug
+    symbols `-g` breaks block-level synchronization and shared memory (nvhpc
+    21.9)
 
 ## Limitations
 
-* *No separabel compilation*. OpenACC requires functions for which device code
+* *No separable compilation*. OpenACC requires functions for which device code
   should be generated for a not-inlined call in a target region to be marked with
   pragmas. This cannot be wrapped by macros like `ALPAKA_FN_DEVICE` because they
   appear between template parameter list and function name.
