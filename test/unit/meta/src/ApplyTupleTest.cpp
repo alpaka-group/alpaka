@@ -42,8 +42,10 @@ TEST_CASE("invoke", "[meta]")
     // invoke a free function
     REQUIRE(9 == alpaka::meta::invoke(abs_num, -9));
 
+#if !BOOST_COMP_PGI // nvc++: "a lambda is not allowed in an unevaluated expression"
     // invoke a lambda
     REQUIRE(42 == alpaka::meta::invoke([]() { return abs_num(-42); }));
+#endif
 
     // invoke a member function
     const Foo foo(-314159);
