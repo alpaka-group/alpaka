@@ -97,6 +97,7 @@ namespace alpaka
             using AccOmp5IfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED) && !(defined(TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION))                       \
+    && !(defined(TEST_UNIT_TIME) /*no clock in OpenACC*/)                                                             \
     && !(                                                                                                             \
         BOOST_COMP_GNUC                                                                                               \
         && (((BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(11, 0, 0)) /* tests excluded because of GCC10 Oacc / Omp5 target \
