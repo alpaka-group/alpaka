@@ -347,6 +347,10 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 target_compile_definitions(alpaka INTERFACE "__CUDACC__")
             endif()
 
+            if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 11.0)
+                target_compile_options(alpaka INTERFACE "-Wno-unknown-cuda-version")
+            endif()
+
             # This flag silences the warning produced by the Dummy.cpp files:
             # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
             # This seems to be a false positive as all flags are 'unused' for an empty file.
