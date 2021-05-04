@@ -35,7 +35,7 @@ struct KernelWithOmpScheduleBase
 // Checks that this variable is only declared and not defined, It also tests that alpaka never odr-uses it.
 struct KernelWithConstexprMemberOmpScheduleKind : KernelWithOmpScheduleBase
 {
-    static constexpr auto ompScheduleKind = alpaka::omp::Schedule::Runtime;
+    static constexpr auto ompScheduleKind = alpaka::omp::Schedule::Static;
 };
 
 // Kernel that sets the schedule kind via non-constexpr ompScheduleKind.
@@ -44,7 +44,7 @@ struct KernelWithMemberOmpScheduleKind : KernelWithOmpScheduleBase
     static const alpaka::omp::Schedule::Kind ompScheduleKind;
 };
 // In this case, the member has to be defined externally
-const alpaka::omp::Schedule::Kind KernelWithMemberOmpScheduleKind::ompScheduleKind = alpaka::omp::Schedule::NoSchedule;
+const alpaka::omp::Schedule::Kind KernelWithMemberOmpScheduleKind::ompScheduleKind = alpaka::omp::Schedule::Dynamic;
 
 // Kernel that sets the schedule chunk size via constexpr ompScheduleChunkSize.
 // Checks that this variable is only declared and not defined, It also tests that alpaka never odr-uses it.

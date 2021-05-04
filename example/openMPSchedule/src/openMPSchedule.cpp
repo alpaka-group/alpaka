@@ -61,6 +61,7 @@ struct OpenMPScheduleMemberKernel : public OpenMPScheduleDefaultKernel
     static constexpr auto ompScheduleKind = alpaka::omp::Schedule::Static;
 
     //! Member to set OpenMP chunk size, can be non-static and non-constexpr.
+    //! Defining kind as member and not defining chunk will result in default chunk size for the kind.
     static constexpr int ompScheduleChunkSize = 1;
 };
 
