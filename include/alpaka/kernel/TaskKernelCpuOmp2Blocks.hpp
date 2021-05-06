@@ -51,12 +51,11 @@ namespace alpaka
         //! Executor of parallel OpenMP loop with the given schedule
         //!
         //! Is explicitly specialized for all supported schedule kinds to help code optimization by compilers.
-        //! For the same purpose performs dispatch based on ways of setting chunk size.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         //! \tparam TScheduleKind The schedule kind value.
-        template<typename TKernel, typename TSchedule, omp::Schedule::Kind TScheduleKind, bool TSfinae = true>
+        template<typename TKernel, typename TSchedule, omp::Schedule::Kind TScheduleKind>
         struct ParallelForImpl;
 
         //! Executor of parallel OpenMP loop with no schedule set
@@ -100,6 +99,13 @@ namespace alpaka
             }
         };
 
+        /* Implementations for Static, Dynamic and Guided follow the same pattern.
+         * There are two specializations of ParallelForImpl for compile-time dispatch depending on whether the
+         * OmpSchedule trait is specialized.
+         * The no trait case is further compile-time dispatched with a helper ParallelForStaticImpl.
+         * It is based on whether ompScheduleChunkSize member is available.
+         */
+
         //! Executor of parallel OpenMP loop with the static schedule
         //!
         //! Specialization for kernels specializing the OmpSchedule trait.
@@ -141,74 +147,63 @@ namespace alpaka
             }
         };
 
-        //! Helper type to check if TSchedule is a type originating from OmpSchedule trait definition
+        //! Helper executor of parallel OpenMP loop with the static schedule
         //!
-        //! \tparam TSchedule The schedule type.
-        template<typename TSchedule>
-        using IsOmpScheduleTraitSpecialized
-            = std::integral_constant<bool, std::is_same<TSchedule, omp::Schedule>::value>;
-
-        //! Helper type to check if member ompScheduleChunkSize of TKernel should be used
-        //!
-        //! For that it has to be present, and no OmpSchedule trait specialized.
-        //! Is std::true_type for those types, ill-formed otherwise.
+        //! Generel implementation is for TKernel types without member ompScheduleChunkSize.
         //!
         //! \tparam TKernel The kernel type.
-        //! \tparam TSchedule The schedule type.
-        template<typename TKernel, typename TSchedule>
-        using UseScheduleChunkSize = std::enable_if_t<
-            sizeof(std::declval<TKernel&>().ompScheduleChunkSize) && !IsOmpScheduleTraitSpecialized<TSchedule>::value,
-            std::true_type>;
-
-        //! Helper type for NotUseScheduleChunkSize
-        //!
-        //! Is std::true_type when TKernel does not have a public member ompScheduleChunkSize,
-        //! std::false_type otherwise.
-        //!
-        //! \tparam TKernel The kernel type.
-        //! \tparam TSchedule The schedule type.
-        template<typename TKernel, typename TSchedule, bool TSfinae = true>
-        struct NotUseScheduleChunkSizeHelper : std::true_type
+        //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
+        template<typename TKernel, typename TSchedule, typename TSfinae = void>
+        struct ParallelForStaticImpl
         {
+            //! Run parallel OpenMP loop
+            //!
+            //! \tparam TLoopBody The loop body functor type.
+            //! \tparam TIdx The index type.
+            //!
+            //! \param loopBody The loop body functor instance, takes iteration index as input.
+            //! \param numIterations The number of loop iterations.
+            template<typename TLoopBody, typename TIdx>
+            ALPAKA_FN_HOST void operator()(
+                TKernel const&,
+                TLoopBody&& loopBody,
+                TIdx const numIterations,
+                TSchedule const&)
+            {
+#    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
+                         // header.
+                std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
+                std::intmax_t i;
+#        pragma omp for nowait schedule(static)
+                for(i = 0; i < iNumBlocksInGrid; ++i)
+#    else
+#        pragma omp for nowait schedule(static)
+                for(TIdx i = 0; i < numIterations; ++i)
+#    endif
+                {
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
+                }
+            }
         };
 
-        //! Helper trait for NotUseScheduleChunkSize
+        //! Helper type to check if TKernel has member ompScheduleChunkSize
         //!
-        //! Specialization for kernels with ompScheduleChunkSize member.
-        //!
-        //! \tparam TKernel The kernel type.
-        //! \tparam TSchedule The schedule type.
-        template<typename TKernel, typename TSchedule>
-        struct NotUseScheduleChunkSizeHelper<TKernel, TSchedule, UseScheduleChunkSize<TKernel, TSchedule>::value>
-            : std::false_type
-        {
-        };
-
-        //! Helper type to check if member ompScheduleChunkSize of TKernel should not be used
-        //!
-        //! For that it has to be not present, and no OmpSchedule trait specialized.
-        //! Is std::true_type for those types, ill-formed otherwise.
+        //! Is void for those types, ill-formed otherwise.
         //!
         //! \tparam TKernel The kernel type.
-        //! \tparam TSchedule The schedule type.
-        template<typename TKernel, typename TSchedule>
-        using NotUseScheduleChunkSize = std::enable_if_t<
-            NotUseScheduleChunkSizeHelper<TKernel, TSchedule>::value
-                && !IsOmpScheduleTraitSpecialized<TSchedule>::value,
-            std::true_type>;
+        template<typename TKernel>
+        using HasScheduleChunkSize = std::enable_if_t<sizeof(std::declval<TKernel&>().ompScheduleChunkSize)>;
 
-        //! Executor of parallel OpenMP loop with the static schedule
+        //! Helper executor of parallel OpenMP loop with the static schedule
         //!
         //! Specialization for kernels with ompScheduleChunkSize member.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<
-            TKernel,
-            TSchedule,
-            omp::Schedule::Static,
-            UseScheduleChunkSize<TKernel, TSchedule>::value>
+        struct ParallelForStaticImpl<TKernel, TSchedule, HasScheduleChunkSize<TKernel>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -245,47 +240,14 @@ namespace alpaka
 
         //! Executor of parallel OpenMP loop with the static schedule
         //!
-        //! Specialization for the kernels that do not set chunk size in any way.
+        //! Specialization for kernels not specializing the OmpSchedule trait.
+        //! Falls back to ParallelForStaticImpl for further dispatch.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<
-            TKernel,
-            TSchedule,
-            omp::Schedule::Static,
-            NotUseScheduleChunkSize<TKernel, TSchedule>::value>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Static> : ParallelForStaticImpl<TKernel, TSchedule>
         {
-            //! Run parallel OpenMP loop
-            //!
-            //! \tparam TLoopBody The loop body functor type.
-            //! \tparam TIdx The index type.
-            //!
-            //! \param loopBody The loop body functor instance, takes iteration index as input.
-            //! \param numIterations The number of loop iterations.
-            template<typename TLoopBody, typename TIdx>
-            ALPAKA_FN_HOST void operator()(
-                TKernel const&,
-                TLoopBody&& loopBody,
-                TIdx const numIterations,
-                TSchedule const&)
-            {
-#    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
-                         // header.
-                std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
-                std::intmax_t i;
-#        pragma omp for nowait schedule(static)
-                for(i = 0; i < iNumBlocksInGrid; ++i)
-#    else
-#        pragma omp for nowait schedule(static)
-                for(TIdx i = 0; i < numIterations; ++i)
-#    endif
-                {
-                    // Make another lambda to work around #1288
-                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
-                    wrappedLoopBody(i);
-                }
-            }
         };
 
         //! Executor of parallel OpenMP loop with the dynamic schedule
@@ -329,18 +291,55 @@ namespace alpaka
             }
         };
 
-        //! Executor of parallel OpenMP loop with the dynamic schedule
+        //! Helper executor of parallel OpenMP loop with the dynamic schedule
+        //!
+        //! Generel implementation is for TKernel types without member ompScheduleChunkSize.
+        //!
+        //! \tparam TKernel The kernel type.
+        //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
+        template<typename TKernel, typename TSchedule, typename TSfinae = void>
+        struct ParallelForDynamicImpl
+        {
+            //! Run parallel OpenMP loop
+            //!
+            //! \tparam TLoopBody The loop body functor type.
+            //! \tparam TIdx The index type.
+            //!
+            //! \param loopBody The loop body functor instance, takes iteration index as input.
+            //! \param numIterations The number of loop iterations.
+            template<typename TLoopBody, typename TIdx>
+            ALPAKA_FN_HOST void operator()(
+                TKernel const&,
+                TLoopBody&& loopBody,
+                TIdx const numIterations,
+                TSchedule const&)
+            {
+#    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
+                         // header.
+                std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
+                std::intmax_t i;
+#        pragma omp for nowait schedule(dynamic)
+                for(i = 0; i < iNumBlocksInGrid; ++i)
+#    else
+#        pragma omp for nowait schedule(dynamic)
+                for(TIdx i = 0; i < numIterations; ++i)
+#    endif
+                {
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
+                }
+            }
+        };
+
+        //! Helper executor of parallel OpenMP loop with the dynamic schedule
         //!
         //! Specialization for kernels with ompScheduleChunkSize member.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<
-            TKernel,
-            TSchedule,
-            omp::Schedule::Dynamic,
-            UseScheduleChunkSize<TKernel, TSchedule>::value>
+        struct ParallelForDynamicImpl<TKernel, TSchedule, HasScheduleChunkSize<TKernel>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -377,47 +376,14 @@ namespace alpaka
 
         //! Executor of parallel OpenMP loop with the dynamic schedule
         //!
-        //! Specialization for the kernels that do not set chunk size in any way.
+        //! Specialization for kernels not specializing the OmpSchedule trait.
+        //! Falls back to ParallelForDynamicImpl for further dispatch.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<
-            TKernel,
-            TSchedule,
-            omp::Schedule::Dynamic,
-            NotUseScheduleChunkSize<TKernel, TSchedule>::value>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Dynamic> : ParallelForDynamicImpl<TKernel, TSchedule>
         {
-            //! Run parallel OpenMP loop
-            //!
-            //! \tparam TLoopBody The loop body functor type.
-            //! \tparam TIdx The index type.
-            //!
-            //! \param loopBody The loop body functor instance, takes iteration index as input.
-            //! \param numIterations The number of loop iterations.
-            template<typename TLoopBody, typename TIdx>
-            ALPAKA_FN_HOST void operator()(
-                TKernel const&,
-                TLoopBody&& loopBody,
-                TIdx const numIterations,
-                TSchedule const&)
-            {
-#    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
-                         // header.
-                std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
-                std::intmax_t i;
-#        pragma omp for nowait schedule(dynamic)
-                for(i = 0; i < iNumBlocksInGrid; ++i)
-#    else
-#        pragma omp for nowait schedule(dynamic)
-                for(TIdx i = 0; i < numIterations; ++i)
-#    endif
-                {
-                    // Make another lambda to work around #1288
-                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
-                    wrappedLoopBody(i);
-                }
-            }
         };
 
         //! Executor of parallel OpenMP loop with the guided schedule
@@ -461,18 +427,55 @@ namespace alpaka
             }
         };
 
-        //! Executor of parallel OpenMP loop with the guided schedule
+        //! Helper executor of parallel OpenMP loop with the guided schedule
+        //!
+        //! Generel implementation is for TKernel types without member ompScheduleChunkSize.
+        //!
+        //! \tparam TKernel The kernel type.
+        //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
+        template<typename TKernel, typename TSchedule, typename TSfinae = void>
+        struct ParallelForGuidedImpl
+        {
+            //! Run parallel OpenMP loop
+            //!
+            //! \tparam TLoopBody The loop body functor type.
+            //! \tparam TIdx The index type.
+            //!
+            //! \param loopBody The loop body functor instance, takes iteration index as input.
+            //! \param numIterations The number of loop iterations.
+            template<typename TLoopBody, typename TIdx>
+            ALPAKA_FN_HOST void operator()(
+                TKernel const&,
+                TLoopBody&& loopBody,
+                TIdx const numIterations,
+                TSchedule const&)
+            {
+#    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
+                         // header.
+                std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
+                std::intmax_t i;
+#        pragma omp for nowait schedule(guided)
+                for(i = 0; i < iNumBlocksInGrid; ++i)
+#    else
+#        pragma omp for nowait schedule(guided)
+                for(TIdx i = 0; i < numIterations; ++i)
+#    endif
+                {
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
+                }
+            }
+        };
+
+        //! Helper executor of parallel OpenMP loop with the guided schedule
         //!
         //! Specialization for kernels with ompScheduleChunkSize member.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<
-            TKernel,
-            TSchedule,
-            omp::Schedule::Guided,
-            UseScheduleChunkSize<TKernel, TSchedule>::value>
+        struct ParallelForGuidedImpl<TKernel, TSchedule, HasScheduleChunkSize<TKernel>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -509,47 +512,14 @@ namespace alpaka
 
         //! Executor of parallel OpenMP loop with the guided schedule
         //!
-        //! Specialization for the kernels that do not set chunk size in any way.
+        //! Specialization for kernels not specializing the OmpSchedule trait.
+        //! Falls back to ParallelForGuidedImpl for further dispatch.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<
-            TKernel,
-            TSchedule,
-            omp::Schedule::Guided,
-            NotUseScheduleChunkSize<TKernel, TSchedule>::value>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Guided> : ParallelForGuidedImpl<TKernel, TSchedule>
         {
-            //! Run parallel OpenMP loop
-            //!
-            //! \tparam TLoopBody The loop body functor type.
-            //! \tparam TIdx The index type.
-            //!
-            //! \param loopBody The loop body functor instance, takes iteration index as input.
-            //! \param numIterations The number of loop iterations.
-            template<typename TLoopBody, typename TIdx>
-            ALPAKA_FN_HOST void operator()(
-                TKernel const&,
-                TLoopBody&& loopBody,
-                TIdx const numIterations,
-                TSchedule const&)
-            {
-#    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
-                         // header.
-                std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
-                std::intmax_t i;
-#        pragma omp for nowait schedule(guided)
-                for(i = 0; i < iNumBlocksInGrid; ++i)
-#    else
-#        pragma omp for nowait schedule(guided)
-                for(TIdx i = 0; i < numIterations; ++i)
-#    endif
-                {
-                    // Make another lambda to work around #1288
-                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
-                    wrappedLoopBody(i);
-                }
-            }
         };
 
 #    if _OPENMP >= 200805
@@ -635,7 +605,7 @@ namespace alpaka
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
-        template<typename TKernel, typename TSchedule, bool TSfinae = true>
+        template<typename TKernel, typename TSchedule, typename TSfinae = void>
         struct ParallelFor
         {
             //! Run parallel OpenMP loop
@@ -739,17 +709,23 @@ namespace alpaka
             }
         };
 
+        //! Helper type to check if TSchedule is a type originating from OmpSchedule trait definition
+        //!
+        //! \tparam TSchedule The schedule type.
+        template<typename TSchedule>
+        using IsOmpScheduleTraitSpecialized
+            = std::integral_constant<bool, std::is_same<TSchedule, omp::Schedule>::value>;
+
         //! Helper type to check if member ompScheduleKind of TKernel should be used
         //!
         //! For that it has to be present, and no OmpSchedule trait specialized.
-        //! Is std::true_type for those types, ill-formed otherwise.
+        //! Is void for those types, ill-formed otherwise.
         //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type.
         template<typename TKernel, typename TSchedule>
-        using UseScheduleKind = std::enable_if_t<
-            sizeof(TKernel::ompScheduleKind) && !IsOmpScheduleTraitSpecialized<TSchedule>::value,
-            std::true_type>;
+        using UseScheduleKind
+            = std::enable_if_t<sizeof(TKernel::ompScheduleKind) && !IsOmpScheduleTraitSpecialized<TSchedule>::value>;
 
         //! Executor of parallel OpenMP loop
         //!
@@ -759,7 +735,7 @@ namespace alpaka
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelFor<TKernel, TSchedule, UseScheduleKind<TKernel, TSchedule>::value>
+        struct ParallelFor<TKernel, TSchedule, UseScheduleKind<TKernel, TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
