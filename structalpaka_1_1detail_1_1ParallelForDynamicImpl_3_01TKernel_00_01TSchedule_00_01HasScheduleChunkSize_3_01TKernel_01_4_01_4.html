@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::detail::ParallelForImpl&lt; TKernel, TSchedule, omp::Schedule::Guided, HasOmpScheduleNotDefined&lt; TSchedule &gt; &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::detail::ParallelForDynamicImpl&lt; TKernel, TSchedule, HasScheduleChunkSize&lt; TKernel &gt; &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,31 +85,30 @@ $(document).ready(function(){initNavTree('structalpaka_1_1detail_1_1ParallelForI
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Gui41628073223bcbbfbe7ed28743ef2245.html">List of all members</a>  </div>
+<a href="structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChun8392982e2cc29085b34b480993ff7b30.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::detail::ParallelForImpl&lt; TKernel, TSchedule, omp::Schedule::Guided, HasOmpScheduleNotDefined&lt; TSchedule &gt; &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::detail::ParallelForDynamicImpl&lt; TKernel, TSchedule, HasScheduleChunkSize&lt; TKernel &gt; &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Executor of parallel OpenMP loop with the guided schedule.  
- <a href="structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c.html#details">More...</a></p>
+<p>Helper executor of parallel OpenMP loop with the dynamic schedule.  
+ <a href="structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a86428cb87953c489ff489fed298e66aa"><td class="memTemplParams" colspan="2">template&lt;typename TLoopBody , typename TIdx &gt; </td></tr>
-<tr class="memitem:a86428cb87953c489ff489fed298e66aa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c.html#a86428cb87953c489ff489fed298e66aa">operator()</a> (TKernel const &amp;, TLoopBody &amp;&amp;loopBody, TIdx const numIterations, TSchedule const &amp;)</td></tr>
-<tr class="memdesc:a86428cb87953c489ff489fed298e66aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run parallel OpenMP loop.  <a href="structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c.html#a86428cb87953c489ff489fed298e66aa">More...</a><br /></td></tr>
-<tr class="separator:a86428cb87953c489ff489fed298e66aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1317db0bc667e05589f18db8700be717"><td class="memTemplParams" colspan="2">template&lt;typename TLoopBody , typename TIdx &gt; </td></tr>
+<tr class="memitem:a1317db0bc667e05589f18db8700be717"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html#a1317db0bc667e05589f18db8700be717">operator()</a> (TKernel const &amp;kernel, TLoopBody &amp;&amp;loopBody, TIdx const numIterations, TSchedule const &amp;)</td></tr>
+<tr class="memdesc:a1317db0bc667e05589f18db8700be717"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run parallel OpenMP loop.  <a href="structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html#a1317db0bc667e05589f18db8700be717">More...</a><br /></td></tr>
+<tr class="separator:a1317db0bc667e05589f18db8700be717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TKernel, typename TSchedule&gt;<br />
-struct alpaka::detail::ParallelForImpl&lt; TKernel, TSchedule, omp::Schedule::Guided, HasOmpScheduleNotDefined&lt; TSchedule &gt; &gt;</h3>
+struct alpaka::detail::ParallelForDynamicImpl&lt; TKernel, TSchedule, HasScheduleChunkSize&lt; TKernel &gt; &gt;</h3>
 
-<p>Executor of parallel OpenMP loop with the guided schedule. </p>
-<p>The default implementation is for the kernels that do not set chunk size in any way.</p>
-<p>Note: HasOmpScheduleNotDefined&lt;TSchedule&gt; should not be necessary, but is required by some old compilers.</p>
+<p>Helper executor of parallel OpenMP loop with the dynamic schedule. </p>
+<p>Specialization for kernels with ompScheduleChunkSize member.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TKernel</td><td>The kernel type. </td></tr>
@@ -118,10 +117,10 @@ struct alpaka::detail::ParallelForImpl&lt; TKernel, TSchedule, omp::Schedule::Gu
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00386">386</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00342">342</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a86428cb87953c489ff489fed298e66aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86428cb87953c489ff489fed298e66aa">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a1317db0bc667e05589f18db8700be717"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1317db0bc667e05589f18db8700be717">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -134,10 +133,10 @@ template&lt;typename TLoopBody , typename TIdx &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void <a class="el" href="structalpaka_1_1detail_1_1ParallelForImpl.html">alpaka::detail::ParallelForImpl</a>&lt; TKernel, TSchedule, <a class="el" href="structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aad0bd9bc4f06fcaea08af1eae99853f75">omp::Schedule::Guided</a>, <a class="el" href="namespacealpaka_1_1detail.html#aa0c7ebd393b636f8e190539f39d90c1c">HasOmpScheduleNotDefined</a>&lt; TSchedule &gt; &gt;::operator() </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void <a class="el" href="structalpaka_1_1detail_1_1ParallelForDynamicImpl.html">alpaka::detail::ParallelForDynamicImpl</a>&lt; TKernel, TSchedule, <a class="el" href="namespacealpaka_1_1detail.html#a63f9308c649c857839b7f512dcecd279">HasScheduleChunkSize</a>&lt; TKernel &gt; &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">TKernel const &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>kernel</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -180,13 +179,14 @@ template&lt;typename TLoopBody , typename TIdx &gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">kernel</td><td>The kernel instance reference </td></tr>
     <tr><td class="paramname">loopBody</td><td>The loop body functor instance, takes iteration index as input. </td></tr>
     <tr><td class="paramname">numIterations</td><td>The number of loop iterations. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00396">396</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00353">353</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
@@ -198,8 +198,8 @@ template&lt;typename TLoopBody , typename TIdx &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c.html">ParallelForImpl&lt; TKernel, TSchedule, omp::Schedule::Guided, HasOmpScheduleNotDefined&lt; TSchedule &gt; &gt;</a></li>
-    <li class="footer">Generated on Tue May 4 2021 16:57:17 for alpaka by
+    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html">ParallelForDynamicImpl&lt; TKernel, TSchedule, HasScheduleChunkSize&lt; TKernel &gt; &gt;</a></li>
+    <li class="footer">Generated on Mon May 10 2021 06:02:47 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

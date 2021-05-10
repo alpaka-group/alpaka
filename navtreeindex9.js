@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1math_1_1ConceptMathSqrt.html":[3,0,0,10,36],
+"structalpaka_1_1math_1_1ConceptMathTan.html":[3,0,0,10,37],
+"structalpaka_1_1math_1_1ConceptMathTrunc.html":[3,0,0,10,38],
 "structalpaka_1_1math_1_1traits_1_1Abs.html":[3,0,0,10,0,0],
 "structalpaka_1_1math_1_1traits_1_1Abs.html#ad4d1f45afc9ccc824b7923a42921248d":[3,0,0,10,0,0,0],
 "structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_d7736916c44035d3b26302de2979b1fb.html":[3,0,0,10,0,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01TLi73423b143ff881ce72a987de38dd0c43.html":[3,0,0,11,0,10],
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01TLi73423b143ff881ce72a987de38dd0c43.html#a8411ee9d74770749367ec01690964727":[3,0,0,11,0,10,0],
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01TLi73423b143ff881ce72a987de38dd0c43.html#add352b7dc269c30b88787a5ffbe5a4a3":[3,0,0,11,0,10,1],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_00_01Head_3_01Ts_8_8_8_01_4_00_01Tail_8_8_8_01_4.html":[3,0,0,11,0,4],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_00_01Head_3_01Ts_8_8_8_01_4_00_01Tail_8_8_8_01_4.html#a6e65654f91348b94295b44aa9b250bf0":[3,0,0,11,0,4,0],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_01_4.html":[3,0,0,11,0,3],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_01_4.html#a67f40c3befc79005d5cb408c58d996b8":[3,0,0,11,0,3,0]
+"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_00_01Head_3_01Ts_8_8_8_01_4_00_01Tail_8_8_8_01_4.html":[3,0,0,11,0,4]
 };

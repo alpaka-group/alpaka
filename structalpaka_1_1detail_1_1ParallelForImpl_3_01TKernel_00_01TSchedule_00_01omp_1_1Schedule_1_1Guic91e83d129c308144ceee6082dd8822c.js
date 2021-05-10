@@ -1,4 +1,0 @@
-var structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c =
-[
-    [ "operator()", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c.html#a86428cb87953c489ff489fed298e66aa", null ]
-];

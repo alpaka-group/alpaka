@@ -102,20 +102,20 @@ var hierarchy =
     [ "alpaka::detail::MapIdxPitchBytes< TidxDimOut, 1u, typename std::enable_if< TidxDimOut !=1u >::type >", "structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01typename_01std_1_1enable_386ea0e3795c3b4cb8ce311d87eceae4.html", null ],
     [ "alpaka::detail::ParallelFor< TKernel, TSchedule, TSfinae >", "structalpaka_1_1detail_1_1ParallelFor.html", null ],
     [ "alpaka::detail::ParallelFor< TKernel, omp::Schedule >", "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01omp_1_1Schedule_01_4.html", null ],
-    [ "alpaka::detail::ParallelFor< TKernel, TSchedule, HasScheduleKind< TKernel, TSchedule > >", "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01TSchedule_00_01HasScheduleKind_3_01TKernel_00_01TSchedule_01_4_01_4.html", null ],
-    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, TScheduleKind, TSfinae >", "structalpaka_1_1detail_1_1ParallelForImpl.html", null ],
+    [ "alpaka::detail::ParallelFor< TKernel, TSchedule, UseScheduleKind< TKernel, TSchedule > >", "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01TSchedule_00_01UseScheduleKind_3_01TKernel_00_01TSchedule_01_4_01_4.html", null ],
+    [ "alpaka::detail::ParallelForDynamicImpl< TKernel, TSchedule, TSfinae >", "structalpaka_1_1detail_1_1ParallelForDynamicImpl.html", null ],
+    [ "alpaka::detail::ParallelForDynamicImpl< TKernel, TSchedule, HasScheduleChunkSize< TKernel > >", "structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html", null ],
+    [ "alpaka::detail::ParallelForGuidedImpl< TKernel, TSchedule, TSfinae >", "structalpaka_1_1detail_1_1ParallelForGuidedImpl.html", null ],
+    [ "alpaka::detail::ParallelForGuidedImpl< TKernel, TSchedule, HasScheduleChunkSize< TKernel > >", "structalpaka_1_1detail_1_1ParallelForGuidedImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html", null ],
+    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, TScheduleKind >", "structalpaka_1_1detail_1_1ParallelForImpl.html", null ],
     [ "alpaka::detail::ParallelForImpl< TKernel, omp::Schedule, omp::Schedule::Dynamic >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Dynamic_01_4.html", null ],
     [ "alpaka::detail::ParallelForImpl< TKernel, omp::Schedule, omp::Schedule::Guided >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Guided_01_4.html", null ],
     [ "alpaka::detail::ParallelForImpl< TKernel, omp::Schedule, omp::Schedule::Static >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Static_01_4.html", null ],
     [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Auto >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Auto_01_4.html", null ],
-    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Dynamic, HasOmpScheduleNotDefined< TSchedule > >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Dyn6ddb09768a137146f4fa9018c3a43eed.html", null ],
-    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Dynamic, HasScheduleChunkSize< TKernel, TSchedule > >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Dyncca3978b8d7f6f0a0330723042607804.html", null ],
-    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Guided, HasOmpScheduleNotDefined< TSchedule > >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guic91e83d129c308144ceee6082dd8822c.html", null ],
-    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Guided, HasScheduleChunkSize< TKernel, TSchedule > >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Gui4b408c00c0f0175ba762cea7de146f90.html", null ],
     [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::NoSchedule >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1NoSchedule_01_4.html", null ],
     [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Runtime >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Runtime_01_4.html", null ],
-    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Static, HasOmpScheduleNotDefined< TSchedule > >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Sta1ca1484d895a86c2c0e5af053c4f691b.html", null ],
-    [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Static, HasScheduleChunkSize< TKernel, TSchedule > >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Sta421709c7bf7761da00c9b006a4ca1cb5.html", null ],
+    [ "alpaka::detail::ParallelForStaticImpl< TKernel, TSchedule, TSfinae >", "structalpaka_1_1detail_1_1ParallelForStaticImpl.html", null ],
+    [ "alpaka::detail::ParallelForStaticImpl< TKernel, TSchedule, HasScheduleChunkSize< TKernel > >", "structalpaka_1_1detail_1_1ParallelForStaticImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html", null ],
     [ "alpaka::detail::Print< TDim, TView >", "structalpaka_1_1detail_1_1Print.html", null ],
     [ "alpaka::detail::Print< DimInt< Dim< TView >::value - 1u >, TView >", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4.html", null ],
     [ "alpaka::detail::TaskCopyCpuBase< TDim, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html", [
@@ -1536,6 +1536,15 @@ var hierarchy =
     ] ],
     [ "alpaka::meta::detail::IsParameterPackSetImpl< Ts... >", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html", [
       [ "alpaka::meta::detail::IsParameterPackSetImpl< T, Ts... >", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html", null ]
+    ] ],
+    [ "alpaka::detail::ParallelForDynamicImpl< TKernel, TSchedule >", "structalpaka_1_1detail_1_1ParallelForDynamicImpl.html", [
+      [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Dynamic >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Dynamic_01_4.html", null ]
+    ] ],
+    [ "alpaka::detail::ParallelForGuidedImpl< TKernel, TSchedule >", "structalpaka_1_1detail_1_1ParallelForGuidedImpl.html", [
+      [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Guided >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Guided_01_4.html", null ]
+    ] ],
+    [ "alpaka::detail::ParallelForStaticImpl< TKernel, TSchedule >", "structalpaka_1_1detail_1_1ParallelForStaticImpl.html", [
+      [ "alpaka::detail::ParallelForImpl< TKernel, TSchedule, omp::Schedule::Static >", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Static_01_4.html", null ]
     ] ],
     [ "type", null, [
       [ "alpaka::meta::detail::ConjunctionImpl< B1, Bn... >", "structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl_3_01B1_00_01Bn_8_8_8_01_4.html", null ],
