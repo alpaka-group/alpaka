@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [0.6.1] - 2021-XX-XX
 ### Compatibility Changes:
-- rework implementation of OpenMP schedule support #1279
+- rework implementation of OpenMP schedule support #1279 #1309 #1313
   - `alpaka::omp::Schedule` is replaced by `ompScheduleKind` and `ompScheduleChunkSize`
 ### Bug Fixes:
 - CI: use ubuntu-18.04 for gcc-5 and gcc-6 builds #1252
@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - port macOSX CI fix from #1283
 - fix assert in DeclareSharedVar (OpenAcc) #1303
 - CI: disable GCC 10.3 + NVCC tests #1302
+- example: fix warning (NVCC+OpenMP) #1307
+- CMake CUDA: dev compile options not propagated #1294
 
 ### Misc
 - add ALPAKA_ASSERT_OFFLOAD Macro #1260
