@@ -25,7 +25,7 @@ var TaskKernelCpuOmp2Blocks_8hpp =
     [ "DimType< TaskKernelCpuOmp2Blocks< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1DimType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1DimType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
     [ "IdxType< TaskKernelCpuOmp2Blocks< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
     [ "PltfType< TaskKernelCpuOmp2Blocks< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
-    [ "HasScheduleChunkSize", "TaskKernelCpuOmp2Blocks_8hpp.html#a63f9308c649c857839b7f512dcecd279", null ],
+    [ "HasScheduleChunkSize", "TaskKernelCpuOmp2Blocks_8hpp.html#a026cb623c9dea79f444585d229c35466", null ],
     [ "IsOmpScheduleTraitSpecialized", "TaskKernelCpuOmp2Blocks_8hpp.html#a6b4a2d062279ca9b90a390b97b8c260b", null ],
     [ "UseScheduleKind", "TaskKernelCpuOmp2Blocks_8hpp.html#aa4d5063ec3f3e7b763fc5fc02617e8f5", null ],
     [ "parallelFor", "TaskKernelCpuOmp2Blocks_8hpp.html#a93cfb90319ccb5e30631f043aff3cfdf", null ]
