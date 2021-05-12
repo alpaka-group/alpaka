@@ -194,7 +194,7 @@ namespace alpaka
         //!
         //! \tparam TKernel The kernel type.
         template<typename TKernel>
-        using HasScheduleChunkSize = std::enable_if_t<sizeof(std::declval<TKernel&>().ompScheduleChunkSize)>;
+        using HasScheduleChunkSize = alpaka::meta::Void<decltype(TKernel::ompScheduleChunkSize)>;
 
         //! Helper executor of parallel OpenMP loop with the static schedule
         //!
