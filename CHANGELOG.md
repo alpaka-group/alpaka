@@ -3,6 +3,59 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.7.0] - 2021-07-01
+### Compatibility Changes:
+- Visual Studio 2017 is no longer supported #1251
+- 32bit Windows is no longer supported #1251
+- CUDA 11.3 is now supported #1295
+- clang < 9 is no longer supported as CUDA compiler #1300
+- clang 11 is now supported #1310
+
+### Bug Fixes:
+- fixed static shared memory allocation for OpenMP 5 back-end #1254
+- fixed static shared memory allocation for CPU back-ends #1258
+- fixed `ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED` being checked without being defined #1259
+- fixed `BlockSharedMemStMemberImpl::getVarPtr` for last variable #1280
+- fixed static shared memory alignment #1282
+- fixed inverted assertion in `DeclareSharedVar` #1303
+- fixed OpenMP scheduler support #1307 #1309 #1316
+
+### New Features:
+- when no specialization is provided by the user alpaka's math functions will now fall back to ADL to find a candidate #1248
+- added `ALPAKA_ASSERT_OFFLOAD` macro #1260
+- the HIP back-end now supports callbacks #1269
+- added warp::shfl functionality #1273
+- added `Front` and `Contains` type list meta functions #1306
+
+### Misc:
+- alpaka's CMake build system now uses CMake's first-class CUDA support #1146
+- updated documentation for clang-format usage #1222
+- increased the static shared memory size to 47 KiB #1247
+- fixed table markup in README.md #1256
+- return values of `empty(queue)` and `isComplete(event)` are now correctly documented #1265
+- added example showcasing how to specialize kernels for particular back-ends #1271
+- removed section comments #1275
+- updated cheatsheet (added warp info, fixed names) #1281
+
+### Breaking Changes:
+- alpaka now requires CMake 3.18 or newer #1146
+- the CUDA and HIP back-ends no longer enable fast-math by default #1285
+- the CMake options `ALPAKA_CUDA_FAST_MATH` and `ALPAKA_HIP_FAST_MATH` have been replaced by `ALPAKA_FAST_MATH` #1289
+- the CMake options `ALPAKA_CUDA_FTZ` and `ALPAKA_HIP_FTZ` have been replaced by `ALPAKA_FTZ` #1289
+- the CMake option `ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION` has been replaced by the native CMake property `CUDA_SEPARABLE_COMPILATION` #1289
+- the CMake option `ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA` has been replaced by `ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA` #1289
+- fixing the OpenMP scheduler behaviour changed the default behaviour #1309
+
+### Test cases / CI:
+- enabled OpenMP back-ends for more Visual Studio builds #1219
+- fixed gh-pages #1230
+- added ICPC / ICC 2021.x to CI #1235
+- now using Ubuntu 18.04 for GCC 5 and GCC 6 builds #1252
+- fixed queue test case which incorrectly assumed that the checked queue will always be empty #1266
+- fixed deadlock in Ubuntu 20.04 container #1270
+- now CI-testing CMake 3.20 #1283
+- fixed CMake device compiler options not being correctly propagated to test cases #1294
+- disabled test cases for GCC 10.3 + NVCC #1302
 
 ## [0.6.0] - 2021-01-20
 ### Compatibility Changes:
@@ -326,4 +379,3 @@ The script only works if you used the full namespace `alpaka::*` for alpaka func
 - CPU accelerators now support arbitrary dimensionality (both kernel execution as well as memory operations)
 - added support for syncBlockThreadsPredicate with block::sync::op::LogicalOr, block::sync::op::LogicalAnd and block::sync::op::Count
 - memory allocations are now aligned optimally for the underlying architecture (16 bit for SSE, 32 bit for AVX, 64 bit for AVX512) instead of 16 bit for all architectures in the previous release
-- 
