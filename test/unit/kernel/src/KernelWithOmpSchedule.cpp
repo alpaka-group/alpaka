@@ -40,30 +40,12 @@ struct KernelWithConstexprMemberOmpScheduleKind : KernelWithOmpScheduleBase
     static constexpr auto ompScheduleKind = TKind;
 };
 
-// CI runs show that nvcc 10 on Windows has an issue with the const, but not constexpr static member.
-// While instantiating schedule-related templates, it throws an error
-// error #28: expression must have a constant value
-// saying the value of the member cannot be used as a constant.
-// This seems like a bug in the compiler.
-// Other versions or compilers in CI process it properly.
-#if BOOST_OS_WINDOWS && (BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(10, 0, 0))                                           \
-    && (BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 0, 0))
-// For this combination use constexpr instead of const.
-template<alpaka::omp::Schedule::Kind TKind>
-struct KernelWithMemberOmpScheduleKind : KernelWithConstexprMemberOmpScheduleKind<TKind>
-{
-};
-#else
 // Kernel that sets the schedule kind via non-constexpr ompScheduleKind, but no chunk size.
 template<alpaka::omp::Schedule::Kind TKind>
 struct KernelWithMemberOmpScheduleKind : KernelWithOmpScheduleBase
 {
-    static const alpaka::omp::Schedule::Kind ompScheduleKind;
+    static const alpaka::omp::Schedule::Kind ompScheduleKind = TKind;
 };
-// In this case, the member has to be defined externally
-template<alpaka::omp::Schedule::Kind TKind>
-const alpaka::omp::Schedule::Kind KernelWithMemberOmpScheduleKind<TKind>::ompScheduleKind = TKind;
-#endif
 
 // Kernel that sets the schedule chunk size via constexpr ompScheduleChunkSize in addition to schedule kind, but no
 // chunk size. Checks that this variable is only declared and not defined, It also tests that alpaka never odr-uses it.
