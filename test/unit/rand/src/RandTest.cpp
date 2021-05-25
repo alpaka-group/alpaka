@@ -77,8 +77,7 @@ public:
         genNumbers(acc, success, genRandomDevice);
 
         // MersenneTwister
-        auto genMersenneTwister
-            = alpaka::rand::engine::createDefault(alpaka::rand::MersenneTwister{}, 12345u, 6789u);
+        auto genMersenneTwister = alpaka::rand::engine::createDefault(alpaka::rand::MersenneTwister{}, 12345u, 6789u);
         genNumbers(acc, success, genMersenneTwister);
 #    endif
 
