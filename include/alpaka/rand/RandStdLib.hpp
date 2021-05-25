@@ -130,10 +130,10 @@ namespace alpaka
                 public:
                     NormalReal() = default;
 
-                    template<typename TGenerator>
-                    ALPAKA_FN_HOST auto operator()(TGenerator& generator) -> T
+                    template<typename TEngine>
+                    ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
-                        return m_dist(generator.m_State);
+                        return m_dist(engine.m_State);
                     }
                     std::normal_distribution<T> m_dist;
                 };
@@ -145,10 +145,10 @@ namespace alpaka
                 public:
                     UniformReal() = default;
 
-                    template<typename TGenerator>
-                    ALPAKA_FN_HOST auto operator()(TGenerator& generator) -> T
+                    template<typename TEngine>
+                    ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
-                        return m_dist(generator.m_State);
+                        return m_dist(engine.m_State);
                     }
                     std::uniform_real_distribution<T> m_dist;
                 };
@@ -165,10 +165,10 @@ namespace alpaka
                     {
                     }
 
-                    template<typename TGenerator>
-                    ALPAKA_FN_HOST auto operator()(TGenerator& generator) -> T
+                    template<typename TEngine>
+                    ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
-                        return m_dist(generator.m_State);
+                        return m_dist(engine.m_State);
                     }
                     std::uniform_int_distribution<T> m_dist;
                 };
