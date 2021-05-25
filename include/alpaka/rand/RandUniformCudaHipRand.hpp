@@ -53,7 +53,7 @@ namespace alpaka
         {
         };
 
-        namespace generator
+        namespace engine
         {
             namespace uniform_cuda_hip
             {
@@ -95,7 +95,7 @@ namespace alpaka
 #    endif
                 };
             } // namespace uniform_cuda_hip
-        } // namespace generator
+        } // namespace engine
         namespace distribution
         {
             namespace uniform_cuda_hip
@@ -246,7 +246,7 @@ namespace alpaka
                 };
             } // namespace traits
         } // namespace distribution
-        namespace generator
+        namespace engine
         {
             namespace traits
             {
@@ -257,13 +257,13 @@ namespace alpaka
                     __device__ static auto createDefault(
                         RandUniformCudaHipRand const& /*rand*/,
                         std::uint32_t const& seed,
-                        std::uint32_t const& subsequence) -> rand::generator::uniform_cuda_hip::Xor
+                        std::uint32_t const& subsequence) -> rand::engine::uniform_cuda_hip::Xor
                     {
-                        return rand::generator::uniform_cuda_hip::Xor(seed, subsequence);
+                        return rand::engine::uniform_cuda_hip::Xor(seed, subsequence);
                     }
                 };
             } // namespace traits
-        } // namespace generator
+        } // namespace engine
     } // namespace rand
 } // namespace alpaka
 
