@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <functional>
+#include <limits>
 #include <type_traits>
 
 namespace alpaka
@@ -32,25 +33,25 @@ namespace alpaka
             struct MetaData
             {
                 //! Unique id if the next data chunk.
-                uint32_t id = std::numeric_limits<uint32_t>::max();
+                std::uint32_t id = std::numeric_limits<std::uint32_t>::max();
                 //! Offset to the next meta data header, relative to m_mem.
                 //! To access the meta data header the offset must by aligned first.
-                uint32_t offset = 0;
+                std::uint32_t offset = 0;
             };
 
-            static constexpr uint32_t metaDataSize = sizeof(MetaData);
+            static constexpr std::uint32_t metaDataSize = sizeof(MetaData);
 
         public:
             //-----------------------------------------------------------------------------
 #ifndef NDEBUG
-            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t capacity)
+            BlockSharedMemStMemberImpl(std::uint8_t* mem, std::size_t capacity)
                 : m_mem(mem)
                 , m_capacity(static_cast<std::uint32_t>(capacity))
             {
                 ALPAKA_ASSERT_OFFLOAD((m_mem == nullptr) == (m_capacity == 0u));
             }
 #else
-            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t) : m_mem(mem)
+            BlockSharedMemStMemberImpl(std::uint8_t* mem, std::size_t) : m_mem(mem)
             {
             }
 #endif
@@ -66,7 +67,7 @@ namespace alpaka
             /*virtual*/ ~BlockSharedMemStMemberImpl() = default;
 
             template<typename T>
-            void alloc(uint32_t id) const
+            void alloc(std::uint32_t id) const
             {
                 // Add meta data chunk in front of the user data
                 m_allocdBytes = varChunkEnd<MetaData>(m_allocdBytes);
@@ -94,19 +95,19 @@ namespace alpaka
             //! @param id unique id of the variable
             //! @return nullptr if variable with id not exists
             template<typename T>
-            T* getVarPtr(uint32_t id) const
+            T* getVarPtr(std::uint32_t id) const
             {
                 // Offset in bytes to the next unaligned meta data header behind the variable.
-                uint32_t off = 0;
+                std::uint32_t off = 0;
 
                 // Iterate over allocated data only
                 while(off < m_allocdBytes)
                 {
                     // Adjust offset to be aligned
-                    uint32_t const alignedMetaDataOffset
-                        = varChunkEnd<MetaData>(off) - static_cast<uint32_t>(sizeof(MetaData));
+                    std::uint32_t const alignedMetaDataOffset
+                        = varChunkEnd<MetaData>(off) - static_cast<std::uint32_t>(sizeof(MetaData));
                     ALPAKA_ASSERT_OFFLOAD(
-                        (alignedMetaDataOffset + static_cast<uint32_t>(sizeof(MetaData))) <= m_allocdBytes);
+                        (alignedMetaDataOffset + static_cast<std::uint32_t>(sizeof(MetaData))) <= m_allocdBytes);
                     MetaData* metaDataPtr = reinterpret_cast<MetaData*>(m_mem + alignedMetaDataOffset);
                     off = metaDataPtr->offset;
 
@@ -140,12 +141,12 @@ namespace alpaka
             //! \param byteOffset Current byte offset.
             //! \result Byte offset to the end of the data chunk, relative to m_mem..
             template<typename T>
-            std::uint32_t varChunkEnd(uint32_t byteOffset) const
+            std::uint32_t varChunkEnd(std::uint32_t byteOffset) const
             {
-                size_t const ptr = reinterpret_cast<size_t>(m_mem + byteOffset);
+                std::size_t const ptr = reinterpret_cast<std::size_t>(m_mem + byteOffset);
                 constexpr size_t align = std::max(TMinDataAlignBytes, alignof(T));
-                size_t const newPtrAdress = ((ptr + align - 1u) / align) * align + sizeof(T);
-                return static_cast<uint32_t>(newPtrAdress - reinterpret_cast<size_t>(m_mem));
+                std::size_t const newPtrAdress = ((ptr + align - 1u) / align) * align + sizeof(T);
+                return static_cast<uint32_t>(newPtrAdress - reinterpret_cast<std::size_t>(m_mem));
             }
 
             //! Offset in bytes relative to m_mem to next free data area.
@@ -155,7 +156,7 @@ namespace alpaka
             //! Memory layout
             //! |Header|Padding|Variable|Padding|Header|....uninitialized Data ....
             //! Size of padding can be zero if data after padding is already aligned.
-            uint8_t* const m_mem;
+            std::uint8_t* const m_mem;
 #ifndef NDEBUG
             const std::uint32_t m_capacity;
 #endif
