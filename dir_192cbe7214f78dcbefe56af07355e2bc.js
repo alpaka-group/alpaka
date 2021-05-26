@@ -14,8 +14,8 @@ var dir_192cbe7214f78dcbefe56af07355e2bc =
       [ "UniformReal< float >", "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01float_01_4.html", "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01float_01_4" ],
       [ "UniformUint", "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformUint.html", null ],
       [ "UniformUint< unsigned int >", "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformUint_3_01unsigned_01int_01_4.html", "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformUint_3_01unsigned_01int_01_4" ],
-      [ "CreateDefault< RandUniformCudaHipRand >", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4" ],
-      [ "Xor", "classalpaka_1_1rand_1_1generator_1_1uniform__cuda__hip_1_1Xor.html", "classalpaka_1_1rand_1_1generator_1_1uniform__cuda__hip_1_1Xor" ],
+      [ "CreateDefault< RandUniformCudaHipRand >", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4" ],
+      [ "Xor", "classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html", "classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor" ],
       [ "RandUniformCudaHipRand", "classalpaka_1_1rand_1_1RandUniformCudaHipRand.html", null ]
     ] ],
     [ "Traits.hpp", "rand_2Traits_8hpp.html", "rand_2Traits_8hpp" ]

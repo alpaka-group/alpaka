@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['randomdevice_2874',['RandomDevice',['../classalpaka_1_1rand_1_1generator_1_1cpu_1_1RandomDevice.html',1,'alpaka::rand::generator::cpu::RandomDevice'],['../classalpaka_1_1rand_1_1RandomDevice.html',1,'alpaka::rand::RandomDevice']]],
+  ['randomdevice_2874',['RandomDevice',['../classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html',1,'alpaka::rand::engine::cpu::RandomDevice'],['../classalpaka_1_1rand_1_1RandomDevice.html',1,'alpaka::rand::RandomDevice']]],
   ['randuniformcudahiprand_2875',['RandUniformCudaHipRand',['../classalpaka_1_1rand_1_1RandUniformCudaHipRand.html',1,'alpaka::rand']]],
   ['remainder_2876',['Remainder',['../structalpaka_1_1math_1_1traits_1_1Remainder.html',1,'alpaka::math::traits']]],
   ['remainder_3c_20remainderstdlib_2c_20tx_2c_20ty_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_3c_20tx_20_3e_3a_3avalue_20_26_26std_3a_3ais_5ffloating_5fpoint_3c_20ty_20_3e_3a_3avalue_20_3e_20_3e_2877',['Remainder&lt; RemainderStdLib, Tx, Ty, std::enable_if_t&lt; std::is_floating_point&lt; Tx &gt;::value &amp;&amp;std::is_floating_point&lt; Ty &gt;::value &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderStdLib_00_01Tx_00_01Ty_00_01std_1_1enab86070ff2c2a204c911a842b010ab328e.html',1,'alpaka::math::traits']]],
