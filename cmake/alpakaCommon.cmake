@@ -772,7 +772,8 @@ if(TARGET alpaka)
 endif()
 
 # NVCC does not incorporate the COMPILE_OPTIONS of a target but only the CMAKE_CXX_FLAGS
-if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
+# For hipcc we need to propagate the CMAKE_CXX_FLAGS to HIP_HIPCC_FLAGS.
+if(ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE)
     get_property(_ALPAKA_COMPILE_OPTIONS_PUBLIC
                  TARGET alpaka
                  PROPERTY INTERFACE_COMPILE_OPTIONS)
@@ -783,6 +784,11 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
     # because FindCUDA only propagates the latter to nvcc.
     string(TOUPPER "${CMAKE_BUILD_TYPE}" build_config)
     alpaka_set_compiler_options(HOST var CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_${build_config}}")
+    if(ALPAKA_ACC_GPU_HIP_ENABLE)
+        # for hipcc we need to propagate the CMAKE_CXX_FLAGS to HIP_HIPCC_FLAGS
+        string(REPLACE " " ";" CMAKE_CXX_FLAGS_AS_LIST "${CMAKE_CXX_FLAGS}")
+        alpaka_set_compiler_options(DEVICE list HIP_HIPCC_FLAGS "${CMAKE_CXX_FLAGS_AS_LIST}")
+    endif()
 endif()
 
 if(ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_COMPILER_OPTIONS_DEVICE)
