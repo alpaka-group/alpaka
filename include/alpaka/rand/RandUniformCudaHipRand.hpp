@@ -53,11 +53,11 @@ namespace alpaka
         {
         };
 
-        namespace generator
+        namespace engine
         {
             namespace uniform_cuda_hip
             {
-                //! The CUDA/HIP Xor random number generator.
+                //! The CUDA/HIP Xor random number generator engine.
                 class Xor
                 {
                 public:
@@ -95,7 +95,7 @@ namespace alpaka
 #    endif
                 };
             } // namespace uniform_cuda_hip
-        } // namespace generator
+        } // namespace engine
         namespace distribution
         {
             namespace uniform_cuda_hip
@@ -111,13 +111,13 @@ namespace alpaka
                 public:
                     NormalReal() = default;
 
-                    template<typename TGenerator>
-                    __device__ auto operator()(TGenerator& generator) -> float
+                    template<typename TEngine>
+                    __device__ auto operator()(TEngine& engine) -> float
                     {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        return curand_normal(&generator.m_State);
+                        return curand_normal(&engine.m_State);
 #    else
-                        return hiprand_normal(&generator.m_State);
+                        return hiprand_normal(&engine.m_State);
 #    endif
                     }
                 };
@@ -128,13 +128,13 @@ namespace alpaka
                 public:
                     NormalReal() = default;
 
-                    template<typename TGenerator>
-                    __device__ auto operator()(TGenerator& generator) -> double
+                    template<typename TEngine>
+                    __device__ auto operator()(TEngine& engine) -> double
                     {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        return curand_normal_double(&generator.m_State);
+                        return curand_normal_double(&engine.m_State);
 #    else
-                        return hiprand_normal_double(&generator.m_State);
+                        return hiprand_normal_double(&engine.m_State);
 #    endif
                     }
                 };
@@ -150,14 +150,14 @@ namespace alpaka
                 public:
                     UniformReal() = default;
 
-                    template<typename TGenerator>
-                    __device__ auto operator()(TGenerator& generator) -> float
+                    template<typename TEngine>
+                    __device__ auto operator()(TEngine& engine) -> float
                     {
                         // (0.f, 1.0f]
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        float const fUniformRand(curand_uniform(&generator.m_State));
+                        float const fUniformRand(curand_uniform(&engine.m_State));
 #    else
-                        float const fUniformRand(hiprand_uniform(&generator.m_State));
+                        float const fUniformRand(hiprand_uniform(&engine.m_State));
 #    endif
                         // NOTE: (1.0f - curand_uniform) does not work, because curand_uniform seems to return
                         // denormalized floats around 0.f. [0.f, 1.0f)
@@ -171,14 +171,14 @@ namespace alpaka
                 public:
                     UniformReal() = default;
 
-                    template<typename TGenerator>
-                    __device__ auto operator()(TGenerator& generator) -> double
+                    template<typename TEngine>
+                    __device__ auto operator()(TEngine& engine) -> double
                     {
                         // (0.f, 1.0f]
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        double const fUniformRand(curand_uniform_double(&generator.m_State));
+                        double const fUniformRand(curand_uniform_double(&engine.m_State));
 #    else
-                        double const fUniformRand(hiprand_uniform_double(&generator.m_State));
+                        double const fUniformRand(hiprand_uniform_double(&engine.m_State));
 #    endif
                         // NOTE: (1.0f - curand_uniform_double) does not work, because curand_uniform_double seems to
                         // return denormalized floats around 0.f. [0.f, 1.0f)
@@ -197,13 +197,13 @@ namespace alpaka
                 public:
                     UniformUint() = default;
 
-                    template<typename TGenerator>
-                    __device__ auto operator()(TGenerator& generator) -> unsigned int
+                    template<typename TEngine>
+                    __device__ auto operator()(TEngine& engine) -> unsigned int
                     {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        return curand(&generator.m_State);
+                        return curand(&engine.m_State);
 #    else
-                        return hiprand(&generator.m_State);
+                        return hiprand(&engine.m_State);
 #    endif
                     }
                 };
@@ -246,7 +246,7 @@ namespace alpaka
                 };
             } // namespace traits
         } // namespace distribution
-        namespace generator
+        namespace engine
         {
             namespace traits
             {
@@ -257,13 +257,13 @@ namespace alpaka
                     __device__ static auto createDefault(
                         RandUniformCudaHipRand const& /*rand*/,
                         std::uint32_t const& seed,
-                        std::uint32_t const& subsequence) -> rand::generator::uniform_cuda_hip::Xor
+                        std::uint32_t const& subsequence) -> rand::engine::uniform_cuda_hip::Xor
                     {
-                        return rand::generator::uniform_cuda_hip::Xor(seed, subsequence);
+                        return rand::engine::uniform_cuda_hip::Xor(seed, subsequence);
                     }
                 };
             } // namespace traits
-        } // namespace generator
+        } // namespace engine
     } // namespace rand
 } // namespace alpaka
 

@@ -38,7 +38,7 @@ namespace alpaka
         {
         };
 
-        namespace generator
+        namespace engine
         {
             namespace cpu
             {
@@ -117,7 +117,7 @@ namespace alpaka
                     std::random_device m_State;
                 };
             } // namespace cpu
-        } // namespace generator
+        } // namespace engine
 
         namespace distribution
         {
@@ -130,10 +130,10 @@ namespace alpaka
                 public:
                     NormalReal() = default;
 
-                    template<typename TGenerator>
-                    ALPAKA_FN_HOST auto operator()(TGenerator& generator) -> T
+                    template<typename TEngine>
+                    ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
-                        return m_dist(generator.m_State);
+                        return m_dist(engine.m_State);
                     }
                     std::normal_distribution<T> m_dist;
                 };
@@ -145,10 +145,10 @@ namespace alpaka
                 public:
                     UniformReal() = default;
 
-                    template<typename TGenerator>
-                    ALPAKA_FN_HOST auto operator()(TGenerator& generator) -> T
+                    template<typename TEngine>
+                    ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
-                        return m_dist(generator.m_State);
+                        return m_dist(engine.m_State);
                     }
                     std::uniform_real_distribution<T> m_dist;
                 };
@@ -165,10 +165,10 @@ namespace alpaka
                     {
                     }
 
-                    template<typename TGenerator>
-                    ALPAKA_FN_HOST auto operator()(TGenerator& generator) -> T
+                    template<typename TEngine>
+                    ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
-                        return m_dist(generator.m_State);
+                        return m_dist(engine.m_State);
                     }
                     std::uniform_int_distribution<T> m_dist;
                 };
@@ -214,7 +214,7 @@ namespace alpaka
                 };
             } // namespace traits
         } // namespace distribution
-        namespace generator
+        namespace engine
         {
             namespace traits
             {
@@ -225,10 +225,10 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto createDefault(
                         TinyMersenneTwister const& rand,
                         std::uint32_t const& seed,
-                        std::uint32_t const& subsequence) -> rand::generator::cpu::TinyMersenneTwister
+                        std::uint32_t const& subsequence) -> rand::engine::cpu::TinyMersenneTwister
                     {
                         alpaka::ignore_unused(rand);
-                        return rand::generator::cpu::TinyMersenneTwister(seed, subsequence);
+                        return rand::engine::cpu::TinyMersenneTwister(seed, subsequence);
                     }
                 };
 
@@ -238,10 +238,10 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto createDefault(
                         MersenneTwister const& rand,
                         std::uint32_t const& seed,
-                        std::uint32_t const& subsequence) -> rand::generator::cpu::MersenneTwister
+                        std::uint32_t const& subsequence) -> rand::engine::cpu::MersenneTwister
                     {
                         alpaka::ignore_unused(rand);
-                        return rand::generator::cpu::MersenneTwister(seed, subsequence);
+                        return rand::engine::cpu::MersenneTwister(seed, subsequence);
                     }
                 };
 
@@ -251,13 +251,13 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto createDefault(
                         RandomDevice const& rand,
                         std::uint32_t const& seed,
-                        std::uint32_t const& subsequence) -> rand::generator::cpu::RandomDevice
+                        std::uint32_t const& subsequence) -> rand::engine::cpu::RandomDevice
                     {
                         alpaka::ignore_unused(rand);
-                        return rand::generator::cpu::RandomDevice(seed, subsequence);
+                        return rand::engine::cpu::RandomDevice(seed, subsequence);
                     }
                 };
             } // namespace traits
-        } // namespace generator
+        } // namespace engine
     } // namespace rand
 } // namespace alpaka

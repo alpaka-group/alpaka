@@ -76,17 +76,17 @@ namespace alpaka
             }
         } // namespace distribution
 
-        //! The random number generator specifics.
-        namespace generator
+        //! The random number generator engine specifics.
+        namespace engine
         {
-            //! The random number generator traits.
+            //! The random number generator engine traits.
             namespace traits
             {
-                //! The random number default generator get trait.
+                //! The random number default generator engine get trait.
                 template<typename TRand, typename TSfinae = void>
                 struct CreateDefault;
             } // namespace traits
-            //! \return A default random number generator.
+            //! \return A default random number generator engine.
             ALPAKA_NO_HOST_ACC_WARNING
             template<typename TRand>
             ALPAKA_FN_HOST_ACC auto createDefault(
@@ -97,6 +97,6 @@ namespace alpaka
                 using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
                 return traits::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence);
             }
-        } // namespace generator
+        } // namespace engine
     } // namespace rand
 } // namespace alpaka
