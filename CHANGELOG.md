@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Misc
 - add ALPAKA_ASSERT_OFFLOAD Macro #1260
 - document return value of `empty()` and `isComplete()` #1265
+- Prefer TBBConfig.cmake over FindTBB.cmake #1329
 
 
 ## [0.6.0] - 2021-01-20
