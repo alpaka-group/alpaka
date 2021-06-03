@@ -8,18 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - rework implementation of OpenMP schedule support #1279 #1309 #1313
   - `alpaka::omp::Schedule` is replaced by `ompScheduleKind` and `ompScheduleChunkSize`
 ### Bug Fixes:
-- CI: use ubuntu-18.04 for gcc-5 and gcc-6 builds #1252
 - fix OpenMP 5 shared memory allocation #1254 
 - fix static shared memory alignment #1282
 - fix BlockSharedMemStMemberImpl::getVarPtr for last var #1280
 - fix CPU static shared memory implementation #1258
 - unit tests: fix queue test #1266
 - fix CtxBlockOacc: SyncBlockThreads #1291
-- port macOSX CI fix from #1283
 - fix assert in DeclareSharedVar (OpenAcc) #1303
-- CI: disable GCC 10.3 + NVCC tests #1302
-- example: fix warning (NVCC+OpenMP) #1307
 - CMake CUDA: dev compile options not propagated #1294
+- example: fix warning (NVCC+OpenMP) #1307
+- port macOSX CI fix from #1283
+- CI: use ubuntu-18.04 for gcc-5 and gcc-6 builds #1252
+- CI: disable GCC 10.3 + NVCC tests #1302
+- CI: MSVC + nvcc workarounds and fixes #1332
 
 ### Misc
 - add ALPAKA_ASSERT_OFFLOAD Macro #1260
