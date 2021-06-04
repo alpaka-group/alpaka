@@ -137,7 +137,7 @@ var searchData=
   ['getsize_3c_20warpuniformcudahipbuiltin_20_3e_919',['GetSize&lt; WarpUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpUniformCudaHipBuiltIn_01_4.html',1,'alpaka::warp::traits']]],
   ['gettotalglobalmemsizebytes_920',['getTotalGlobalMemSizeBytes',['../namespacealpaka_1_1cpu_1_1detail.html#a72677a79325c068d68aec4c38626f943',1,'alpaka::cpu::detail']]],
   ['getvalidworkdiv_921',['getValidWorkDiv',['../namespacealpaka.html#aee6bb9f131a6e0fa9487bca7237d3e18',1,'alpaka']]],
-  ['getvarptr_922',['getVarPtr',['../classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#aac63dd9e74055a880dd4b0af299c7fe8',1,'alpaka::detail::BlockSharedMemStMemberImpl']]],
+  ['getvarptr_922',['getVarPtr',['../classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a29df5c09acb2f007fd6894a629c4f974',1,'alpaka::detail::BlockSharedMemStMemberImpl']]],
   ['getvectorizationsizeelems_923',['GetVectorizationSizeElems',['../structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html',1,'alpaka::core::vectorization']]],
   ['getvectorizationsizeelems_3c_20double_20_3e_924',['GetVectorizationSizeElems&lt; double &gt;',['../structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01double_01_4.html',1,'alpaka::core::vectorization']]],
   ['getvectorizationsizeelems_3c_20float_20_3e_925',['GetVectorizationSizeElems&lt; float &gt;',['../structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01float_01_4.html',1,'alpaka::core::vectorization']]],
