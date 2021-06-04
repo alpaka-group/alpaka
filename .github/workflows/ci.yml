@@ -210,12 +210,15 @@ jobs:
         - name: windows_nvcc-11.1_cl-2017_debug_cuda-only
           os: windows-2016
           env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2017,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.18.5,                     ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.1", ALPAKA_CUDA_ARCH: "35;80", ALPAKA_ACC_GPU_CUDA_ONLY_MODE: ON,                                                                ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_ANY_BT_OMP5_ENABLE: OFF}
-        - name: windows_nvcc-11.1_cl-2019_release_cuda-only
+
+          ## CUDA 11.2
+          # nvcc + MSVC
+        - name: windows_nvcc-11.2_cl-2019_release_cuda-only_c++17
           os: windows-2019
-          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.19.0,                     ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.1", ALPAKA_CUDA_ARCH: "35;75", ALPAKA_ACC_GPU_CUDA_ONLY_MODE: ON,                                                                ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_ANY_BT_OMP5_ENABLE: OFF}
-        - name: windows_nvcc-11.1_cl-2019_debug
+          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.19.0,                     ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.2", ALPAKA_CUDA_ARCH: "35;75", ALPAKA_ACC_GPU_CUDA_ONLY_MODE: ON,                                                                ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_ANY_BT_OMP5_ENABLE: OFF, ALPAKA_CXX_STANDARD: 17}
+        - name: windows_nvcc-11.2_cl-2019_debug_c++17
           os: windows-2019
-          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.68.0, ALPAKA_CI_CMAKE_VER: 3.18.5,                     ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.1",                                                                                                                              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
+          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.68.0, ALPAKA_CI_CMAKE_VER: 3.18.5,                     ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "11.2",                                                                                                                              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_CXX_STANDARD: 17}
 
         ### Ubuntu
         ## native
