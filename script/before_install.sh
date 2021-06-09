@@ -44,13 +44,6 @@ if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
 then
     export ALPAKA_CI_INSTALL_CUDA="ON"
 fi
-if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ]
-then
-    if [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
-    then
-        export ALPAKA_CI_INSTALL_CUDA="ON"
-    fi
-fi
 
 #-------------------------------------------------------------------------------
 # HIP
@@ -58,13 +51,6 @@ export ALPAKA_CI_INSTALL_HIP="OFF"
 if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ]
 then
     export ALPAKA_CI_INSTALL_HIP="ON"
-
-    # if platform is nvcc, CUDA part is already processed in this file.
-    if [ "${ALPAKA_HIP_PLATFORM}" == "hcc" ]
-    then
-        echo "HIP(hcc) is not supported."
-        exit 1
-    fi
 fi
 
 #-------------------------------------------------------------------------------
