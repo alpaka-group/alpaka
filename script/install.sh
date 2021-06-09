@@ -49,7 +49,8 @@ if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/install_cuda.sh ;fi
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${CXX}" == "g++" ] ;then ./script/install_gcc.sh ;fi
-    if [ "${CXX}" == "clang++" ] ;then source ./script/install_clang.sh ;fi
+    # do not install clang if we use HIP, HIP/ROCm is shipping an own clang version
+    if [ "${CXX}" == "clang++" ] && [ "${ALPAKA_CI_INSTALL_HIP}" != "ON" ] ;then source ./script/install_clang.sh ;fi
     if [ "${CXX}" == "icpc" ] ;then source ./script/install_icpc.sh ;fi
 elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
@@ -65,9 +66,9 @@ then
 fi
 
 # HIP
-if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ]
+if [ "${ALPAKA_CI_INSTALL_HIP}" = "ON" ]
 then
-    ./script/install_hip.sh
+    source ./script/install_hip.sh
 fi
 
 ./script/install_boost.sh
