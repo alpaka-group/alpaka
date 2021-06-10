@@ -49,7 +49,7 @@ namespace alpaka
 #    if BOOST_COMP_CLANG && BOOST_LANG_CUDA
                 return __popc(static_cast<int>(value));
 #    else
-                return __popc(static_cast<unsigned int>(value));
+                return static_cast<std::int32_t>(__popc(static_cast<unsigned int>(value)));
 #    endif
             }
 
@@ -59,7 +59,7 @@ namespace alpaka
 #    if BOOST_COMP_CLANG && BOOST_LANG_CUDA
                 return __popcll(static_cast<long long>(value));
 #    else
-                return __popcll(static_cast<unsigned long long>(value));
+                return static_cast<std::int32_t>(__popcll(static_cast<unsigned long long>(value)));
 #    endif
             }
         };
@@ -70,13 +70,13 @@ namespace alpaka
             __device__ static auto ffs(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::int32_t value)
                 -> std::int32_t
             {
-                return __ffs(static_cast<int>(value));
+                return static_cast<std::int32_t>(__ffs(static_cast<int>(value)));
             }
 
             __device__ static auto ffs(IntrinsicUniformCudaHipBuiltIn const& /*intrinsic*/, std::int64_t value)
                 -> std::int32_t
             {
-                return __ffsll(static_cast<long long>(value));
+                return static_cast<std::int32_t>(__ffsll(static_cast<long long>(value)));
             }
         };
     } // namespace traits

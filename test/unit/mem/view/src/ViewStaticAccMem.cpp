@@ -52,6 +52,8 @@ using TestAccs = alpaka::test::EnabledAccs<Dim, Idx>;
 
 TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAccs)
 {
+// FIXME: static device memory in HIP is still not working
+#if !BOOST_COMP_HIP
     using Acc = TestType;
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
@@ -63,8 +65,6 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
 
     StaticDeviceMemoryTestKernel kernel;
 
-    // FIXME: constant memory in HIP is still not working
-#if !BOOST_COMP_HIP
     // initialized static constant device memory
     {
         auto const viewConstantMemInitialized
@@ -107,6 +107,8 @@ ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 
 TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", TestAccs)
 {
+// FIXME: static device memory in HIP is still not working
+#if !BOOST_COMP_HIP
     using Acc = TestType;
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
@@ -118,8 +120,6 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
 
     StaticDeviceMemoryTestKernel kernel;
 
-    // FIXME: static device memory in HIP is still not working
-#if !BOOST_COMP_HIP
     // initialized static global device memory
     {
         auto const viewGlobalMemInitialized

@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/alpaka.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <condition_variable>
 #include <mutex>
@@ -693,7 +694,7 @@ namespace alpaka
                 std::cerr << "[Workaround] polling of device-located value in stream, as hipStreamWaitValue32 is not "
                              "available.\n";
 #    endif
-                while(hostMem < 0x01010101u)
+                while(hostMem < 0x01010101)
                 {
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMemcpyDtoHAsync(
                         &hostMem,
@@ -737,6 +738,7 @@ namespace alpaka
                     0x01010101u,
                     CU_STREAM_WAIT_VALUE_GEQ)));
 #    else
+                ignore_unused(queue);
                 // workaround for missing cuStreamWaitValue32 in HIP
                 std::uint32_t hmem = 0;
                 do

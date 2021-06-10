@@ -142,6 +142,7 @@ namespace alpaka
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __shfl_sync(activemask(warp), val, srcLane, width);
 #    else
+                    alpaka::ignore_unused(warp);
                     return __shfl(val, srcLane, width);
 #    endif
                 }
@@ -155,6 +156,7 @@ namespace alpaka
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __shfl_sync(activemask(warp), val, srcLane, width);
 #    else
+                    alpaka::ignore_unused(warp);
                     return __shfl(val, srcLane, width);
 #    endif
                 }
