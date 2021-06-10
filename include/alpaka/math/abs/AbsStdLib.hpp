@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Sergei Bastrakov
  *
  * This file is part of alpaka.
  *
@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/math/ConvertedArg.hpp>
 #include <alpaka/math/abs/Traits.hpp>
 
 #include <cmath>
@@ -29,17 +30,15 @@ namespace alpaka
         {
             //! The standard library abs trait specialization.
             template<typename TArg>
-            struct Abs<
-                AbsStdLib,
-                TArg,
-                std::enable_if_t<std::is_arithmetic<TArg>::value && std::is_signed<TArg>::value>>
+            struct Abs<AbsStdLib, TArg>
             {
-                ALPAKA_FN_HOST auto operator()(AbsStdLib const& abs_ctx, TArg const& arg)
+                ALPAKA_FN_HOST auto operator()(AbsStdLib const& abs_ctx, ConvertedArg<TArg> const& arg)
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return std::abs(arg);
                 }
             };
+
         } // namespace traits
     } // namespace math
 } // namespace alpaka

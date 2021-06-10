@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg
+/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Sergei Bastrakov
  *
  * This file is part of alpaka.
  *
@@ -38,6 +38,7 @@
 #    endif
 
 #    include <alpaka/core/Unused.hpp>
+#    include <alpaka/math/Complex.hpp>
 #    include <alpaka/math/abs/Traits.hpp>
 
 #    include <type_traits>
@@ -81,6 +82,16 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return ::fabsf(arg);
+                }
+            };
+            //! The CUDA built in abs Complex specialization.
+            template<typename T>
+            struct Abs<AbsUniformCudaHipBuiltIn, Complex<T>>
+            {
+                __device__ auto operator()(AbsUniformCudaHipBuiltIn const& abs_ctx, Complex<T> const& arg)
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::sqrt(arg.real() * arg.real() + arg.imag() * arg.imag());
                 }
             };
         } // namespace traits
