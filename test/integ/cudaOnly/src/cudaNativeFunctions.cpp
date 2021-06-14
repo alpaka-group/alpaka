@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -30,8 +30,10 @@ __device__ auto userDefinedThreadFence() -> void
 class CudaOnlyTestKernel
 {
 public:
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::WriteAccess> const success) const -> void
     {
         alpaka::ignore_unused(acc);
 
@@ -40,7 +42,7 @@ public:
         userDefinedThreadFence();
         __threadfence_system();
 
-        *success = true;
+        success[0] = true;
     }
 };
 

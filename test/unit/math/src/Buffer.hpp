@@ -1,4 +1,4 @@
-/** Copyright 2019 Jakob Krude, Benjamin Worpitz
+/** Copyright 2019-2021 Jakob Krude, Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -54,9 +54,8 @@ namespace alpaka
                     BufAcc devBuffer;
 
                     // Native pointer to access buffer.
-                    TData* const pHostBuffer;
-                    TData* const pDevBuffer;
-
+                    alpaka::Accessor<TData*, TData, Idx, Dim::value, alpaka::ReadWriteAccess> const pHostBuffer;
+                    alpaka::Accessor<TData*, TData, Idx, Dim::value, alpaka::ReadWriteAccess> const pDevBuffer;
 
                     // This constructor cant be used,
                     // because BufHost and BufAcc need to be initialised.
@@ -67,8 +66,8 @@ namespace alpaka
                         : devHost{alpaka::getDevByIdx<PltfHost>(0u)}
                         , hostBuffer{alpaka::allocBuf<TData, Idx>(devHost, Tcapacity)}
                         , devBuffer{alpaka::allocBuf<TData, Idx>(devAcc, Tcapacity)}
-                        , pHostBuffer{alpaka::getPtrNative(hostBuffer)}
-                        , pDevBuffer{alpaka::getPtrNative(devBuffer)}
+                        , pHostBuffer{alpaka::access(hostBuffer)}
+                        , pDevBuffer{alpaka::access(devBuffer)}
                     {
                     }
 

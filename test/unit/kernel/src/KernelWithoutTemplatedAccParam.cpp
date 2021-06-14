@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -44,11 +44,12 @@ using AccGpu = alpaka::AccGpuCudaRt<Dim, Idx>;
 struct KernelNoTemplateCpu
 {
     ALPAKA_FN_ACC
-    auto operator()(AccCpu const& acc, bool* success) const -> void
+    auto operator()(AccCpu const& acc, alpaka::Accessor<bool*, bool, Idx, 1, alpaka::WriteAccess> const success) const
+        -> void
     {
         ALPAKA_CHECK(
-            *success,
-            static_cast<alpaka::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            success[0],
+            static_cast<Idx>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -69,12 +70,12 @@ struct KernelNoTemplateGpu
     ALPAKA_FN_ACC
     auto operator()(
         AccGpu const & acc,
-        bool* success) const
+        alpaka::Accessor<bool*, bool, Idx, 1, alpaka::WriteAccess> const success) const
     -> void
     {
         ALPAKA_CHECK(
-            *success,
-            static_cast<alpaka::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            success[0],
+            static_cast<Idx>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -93,11 +94,13 @@ TEST_CASE("kernelNoTemplateGpu", "[kernel]")
 struct KernelWithoutTemplateParamCpu
 {
     template<typename TNotUsed = void>
-    ALPAKA_FN_ACC auto operator()(AccCpu const& acc, bool* success) const -> void
+    ALPAKA_FN_ACC auto operator()(
+        AccCpu const& acc,
+        alpaka::Accessor<bool*, bool, Idx, 1, alpaka::WriteAccess> const success) const -> void
     {
         ALPAKA_CHECK(
-            *success,
-            static_cast<alpaka::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            success[0],
+            static_cast<Idx>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -115,11 +118,13 @@ TEST_CASE("kernelWithoutTemplateParamCpu", "[kernel]")
 struct KernelWithoutTemplateParamGpu
 {
     template<typename TNotUsed = void>
-    ALPAKA_FN_ACC auto operator()(AccGpu const& acc, bool* success) const -> void
+    ALPAKA_FN_ACC auto operator()(
+        AccGpu const& acc,
+        alpaka::Accessor<bool*, bool, Idx, 1, alpaka::WriteAccess> const success) const -> void
     {
         ALPAKA_CHECK(
-            *success,
-            static_cast<alpaka::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            success[0],
+            static_cast<Idx>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 

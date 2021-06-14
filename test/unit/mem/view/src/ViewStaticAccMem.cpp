@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -35,16 +35,18 @@ ALPAKA_STATIC_ACC_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
 struct StaticDeviceMemoryTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename TElem>
-    ALPAKA_FN_ACC void operator()(TAcc const& acc, bool* success, TElem const* const pConstantMem) const
+    template<typename TAcc, typename TMemoryHandleBool, typename TMemoryHandleElem, typename TElem>
+    ALPAKA_FN_ACC void operator()(
+        TAcc const& acc,
+        alpaka::Accessor<TMemoryHandleBool, bool, alpaka::Idx<TAcc>, 1, alpaka::WriteAccess> const success,
+        alpaka::Accessor<TMemoryHandleElem, TElem, alpaka::Idx<TAcc>, 2, alpaka::ReadAccess> const constantMem) const
     {
         auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const offset = gridThreadExtent[1u] * gridThreadIdx[0u] + gridThreadIdx[1u];
-        auto const val = offset;
+        auto const val = gridThreadExtent[1u] * gridThreadIdx[0u] + gridThreadIdx[1u];
 
-        ALPAKA_CHECK(*success, val == *(pConstantMem + offset));
+        ALPAKA_CHECK(success[0], val == constantMem(gridThreadIdx[0u], gridThreadIdx[1u]));
     }
 };
 
@@ -70,7 +72,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
         auto const viewConstantMemInitialized
             = alpaka::createStaticDevMemView(&g_constantMemory2DInitialized[0u][0u], devAcc, extent);
 
-        REQUIRE(fixture(kernel, alpaka::getPtrNative(viewConstantMemInitialized)));
+        REQUIRE(fixture(kernel, alpaka::readAccess(viewConstantMemInitialized)));
     }
     // uninitialized static constant device memory
     {
@@ -89,7 +91,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
         alpaka::memcpy(queueAcc, viewConstantMemUninitialized, bufHost, extent);
         alpaka::wait(queueAcc);
 
-        REQUIRE(fixture(kernel, alpaka::getPtrNative(viewConstantMemUninitialized)));
+        REQUIRE(fixture(kernel, alpaka::readAccess(viewConstantMemUninitialized)));
     }
 #endif
 }
@@ -125,7 +127,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
         auto const viewGlobalMemInitialized
             = alpaka::createStaticDevMemView(&g_globalMemory2DInitialized[0u][0u], devAcc, extent);
 
-        REQUIRE(fixture(kernel, alpaka::getPtrNative(viewGlobalMemInitialized)));
+        REQUIRE(fixture(kernel, alpaka::readAccess(viewGlobalMemInitialized)));
     }
 
     // uninitialized static global device memory
@@ -145,7 +147,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
         alpaka::memcpy(queueAcc, viewGlobalMemUninitialized, bufHost, extent);
         alpaka::wait(queueAcc);
 
-        REQUIRE(fixture(kernel, alpaka::getPtrNative(viewGlobalMemUninitialized)));
+        REQUIRE(fixture(kernel, alpaka::readAccess(viewGlobalMemUninitialized)));
     }
 #endif
 }

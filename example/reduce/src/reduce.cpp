@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Jonas Schenke, Matthias Werner
+/* Copyright 2019-2021 Benjamin Worpitz, Jonas Schenke, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *
@@ -93,8 +93,8 @@ T reduce(
     auto const taskKernelReduceMain(alpaka::createTaskKernel<Acc>(
         workDiv1,
         kernel1,
-        alpaka::getPtrNative(sourceDeviceMemory),
-        alpaka::getPtrNative(destinationDeviceMemory),
+        alpaka::readAccess(sourceDeviceMemory),
+        alpaka::writeAccess(destinationDeviceMemory),
         n,
         func));
 
@@ -102,8 +102,8 @@ T reduce(
     auto const taskKernelReduceLastBlock(alpaka::createTaskKernel<Acc>(
         workDiv2,
         kernel2,
-        alpaka::getPtrNative(destinationDeviceMemory),
-        alpaka::getPtrNative(destinationDeviceMemory),
+        alpaka::readAccess(destinationDeviceMemory),
+        alpaka::writeAccess(destinationDeviceMemory),
         blockCount,
         func));
 
@@ -145,7 +145,7 @@ int main()
     // allocate memory
     auto hostMemory = alpaka::allocBuf<T, Idx>(devHost, n);
 
-    T* nativeHostMemory = alpaka::getPtrNative(hostMemory);
+    auto nativeHostMemory = alpaka::access(hostMemory);
 
     // fill array with data
     for(uint64_t i = 0; i < n; i++)

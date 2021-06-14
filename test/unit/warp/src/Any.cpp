@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *
@@ -20,14 +20,16 @@ class AnySingleThreadWarpTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::WriteAccess> const success) const -> void
     {
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
-        ALPAKA_CHECK(*success, warpExtent == 1);
+        ALPAKA_CHECK(success[0], warpExtent == 1);
 
-        ALPAKA_CHECK(*success, alpaka::warp::any(acc, 42) != 0);
-        ALPAKA_CHECK(*success, alpaka::warp::any(acc, 0) == 0);
+        ALPAKA_CHECK(success[0], alpaka::warp::any(acc, 42) != 0);
+        ALPAKA_CHECK(success[0], alpaka::warp::any(acc, 0) == 0);
     }
 };
 
@@ -35,18 +37,20 @@ class AnyMultipleThreadWarpTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::WriteAccess> const success) const -> void
     {
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
-        ALPAKA_CHECK(*success, warpExtent > 1);
+        ALPAKA_CHECK(success[0], warpExtent > 1);
 
-        ALPAKA_CHECK(*success, alpaka::warp::any(acc, 0) == 0);
-        ALPAKA_CHECK(*success, alpaka::warp::any(acc, 42) != 0);
+        ALPAKA_CHECK(success[0], alpaka::warp::any(acc, 0) == 0);
+        ALPAKA_CHECK(success[0], alpaka::warp::any(acc, 42) != 0);
 
         // Test relies on having a single warp per thread block
         auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
-        ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
+        ALPAKA_CHECK(success[0], static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const localThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const threadIdxInWarp = static_cast<std::int32_t>(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
@@ -57,9 +61,9 @@ public:
 
         for(auto idx = 0; idx < warpExtent; idx++)
         {
-            ALPAKA_CHECK(*success, alpaka::warp::any(acc, threadIdxInWarp == idx ? 0 : 1) == 1);
+            ALPAKA_CHECK(success[0], alpaka::warp::any(acc, threadIdxInWarp == idx ? 0 : 1) == 1);
             std::int32_t const expected = idx % 5 ? 0 : 1;
-            ALPAKA_CHECK(*success, alpaka::warp::any(acc, threadIdxInWarp == idx ? 1 : 0) == expected);
+            ALPAKA_CHECK(success[0], alpaka::warp::any(acc, threadIdxInWarp == idx ? 1 : 0) == expected);
         }
     }
 };
