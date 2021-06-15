@@ -29,7 +29,7 @@
 //!
 //! Prints distribution of alpaka thread indices between OpenMP threads.
 //! Its operator() is reused in other kernels of this example.
-//! Sets no schedule explicitly, so the default is used, controlled by the OMP_SCHEDULE environment variable.
+//! Sets no schedule explicitly, so no schedule() clause is used.
 struct OpenMPScheduleDefaultKernel
 {
     template<typename TAcc>
@@ -76,9 +76,7 @@ namespace alpaka
     {
         //! Schedule trait specialization for OpenMPScheduleTraitKernel.
         //! This is the most general way to define a schedule.
-        //! In case neither the trait nor the member are provided, alpaka does not set any runtime schedule and the
-        //! schedule used is defined by omp_set_schedule() called on the user side, or otherwise by the OMP_SCHEDULE
-        //! environment variable.
+        //! In case neither the trait nor the member are provided, there will be no schedule() clause.
         template<typename TAcc>
         struct OmpSchedule<OpenMPScheduleTraitKernel, TAcc>
         {
@@ -137,7 +135,6 @@ auto main() -> int
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Run the kernel setting no schedule explicitly.
-    // In this case the schedule is controlled by the OMP_SCHEDULE environment variable.
     std::cout << "OpenMPScheduleDefaultKernel setting no schedule explicitly:\n";
     alpaka::exec<Acc>(queue, workDiv, OpenMPScheduleDefaultKernel{});
     alpaka::wait(queue);
