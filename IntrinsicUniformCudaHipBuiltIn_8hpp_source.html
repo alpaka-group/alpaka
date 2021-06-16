@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('IntrinsicUniformCudaHipBuiltIn_8hpp_so
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#    if BOOST_COMP_CLANG &amp;&amp; BOOST_LANG_CUDA</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keywordflow">return</span> __popc(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value));</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">return</span> __popc(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(value));</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(__popc(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(value)));</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('IntrinsicUniformCudaHipBuiltIn_8hpp_so
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#    if BOOST_COMP_CLANG &amp;&amp; BOOST_LANG_CUDA</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">return</span> __popcll(<span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(value));</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">return</span> __popcll(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(value));</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(__popcll(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(value)));</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        };</div>
@@ -159,13 +159,13 @@ $(document).ready(function(){initNavTree('IntrinsicUniformCudaHipBuiltIn_8hpp_so
 <div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html#ad2a5956c9096c09d917a4806ff6d429b">   70</a></span>&#160;            __device__ <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html#ad2a5956c9096c09d917a4806ff6d429b">ffs</a>(<a class="code" href="classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html">IntrinsicUniformCudaHipBuiltIn</a> <span class="keyword">const</span>&amp; <span class="comment">/*intrinsic*/</span>, std::int32_t value)</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                -&gt; std::int32_t</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">return</span> __ffs(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value));</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(__ffs(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value)));</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            }</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html#ace026c636ecc169fb907f305f7fef170">   76</a></span>&#160;            __device__ <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html#ace026c636ecc169fb907f305f7fef170">ffs</a>(<a class="code" href="classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html">IntrinsicUniformCudaHipBuiltIn</a> <span class="keyword">const</span>&amp; <span class="comment">/*intrinsic*/</span>, std::int64_t value)</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                -&gt; std::int32_t</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keywordflow">return</span> __ffsll(<span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(value));</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(__ffsll(<span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(value)));</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        };</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    } <span class="comment">// namespace traits</span></div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('IntrinsicUniformCudaHipBuiltIn_8hpp_so
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_67d3bf5303aed2f3419e836e3bc6322c.html">intrinsic</a></li><li class="navelem"><a class="el" href="IntrinsicUniformCudaHipBuiltIn_8hpp.html">IntrinsicUniformCudaHipBuiltIn.hpp</a></li>
-    <li class="footer">Generated on Wed Jun 16 2021 06:59:03 for alpaka by
+    <li class="footer">Generated on Wed Jun 16 2021 09:13:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -231,28 +231,30 @@ $(document).ready(function(){initNavTree('WarpUniformCudaHipBuiltIn_8hpp_source.
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                    <span class="keywordflow">return</span> __shfl_sync(<a class="code" href="namespacealpaka_1_1warp.html#abd9dbd228e440468d6bc3bc31c1df075">activemask</a>(warp), val, srcLane, width);</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                    <span class="keywordflow">return</span> __shfl(val, srcLane, width);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                <span class="comment">//-------------------------------------------------------------</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#ad9230255d256e5ed1c1d05f4d833bda1">  149</a></span>&#160;                __device__ <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#ad9230255d256e5ed1c1d05f4d833bda1">shfl</a>(</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    <a class="code" href="classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html">warp::WarpUniformCudaHipBuiltIn</a> <span class="keyword">const</span>&amp; warp,</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    std::int32_t val,</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    <span class="keywordtype">int</span> srcLane,</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                    std::int32_t width) -&gt; std::int32_t</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    <span class="keywordflow">return</span> __shfl_sync(<a class="code" href="namespacealpaka_1_1warp.html#abd9dbd228e440468d6bc3bc31c1df075">activemask</a>(warp), val, srcLane, width);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    <span class="keywordflow">return</span> __shfl(val, srcLane, width);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            };</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    } <span class="comment">// namespace warp</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                    <a class="code" href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a>(warp);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                    <span class="keywordflow">return</span> __shfl(val, srcLane, width);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                <span class="comment">//-------------------------------------------------------------</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#ad9230255d256e5ed1c1d05f4d833bda1">  150</a></span>&#160;                __device__ <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#ad9230255d256e5ed1c1d05f4d833bda1">shfl</a>(</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    <a class="code" href="classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html">warp::WarpUniformCudaHipBuiltIn</a> <span class="keyword">const</span>&amp; warp,</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    std::int32_t val,</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                    <span class="keywordtype">int</span> srcLane,</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    std::int32_t width) -&gt; std::int32_t</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                    <span class="keywordflow">return</span> __shfl_sync(<a class="code" href="namespacealpaka_1_1warp.html#abd9dbd228e440468d6bc3bc31c1df075">activemask</a>(warp), val, srcLane, width);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    <a class="code" href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a>(warp);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    <span class="keywordflow">return</span> __shfl(val, srcLane, width);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            };</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    } <span class="comment">// namespace warp</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn_html_aaf42f4426c482ad030ea187bb47b53fc"><div class="ttname"><a href="classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html#aaf42f4426c482ad030ea187bb47b53fc">alpaka::warp::WarpUniformCudaHipBuiltIn::WarpUniformCudaHipBuiltIn</a></div><div class="ttdeci">WarpUniformCudaHipBuiltIn()=default</div></div>
@@ -275,7 +277,7 @@ $(document).ready(function(){initNavTree('WarpUniformCudaHipBuiltIn_8hpp_source.
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a20f2e6e4a15a2ed731ed862d824ccfdd"><div class="ttname"><a href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC void ignore_unused(Ts const &amp;...)</div><div class="ttdef"><b>Definition:</b> <a href="Unused_8hpp_source.html#l00018">Unused.hpp:18</a></div></div>
 <div class="ttc" id="astructalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4_html_a2dee213defdf5eec1d29ac1fcf70a29c"><div class="ttname"><a href="structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html#a2dee213defdf5eec1d29ac1fcf70a29c">alpaka::warp::traits::Ballot&lt; WarpUniformCudaHipBuiltIn &gt;::ballot</a></div><div class="ttdeci">static __device__ auto ballot(warp::WarpUniformCudaHipBuiltIn const &amp;warp, std::int32_t predicate) -&gt; std::uint32_t</div><div class="ttdef"><b>Definition:</b> <a href="WarpUniformCudaHipBuiltIn_8hpp_source.html#l00115">WarpUniformCudaHipBuiltIn.hpp:115</a></div></div>
-<div class="ttc" id="astructalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4_html_ad9230255d256e5ed1c1d05f4d833bda1"><div class="ttname"><a href="structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#ad9230255d256e5ed1c1d05f4d833bda1">alpaka::warp::traits::Shfl&lt; WarpUniformCudaHipBuiltIn &gt;::shfl</a></div><div class="ttdeci">static __device__ auto shfl(warp::WarpUniformCudaHipBuiltIn const &amp;warp, std::int32_t val, int srcLane, std::int32_t width) -&gt; std::int32_t</div><div class="ttdef"><b>Definition:</b> <a href="WarpUniformCudaHipBuiltIn_8hpp_source.html#l00149">WarpUniformCudaHipBuiltIn.hpp:149</a></div></div>
+<div class="ttc" id="astructalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4_html_ad9230255d256e5ed1c1d05f4d833bda1"><div class="ttname"><a href="structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#ad9230255d256e5ed1c1d05f4d833bda1">alpaka::warp::traits::Shfl&lt; WarpUniformCudaHipBuiltIn &gt;::shfl</a></div><div class="ttdeci">static __device__ auto shfl(warp::WarpUniformCudaHipBuiltIn const &amp;warp, std::int32_t val, int srcLane, std::int32_t width) -&gt; std::int32_t</div><div class="ttdef"><b>Definition:</b> <a href="WarpUniformCudaHipBuiltIn_8hpp_source.html#l00150">WarpUniformCudaHipBuiltIn.hpp:150</a></div></div>
 <div class="ttc" id="awarp_2Traits_8hpp_html"><div class="ttname"><a href="warp_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00021">Concepts.hpp:21</a></div></div>
 <div class="ttc" id="astructalpaka_1_1warp_1_1traits_1_1Any_html"><div class="ttname"><a href="structalpaka_1_1warp_1_1traits_1_1Any.html">alpaka::warp::traits::Any</a></div><div class="ttdoc">The any warp vote trait.</div><div class="ttdef"><b>Definition:</b> <a href="warp_2Traits_8hpp_source.html#l00040">Traits.hpp:40</a></div></div>
@@ -283,7 +285,7 @@ $(document).ready(function(){initNavTree('WarpUniformCudaHipBuiltIn_8hpp_source.
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7d123124934e174b4626b90ed7337338.html">warp</a></li><li class="navelem"><a class="el" href="WarpUniformCudaHipBuiltIn_8hpp.html">WarpUniformCudaHipBuiltIn.hpp</a></li>
-    <li class="footer">Generated on Wed Jun 16 2021 06:59:04 for alpaka by
+    <li class="footer">Generated on Wed Jun 16 2021 09:14:00 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
