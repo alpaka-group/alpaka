@@ -17,34 +17,34 @@
 #include <type_traits>
 
 // https://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
-template<typename TAcc, typename FP>
-ALPAKA_FN_ACC std::enable_if_t<!std::numeric_limits<FP>::is_integer, bool> almost_equal(
+template<typename TAcc, typename TFp>
+ALPAKA_FN_ACC std::enable_if_t<!std::numeric_limits<TFp>::is_integer, bool> almost_equal(
     TAcc const& acc,
-    FP x,
-    FP y,
+    TFp x,
+    TFp y,
     int ulp)
 {
     // the machine epsilon has to be scaled to the magnitude of the values used
     // and multiplied by the desired precision in ULPs (units in the last place)
     return alpaka::math::abs(acc, x - y)
-        <= std::numeric_limits<FP>::epsilon() * alpaka::math::abs(acc, x + y) * static_cast<FP>(ulp)
+        <= std::numeric_limits<TFp>::epsilon() * alpaka::math::abs(acc, x + y) * static_cast<TFp>(ulp)
         // unless the result is subnormal
-        || alpaka::math::abs(acc, x - y) < std::numeric_limits<FP>::min();
+        || alpaka::math::abs(acc, x - y) < std::numeric_limits<TFp>::min();
 }
 
 class SinCosTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename FP>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, FP const arg) const -> void
+    template<typename TAcc, typename TFp>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, TFp const arg) const -> void
     {
         // if arg is hardcoded then compiler can optimize it out
         // (PTX kernel (float) was just empty)
-        FP check_sin = alpaka::math::sin(acc, arg);
-        FP check_cos = alpaka::math::cos(acc, arg);
-        FP result_sin = 0.;
-        FP result_cos = 0.;
+        TFp check_sin = alpaka::math::sin(acc, arg);
+        TFp check_cos = alpaka::math::cos(acc, arg);
+        TFp result_sin = 0.;
+        TFp result_cos = 0.;
         alpaka::math::sincos(acc, arg, result_sin, result_cos);
         ALPAKA_CHECK(
             *success,

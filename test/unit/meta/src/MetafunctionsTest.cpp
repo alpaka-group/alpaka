@@ -19,7 +19,7 @@ TEST_CASE("conjunctionTrue", "[meta]")
     using ConjunctionResult
         = alpaka::meta::Conjunction<std::true_type, std::true_type, std::integral_constant<bool, true>>;
 
-    static_assert(ConjunctionResult::value == true, "alpaka::meta::Conjunction failed!");
+    static_assert(ConjunctionResult::value, "alpaka::meta::Conjunction failed!");
 }
 
 TEST_CASE("conjunctionFalse", "[meta]")
@@ -27,7 +27,7 @@ TEST_CASE("conjunctionFalse", "[meta]")
     using ConjunctionResult
         = alpaka::meta::Conjunction<std::true_type, std::false_type, std::integral_constant<bool, true>>;
 
-    static_assert(ConjunctionResult::value == false, "alpaka::meta::Conjunction failed!");
+    static_assert(!ConjunctionResult::value, "alpaka::meta::Conjunction failed!");
 }
 
 TEST_CASE("disjunctionTrue", "[meta]")
@@ -35,7 +35,7 @@ TEST_CASE("disjunctionTrue", "[meta]")
     using DisjunctionResult
         = alpaka::meta::Disjunction<std::false_type, std::true_type, std::integral_constant<bool, false>>;
 
-    static_assert(DisjunctionResult::value == true, "alpaka::meta::Disjunction failed!");
+    static_assert(DisjunctionResult::value, "alpaka::meta::Disjunction failed!");
 }
 
 TEST_CASE("disjunctionFalse", "[meta]")
@@ -43,7 +43,7 @@ TEST_CASE("disjunctionFalse", "[meta]")
     using DisjunctionResult
         = alpaka::meta::Disjunction<std::false_type, std::false_type, std::integral_constant<bool, false>>;
 
-    static_assert(DisjunctionResult::value == false, "alpaka::meta::Disjunction failed!");
+    static_assert(!DisjunctionResult::value, "alpaka::meta::Disjunction failed!");
 }
 
 TEST_CASE("negationFalse", "[meta]")

@@ -24,8 +24,8 @@ TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
 #    include <nvfunctional>
 #endif
 
-template<typename Acc>
-void ALPAKA_FN_ACC kernelFn(Acc const& acc, bool* success, std::int32_t val)
+template<typename TAcc>
+void ALPAKA_FN_ACC kernel_fn(TAcc const& acc, bool* success, std::int32_t val)
 {
     alpaka::ignore_unused(acc);
 
@@ -42,7 +42,7 @@ TEMPLATE_LIST_TEST_CASE("stdFunctionKernelIsWorking", "[kernel]", alpaka::test::
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
-    const auto kernel = std::function<void(Acc const&, bool*, std::int32_t)>(kernelFn<Acc>);
+    const auto kernel = std::function<void(Acc const&, bool*, std::int32_t)>(kernel_fn<Acc>);
     REQUIRE(fixture(kernel, 42));
 }
 
@@ -54,7 +54,7 @@ TEMPLATE_LIST_TEST_CASE("stdBindKernelIsWorking", "[kernel]", alpaka::test::Test
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
-    const auto kernel = std::bind(kernelFn<Acc>, std::placeholders::_1, std::placeholders::_2, 42);
+    const auto kernel = std::bind(kernel_fn<Acc>, std::placeholders::_1, std::placeholders::_2, 42);
     REQUIRE(fixture(kernel));
 }
 #endif

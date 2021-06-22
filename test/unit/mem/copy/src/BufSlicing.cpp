@@ -18,7 +18,7 @@
 #    pragma warning(disable : 4127) // suppress warning for c++17 conditional expression is constant
 #endif
 
-template<typename TDim, typename TIdx, typename TAcc, typename TData, typename Vec = alpaka::Vec<TDim, TIdx>>
+template<typename TDim, typename TIdx, typename TAcc, typename TData, typename TVec = alpaka::Vec<TDim, TIdx>>
 struct TestContainer
 {
     using AccQueueProperty = alpaka::Blocking;
@@ -34,76 +34,76 @@ struct TestContainer
 
     using SubView = alpaka::ViewSubView<DevAcc, TData, TDim, TIdx>;
 
-    DevAcc const devAcc;
-    DevHost const devHost;
-    DevQueue devQueue;
+    DevAcc const m_dev_acc;
+    DevHost const m_dev_host;
+    DevQueue m_dev_queue;
 
 
     // Constructor
     TestContainer()
-        : devAcc(alpaka::getDevByIdx<PltfAcc>(0u))
-        , devHost(alpaka::getDevByIdx<PltfHost>(0u))
-        , devQueue(devAcc)
+        : m_dev_acc(alpaka::getDevByIdx<PltfAcc>(0u))
+        , m_dev_host(alpaka::getDevByIdx<PltfHost>(0u))
+        , m_dev_queue(m_dev_acc)
     {
     }
 
 
-    auto createHostBuffer(Vec extents, bool indexed) -> BufHost
+    auto create_host_buffer(TVec extents, bool indexed) -> BufHost
     {
-        BufHost bufHost(alpaka::allocBuf<TData, TIdx>(devHost, extents));
+        BufHost buf_host(alpaka::allocBuf<TData, TIdx>(m_dev_host, extents));
         if(indexed)
         {
-            TData* const ptr = alpaka::getPtrNative(bufHost);
+            TData* const ptr = alpaka::getPtrNative(buf_host);
             for(TIdx i(0); i < extents.prod(); ++i)
             {
                 ptr[i] = static_cast<TData>(i);
             }
         }
-        return bufHost;
+        return buf_host;
     }
 
 
-    auto createDeviceBuffer(Vec extents) -> BufDevice
+    auto create_device_buffer(TVec extents) -> BufDevice
     {
-        BufDevice bufDevice(alpaka::allocBuf<TData, TIdx>(devAcc, extents));
-        return bufDevice;
+        BufDevice buf_device(alpaka::allocBuf<TData, TIdx>(m_dev_acc, extents));
+        return buf_device;
     }
 
 
-    auto copyToAcc(BufHost bufHost, BufDevice bufAcc, Vec extents) -> void
+    auto copy_to_acc(BufHost buf_host, BufDevice buf_acc, TVec extents) -> void
     {
-        alpaka::memcpy(devQueue, bufAcc, bufHost, extents);
+        alpaka::memcpy(m_dev_queue, buf_acc, buf_host, extents);
     }
 
 
-    auto copyToHost(BufDevice bufAcc, BufHost bufHost, Vec extents) -> void
+    auto copy_to_host(BufDevice buf_acc, BufHost buf_host, TVec extents) -> void
     {
-        alpaka::memcpy(devQueue, bufHost, bufAcc, extents);
+        alpaka::memcpy(m_dev_queue, buf_host, buf_acc, extents);
     }
 
 
-    auto sliceOnDevice(BufDevice bufferToBeSliced, Vec subViewExtents, Vec offsets) -> BufDevice
+    auto slice_on_device(BufDevice buffer_to_be_sliced, TVec sub_view_extents, TVec offsets) -> BufDevice
     {
-        BufDevice slicedBuffer = createDeviceBuffer(subViewExtents);
+        BufDevice sliced_buffer = create_device_buffer(sub_view_extents);
         // Create a subView with a possible offset.
-        SubView subView = SubView(bufferToBeSliced, subViewExtents, offsets);
+        SubView sub_view = SubView(buffer_to_be_sliced, sub_view_extents, offsets);
         // Copy the subView into a new buffer.
-        alpaka::memcpy(devQueue, slicedBuffer, subView, subViewExtents);
-        return slicedBuffer;
+        alpaka::memcpy(m_dev_queue, sliced_buffer, sub_view, sub_view_extents);
+        return sliced_buffer;
     }
 
 
-    auto compareBuffer(BufHost const& bufferA, BufHost const& bufferB, Vec const& extents) const
+    auto compare_buffer(BufHost const& buffer_a, BufHost const& buffer_b, TVec const& extents) const
     {
-        TData const* const ptrA = alpaka::getPtrNative(bufferA);
-        TData const* const ptrB = alpaka::getPtrNative(bufferB);
+        TData const* const ptr_a = alpaka::getPtrNative(buffer_a);
+        TData const* const ptr_b = alpaka::getPtrNative(buffer_b);
         for(TIdx i(0); i < extents.prod(); ++i)
         {
             INFO("Dim: " << TDim::value)
             INFO("Idx: " << typeid(TIdx).name())
             INFO("Acc: " << alpaka::traits::GetAccName<TAcc>::getAccName())
             INFO("i: " << i)
-            REQUIRE(ptrA[i] == Approx(ptrB[i]));
+            REQUIRE(ptr_a[i] == Approx(ptr_b[i]));
         }
     }
 };
@@ -123,46 +123,46 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest", "[memBuf]", TestAccWithDataTypes)
         return;
     }
     using Idx = alpaka::Idx<Acc>;
-    TestContainer<Dim, Idx, Acc, Data> slicingTest;
+    TestContainer<Dim, Idx, Acc, Data> slicing_test;
 
     auto const extents
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
-    auto const extentsSubView
+    auto const extents_sub_view
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView>();
     auto const offsets
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>();
 
     // This is the initial buffer.
-    auto const indexedBuffer = slicingTest.createHostBuffer(extents, true);
+    auto const indexed_buffer = slicing_test.create_host_buffer(extents, true);
     // This buffer will hold the sliced-buffer when it was copied to the host.
-    auto resultBuffer = slicingTest.createHostBuffer(extentsSubView, false);
+    auto result_buffer = slicing_test.create_host_buffer(extents_sub_view, false);
 
     // Copy of the indexBuffer on the deviceSide.
-    auto deviceBuffer = slicingTest.createDeviceBuffer(extents);
+    auto device_buffer = slicing_test.create_device_buffer(extents);
 
     // Start: Main-Test
-    slicingTest.copyToAcc(indexedBuffer, deviceBuffer, extents);
+    slicing_test.copy_to_acc(indexed_buffer, device_buffer, extents);
 
-    auto slicedBuffer = slicingTest.sliceOnDevice(deviceBuffer, extentsSubView, offsets);
+    auto sliced_buffer = slicing_test.slice_on_device(device_buffer, extents_sub_view, offsets);
 
-    slicingTest.copyToHost(slicedBuffer, resultBuffer, extentsSubView);
+    slicing_test.copy_to_host(sliced_buffer, result_buffer, extents_sub_view);
 
-    auto correctResults = slicingTest.createHostBuffer(extentsSubView, false);
-    Data* ptrNative = alpaka::getPtrNative(correctResults);
+    auto correct_results = slicing_test.create_host_buffer(extents_sub_view, false);
+    Data* ptr_native = alpaka::getPtrNative(correct_results);
     using Dim1 = alpaka::DimInt<1u>;
 
-    for(Idx i(0); i < extentsSubView.prod(); ++i)
+    for(Idx i(0); i < extents_sub_view.prod(); ++i)
     {
-        auto mappedToND = alpaka::mapIdx<Dim::value, Dim1::value>(alpaka::Vec<Dim1, Idx>(i), extentsSubView);
-        auto addedOffset = mappedToND + offsets;
-        auto mappedTo1D = alpaka::mapIdx<Dim1::value>(addedOffset,
+        auto mapped_to_nd = alpaka::mapIdx<Dim::value, Dim1::value>(alpaka::Vec<Dim1, Idx>(i), extents_sub_view);
+        auto added_offset = mapped_to_nd + offsets;
+        auto mapped_to1_d = alpaka::mapIdx<Dim1::value>(added_offset,
                                                       extents)[0]; // take the only element in the vector
-        ptrNative[i] = static_cast<Data>(mappedTo1D);
+        ptr_native[i] = static_cast<Data>(mapped_to1_d);
     }
 
     // resultBuffer will be compared with the manually computed results.
-    slicingTest.compareBuffer(resultBuffer, correctResults, extentsSubView);
+    slicing_test.compare_buffer(result_buffer, correct_results, extents_sub_view);
 }
 
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)

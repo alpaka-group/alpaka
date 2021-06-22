@@ -19,7 +19,7 @@
 #include <type_traits>
 
 template<typename TAcc>
-static auto testBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
+static auto test_buffer_mutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
     using Dev = alpaka::Dev<TAcc>;
     using Pltf = alpaka::Pltf<Dev>;
@@ -50,7 +50,7 @@ TEMPLATE_LIST_TEST_CASE("memBufBasicTest", "[memBuf]", alpaka::test::TestAccs)
     auto const extent
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
-    testBufferMutable<Acc>(extent);
+    test_buffer_mutable<Acc>(extent);
 }
 
 TEMPLATE_LIST_TEST_CASE("memBufZeroSizeTest", "[memBuf]", alpaka::test::TestAccs)
@@ -61,12 +61,12 @@ TEMPLATE_LIST_TEST_CASE("memBufZeroSizeTest", "[memBuf]", alpaka::test::TestAccs
 
     auto const extent = alpaka::Vec<Dim, Idx>::zeros();
 
-    testBufferMutable<Acc>(extent);
+    test_buffer_mutable<Acc>(extent);
 }
 
 
 template<typename TAcc>
-static auto testBufferImmutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
+static auto test_buffer_immutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
     using Dev = alpaka::Dev<TAcc>;
     using Pltf = alpaka::Pltf<Dev>;
@@ -93,5 +93,5 @@ TEMPLATE_LIST_TEST_CASE("memBufConstTest", "[memBuf]", alpaka::test::TestAccs)
     auto const extent
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
-    testBufferImmutable<Acc>(extent);
+    test_buffer_immutable<Acc>(extent);
 }

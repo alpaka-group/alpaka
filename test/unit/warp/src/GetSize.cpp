@@ -21,10 +21,10 @@ class GetSizeTestKernel
 public:
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, std::int32_t expectedWarpSize) const -> void
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, std::int32_t expected_warp_size) const -> void
     {
-        std::int32_t const actualWarpSize = alpaka::warp::getSize(acc);
-        ALPAKA_CHECK(*success, actualWarpSize == expectedWarpSize);
+        std::int32_t const actual_warp_size = alpaka::warp::getSize(acc);
+        ALPAKA_CHECK(*success, actual_warp_size == expected_warp_size);
     }
 };
 
@@ -37,9 +37,9 @@ TEMPLATE_LIST_TEST_CASE("getSize", "[warp]", alpaka::test::TestAccs)
     using Idx = alpaka::Idx<Acc>;
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
-    auto const expectedWarpSize = static_cast<int>(alpaka::getWarpSize(dev));
-    Idx const gridThreadExtentPerDim = 8;
-    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
+    auto const expected_warp_size = static_cast<int>(alpaka::getWarpSize(dev));
+    Idx const grid_thread_extent_per_dim = 8;
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(grid_thread_extent_per_dim));
     GetSizeTestKernel kernel;
-    REQUIRE(fixture(kernel, expectedWarpSize));
+    REQUIRE(fixture(kernel, expected_warp_size));
 }

@@ -20,7 +20,7 @@
 #include <type_traits>
 
 template<typename TAcc>
-static auto testP2P(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
+static auto test_p2_p(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
     using Dev = alpaka::Dev<TAcc>;
     using Pltf = alpaka::Pltf<Dev>;
@@ -43,7 +43,7 @@ static auto testP2P(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& ext
     auto buf0 = alpaka::allocBuf<Elem, Idx>(dev0, extent);
     auto buf1 = alpaka::allocBuf<Elem, Idx>(dev1, extent);
 
-    std::uint8_t const byte(static_cast<uint8_t>(42u));
+    auto const byte(static_cast<uint8_t>(42u));
     alpaka::memset(queue0, buf0, byte, extent);
 
     alpaka::memcpy(queue0, buf1, buf0, extent);
@@ -65,6 +65,6 @@ TEMPLATE_LIST_TEST_CASE("memP2PTest", "[memP2P]", alpaka::test::TestAccs)
     auto const extent
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
-    testP2P<Acc>(extent);
+    test_p2_p<Acc>(extent);
 #endif
 }

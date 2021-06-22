@@ -16,8 +16,8 @@
 class RandTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename T_Generator>
-    ALPAKA_FN_ACC void genNumbers(TAcc const& acc, bool* success, T_Generator& gen) const
+    template<typename TAcc, typename TTGenerator>
+    ALPAKA_FN_ACC void gen_numbers(TAcc const& acc, bool* success, TTGenerator& gen) const
     {
         {
             auto dist = alpaka::rand::distribution::createNormalReal<float>(acc);
@@ -65,8 +65,8 @@ public:
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         // default generator for accelerator
-        auto genDefault = alpaka::rand::engine::createDefault(acc, 12345u, 6789u);
-        genNumbers(acc, success, genDefault);
+        auto gen_default = alpaka::rand::engine::createDefault(acc, 12345u, 6789u);
+        gen_numbers(acc, success, gen_default);
 
 #if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 #    ifndef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
@@ -82,9 +82,9 @@ public:
 #    endif
 
         // TinyMersenneTwister
-        auto genTinyMersenneTwister
+        auto gen_tiny_mersenne_twister
             = alpaka::rand::engine::createDefault(alpaka::rand::TinyMersenneTwister{}, 12345u, 6789u);
-        genNumbers(acc, success, genTinyMersenneTwister);
+        gen_numbers(acc, success, gen_tiny_mersenne_twister);
 #endif
     }
 };

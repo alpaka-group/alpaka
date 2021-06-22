@@ -20,69 +20,69 @@
 
 //! A kernel using atomicOp, syncBlockThreads, getDynSharedMem, getIdx, getWorkDiv and global memory to compute a
 //! (useless) result. \tparam TnumUselessWork The number of useless calculations done in each kernel execution.
-template<typename TnumUselessWork, typename Val>
+template<typename TTnumUselessWork, typename TVal>
 class SharedMemKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, Val* const puiBlockRetVals) const -> void
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TVal* const pui_block_ret_vals) const -> void
     {
         using Idx = alpaka::Idx<TAcc>;
 
         static_assert(alpaka::Dim<TAcc>::value == 1, "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
-        Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        Idx const block_thread_count(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the dynamically allocated shared memory.
-        Val* const pBlockShared(alpaka::getDynSharedMem<Val>(acc));
+        TVal* const p_block_shared(alpaka::getDynSharedMem<TVal>(acc));
 
         // Calculate linearized index of the thread in the block.
-        Idx const blockThreadIdx1d(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        Idx const block_thread_idx1d(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
-        auto sum1 = static_cast<Val>(blockThreadIdx1d + 1);
-        for(Val i(0); i < static_cast<Val>(TnumUselessWork::value); ++i)
+        auto sum1 = static_cast<TVal>(block_thread_idx1d + 1);
+        for(TVal i(0); i < static_cast<TVal>(TTnumUselessWork::value); ++i)
         {
             sum1 += i;
         }
-        pBlockShared[blockThreadIdx1d] = sum1;
+        p_block_shared[block_thread_idx1d] = sum1;
 
 
         // Synchronize all threads because now we are writing to the memory again but inverse.
         alpaka::syncBlockThreads(acc);
 
         // Do something useless.
-        auto sum2 = static_cast<Val>(blockThreadIdx1d);
-        for(Val i(0); i < static_cast<Val>(TnumUselessWork::value); ++i)
+        auto sum2 = static_cast<TVal>(block_thread_idx1d);
+        for(TVal i(0); i < static_cast<TVal>(TTnumUselessWork::value); ++i)
         {
             sum2 -= i;
         }
         // Add the inverse so that every cell is filled with [#Threads, #Threads, ..., #Threads].
-        pBlockShared[(blockThreadCount - 1) - blockThreadIdx1d] += sum2;
+        p_block_shared[(block_thread_count - 1) - block_thread_idx1d] += sum2;
 
 
         // Synchronize all threads again.
         alpaka::syncBlockThreads(acc);
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
-        if(blockThreadIdx1d > 0)
+        if(block_thread_idx1d > 0)
         {
-            alpaka::atomicAdd(acc, &pBlockShared[0], pBlockShared[blockThreadIdx1d]);
+            alpaka::atomicAdd(acc, &p_block_shared[0], p_block_shared[block_thread_idx1d]);
         }
 
 
         alpaka::syncBlockThreads(acc);
 
         // Only master writes result to global memory.
-        if(blockThreadIdx1d == 0)
+        if(block_thread_idx1d == 0)
         {
             // Calculate linearized block id.
-            Idx const gridBlockIdx(alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
+            Idx const grid_block_idx(alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
-            puiBlockRetVals[gridBlockIdx] = pBlockShared[0];
+            pui_block_ret_vals[grid_block_idx] = p_block_shared[0];
         }
     }
 };
@@ -92,19 +92,19 @@ namespace alpaka
     namespace traits
     {
         //! The trait for getting the size of the block shared dynamic memory for a kernel.
-        template<typename TnumUselessWork, typename Val, typename TAcc>
-        struct BlockSharedMemDynSizeBytes<SharedMemKernel<TnumUselessWork, Val>, TAcc>
+        template<typename TTnumUselessWork, typename TVal, typename TAcc>
+        struct BlockSharedMemDynSizeBytes<SharedMemKernel<TTnumUselessWork, TVal>, TAcc>
         {
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec, typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                SharedMemKernel<TnumUselessWork, Val> const& sharedMemKernel,
-                TVec const& blockThreadExtent,
-                TVec const& threadElemExtent,
+            ALPAKA_FN_HOST_ACC static auto get_block_shared_mem_dyn_size_bytes(
+                SharedMemKernel<TTnumUselessWork, TVal> const& shared_mem_kernel,
+                TVec const& block_thread_extent,
+                TVec const& thread_elem_extent,
                 TArgs&&...) -> std::size_t
             {
-                alpaka::ignore_unused(sharedMemKernel);
-                return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
+                alpaka::ignore_unused(shared_mem_kernel);
+                return static_cast<std::size_t>(block_thread_extent.prod() * thread_elem_extent.prod()) * sizeof(TVal);
             }
         };
     } // namespace traits
@@ -118,7 +118,7 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    Idx const numElements = 1u << 16u;
+    Idx const num_elements = 1u << 16u;
 
     using Val = std::int32_t;
     using TnumUselessWork = std::integral_constant<Idx, 100>;
@@ -132,60 +132,60 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
     SharedMemKernel<TnumUselessWork, Val> kernel;
 
     // Select a device to execute on.
-    auto const devAcc = alpaka::getDevByIdx<PltfAcc>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<PltfAcc>(0u);
 
     // Get a queue on this device.
-    QueueAcc queue(devAcc);
+    QueueAcc queue(dev_acc);
 
     // Set the grid blocks extent.
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        numElements,
+    alpaka::WorkDivMembers<Dim, Idx> const work_div(alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
+        num_elements,
         static_cast<Idx>(1u),
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     std::cout << "SharedMemKernel("
               << " accelerator: " << alpaka::getAccName<Acc>() << ", kernel: " << typeid(kernel).name()
-              << ", workDiv: " << workDiv << ")" << std::endl;
+              << ", workDiv: " << work_div << ")" << std::endl;
 
-    Idx const gridBlocksCount(alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
-    Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
+    Idx const grid_blocks_count(alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(work_div)[0u]);
+    Idx const block_thread_count(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(work_div)[0u]);
 
     // An array for the return values calculated by the blocks.
-    std::vector<Val> blockRetVals(static_cast<std::size_t>(gridBlocksCount));
+    std::vector<Val> block_ret_vals(static_cast<std::size_t>(grid_blocks_count));
 
     // Allocate accelerator buffers and copy.
-    Idx const resultElemCount(gridBlocksCount);
-    auto blockRetValsAcc = alpaka::allocBuf<Val, Idx>(devAcc, resultElemCount);
-    alpaka::memcpy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
+    Idx const result_elem_count(grid_blocks_count);
+    auto block_ret_vals_acc = alpaka::allocBuf<Val, Idx>(dev_acc, result_elem_count);
+    alpaka::memcpy(queue, block_ret_vals_acc, block_ret_vals, result_elem_count);
 
     // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernel, alpaka::getPtrNative(blockRetValsAcc));
+    auto const task_kernel = alpaka::createTaskKernel<Acc>(work_div, kernel, alpaka::getPtrNative(block_ret_vals_acc));
 
     // Profile the kernel execution.
-    std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"
+    std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, task_kernel) << " ms"
               << std::endl;
 
     // Copy back the result.
-    alpaka::memcpy(queue, blockRetVals, blockRetValsAcc, resultElemCount);
+    alpaka::memcpy(queue, block_ret_vals, block_ret_vals_acc, result_elem_count);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queue);
 
     // Assert that the results are correct.
-    Val const correctResult(static_cast<Val>(blockThreadCount * blockThreadCount));
+    auto const correct_result(static_cast<Val>(block_thread_count * block_thread_count));
 
-    bool resultCorrect(true);
-    for(Idx i(0); i < gridBlocksCount; ++i)
+    bool result_correct(true);
+    for(Idx i(0); i < grid_blocks_count; ++i)
     {
-        auto const val(blockRetVals[static_cast<std::size_t>(i)]);
-        if(val != correctResult)
+        auto const val(block_ret_vals[static_cast<std::size_t>(i)]);
+        if(val != correct_result)
         {
-            std::cerr << "blockRetVals[" << i << "] == " << val << " != " << correctResult << std::endl;
-            resultCorrect = false;
+            std::cerr << "blockRetVals[" << i << "] == " << val << " != " << correct_result << std::endl;
+            result_correct = false;
         }
     }
 
-    REQUIRE(resultCorrect);
+    REQUIRE(result_correct);
 }

@@ -50,25 +50,25 @@ struct Kernel
     template<typename TAcc, typename TFunctor>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        size_t const numPoints,
-        uint32_t* const globalCounter,
+        size_t const num_points,
+        uint32_t* const global_counter,
         TFunctor functor) const -> void
     {
         // Get the global linearized thread idx.
-        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_extent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent)[0];
+        auto const linearized_global_thread_idx = alpaka::mapIdx<1u>(global_thread_idx, global_thread_extent)[0];
         // Setup generator engine and distribution.
         auto engine = alpaka::rand::engine::createDefault(
             acc,
-            linearizedGlobalThreadIdx,
+            linearized_global_thread_idx,
             0); // No specific subsequence start.
         // For simplicity the interval is fixed to [0.0,1.0].
         auto dist(alpaka::rand::distribution::createUniformReal<float>(acc));
 
-        uint32_t localCount = 0;
-        for(size_t i = linearizedGlobalThreadIdx; i < numPoints; i += globalThreadExtent.prod())
+        uint32_t local_count = 0;
+        for(size_t i = linearized_global_thread_idx; i < num_points; i += global_thread_extent.prod())
         {
             // Generate a point in the 2D interval.
             float x = dist(engine);
@@ -76,12 +76,12 @@ struct Kernel
             // Count every time where the point is "below" the given function.
             if(y <= functor(acc, x))
             {
-                ++localCount;
+                ++local_count;
             }
         }
 
         // Add the local result to the sum of the other results.
-        alpaka::atomicAdd(acc, globalCounter, localCount, alpaka::hierarchy::Blocks{});
+        alpaka::atomicAdd(acc, global_counter, local_count, alpaka::hierarchy::Blocks{});
     }
 };
 
@@ -94,53 +94,53 @@ auto main() -> int
     using Vec = alpaka::Vec<Dim, Idx>;
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using Host = alpaka::DevCpu;
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
-    auto const devHost = alpaka::getDevByIdx<Host>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_host = alpaka::getDevByIdx<Host>(0u);
     using QueueProperty = alpaka::Blocking;
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
-    QueueAcc queue{devAcc};
+    QueueAcc queue{dev_acc};
 
     using BufHost = alpaka::Buf<Host, uint32_t, Dim, Idx>;
     using BufAcc = alpaka::Buf<Acc, uint32_t, Dim, Idx>;
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     // Problem parameter.
-    constexpr size_t numPoints = 100000000u;
+    constexpr size_t num_points = 100000000u;
     constexpr size_t extent = 1u;
-    constexpr size_t numThreads = 100u; // Kernel will decide numCalcPerThread.
-    constexpr size_t numAlpakaElementsPerThread = 1;
+    constexpr size_t num_threads = 100u; // Kernel will decide numCalcPerThread.
+    constexpr size_t num_alpaka_elements_per_thread = 1;
     WorkDiv workdiv{alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        Vec(numThreads),
-        Vec(numAlpakaElementsPerThread),
+        dev_acc,
+        Vec(num_threads),
+        Vec(num_alpaka_elements_per_thread),
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
 
     // Setup buffer.
-    BufHost bufHost{alpaka::allocBuf<uint32_t, Idx>(devHost, extent)};
-    uint32_t* const ptrBufHost{alpaka::getPtrNative(bufHost)};
-    BufAcc bufAcc{alpaka::allocBuf<uint32_t, Idx>(devAcc, extent)};
-    uint32_t* const ptrBufAcc{alpaka::getPtrNative(bufAcc)};
+    BufHost buf_host{alpaka::allocBuf<uint32_t, Idx>(dev_host, extent)};
+    uint32_t* const ptr_buf_host{alpaka::getPtrNative(buf_host)};
+    BufAcc buf_acc{alpaka::allocBuf<uint32_t, Idx>(dev_acc, extent)};
+    uint32_t* const ptr_buf_acc{alpaka::getPtrNative(buf_acc)};
 
     // Initialize the global count to 0.
-    ptrBufHost[0] = 0.0f;
-    alpaka::memcpy(queue, bufAcc, bufHost, extent);
+    ptr_buf_host[0] = 0.0f;
+    alpaka::memcpy(queue, buf_acc, buf_host, extent);
 
     Kernel kernel;
-    alpaka::exec<Acc>(queue, workdiv, kernel, numPoints, ptrBufAcc, Function{});
-    alpaka::memcpy(queue, bufHost, bufAcc, extent);
+    alpaka::exec<Acc>(queue, workdiv, kernel, num_points, ptr_buf_acc, Function{});
+    alpaka::memcpy(queue, buf_host, buf_acc, extent);
     alpaka::wait(queue);
 
     // Check the result.
-    uint32_t globalCount = *ptrBufHost;
+    uint32_t global_count = *ptr_buf_host;
 
     // Final result.
-    float finalResult = globalCount / static_cast<float>(numPoints);
+    float final_result = global_count / static_cast<float>(num_points);
     constexpr double pi = 3.14159265358979323846;
-    constexpr double exactResult = pi / 4.0;
-    auto const error = std::abs(finalResult - exactResult);
+    constexpr double exact_result = pi / 4.0;
+    auto const error = std::abs(final_result - exact_result);
 
     std::cout << "exact result (pi / 4): " << pi / 4.0 << "\n";
-    std::cout << "final result: " << finalResult << "\n";
+    std::cout << "final result: " << final_result << "\n";
     std::cout << "error: " << error << "\n";
     return error > 0.001 ? EXIT_FAILURE : EXIT_SUCCESS;
 }

@@ -29,13 +29,13 @@ TEST_CASE("voidEmpty", "[meta]")
 //! Trait to detect if the given class has a method size().
 //! This illustrates and tests the technique of using Void<> to compile-time
 //! check for methods (and members can be treated similarly).
-template<class T, class = void>
+template<class TT, class = void>
 struct HasMethodSize : std::false_type
 {
 };
 
-template<class T>
-struct HasMethodSize<T, alpaka::meta::Void<decltype(std::declval<T&>().size())>> : std::true_type
+template<class TT>
+struct HasMethodSize<TT, alpaka::meta::Void<decltype(std::declval<TT&>().size())>> : std::true_type
 {
 };
 

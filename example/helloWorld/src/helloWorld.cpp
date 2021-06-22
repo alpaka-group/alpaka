@@ -38,13 +38,13 @@ struct HelloWorldKernel
         // exist overall. These information can be obtained by
         // getIdx() and getWorkDiv(). In this example these
         // values are obtained for a global scope.
-        Vec const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        Vec const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        Vec const global_thread_extent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
         // Map the three dimensional thread index into a
         // one dimensional thread index space. We call it
         // linearize the thread index.
-        Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
+        Vec1 const linearized_global_thread_idx = alpaka::mapIdx<1u>(global_thread_idx, global_thread_extent);
 
         // Each thread prints a hello world to the terminal
         // together with the global index of the thread in
@@ -53,10 +53,10 @@ struct HelloWorldKernel
         // order [z][y][x] where the last index is the fast one.
         printf(
             "[z:%u, y:%u, x:%u][linear:%u] Hello World\n",
-            static_cast<unsigned>(globalThreadIdx[0u]),
-            static_cast<unsigned>(globalThreadIdx[1u]),
-            static_cast<unsigned>(globalThreadIdx[2u]),
-            static_cast<unsigned>(linearizedGlobalThreadIdx[0u]));
+            static_cast<unsigned>(global_thread_idx[0u]),
+            static_cast<unsigned>(global_thread_idx[1u]),
+            static_cast<unsigned>(global_thread_idx[2u]),
+            static_cast<unsigned>(linearized_global_thread_idx[0u]));
     }
 };
 
@@ -113,7 +113,7 @@ auto main() -> int
     // by id (0 to the number of devices minus 1) or you
     // can also retrieve all devices in a vector (getDevs()).
     // In this example the first devices is choosen.
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
 
     // Create a queue on the device
     //
@@ -125,7 +125,7 @@ auto main() -> int
     // The example queue is a blocking queue to a cpu device,
     // but it also exists an non-blocking queue for this
     // device (QueueCpuNonBlocking).
-    Queue queue(devAcc);
+    Queue queue(dev_acc);
 
     // Define the work division
     //
@@ -156,13 +156,13 @@ auto main() -> int
     // Thus, a thread can process data element size wise with its
     // vector processing unit.
     using Vec = alpaka::Vec<Dim, Idx>;
-    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerGrid(Vec::all(static_cast<Idx>(8)));
+    Vec const elements_per_thread(Vec::all(static_cast<Idx>(1)));
+    Vec const threads_per_grid(Vec::all(static_cast<Idx>(8)));
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv = alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        threadsPerGrid,
-        elementsPerThread,
+    WorkDiv const work_div = alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
+        threads_per_grid,
+        elements_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
@@ -171,7 +171,7 @@ auto main() -> int
     // Kernels can be everything that has a callable operator()
     // and which takes the accelerator as first argument.
     // So a kernel can be a class or struct, a lambda, a std::function, etc.
-    HelloWorldKernel helloWorldKernel;
+    HelloWorldKernel hello_world_kernel;
 
     // Run the kernel
     //
@@ -184,8 +184,8 @@ auto main() -> int
     // Here it is synchronous which means that the kernel is directly executed.
     alpaka::exec<Acc>(
         queue,
-        workDiv,
-        helloWorldKernel
+        work_div,
+        hello_world_kernel
         /* put kernel arguments here */);
     alpaka::wait(queue);
 
