@@ -1,0 +1,156 @@
+Checks: 'bugprone-bool-pointer-implicit-conversion,
+bugprone-copy-constructor-init,
+bugprone-forwarding-reference-overload,
+bugprone-misplaced-widening-cast,
+bugprone-parent-virtual-call,
+bugprone-signed-char-misuse,
+bugprone-suspicious-enum-usage,
+bugprone-swapped-arguments,
+bugprone-undelegated-constructor,
+bugprone-unhandled-self-assignment,
+bugprone-virtual-near-miss,
+cert-dcl50-cpp,
+cert-oop57-cpp,
+cert-oop58-cpp,
+cppcoreguidelines-narrowing-conversions,
+cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+cppcoreguidelines-pro-type-cstyle-cast,
+cppcoreguidelines-pro-type-member-init,
+cppcoreguidelines-pro-type-static-cast-downcast,
+cppcoreguidelines-pro-type-vararg,
+cppcoreguidelines-slicing,
+cppcoreguidelines-special-member-functions,
+google-default-arguments,
+google-explicit-constructor,
+google-readability-casting,
+google-readability-todo,
+hicpp-signed-bitwise,
+misc-misplaced-const,
+misc-unconventional-assign-operator,
+modernize-raw-string-literal,
+modernize-replace-disallow-copy-and-assign-macro,
+modernize-return-braced-init-list,
+modernize-unary-static-assert,
+modernize-use-auto,
+modernize-use-bool-literals,
+modernize-use-default-member-init,
+modernize-use-equals-default,
+modernize-use-equals-delete,
+modernize-use-nullptr,
+modernize-use-override,
+modernize-use-transparent-functors,
+modernize-use-using,
+readability-avoid-const-params-in-decls,
+readability-const-return-type,
+readability-convert-member-functions-to-static,
+readability-deleted-default,
+readability-identifier-naming,
+readability-implicit-bool-conversion,
+readability-isolate-declaration,
+readability-make-member-function-const,
+readability-misplaced-array-index,
+readability-non-const-parameter,
+readability-qualified-auto,
+readability-redundant-access-specifiers,
+readability-redundant-declaration,
+readability-redundant-function-ptr-dereference,
+readability-redundant-member-init,
+readability-redundant-preprocessor,
+readability-simplify-boolean-expr,
+readability-simplify-subscript-expr,
+readability-static-accessed-through-instance'
+CheckOptions:
+  - { key: bugprone-misplaced-widening-cast.CheckImplicitCasts, value: 1}
+  - { key: bugprone-signed-char-misuse.CharTypedefsToIgnore, value: "int8_t;std::int8_t"}
+  - { key: bugprone-signed-char-misuse.DiagnoseSignedUnsignedCharComparisons, value: 1}
+  - { key: bugprone-suspicious-enum-usage.StrictMode, value: 1}
+  - { key: bugprone-unhandled-self-assignment.WarnOnlyIfThisHasSuspiciousField, value: 0}
+  - { key: cppcoreguidelines-narrowing-conversions.WarnOnFloatingPointNarrowingConversion, value: 1}
+  - { key: cppcoreguidelines-narrowing-conversions.WarnWithinTemplateInstantiation, value: 1}
+  - { key: cppcoreguidelines-narrowing-conversions.WarnOnEquivalentBitWidth, value: 1}
+  - { key: cppcoreguidelines-narrowing-conversions.PedanticMode, value: 1}
+  - { key: cppcoreguidelines-pro-type-member-init.IgnoreArrays, value: 0}
+  - { key: cppcoreguidelines-pro-type-member-init.UseAssignment, value: 0}
+  - { key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor, value: 0}
+  - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: 0}
+  - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctionsWhenCopyIsDeleted, value: 0}
+  - { key: hicpp-signed-bitwise.IgnorePositiveIntegerLiterals, value: false}
+  - { key: modernize-use-auto.MinTypeNameLength, value: 0}
+  - { key: modernize-use-auto.RemoveStars, value: 0}
+  - { key: modernize-use-bool-literals.IgnoreMacros, value: 0}
+  - { key: modernize-use-default-member-init.UseAssignment, value: 0}
+  - { key: modernize-use-default-member-init.IgnoreMacros, value: 0}
+  - { key: modernize-use-equals-default.IgnoreMacros, value: 0}
+  - { key: modernize-use-equals-delete.IgnoreMacros, value: 0}
+  - { key: modernize-use-override.IgnoreDestructors, value: 0}
+  - { key: modernize-use-override.AllowOverrideAndFinal, value: 1}
+  - { key: modernize-use-transparent-functors.SafeMode, value: 1}
+  - { key: modernize-use-using.IgnoreMacros, value: 0}
+  - { key: readability-identifier-naming.AbstractClassCase, value: CamelCase}
+  - { key: readability-identifier-naming.AggressiveDependentMemberLookup, value: 1}
+  - { key: readability-identifier-naming.ClassCase, value: CamelCase}
+  - { key: readability-identifier-naming.ClassConstantCase, value: lower_case}
+  - { key: readability-identifier-naming.ClassMemberCase, value: lower_case}
+  - { key: readability-identifier-naming.ClassMethodCase, value: lower_case}
+  - { key: readability-identifier-naming.ConstantCase, value: lower_case}
+  - { key: readability-identifier-naming.ConstantMemberCase, value: lower_case}
+  - { key: readability-identifier-naming.ConstantMemberPrefix, value: m_}
+  - { key: readability-identifier-naming.ConstantParameterCase, value: lower_case}
+  - { key: readability-identifier-naming.ConstantPointerParameterCase, value: lower_case}
+  - { key: readability-identifier-naming.ConstexprFunctionCase, value: lower_case}
+  - { key: readability-identifier-naming.ConstexprMethodCase, value: lower_case}
+  - { key: readability-identifier-naming.ConstexprVariableCase, value: lower_case}
+  - { key: readability-identifier-naming.EnumCase, value: CamelCase}
+  - { key: readability-identifier-naming.EnumConstantCase, value: lower_case}
+  - { key: readability-identifier-naming.FunctionCase, value: lower_case}
+  - { key: readability-identifier-naming.GlobalConstantCase, value: lower_case}
+  - { key: readability-identifier-naming.GlobalConstantPointerCase, value: lower_case}
+  - { key: readability-identifier-naming.GlobalFunctionCase, value: lower_case}
+  - { key: readability-identifier-naming.GlobalPointerCase, value: lower_case}
+  - { key: readability-identifier-naming.GlobalVariableCase, value: lower_case}
+  - { key: readability-identifier-naming.InlineNamespaceCase, value: lower_case}
+  - { key: readability-identifier-naming.LocalConstantCase, value: lower_case}
+  - { key: readability-identifier-naming.LocalConstantPointerCase, value: lower_case}
+  - { key: readability-identifier-naming.LocalPointerCase, value: lower_case}
+  - { key: readability-identifier-naming.LocalVariableCase, value: lower_case}
+  - { key: readability-identifier-naming.MacroDefinitionCase, value: UPPER_CASE}
+  - { key: readability-identifier-naming.MemberCase, value: lower_case}
+  - { key: readability-identifier-naming.MemberPrefix, value: m_}
+  - { key: readability-identifier-naming.MethodCase, value: lower_case}
+  - { key: readability-identifier-naming.NamespaceCase, value: lower_case}
+  - { key: readability-identifier-naming.ParameterCase, value: lower_case}
+  - { key: readability-identifier-naming.ParameterPackCase, value: lower_case}
+  - { key: readability-identifier-naming.PointerParameterCase, value: lower_case}
+  - { key: readability-identifier-naming.PrivateMemberCase, value: lower_case}
+  - { key: readability-identifier-naming.PrivateMemberPrefix, value: m_}
+  - { key: readability-identifier-naming.PrivateMethodCase, value: lower_case}
+  - { key: readability-identifier-naming.ProtectedMemberCase, value: lower_case}
+  - { key: readability-identifier-naming.ProtectedMemberPrefix, value: m_}
+  - { key: readability-identifier-naming.ProtectedMethodCase, value: lower_case}
+  - { key: readability-identifier-naming.PublicMemberCase, value: lower_case}
+  - { key: readability-identifier-naming.PublicMemberPrefix, value: m_}
+  - { key: readability-identifier-naming.PublicMethodCase, value: lower_case}
+  - { key: readability-identifier-naming.StaticConstantCase, value: lower_case}
+  - { key: readability-identifier-naming.StaticVariableCase, value: lower_case}
+  - { key: readability-identifier-naming.StructCase, value: CamelCase}
+  - { key: readability-identifier-naming.TemplateParameterCase, value: CamelCase}
+  - { key: readability-identifier-naming.TemplateParameterPrefix, value: T}
+  - { key: readability-identifier-naming.TemplateTemplateParameterCase, value: CamelCase}
+  - { key: readability-identifier-naming.TemplateTemplateParameterPrefix, value: T}
+  - { key: readability-identifier-naming.TypeAliasCase, value: CamelCase}
+  - { key: readability-identifier-naming.TypedefCase, value: CamelCase}
+  - { key: readability-identifier-naming.TypeTemplateParameterCase, value: CamelCase}
+  - { key: readability-identifier-naming.TypeTemplateParameterPrefix, value: T}
+  - { key: readability-identifier-naming.UnionCase, value: CamelCase}
+  - { key: readability-identifier-naming.ValueTemplateParameterCase, value: CamelCase}
+  - { key: readability-identifier-naming.ValueTemplateParameterPrefix, value: T}
+  - { key: readability-identifier-naming.VariableCase, value: lower_case}
+  - { key: readability-identifier-naming.VirtualMethodCase, value: lower_case}
+  - { key: readability-implicit-bool-conversion.AllowIntegerConditions, value: 0}
+  - { key: readability-implicit-bool-conversion.AllowPointerConditions, value: 0}
+  - { key: readability-qualified-auto.AddConstToQualified, value: 1}
+  - { key: readability-redundant-access-specifiers.CheckFirstDeclaration, value: 1}
+  - { key: readability-redundant-declaration.IgnoreMacros, value: 0}
+  - { key: readability-redundant-member-init.IgnoreBaseInCopyConstructors, value: 1}
+  - { key: readability-simplify-boolean-expr.ChainedConditionalAssignment, value: 1}
+  - { key: readability-simplify-boolean-expr.ChainedConditionalReturn, value: 1}
