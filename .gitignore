@@ -25,3 +25,9 @@ cmake-build-*/
 *.kdev?
 spack-build*
 build/
+
+# Eclipse project files
+/.project
+/.cproject
+/.settings/
+
