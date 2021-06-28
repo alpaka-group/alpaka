@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [0.6.1] - 2021-06-24
+## [0.6.1] - 2021-06-29
 ### Compatibility Changes:
 - rework implementation of OpenMP schedule support #1279 #1309 #1313 #1341
   - `alpaka::omp::Schedule` is replaced by `ompScheduleKind` and `ompScheduleChunkSize`
