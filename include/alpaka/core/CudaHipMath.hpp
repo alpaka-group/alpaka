@@ -17,13 +17,5 @@
 #endif
 
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#    if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 0, 0)
-#        include <cuda_runtime_api.h>
-#    else
-#        if BOOST_COMP_HIP
-#            include <hip/math_functions.h>
-#        else
-#            include <math_functions.hpp>
-#        endif
-#    endif
+#    include <hip/math_functions.h>
 #endif
