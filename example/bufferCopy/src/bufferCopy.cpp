@@ -78,7 +78,7 @@ struct TestBufferKernel
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
-            ALPAKA_ASSERT(data[linIdxToPitchedIdx<2>(i, pitch)] == i);
+            ALPAKA_ASSERT_OFFLOAD(data[linIdxToPitchedIdx<2>(i, pitch)] == i);
         }
     }
 };

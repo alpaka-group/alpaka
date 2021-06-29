@@ -15,6 +15,12 @@
 #        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #    endif
 
+// Kill printf in AMD GPU code because of missing compiler support
+#    ifdef __AMDGCN__
+#        include <cstdio> // the define breaks <cstdio> if it is included afterwards
+#        define printf(...)
+#    endif
+
 // Base classes.
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
