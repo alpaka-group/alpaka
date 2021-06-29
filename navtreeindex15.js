@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"wait_2Traits_8hpp.html#a751547dd588408ae790584281af1775f":[4,0,0,0,24,0,4],
+"wait_2Traits_8hpp.html#ad9138b33fed58f04b121274d4a6e2806":[4,0,0,0,24,0,3],
 "wait_2Traits_8hpp_source.html":[4,0,0,0,24,0],
 "warp_2Traits_8hpp.html":[4,0,0,0,25,0],
 "warp_2Traits_8hpp.html#a0b2d83334bcd2540baca4256ab378672":[4,0,0,0,25,0,8],
