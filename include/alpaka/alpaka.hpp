@@ -141,10 +141,13 @@
 #include <alpaka/meta/Functional.hpp>
 #include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/meta/Integral.hpp>
+#include <alpaka/meta/IsArrayOrVector.hpp>
 #include <alpaka/meta/IsStrictBase.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 #include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/RepeatN.hpp>
 #include <alpaka/meta/Set.hpp>
+#include <alpaka/meta/StaticFor.hpp>
 #include <alpaka/meta/Transform.hpp>
 #include <alpaka/meta/TypeListOps.hpp>
 #include <alpaka/meta/Void.hpp>
@@ -157,6 +160,7 @@
 #include <alpaka/pltf/PltfUniformCudaHipRt.hpp>
 #include <alpaka/pltf/Traits.hpp>
 // rand
+#include <alpaka/rand/RandPhilox.hpp>
 #include <alpaka/rand/RandUniformCudaHipRand.hpp>
 #include <alpaka/rand/Traits.hpp>
 // idx
