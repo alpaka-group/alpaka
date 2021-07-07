@@ -46,8 +46,15 @@ namespace alpaka
             class DevOaccImpl
             {
             public:
-                DevOaccImpl(int iDevice) noexcept : m_deviceType(::acc_get_device_type()), m_iDevice(iDevice)
+                DevOaccImpl(int iDevice) noexcept
+                    : m_deviceType(::acc_get_device_type())
+                    , m_iDevice(iDevice)
+                    , m_gridsLock(reinterpret_cast<std::uint32_t*>(acc_malloc(2 * sizeof(std::uint32_t))))
                 {
+                    const auto gridsLock = m_gridsLock;
+#    pragma acc parallel loop vector default(present) deviceptr(gridsLock)
+                    for(std::size_t a = 0; a < 2; ++a)
+                        gridsLock[a] = 0u;
                 }
                 DevOaccImpl(DevOaccImpl const&) = delete;
                 DevOaccImpl(DevOaccImpl&&) = delete;
@@ -98,11 +105,17 @@ namespace alpaka
                     return m_deviceType;
                 }
 
+                std::uint32_t* gridsLock() const
+                {
+                    return m_gridsLock;
+                }
+
             private:
                 std::mutex mutable m_Mutex;
                 std::vector<std::weak_ptr<IGenericThreadsQueue<DevOacc>>> mutable m_queues;
                 acc_device_t m_deviceType;
                 int m_iDevice;
+                std::uint32_t* m_gridsLock = nullptr;
             };
         } // namespace detail
     } // namespace oacc
@@ -146,6 +159,11 @@ namespace alpaka
             std::cout << "acc_set_device_num( " << m_spDevOaccImpl->iDevice() << ", [type] )" << std::endl;
 #    endif
             acc_set_device_num(m_spDevOaccImpl->iDevice(), m_spDevOaccImpl->deviceType());
+        }
+
+        std::uint32_t* gridsLock() const
+        {
+            return m_spDevOaccImpl->gridsLock();
         }
 
         ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>>
