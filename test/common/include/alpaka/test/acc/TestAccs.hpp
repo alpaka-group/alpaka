@@ -97,6 +97,7 @@ namespace alpaka
             using AccOmp5IfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED) && !(defined(TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION))                       \
+    && !(defined(TEST_UNIT_TIME) /*no clock in OpenACC*/)                                                             \
     && !(                                                                                                             \
         BOOST_COMP_GNUC                                                                                               \
         && (((BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(11, 0, 0)) /* tests excluded because of GCC10 Oacc / Omp5 target \
@@ -105,7 +106,17 @@ namespace alpaka
                  || defined(TEST_UNIT_INTRINSIC) || defined(TEST_UNIT_KERNEL) || defined(TEST_UNIT_MEM_VIEW)))        \
             || defined(TEST_UNIT_MATH) /* because of static const members */                                          \
             || defined(TEST_UNIT_MEM_BUF) /* actually works, but hangs when ran by ctest */                           \
-            ))
+            ))                                                                                                        \
+    && !(                                                                                                             \
+        BOOST_COMP_PGI                                                                                                \
+        && (((defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST)) && false)                                                    \
+            || ((!defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST))                                                          \
+                && (defined(TEST_UNIT_MATH) /* 21.3: nvc++ fmod no acc device info */                                 \
+                    || defined(TEST_UNIT_RAND) /* 21.3: nvc++ ICE */                                                  \
+                    ))                                                                                                \
+            || (defined(TEST_UNIT_ATOMIC) /* 21.3: nvc++ SIGSEGV */                                                   \
+                )))
+
             template<typename TDim, typename TIdx>
             using AccOaccIfAvailableElseInt = alpaka::AccOacc<TDim, TIdx>;
 #else

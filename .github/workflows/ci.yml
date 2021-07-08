@@ -82,6 +82,7 @@ jobs:
   ci:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
     env: ${{ matrix.env }}
 
     strategy:
@@ -110,35 +111,39 @@ jobs:
         - name: macos_xcode-11.3_debug_analysis
           os: macos-10.15
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.3.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.65.1,                                                  ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2,                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        - name: linux_nvhpc-21.3_debug_analysis_oacc_gpu
+        # # gcc is used to compile the dependencies, nvc++ will be used to compile alpaka
+          os: ubuntu-20.04
+          env: {CXX: g++,   CC: gcc, CMAKE_CXX_COMPILER: nvc++,     CMAKE_C_COMPILER: nvc,    ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "nvcr.io/nvidia/nvhpc:21.3-devel-cuda11.2-ubuntu20.04", ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2, ALPAKA_ACC_ANY_BT_OACC_ENABLE: ON, ALPAKA_OFFLOAD_MAX_BLOCK_SIZE: 256, ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST: OFF, CMAKE_CXX_FLAGS: "-acc=gpu", ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
 
-        ### macOS
-        - name: macos_xcode-11.2.1_debug
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.2.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-11.3.1_release
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.3.1,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.65.1,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-11.4.1_debug
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.4.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-11.5.0_release
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.5.0,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.73.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-11.6.0_debug
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.6.0,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-117.0_release
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.7.0,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-12.0.1_debug
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.0.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.66.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-12.1.1_release
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.1.1,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: macos_xcode-12.2.0_debug
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.2.0,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # ### macOS
+        # - name: macos_xcode-11.2.1_debug
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.2.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-11.3.1_release
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.3.1,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.65.1,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-11.4.1_debug
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.4.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-11.5.0_release
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.5.0,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.73.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-11.6.0_debug
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.6.0,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-117.0_release
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.7.0,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-12.0.1_debug
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.0.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.66.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-12.1.1_release
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.1.1,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        # - name: macos_xcode-12.2.0_debug
+        #   os: macos-10.15
+        #   env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.2.0,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                                                                                                                                                                                                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
 
         ### Windows
         - name: windows_cl-2019_release
@@ -241,11 +246,10 @@ jobs:
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 11,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0, ALPAKA_CI_CMAKE_VER: 3.20.0, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CXX_STANDARD: 17}
 
-
-        # icpc
-        - name: linux_icpc_release
-          os: ubuntu-latest
-          env: {CXX: icpc,    CC: icc,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.75.0, ALPAKA_CI_CMAKE_VER: 3.19.2, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04",                                                                                                                                         ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
+        # # icpc
+        # - name: linux_icpc_release
+        #   os: ubuntu-latest
+        #   env: {CXX: icpc,    CC: icc,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.75.0, ALPAKA_CI_CMAKE_VER: 3.19.2, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04",                                                                                                                                         ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
 
         ## CUDA 9.0
         # nvcc + g++
