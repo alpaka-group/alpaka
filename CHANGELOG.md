@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [0.7.0] - 2021-07-01
+## [0.7.0] - 2021-07-09
 ### Compatibility Changes:
 - Visual Studio 2017 is no longer supported #1251
 - 32bit Windows is no longer supported #1251
@@ -12,17 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clang 11 is now supported #1310
 
 ### Bug Fixes:
-- fixed static shared memory allocation for OpenMP 5 back-end #1254
-- fixed static shared memory allocation for CPU back-ends #1258
 - fixed `ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED` being checked without being defined #1259
-- fixed `BlockSharedMemStMemberImpl::getVarPtr` for last variable #1280
-- fixed static shared memory alignment #1282
-- fixed inverted assertion in `DeclareSharedVar` #1303
-- fixed OpenMP scheduler support #1307 #1309 #1316
 
 ### New Features:
 - when no specialization is provided by the user alpaka's math functions will now fall back to ADL to find a candidate #1248
-- added `ALPAKA_ASSERT_OFFLOAD` macro #1260
 - the HIP back-end now supports callbacks #1269
 - added warp::shfl functionality #1273
 - added `Front` and `Contains` type list meta functions #1306
@@ -32,7 +25,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - updated documentation for clang-format usage #1222
 - increased the static shared memory size to 47 KiB #1247
 - fixed table markup in README.md #1256
-- return values of `empty(queue)` and `isComplete(event)` are now correctly documented #1265
 - added example showcasing how to specialize kernels for particular back-ends #1271
 - removed section comments #1275
 - updated cheatsheet (added warp info, fixed names) #1281
@@ -44,18 +36,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - the CMake options `ALPAKA_CUDA_FTZ` and `ALPAKA_HIP_FTZ` have been replaced by `ALPAKA_FTZ` #1289
 - the CMake option `ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION` has been replaced by the native CMake property `CUDA_SEPARABLE_COMPILATION` #1289
 - the CMake option `ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA` has been replaced by `ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA` #1289
-- fixing the OpenMP scheduler behaviour changed the default behaviour #1309
 
 ### Test cases / CI:
 - enabled OpenMP back-ends for more Visual Studio builds #1219
 - fixed gh-pages #1230
 - added ICPC / ICC 2021.x to CI #1235
-- now using Ubuntu 18.04 for GCC 5 and GCC 6 builds #1252
-- fixed queue test case which incorrectly assumed that the checked queue will always be empty #1266
 - fixed deadlock in Ubuntu 20.04 container #1270
 - now CI-testing CMake 3.20 #1283
-- fixed CMake device compiler options not being correctly propagated to test cases #1294
-- disabled test cases for GCC 10.3 + NVCC #1302
+
+## [0.6.1] - 2021-06-29
+### Compatibility Changes:
+- rework implementation of OpenMP schedule support #1279 #1309 #1313 #1341
+  - `alpaka::omp::Schedule` is replaced by `ompScheduleKind` and `ompScheduleChunkSize`
+### Bug Fixes:
+- fix OpenMP 5 shared memory allocation #1254 
+- fix static shared memory alignment #1282
+- fix BlockSharedMemStMemberImpl::getVarPtr for last var #1280
+- fix CPU static shared memory implementation #1258
+- unit tests: fix queue test #1266
+- fix CtxBlockOacc: SyncBlockThreads #1291
+- fix assert in DeclareSharedVar (OpenAcc) #1303
+- CMake CUDA: dev compile options not propagated #1294
+- example: fix warning (NVCC+OpenMP) #1307
+- TBB: Add missing <limits> header and fix integer namespace #1327
+- OpenAcc: TaskKernelOacc: copyin(all used local vars) #1342
+- port macOSX CI fix from #1283
+- CI: use ubuntu-18.04 for gcc-5 and gcc-6 builds #1252
+- CI: disable GCC 10.3 + NVCC tests #1302
+- CI: MSVC + nvcc workarounds and fixes #1332
+- CI: fix warp test #1339
+
+### Misc
+- add ALPAKA_ASSERT_OFFLOAD Macro #1260
+- document return value of `empty()` and `isComplete()` #1265
+- Prefer TBBConfig.cmake over FindTBB.cmake #1329
 
 ## [0.6.0] - 2021-01-20
 ### Compatibility Changes:
