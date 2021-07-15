@@ -8,27 +8,28 @@
  */
 
 #pragma once
+#include <alpaka/alpaka.hpp>
+
+#include <tuple>
 
 namespace alpaka
 {
     namespace test
     {
-        template<typename TType, size_t TSize>
-        struct Array
+        template<typename TDevQueue>
+        struct QueueTestFixture
         {
-            TType m_data[TSize];
+            using Dev = std::tuple_element_t<0, TDevQueue>;
+            using Queue = std::tuple_element_t<1, TDevQueue>;
 
-            template<typename T_Idx>
-            ALPAKA_FN_HOST_ACC const TType& operator[](const T_Idx idx) const
+            using Pltf = alpaka::Pltf<Dev>;
+
+            QueueTestFixture() : m_dev(alpaka::getDevByIdx<Pltf>(0u)), m_queue(m_dev)
             {
-                return m_data[idx];
             }
 
-            template<typename TIdx>
-            ALPAKA_FN_HOST_ACC TType& operator[](const TIdx idx)
-            {
-                return m_data[idx];
-            }
+            Dev m_dev;
+            Queue m_queue;
         };
     } // namespace test
 } // namespace alpaka

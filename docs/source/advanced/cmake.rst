@@ -37,6 +37,14 @@ BUILD_TESTING
 
      Build the testing tree.
 
+alpaka_INSTALL_TEST_HEADER
+  .. code-block::
+
+     Install headers of the namespace alpaka::test.
+     Attention, headers are not designed for production code.
+     They should only be used for prototyping or creating tests that use alpaka
+     functionality.
+
 ALPAKA_DEBUG
   .. code-block::
 

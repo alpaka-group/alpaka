@@ -7,28 +7,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#pragma once
 #include <alpaka/alpaka.hpp>
 
-#include <tuple>
+#include <cstddef>
 
 namespace alpaka
 {
     namespace test
     {
-        template<typename TDevQueue>
-        struct QueueTestFixture
+        template<typename TType, size_t TSize>
+        struct Array
         {
-            using Dev = std::tuple_element_t<0, TDevQueue>;
-            using Queue = std::tuple_element_t<1, TDevQueue>;
+            TType m_data[TSize];
 
-            using Pltf = alpaka::Pltf<Dev>;
-
-            QueueTestFixture() : m_dev(alpaka::getDevByIdx<Pltf>(0u)), m_queue(m_dev)
+            template<typename T_Idx>
+            ALPAKA_FN_HOST_ACC const TType& operator[](const T_Idx idx) const
             {
+                return m_data[idx];
             }
 
-            Dev m_dev;
-            Queue m_queue;
+            template<typename TIdx>
+            ALPAKA_FN_HOST_ACC TType& operator[](const TIdx idx)
+            {
+                return m_data[idx];
+            }
         };
     } // namespace test
 } // namespace alpaka
