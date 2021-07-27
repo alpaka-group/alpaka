@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2019 Benjamin Worpitz, Maximilian Knespel
+# Copyright 2015-2021 Benjamin Worpitz, Maximilian Knespel, Simeon Ehrig
 #
 # This file is part of alpaka.
 #
@@ -94,10 +94,10 @@ MACRO(ALPAKA_ADD_LIBRARY libraryName)
             ENDFOREACH()
             ADD_LIBRARY(
                 ${libraryName}
-                ${sourceFileNames}
                 ${libraryType}
                 ${excludeFromAll}
                 ${optionArguments}
+                ${sourceFileNames}
             )
         ELSE()
             FOREACH( _file ${ARGN} )
