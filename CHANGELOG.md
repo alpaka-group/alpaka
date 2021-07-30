@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [0.7.0] - 2021-07-09
+## [0.7.0] - 2021-08-03
 ### Compatibility Changes:
 - Visual Studio 2017 is no longer supported #1251
 - 32bit Windows is no longer supported #1251
