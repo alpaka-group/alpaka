@@ -1,12 +1,17 @@
 var searchData=
 [
-  ['randstdlib_2ehpp_3246',['RandStdLib.hpp',['../RandStdLib_8hpp.html',1,'']]],
-  ['randuniformcudahiprand_2ehpp_3247',['RandUniformCudaHipRand.hpp',['../RandUniformCudaHipRand_8hpp.html',1,'']]],
-  ['readme_2emd_3248',['README.md',['../README_8md.html',1,'']]],
-  ['remainderstdlib_2ehpp_3249',['RemainderStdLib.hpp',['../RemainderStdLib_8hpp.html',1,'']]],
-  ['remainderuniformcudahipbuiltin_2ehpp_3250',['RemainderUniformCudaHipBuiltIn.hpp',['../RemainderUniformCudaHipBuiltIn_8hpp.html',1,'']]],
-  ['roundstdlib_2ehpp_3251',['RoundStdLib.hpp',['../RoundStdLib_8hpp.html',1,'']]],
-  ['rounduniformcudahipbuiltin_2ehpp_3252',['RoundUniformCudaHipBuiltIn.hpp',['../RoundUniformCudaHipBuiltIn_8hpp.html',1,'']]],
-  ['rsqrtstdlib_2ehpp_3253',['RsqrtStdLib.hpp',['../RsqrtStdLib_8hpp.html',1,'']]],
-  ['rsqrtuniformcudahipbuiltin_2ehpp_3254',['RsqrtUniformCudaHipBuiltIn.hpp',['../RsqrtUniformCudaHipBuiltIn_8hpp.html',1,'']]]
+  ['queue_2ehpp_3434',['Queue.hpp',['../Queue_8hpp.html',1,'']]],
+  ['queuecpublocking_2ehpp_3435',['QueueCpuBlocking.hpp',['../QueueCpuBlocking_8hpp.html',1,'']]],
+  ['queuecpunonblocking_2ehpp_3436',['QueueCpuNonBlocking.hpp',['../QueueCpuNonBlocking_8hpp.html',1,'']]],
+  ['queuecpuomp2collective_2ehpp_3437',['QueueCpuOmp2Collective.hpp',['../QueueCpuOmp2Collective_8hpp.html',1,'']]],
+  ['queuegenericthreadsblocking_2ehpp_3438',['QueueGenericThreadsBlocking.hpp',['../QueueGenericThreadsBlocking_8hpp.html',1,'']]],
+  ['queuegenericthreadsnonblocking_2ehpp_3439',['QueueGenericThreadsNonBlocking.hpp',['../QueueGenericThreadsNonBlocking_8hpp.html',1,'']]],
+  ['queueoaccblocking_2ehpp_3440',['QueueOaccBlocking.hpp',['../QueueOaccBlocking_8hpp.html',1,'']]],
+  ['queueoaccnonblocking_2ehpp_3441',['QueueOaccNonBlocking.hpp',['../QueueOaccNonBlocking_8hpp.html',1,'']]],
+  ['queueomp5blocking_2ehpp_3442',['QueueOmp5Blocking.hpp',['../QueueOmp5Blocking_8hpp.html',1,'']]],
+  ['queueomp5nonblocking_2ehpp_3443',['QueueOmp5NonBlocking.hpp',['../QueueOmp5NonBlocking_8hpp.html',1,'']]],
+  ['queuetestfixture_2ehpp_3444',['QueueTestFixture.hpp',['../QueueTestFixture_8hpp.html',1,'']]],
+  ['queueuniformcudahiprtbase_2ehpp_3445',['QueueUniformCudaHipRtBase.hpp',['../QueueUniformCudaHipRtBase_8hpp.html',1,'']]],
+  ['queueuniformcudahiprtblocking_2ehpp_3446',['QueueUniformCudaHipRtBlocking.hpp',['../QueueUniformCudaHipRtBlocking_8hpp.html',1,'']]],
+  ['queueuniformcudahiprtnonblocking_2ehpp_3447',['QueueUniformCudaHipRtNonBlocking.hpp',['../QueueUniformCudaHipRtNonBlocking_8hpp.html',1,'']]]
 ];

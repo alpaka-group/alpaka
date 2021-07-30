@@ -1,0 +1,4 @@
+var namespacealpaka_1_1test_1_1uniform__cuda__hip_1_1detail =
+[
+    [ "EventHostManualTriggerCudaImpl", "classalpaka_1_1test_1_1uniform__cuda__hip_1_1detail_1_1EventHostManualTriggerCudaImpl.html", "classalpaka_1_1test_1_1uniform__cuda__hip_1_1detail_1_1EventHostManualTriggerCudaImpl" ]
+];

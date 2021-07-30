@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['llround_3503',['llround',['../namespacealpaka_1_1math.html#a6dbd8f303dc354787697c47301eb7a1c',1,'alpaka::math']]],
-  ['log_3504',['log',['../namespacealpaka_1_1math.html#af697280cd49cb87e757965cecf5bfcb5',1,'alpaka::math']]],
-  ['lround_3505',['lround',['../namespacealpaka_1_1math.html#aab46c7252772bedb6798b33155240936',1,'alpaka::math']]]
+  ['kernelexecutionfixture_3719',['KernelExecutionFixture',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#adb153f13bb0abe25f5c2c8be21ded3ef',1,'alpaka::test::KernelExecutionFixture::KernelExecutionFixture(TExtent const &amp;extent)'],['../classalpaka_1_1test_1_1KernelExecutionFixture.html#aa83674595a89cdf0815fc25781d4a0bf',1,'alpaka::test::KernelExecutionFixture::KernelExecutionFixture(WorkDiv const &amp;workDiv)']]]
 ];

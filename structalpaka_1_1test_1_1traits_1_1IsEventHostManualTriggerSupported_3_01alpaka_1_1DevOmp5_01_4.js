@@ -1,0 +1,4 @@
+var structalpaka_1_1test_1_1traits_1_1IsEventHostManualTriggerSupported_3_01alpaka_1_1DevOmp5_01_4 =
+[
+    [ "isSupported", "structalpaka_1_1test_1_1traits_1_1IsEventHostManualTriggerSupported_3_01alpaka_1_1DevOmp5_01_4.html#ada45318cefa0debaecf5724b2998284a", null ]
+];

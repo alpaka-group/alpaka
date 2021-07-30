@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['logstdlib_2ehpp_3213',['LogStdLib.hpp',['../LogStdLib_8hpp.html',1,'']]],
-  ['loguniformcudahipbuiltin_2ehpp_3214',['LogUniformCudaHipBuiltIn.hpp',['../LogUniformCudaHipBuiltIn_8hpp.html',1,'']]]
+  ['kernelexecutionfixture_2ehpp_3410',['KernelExecutionFixture.hpp',['../KernelExecutionFixture_8hpp.html',1,'']]]
 ];
