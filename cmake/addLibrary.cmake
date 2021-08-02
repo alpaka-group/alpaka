@@ -94,10 +94,10 @@ MACRO(ALPAKA_ADD_LIBRARY libraryName)
 
         ADD_LIBRARY(
             ${libraryName}
-            ${sourceFileNames}
             ${libraryType}
             ${excludeFromAll}
             ${optionArguments}
+            ${sourceFileNames}
             )
     ELSEIF( ALPAKA_ACC_GPU_HIP_ENABLE )
         FOREACH( _file ${ARGN} )
