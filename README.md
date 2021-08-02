@@ -219,7 +219,7 @@ Authors
 - Bernhard Manfred Gruber
 - Dr. Axel Huebl*
 - Dr. Jeffrey Kelling
-- Jakob Krude
+- Dr. David M. Rogers
 - Jan Stephan*
 - Rene Widera*
 
@@ -229,6 +229,7 @@ Authors
 - Mat Colgrove
 - Valentin Gehrke
 - Maximilian Knespel
+- Jakob Krude
 - Alexander Matthes
 - Hauke Mewes
 - Phil Nash
