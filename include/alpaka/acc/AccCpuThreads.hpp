@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2021 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -21,6 +21,7 @@
 #    include <alpaka/idx/gb/IdxGbRef.hpp>
 #    include <alpaka/intrinsic/IntrinsicCpu.hpp>
 #    include <alpaka/math/MathStdLib.hpp>
+#    include <alpaka/mem/fence/MemFenceCpu.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
 #    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
@@ -70,6 +71,7 @@ namespace alpaka
         public BlockSharedMemStMemberMasterSync<>,
         public BlockSyncBarrierThread<TIdx>,
         public IntrinsicCpu,
+        public MemFenceCpu,
         public rand::RandStdLib,
         public TimeStdLib,
         public warp::WarpSingleThread,
@@ -103,6 +105,7 @@ namespace alpaka
                   [this]() { syncBlockThreads(*this); },
                   [this]() noexcept { return (m_idMasterThread == std::this_thread::get_id()); })
             , BlockSyncBarrierThread<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
+            , MemFenceCpu()
             , rand::RandStdLib()
             , TimeStdLib()
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())

@@ -123,6 +123,13 @@
 #include <alpaka/mem/buf/BufOmp5.hpp>
 #include <alpaka/mem/buf/BufUniformCudaHipRt.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
+#include <alpaka/mem/fence/MemFenceCpu.hpp>
+#include <alpaka/mem/fence/MemFenceOacc.hpp>
+#include <alpaka/mem/fence/MemFenceOmp2Blocks.hpp>
+#include <alpaka/mem/fence/MemFenceOmp2Threads.hpp>
+#include <alpaka/mem/fence/MemFenceOmp5.hpp>
+#include <alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp>
+#include <alpaka/mem/fence/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/mem/view/ViewCompileTimeArray.hpp>
 #include <alpaka/mem/view/ViewPlainPtr.hpp>

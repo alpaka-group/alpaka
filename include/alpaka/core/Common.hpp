@@ -102,3 +102,18 @@
 #else
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT
 #endif
+
+//! This macro disables memory optimizations for annotated device memory.
+//!
+//! Example:
+//!   ALPAKA_DEVICE_VOLATILE float* ptr;
+//!
+//! This is useful for pointers, (shared) variables and shared memory which are used in combination with
+//! the alpaka::mem_fence() function. It ensures that memory annotated with this macro will always be written directly
+//! to memory (and not to a register or cache because of compiler optimizations).
+#if(BOOST_LANG_CUDA && BOOST_ARCH_PTX)                                                                                \
+    || (BOOST_LANG_HIP && defined(__HIP_DEVICE_COMPILE__) && __HIP_DEVICE_COMPILE__ == 1)
+#    define ALPAKA_DEVICE_VOLATILE volatile
+#else
+#    define ALPAKA_DEVICE_VOLATILE
+#endif

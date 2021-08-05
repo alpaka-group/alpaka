@@ -279,18 +279,22 @@ if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
 
     if(OpenMP_CXX_FOUND)
         if(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
-            if(OpenMP_CXX_VERSION VERSION_LESS 4.0)
-                message(FATAL_ERROR "ALPAKA_ACC_ANY_BT_OMP5_ENABLE requires compiler support for OpenMP at least 4.0, 5.0 is recommended.")
-            elseif(OpenMP_CXX_VERSION VERSION_LESS 5.0)
-                message(WARNING "OpenMP < 5.0, for ALPAKA_ACC_ANY_BT_OMP5_ENABLE 5.0 is recommended.")
+            if(OpenMP_CXX_VERSION VERSION_LESS 5.0)
+                message(FATAL_ERROR "ALPAKA_ACC_ANY_BT_OMP5_ENABLE requires compiler support for OpenMP 5.0.")
+
+                if((${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang") AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 12.0.5))
+                    message(FATAL_ERROR "The OpenMP 5.0 back-end requires Xcode 12.5 or later")
+                elseif((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang") AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 11.0))
+                    message(FATAL_ERROR "The OpenMP 5.0 back-end requires clang 11.0 or later")
+                endif()
             endif()
         endif()
 
         target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
 
-        # Clang versions starting from 3.9 support OpenMP 4.0 and higher only when given the corresponding flag
+        # Clang versions support OpenMP 5.0 only when given the corresponding flag
         if(ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
-            target_link_options(alpaka INTERFACE $<$<CXX_COMPILER_ID:AppleClang,Clang>:-fopenmp-version=40>)
+            target_link_options(alpaka INTERFACE $<$<CXX_COMPILER_ID:AppleClang,Clang>:-fopenmp-version=50>)
         endif()
     else()
         message(FATAL_ERROR "Optional alpaka dependency OpenMP could not be found!")

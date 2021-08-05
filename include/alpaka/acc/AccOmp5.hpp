@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2021 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -31,6 +31,7 @@
 #    include <alpaka/idx/gb/IdxGbLinear.hpp>
 #    include <alpaka/intrinsic/IntrinsicFallback.hpp>
 #    include <alpaka/math/MathStdLib.hpp>
+#    include <alpaka/mem/fence/MemFenceOmp5.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
 #    include <alpaka/time/TimeOmp.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
@@ -78,6 +79,7 @@ namespace alpaka
         public BlockSyncBarrierOmp,
         // cannot determine which intrinsics are safe to use (depends on target), using fallback
         public IntrinsicFallback,
+        public MemFenceOmp5,
         public rand::RandStdLib,
         public TimeOmp,
         public warp::WarpSingleThread,
@@ -113,6 +115,7 @@ namespace alpaka
             //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
             BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity())
             , BlockSyncBarrierOmp()
+            , MemFenceOmp5()
             , rand::RandStdLib()
             , TimeOmp()
         {
