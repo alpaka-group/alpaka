@@ -1,0 +1,41 @@
+.base:
+  image: registry.gitlab.com/hzdr/crp/alpaka-group-container/alpaka-ci-${ALPAKA_CONTAINER_SUFFIX}:${ALPAKA_GITLAB_CI_CONTAINER_VERSION}
+  variables:
+    ALPAKA_DEBUG: 0
+    BOOST_ROOT: /opt/boost/${ALPAKA_BOOST_VERSION}
+    BOOST_LIBRARYDIR: /opt/boost/${ALPAKA_BOOST_VERSION}/lib
+    ALPAKA_CI_BOOST_LIB_DIR: /opt/boost/${ALPAKA_BOOST_VERSION}
+  script:
+    # create fake sudo
+    - cp ./script/gitlabci/fake_sudo.sh /bin/sudo
+    - chmod +x /bin/sudo
+    - mkdir -p ${ALPAKA_CI_CMAKE_DIR}
+    - source ./script/install_cmake.sh
+    - source ./script/run.sh
+
+.base_gcc:
+  variables:
+    ALPAKA_CONTAINER_SUFFIX: gcc
+    CC: gcc-${ALPAKA_CI_GCC_VER}
+    CXX: g++-${ALPAKA_CI_GCC_VER}
+    OMP_NUM_THREADS: 8
+    ALPAKA_CI_BUILD_JOBS: 8
+  extends: .base
+  tags:
+    - x86_64
+
+.base_cuda:
+  image: registry.gitlab.com/hzdr/crp/alpaka-group-container/alpaka-ci-${ALPAKA_CONTAINER_SUFFIX}:${ALPAKA_GITLAB_CI_CONTAINER_VERSION}
+  variables:
+    CC: gcc-${ALPAKA_CI_GCC_VER}
+    CXX: g++-${ALPAKA_CI_GCC_VER}
+    OMP_NUM_THREADS: 2
+    ALPAKA_CI_BUILD_JOBS: 2
+    ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: "OFF"
+    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+    ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "OFF"
+    ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
+  extends: .base
+  tags:
+    - cuda
+    - intel

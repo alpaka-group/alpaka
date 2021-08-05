@@ -1,0 +1,45 @@
+include:
+  - local: '/script/gitlabci/job_base.yml'
+
+variables:
+  ALPAKA_GITLAB_CI_CONTAINER_VERSION: "1.4"
+  ALPAKA_CI_OS_NAME: "Linux"
+  ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: "ON"
+  ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: "ON"
+  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
+  ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: "OFF"
+  ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "ON"
+  ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "ON"
+  ALPAKA_ACC_ANY_BT_OMP5_ENABLE: "OFF"
+  ALPAKA_ACC_ANY_BT_OACC_ENABLE: "OFF"
+  ALPAKA_ACC_GPU_CUDA_ENABLE: "OFF"
+  ALPAKA_ACC_GPU_CUDA_ONLY_MODE: "OFF"
+  ALPAKA_ACC_GPU_HIP_ENABLE: "OFF"
+  ALPAKA_ACC_GPU_HIP_ONLY_MODE: "OFF"
+  # If ALPAKA_CI_ANALYSIS is OFF compile and execute runtime tests else compile only.
+  ALPAKA_CI_ANALYSIS: "OFF"
+  # needs to be enabled, that test on the GPU are executed
+  ALPAKA_FORCE_RUNTIME_TEST: "ON"
+  ALPAKA_CI_SANITIZERS: ""
+  ALPAKA_CI_CMAKE_DIR: "/opt/cmake/"
+  ALPAKA_CI_INSTALL_CUDA: "OFF"
+  ALPAKA_CI_INSTALL_HIP: "OFF"
+
+linux_gcc-9_release:
+  variables:
+    ALPAKA_CI_GCC_VER: 9
+    CMAKE_BUILD_TYPE: Release
+    ALPAKA_CI_STDLIB: libc++
+    ALPAKA_BOOST_VERSION: 1.74.0
+    ALPAKA_CI_CMAKE_VER: 3.20.0
+  extends: .base_gcc
+
+linux_nvcc-11.3_gcc-7_release:
+  variables:
+    ALPAKA_CONTAINER_SUFFIX: cuda113
+    ALPAKA_CI_GCC_VER: 7
+    ALPAKA_CI_STDLIB: libc++
+    CMAKE_BUILD_TYPE: Release
+    ALPAKA_BOOST_VERSION: 1.74.0
+    ALPAKA_CI_CMAKE_VER: 3.20.0
+  extends: .base_cuda
