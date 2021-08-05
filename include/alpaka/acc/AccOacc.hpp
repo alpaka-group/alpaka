@@ -20,6 +20,7 @@
 #    include <alpaka/idx/bt/IdxBtLinear.hpp>
 #    include <alpaka/intrinsic/IntrinsicFallback.hpp>
 #    include <alpaka/math/MathStdLib.hpp>
+#    include <alpaka/mem/fence/MemFenceOacc.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
 #    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
@@ -64,6 +65,7 @@ namespace alpaka
     class AccOacc final
         : public bt::IdxBtLinear<TDim, TIdx>
         , public math::MathStdLib
+        , public MemFenceOacc
         , public rand::RandStdLib
         , public TimeStdLib
         , public warp::WarpSingleThread
@@ -87,6 +89,7 @@ namespace alpaka
         AccOacc(TIdx const& blockThreadIdx, CtxBlockOacc<TDim, TIdx>& blockShared)
             : bt::IdxBtLinear<TDim, TIdx>(blockThreadIdx)
             , math::MathStdLib()
+            , MemFenceOacc()
             , rand::RandStdLib()
             , TimeStdLib()
             , m_blockShared(blockShared)

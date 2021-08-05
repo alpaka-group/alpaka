@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, René Widera
+/* Copyright 2021 Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -31,6 +31,7 @@
 #    include <alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/math/MathUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/rand/RandUniformCudaHipRand.hpp>
 #    include <alpaka/time/TimeUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/warp/WarpUniformCudaHipBuiltIn.hpp>
@@ -75,6 +76,7 @@ namespace alpaka
         public BlockSharedMemStUniformCudaHipBuiltIn,
         public BlockSyncUniformCudaHipBuiltIn,
         public IntrinsicUniformCudaHipBuiltIn,
+        public MemFenceUniformCudaHipBuiltIn,
         public rand::RandUniformCudaHipRand,
         public TimeUniformCudaHipBuiltIn,
         public warp::WarpUniformCudaHipBuiltIn,
@@ -98,6 +100,7 @@ namespace alpaka
             , BlockSharedMemDynUniformCudaHipBuiltIn()
             , BlockSharedMemStUniformCudaHipBuiltIn()
             , BlockSyncUniformCudaHipBuiltIn()
+            , MemFenceUniformCudaHipBuiltIn()
             , rand::RandUniformCudaHipRand()
             , TimeUniformCudaHipBuiltIn()
         {

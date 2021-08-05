@@ -15,8 +15,11 @@
 # original backup files
 *.orig
 
-# VIM project files
+# Vim project files
 .vimrc
+
+# Neovim project files
+.exrc
 
 # IDE & tmp build
 .idea/
@@ -31,3 +34,5 @@ build/
 /.cproject
 /.settings/
 
+# Visual Studio Code project files
+.cache/

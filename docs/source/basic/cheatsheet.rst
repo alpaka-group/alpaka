@@ -256,6 +256,12 @@ Atomic operations
          AtomicAdd, AtomicSub, AtomicMin, AtomicMax, AtomicExch,
          AtomicInc, AtomicDec, AtomicAnd, AtomicOr, AtomicXor, AtomicCas
 
+Memory fences on block- or device level (guarantees LoadLoad and StoreStore ordering)
+  .. code-block:: c++
+
+     mem_fence(acc, memory_scope::Block{});
+     mem_fence(acc, memory_scope::Device{});
+
 Warp-level operations
   .. code-block:: c++
 
