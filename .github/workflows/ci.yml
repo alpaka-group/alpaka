@@ -223,6 +223,9 @@ jobs:
         - name: linux_gcc-10_release_oacc
           os: ubuntu-latest
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.20.0, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-foffload=disable", ALPAKA_ACC_ANY_BT_OACC_ENABLE: ON, ALPAKA_OFFLOAD_MAX_BLOCK_SIZE: 1, ACC_DEVICE_TYPE: "host", ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        - name: linux_gcc-11_debug
+          os: ubuntu-latest
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.76.0, ALPAKA_CI_CMAKE_VER: 3.21.1, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
 
         # clang++
         - name: linux_clang-4_debug_ubsan

@@ -106,7 +106,7 @@ namespace alpaka
                   staticMemBegin(),
                   staticMemCapacity(),
                   [this]() { syncBlockThreads(*this); },
-                  []() { return (::omp_get_thread_num() == 0); })
+                  []() noexcept { return (::omp_get_thread_num() == 0); })
             , BlockSyncBarrierOmp()
             , rand::RandStdLib()
             , TimeOmp()

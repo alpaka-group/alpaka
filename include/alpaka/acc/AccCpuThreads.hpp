@@ -101,7 +101,7 @@ namespace alpaka
                   staticMemBegin(),
                   staticMemCapacity(),
                   [this]() { syncBlockThreads(*this); },
-                  [this]() { return (m_idMasterThread == std::this_thread::get_id()); })
+                  [this]() noexcept { return (m_idMasterThread == std::this_thread::get_id()); })
             , BlockSyncBarrierThread<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
             , rand::RandStdLib()
             , TimeStdLib()

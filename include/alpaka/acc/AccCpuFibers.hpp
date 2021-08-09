@@ -104,7 +104,7 @@ namespace alpaka
                   staticMemBegin(),
                   staticMemCapacity(),
                   [this]() { syncBlockThreads(*this); },
-                  [this]() { return (m_masterFiberId == boost::this_fiber::get_id()); })
+                  [this]() noexcept { return (m_masterFiberId == boost::this_fiber::get_id()); })
             , BlockSyncBarrierFiber<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
             , rand::RandStdLib()
             , TimeStdLib()
