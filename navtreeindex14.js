@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"structalpaka_1_1traits_1_1GetDev_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a6418331a9c1c8281e7caa525e24f83ab":[3,0,0,16,301,0],
+"structalpaka_1_1traits_1_1GetDev_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html":[3,0,0,16,302],
 "structalpaka_1_1traits_1_1GetDev_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html#ae8375dcda09985a0314ecdbc0fc9b715":[3,0,0,16,302,0],
 "structalpaka_1_1traits_1_1GetDev_3_01test_1_1EventHostManualTriggerCuda_01_4.html":[3,0,0,16,303],
 "structalpaka_1_1traits_1_1GetDev_3_01test_1_1EventHostManualTriggerCuda_01_4.html#a95f4a8d35665adecbbad85f648d1b48e":[3,0,0,16,303,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX14 =
 "structalpaka_1_1traits_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html#ad2f9ada608738bde84f701557b2c01eb":[3,0,0,16,435,0],
 "structalpaka_1_1traits_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html":[3,0,0,16,436],
 "structalpaka_1_1traits_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html#ac42a467f6722ee943ee1602a926e1e08":[3,0,0,16,436,0],
-"structalpaka_1_1traits_1_1IsPinned.html":[3,0,0,16,437],
-"structalpaka_1_1traits_1_1IsPinned_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,16,439],
-"structalpaka_1_1traits_1_1IsPinned_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a63234087c1038621ea3be1c167bfa775":[3,0,0,16,439,0]
+"structalpaka_1_1traits_1_1IsPinned.html":[3,0,0,16,437]
 };

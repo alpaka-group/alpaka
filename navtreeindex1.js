@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"ErfUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,14,8,1],
+"ErfUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,14,8,1],
 "EventCpu_8hpp.html":[4,0,0,0,8,0],
 "EventCpu_8hpp.html#acc8723b925f6ddf8b27631b71a7c22c6":[4,0,0,0,8,0,0],
 "EventCpu_8hpp_source.html":[4,0,0,0,8,0],
@@ -149,8 +151,8 @@ var NAVTREEINDEX1 =
 "OmpSchedule_8hpp.html#abaa4be57aab4d48a1cd4cd3024dc1b09":[4,0,0,0,3,16,2],
 "OmpSchedule_8hpp.html#ada298672cb75e2de066f2c30c7ba7cba":[4,0,0,0,3,16,1],
 "OmpSchedule_8hpp_source.html":[4,0,0,0,3,16],
-"Op_8hpp.html":[4,0,0,0,1,6],
-"Op_8hpp_source.html":[4,0,0,0,1,6],
+"Op_8hpp.html":[4,0,0,0,1,7],
+"Op_8hpp_source.html":[4,0,0,0,1,7],
 "PltfCpu_8hpp.html":[4,0,0,0,18,0],
 "PltfCpu_8hpp_source.html":[4,0,0,0,18,0],
 "PltfOacc_8hpp.html":[4,0,0,0,18,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "TaskKernelCpuFibers_8hpp.html":[4,0,0,0,13,0],
 "TaskKernelCpuFibers_8hpp_source.html":[4,0,0,0,13,0],
 "TaskKernelCpuOmp2Blocks_8hpp.html":[4,0,0,0,13,1],
-"TaskKernelCpuOmp2Blocks_8hpp.html#a026cb623c9dea79f444585d229c35466":[4,0,0,0,13,1,25],
-"TaskKernelCpuOmp2Blocks_8hpp.html#a6b4a2d062279ca9b90a390b97b8c260b":[4,0,0,0,13,1,26],
-"TaskKernelCpuOmp2Blocks_8hpp.html#a93cfb90319ccb5e30631f043aff3cfdf":[4,0,0,0,13,1,28]
+"TaskKernelCpuOmp2Blocks_8hpp.html#a026cb623c9dea79f444585d229c35466":[4,0,0,0,13,1,25]
 };

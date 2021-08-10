@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1AtomicNoOp.html#a5ff25942fc765afd968a2e23c53d7fe8":[3,0,0,38,2],
+"classalpaka_1_1AtomicNoOp.html#aaaab2055dfd970200d1ef4c136e18e34":[3,0,0,38,0],
 "classalpaka_1_1AtomicNoOp.html#ae9297d883b4113d546fea0223af8b9c3":[3,0,0,38,5],
 "classalpaka_1_1AtomicNoOp.html#afddee2b0f69a10a5518391d755243d9a":[3,0,0,38,3],
 "classalpaka_1_1AtomicOmpBuiltIn.html":[3,0,0,39],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1QueueGenericThreadsNonBlocking.html#a727c170c268ba3b17fda6f2481f1f49c":[3,0,0,93,8],
 "classalpaka_1_1QueueGenericThreadsNonBlocking.html#aa799143959b42708fc44a5298a5079e3":[3,0,0,93,3],
 "classalpaka_1_1QueueGenericThreadsNonBlocking.html#ac6e13dc61852e65ad887637ee8d484c3":[3,0,0,93,5],
-"classalpaka_1_1QueueGenericThreadsNonBlocking.html#adfd392f325ebc6ad5d07e227d488e7ec":[3,0,0,93,4],
-"classalpaka_1_1QueueUniformCudaHipRtBlocking.html":[3,0,0,94],
-"classalpaka_1_1QueueUniformCudaHipRtBlocking.html#a0608f6c2a99c32442b2073a79db9db16":[3,0,0,94,0]
+"classalpaka_1_1QueueGenericThreadsNonBlocking.html#adfd392f325ebc6ad5d07e227d488e7ec":[3,0,0,93,4]
 };

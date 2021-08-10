@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"time_2Traits_8hpp.html#a6029d42c64be25e3a39d6a7d47f208de":[4,0,0,0,23,3,2],
+"time_2Traits_8hpp_source.html":[4,0,0,0,23,3],
 "tinymt32_8h.html":[4,0,0,0,20,0,1],
 "tinymt32_8h.html#a04862c981ffac8f9ff6b8eb142a99da5":[4,0,0,0,20,0,1,23],
 "tinymt32_8h.html#a0560ff3e36b30d2867fcd02ad8948b11":[4,0,0,0,20,0,1,24],
