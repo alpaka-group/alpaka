@@ -25,6 +25,7 @@
 // Implementation details.
 #    include <alpaka/acc/AccOacc.hpp>
 #    include <alpaka/core/Decay.hpp>
+#    include <alpaka/core/Tuple.hpp>
 #    include <alpaka/ctx/block/CtxBlockOacc.hpp>
 #    include <alpaka/dev/DevOacc.hpp>
 #    include <alpaka/idx/MapIdx.hpp>
@@ -35,7 +36,6 @@
 #    include <algorithm>
 #    include <functional>
 #    include <stdexcept>
-#    include <tuple>
 #    include <type_traits>
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        include <iostream>
@@ -83,7 +83,7 @@ namespace alpaka
 #    endif
 
             // Get the size of the block shared dynamic memory.
-            auto const blockSharedMemDynSizeBytes = meta::apply(
+            auto const blockSharedMemDynSizeBytes = core::apply(
                 [&](ALPAKA_DECAY_T(TArgs) const&... args) {
                     return getBlockSharedMemDynSizeBytes<AccOacc<TDim, TIdx>>(
                         m_kernelFnObj,
@@ -154,7 +154,7 @@ namespace alpaka
                         {
                             AccOacc<TDim, TIdx> acc(w, blockShared);
 
-                            meta::apply(
+                            core::apply(
                                 [kernelFnObj, &acc](typename std::decay<TArgs>::type const&... args) {
                                     kernelFnObj(acc, args...);
                                 },
@@ -168,7 +168,7 @@ namespace alpaka
 
     private:
         TKernelFnObj m_kernelFnObj;
-        std::tuple<std::decay_t<TArgs>...> m_args;
+        core::Tuple<std::decay_t<TArgs>...> m_args;
     };
 
     namespace traits
