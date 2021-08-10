@@ -23,8 +23,16 @@ travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recomm
 if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
 then
     travis_retry sudo apt-get -y --quiet update
-    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++-dev
-    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++abi-dev
+    if [ "${ALPAKA_CI_CLANG_VER}" -gt 6 ]
+    then
+        travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++-${ALPAKA_CI_CLANG_VER}-dev
+        travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++abi-${ALPAKA_CI_CLANG_VER}-dev
+    else
+        # Ubuntu started numbering libc++ with version 7. If we got to this point, we need to install the 
+        # default libc++ and hope for the best
+        travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++-dev
+        travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++abi-dev
+    fi
 fi
 
 if [ "${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" = "ON" ] || [ "${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" = "ON" ] || [ "${ALPAKA_ACC_ANY_BT_OMP5_ENABLE}" = "ON" ]
