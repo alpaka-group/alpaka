@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                  <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#a3270b5f30feaff786dc436304690bb40">staticMemBegin</a>(),</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                  <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#ad1725c0126d547988289f3dd558b51d0">staticMemCapacity</a>(),</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                  [this]() { <a class="code" href="namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1">syncBlockThreads</a>(*<span class="keyword">this</span>); },</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                  [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> (m_idMasterThread == std::this_thread::get_id()); })</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                  [<span class="keyword">this</span>]() noexcept { <span class="keywordflow">return</span> (m_idMasterThread == std::this_thread::get_id()); })</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            , BlockSyncBarrierThread&lt;TIdx&gt;(getWorkDiv&lt;Block, Threads&gt;(workDiv).prod())</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            , <a class="code" href="namespacealpaka_1_1rand.html#a93da771a5926ecbf71428adf07417ac8">rand::RandStdLib</a>()</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            , <a class="code" href="classalpaka_1_1TimeStdLib.html#ae8475ae78855794cf03586c7bc46d065">TimeStdLib</a>()</div>
@@ -392,7 +392,7 @@ $(document).ready(function(){initNavTree('AccCpuThreads_8hpp_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccCpuThreads_8hpp.html">AccCpuThreads.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 10 2021 10:25:39 for alpaka by
+    <li class="footer">Generated on Tue Aug 10 2021 18:21:44 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
