@@ -76,7 +76,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if(BOOST_LANG_CUDA && BOOST_ARCH_PTX) || (BOOST_LANG_HIP && (BOOST_ARCH_HSA || BOOST_ARCH_PTX))
+#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX) || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
 #else
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL
@@ -97,7 +97,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if(BOOST_LANG_CUDA && BOOST_ARCH_PTX) || (BOOST_LANG_HIP && (BOOST_ARCH_HSA || BOOST_ARCH_PTX))
+#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX) || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
 #else
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT

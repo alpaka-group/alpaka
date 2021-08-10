@@ -189,19 +189,9 @@ namespace alpaka
             static auto createStaticDevMemView(TElem* pMem, DevUniformCudaHipRt const& dev, TExtent const& extent)
             {
                 TElem* pMemAcc(nullptr);
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaGetSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *pMem));
-#    else
-#        ifdef __HIP_PLATFORM_NVCC__
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    hipCUDAErrorTohipError(cudaGetSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *pMem)));
-#        else
-                // FIXME: still does not work in HIP(clang) (results in hipErrorNotFound)
-                // HIP_SYMBOL(X) not useful because it only does #X on HIP(clang), while &X on HIP(NVCC)
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipGetSymbolAddress(reinterpret_cast<void**>(&pMemAcc), pMem));
-#        endif
-#    endif
+                    ALPAKA_API_PREFIX(GetSymbolAddress)(reinterpret_cast<void**>(&pMemAcc), *pMem));
+
                 return alpaka::ViewPlainPtr<DevUniformCudaHipRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMemAcc,
                     dev,
