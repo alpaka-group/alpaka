@@ -15,7 +15,9 @@
 #        error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #    endif
 
+#    include <alpaka/core/AlignedAlloc.hpp>
 #    include <alpaka/core/Assert.hpp>
+#    include <alpaka/core/Vectorize.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/dev/DevOacc.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
@@ -29,10 +31,6 @@
 #    include <set>
 #    include <tuple>
 #    include <utility>
-
-#    if _OPENACC < 201510
-#        include <vector>
-#    endif
 
 namespace alpaka
 {
@@ -284,9 +282,10 @@ namespace alpaka
                         // acc_memcpy_device is only available since OpenACC2.5
                         // , but we want the tests to compile anyway
                         [](void* dst, void* src, std::size_t size) {
-                            std::vector<std::size_t> buf(size / sizeof(std::size_t));
-                            acc_memcpy_from_device(static_cast<void*>(buf.data()), src, size);
-                            acc_memcpy_to_device(dst, static_cast<void*>(buf.data()), size);
+                            void* buf = core::alignedAlloc(core::vectorization::defaultAlignment, size);
+                            acc_memcpy_from_device(buf, src, size);
+                            acc_memcpy_to_device(dst, buf, size);
+                            core::alignedFree(buf);
                         }
 #    endif
                     );
