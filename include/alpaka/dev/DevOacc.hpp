@@ -51,6 +51,7 @@ namespace alpaka
                     , m_iDevice(iDevice)
                     , m_gridsLock(reinterpret_cast<std::uint32_t*>(acc_malloc(2 * sizeof(std::uint32_t))))
                 {
+                    makeCurrent();
                     const auto gridsLock = m_gridsLock;
 #    pragma acc parallel loop vector default(present) deviceptr(gridsLock)
                     for(std::size_t a = 0; a < 2; ++a)
@@ -105,6 +106,14 @@ namespace alpaka
                     return m_deviceType;
                 }
 
+                void makeCurrent() const
+                {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << "acc_set_device_num( " << iDevice() << ", [type] )" << std::endl;
+#    endif
+                    acc_set_device_num(iDevice(), deviceType());
+                }
+
                 std::uint32_t* gridsLock() const
                 {
                     return m_gridsLock;
@@ -155,10 +164,7 @@ namespace alpaka
         }
         void makeCurrent() const
         {
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            std::cout << "acc_set_device_num( " << m_spDevOaccImpl->iDevice() << ", [type] )" << std::endl;
-#    endif
-            acc_set_device_num(m_spDevOaccImpl->iDevice(), m_spDevOaccImpl->deviceType());
+            m_spDevOaccImpl->makeCurrent();
         }
 
         std::uint32_t* gridsLock() const
