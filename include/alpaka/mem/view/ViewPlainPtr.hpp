@@ -202,7 +202,6 @@ namespace alpaka
 
 #ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
         //! The Omp5 device CreateStaticDevMemView trait specialization.
-        //! \todo What ist this for? Does this exist in OMP5?
         template<>
         struct CreateStaticDevMemView<DevOmp5>
         {
@@ -210,7 +209,7 @@ namespace alpaka
             static auto createStaticDevMemView(TElem* pMem, DevOmp5 const& dev, TExtent const& extent)
             {
                 return alpaka::ViewPlainPtr<DevOmp5, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-                    pMem,
+                    dev.mapStatic(pMem, extent),
                     dev,
                     extent);
             }
