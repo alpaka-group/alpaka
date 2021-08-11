@@ -16,7 +16,7 @@ include(CMakePrintHelpers) # for easier printing of variables and properties
 
 # Compiler options
 function(alpaka_compiler_option name description default)
-    if(NOT DEFINED name)
+    if(NOT DEFINED ALPAKA_${name})
         set(ALPAKA_${name} ${default} CACHE STRING "${description}")
         set_property(CACHE ALPAKA_${name} PROPERTY STRINGS "DEFAULT;ON;OFF")
     endif()
