@@ -225,7 +225,7 @@ namespace alpaka
             static auto createStaticDevMemView(TElem* pMem, DevOacc const& dev, TExtent const& extent)
             {
                 return alpaka::ViewPlainPtr<DevOacc, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-                    pMem,
+                    dev.mapStatic(pMem, extent),
                     dev,
                     extent);
             }

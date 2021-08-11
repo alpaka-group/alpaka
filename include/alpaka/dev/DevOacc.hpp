@@ -119,6 +119,21 @@ namespace alpaka
                     return m_gridsLock;
                 }
 
+                //! Create and/or return staticlly mapped device pointer of host address.
+                template<typename TElem, typename TExtent>
+                ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) -> TElem*
+                {
+                    makeCurrent();
+                    void* pDev = acc_deviceptr(pHost);
+                    if(!pDev)
+                    {
+#    pragma acc enter data create(pHost [0:extent.prod()])
+                        pDev = acc_deviceptr(pHost);
+                        assert(pDev != nullptr);
+                    }
+                    return reinterpret_cast<TElem*>(pDev);
+                }
+
             private:
                 std::mutex mutable m_Mutex;
                 std::vector<std::weak_ptr<IGenericThreadsQueue<DevOacc>>> mutable m_queues;
@@ -175,6 +190,13 @@ namespace alpaka
         ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>>
         {
             return m_spDevOaccImpl->getAllExistingQueues();
+        }
+
+        //! Create and/or return staticlly mapped device pointer of host address.
+        template<typename TElem, typename TExtent>
+        ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) const -> TElem*
+        {
+            return m_spDevOaccImpl->mapStatic(pHost, extent);
         }
 
         //! Registers the given queue on this device.
