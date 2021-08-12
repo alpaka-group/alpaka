@@ -197,8 +197,7 @@ auto main() -> int
     // The view does not own the underlying memory. So you have to make sure that
     // the view does not outlive its underlying memory.
     std::array<Data, nElementsPerDim * nElementsPerDim * nElementsPerDim> plainBuffer;
-    using ViewHost = alpaka::ViewPlainPtr<Host, Data, Dim, Idx>;
-    ViewHost hostViewPlainPtr(plainBuffer.data(), devHost, extents);
+    auto hostViewPlainPtr = alpaka::createView(plainBuffer.data(), devHost, extents);
 
     // Allocate accelerator memory buffers
     //
