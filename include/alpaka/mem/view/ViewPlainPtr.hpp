@@ -34,7 +34,7 @@ namespace alpaka
             : m_pMem(pMem)
             , m_dev(dev)
             , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
-            , m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
+            , m_pitchBytes(detail::calculatePitchesFromExtents<TElem>(m_extentElements))
         {
         }
 
@@ -62,20 +62,6 @@ namespace alpaka
         ALPAKA_FN_HOST
         auto operator=(ViewPlainPtr&&) -> ViewPlainPtr& = delete;
         ALPAKA_FN_HOST ~ViewPlainPtr() = default;
-
-    private:
-        //! Calculate the pitches purely from the extents.
-        template<typename TExtent>
-        ALPAKA_FN_HOST static auto calculatePitchesFromExtents(TExtent const& extent) -> Vec<TDim, TIdx>
-        {
-            Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
-            pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
-            for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
-            {
-                pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
-            }
-            return pitchBytes;
-        }
 
     public:
         TElem* const m_pMem;
@@ -229,6 +215,77 @@ namespace alpaka
                     pMem,
                     dev,
                     extent);
+            }
+        };
+#endif
+
+        //! The CPU device CreateViewPlainPtr trait specialization.
+        template<>
+        struct CreateViewPlainPtr<DevCpu>
+        {
+            template<typename TElem, typename TExtent, typename TPitch>
+            static auto createViewPlainPtr(TElem* pMem, DevCpu const& dev, TExtent const& extent, TPitch const& pitch)
+            {
+                return alpaka::ViewPlainPtr<DevCpu, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                    pMem,
+                    dev,
+                    extent,
+                    pitch);
+            }
+        };
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+        //! The CUDA/HIP RT device CreateViewPlainPtr trait specialization.
+        template<>
+        struct CreateViewPlainPtr<DevUniformCudaHipRt>
+        {
+            template<typename TElem, typename TExtent, typename TPitch>
+            static auto createViewPlainPtr(
+                TElem* pMem,
+                DevUniformCudaHipRt const& dev,
+                TExtent const& extent,
+                TPitch const& pitch)
+            {
+                return alpaka::ViewPlainPtr<DevUniformCudaHipRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                    pMem,
+                    dev,
+                    extent,
+                    pitch);
+            }
+        };
+#endif
+
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
+        //! The Omp5 device CreateViewPlainPtr trait specialization.
+        //! \todo What ist this for? Does this exist in OMP5?
+        template<>
+        struct CreateViewPlainPtr<DevOmp5>
+        {
+            template<typename TElem, typename TExtent, typename TPitch>
+            static auto createViewPlainPtr(TElem* pMem, DevOmp5 const& dev, TExtent const& extent, TPitch const& pitch)
+            {
+                return alpaka::ViewPlainPtr<DevOmp5, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                    pMem,
+                    dev,
+                    extent,
+                    pitch);
+            }
+        };
+#endif
+
+#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
+        //! The Oacc device CreateViewPlainPtr trait specialization.
+        template<>
+        struct CreateViewPlainPtr<DevOacc>
+        {
+            template<typename TElem, typename TExtent, typename TPitch>
+            static auto createViewPlainPtr(TElem* pMem, DevOacc const& dev, TExtent const& extent, TPitch const& pitch)
+            {
+                return alpaka::ViewPlainPtr<DevOacc, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                    pMem,
+                    dev,
+                    extent,
+                    pitch);
             }
         };
 #endif
