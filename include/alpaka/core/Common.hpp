@@ -76,6 +76,20 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
+//!
+//! \attention It is not allowed to initialize the variable together with the declaration.
+//!            To initialize the variable alpaka::createStaticDevMemView and alpaka::memcpy must be used.
+//! \code{.cpp}
+//! ALPAKA_STATIC_ACC_MEM_GLOBAL int foo;
+//!
+//! void initFoo() {
+//!     auto extent = alpaka::Vec<alpaka::DimInt<1u>, size_t>{1};
+//!     auto viewFoo = alpaka::createStaticDevMemView(&foo, device, extent);
+//!     int initialValue = 42;
+//!     alpaka::ViewPlainPtr<DevHost, int, alpaka::DimInt<1u>, size_t> bufHost(&initialValue, devHost, extent);
+//!     alpaka::memcpy(queue, viewGlobalMemUninitialized, bufHost, extent);
+//! }
+//! \endcode
 #if((BOOST_LANG_CUDA && BOOST_COMP_CLANG) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX) || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
 #else
@@ -97,6 +111,20 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
+//!
+//! \attention It is not allowed to initialize the variable together with the declaration.
+//!            To initialize the variable alpaka::createStaticDevMemView and alpaka::memcpy must be used.
+//! \code{.cpp}
+//! ALPAKA_STATIC_ACC_MEM_CONSTANT int foo;
+//!
+//! void initFoo() {
+//!     auto extent = alpaka::Vec<alpaka::DimInt<1u>, size_t>{1};
+//!     auto viewFoo = alpaka::createStaticDevMemView(&foo, device, extent);
+//!     int initialValue = 42;
+//!     alpaka::ViewPlainPtr<DevHost, int, alpaka::DimInt<1u>, size_t> bufHost(&initialValue, devHost, extent);
+//!     alpaka::memcpy(queue, viewGlobalMemUninitialized, bufHost, extent);
+//! }
+//! \endcode
 #if((BOOST_LANG_CUDA && BOOST_COMP_CLANG) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX) || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
 #else
