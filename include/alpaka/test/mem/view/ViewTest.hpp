@@ -218,15 +218,10 @@ namespace alpaka
         template<typename TView, typename TQueue>
         ALPAKA_FN_HOST auto iotaFillView(TQueue& queue, TView& view) -> void
         {
-            using Dim = alpaka::Dim<TView>;
-            using Idx = alpaka::Idx<TView>;
-
             using DevHost = alpaka::DevCpu;
             using PltfHost = alpaka::Pltf<DevHost>;
 
             using Elem = alpaka::Elem<TView>;
-
-            using ViewPlainPtr = alpaka::ViewPlainPtr<DevHost, Elem, Dim, Idx>;
 
             DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0);
 
@@ -235,7 +230,7 @@ namespace alpaka
             // Init buf with increasing values
             std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
             std::iota(v.begin(), v.end(), static_cast<Elem>(0));
-            ViewPlainPtr plainBuf(v.data(), devHost, extent);
+            auto plainBuf = alpaka::createView(v, devHost, extent);
 
             // Copy the generated content into the given view.
             alpaka::memcpy(queue, view, plainBuf, extent);

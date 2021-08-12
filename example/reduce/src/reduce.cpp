@@ -113,8 +113,7 @@ T reduce(
 
     //  download result from GPU
     T resultGpuHost;
-    auto resultGpuDevice
-        = alpaka::ViewPlainPtr<DevHost, T, Dim, Idx>(&resultGpuHost, devHost, static_cast<Extent>(blockSize));
+    auto resultGpuDevice = alpaka::createView(&resultGpuHost, devHost, static_cast<Extent>(blockSize));
 
     alpaka::memcpy(queue, resultGpuDevice, destinationDeviceMemory, 1);
 
