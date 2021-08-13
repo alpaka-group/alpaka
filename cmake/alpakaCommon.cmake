@@ -15,12 +15,12 @@ include(CMakePrintHelpers) # for easier printing of variables and properties
 # Options.
 
 # Compiler options
-function(alpaka_compiler_option name description default)
+macro(alpaka_compiler_option name description default)
     if(NOT DEFINED ALPAKA_${name})
         set(ALPAKA_${name} ${default} CACHE STRING "${description}")
         set_property(CACHE ALPAKA_${name} PROPERTY STRINGS "DEFAULT;ON;OFF")
     endif()
-endfunction()
+endmacro()
 
 # Add append compiler flags to a variable or target
 #
