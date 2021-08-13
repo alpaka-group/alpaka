@@ -243,8 +243,8 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     // For 1D data this would not be required because alpaka::copy is specialized for std::vector and std::array.
     // For multi dimensional data you could directly create them using alpaka::malloc<Type>(devHost, extent), which is
     // not used here. Instead we create a View to wrap the data.
-    auto bufAHost = alpaka::createView(bufAHost1d.data(), devHost, extentA);
-    auto bufBHost = alpaka::createView(bufBHost1d.data(), devHost, extentB);
+    auto bufAHost = alpaka::createView(devHost, bufAHost1d.data(), extentA);
+    auto bufBHost = alpaka::createView(devHost, bufBHost1d.data(), extentB);
 
     // Allocate C and set it to zero.
     auto bufCHost = alpaka::allocBuf<Val, Idx>(devHost, extentC);

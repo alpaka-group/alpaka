@@ -343,7 +343,7 @@ namespace alpaka
 
         //! Calculate the pitches purely from the extents.
         template<typename TElem, typename TDim, typename TIdx>
-        ALPAKA_FN_HOST static auto calculatePitchesFromExtents(Vec<TDim, TIdx> const& extent)
+        ALPAKA_FN_HOST inline auto calculatePitchesFromExtents(Vec<TDim, TIdx> const& extent)
         {
             Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
             pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
@@ -377,90 +377,91 @@ namespace alpaka
         return traits::CreateStaticDevMemView<TDev>::createStaticDevMemView(pMem, dev, extent);
     }
 
-    //! Creates a view to a pointer device
+    //! Creates a view to a device pointer
     //!
-    //! \param pMem Pointer to memory.
     //! \param dev Device from where pMem can be accessed.
+    //! \param pMem Pointer to memory. The pointer must be accessible from the given device.
     //! \param extent Number of elements represented by the pMem.
     //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
     //!               by pMem.
     //! \return A view to device memory.
-    template<typename TElem, typename TDev, typename TExtent>
-    auto createView(TElem* pMem, TDev const& dev, TExtent const& extent)
+    template<typename TDev, typename TElem, typename TExtent>
+    auto createView(TDev const& dev, TElem* pMem, TExtent const& extent)
     {
         using Dim = alpaka::Dim<TExtent>;
         using Idx = alpaka::Idx<TExtent>;
         auto const extentVec = Vec<Dim, Idx>(extent);
         return traits::CreateViewPlainPtr<TDev>::createViewPlainPtr(
-            pMem,
             dev,
+            pMem,
             extentVec,
             detail::calculatePitchesFromExtents<TElem>(extentVec));
     }
 
     //! Creates a view to a device pointer
     //!
-    //! \param pMem Pointer to memory.
     //! \param dev Device from where pMem can be accessed.
+    //! \param pMem Pointer to memory. The pointer must be accessible from the given device.
     //! \param extent Number of elements represented by the pMem.
     //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
     //!               by pMem.
     //! \param pitch Pitch in bytes for each dimension. Dimensionality must be equal to extent.
     //! \return A view to device memory.
-    template<typename TElem, typename TDev, typename TExtent, typename TPitch>
-    auto createView(TElem* pMem, TDev const& dev, TExtent const& extent, TPitch const& pitch)
+    template<typename TDev, typename TElem, typename TExtent, typename TPitch>
+    auto createView(TDev const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
     {
-        return traits::CreateViewPlainPtr<TDev>::createViewPlainPtr(pMem, dev, extent, pitch);
+        return traits::CreateViewPlainPtr<TDev>::createViewPlainPtr(dev, pMem, extent, pitch);
     }
 
     //! Creates a view to a device std::vector
     //!
-    //! \param vec Pointer to memory.
     //! \param dev Device from where vec can be accessed.
+    //! \param vec std::vector container. The data hold by the container the must be accessible from the given device.
     //! \return A view to device memory.
-    template<typename TElem, typename TAllocator, typename TDev>
-    auto createView(std::vector<TElem, TAllocator>& vec, TDev const& dev)
+    template<typename TDev, typename TElem, typename TAllocator>
+    auto createView(TDev const& dev, std::vector<TElem, TAllocator>& vec)
     {
-        return createView(vec.data(), dev, extent::getExtent(vec));
+        //! \todo With C++17 use std::data() and add support for all contiguous container
+        return createView(dev, vec.data(), extent::getExtent(vec));
     }
 
     //! Creates a view to a device std::vector
     //!
-    //! \param vec Pointer to memory.
     //! \param dev Device from where pMem can be accessed.
+    //! \param vec std::vector container. The data hold by the container the must be accessible from the given device.
     //! \param extent Number of elements represented by vec.
     //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
     //!               by vec.
     //! \return A view to device memory.
-    template<typename TElem, typename TAllocator, typename TDev, typename TExtent>
-    auto createView(std::vector<TElem, TAllocator>& vec, TDev const& dev, TExtent const& extent)
+    template<typename TDev, typename TElem, typename TAllocator, typename TExtent>
+    auto createView(TDev const& dev, std::vector<TElem, TAllocator>& vec, TExtent const& extent)
     {
-        return createView(vec.data(), dev, extent);
+        return createView(dev, vec.data(), extent);
     }
 
     //! Creates a view to a device std::array
     //!
-    //! \param array Pointer to memory.
     //! \param dev Device from where array can be accessed.
+    //! \param array std::array container. The data hold by the container the must be accessible from the given device.
     //! \return A view to device memory.
-    template<typename TElem, std::size_t Tsize, typename TDev>
-    auto createView(std::array<TElem, Tsize>& array, TDev const& dev)
+    template<typename TDev, typename TElem, std::size_t Tsize>
+    auto createView(TDev const& dev, std::array<TElem, Tsize>& array)
     {
-        return createView(array.data(), dev, extent::getExtent(array));
+        return createView(dev, array.data(), extent::getExtent(array));
     }
 
     //! Creates a view to a device std::vector
     //!
-    //! \param array Pointer to memory.
     //! \param dev Device from where array can be accessed.
+    //! \param array std::array container. The data hold by the container the must be accessible from the given device
     //! \param extent Number of elements represented by array.
     //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
     //!               by array.
     //! \return A view to device memory.
-    template<typename TElem, std::size_t Tsize, typename TDev, typename TExtent>
-    auto createView(std::array<TElem, Tsize>& array, TDev const& dev, TExtent const& extent)
+    template<typename TDev, typename TElem, std::size_t Tsize, typename TExtent>
+    auto createView(TDev const& dev, std::array<TElem, Tsize>& array, TExtent const& extent)
     {
-        return createView(array.data(), dev, extent);
+        return createView(dev, array.data(), extent);
     }
 
     //! Creates a sub view to an existing view.

@@ -30,12 +30,12 @@ TEMPLATE_LIST_TEST_CASE("mapIdxPitchBytes", "[idx]", alpaka::test::TestDims)
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using Elem = std::uint8_t;
     auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
-    auto parentView = alpaka::createView(static_cast<Elem*>(nullptr), devAcc, extentNd);
+    auto parentView = alpaka::createView(devAcc, static_cast<Elem*>(nullptr), extentNd);
 
     auto const offset = Vec::all(4u);
     auto const extent = Vec::all(4u);
     auto const idxNd = Vec::all(2u);
-    auto view = createSubView(parentView, extent, offset);
+    auto view = alpaka::createSubView(parentView, extent, offset);
     auto pitch = alpaka::getPitchBytesVec(view);
 
     auto const idx1d = alpaka::mapIdxPitchBytes<1u>(idxNd, pitch);

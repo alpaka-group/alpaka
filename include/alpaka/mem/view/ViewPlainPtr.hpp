@@ -224,7 +224,7 @@ namespace alpaka
         struct CreateViewPlainPtr<DevCpu>
         {
             template<typename TElem, typename TExtent, typename TPitch>
-            static auto createViewPlainPtr(TElem* pMem, DevCpu const& dev, TExtent const& extent, TPitch const& pitch)
+            static auto createViewPlainPtr(DevCpu const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
             {
                 return alpaka::ViewPlainPtr<DevCpu, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMem,
@@ -241,8 +241,8 @@ namespace alpaka
         {
             template<typename TElem, typename TExtent, typename TPitch>
             static auto createViewPlainPtr(
-                TElem* pMem,
                 DevUniformCudaHipRt const& dev,
+                TElem* pMem,
                 TExtent const& extent,
                 TPitch const& pitch)
             {
@@ -262,7 +262,7 @@ namespace alpaka
         struct CreateViewPlainPtr<DevOmp5>
         {
             template<typename TElem, typename TExtent, typename TPitch>
-            static auto createViewPlainPtr(TElem* pMem, DevOmp5 const& dev, TExtent const& extent, TPitch const& pitch)
+            static auto createViewPlainPtr(DevOmp5 const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
             {
                 return alpaka::ViewPlainPtr<DevOmp5, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMem,
@@ -279,7 +279,7 @@ namespace alpaka
         struct CreateViewPlainPtr<DevOacc>
         {
             template<typename TElem, typename TExtent, typename TPitch>
-            static auto createViewPlainPtr(TElem* pMem, DevOacc const& dev, TExtent const& extent, TPitch const& pitch)
+            static auto createViewPlainPtr(DevOacc const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
             {
                 return alpaka::ViewPlainPtr<DevOacc, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMem,

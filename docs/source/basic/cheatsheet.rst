@@ -128,19 +128,19 @@ Create a view to host memory represented by a pointer
      using Dim = alpaka::DimInt<1u>;
      Vec<Dim, Idx> extent = value;
      DataType* date = new DataType[extent[0]];
-     auto hostView = createView(data, devHost, extent);
+     auto hostView = createView(devHost, data, extent);
 
 Create a view to host std::vector
    .. code-block:: c++
 
      auto vec = std::vector<DataType>(42u);
-     auto hostView = createView(vec, devHost);
+     auto hostView = createView(devHost, vec);
 
 Create a view to host std::array
    .. code-block:: c++
 
      std::vector<DataType, 2> array = {42u, 23};
-     auto hostView = createView(array, devHost);
+     auto hostView = createView(devHost, array);
 
 Get a raw pointer to a buffer or view initialization, etc.
   .. code-block:: c++
