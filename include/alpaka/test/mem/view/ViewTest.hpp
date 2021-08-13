@@ -230,7 +230,7 @@ namespace alpaka
             // Init buf with increasing values
             std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
             std::iota(v.begin(), v.end(), static_cast<Elem>(0));
-            auto plainBuf = alpaka::createView(v, devHost, extent);
+            auto plainBuf = alpaka::createView(devHost, v, extent);
 
             // Copy the generated content into the given view.
             alpaka::memcpy(queue, view, plainBuf, extent);
