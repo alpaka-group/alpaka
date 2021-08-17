@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['chunksize_3958',['chunkSize',['../structalpaka_1_1omp_1_1Schedule.html#a050d3f2bb222571788ae0e749b8348e3',1,'alpaka::omp::Schedule']]]
+  ['chunksize_4032',['chunkSize',['../structalpaka_1_1omp_1_1Schedule.html#a050d3f2bb222571788ae0e749b8348e3',1,'alpaka::omp::Schedule']]]
 ];

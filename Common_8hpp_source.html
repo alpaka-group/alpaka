@@ -191,6 +191,21 @@ $(document).ready(function(){initNavTree('Common_8hpp_source.html',''); initResi
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">  103</a></span>&#160;<span class="preprocessor">#    define ALPAKA_STATIC_ACC_MEM_CONSTANT</span></div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">//! This macro disables memory optimizations for annotated device memory.</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">//!</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">//! Example:</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">//!   ALPAKA_DEVICE_VOLATILE float* ptr;</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">//!</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">//! This is useful for pointers, (shared) variables and shared memory which are used in combination with</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">//! the alpaka::mem_fence() function. It ensures that memory annotated with this macro will always be written directly</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">//! to memory (and not to a register or cache because of compiler optimizations).</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment"></span><span class="preprocessor">#if(BOOST_LANG_CUDA &amp;&amp; BOOST_ARCH_PTX)                                                                                \</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">    || (BOOST_LANG_HIP &amp;&amp; defined(__HIP_DEVICE_COMPILE__) &amp;&amp; __HIP_DEVICE_COMPILE__ == 1)</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#    define ALPAKA_DEVICE_VOLATILE volatile</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6">  118</a></span>&#160;<span class="preprocessor">#    define ALPAKA_DEVICE_VOLATILE</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
@@ -199,7 +214,7 @@ $(document).ready(function(){initNavTree('Common_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Sat Aug 14 2021 10:16:20 for alpaka by
+    <li class="footer">Generated on Tue Aug 17 2021 08:26:21 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

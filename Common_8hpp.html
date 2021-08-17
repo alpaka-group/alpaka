@@ -96,6 +96,9 @@ $(document).ready(function(){initNavTree('Common_8hpp.html',''); initResizable()
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:aed43b384334a6dcf0f0132e8a55339f6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6">ALPAKA_DEVICE_VOLATILE</a></td></tr>
+<tr class="memdesc:aed43b384334a6dcf0f0132e8a55339f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro disables memory optimizations for annotated device memory.  <a href="Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6">More...</a><br /></td></tr>
+<tr class="separator:aed43b384334a6dcf0f0132e8a55339f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bfb3a7f88316271e795e20d2810755a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a></td></tr>
 <tr class="memdesc:a1bfb3a7f88316271e795e20d2810755a"><td class="mdescLeft">&#160;</td><td class="mdescRight">All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC.  <a href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">More...</a><br /></td></tr>
 <tr class="separator:a1bfb3a7f88316271e795e20d2810755a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,6 +120,26 @@ Macros</h2></td></tr>
 <tr class="separator:a95bebbbf9aab1a18a278359a85a41125"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aed43b384334a6dcf0f0132e8a55339f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed43b384334a6dcf0f0132e8a55339f6">&#9670;&nbsp;</a></span>ALPAKA_DEVICE_VOLATILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ALPAKA_DEVICE_VOLATILE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This macro disables memory optimizations for annotated device memory. </p>
+<p>Example: ALPAKA_DEVICE_VOLATILE float* ptr;</p>
+<p>This is useful for pointers, (shared) variables and shared memory which are used in combination with the <a class="el" href="namespacealpaka.html#a8a1c027320c9d7a10df1ae7bc87fcb46" title="Issues memory fence instructions.">alpaka::mem_fence()</a> function. It ensures that memory annotated with this macro will always be written directly to memory (and not to a register or cache because of compiler optimizations). </p>
+
+<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00118">118</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a1bfb3a7f88316271e795e20d2810755a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1bfb3a7f88316271e795e20d2810755a">&#9670;&nbsp;</a></span>ALPAKA_FN_ACC</h2>
 
@@ -252,7 +275,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Sat Aug 14 2021 10:16:20 for alpaka by
+    <li class="footer">Generated on Tue Aug 17 2021 08:26:22 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
