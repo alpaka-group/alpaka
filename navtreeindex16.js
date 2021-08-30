@@ -106,7 +106,6 @@ var NAVTREEINDEX16 =
 "tinymt32_8h_source.html":[4,0,0,0,20,0,1],
 "todo.html":[1],
 "uniformCudaHip_2Copy_8hpp.html":[4,0,0,0,15,1,3,0],
-"uniformCudaHip_2Copy_8hpp.html#abd7f55db5dc905306b98eb481469b07b":[4,0,0,0,15,1,3,0,13],
 "uniformCudaHip_2Copy_8hpp_source.html":[4,0,0,0,15,1,3,0],
 "vec_2Traits_8hpp.html":[4,0,0,0,24,0],
 "vec_2Traits_8hpp.html#a1fb281be5e276c272c312ac4466d9274":[4,0,0,0,24,0,7],

@@ -318,9 +318,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral&lt;T&gt;::value&gt;&gt; </td></tr>
 <tr class="memitem:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#ab1d31914161c1f5c4cf6f71e7d1bfe50">allDivisorsLessOrEqual</a> (T const &amp;val, T const &amp;maxDivisor) -&gt; std::set&lt; T &gt;</td></tr>
 <tr class="separator:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd7f55db5dc905306b98eb481469b07b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#abd7f55db5dc905306b98eb481469b07b">enablePeerAccessIfPossible</a> (const int &amp;devSrc, const int &amp;devDst) -&gt; void</td></tr>
-<tr class="memdesc:abd7f55db5dc905306b98eb481469b07b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not being able to enable peer access does not prevent such device to device memory copies. However, those copies may be slower because the memory is copied via the CPU.  <a href="namespacealpaka_1_1detail.html#abd7f55db5dc905306b98eb481469b07b">More...</a><br /></td></tr>
-<tr class="separator:abd7f55db5dc905306b98eb481469b07b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adceeaf4e5d3925a71381d74cd1e78bad"><td class="memTemplParams" colspan="2">template&lt;typename TValue &gt; </td></tr>
 <tr class="memitem:adceeaf4e5d3925a71381d74cd1e78bad"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#adceeaf4e5d3925a71381d74cd1e78bad">ffsFallback</a> (TValue value) -&gt; std::int32_t</td></tr>
 <tr class="memdesc:adceeaf4e5d3925a71381d74cd1e78bad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback implementaion of ffs.  <a href="namespacealpaka_1_1detail.html#adceeaf4e5d3925a71381d74cd1e78bad">More...</a><br /></td></tr>
@@ -587,47 +584,6 @@ template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral&lt;T&g
 
 </div>
 </div>
-<a id="abd7f55db5dc905306b98eb481469b07b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd7f55db5dc905306b98eb481469b07b">&#9670;&nbsp;</a></span>enablePeerAccessIfPossible()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto alpaka::detail::enablePeerAccessIfPossible </td>
-          <td>(</td>
-          <td class="paramtype">const int &amp;&#160;</td>
-          <td class="paramname"><em>devSrc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int &amp;&#160;</td>
-          <td class="paramname"><em>devDst</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; void
-        </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Not being able to enable peer access does not prevent such device to device memory copies. However, those copies may be slower because the memory is copied via the CPU. </p>
-
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00050">50</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
-
-</div>
-</div>
 <a id="adceeaf4e5d3925a71381d74cd1e78bad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adceeaf4e5d3925a71381d74cd1e78bad">&#9670;&nbsp;</a></span>ffsFallback()</h2>
 
@@ -805,7 +761,7 @@ template&lt;typename TValue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Aug 17 2021 08:26:23 for alpaka by
+    <li class="footer">Generated on Mon Aug 30 2021 16:40:53 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
