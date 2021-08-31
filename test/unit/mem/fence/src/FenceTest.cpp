@@ -46,7 +46,7 @@ public:
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u];
-        auto shared = const_cast<ALPAKA_DEVICE_VOLATILE int* const>(alpaka::getDynSharedMem<int>(acc));
+        auto shared = const_cast<ALPAKA_DEVICE_VOLATILE int*>(alpaka::getDynSharedMem<int>(acc));
 
         // Initialize
         if(idx == 0)
