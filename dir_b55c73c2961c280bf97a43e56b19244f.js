@@ -7,6 +7,9 @@ var dir_b55c73c2961c280bf97a43e56b19244f =
       [ "CreateStaticDevMemView< DevCpu >", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevCpu_01_4" ],
       [ "CreateStaticDevMemView< DevOmp5 >", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevOmp5_01_4.html", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevOmp5_01_4" ],
       [ "CreateStaticDevMemView< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_01_4" ],
+      [ "CreateViewPlainPtr< DevCpu >", "structalpaka_1_1traits_1_1CreateViewPlainPtr_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1CreateViewPlainPtr_3_01DevCpu_01_4" ],
+      [ "CreateViewPlainPtr< DevOmp5 >", "structalpaka_1_1traits_1_1CreateViewPlainPtr_3_01DevOmp5_01_4.html", "structalpaka_1_1traits_1_1CreateViewPlainPtr_3_01DevOmp5_01_4" ],
+      [ "CreateViewPlainPtr< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1CreateViewPlainPtr_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1CreateViewPlainPtr_3_01DevUniformCudaHipRt_01_4" ],
       [ "DevType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1DevType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DevType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "DimType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1DimType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DimType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "ElemType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1ElemType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1ElemType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
@@ -41,6 +44,7 @@ var dir_b55c73c2961c280bf97a43e56b19244f =
     ] ],
     [ "ViewSubView.hpp", "ViewSubView_8hpp.html", [
       [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01ViewSubView_3_01TDev_00cc80f9157c6c2414d64ef81a1ca68b7d.html", null ],
+      [ "CreateSubView", "structalpaka_1_1traits_1_1CreateSubView.html", "structalpaka_1_1traits_1_1CreateSubView" ],
       [ "DevType< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1DevType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DevType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "DimType< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1DimType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DimType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "ElemType< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],

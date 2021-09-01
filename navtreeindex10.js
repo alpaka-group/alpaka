@@ -1,5 +1,13 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,10,20],
+"structalpaka_1_1math_1_1ConceptMathCeil.html":[3,0,0,10,21],
+"structalpaka_1_1math_1_1ConceptMathCos.html":[3,0,0,10,22],
+"structalpaka_1_1math_1_1ConceptMathErf.html":[3,0,0,10,23],
+"structalpaka_1_1math_1_1ConceptMathExp.html":[3,0,0,10,24],
+"structalpaka_1_1math_1_1ConceptMathFloor.html":[3,0,0,10,25],
+"structalpaka_1_1math_1_1ConceptMathFmod.html":[3,0,0,10,26],
+"structalpaka_1_1math_1_1ConceptMathLog.html":[3,0,0,10,27],
 "structalpaka_1_1math_1_1ConceptMathMax.html":[3,0,0,10,28],
 "structalpaka_1_1math_1_1ConceptMathMin.html":[3,0,0,10,29],
 "structalpaka_1_1math_1_1ConceptMathPow.html":[3,0,0,10,30],
@@ -241,13 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1meta_1_1IntegralValuesUnique.html":[3,0,0,12,13],
 "structalpaka_1_1meta_1_1IntegralValuesUnique.html#a69c48ee16b2f405448bacdbca627fe84":[3,0,0,12,13,0],
 "structalpaka_1_1meta_1_1detail_1_1ApplyImpl.html":[3,0,0,12,0,0],
-"structalpaka_1_1meta_1_1detail_1_1ApplyImpl_3_01TList_3_01T_8_8_8_01_4_00_01TApplicant_01_4.html":[3,0,0,12,0,1],
-"structalpaka_1_1meta_1_1detail_1_1ApplyImpl_3_01TList_3_01T_8_8_8_01_4_00_01TApplicant_01_4.html#a025d920f78878d2802d0b68e61de4da8":[3,0,0,12,0,1,0],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl.html":[3,0,0,12,0,2],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper.html":[3,0,0,12,0,5],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01TList_3_4_01_4_00_01Ts_8_8_8_01_4.html":[3,0,0,12,0,6],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01TList_3_4_01_4_00_01Ts_8_8_8_01_4.html#acb835539a8e1f860e3bd9112332f2c3c":[3,0,0,12,0,6,0],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01TList_3_4_00_01Rests_8_8_8_01_4.html":[3,0,0,12,0,8],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01TList_3_4_00_01Rests_8_8_8_01_4.html#a0ab5467e577ef3dce1e24beea9908d74":[3,0,0,12,0,8,0],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_01_4.html":[3,0,0,12,0,7]
+"structalpaka_1_1meta_1_1detail_1_1ApplyImpl_3_01TList_3_01T_8_8_8_01_4_00_01TApplicant_01_4.html":[3,0,0,12,0,1]
 };

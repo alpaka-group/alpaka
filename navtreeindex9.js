@@ -1,5 +1,13 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html#a3f110ab539eb93fe99a35a1c64d86406":[3,0,0,2,1,1,0],
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html":[3,0,0,2,1,2],
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html#a900abf5fc4d95ddb3beae6e3892f895d":[3,0,0,2,1,2,0],
+"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html":[3,0,0,2,1,3],
+"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_01stdb72af6a8675947df196653993d534c13.html":[3,0,0,2,1,4],
+"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_01stdb72af6a8675947df196653993d534c13.html#a6826ca7908ef400e7095fef3ea3aafb6":[3,0,0,2,1,4,0],
+"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_9std_6cb140c1f390c6f74ef7d28a958c1cab.html":[3,0,0,2,1,5],
+"structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_9std_6cb140c1f390c6f74ef7d28a958c1cab.html#afe7f019ba652a83f7a369526a096ef8e":[3,0,0,2,1,5,0],
 "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html":[3,0,0,2,1,9],
 "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html":[3,0,0,2,1,10],
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html":[3,0,0,2,2,0,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1math_1_1ConceptMathAcos.html":[3,0,0,10,16],
 "structalpaka_1_1math_1_1ConceptMathAsin.html":[3,0,0,10,17],
 "structalpaka_1_1math_1_1ConceptMathAtan.html":[3,0,0,10,18],
-"structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,10,19],
-"structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,10,20],
-"structalpaka_1_1math_1_1ConceptMathCeil.html":[3,0,0,10,21],
-"structalpaka_1_1math_1_1ConceptMathCos.html":[3,0,0,10,22],
-"structalpaka_1_1math_1_1ConceptMathErf.html":[3,0,0,10,23],
-"structalpaka_1_1math_1_1ConceptMathExp.html":[3,0,0,10,24],
-"structalpaka_1_1math_1_1ConceptMathFloor.html":[3,0,0,10,25],
-"structalpaka_1_1math_1_1ConceptMathFmod.html":[3,0,0,10,26],
-"structalpaka_1_1math_1_1ConceptMathLog.html":[3,0,0,10,27]
+"structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,10,19]
 };

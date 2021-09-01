@@ -101,8 +101,10 @@ $(document).ready(function(){initNavTree('mem_2view_2Traits_8hpp.html',''); init
 <code>#include &lt;<a class="el" href="offset_2Traits_8hpp_source.html">alpaka/offset/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="queue_2Traits_8hpp_source.html">alpaka/queue/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
 <code>#include &lt;iosfwd&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div>
 <p><a href="mem_2view_2Traits_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -118,11 +120,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1CreateStaticDevMemView.html">alpaka::traits::CreateStaticDevMemView&lt; TDev, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The static device memory view creation trait.  <a href="structalpaka_1_1traits_1_1CreateStaticDevMemView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1CreateSubView.html">alpaka::traits::CreateSubView&lt; TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sub view creation trait.  <a href="structalpaka_1_1traits_1_1CreateSubView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1CreateTaskMemcpy.html">alpaka::traits::CreateTaskMemcpy&lt; TDim, TDevDst, TDevSrc, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory copy task trait.  <a href="structalpaka_1_1traits_1_1CreateTaskMemcpy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1CreateTaskMemset.html">alpaka::traits::CreateTaskMemset&lt; TDim, TDev, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory set task trait.  <a href="structalpaka_1_1traits_1_1CreateTaskMemset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1CreateViewPlainPtr.html">alpaka::traits::CreateViewPlainPtr&lt; TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device memory view creation trait.  <a href="structalpaka_1_1traits_1_1CreateViewPlainPtr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1detail_1_1GetPitchBytesDefault.html">alpaka::traits::detail::GetPitchBytesDefault&lt; TIdx, TView, TSfinae &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,9 +165,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a97da91c88a5fe4706fa3747b0e6c8cc9"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a97da91c88a5fe4706fa3747b0e6c8cc9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a97da91c88a5fe4706fa3747b0e6c8cc9">alpaka::detail::calculatePitchesFromExtents</a> (Vec&lt; TDim, TIdx &gt; const &amp;extent)</td></tr>
+<tr class="memdesc:a97da91c88a5fe4706fa3747b0e6c8cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the pitches purely from the extents.  <a href="namespacealpaka_1_1detail.html#a97da91c88a5fe4706fa3747b0e6c8cc9">More...</a><br /></td></tr>
+<tr class="separator:a97da91c88a5fe4706fa3747b0e6c8cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adedb8c0a11a3096bccbd7d37481798b0"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TDev , typename TExtent &gt; </td></tr>
 <tr class="memitem:adedb8c0a11a3096bccbd7d37481798b0"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#adedb8c0a11a3096bccbd7d37481798b0">alpaka::createStaticDevMemView</a> (TElem *pMem, TDev const &amp;dev, TExtent const &amp;extent)</td></tr>
 <tr class="separator:adedb8c0a11a3096bccbd7d37481798b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e0cc673cdcdfc1f6b901a6bc09d975d"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TExtent , typename TOffsets &gt; </td></tr>
+<tr class="memitem:a3e0cc673cdcdfc1f6b901a6bc09d975d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3e0cc673cdcdfc1f6b901a6bc09d975d">alpaka::createSubView</a> (TView &amp;view, TExtent const &amp;extent, TOffsets const &amp;offset=TExtent())</td></tr>
+<tr class="memdesc:a3e0cc673cdcdfc1f6b901a6bc09d975d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a sub view to an existing view.  <a href="namespacealpaka.html#a3e0cc673cdcdfc1f6b901a6bc09d975d">More...</a><br /></td></tr>
+<tr class="separator:a3e0cc673cdcdfc1f6b901a6bc09d975d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75518a15325404b63696b9261ea9bd34"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TViewSrc , typename TViewDst &gt; </td></tr>
 <tr class="memitem:a75518a15325404b63696b9261ea9bd34"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">alpaka::createTaskMemcpy</a> (TViewDst &amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent)</td></tr>
 <tr class="memdesc:a75518a15325404b63696b9261ea9bd34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a memory copy task.  <a href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">More...</a><br /></td></tr>
@@ -168,6 +184,30 @@ Functions</h2></td></tr>
 <tr class="memitem:a1a50b36a49510b2c3d5418cbc9c11f61"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1a50b36a49510b2c3d5418cbc9c11f61">alpaka::createTaskMemset</a> (TView &amp;view, std::uint8_t const &amp;byte, TExtent const &amp;extent)</td></tr>
 <tr class="memdesc:a1a50b36a49510b2c3d5418cbc9c11f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a memory set task.  <a href="namespacealpaka.html#a1a50b36a49510b2c3d5418cbc9c11f61">More...</a><br /></td></tr>
 <tr class="separator:a1a50b36a49510b2c3d5418cbc9c11f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acef6cd37a399201200514adb676e6266"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , std::size_t Tsize&gt; </td></tr>
+<tr class="memitem:acef6cd37a399201200514adb676e6266"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#acef6cd37a399201200514adb676e6266">alpaka::createView</a> (TDev const &amp;dev, std::array&lt; TElem, Tsize &gt; &amp;array)</td></tr>
+<tr class="memdesc:acef6cd37a399201200514adb676e6266"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::array.  <a href="namespacealpaka.html#acef6cd37a399201200514adb676e6266">More...</a><br /></td></tr>
+<tr class="separator:acef6cd37a399201200514adb676e6266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae82c506e09dbd4ce3589243d3e9656ad"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , std::size_t Tsize, typename TExtent &gt; </td></tr>
+<tr class="memitem:ae82c506e09dbd4ce3589243d3e9656ad"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae82c506e09dbd4ce3589243d3e9656ad">alpaka::createView</a> (TDev const &amp;dev, std::array&lt; TElem, Tsize &gt; &amp;array, TExtent const &amp;extent)</td></tr>
+<tr class="memdesc:ae82c506e09dbd4ce3589243d3e9656ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::vector.  <a href="namespacealpaka.html#ae82c506e09dbd4ce3589243d3e9656ad">More...</a><br /></td></tr>
+<tr class="separator:ae82c506e09dbd4ce3589243d3e9656ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TAllocator &gt; </td></tr>
+<tr class="memitem:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3cc206658f4ffdc109ca9ae82a2663b3">alpaka::createView</a> (TDev const &amp;dev, std::vector&lt; TElem, TAllocator &gt; &amp;vec)</td></tr>
+<tr class="memdesc:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::vector.  <a href="namespacealpaka.html#a3cc206658f4ffdc109ca9ae82a2663b3">More...</a><br /></td></tr>
+<tr class="separator:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a251e44ab7e6da4c81bf8173170506329"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TAllocator , typename TExtent &gt; </td></tr>
+<tr class="memitem:a251e44ab7e6da4c81bf8173170506329"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a251e44ab7e6da4c81bf8173170506329">alpaka::createView</a> (TDev const &amp;dev, std::vector&lt; TElem, TAllocator &gt; &amp;vec, TExtent const &amp;extent)</td></tr>
+<tr class="memdesc:a251e44ab7e6da4c81bf8173170506329"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::vector.  <a href="namespacealpaka.html#a251e44ab7e6da4c81bf8173170506329">More...</a><br /></td></tr>
+<tr class="separator:a251e44ab7e6da4c81bf8173170506329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TExtent &gt; </td></tr>
+<tr class="memitem:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">alpaka::createView</a> (TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent)</td></tr>
+<tr class="memdesc:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device pointer.  <a href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">More...</a><br /></td></tr>
+<tr class="separator:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b70a30fda25553ded3fe93739b0c95"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TExtent , typename TPitch &gt; </td></tr>
+<tr class="memitem:a57b70a30fda25553ded3fe93739b0c95"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a57b70a30fda25553ded3fe93739b0c95">alpaka::createView</a> (TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent, TPitch const &amp;pitch)</td></tr>
+<tr class="memdesc:a57b70a30fda25553ded3fe93739b0c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device pointer.  <a href="namespacealpaka.html#a57b70a30fda25553ded3fe93739b0c95">More...</a><br /></td></tr>
+<tr class="separator:a57b70a30fda25553ded3fe93739b0c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TView &gt; </td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad6365b89c5be8dd8917954798cc7fc21">alpaka::getPitchBytes</a> (TView const &amp;view) -&gt; Idx&lt; TView &gt;</td></tr>
 <tr class="separator:ad6365b89c5be8dd8917954798cc7fc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,7 +252,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed Sep 1 2021 15:13:56 for alpaka by
+    <li class="footer">Generated on Wed Sep 1 2021 17:30:19 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
