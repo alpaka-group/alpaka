@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1math_1_1ConceptMathAbs.html":[3,0,0,10,15],
+"structalpaka_1_1math_1_1ConceptMathAcos.html":[3,0,0,10,16],
 "structalpaka_1_1math_1_1ConceptMathAsin.html":[3,0,0,10,17],
 "structalpaka_1_1math_1_1ConceptMathAtan.html":[3,0,0,10,18],
 "structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,10,19],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1meta_1_1IntegralValuesInRange.html":[3,0,0,12,10],
 "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html":[3,0,0,12,12],
 "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html#a40a66c644ae849d912adbd40525c9dd9":[3,0,0,12,12,0],
-"structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4.html":[3,0,0,12,11],
-"structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4.html#a8e63c09e55aab5be62d36127cbbaa1d5":[3,0,0,12,11,0],
-"structalpaka_1_1meta_1_1IntegralValuesUnique.html":[3,0,0,12,13]
+"structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4.html":[3,0,0,12,11]
 };

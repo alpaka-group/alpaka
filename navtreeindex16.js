@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,528],
+"structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html#a9460775741862f4f2ab9b8370ffff32a":[3,0,0,17,528,0],
 "structalpaka_1_1traits_1_1TIdx.html":[3,0,0,17,537],
 "structalpaka_1_1traits_1_1TIdx.html#ad29f8577eab2d4cfd67770a641ac9b28":[3,0,0,17,537,0],
 "structalpaka_1_1traits_1_1Unmap.html":[3,0,0,17,538],

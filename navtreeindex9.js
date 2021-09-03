@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91":[3,0,0,2,4,1],
+"structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html":[3,0,0,2,5],
 "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html":[3,0,0,2,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,2,1,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html":[3,0,0,2,1,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_911c777b874615f26696fdd440a48a2b.html":[3,0,0,6,1,19],
 "structalpaka_1_1hierarchy_1_1Blocks.html":[3,0,0,9,0],
 "structalpaka_1_1hierarchy_1_1Grids.html":[3,0,0,9,1],
-"structalpaka_1_1hierarchy_1_1Threads.html":[3,0,0,9,2],
-"structalpaka_1_1math_1_1ConceptMathAbs.html":[3,0,0,10,15],
-"structalpaka_1_1math_1_1ConceptMathAcos.html":[3,0,0,10,16]
+"structalpaka_1_1hierarchy_1_1Threads.html":[3,0,0,9,2]
 };

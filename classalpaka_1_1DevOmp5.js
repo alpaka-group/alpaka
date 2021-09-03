@@ -5,6 +5,7 @@ var classalpaka_1_1DevOmp5 =
     [ "~DevOmp5", "classalpaka_1_1DevOmp5.html#abb2a1365111e0989b4a6cbc1b8a07578", null ],
     [ "getAllQueues", "classalpaka_1_1DevOmp5.html#a9b4e907588e77c0f3c112f495e5f9b5e", null ],
     [ "iDevice", "classalpaka_1_1DevOmp5.html#a35782fdc7cb28dc11d3769302189b88a", null ],
+    [ "mapStatic", "classalpaka_1_1DevOmp5.html#a8a7ca0a58190066fb04cfc1bbcd8d5d5", null ],
     [ "operator!=", "classalpaka_1_1DevOmp5.html#adb4b0ed1d895fd74e00e9a8ee7730f2f", null ],
     [ "operator=", "classalpaka_1_1DevOmp5.html#a85331a8152da813e0e81fed66da22b73", null ],
     [ "operator=", "classalpaka_1_1DevOmp5.html#a86515a4a7f2dfec097098124ba36742c", null ],
