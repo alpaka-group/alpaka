@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1math_1_1ConceptMathAsin.html":[3,0,0,10,17],
+"structalpaka_1_1math_1_1ConceptMathAtan.html":[3,0,0,10,18],
+"structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,10,19],
 "structalpaka_1_1math_1_1ConceptMathCbrt.html":[3,0,0,10,20],
 "structalpaka_1_1math_1_1ConceptMathCeil.html":[3,0,0,10,21],
 "structalpaka_1_1math_1_1ConceptMathCos.html":[3,0,0,10,22],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html#a40a66c644ae849d912adbd40525c9dd9":[3,0,0,12,12,0],
 "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4.html":[3,0,0,12,11],
 "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4.html#a8e63c09e55aab5be62d36127cbbaa1d5":[3,0,0,12,11,0],
-"structalpaka_1_1meta_1_1IntegralValuesUnique.html":[3,0,0,12,13],
-"structalpaka_1_1meta_1_1IntegralValuesUnique.html#a69c48ee16b2f405448bacdbca627fe84":[3,0,0,12,13,0],
-"structalpaka_1_1meta_1_1detail_1_1ApplyImpl.html":[3,0,0,12,0,0],
-"structalpaka_1_1meta_1_1detail_1_1ApplyImpl_3_01TList_3_01T_8_8_8_01_4_00_01TApplicant_01_4.html":[3,0,0,12,0,1]
+"structalpaka_1_1meta_1_1IntegralValuesUnique.html":[3,0,0,12,13]
 };

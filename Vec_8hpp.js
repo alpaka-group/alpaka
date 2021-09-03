@@ -21,6 +21,8 @@ var Vec_8hpp =
     [ "SubVecFromIndices< Vec< TDim, TVal >, std::integer_sequence< std::size_t, TIndices... >, std::enable_if_t<!std::is_same< std::integer_sequence< std::size_t, TIndices... >, std::make_integer_sequence< std::size_t, TDim::value > >::value > >", "structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_0459b1d99735bb5880b8ff05cb08e3e4.html", "structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_0459b1d99735bb5880b8ff05cb08e3e4" ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ],
+    [ "tuple_element< I, alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__element_3_01I_00_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", "structstd_1_1tuple__element_3_01I_00_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4" ],
+    [ "tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
     [ "CreateVecFromTwoIndexedVecsGreater", "Vec_8hpp.html#a8d6ec05ae3944637016495c02a9accfd", null ],
     [ "CreateVecFromTwoIndexedVecsGreaterEqual", "Vec_8hpp.html#a757e78323048841b8ae45c2b57853a9f", null ],
     [ "CreateVecFromTwoIndexedVecsLess", "Vec_8hpp.html#a5da8c2bc9876268abc9532881f2e7e0a", null ],

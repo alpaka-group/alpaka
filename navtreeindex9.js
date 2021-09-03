@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1core_1_1align_1_1OptimalAlignment.html":[3,0,0,2,0,0],
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,2,1,0],
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html":[3,0,0,2,1,1],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html#a3f110ab539eb93fe99a35a1c64d86406":[3,0,0,2,1,1,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html":[3,0,0,2,1,2],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html#a900abf5fc4d95ddb3beae6e3892f895d":[3,0,0,2,1,2,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1hierarchy_1_1Grids.html":[3,0,0,9,1],
 "structalpaka_1_1hierarchy_1_1Threads.html":[3,0,0,9,2],
 "structalpaka_1_1math_1_1ConceptMathAbs.html":[3,0,0,10,15],
-"structalpaka_1_1math_1_1ConceptMathAcos.html":[3,0,0,10,16],
-"structalpaka_1_1math_1_1ConceptMathAsin.html":[3,0,0,10,17],
-"structalpaka_1_1math_1_1ConceptMathAtan.html":[3,0,0,10,18],
-"structalpaka_1_1math_1_1ConceptMathAtan2.html":[3,0,0,10,19]
+"structalpaka_1_1math_1_1ConceptMathAcos.html":[3,0,0,10,16]
 };

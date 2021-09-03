@@ -10,6 +10,8 @@ var classalpaka_1_1Vec =
     [ "all", "classalpaka_1_1Vec.html#ae34b38c137f62df4df21d58a0bac8ad2", null ],
     [ "foldrAll", "classalpaka_1_1Vec.html#a977b175ea52b5c21039fc76997657e7b", null ],
     [ "foldrByIndices", "classalpaka_1_1Vec.html#ac8fb88f8b13e40592fb5587534241888", null ],
+    [ "get", "classalpaka_1_1Vec.html#ae828cf41fc4a831561b0d54170531c5d", null ],
+    [ "get", "classalpaka_1_1Vec.html#a9d0ba78720401b57422dc8c90c8d97b7", null ],
     [ "max", "classalpaka_1_1Vec.html#a99fad458ce1140a86e73e7e1b33fa5b2", null ],
     [ "maxElem", "classalpaka_1_1Vec.html#ad97763528181ca2f2542a1dfe2334f56", null ],
     [ "min", "classalpaka_1_1Vec.html#a12d4017fe620a87aeaa2c5dbb6607d44", null ],

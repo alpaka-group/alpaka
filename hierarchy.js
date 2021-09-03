@@ -1670,7 +1670,8 @@ var hierarchy =
       [ "alpaka::core::align::OptimalAlignment< TsizeBytes >", "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html", null ],
       [ "alpaka::core::detail::RoundUpToPowerOfTwoHelper< N, TisPowerTwo >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html", null ],
       [ "alpaka::core::detail::RoundUpToPowerOfTwoHelper< N, false >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html", null ],
-      [ "alpaka::cuda::traits::IsCudaBuiltInType< T >", "structalpaka_1_1cuda_1_1traits_1_1IsCudaBuiltInType.html", null ]
+      [ "alpaka::cuda::traits::IsCudaBuiltInType< T >", "structalpaka_1_1cuda_1_1traits_1_1IsCudaBuiltInType.html", null ],
+      [ "std::tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ]
     ] ],
     [ "std::queue< T >", null, [
       [ "alpaka::core::detail::ThreadSafeQueue< T >", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", null ],
@@ -1679,6 +1680,7 @@ var hierarchy =
     [ "true_type", null, [
       [ "alpaka::meta::detail::ConjunctionImpl<... >", "structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl.html", null ]
     ] ],
+    [ "std::tuple_element< I, alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__element_3_01I_00_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
     [ "alpaka::detail::TaskCopyCpuBase< DimInt< 1u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html", [
       [ "alpaka::detail::TaskCopyCpu< DimInt< 1u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", null ]
     ] ],
