@@ -1,6 +1,3 @@
-include:
-  - local: '/script/gitlabci/job_base.yml'
-
 variables:
   ALPAKA_GITLAB_CI_CONTAINER_VERSION: "1.4"
   ALPAKA_CI_OS_NAME: "Linux"
@@ -21,25 +18,14 @@ variables:
   # needs to be enabled, that test on the GPU are executed
   ALPAKA_FORCE_RUNTIME_TEST: "ON"
   ALPAKA_CI_SANITIZERS: ""
-  ALPAKA_CI_CMAKE_DIR: "/opt/cmake/"
   ALPAKA_CI_INSTALL_CUDA: "OFF"
   ALPAKA_CI_INSTALL_HIP: "OFF"
+  ALPAKA_CI_CMAKE_DIR: "$HOME/cmake"
+  BOOST_ROOT: "$HOME/boost"
+  ALPAKA_CI_BOOST_LIB_DIR: "$HOME/boost_libs"
+  ALPAKA_CI_CUDA_DIR: "$HOME/cuda"
+  ALPAKA_CI_HIP_ROOT_DIR: "$HOME/hip"
 
-linux_gcc-9_release:
-  variables:
-    ALPAKA_CI_GCC_VER: 9
-    CMAKE_BUILD_TYPE: Release
-    ALPAKA_CI_STDLIB: libc++
-    ALPAKA_BOOST_VERSION: 1.74.0
-    ALPAKA_CI_CMAKE_VER: 3.20.0
-  extends: .base_gcc
-
-linux_nvcc-11.3_gcc-7_release:
-  variables:
-    ALPAKA_CONTAINER_SUFFIX: cuda113
-    ALPAKA_CI_GCC_VER: 7
-    ALPAKA_CI_STDLIB: libc++
-    CMAKE_BUILD_TYPE: Release
-    ALPAKA_BOOST_VERSION: 1.74.0
-    ALPAKA_CI_CMAKE_VER: 3.20.0
-  extends: .base_cuda
+include:
+  - local: '/script/gitlabci/job_base.yml'
+  - local: '/script/gitlabci/job_cuda9.2.yml'

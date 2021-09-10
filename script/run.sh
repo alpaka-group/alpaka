@@ -33,7 +33,7 @@ then
     then
         LD_LIBRARY_PATH=
     fi
-    if [ "${CXX}" = "clang++" ]
+    if [[ "${CXX}" = "clang++"* ]]
     then
         if [ "${ALPAKA_CI_CLANG_VER}" -ge "10" ]
         then
@@ -96,7 +96,7 @@ then
             export CMAKE_CXX_FLAGS=
         fi
 
-        if [ "${CXX}" == "clang++" ]
+        if [[ "${CXX}" == "clang++"* ]]
         then
             CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libc++"
         fi
