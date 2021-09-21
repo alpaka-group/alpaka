@@ -147,6 +147,105 @@ namespace alpaka
 
 #    endif // _OPENMP >= 201107
 
+// check for OpenMP 5.1+
+// "omp atomic compare" was introduced with OpenMP 5.1
+#    if _OPENMP >= 202011
+
+        //! The OpenMP accelerators atomic operation: Min
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicMin, AtomicOmpBuiltIn, T, THierarchy>
+        {
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            {
+                T old;
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture compare
+                {
+                    old = ref;
+                    ref = (ref <= value) ? ref : value;
+                }
+                return old;
+            }
+        };
+
+        //! The OpenMP accelerators atomic operation: Max
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicMax, AtomicOmpBuiltIn, T, THierarchy>
+        {
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            {
+                T old;
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture compare
+                {
+                    old = ref;
+                    ref = (ref >= value) ? ref : value;
+                }
+                return old;
+            }
+        };
+
+        //! The OpenMP accelerators atomic operation: Inc
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicInc, AtomicOmpBuiltIn, T, THierarchy>
+        {
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            {
+                T old;
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture compare
+                {
+                    old = ref;
+                    ref = ((ref >= value) ? 0 : (ref + 1));
+                }
+                return old;
+            }
+        };
+
+        //! The OpenMP accelerators atomic operation: Dec
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicDec, AtomicOmpBuiltIn, T, THierarchy>
+        {
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            {
+                T old;
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture compare
+                {
+                    old = ref;
+                    ref = ((ref == 0) || (ref > value)) ? value : (ref - 1);
+                }
+                return old;
+            }
+        };
+
+        //! The OpenMP accelerators atomic operation: Cas
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicCas, AtomicOmpBuiltIn, T, THierarchy>
+        {
+            ALPAKA_FN_HOST static auto atomicOp(
+                AtomicOmpBuiltIn const&,
+                T* const addr,
+                T const& compare,
+                T const& value) -> T
+            {
+                T old;
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture compare
+                {
+                    old = ref;
+                    ref = (ref == compare ? value : ref);
+                }
+                return old;
+            }
+        };
+
+#    else
         //! The OpenMP accelerators atomic operation
         //
         // generic implementations for operations where native atomics are not available
@@ -158,7 +257,7 @@ namespace alpaka
                 T old;
 // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all
 // threads.
-#    pragma omp critical(AlpakaOmpAtomicOp)
+#        pragma omp critical(AlpakaOmpAtomicOp)
                 {
                     old = TOp()(addr, value);
                 }
@@ -173,13 +272,16 @@ namespace alpaka
                 T old;
 // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all
 // threads.
-#    pragma omp critical(AlpakaOmpAtomicOp2)
+#        pragma omp critical(AlpakaOmpAtomicOp2)
                 {
                     old = TOp()(addr, compare, value);
                 }
                 return old;
             }
         };
+
+#    endif // _OPENMP >= 202011
+
     } // namespace traits
 } // namespace alpaka
 
