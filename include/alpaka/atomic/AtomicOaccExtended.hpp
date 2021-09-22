@@ -90,7 +90,12 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]()
+                    [&
+#    if BOOST_COMP_PGI
+                     ,
+                     addr // NVHPC 21.7: capturing pointer by ref results in invalid address inside lambda
+#    endif
+                ]()
                     {
                         auto& ref(*addr);
                         T old = ref;
@@ -113,7 +118,12 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]()
+                    [&
+#    if BOOST_COMP_PGI
+                     ,
+                     addr // NVHPC 21.7: capturing pointer by ref results in invalid address inside lambda
+#    endif
+                ]()
                     {
                         auto& ref(*addr);
                         T old = ref;
@@ -134,7 +144,12 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]()
+                    [&
+#    if BOOST_COMP_PGI
+                     ,
+                     addr // NVHPC 21.7: capturing pointer by ref results in invalid address inside lambda
+#    endif
+                ]()
                     {
                         auto& ref(*addr);
                         T old = ref;
@@ -155,7 +170,12 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]()
+                    [&
+#    if BOOST_COMP_PGI
+                     ,
+                     addr // NVHPC 21.7: capturing pointer by ref results in invalid address inside lambda
+#    endif
+                ]()
                     {
                         auto& ref(*addr);
                         T old = ref;
@@ -177,7 +197,12 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]()
+                    [&
+#    if BOOST_COMP_PGI
+                     ,
+                     addr // NVHPC 21.7: capturing pointer by ref results in invalid address inside lambda
+#    endif
+                ]()
                     {
                         auto& ref(*addr);
                         T old = ref;
