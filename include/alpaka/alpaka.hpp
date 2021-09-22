@@ -167,7 +167,9 @@
 #include <alpaka/pltf/PltfUniformCudaHipRt.hpp>
 #include <alpaka/pltf/Traits.hpp>
 // rand
+#include <alpaka/rand/RandDefault.hpp>
 #include <alpaka/rand/RandPhilox.hpp>
+#include <alpaka/rand/RandStdLib.hpp>
 #include <alpaka/rand/RandUniformCudaHipRand.hpp>
 #include <alpaka/rand/Traits.hpp>
 // idx
