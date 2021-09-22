@@ -105,7 +105,12 @@ namespace alpaka
                  || defined(TEST_UNIT_INTRINSIC) || defined(TEST_UNIT_KERNEL) || defined(TEST_UNIT_MEM_VIEW)))        \
             || defined(TEST_UNIT_MATH) /* because of static const members */                                          \
             || defined(TEST_UNIT_MEM_BUF) /* actually works, but hangs when ran by ctest */                           \
-            ))
+            ))                                                                                                        \
+    && !(                                                                                                             \
+        BOOST_COMP_PGI                                                                                                \
+        && ((!defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST))                                                              \
+            && (defined(TEST_UNIT_MATH) /* 21.7: nvc++ fmod no acc device info */                                     \
+                )))
             template<typename TDim, typename TIdx>
             using AccOaccIfAvailableElseInt = alpaka::AccOacc<TDim, TIdx>;
 #else

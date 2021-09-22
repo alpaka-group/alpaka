@@ -21,7 +21,7 @@
 #    include <alpaka/intrinsic/IntrinsicFallback.hpp>
 #    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/mem/fence/MemFenceOacc.hpp>
-#    include <alpaka/rand/RandStdLib.hpp>
+#    include <alpaka/rand/RandDefault.hpp>
 #    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
 
@@ -66,7 +66,7 @@ namespace alpaka
         : public bt::IdxBtLinear<TDim, TIdx>
         , public math::MathStdLib
         , public MemFenceOacc
-        , public rand::RandStdLib
+        , public rand::RandDefault
         , public TimeStdLib
         , public warp::WarpSingleThread
         ,
@@ -90,7 +90,7 @@ namespace alpaka
             : bt::IdxBtLinear<TDim, TIdx>(blockThreadIdx)
             , math::MathStdLib()
             , MemFenceOacc()
-            , rand::RandStdLib()
+            , rand::RandDefault()
             , TimeStdLib()
             , m_blockShared(blockShared)
         {

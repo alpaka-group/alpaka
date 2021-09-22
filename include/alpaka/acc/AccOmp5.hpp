@@ -32,7 +32,7 @@
 #    include <alpaka/intrinsic/IntrinsicFallback.hpp>
 #    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/mem/fence/MemFenceOmp5.hpp>
-#    include <alpaka/rand/RandStdLib.hpp>
+#    include <alpaka/rand/RandDefault.hpp>
 #    include <alpaka/time/TimeOmp.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
@@ -80,7 +80,7 @@ namespace alpaka
         // cannot determine which intrinsics are safe to use (depends on target), using fallback
         public IntrinsicFallback,
         public MemFenceOmp5,
-        public rand::RandStdLib,
+        public rand::RandDefault,
         public TimeOmp,
         public warp::WarpSingleThread,
         public concepts::Implements<ConceptAcc, AccOmp5<TDim, TIdx>>
@@ -116,7 +116,7 @@ namespace alpaka
             BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity())
             , BlockSyncBarrierOmp()
             , MemFenceOmp5()
-            , rand::RandStdLib()
+            , rand::RandDefault()
             , TimeOmp()
         {
         }
