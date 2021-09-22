@@ -782,10 +782,14 @@ using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 TEMPLATE_LIST_TEST_CASE("atomicOperationsWorking", "[atomic]", TestAccs)
 {
     using Acc = TestType;
-    TestAtomicOperations<Acc, unsigned char>::testAtomicOperations();
-    TestAtomicOperations<Acc, char>::testAtomicOperations();
-    TestAtomicOperations<Acc, unsigned short>::testAtomicOperations();
-    TestAtomicOperations<Acc, short>::testAtomicOperations();
+
+    // Types smaller than 32-bit are not supoported on accelerators for most atomics
+    // these should be reenabled for supporting backends (all CPU backends)
+    // when atomic testing is made more consistent
+    // TestAtomicOperations<Acc, unsigned char>::testAtomicOperations();
+    // TestAtomicOperations<Acc, char>::testAtomicOperations();
+    // TestAtomicOperations<Acc, unsigned short>::testAtomicOperations();
+    // TestAtomicOperations<Acc, short>::testAtomicOperations();
 
     TestAtomicOperations<Acc, unsigned int>::testAtomicOperations();
     TestAtomicOperations<Acc, int>::testAtomicOperations();
