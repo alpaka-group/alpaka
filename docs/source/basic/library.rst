@@ -107,6 +107,32 @@ The kernel function object is shared across all threads in all blocks.
 Due to the block execution order being undefined, there is no safe and consistent way of altering state that is stored inside of the function object.
 Therefore, the ``operator()`` of the kernel function object has to be ``const`` and is not allowed to modify any of the object members.
 
+Kernels can also be defined via lambda expressions.
+
+.. code-block:: cpp
+
+   auto kernel = [] ALPAKA_FN_ACC (auto const & acc /* , ... */) -> void {
+	// ...
+   }
+
+.. attention::
+   The Nvidia ``nvcc`` does not support generic lambdas which are marked with `__device__`, which is what `ALPAKA_FN_ACC` expands to (among others) when the CUDA backend is active.
+   Therefore, a workaround is required. The type of the ``acc`` must be defined outside the lambda.
+
+   .. code-block:: cpp
+
+      int main() {
+          // ...
+	  using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
+
+	  auto kernel = [] ALPAKA_FN_ACC (Acc const & acc /* , ... */) -> void {
+	      // ...
+	  }
+	  // ...
+      }
+
+   However, the kernel is no longer completely generic and cannot be used with different accelerators.
+   If this is required, the kernel must be defined as a function object.
 
 Index and Work Division
 ```````````````````````
@@ -147,7 +173,7 @@ Example:
 
 .. code-block:: cpp
 
-    /* Initial values: 
+    /* Initial values:
      * vars[0] = 1
      * vars[1] = 2
      */

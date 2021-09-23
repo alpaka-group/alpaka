@@ -118,6 +118,10 @@ auto main() -> int
     // This example passes the number exclamation marks, that should
     // be written after we greet the world, to the
     // lambda function.
+    //
+    // To define a fully generic kernel lambda, the type of acc must be
+    // auto. The Nvidia nvcc does not support generic lambdas, so the
+    // type is set to Acc.
     alpaka::exec<Acc>(
         queue,
         workDiv,
