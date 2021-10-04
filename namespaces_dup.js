@@ -1,4 +1,5 @@
 var namespaces_dup =
 [
-    [ "alpaka", "namespacealpaka.html", "namespacealpaka" ]
+    [ "alpaka", "namespacealpaka.html", "namespacealpaka" ],
+    [ "utility", "namespaceutility.html", "namespaceutility" ]
 ];

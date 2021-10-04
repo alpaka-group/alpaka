@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['prng_4130',['prng',['../structalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMTengine.html#a29a95091e48520aeff62cbb788800d68',1,'alpaka::rand::engine::cpu::TinyMTengine']]]
+  ['no_5fcpuid_4189',['NO_CPUID',['../namespacealpaka_1_1cpu_1_1detail.html#a00bbec37f6a4dd972e4c008f6c0dffff',1,'alpaka::cpu::detail']]]
 ];

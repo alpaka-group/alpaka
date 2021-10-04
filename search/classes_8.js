@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kernelexecutionfixture_2972',['KernelExecutionFixture',['../classalpaka_1_1test_1_1KernelExecutionFixture.html',1,'alpaka::test']]]
+  ['kernelexecutionfixture_3010',['KernelExecutionFixture',['../classalpaka_1_1test_1_1KernelExecutionFixture.html',1,'alpaka::test']]]
 ];

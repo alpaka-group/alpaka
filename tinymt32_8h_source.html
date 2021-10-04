@@ -448,7 +448,7 @@ $(document).ready(function(){initNavTree('tinymt32_8h_source.html',''); initResi
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                            <span class="keywordtype">int</span> key_length) {</div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lag = 1;</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> mid = 1;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size = 4;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a> = 4;</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i, j;</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count;</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    uint32_t r;</div>
@@ -463,42 +463,42 @@ $(document).ready(function(){initNavTree('tinymt32_8h_source.html',''); initResi
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        count = <a class="code" href="tinymt32_8h.html#ad7a4b73a72fafba00138f2491676c498">MIN_LOOP</a>;</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    }</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    r = <a class="code" href="tinymt32_8h.html#afe0e4e5727d9188f5ae1632da731d412">ini_func1</a>(st[0] ^ st[mid % size]</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                  ^ st[(size - 1) % size]);</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    st[mid % size] += r;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    r = <a class="code" href="tinymt32_8h.html#afe0e4e5727d9188f5ae1632da731d412">ini_func1</a>(st[0] ^ st[mid % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                  ^ st[(<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a> - 1) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    st[mid % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] += r;</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    r += (<span class="keywordtype">unsigned</span> int)key_length;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    st[(mid + lag) % size] += r;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    st[(mid + lag) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] += r;</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    st[0] = r;</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    count--;</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="keywordflow">for</span> (i = 1, j = 0; (j &lt; count) &amp;&amp; (j &lt; (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)key_length); j++) {</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        r = <a class="code" href="tinymt32_8h.html#afe0e4e5727d9188f5ae1632da731d412">ini_func1</a>(st[i % size]</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                      ^ st[(i + mid) % size]</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                      ^ st[(i + size - 1) % size]);</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        st[(i + mid) % size] += r;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        r = <a class="code" href="tinymt32_8h.html#afe0e4e5727d9188f5ae1632da731d412">ini_func1</a>(st[i % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                      ^ st[(i + mid) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                      ^ st[(i + <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a> - 1) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]);</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        st[(i + mid) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] += r;</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        r += init_key[j] + i;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        st[(i + mid + lag) % size] += r;</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        st[i % size] = r;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        i = (i + 1) % size;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        st[(i + mid + lag) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] += r;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        st[i % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] = r;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        i = (i + 1) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>;</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    }</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="keywordflow">for</span> (; j &lt; count; j++) {</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        r = <a class="code" href="tinymt32_8h.html#afe0e4e5727d9188f5ae1632da731d412">ini_func1</a>(st[i % size]</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                      ^ st[(i + mid) % size]</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                      ^ st[(i + size - 1) % size]);</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        st[(i + mid) % size] += r;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        r = <a class="code" href="tinymt32_8h.html#afe0e4e5727d9188f5ae1632da731d412">ini_func1</a>(st[i % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                      ^ st[(i + mid) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                      ^ st[(i + <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a> - 1) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]);</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        st[(i + mid) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] += r;</div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        r += i;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        st[(i + mid + lag) % size] += r;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        st[i % size] = r;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        i = (i + 1) % size;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        st[(i + mid + lag) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] += r;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        st[i % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] = r;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        i = (i + 1) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>;</div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    }</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    <span class="keywordflow">for</span> (j = 0; j &lt; size; j++) {</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        r = <a class="code" href="tinymt32_8h.html#a8da6197e2fe073abb9016e3cf4822807">ini_func2</a>(st[i % size]</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                      + st[(i + mid) % size]</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                      + st[(i + size - 1) % size]);</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        st[(i + mid) % size] ^= r;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    <span class="keywordflow">for</span> (j = 0; j &lt; <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>; j++) {</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        r = <a class="code" href="tinymt32_8h.html#a8da6197e2fe073abb9016e3cf4822807">ini_func2</a>(st[i % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                      + st[(i + mid) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                      + st[(i + <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a> - 1) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>]);</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        st[(i + mid) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] ^= r;</div>
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        r -= i;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        st[(i + mid + lag) % size] ^= r;</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        st[i % size] = r;</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        i = (i + 1) % size;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        st[(i + mid + lag) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] ^= r;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        st[i % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>] = r;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        i = (i + 1) % <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>;</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    }</div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <a class="code" href="tinymt32_8h.html#afef739214ca5da19c60be86f0cf94f0c">period_certification</a>(random);</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="tinymt32_8h.html#a27671e17b40aebc0e9aca6fcd7252e6a">PRE_LOOP</a>; i++) {</div>
@@ -551,6 +551,7 @@ $(document).ready(function(){initNavTree('tinymt32_8h_source.html',''); initResi
 <div class="ttc" id="atinymt32_8h_html_a8da6197e2fe073abb9016e3cf4822807"><div class="ttname"><a href="tinymt32_8h.html#a8da6197e2fe073abb9016e3cf4822807">ini_func2</a></div><div class="ttdeci">static uint32_t ini_func2(uint32_t x)</div><div class="ttdef"><b>Definition:</b> <a href="tinymt32_8h_source.html#l00309">tinymt32.h:309</a></div></div>
 <div class="ttc" id="atinymt32_8h_html_aad7ed549a9eb60849db663f723d63ba6"><div class="ttname"><a href="tinymt32_8h.html#aad7ed549a9eb60849db663f723d63ba6">TINYMT32_SH8</a></div><div class="ttdeci">#define TINYMT32_SH8</div><div class="ttdef"><b>Definition:</b> <a href="tinymt32_8h_source.html#l00058">tinymt32.h:58</a></div></div>
 <div class="ttc" id="atinymt32_8h_html_ac29e1292a65ed4821d4453bbb2ea2c30"><div class="ttname"><a href="tinymt32_8h.html#ac29e1292a65ed4821d4453bbb2ea2c30">tinymt32_get_mexp</a></div><div class="ttdeci">static int tinymt32_get_mexp(tinymt32_t *random)</div><div class="ttdef"><b>Definition:</b> <a href="tinymt32_8h_source.html#l00093">tinymt32.h:93</a></div></div>
+<div class="ttc" id="anamespaceutility_1_1tuple_html_a3ee33aa9c095eefbb760200218a320fc"><div class="ttname"><a href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">utility::tuple::size</a></div><div class="ttdeci">static constexpr size_t size(Tuple&lt; Args... &gt; &amp;)</div><div class="ttdoc">size</div><div class="ttdef"><b>Definition:</b> <a href="STLTuple_8hpp_source.html#l00248">STLTuple.hpp:248</a></div></div>
 <div class="ttc" id="atinymt32_8h_html_a1fb73633dcae08b2a209674d7579c6de"><div class="ttname"><a href="tinymt32_8h.html#a1fb73633dcae08b2a209674d7579c6de">tinymt32_generate_32double</a></div><div class="ttdeci">static double tinymt32_generate_32double(tinymt32_t *random)</div><div class="ttdef"><b>Definition:</b> <a href="tinymt32_8h_source.html#l00281">tinymt32.h:281</a></div></div>
 <div class="ttc" id="atinymt32_8h_html_ae3012cf9080c25d473c7c05b65621e2d"><div class="ttname"><a href="tinymt32_8h.html#ae3012cf9080c25d473c7c05b65621e2d">TINYMT32_SH1</a></div><div class="ttdeci">#define TINYMT32_SH1</div><div class="ttdef"><b>Definition:</b> <a href="tinymt32_8h_source.html#l00057">tinymt32.h:57</a></div></div>
 <div class="ttc" id="atinymt32_8h_html_ad76f76a71e9ffc13963ee895d1828b2c"><div class="ttname"><a href="tinymt32_8h.html#ad76f76a71e9ffc13963ee895d1828b2c">UINT32_C</a></div><div class="ttdeci">#define UINT32_C(value)</div><div class="ttdef"><b>Definition:</b> <a href="tinymt32_8h_source.html#l00038">tinymt32.h:38</a></div></div>
@@ -558,7 +559,7 @@ $(document).ready(function(){initNavTree('tinymt32_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="dir_141d118e57743bf276e96d2b8fa0c4d8.html">TinyMT</a></li><li class="navelem"><a class="el" href="tinymt32_8h.html">tinymt32.h</a></li>
-    <li class="footer">Generated on Fri Oct 1 2021 08:48:30 for alpaka by
+    <li class="footer">Generated on Mon Oct 4 2021 05:53:10 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

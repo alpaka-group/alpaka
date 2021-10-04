@@ -242,13 +242,13 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                        HW_PHYSMEM64</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#        endif</span></div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                      };</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                std::uint64_t size(0);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                std::size_t sizeLen{<span class="keyword">sizeof</span>(size)};</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="keywordflow">if</span>(sysctl(mib, 2, &amp;size, &amp;sizeLen, <span class="keyword">nullptr</span>, 0) &lt; 0)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                std::uint64_t <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>(0);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                std::size_t sizeLen{<span class="keyword">sizeof</span>(<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>)};</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="keywordflow">if</span>(sysctl(mib, 2, &amp;<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, &amp;sizeLen, <span class="keyword">nullptr</span>, 0) &lt; 0)</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                {</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    <span class="keywordflow">throw</span> std::logic_error(<span class="stringliteral">&quot;getTotalGlobalMemSizeBytes failed calling sysctl!&quot;</span>);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(size);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#    elif defined(_SC_AIX_REALMEM) // AIX.</span></div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(sysconf(_SC_AIX_REALMEM)) * <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(1024);</div>
@@ -271,13 +271,13 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                        HW_PHYSMEM;</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#        endif</span></div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            };</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            std::uint32_t size(0);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            std::size_t <span class="keyword">const</span> sizeLen{<span class="keyword">sizeof</span>(size)};</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">if</span>(sysctl(mib, 2, &amp;size, &amp;sizeLen, <span class="keyword">nullptr</span>, 0) &lt; 0)</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            std::uint32_t <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>(0);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            std::size_t <span class="keyword">const</span> sizeLen{<span class="keyword">sizeof</span>(<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>)};</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">if</span>(sysctl(mib, 2, &amp;<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, &amp;sizeLen, <span class="keyword">nullptr</span>, 0) &lt; 0)</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            {</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                <span class="keywordflow">throw</span> std::logic_error(<span class="stringliteral">&quot;getTotalGlobalMemSizeBytes failed calling sysctl!&quot;</span>);</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(size);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">#else</span></div>
@@ -353,11 +353,12 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div class="ttc" id="anamespacealpaka_1_1cpu_1_1detail_html_a84fb47ca375df6c2f0b222b59f79dcbe"><div class="ttname"><a href="namespacealpaka_1_1cpu_1_1detail.html#a84fb47ca375df6c2f0b222b59f79dcbe">alpaka::cpu::detail::UNKNOWN_COMPILER</a></div><div class="ttdeci">constexpr int UNKNOWN_COMPILER</div><div class="ttdef"><b>Definition:</b> <a href="SysInfo_8hpp_source.html#l00050">SysInfo.hpp:50</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1cpu_1_1detail_html_abb8c51265e5de4cb525e1dbd924ff436"><div class="ttname"><a href="namespacealpaka_1_1cpu_1_1detail.html#abb8c51265e5de4cb525e1dbd924ff436">alpaka::cpu::detail::getFreeGlobalMemSizeBytes</a></div><div class="ttdeci">auto getFreeGlobalMemSizeBytes() -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="SysInfo_8hpp_source.html#l00200">SysInfo.hpp:200</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00049">AccCpuFibers.hpp:49</a></div></div>
+<div class="ttc" id="anamespaceutility_1_1tuple_html_a3ee33aa9c095eefbb760200218a320fc"><div class="ttname"><a href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">utility::tuple::size</a></div><div class="ttdeci">static constexpr size_t size(Tuple&lt; Args... &gt; &amp;)</div><div class="ttdoc">size</div><div class="ttdef"><b>Definition:</b> <a href="STLTuple_8hpp_source.html#l00248">STLTuple.hpp:248</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="dir_c201f7a35756f890108797586165839d.html">cpu</a></li><li class="navelem"><a class="el" href="SysInfo_8hpp.html">SysInfo.hpp</a></li>
-    <li class="footer">Generated on Fri Oct 1 2021 08:48:29 for alpaka by
+    <li class="footer">Generated on Mon Oct 4 2021 05:53:09 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

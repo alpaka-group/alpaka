@@ -121,6 +121,9 @@ Functions</h2></td></tr>
 <tr class="separator:a7cc30c54c88b7aa4149799ba0c71be33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37ee6854f4b95a55572f293d23d1d6fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a> <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">alignedFree</a> (void *ptr)</td></tr>
 <tr class="separator:a37ee6854f4b95a55572f293d23d1d6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bc48ef7c999409550fcbe1a948d6f31"><td class="memTemplParams" colspan="2">template&lt;typename TFunc , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a3bc48ef7c999409550fcbe1a948d6f31"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">apply</a> (TFunc &amp;&amp;f, Tuple&lt; TArgs... &gt; t)</td></tr>
+<tr class="separator:a3bc48ef7c999409550fcbe1a948d6f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42d5ffb31558d590b656b262a269a8d6"><td class="memTemplParams" colspan="2">template&lt;typename TLhs , typename TRhs &gt; </td></tr>
 <tr class="memitem:a42d5ffb31558d590b656b262a269a8d6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a42d5ffb31558d590b656b262a269a8d6">assertGreaterThan</a> (TRhs const &amp;lhs) -&gt; void</td></tr>
 <tr class="memdesc:a42d5ffb31558d590b656b262a269a8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method asserts that the integral value TArg is less than Tidx.  <a href="namespacealpaka_1_1core.html#a42d5ffb31558d590b656b262a269a8d6">More...</a><br /></td></tr>
@@ -183,6 +186,46 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="AlignedAlloc_8hpp_source.html#l00042">42</a> of file <a class="el" href="AlignedAlloc_8hpp_source.html">AlignedAlloc.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a3bc48ef7c999409550fcbe1a948d6f31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bc48ef7c999409550fcbe1a948d6f31">&#9670;&nbsp;</a></span>apply()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TFunc , typename... TArgs&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto alpaka::core::apply </td>
+          <td>(</td>
+          <td class="paramtype">TFunc &amp;&amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Tuple&lt; TArgs... &gt;&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Tuple_8hpp_source.html#l00033">33</a> of file <a class="el" href="Tuple_8hpp_source.html">Tuple.hpp</a>.</p>
 
 </div>
 </div>
@@ -266,7 +309,7 @@ template&lt;typename T , typename V &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li>
-    <li class="footer">Generated on Fri Oct 1 2021 08:48:31 for alpaka by
+    <li class="footer">Generated on Mon Oct 4 2021 05:53:10 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
