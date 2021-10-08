@@ -72,7 +72,7 @@ namespace alpaka
                     }
 
 #    if BOOST_COMP_HIP
-                    ALPAKA_FN_HOST_ACC ~Xor() = default;
+                    ~Xor() = default;
 #    endif
 
                     __device__ Xor(

@@ -605,7 +605,7 @@ namespace alpaka
             {
                 return !((*this) == rhs);
             }
-            ALPAKA_FN_HOST ~EventHostManualTriggerHip() = default;
+            ~EventHostManualTriggerHip() = default;
 
             void trigger()
             {

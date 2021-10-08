@@ -50,14 +50,9 @@ namespace alpaka
             , m_threadElemExtent(subVecEnd<TDim>(getWorkDiv<Thread, Elems>(other)))
         {
         }
-        ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC
+
         WorkDivMembers(WorkDivMembers&&) = default;
-        ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC
         auto operator=(WorkDivMembers const&) -> WorkDivMembers& = default;
-        ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC
         auto operator=(WorkDivMembers&&) -> WorkDivMembers& = default;
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TWorkDiv>
@@ -68,8 +63,8 @@ namespace alpaka
             m_threadElemExtent = subVecEnd<TDim>(getWorkDiv<Thread, Elems>(other));
             return *this;
         }
-        ALPAKA_NO_HOST_ACC_WARNING
-        /*virtual*/ ALPAKA_FN_HOST_ACC ~WorkDivMembers() = default;
+
+        /*virtual*/ ~WorkDivMembers() = default;
 
     public:
         Vec<TDim, TIdx> m_gridBlockExtent;
