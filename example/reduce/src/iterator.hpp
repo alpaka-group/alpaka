@@ -47,7 +47,7 @@ public:
     //! Constructor.
     //!
     //! \param other The other iterator object.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE Iterator(const Iterator& other) = default;
+    Iterator(const Iterator& other) = default;
 
     //! Compare operator.
     //!

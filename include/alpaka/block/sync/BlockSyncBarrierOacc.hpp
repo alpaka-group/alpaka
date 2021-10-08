@@ -23,7 +23,7 @@ namespace alpaka
     class BlockSyncBarrierOacc
     {
     public:
-        ALPAKA_FN_HOST BlockSyncBarrierOacc() = default;
+        BlockSyncBarrierOacc() = default;
         ALPAKA_FN_HOST BlockSyncBarrierOacc(BlockSyncBarrierOacc const&) = delete;
         ALPAKA_FN_HOST BlockSyncBarrierOacc(BlockSyncBarrierOacc&&) = delete;
         ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOacc const&) -> BlockSyncBarrierOacc& = delete;
