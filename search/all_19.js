@@ -21,7 +21,7 @@ var searchData=
   ['_7eblocksyncbarrierfiber_2013',['~BlockSyncBarrierFiber',['../classalpaka_1_1BlockSyncBarrierFiber.html#a378192db1c432df0a3060df4846c26fc',1,'alpaka::BlockSyncBarrierFiber']]],
   ['_7eblocksyncbarrieromp_2014',['~BlockSyncBarrierOmp',['../classalpaka_1_1BlockSyncBarrierOmp.html#a6e240b0f5bb659944215115ae8f70fd1',1,'alpaka::BlockSyncBarrierOmp']]],
   ['_7eblocksyncbarrierthread_2015',['~BlockSyncBarrierThread',['../classalpaka_1_1BlockSyncBarrierThread.html#ab76509f5a5dbbbd655e30434f7c543a2',1,'alpaka::BlockSyncBarrierThread']]],
-  ['_7eblocksyncnoop_2016',['~BlockSyncNoOp',['../classalpaka_1_1BlockSyncNoOp.html#af5797b58bdcaebd863fde7d7e4e1cfd6',1,'alpaka::BlockSyncNoOp']]],
+  ['_7eblocksyncnoop_2016',['~BlockSyncNoOp',['../classalpaka_1_1BlockSyncNoOp.html#a8e7bd9abd577325bdfbbf8ea47b95ad2',1,'alpaka::BlockSyncNoOp']]],
   ['_7eblocksyncuniformcudahipbuiltin_2017',['~BlockSyncUniformCudaHipBuiltIn',['../classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html#a368fb5f5929b752eaecee2b61660e98e',1,'alpaka::BlockSyncUniformCudaHipBuiltIn']]],
   ['_7ebufcpu_2018',['~BufCpu',['../classalpaka_1_1BufCpu.html#aa5d43f4853ec5b13808adc63e56738b8',1,'alpaka::BufCpu']]],
   ['_7ebufcpuimpl_2019',['~BufCpuImpl',['../classalpaka_1_1detail_1_1BufCpuImpl.html#a8b28f75adc5d7f37677b09616cf2c749',1,'alpaka::detail::BufCpuImpl']]],
@@ -75,10 +75,10 @@ var searchData=
   ['_7etimeomp_2067',['~TimeOmp',['../classalpaka_1_1TimeOmp.html#a0a10725544c118d44f4629d57b741751',1,'alpaka::TimeOmp']]],
   ['_7etimestdlib_2068',['~TimeStdLib',['../classalpaka_1_1TimeStdLib.html#af5c9a4acbf747791935433bad5e23440',1,'alpaka::TimeStdLib']]],
   ['_7etimeuniformcudahipbuiltin_2069',['~TimeUniformCudaHipBuiltIn',['../classalpaka_1_1TimeUniformCudaHipBuiltIn.html#a9a241b3b88705ecabee7e2387ada3c73',1,'alpaka::TimeUniformCudaHipBuiltIn']]],
-  ['_7evec_2070',['~Vec',['../classalpaka_1_1Vec.html#a88e66f65fd471ecdc55b4116e19d84a8',1,'alpaka::Vec']]],
-  ['_7eviewplainptr_2071',['~ViewPlainPtr',['../classalpaka_1_1ViewPlainPtr.html#acf8a1496adab0b88cfe037a76c633f70',1,'alpaka::ViewPlainPtr']]],
+  ['_7evec_2070',['~Vec',['../classalpaka_1_1Vec.html#ac3ef5e28bc67ad090776690a62b320a2',1,'alpaka::Vec']]],
+  ['_7eviewplainptr_2071',['~ViewPlainPtr',['../classalpaka_1_1ViewPlainPtr.html#ac9a4c94f2fc97e80f4c2b0b7b87120cf',1,'alpaka::ViewPlainPtr']]],
   ['_7ewarpsinglethread_2072',['~WarpSingleThread',['../classalpaka_1_1warp_1_1WarpSingleThread.html#a817c34d9cd62b7f1f705aebd20501461',1,'alpaka::warp::WarpSingleThread']]],
   ['_7ewarpuniformcudahipbuiltin_2073',['~WarpUniformCudaHipBuiltIn',['../classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html#a9eda65cf7748d18be3a506f80d75a8d2',1,'alpaka::warp::WarpUniformCudaHipBuiltIn']]],
-  ['_7eworkdivmembers_2074',['~WorkDivMembers',['../classalpaka_1_1WorkDivMembers.html#a828ffec78478a43afbbd73b95342ceae',1,'alpaka::WorkDivMembers']]],
+  ['_7eworkdivmembers_2074',['~WorkDivMembers',['../classalpaka_1_1WorkDivMembers.html#a2f2d5d571a181aaa51832713ce53a58d',1,'alpaka::WorkDivMembers']]],
   ['_7eworkdivuniformcudahipbuiltin_2075',['~WorkDivUniformCudaHipBuiltIn',['../classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#a795d0558a6959303ac6fc43c5340d89f',1,'alpaka::WorkDivUniformCudaHipBuiltIn']]]
 ];
