@@ -272,7 +272,8 @@ namespace alpaka
                 // (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the
                 // value location.
                 meta::apply(
-                    [&](ALPAKA_DECAY_T(TArgs) const&... args) {
+                    [&](ALPAKA_DECAY_T(TArgs) const&... args)
+                    {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
                             gridDim,
@@ -399,7 +400,8 @@ namespace alpaka
 
                 // Enqueue the kernel execution.
                 meta::apply(
-                    [&](ALPAKA_DECAY_T(TArgs) const&... args) {
+                    [&](ALPAKA_DECAY_T(TArgs) const&... args)
+                    {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
                             gridDim,

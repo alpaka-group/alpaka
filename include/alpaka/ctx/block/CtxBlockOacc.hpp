@@ -184,9 +184,9 @@ namespace alpaka
                 int predicate) -> int
             {
                 // implicit snyc
-                SyncBlockThreads<CtxBlockOacc<TDim, TIdx>>::masterOpBlockThreads(blockSync, [&blockSync]() {
-                    blockSync.m_result = TOp::InitialValue;
-                });
+                SyncBlockThreads<CtxBlockOacc<TDim, TIdx>>::masterOpBlockThreads(
+                    blockSync,
+                    [&blockSync]() { blockSync.m_result = TOp::InitialValue; });
 
                 int& result(blockSync.m_result);
                 bool const predicateBool(predicate != 0);
@@ -222,9 +222,9 @@ namespace alpaka
 
                 if(!data)
                 {
-                    traits::SyncBlockThreads<CtxBlockOacc<TDim, TIdx>>::masterOpBlockThreads(smem, [&data, &smem]() {
-                        smem.template alloc<T>(TuniqueId);
-                    });
+                    traits::SyncBlockThreads<CtxBlockOacc<TDim, TIdx>>::masterOpBlockThreads(
+                        smem,
+                        [&data, &smem]() { smem.template alloc<T>(TuniqueId); });
                     data = smem.template getLatestVarPtr<T>();
                 }
                 ALPAKA_ASSERT_OFFLOAD(data != nullptr);

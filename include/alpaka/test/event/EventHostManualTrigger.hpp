@@ -241,12 +241,15 @@ namespace alpaka
                 auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                 // Enqueue a task that only resets the events flag if it is completed.
-                queue.m_spQueueImpl->m_workerThread.enqueueTask([spEventImpl, enqueueCount]() {
-                    std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-                    spEventImpl->m_conditionVariable.wait(lk2, [spEventImpl, enqueueCount] {
-                        return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady;
+                queue.m_spQueueImpl->m_workerThread.enqueueTask(
+                    [spEventImpl, enqueueCount]()
+                    {
+                        std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
+                        spEventImpl->m_conditionVariable.wait(
+                            lk2,
+                            [spEventImpl, enqueueCount]
+                            { return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady; });
                     });
-                });
 #endif
             }
         };
@@ -279,9 +282,10 @@ namespace alpaka
 
                 auto const enqueueCount = spEventImpl->m_enqueueCount;
 
-                spEventImpl->m_conditionVariable.wait(lk, [spEventImpl, enqueueCount] {
-                    return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady;
-                });
+                spEventImpl->m_conditionVariable.wait(
+                    lk,
+                    [spEventImpl, enqueueCount]
+                    { return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady; });
             }
         };
     } // namespace traits
