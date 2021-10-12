@@ -128,8 +128,6 @@ namespace alpaka
                 class NormalReal
                 {
                 public:
-                    NormalReal() = default;
-
                     template<typename TEngine>
                     ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
@@ -143,8 +141,6 @@ namespace alpaka
                 class UniformReal
                 {
                 public:
-                    UniformReal() = default;
-
                     template<typename TEngine>
                     ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
@@ -158,19 +154,14 @@ namespace alpaka
                 class UniformUint
                 {
                 public:
-                    UniformUint()
-                        : m_dist(
-                            0, // For signed integer: std::numeric_limits<T>::lowest()
-                            std::numeric_limits<T>::max())
-                    {
-                    }
-
                     template<typename TEngine>
                     ALPAKA_FN_HOST auto operator()(TEngine& engine) -> T
                     {
                         return m_dist(engine.m_State);
                     }
-                    std::uniform_int_distribution<T> m_dist;
+                    std::uniform_int_distribution<T> m_dist{
+                        0, // For signed integer: std::numeric_limits<T>::lowest()
+                        std::numeric_limits<T>::max()};
                 };
             } // namespace cpu
         } // namespace distribution

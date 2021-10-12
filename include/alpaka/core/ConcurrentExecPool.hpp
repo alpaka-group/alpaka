@@ -265,9 +265,7 @@ namespace alpaka
                     }
                 }
                 ConcurrentExecPool(ConcurrentExecPool const&) = delete;
-                ConcurrentExecPool(ConcurrentExecPool&&) = delete;
                 auto operator=(ConcurrentExecPool const&) -> ConcurrentExecPool& = delete;
-                auto operator=(ConcurrentExecPool&&) -> ConcurrentExecPool& = delete;
 
                 //! Completes any currently running task normally.
                 //! Signals a std::runtime_error exception to any other tasks that was not able to run.
@@ -428,9 +426,7 @@ namespace alpaka
                     }
                 }
                 ConcurrentExecPool(ConcurrentExecPool const&) = delete;
-                ConcurrentExecPool(ConcurrentExecPool&&) = delete;
                 auto operator=(ConcurrentExecPool const&) -> ConcurrentExecPool& = delete;
-                auto operator=(ConcurrentExecPool&&) -> ConcurrentExecPool& = delete;
 
                 //! Completes any currently running task normally.
                 //! Signals a std::runtime_error exception to any other tasks that was not able to run.

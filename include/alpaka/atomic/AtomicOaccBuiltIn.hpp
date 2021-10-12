@@ -26,13 +26,6 @@ namespace alpaka
     //  Atomics are not guaranteed to be safe between devices or grids.
     class AtomicOaccBuiltIn
     {
-    public:
-        AtomicOaccBuiltIn() = default;
-        ALPAKA_FN_HOST_ACC AtomicOaccBuiltIn(AtomicOaccBuiltIn const&) = delete;
-        ALPAKA_FN_HOST_ACC AtomicOaccBuiltIn(AtomicOaccBuiltIn&&) = delete;
-        ALPAKA_FN_HOST_ACC auto operator=(AtomicOaccBuiltIn const&) -> AtomicOaccBuiltIn& = delete;
-        ALPAKA_FN_HOST_ACC auto operator=(AtomicOaccBuiltIn&&) -> AtomicOaccBuiltIn& = delete;
-        ~AtomicOaccBuiltIn() = default;
     };
 
     namespace traits

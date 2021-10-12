@@ -76,11 +76,6 @@ namespace alpaka
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                 "The work division and the execution task have to be of the same dimensionality!");
         }
-        TaskKernelCpuThreads(TaskKernelCpuThreads const&) = default;
-        TaskKernelCpuThreads(TaskKernelCpuThreads&&) = default;
-        auto operator=(TaskKernelCpuThreads const&) -> TaskKernelCpuThreads& = default;
-        auto operator=(TaskKernelCpuThreads&&) -> TaskKernelCpuThreads& = default;
-        ~TaskKernelCpuThreads() = default;
 
         //! Executes the kernel function object.
         ALPAKA_FN_HOST auto operator()() const -> void

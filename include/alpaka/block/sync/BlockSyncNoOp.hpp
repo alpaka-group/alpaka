@@ -18,13 +18,6 @@ namespace alpaka
     //! The no op block synchronization.
     class BlockSyncNoOp : public concepts::Implements<ConceptBlockSync, BlockSyncNoOp>
     {
-    public:
-        BlockSyncNoOp() = default;
-        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp const&) = delete;
-        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp&&) = delete;
-        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp const&) -> BlockSyncNoOp& = delete;
-        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp&&) -> BlockSyncNoOp& = delete;
-        /*virtual*/ ~BlockSyncNoOp() = default;
     };
 
     namespace traits

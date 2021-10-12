@@ -39,11 +39,6 @@ namespace alpaka
                     , m_generation(0)
                 {
                 }
-                BarrierThread(BarrierThread const&) = delete;
-                BarrierThread(BarrierThread&&) = delete;
-                auto operator=(BarrierThread const&) -> BarrierThread& = delete;
-                auto operator=(BarrierThread&&) -> BarrierThread& = delete;
-                ~BarrierThread() = default;
 
                 //! Waits for all the other threads to reach the barrier.
                 auto wait() -> void
@@ -132,11 +127,6 @@ namespace alpaka
                     , m_generation(0)
                 {
                 }
-                BarrierThreadWithPredicate(BarrierThreadWithPredicate const& other) = delete;
-                BarrierThreadWithPredicate(BarrierThreadWithPredicate&&) = delete;
-                auto operator=(BarrierThreadWithPredicate const&) -> BarrierThreadWithPredicate& = delete;
-                auto operator=(BarrierThreadWithPredicate&&) -> BarrierThreadWithPredicate& = delete;
-                ~BarrierThreadWithPredicate() = default;
 
                 //! Waits for all the other threads to reach the barrier.
                 template<typename TOp>

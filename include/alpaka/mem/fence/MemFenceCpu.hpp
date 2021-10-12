@@ -19,13 +19,6 @@ namespace alpaka
     //! The default CPU memory fence.
     class MemFenceCpu : public concepts::Implements<ConceptMemFence, MemFenceCpu>
     {
-    public:
-        MemFenceCpu() = default;
-        MemFenceCpu(MemFenceCpu const&) = delete;
-        auto operator=(MemFenceCpu const&) -> MemFenceCpu& = delete;
-        MemFenceCpu(MemFenceCpu&&) = delete;
-        auto operator=(MemFenceCpu&&) -> MemFenceCpu& = delete;
-        ~MemFenceCpu() = default;
     };
 
     namespace traits

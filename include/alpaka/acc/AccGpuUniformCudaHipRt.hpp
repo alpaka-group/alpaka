@@ -105,15 +105,6 @@ namespace alpaka
             , TimeUniformCudaHipBuiltIn()
         {
         }
-
-    public:
-        // using baseType = AccUniformCudaHip<TDim,TIdx>;
-
-        __device__ AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt const&) = delete;
-        __device__ AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt&&) = delete;
-        __device__ auto operator=(AccGpuUniformCudaHipRt const&) -> AccGpuUniformCudaHipRt& = delete;
-        __device__ auto operator=(AccGpuUniformCudaHipRt&&) -> AccGpuUniformCudaHipRt& = delete;
-        ~AccGpuUniformCudaHipRt() = default;
     };
 
     namespace traits

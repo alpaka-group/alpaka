@@ -34,8 +34,6 @@ namespace alpaka
     template<>
     struct AtomicOaccExtended<hierarchy::Threads> : public AtomicOaccBuiltIn
     {
-        AtomicOaccExtended() = default;
-
         mutable std::uint32_t mutex[2] = {0u, 0u};
     };
 

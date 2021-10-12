@@ -64,8 +64,6 @@ namespace alpaka
             return *this;
         }
 
-        /*virtual*/ ~WorkDivMembers() = default;
-
     public:
         Vec<TDim, TIdx> m_gridBlockExtent;
         Vec<TDim, TIdx> m_blockThreadExtent;

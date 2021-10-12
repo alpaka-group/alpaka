@@ -112,12 +112,6 @@ namespace alpaka
         {
         }
 
-        Vec(Vec const&) = default;
-        Vec(Vec&&) noexcept = default;
-        auto operator=(Vec const&) -> Vec& = default;
-        auto operator=(Vec&&) noexcept -> Vec& = default;
-        ~Vec() = default;
-
     private:
         //! A function object that returns the given value for each index.
         template<std::size_t Tidx>

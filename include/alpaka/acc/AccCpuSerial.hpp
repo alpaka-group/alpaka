@@ -106,13 +106,6 @@ namespace alpaka
         {
         }
 
-    public:
-        ALPAKA_FN_HOST AccCpuSerial(AccCpuSerial const&) = delete;
-        ALPAKA_FN_HOST AccCpuSerial(AccCpuSerial&&) = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuSerial const&) -> AccCpuSerial& = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuSerial&&) -> AccCpuSerial& = delete;
-        /*virtual*/ ~AccCpuSerial() = default;
-
     private:
         // getIdx
         Vec<TDim, TIdx> mutable m_gridBlockIdx; //!< The index of the currently executed block.

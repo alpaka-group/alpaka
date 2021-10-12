@@ -56,9 +56,7 @@ namespace alpaka
                 {
                 }
                 QueueCpuOmp2CollectiveImpl(QueueCpuOmp2CollectiveImpl const&) = delete;
-                QueueCpuOmp2CollectiveImpl(QueueCpuOmp2CollectiveImpl&&) = delete;
                 auto operator=(QueueCpuOmp2CollectiveImpl const&) -> QueueCpuOmp2CollectiveImpl& = delete;
-                auto operator=(QueueCpuOmp2CollectiveImpl&&) -> QueueCpuOmp2CollectiveImpl& = delete;
                 void enqueue(EventCpu& ev) final
                 {
                     alpaka::enqueue(*this, ev);
@@ -97,10 +95,6 @@ namespace alpaka
         {
             dev.registerQueue(m_spQueueImpl);
         }
-        QueueCpuOmp2Collective(QueueCpuOmp2Collective const&) = default;
-        QueueCpuOmp2Collective(QueueCpuOmp2Collective&&) = default;
-        auto operator=(QueueCpuOmp2Collective const&) -> QueueCpuOmp2Collective& = default;
-        auto operator=(QueueCpuOmp2Collective&&) -> QueueCpuOmp2Collective& = default;
         auto operator==(QueueCpuOmp2Collective const& rhs) const -> bool
         {
             return m_spQueueImpl == rhs.m_spQueueImpl && m_spBlockingQueue == rhs.m_spBlockingQueue;
@@ -109,7 +103,6 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        ~QueueCpuOmp2Collective() = default;
 
     public:
         std::shared_ptr<cpu::detail::QueueCpuOmp2CollectiveImpl> m_spQueueImpl;

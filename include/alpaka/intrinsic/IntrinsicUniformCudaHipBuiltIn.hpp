@@ -29,13 +29,6 @@ namespace alpaka
     class IntrinsicUniformCudaHipBuiltIn
         : public concepts::Implements<ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn>
     {
-    public:
-        IntrinsicUniformCudaHipBuiltIn() = default;
-        __device__ IntrinsicUniformCudaHipBuiltIn(IntrinsicUniformCudaHipBuiltIn const&) = delete;
-        __device__ IntrinsicUniformCudaHipBuiltIn(IntrinsicUniformCudaHipBuiltIn&&) = delete;
-        __device__ auto operator=(IntrinsicUniformCudaHipBuiltIn const&) -> IntrinsicUniformCudaHipBuiltIn& = delete;
-        __device__ auto operator=(IntrinsicUniformCudaHipBuiltIn&&) -> IntrinsicUniformCudaHipBuiltIn& = delete;
-        ~IntrinsicUniformCudaHipBuiltIn() = default;
     };
 
     namespace traits

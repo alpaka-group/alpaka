@@ -59,11 +59,6 @@ namespace alpaka
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                 "The work division and the execution task have to be of the same dimensionality!");
         }
-        TaskKernelOmp5(TaskKernelOmp5 const& other) = default;
-        TaskKernelOmp5(TaskKernelOmp5&& other) = default;
-        auto operator=(TaskKernelOmp5 const&) -> TaskKernelOmp5& = default;
-        auto operator=(TaskKernelOmp5&&) -> TaskKernelOmp5& = default;
-        ~TaskKernelOmp5() = default;
 
         //! Executes the kernel function object.
         ALPAKA_FN_HOST auto operator()(const DevOmp5& dev) const -> void

@@ -117,13 +117,6 @@ namespace alpaka
         {
         }
 
-    public:
-        ALPAKA_FN_HOST AccCpuOmp2Threads(AccCpuOmp2Threads const&) = delete;
-        ALPAKA_FN_HOST AccCpuOmp2Threads(AccCpuOmp2Threads&&) = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuOmp2Threads const&) -> AccCpuOmp2Threads& = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuOmp2Threads&&) -> AccCpuOmp2Threads& = delete;
-        /*virtual*/ ~AccCpuOmp2Threads() = default;
-
     private:
         // getIdx
         Vec<TDim, TIdx> mutable m_gridBlockIdx; //!< The index of the currently executed block.

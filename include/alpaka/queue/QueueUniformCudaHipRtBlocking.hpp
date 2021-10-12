@@ -55,10 +55,6 @@ namespace alpaka
             : uniform_cuda_hip::detail::QueueUniformCudaHipRtBase(dev)
         {
         }
-        QueueUniformCudaHipRtBlocking(QueueUniformCudaHipRtBlocking const&) = default;
-        QueueUniformCudaHipRtBlocking(QueueUniformCudaHipRtBlocking&&) = default;
-        auto operator=(QueueUniformCudaHipRtBlocking const&) -> QueueUniformCudaHipRtBlocking& = default;
-        auto operator=(QueueUniformCudaHipRtBlocking&&) -> QueueUniformCudaHipRtBlocking& = default;
         ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRtBlocking const& rhs) const -> bool
         {
             return (m_spQueueImpl == rhs.m_spQueueImpl);
@@ -67,7 +63,6 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        ~QueueUniformCudaHipRtBlocking() = default;
     };
 
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)

@@ -74,13 +74,6 @@ namespace alpaka
             , BlockSyncBarrierOacc()
         {
         }
-
-    public:
-        CtxBlockOacc(CtxBlockOacc const&) = delete;
-        CtxBlockOacc(CtxBlockOacc&&) = delete;
-        auto operator=(CtxBlockOacc const&) -> CtxBlockOacc& = delete;
-        auto operator=(CtxBlockOacc&&) -> CtxBlockOacc& = delete;
-        ~CtxBlockOacc() = default;
     };
 
     namespace traits

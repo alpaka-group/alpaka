@@ -57,11 +57,6 @@ namespace alpaka
                     for(std::size_t a = 0; a < 2; ++a)
                         gridsLock[a] = 0u;
                 }
-                DevOaccImpl(DevOaccImpl const&) = delete;
-                DevOaccImpl(DevOaccImpl&&) = delete;
-                auto operator=(DevOaccImpl const&) -> DevOaccImpl& = delete;
-                auto operator=(DevOaccImpl&&) -> DevOaccImpl& = delete;
-                ~DevOaccImpl() = default;
 
                 ALPAKA_FN_HOST auto getAllExistingQueues() const
                     -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>>
@@ -156,10 +151,6 @@ namespace alpaka
         }
 
     public:
-        DevOacc(DevOacc const&) = default;
-        DevOacc(DevOacc&&) = default;
-        auto operator=(DevOacc const&) -> DevOacc& = default;
-        auto operator=(DevOacc&&) -> DevOacc& = default;
         ALPAKA_FN_HOST auto operator==(DevOacc const& rhs) const -> bool
         {
             return m_spDevOaccImpl->iDevice() == rhs.m_spDevOaccImpl->iDevice();
@@ -168,7 +159,6 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        ~DevOacc() = default;
         int iDevice() const
         {
             return m_spDevOaccImpl->iDevice();
