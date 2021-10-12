@@ -36,7 +36,7 @@ namespace alpaka
         {
         }
         ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC explicit WorkDivMembers(WorkDivMembers const& other)
+        ALPAKA_FN_HOST_ACC WorkDivMembers(WorkDivMembers const& other)
             : m_gridBlockExtent(other.m_gridBlockExtent)
             , m_blockThreadExtent(other.m_blockThreadExtent)
             , m_threadElemExtent(other.m_threadElemExtent)
