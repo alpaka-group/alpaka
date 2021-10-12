@@ -45,7 +45,11 @@ TEST_CASE("basicVecTraits", "[vec]")
 
     // constructor from convertible integral
     {
-        [[maybe_unused]] constexpr Vec v(0, 0, 0);
+        [[maybe_unused]] constexpr Vec v0(0, 0, 0);
+        [[maybe_unused]] constexpr Vec v1(1, 1, 1);
+        [[maybe_unused]] constexpr Vec v2(1, 1u, 1);
+        [[maybe_unused]] constexpr Vec v3(1, 1u, static_cast<Idx>(1u));
+        [[maybe_unused]] constexpr Vec v4(1, 1u, 1.4f);
     }
 
     // constructor from convertible type
