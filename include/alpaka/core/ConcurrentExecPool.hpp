@@ -310,9 +310,8 @@ namespace alpaka
                     auto boundTask = [=]() { return task(args...); };
                     auto decrementNumActiveTasks = [this]() { --m_numActiveTasks; };
 
-                    auto extendedTask = [boundTask, decrementNumActiveTasks]() {
-                        return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks));
-                    };
+                    auto extendedTask = [boundTask, decrementNumActiveTasks]()
+                    { return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks)); };
 
                     using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
                     auto pTaskPackage = new TaskPackage(std::move(extendedTask));
@@ -480,9 +479,8 @@ namespace alpaka
                     auto boundTask = [=]() { return task(args...); };
                     auto decrementNumActiveTasks = [this]() { --m_numActiveTasks; };
 
-                    auto extendedTask = [boundTask, decrementNumActiveTasks]() {
-                        return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks));
-                    };
+                    auto extendedTask = [boundTask, decrementNumActiveTasks]()
+                    { return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks)); };
 
                     using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
                     auto pTaskPackage = new TaskPackage(std::move(extendedTask));

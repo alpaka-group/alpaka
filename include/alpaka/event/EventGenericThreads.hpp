@@ -165,15 +165,17 @@ namespace alpaka
                 auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                 // Enqueue a task that only resets the events flag if it is completed.
-                spEventImpl->m_future = queueImpl.m_workerThread.enqueueTask([spEventImpl, enqueueCount]() {
-                    std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-
-                    // Nothing to do if it has been re-enqueued to a later position in the queue.
-                    if(enqueueCount == spEventImpl->m_enqueueCount)
+                spEventImpl->m_future = queueImpl.m_workerThread.enqueueTask(
+                    [spEventImpl, enqueueCount]()
                     {
-                        spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
-                    }
-                });
+                        std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
+
+                        // Nothing to do if it has been re-enqueued to a later position in the queue.
+                        if(enqueueCount == spEventImpl->m_enqueueCount)
+                        {
+                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+                        }
+                    });
 #endif
             }
         };
@@ -323,10 +325,12 @@ namespace alpaka
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                     // Enqueue a task that waits for the given event.
-                    queueImpl.m_workerThread.enqueueTask([spEventImpl, enqueueCount]() {
-                        std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-                        spEventImpl->wait(enqueueCount, lk2);
-                    });
+                    queueImpl.m_workerThread.enqueueTask(
+                        [spEventImpl, enqueueCount]()
+                        {
+                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
+                            spEventImpl->wait(enqueueCount, lk2);
+                        });
 #endif
                 }
             }

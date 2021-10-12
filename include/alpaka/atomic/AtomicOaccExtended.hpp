@@ -92,7 +92,8 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]() {
+                    [&]()
+                    {
                         auto& ref(*addr);
                         T old = ref;
                         ref = (ref <= value) ? ref : value;
@@ -114,7 +115,8 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]() {
+                    [&]()
+                    {
                         auto& ref(*addr);
                         T old = ref;
                         ref = (ref >= value) ? ref : value;
@@ -134,7 +136,8 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]() {
+                    [&]()
+                    {
                         auto& ref(*addr);
                         T old = ref;
                         ref = ((ref >= value) ? 0 : (ref + 1));
@@ -154,7 +157,8 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]() {
+                    [&]()
+                    {
                         auto& ref(*addr);
                         T old = ref;
                         ref = ((ref == 0) || (ref > value)) ? value : (ref - 1);
@@ -175,7 +179,8 @@ namespace alpaka
                 T const& value) -> T
             {
                 return detail::criticalOp(
-                    [&]() {
+                    [&]()
+                    {
                         auto& ref(*addr);
                         T old = ref;
                         ref = (ref == compare ? value : ref);

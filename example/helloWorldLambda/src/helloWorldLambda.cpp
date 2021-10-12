@@ -125,7 +125,8 @@ auto main() -> int
     alpaka::exec<Acc>(
         queue,
         workDiv,
-        [] ALPAKA_FN_ACC(Acc const& acc, size_t const nExclamationMarksAsArg) -> void {
+        [] ALPAKA_FN_ACC(Acc const& acc, size_t const nExclamationMarksAsArg) -> void
+        {
             auto globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
             auto globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
             auto linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);

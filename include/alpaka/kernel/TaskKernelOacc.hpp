@@ -84,7 +84,8 @@ namespace alpaka
 
             // Get the size of the block shared dynamic memory.
             auto const blockSharedMemDynSizeBytes = core::apply(
-                [&](ALPAKA_DECAY_T(TArgs) const&... args) {
+                [&](ALPAKA_DECAY_T(TArgs) const&... args)
+                {
                     return getBlockSharedMemDynSizeBytes<AccOacc<TDim, TIdx>>(
                         m_kernelFnObj,
                         blockThreadExtent,
@@ -155,9 +156,8 @@ namespace alpaka
                             AccOacc<TDim, TIdx> acc(w, blockShared);
 
                             core::apply(
-                                [kernelFnObj, &acc](typename std::decay<TArgs>::type const&... args) {
-                                    kernelFnObj(acc, args...);
-                                },
+                                [kernelFnObj, &acc](typename std::decay<TArgs>::type const&... args)
+                                { kernelFnObj(acc, args...); },
                                 argsD);
                         }
                         freeSharedVars(blockShared);
@@ -232,8 +232,8 @@ namespace alpaka
                 QueueOaccNonBlocking& queue,
                 TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...> const& task) -> void
             {
-                queue.m_spQueueImpl->m_workerThread.enqueueTask(
-                    [&queue, task]() { task(queue.m_spQueueImpl->m_dev); });
+                queue.m_spQueueImpl->m_workerThread.enqueueTask([&queue, task]()
+                                                                { task(queue.m_spQueueImpl->m_dev); });
             }
         };
     } // namespace traits

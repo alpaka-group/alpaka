@@ -63,9 +63,10 @@ namespace alpaka
                     else
                     {
 #ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
-                        m_cvAllThreadsReachedBarrier.wait(lock, [this, generationWhenEnteredTheWait] {
-                            return generationWhenEnteredTheWait != m_generation;
-                        });
+                        m_cvAllThreadsReachedBarrier.wait(
+                            lock,
+                            [this, generationWhenEnteredTheWait]
+                            { return generationWhenEnteredTheWait != m_generation; });
 #else
                         while(generationWhenEnteredTheWait == m_generation)
                         {
@@ -163,9 +164,10 @@ namespace alpaka
                     }
                     else
                     {
-                        m_cvAllThreadsReachedBarrier.wait(lock, [this, generationWhenEnteredTheWait] {
-                            return generationWhenEnteredTheWait != m_generation;
-                        });
+                        m_cvAllThreadsReachedBarrier.wait(
+                            lock,
+                            [this, generationWhenEnteredTheWait]
+                            { return generationWhenEnteredTheWait != m_generation; });
                     }
                     return m_result[generationMod2];
                 }
