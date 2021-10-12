@@ -103,13 +103,6 @@ namespace alpaka
         {
         }
 
-    public:
-        ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks const&) = delete;
-        ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks&&) = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks const&) -> AccCpuTbbBlocks& = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks&&) -> AccCpuTbbBlocks& = delete;
-        /*virtual*/ ~AccCpuTbbBlocks() = default;
-
     private:
         // getIdx
         Vec<TDim, TIdx> mutable m_gridBlockIdx; //!< The index of the currently executed block.

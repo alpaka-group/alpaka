@@ -33,13 +33,6 @@ namespace alpaka
         //! The GPU CUDA/HIP warp.
         class WarpUniformCudaHipBuiltIn : public concepts::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
         {
-        public:
-            WarpUniformCudaHipBuiltIn() = default;
-            __device__ WarpUniformCudaHipBuiltIn(WarpUniformCudaHipBuiltIn const&) = delete;
-            __device__ WarpUniformCudaHipBuiltIn(WarpUniformCudaHipBuiltIn&&) = delete;
-            __device__ auto operator=(WarpUniformCudaHipBuiltIn const&) -> WarpUniformCudaHipBuiltIn& = delete;
-            __device__ auto operator=(WarpUniformCudaHipBuiltIn&&) -> WarpUniformCudaHipBuiltIn& = delete;
-            ~WarpUniformCudaHipBuiltIn() = default;
         };
 
         namespace traits

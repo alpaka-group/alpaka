@@ -22,13 +22,6 @@ namespace alpaka
     //  Atomics are not guaranteed to be safe between devices or grids.
     class AtomicOmpBuiltIn
     {
-    public:
-        AtomicOmpBuiltIn() = default;
-        ALPAKA_FN_HOST AtomicOmpBuiltIn(AtomicOmpBuiltIn const&) = delete;
-        ALPAKA_FN_HOST AtomicOmpBuiltIn(AtomicOmpBuiltIn&&) = delete;
-        ALPAKA_FN_HOST auto operator=(AtomicOmpBuiltIn const&) -> AtomicOmpBuiltIn& = delete;
-        ALPAKA_FN_HOST auto operator=(AtomicOmpBuiltIn&&) -> AtomicOmpBuiltIn& = delete;
-        /*virtual*/ ~AtomicOmpBuiltIn() = default;
     };
 
     namespace traits

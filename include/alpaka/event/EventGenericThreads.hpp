@@ -37,18 +37,11 @@ namespace alpaka
                 : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
             {
             public:
-                EventGenericThreadsImpl(TDev const& dev) noexcept
-                    : m_dev(dev)
-                    , m_mutex()
-                    , m_enqueueCount(0u)
-                    , m_LastReadyEnqueueCount(0u)
+                EventGenericThreadsImpl(TDev const& dev) noexcept : m_dev(dev)
                 {
                 }
                 EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> const&) = delete;
-                EventGenericThreadsImpl(EventGenericThreadsImpl<TDev>&&) = delete;
                 auto operator=(EventGenericThreadsImpl<TDev> const&) -> EventGenericThreadsImpl<TDev>& = delete;
-                auto operator=(EventGenericThreadsImpl<TDev>&&) -> EventGenericThreadsImpl<TDev>& = delete;
-                ~EventGenericThreadsImpl() noexcept = default;
 
                 auto isReady() noexcept -> bool
                 {
@@ -68,16 +61,16 @@ namespace alpaka
                     }
                 }
 
-            public:
                 TDev const m_dev; //!< The device this event is bound to.
 
                 std::mutex mutable m_mutex; //!< The mutex used to synchronize access to the event.
                 std::shared_future<void> m_future; //!< The future signaling the event completion.
-                std::size_t m_enqueueCount; //!< The number of times this event has been enqueued.
-                std::size_t m_LastReadyEnqueueCount; //!< The time this event has been ready the last time.
-                                                     //!< Ready means that the event was not waiting within a queue
-                                                     //!< (not enqueued or already completed). If m_enqueueCount ==
-                                                     //!< m_LastReadyEnqueueCount, the event is currently not enqueued
+                std::size_t m_enqueueCount = 0u; //!< The number of times this event has been enqueued.
+                std::size_t m_LastReadyEnqueueCount
+                    = 0u; //!< The time this event has been ready the last time.
+                          //!< Ready means that the event was not waiting within a queue
+                          //!< (not enqueued or already completed). If m_enqueueCount ==
+                          //!< m_LastReadyEnqueueCount, the event is currently not enqueued
             };
         } // namespace detail
     } // namespace generic
@@ -95,10 +88,6 @@ namespace alpaka
         {
             alpaka::ignore_unused(bBusyWaiting);
         }
-        EventGenericThreads(EventGenericThreads<TDev> const&) = default;
-        EventGenericThreads(EventGenericThreads<TDev>&&) = default;
-        auto operator=(EventGenericThreads<TDev> const&) -> EventGenericThreads<TDev>& = default;
-        auto operator=(EventGenericThreads<TDev>&&) -> EventGenericThreads<TDev>& = default;
         auto operator==(EventGenericThreads<TDev> const& rhs) const -> bool
         {
             return (m_spEventImpl == rhs.m_spEventImpl);
@@ -107,7 +96,6 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        ~EventGenericThreads() = default;
 
     public:
         std::shared_ptr<generic::detail::EventGenericThreadsImpl<TDev>> m_spEventImpl;

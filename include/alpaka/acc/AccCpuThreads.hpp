@@ -112,13 +112,6 @@ namespace alpaka
         {
         }
 
-    public:
-        ALPAKA_FN_HOST AccCpuThreads(AccCpuThreads const&) = delete;
-        ALPAKA_FN_HOST AccCpuThreads(AccCpuThreads&&) = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuThreads const&) -> AccCpuThreads& = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuThreads&&) -> AccCpuThreads& = delete;
-        /*virtual*/ ~AccCpuThreads() = default;
-
     private:
         // getIdx
         std::mutex mutable m_mtxMapInsert; //!< The mutex used to secure insertion into the ThreadIdToIdxMap.

@@ -138,11 +138,6 @@ namespace alpaka
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                 "The work division and the execution task have to be of the same dimensionality!");
         }
-        TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt const&) = default;
-        TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt&&) = default;
-        auto operator=(TaskKernelGpuUniformCudaHipRt const&) -> TaskKernelGpuUniformCudaHipRt& = default;
-        auto operator=(TaskKernelGpuUniformCudaHipRt&&) -> TaskKernelGpuUniformCudaHipRt& = default;
-        ~TaskKernelGpuUniformCudaHipRt() = default;
 
         TKernelFnObj m_kernelFnObj;
         std::tuple<std::decay_t<TArgs>...> m_args;

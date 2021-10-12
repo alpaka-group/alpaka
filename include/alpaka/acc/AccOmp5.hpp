@@ -120,13 +120,6 @@ namespace alpaka
             , TimeOmp()
         {
         }
-
-    public:
-        AccOmp5(AccOmp5 const&) = delete;
-        AccOmp5(AccOmp5&&) = delete;
-        auto operator=(AccOmp5 const&) -> AccOmp5& = delete;
-        auto operator=(AccOmp5&&) -> AccOmp5& = delete;
-        /*virtual*/ ~AccOmp5() = default;
     };
 
     namespace traits

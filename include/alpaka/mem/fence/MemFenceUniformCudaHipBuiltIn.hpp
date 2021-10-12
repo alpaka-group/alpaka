@@ -29,13 +29,6 @@ namespace alpaka
     //! The GPU CUDA/HIP memory fence.
     class MemFenceUniformCudaHipBuiltIn : public concepts::Implements<ConceptMemFence, MemFenceUniformCudaHipBuiltIn>
     {
-    public:
-        MemFenceUniformCudaHipBuiltIn() = default;
-        __device__ MemFenceUniformCudaHipBuiltIn(MemFenceUniformCudaHipBuiltIn const&) = delete;
-        __device__ auto operator=(MemFenceUniformCudaHipBuiltIn const&) -> MemFenceUniformCudaHipBuiltIn& = delete;
-        __device__ MemFenceUniformCudaHipBuiltIn(MemFenceUniformCudaHipBuiltIn&&) = delete;
-        __device__ auto operator=(MemFenceUniformCudaHipBuiltIn&&) -> MemFenceUniformCudaHipBuiltIn& = delete;
-        ~MemFenceUniformCudaHipBuiltIn() = default;
     };
 
     namespace traits

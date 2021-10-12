@@ -60,7 +60,6 @@ namespace alpaka
         auto operator=(ViewPlainPtr const&) -> ViewPlainPtr& = delete;
         ALPAKA_FN_HOST
         auto operator=(ViewPlainPtr&&) -> ViewPlainPtr& = delete;
-        ~ViewPlainPtr() = default;
 
     public:
         TElem* const m_pMem;

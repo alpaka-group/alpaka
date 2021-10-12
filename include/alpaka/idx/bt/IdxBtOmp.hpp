@@ -30,13 +30,6 @@ namespace alpaka
         template<typename TDim, typename TIdx>
         class IdxBtOmp : public concepts::Implements<ConceptIdxBt, IdxBtOmp<TDim, TIdx>>
         {
-        public:
-            IdxBtOmp() = default;
-            IdxBtOmp(IdxBtOmp const&) = delete;
-            IdxBtOmp(IdxBtOmp&&) = delete;
-            auto operator=(IdxBtOmp const&) -> IdxBtOmp& = delete;
-            auto operator=(IdxBtOmp&&) -> IdxBtOmp& = delete;
-            /*virtual*/ ~IdxBtOmp() = default;
         };
     } // namespace bt
 

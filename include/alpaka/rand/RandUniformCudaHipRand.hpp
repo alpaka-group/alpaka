@@ -71,10 +71,6 @@ namespace alpaka
                     {
                     }
 
-#    if BOOST_COMP_HIP
-                    ~Xor() = default;
-#    endif
-
                     __device__ Xor(
                         std::uint32_t const& seed,
                         std::uint32_t const& subsequence = 0,
@@ -109,8 +105,6 @@ namespace alpaka
                 class NormalReal<float>
                 {
                 public:
-                    NormalReal() = default;
-
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> float
                     {
@@ -126,8 +120,6 @@ namespace alpaka
                 class NormalReal<double>
                 {
                 public:
-                    NormalReal() = default;
-
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> double
                     {
@@ -148,8 +140,6 @@ namespace alpaka
                 class UniformReal<float>
                 {
                 public:
-                    UniformReal() = default;
-
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> float
                     {
@@ -169,8 +159,6 @@ namespace alpaka
                 class UniformReal<double>
                 {
                 public:
-                    UniformReal() = default;
-
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> double
                     {
@@ -195,8 +183,6 @@ namespace alpaka
                 class UniformUint<unsigned int>
                 {
                 public:
-                    UniformUint() = default;
-
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> unsigned int
                     {

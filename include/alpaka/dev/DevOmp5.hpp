@@ -51,10 +51,6 @@ namespace alpaka
                 DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
                 {
                 }
-                DevOmp5Impl(DevOmp5Impl const&) = delete;
-                DevOmp5Impl(DevOmp5Impl&&) = delete;
-                auto operator=(DevOmp5Impl const&) -> DevOmp5Impl& = delete;
-                auto operator=(DevOmp5Impl&&) -> DevOmp5Impl& = delete;
                 ~DevOmp5Impl()
                 {
                     for(auto& a : m_staticMemMap)
@@ -151,10 +147,6 @@ namespace alpaka
         }
 
     public:
-        DevOmp5(DevOmp5 const&) = default;
-        DevOmp5(DevOmp5&&) = default;
-        auto operator=(DevOmp5 const&) -> DevOmp5& = default;
-        auto operator=(DevOmp5&&) -> DevOmp5& = default;
         ALPAKA_FN_HOST auto operator==(DevOmp5 const& rhs) const -> bool
         {
             return m_spDevOmp5Impl->iDevice() == rhs.m_spDevOmp5Impl->iDevice();
@@ -163,7 +155,6 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        ~DevOmp5() = default;
         int iDevice() const
         {
             return m_spDevOmp5Impl->iDevice();

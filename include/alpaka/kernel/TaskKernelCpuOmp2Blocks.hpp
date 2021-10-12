@@ -802,11 +802,6 @@ namespace alpaka
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                 "The work division and the execution task have to be of the same dimensionality!");
         }
-        TaskKernelCpuOmp2Blocks(TaskKernelCpuOmp2Blocks const&) = default;
-        TaskKernelCpuOmp2Blocks(TaskKernelCpuOmp2Blocks&&) = default;
-        auto operator=(TaskKernelCpuOmp2Blocks const&) -> TaskKernelCpuOmp2Blocks& = default;
-        auto operator=(TaskKernelCpuOmp2Blocks&&) -> TaskKernelCpuOmp2Blocks& = default;
-        ~TaskKernelCpuOmp2Blocks() = default;
 
         //! Executes the kernel function object.
         ALPAKA_FN_HOST auto operator()() const -> void

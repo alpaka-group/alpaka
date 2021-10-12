@@ -56,14 +56,8 @@ namespace alpaka
                         , m_bIsReady(true)
                     {
                     }
-                    //! Copy constructor.
                     EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl const& other) = delete;
-                    //! Move constructor.
-                    EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl&&) = delete;
-                    //! Copy assignment operator.
                     auto operator=(EventHostManualTriggerCpuImpl const&) -> EventHostManualTriggerCpuImpl& = delete;
-                    //! Move assignment operator.
-                    auto operator=(EventHostManualTriggerCpuImpl&&) -> EventHostManualTriggerCpuImpl& = delete;
 
                     void trigger()
                     {
@@ -99,14 +93,6 @@ namespace alpaka
                 : m_spEventImpl(std::make_shared<cpu::detail::EventHostManualTriggerCpuImpl<TDev>>(dev))
             {
             }
-            //! Copy constructor.
-            EventHostManualTriggerCpu(EventHostManualTriggerCpu const&) = default;
-            //! Move constructor.
-            EventHostManualTriggerCpu(EventHostManualTriggerCpu&&) = default;
-            //! Copy assignment operator.
-            auto operator=(EventHostManualTriggerCpu const&) -> EventHostManualTriggerCpu& = default;
-            //! Move assignment operator.
-            auto operator=(EventHostManualTriggerCpu&&) -> EventHostManualTriggerCpu& = default;
             //! Equality comparison operator.
             ALPAKA_FN_HOST auto operator==(EventHostManualTriggerCpu const& rhs) const -> bool
             {
@@ -330,9 +316,7 @@ namespace alpaka
                             cudaMemset(m_devMem, static_cast<int>(0u), static_cast<size_t>(sizeof(int32_t))));
                     }
                     EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl const&) = delete;
-                    EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl&&) = delete;
                     auto operator=(EventHostManualTriggerCudaImpl const&) -> EventHostManualTriggerCudaImpl& = delete;
-                    auto operator=(EventHostManualTriggerCudaImpl&&) -> EventHostManualTriggerCudaImpl& = delete;
                     ALPAKA_FN_HOST ~EventHostManualTriggerCudaImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -375,10 +359,6 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
             }
-            EventHostManualTriggerCuda(EventHostManualTriggerCuda const&) = default;
-            EventHostManualTriggerCuda(EventHostManualTriggerCuda&&) = default;
-            auto operator=(EventHostManualTriggerCuda const&) -> EventHostManualTriggerCuda& = default;
-            auto operator=(EventHostManualTriggerCuda&&) -> EventHostManualTriggerCuda& = default;
             ALPAKA_FN_HOST auto operator==(EventHostManualTriggerCuda const& rhs) const -> bool
             {
                 return (m_spEventImpl == rhs.m_spEventImpl);
@@ -387,7 +367,6 @@ namespace alpaka
             {
                 return !((*this) == rhs);
             }
-            ~EventHostManualTriggerCuda() = default;
 
             void trigger()
             {
@@ -553,9 +532,7 @@ namespace alpaka
                             hipMemset(m_devMem, static_cast<int>(0u), static_cast<size_t>(sizeof(int32_t))));
                     }
                     EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl const&) = delete;
-                    EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl&&) = delete;
                     auto operator=(EventHostManualTriggerHipImpl const&) -> EventHostManualTriggerHipImpl& = delete;
-                    auto operator=(EventHostManualTriggerHipImpl&&) -> EventHostManualTriggerHipImpl& = delete;
                     ALPAKA_FN_HOST ~EventHostManualTriggerHipImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -597,10 +574,6 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
             }
-            EventHostManualTriggerHip(EventHostManualTriggerHip const&) = default;
-            EventHostManualTriggerHip(EventHostManualTriggerHip&&) = default;
-            auto operator=(EventHostManualTriggerHip const&) -> EventHostManualTriggerHip& = default;
-            auto operator=(EventHostManualTriggerHip&&) -> EventHostManualTriggerHip& = default;
             ALPAKA_FN_HOST auto operator==(EventHostManualTriggerHip const& rhs) const -> bool
             {
                 return (m_spEventImpl == rhs.m_spEventImpl);
@@ -609,7 +582,6 @@ namespace alpaka
             {
                 return !((*this) == rhs);
             }
-            ~EventHostManualTriggerHip() = default;
 
             void trigger()
             {

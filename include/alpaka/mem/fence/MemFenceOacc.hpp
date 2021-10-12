@@ -23,13 +23,6 @@ namespace alpaka
     //! The OpenACC memory fence.
     class MemFenceOacc : public concepts::Implements<ConceptMemFence, MemFenceOacc>
     {
-    public:
-        MemFenceOacc() = default;
-        MemFenceOacc(MemFenceOacc const&) = delete;
-        auto operator=(MemFenceOacc const&) -> MemFenceOacc& = delete;
-        MemFenceOacc(MemFenceOacc&&) = delete;
-        auto operator=(MemFenceOacc&&) -> MemFenceOacc& = delete;
-        ~MemFenceOacc() = default;
     };
 
     namespace traits

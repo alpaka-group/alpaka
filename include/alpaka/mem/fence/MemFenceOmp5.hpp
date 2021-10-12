@@ -23,13 +23,6 @@ namespace alpaka
     //! The OpenMP 5 block memory fence.
     class MemFenceOmp5 : public concepts::Implements<ConceptMemFence, MemFenceOmp5>
     {
-    public:
-        MemFenceOmp5() = default;
-        MemFenceOmp5(MemFenceOmp5 const&) = delete;
-        auto operator=(MemFenceOmp5 const&) -> MemFenceOmp5& = delete;
-        MemFenceOmp5(MemFenceOmp5&&) = delete;
-        auto operator=(MemFenceOmp5&&) -> MemFenceOmp5& = delete;
-        ~MemFenceOmp5() = default;
     };
 
     namespace traits

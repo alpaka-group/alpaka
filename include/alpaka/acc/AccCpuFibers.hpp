@@ -115,13 +115,6 @@ namespace alpaka
         {
         }
 
-    public:
-        ALPAKA_FN_HOST AccCpuFibers(AccCpuFibers const&) = delete;
-        ALPAKA_FN_HOST AccCpuFibers(AccCpuFibers&&) = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuFibers const&) -> AccCpuFibers& = delete;
-        ALPAKA_FN_HOST auto operator=(AccCpuFibers&&) -> AccCpuFibers& = delete;
-        /*virtual*/ ~AccCpuFibers() = default;
-
     private:
         // getIdx
         typename bt::IdxBtRefFiberIdMap<TDim, TIdx>::

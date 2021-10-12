@@ -23,13 +23,6 @@ namespace alpaka
     //! The CPU OpenMP 2.0 block memory fence.
     class MemFenceOmp2Threads : public concepts::Implements<ConceptMemFence, MemFenceOmp2Threads>
     {
-    public:
-        MemFenceOmp2Threads() = default;
-        MemFenceOmp2Threads(MemFenceOmp2Threads const&) = delete;
-        auto operator=(MemFenceOmp2Threads const&) -> MemFenceOmp2Threads& = delete;
-        MemFenceOmp2Threads(MemFenceOmp2Threads&&) = delete;
-        auto operator=(MemFenceOmp2Threads&&) -> MemFenceOmp2Threads& = delete;
-        ~MemFenceOmp2Threads() = default;
     };
 
     namespace traits
