@@ -22,7 +22,7 @@
 #    include <alpaka/idx/gb/IdxGbRef.hpp>
 #    include <alpaka/intrinsic/IntrinsicCpu.hpp>
 #    include <alpaka/math/MathStdLib.hpp>
-#    include <alpaka/mem/fence/MemFenceCpu.hpp>
+#    include <alpaka/mem/fence/MemFenceCpuSerial.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
 #    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
@@ -69,7 +69,7 @@ namespace alpaka
         public BlockSharedMemStMember<>,
         public BlockSyncNoOp,
         public IntrinsicCpu,
-        public MemFenceCpu,
+        public MemFenceCpuSerial,
         public rand::RandStdLib,
         public TimeStdLib,
         public warp::WarpSingleThread,
@@ -99,7 +99,7 @@ namespace alpaka
             , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
             , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
             , BlockSyncNoOp()
-            , MemFenceCpu()
+            , MemFenceCpuSerial()
             , rand::RandStdLib()
             , TimeStdLib()
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
