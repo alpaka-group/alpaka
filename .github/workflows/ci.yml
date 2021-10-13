@@ -118,6 +118,9 @@ jobs:
         - name: macos_xcode-12.5.1_release
           os: macos-11
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.5.1,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.66.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        - name: macos_xcode-13.0.0_debug
+          os: macos-11
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 13.0.0,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.68.0,                                                  ALPAKA_CXX_STANDARD: 17,                                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
 
         ### Windows
         - name: windows_cl-2019_release
