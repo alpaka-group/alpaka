@@ -174,6 +174,14 @@ if(MSVC)
         target_compile_options(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/wd4505>)
     endif()
 else()
+    # For std::future we need to pass the correct pthread flag for the compiler and the linker:
+    # https://github.com/alpaka-group/cupla/pull/128#issuecomment-545078917
+    
+    # Allow users to override the "-pthread" preference.
+    if(NOT THREADS_PREFER_PTHREAD_FLAG)
+        set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+    endif()
+    
     find_package(Threads REQUIRED)
     target_link_libraries(alpaka INTERFACE Threads::Threads)
 
