@@ -70,7 +70,7 @@ Supported Compilers
 
 This library uses C++14 (or newer when available).
 
-|Accelerator Back-end|gcc 7.5 <br/> (Linux)|gcc 8.5 <br/> (Linux)|gcc 9.4 <br/> (Linux)|gcc 10.3 <br/> (Linux)|gcc 11.1 <br/> (Linux)|clang 5/6/7/8 <br/> (Linux)|clang 9 <br/> (Linux)|clang 10 <br/> (Linux)|clang 11 <br/> (Linux)|clang 12 <br/> (Linux)|Apple LLVM 11.3.1/12.4.0/12.5.1 <br /> (macOS)|MSVC 2019 <br/> (Windows)|
+|Accelerator Back-end|gcc 7.5 <br/> (Linux)|gcc 8.5 <br/> (Linux)|gcc 9.4 <br/> (Linux)|gcc 10.3 <br/> (Linux)|gcc 11.1 <br/> (Linux)|clang 5/6/7/8 <br/> (Linux)|clang 9 <br/> (Linux)|clang 10 <br/> (Linux)|clang 11 <br/> (Linux)|clang 12 <br/> (Linux)|Apple LLVM 11.3.1/12.4.0/12.5.1/13.0.0 <br /> (macOS)|MSVC 2019 <br/> (Windows)|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
