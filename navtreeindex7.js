@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"namespacemembers_v.html":[2,1,0,19],
+"namespacemembers_vars.html":[2,1,2],
+"namespacemembers_w.html":[2,1,0,20],
 "namespaces.html":[2,0],
 "namespaceutility.html":[2,0,1],
 "namespaceutility.html":[3,0,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a7c2014f4e56985cb2d27267cd0775183":[3,0,0,5,48,13],
 "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a853b0956c7c1e0b0e1609adfba85785e":[3,0,0,5,48,5],
 "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a88f1fc7f03baec7e484a2e3009440395":[3,0,0,5,48,9],
-"structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a8d5896055ba16e39a6b5604610a4da30":[3,0,0,5,48,0],
-"structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a93890b82f7b319728de301dc8680fd3c":[3,0,0,5,48,1],
-"structalpaka_1_1detail_1_1TaskCopyCpuBase.html#ab0b566bb6a484d011ce48c80e0348c69":[3,0,0,5,48,10],
-"structalpaka_1_1detail_1_1TaskCopyCpuBase.html#ab376448422f952b7afc5f96b519c3671":[3,0,0,5,48,4]
+"structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a8d5896055ba16e39a6b5604610a4da30":[3,0,0,5,48,0]
 };

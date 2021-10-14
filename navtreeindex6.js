@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"math_2exp_2Traits_8hpp.html#a37d8372a12156afd5d5147542c5b72df":[4,0,0,0,14,9,2,2],
+"math_2exp_2Traits_8hpp_source.html":[4,0,0,0,14,9,2],
+"math_2floor_2Traits_8hpp.html":[4,0,0,0,14,10,2],
 "math_2floor_2Traits_8hpp.html#a2a8c69be37b50a9af624374878e95abd":[4,0,0,0,14,10,2,2],
 "math_2floor_2Traits_8hpp_source.html":[4,0,0,0,14,10,2],
 "math_2fmod_2Traits_8hpp.html":[4,0,0,0,14,11,2],
@@ -65,9 +68,9 @@ var NAVTREEINDEX6 =
 "mem_2buf_2omp5_2Set_8hpp_source.html":[4,0,0,0,15,1,2,1],
 "mem_2buf_2uniformCudaHip_2Set_8hpp.html":[4,0,0,0,15,1,3,1],
 "mem_2buf_2uniformCudaHip_2Set_8hpp_source.html":[4,0,0,0,15,1,3,1],
-"mem_2fence_2Traits_8hpp.html":[4,0,0,0,15,2,6],
-"mem_2fence_2Traits_8hpp.html#a8a1c027320c9d7a10df1ae7bc87fcb46":[4,0,0,0,15,2,6,4],
-"mem_2fence_2Traits_8hpp_source.html":[4,0,0,0,15,2,6],
+"mem_2fence_2Traits_8hpp.html":[4,0,0,0,15,2,7],
+"mem_2fence_2Traits_8hpp.html#a8a1c027320c9d7a10df1ae7bc87fcb46":[4,0,0,0,15,2,7,4],
+"mem_2fence_2Traits_8hpp_source.html":[4,0,0,0,15,2,7],
 "mem_2view_2Traits_8hpp.html":[4,0,0,0,15,3,0],
 "mem_2view_2Traits_8hpp.html#a077ab1ce794c066edb479ba04db6af60":[4,0,0,0,15,3,0,28],
 "mem_2view_2Traits_8hpp.html#a1a50b36a49510b2c3d5418cbc9c11f61":[4,0,0,0,15,3,0,19],
@@ -95,8 +98,8 @@ var NAVTREEINDEX6 =
 "meta_2Set_8hpp.html#a232409af86c4d12e27e83406c7d6f6ca":[4,0,0,0,16,15,7],
 "meta_2Set_8hpp.html#a7007c16b361a3bbc1184a79223d884dc":[4,0,0,0,16,15,6],
 "meta_2Set_8hpp_source.html":[4,0,0,0,16,15],
-"namespacealpaka.html":[2,0,0],
 "namespacealpaka.html":[3,0,0],
+"namespacealpaka.html":[2,0,0],
 "namespacealpaka_1_1bt.html":[2,0,0,0],
 "namespacealpaka_1_1bt.html":[3,0,0,0],
 "namespacealpaka_1_1concepts.html":[2,0,0,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "namespacemembers_s.html":[2,1,0,16],
 "namespacemembers_t.html":[2,1,0,17],
 "namespacemembers_type.html":[2,1,3],
-"namespacemembers_u.html":[2,1,0,18],
-"namespacemembers_v.html":[2,1,0,19],
-"namespacemembers_vars.html":[2,1,2],
-"namespacemembers_w.html":[2,1,0,20]
+"namespacemembers_u.html":[2,1,0,18]
 };

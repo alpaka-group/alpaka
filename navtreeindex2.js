@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"SetKernel_8hpp_source.html":[4,0,0,0,15,1,8],
+"SinCosStdLib_8hpp.html":[4,0,0,0,14,20,0],
 "SinCosStdLib_8hpp_source.html":[4,0,0,0,14,20,0],
 "SinCosUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,14,20,1],
 "SinCosUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,14,20,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "classalpaka_1_1AtomicStdLibLock.html#acaff1a9664e08b8cf8c7d20eb6ba2ff3":[3,0,0,42,0],
 "classalpaka_1_1AtomicStdLibLock.html#af244051ba50a6b617317730d056a3519":[3,0,0,42,2],
 "classalpaka_1_1AtomicUniformCudaHipBuiltIn.html":[3,0,0,44],
-"classalpaka_1_1BlockSharedMemDynMember.html":[3,0,0,49],
-"classalpaka_1_1BlockSharedMemDynMember.html#a3270b5f30feaff786dc436304690bb40":[3,0,0,49,3],
-"classalpaka_1_1BlockSharedMemDynMember.html#a4c97f20cb71d7947d0dc18fc9126ea36":[3,0,0,49,1]
+"classalpaka_1_1BlockSharedMemDynMember.html":[3,0,0,49]
 };

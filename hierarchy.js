@@ -903,6 +903,8 @@ var hierarchy =
     [ "alpaka::traits::Map< BufUniformCudaHipRt< TElem, TDim, TIdx >, DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1Map_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4.html", null ],
     [ "alpaka::traits::MemFence< TMemFence, TMemScope, TSfinae >", "structalpaka_1_1traits_1_1MemFence.html", null ],
     [ "alpaka::traits::MemFence< MemFenceCpu, TMemScope >", "structalpaka_1_1traits_1_1MemFence_3_01MemFenceCpu_00_01TMemScope_01_4.html", null ],
+    [ "alpaka::traits::MemFence< MemFenceCpuSerial, memory_scope::Block >", "structalpaka_1_1traits_1_1MemFence_3_01MemFenceCpuSerial_00_01memory__scope_1_1Block_01_4.html", null ],
+    [ "alpaka::traits::MemFence< MemFenceCpuSerial, TMemScope >", "structalpaka_1_1traits_1_1MemFence_3_01MemFenceCpuSerial_00_01TMemScope_01_4.html", null ],
     [ "alpaka::traits::MemFence< MemFenceOmp2Blocks, memory_scope::Block >", "structalpaka_1_1traits_1_1MemFence_3_01MemFenceOmp2Blocks_00_01memory__scope_1_1Block_01_4.html", null ],
     [ "alpaka::traits::MemFence< MemFenceOmp2Blocks, memory_scope::Device >", "structalpaka_1_1traits_1_1MemFence_3_01MemFenceOmp2Blocks_00_01memory__scope_1_1Device_01_4.html", null ],
     [ "alpaka::traits::MemFence< MemFenceOmp2Threads, TMemScope >", "structalpaka_1_1traits_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html", null ],
@@ -1522,8 +1524,12 @@ var hierarchy =
     [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::MemFenceCpu", "classalpaka_1_1MemFenceCpu.html", [
         [ "alpaka::AccCpuFibers< TDim, TIdx >", "classalpaka_1_1AccCpuFibers.html", null ],
-        [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ],
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceCpuSerial >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::MemFenceCpuSerial", "classalpaka_1_1MemFenceCpuSerial.html", [
+        [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ]
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptMemFence, MemFenceOmp2Blocks >", "structalpaka_1_1concepts_1_1Implements.html", [

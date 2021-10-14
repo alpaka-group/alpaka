@@ -90,6 +90,7 @@ var namespacealpaka =
     [ "IntrinsicFallback", "classalpaka_1_1IntrinsicFallback.html", null ],
     [ "IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html", null ],
     [ "MemFenceCpu", "classalpaka_1_1MemFenceCpu.html", null ],
+    [ "MemFenceCpuSerial", "classalpaka_1_1MemFenceCpuSerial.html", null ],
     [ "MemFenceOmp2Blocks", "classalpaka_1_1MemFenceOmp2Blocks.html", null ],
     [ "MemFenceOmp2Threads", "classalpaka_1_1MemFenceOmp2Threads.html", null ],
     [ "MemFenceOmp5", "classalpaka_1_1MemFenceOmp5.html", null ],

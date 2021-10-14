@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_00_01TWorkDi72883ed3c71fb747922ee67c6ebbe109.html":[3,0,0,17,97],
+"structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_00_01TWorkDi72883ed3c71fb747922ee67c6ebbe109.html#af55b4e589906b4f10fa799a637cc7b73":[3,0,0,17,97,0],
+"structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TWo53539caf20b345c3464a6b90e8d485f6.html":[3,0,0,17,98],
 "structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_00_01TWo53539caf20b345c3464a6b90e8d485f6.html#adb5b95a5c01e0fc5a995fb9c9b096e3a":[3,0,0,17,98,0],
 "structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_00_01TWebc4bed7b4411d4f5e9ba86ef0ca94fe.html":[3,0,0,17,99],
 "structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_00_01TWebc4bed7b4411d4f5e9ba86ef0ca94fe.html#adaa6be5f9eae94c552a8a32b6db86a2c":[3,0,0,17,99,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1traits_1_1Empty_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html#acc56be4d76591f7977bf18501c5a2c39":[3,0,0,17,223,0],
 "structalpaka_1_1traits_1_1Enqueue.html":[3,0,0,17,224],
 "structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html":[3,0,0,17,228],
-"structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html#a77db0c8008e2f862d5d82e0cf9e10f67":[3,0,0,17,228,0],
-"structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01TTask_01_4.html":[3,0,0,17,231],
-"structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01TTask_01_4.html#aa8837a5b21a564a2f75ff2c4e40fc138":[3,0,0,17,231,0],
-"structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01TaskKernelCpuOmp2Blocks_3_01TD8b949a179ccd6cd2512f1f5f04b92701.html":[3,0,0,17,229]
+"structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html#a77db0c8008e2f862d5d82e0cf9e10f67":[3,0,0,17,228,0]
 };
