@@ -2,13 +2,13 @@ var dir_1143562e5ac1f1cac7683540118ef5cd =
 [
     [ "AtomicHierarchy.hpp", "AtomicHierarchy_8hpp.html", "AtomicHierarchy_8hpp" ],
     [ "AtomicNoOp.hpp", "AtomicNoOp_8hpp.html", [
-      [ "AtomicNoOp", "classalpaka_1_1AtomicNoOp.html", "classalpaka_1_1AtomicNoOp" ],
+      [ "AtomicNoOp", "classalpaka_1_1AtomicNoOp.html", null ],
       [ "AtomicOp< TOp, AtomicNoOp, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicNoOp_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicNoOp_00_01T_00_01THierarchy_01_4" ]
     ] ],
     [ "AtomicOaccBuiltIn.hpp", "AtomicOaccBuiltIn_8hpp.html", null ],
     [ "AtomicOaccExtended.hpp", "AtomicOaccExtended_8hpp.html", null ],
     [ "AtomicOmpBuiltIn.hpp", "AtomicOmpBuiltIn_8hpp.html", [
-      [ "AtomicOmpBuiltIn", "classalpaka_1_1AtomicOmpBuiltIn.html", "classalpaka_1_1AtomicOmpBuiltIn" ],
+      [ "AtomicOmpBuiltIn", "classalpaka_1_1AtomicOmpBuiltIn.html", null ],
       [ "AtomicOp< AtomicAdd, AtomicOmpBuiltIn, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4" ],
       [ "AtomicOp< AtomicAnd, AtomicOmpBuiltIn, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAnd_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAnd_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4" ],
       [ "AtomicOp< AtomicExch, AtomicOmpBuiltIn, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicExch_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicExch_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4" ],
@@ -22,7 +22,7 @@ var dir_1143562e5ac1f1cac7683540118ef5cd =
       [ "AtomicOp< TOp, AtomicStdLibLock< THashTableSize >, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicStdLibLock_3_01THashTableSize_01_4_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicStdLibLock_3_01THashTableSize_01_4_00_01T_00_01THierarchy_01_4" ]
     ] ],
     [ "AtomicUniformCudaHipBuiltIn.hpp", "AtomicUniformCudaHipBuiltIn_8hpp.html", [
-      [ "AtomicUniformCudaHipBuiltIn", "classalpaka_1_1AtomicUniformCudaHipBuiltIn.html", "classalpaka_1_1AtomicUniformCudaHipBuiltIn" ],
+      [ "AtomicUniformCudaHipBuiltIn", "classalpaka_1_1AtomicUniformCudaHipBuiltIn.html", null ],
       [ "AtomicOp< AtomicAdd, AtomicUniformCudaHipBuiltIn, double, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicUniformCudaHipBuiltIn_00_01double_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicUniformCudaHipBuiltIn_00_01double_00_01THierarchy_01_4" ],
       [ "AtomicOp< AtomicAdd, AtomicUniformCudaHipBuiltIn, float, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicUniformCudaHipBuiltIn_00_01float_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicUniformCudaHipBuiltIn_00_01float_00_01THierarchy_01_4" ],
       [ "AtomicOp< AtomicAdd, AtomicUniformCudaHipBuiltIn, int, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4" ],

@@ -17,7 +17,7 @@ var dir_7be937b0b17efdbd2f169f14f5c2db8e =
       [ "FreeSharedVars< BlockSharedMemStOmp5 >", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4" ]
     ] ],
     [ "BlockSharedMemStUniformCudaHipBuiltIn.hpp", "BlockSharedMemStUniformCudaHipBuiltIn_8hpp.html", [
-      [ "BlockSharedMemStUniformCudaHipBuiltIn", "classalpaka_1_1BlockSharedMemStUniformCudaHipBuiltIn.html", "classalpaka_1_1BlockSharedMemStUniformCudaHipBuiltIn" ],
+      [ "BlockSharedMemStUniformCudaHipBuiltIn", "classalpaka_1_1BlockSharedMemStUniformCudaHipBuiltIn.html", null ],
       [ "DeclareSharedVar< T, TuniqueId, BlockSharedMemStUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4" ],
       [ "FreeSharedVars< BlockSharedMemStUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4" ]
     ] ],

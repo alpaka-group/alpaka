@@ -354,326 +354,322 @@ $(document).ready(function(){initNavTree('ConcurrentExecPool_8hpp_source.html','
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    }</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                }</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3b76ff3fb042890756bfd174d5aaa85e">ConcurrentExecPool</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3b76ff3fb042890756bfd174d5aaa85e">ConcurrentExecPool</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp;&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> <span class="keyword">const</span>&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp;&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment">                //! Completes any currently running task normally.</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">                //! Signals a std::runtime_error exception to any other tasks that was not able to run.</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">  274</a></span>&#160;<span class="comment"></span>                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">~ConcurrentExecPool</a>()</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                {</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    <span class="comment">// Signal that concurrent executors should not perform any new work</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                    m_bShutdownFlag.store(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> <span class="keyword">const</span>&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp; = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">                //! Completes any currently running task normally.</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">                //! Signals a std::runtime_error exception to any other tasks that was not able to run.</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">  272</a></span>&#160;<span class="comment"></span>                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">~ConcurrentExecPool</a>()</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                    <span class="comment">// Signal that concurrent executors should not perform any new work</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                    m_bShutdownFlag.store(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                    joinAllConcurrentExecs();</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                    joinAllConcurrentExecs();</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                    <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                    <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                    <span class="comment">// Signal to each incomplete task that it will not complete due to pool destruction.</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                    <span class="keywordflow">while</span>(popTask(currentTaskPackage))</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                    {</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                        <span class="keyword">auto</span> <span class="keyword">const</span> except(</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                            std::runtime_error(<span class="stringliteral">&quot;Could not perform task before ConcurrentExecPool destruction&quot;</span>));</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">#if !(BOOST_COMP_CLANG_CUDA &amp;&amp; BOOST_ARCH_PTX)</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                        currentTaskPackage-&gt;setException(std::make_exception_ptr(except));</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                    }</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">                //! Runs the given function on one of the pool in First In First Out (FIFO) order.</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">                //!</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">                //! \tparam TFnObj  The function type.</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">                //! \param task     Function object to be called on the pool.</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">                //!                 Takes an arbitrary number of arguments and arbitrary return type.</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">                //! \tparam TArgs   The argument types pack.</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">                //! \param args     Arguments for task, cannot be moved.</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">                //!                 If such parameters must be used, use a lambda and capture via move then move the</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">                //!                 lambda.</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">                //!</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">                //! \return Signals when the task has completed with either success or an exception.</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">                //!         Also results in an exception if the pool is destroyed before execution has begun.</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment"></span>                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">  308</a></span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">enqueueTask</a>(TFnObj&amp;&amp; task, TArgs&amp;&amp;... args)</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                {</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                    <span class="keyword">auto</span> boundTask = [=]() { <span class="keywordflow">return</span> task(args...); };</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    <span class="keyword">auto</span> decrementNumActiveTasks = [<span class="keyword">this</span>]() { --m_numActiveTasks; };</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                    <span class="keyword">auto</span> extendedTask = [boundTask, decrementNumActiveTasks]()</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    { <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1core_1_1detail.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec">invokeBothReturnFirst</a>(std::move(boundTask), std::move(decrementNumActiveTasks)); };</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                    <span class="keyword">using</span> TaskPackage = <a class="code" href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html">TaskPkg</a>&lt;TPromise, decltype(extendedTask)&gt;;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    <span class="keyword">auto</span> pTaskPackage = <span class="keyword">new</span> TaskPackage(std::move(extendedTask));</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    std::shared_ptr&lt;ITaskPkg&gt; upTaskPackage(pTaskPackage);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                    <span class="comment">// Signal to each incomplete task that it will not complete due to pool destruction.</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                    <span class="keywordflow">while</span>(popTask(currentTaskPackage))</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                    {</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                        <span class="keyword">auto</span> <span class="keyword">const</span> except(</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                            std::runtime_error(<span class="stringliteral">&quot;Could not perform task before ConcurrentExecPool destruction&quot;</span>));</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#if !(BOOST_COMP_CLANG_CUDA &amp;&amp; BOOST_ARCH_PTX)</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                        currentTaskPackage-&gt;setException(std::make_exception_ptr(except));</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                    }</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                }</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">                //! Runs the given function on one of the pool in First In First Out (FIFO) order.</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">                //!</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">                //! \tparam TFnObj  The function type.</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">                //! \param task     Function object to be called on the pool.</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">                //!                 Takes an arbitrary number of arguments and arbitrary return type.</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">                //! \tparam TArgs   The argument types pack.</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">                //! \param args     Arguments for task, cannot be moved.</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">                //!                 If such parameters must be used, use a lambda and capture via move then move the</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">                //!                 lambda.</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">                //!</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">                //! \return Signals when the task has completed with either success or an exception.</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">                //!         Also results in an exception if the pool is destroyed before execution has begun.</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment"></span>                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">  306</a></span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">enqueueTask</a>(TFnObj&amp;&amp; task, TArgs&amp;&amp;... args)</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                {</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                    <span class="keyword">auto</span> boundTask = [=]() { <span class="keywordflow">return</span> task(args...); };</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                    <span class="keyword">auto</span> decrementNumActiveTasks = [<span class="keyword">this</span>]() { --m_numActiveTasks; };</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    <span class="keyword">auto</span> extendedTask = [boundTask, decrementNumActiveTasks]()</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                    { <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1core_1_1detail.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec">invokeBothReturnFirst</a>(std::move(boundTask), std::move(decrementNumActiveTasks)); };</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    <span class="keyword">using</span> TaskPackage = <a class="code" href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html">TaskPkg</a>&lt;TPromise, decltype(extendedTask)&gt;;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    <span class="keyword">auto</span> pTaskPackage = <span class="keyword">new</span> TaskPackage(std::move(extendedTask));</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                    std::shared_ptr&lt;ITaskPkg&gt; upTaskPackage(pTaskPackage);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    <span class="keyword">auto</span> future = pTaskPackage-&gt;m_Promise.get_future();</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                    <span class="keyword">auto</span> future = pTaskPackage-&gt;m_Promise.get_future();</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                    ++m_numActiveTasks;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                    m_qTasks.push(std::move(upTaskPackage));</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    <span class="keywordflow">return</span> future;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                }<span class="comment"></span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">                //! \return The number of concurrent executors available.</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a839ac4be88794912a739f4bd061c2083">  328</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a839ac4be88794912a739f4bd061c2083">getConcurrentExecutionCount</a>() const -&gt; TIdx</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                {</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                    <span class="keywordflow">return</span> m_vConcurrentExecs.size();</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                }<span class="comment"></span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">                //! \return If the thread pool is idle.</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c">  333</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c">isIdle</a>() const -&gt; <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                {</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                    <span class="keywordflow">return</span> m_numActiveTasks == 0u;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                }</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            <span class="keyword">private</span>:<span class="comment"></span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">                //! The function the concurrent executors are executing.</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> concurrentExecFn()</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                {</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                    <span class="comment">// Checks whether pool is being destroyed, if so, stop running.</span></div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                    <span class="keywordflow">while</span>(!m_bShutdownFlag.load(std::memory_order_relaxed))</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                    {</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                        <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                        <span class="comment">// Use popTask so we only ever have one reference to the ITaskPkg</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                        <span class="keywordflow">if</span>(popTask(currentTaskPackage))</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                        {</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                            currentTaskPackage-&gt;runTask();</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                        }</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                        {</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                            TYield::yield();</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                        }</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                    }</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                }</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">                //! Joins all concurrent executors.</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> joinAllConcurrentExecs()</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                {</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp;&amp; concurrentExec : m_vConcurrentExecs)</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                    {</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                        concurrentExec.join();</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                    }</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                }<span class="comment"></span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">                //! Pops a task from the queue.</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> popTask(std::shared_ptr&lt;ITaskPkg&gt;&amp; out) -&gt; <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                {</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                    <span class="keywordflow">if</span>(m_qTasks.pop(out))</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                    {</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                    }</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;                }</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; </div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                std::vector&lt;TConcurrentExec&gt; m_vConcurrentExecs;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                ThreadSafeQueue&lt;std::shared_ptr&lt;ITaskPkg&gt;&gt; m_qTasks;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                std::atomic&lt;std::uint32_t&gt; m_numActiveTasks;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                std::atomic&lt;bool&gt; m_bShutdownFlag;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            };</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="comment">            //! ConcurrentExecPool using a condition variable to wait for new work.</span></div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment">            //!</span></div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">            //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">            //! \tparam TPromise The promise type returned by the task.</span></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="comment">            //! \tparam TYield Unused. The type is required to have a static method &quot;void yield()&quot; to yield the current</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="comment">            //! thread if there is no work. \tparam TMutex The mutex type used for locking threads. \tparam TCondVar</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="comment">            //! The condition variable type used to make the threads wait if there is no work.</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                <span class="keyword">typename</span> TIdx,</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                <span class="keyword">typename</span> TConcurrentExec,</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TFnObjReturn&gt;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                <span class="keyword">class </span>TPromise,</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                <span class="keyword">typename</span> TYield,</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                <span class="keyword">typename</span> TMutex,</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                <span class="keyword">typename</span> TCondVar&gt;</div>
-<div class="line"><a name="l00399"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html">  399</a></span>&#160;            <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt;TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false&gt; final</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            {</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            <span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">                //! Creates a concurrent executors pool with a specific number of concurrent executors and a maximum</span></div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">                //! number of queued tasks.</span></div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment">                //!</span></div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="comment">                //! \param concurrentExecutionCount</span></div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment">                //!    The guaranteed number of concurrent executors used in the pool.</span></div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="comment">                //!    This is also the maximum number of tasks worked on concurrently.</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#aaac41c49f885aa725c922da24f537f86">  408</a></span>&#160;<span class="comment"></span>                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#aaac41c49f885aa725c922da24f537f86">ConcurrentExecPool</a>(TIdx concurrentExecutionCount)</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                    : m_vConcurrentExecs()</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                    , m_qTasks()</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                    , m_numActiveTasks(0u)</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                    , m_mtxWakeup()</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                    , m_cvWakeup()</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                    , m_bShutdownFlag(false)</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                {</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                    <span class="keywordflow">if</span>(concurrentExecutionCount &lt; 1)</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                    {</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                        <span class="keywordflow">throw</span> std::invalid_argument(</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                            <span class="stringliteral">&quot;The argument &#39;concurrentExecutionCount&#39; has to be greate or equal to one!&quot;</span>);</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                    }</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                    ++m_numActiveTasks;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                    m_qTasks.push(std::move(upTaskPackage));</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                    <span class="keywordflow">return</span> future;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                }<span class="comment"></span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">                //! \return The number of concurrent executors available.</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a839ac4be88794912a739f4bd061c2083">  326</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a839ac4be88794912a739f4bd061c2083">getConcurrentExecutionCount</a>() const -&gt; TIdx</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                {</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                    <span class="keywordflow">return</span> m_vConcurrentExecs.size();</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                }<span class="comment"></span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment">                //! \return If the thread pool is idle.</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c">  331</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c">isIdle</a>() const -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                {</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                    <span class="keywordflow">return</span> m_numActiveTasks == 0u;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                }</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            <span class="keyword">private</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment">                //! The function the concurrent executors are executing.</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> concurrentExecFn()</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                {</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                    <span class="comment">// Checks whether pool is being destroyed, if so, stop running.</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                    <span class="keywordflow">while</span>(!m_bShutdownFlag.load(std::memory_order_relaxed))</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                    {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                        <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                        <span class="comment">// Use popTask so we only ever have one reference to the ITaskPkg</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                        <span class="keywordflow">if</span>(popTask(currentTaskPackage))</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                        {</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                            currentTaskPackage-&gt;runTask();</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                        }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                        {</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                            TYield::yield();</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                        }</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                    }</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                }</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="comment">                //! Joins all concurrent executors.</span></div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> joinAllConcurrentExecs()</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                {</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp;&amp; concurrentExec : m_vConcurrentExecs)</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                    {</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                        concurrentExec.join();</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                    }</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                }<span class="comment"></span></div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">                //! Pops a task from the queue.</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> popTask(std::shared_ptr&lt;ITaskPkg&gt;&amp; out) -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                {</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                    <span class="keywordflow">if</span>(m_qTasks.pop(out))</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                    {</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                    }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                }</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;            <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;                std::vector&lt;TConcurrentExec&gt; m_vConcurrentExecs;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                ThreadSafeQueue&lt;std::shared_ptr&lt;ITaskPkg&gt;&gt; m_qTasks;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                std::atomic&lt;std::uint32_t&gt; m_numActiveTasks;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                std::atomic&lt;bool&gt; m_bShutdownFlag;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            };</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment">            //! ConcurrentExecPool using a condition variable to wait for new work.</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="comment">            //!</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="comment">            //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment">            //! \tparam TPromise The promise type returned by the task.</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">            //! \tparam TYield Unused. The type is required to have a static method &quot;void yield()&quot; to yield the current</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">            //! thread if there is no work. \tparam TMutex The mutex type used for locking threads. \tparam TCondVar</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="comment">            //! The condition variable type used to make the threads wait if there is no work.</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                <span class="keyword">typename</span> TIdx,</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                <span class="keyword">typename</span> TConcurrentExec,</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TFnObjReturn&gt;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                <span class="keyword">class </span>TPromise,</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                <span class="keyword">typename</span> TYield,</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                <span class="keyword">typename</span> TMutex,</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                <span class="keyword">typename</span> TCondVar&gt;</div>
+<div class="line"><a name="l00397"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html">  397</a></span>&#160;            <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt;TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false&gt; final</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            {</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            <span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">                //! Creates a concurrent executors pool with a specific number of concurrent executors and a maximum</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">                //! number of queued tasks.</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">                //!</span></div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">                //! \param concurrentExecutionCount</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment">                //!    The guaranteed number of concurrent executors used in the pool.</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="comment">                //!    This is also the maximum number of tasks worked on concurrently.</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#aaac41c49f885aa725c922da24f537f86">  406</a></span>&#160;<span class="comment"></span>                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#aaac41c49f885aa725c922da24f537f86">ConcurrentExecPool</a>(TIdx concurrentExecutionCount)</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                    : m_vConcurrentExecs()</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                    , m_qTasks()</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                    , m_numActiveTasks(0u)</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                    , m_mtxWakeup()</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                    , m_cvWakeup()</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                    , m_bShutdownFlag(false)</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                {</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                    <span class="keywordflow">if</span>(concurrentExecutionCount &lt; 1)</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                    {</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                        <span class="keywordflow">throw</span> std::invalid_argument(</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                            <span class="stringliteral">&quot;The argument &#39;concurrentExecutionCount&#39; has to be greate or equal to one!&quot;</span>);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                    }</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                    m_vConcurrentExecs.reserve(<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(concurrentExecutionCount));</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160; </div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                    m_vConcurrentExecs.reserve(<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(concurrentExecutionCount));</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160; </div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                    <span class="comment">// Create all concurrent executors.</span></div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                    <span class="keywordflow">for</span>(TIdx concurrentExec(0u); concurrentExec &lt; concurrentExecutionCount; ++concurrentExec)</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                    {</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                        m_vConcurrentExecs.emplace_back([<span class="keyword">this</span>]() { concurrentExecFn(); });</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                    }</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                }</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3b76ff3fb042890756bfd174d5aaa85e">ConcurrentExecPool</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3b76ff3fb042890756bfd174d5aaa85e">ConcurrentExecPool</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp;&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> <span class="keyword">const</span>&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp;&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">                //! Completes any currently running task normally.</span></div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;<span class="comment">                //! Signals a std::runtime_error exception to any other tasks that was not able to run.</span></div>
-<div class="line"><a name="l00437"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">  437</a></span>&#160;<span class="comment"></span>                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">~ConcurrentExecPool</a>()</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;                {</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                    {</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;                        std::unique_lock&lt;TMutex&gt; lock(m_mtxWakeup);</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                    <span class="comment">// Create all concurrent executors.</span></div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;                    <span class="keywordflow">for</span>(TIdx concurrentExec(0u); concurrentExec &lt; concurrentExecutionCount; ++concurrentExec)</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                    {</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                        m_vConcurrentExecs.emplace_back([<span class="keyword">this</span>]() { concurrentExecFn(); });</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                    }</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                }</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3b76ff3fb042890756bfd174d5aaa85e">ConcurrentExecPool</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> <span class="keyword">const</span>&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&amp; = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="comment">                //! Completes any currently running task normally.</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="comment">                //! Signals a std::runtime_error exception to any other tasks that was not able to run.</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">  433</a></span>&#160;<span class="comment"></span>                <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">~ConcurrentExecPool</a>()</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;                {</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;                    {</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;                        std::unique_lock&lt;TMutex&gt; lock(m_mtxWakeup);</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160; </div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;                        <span class="comment">// Signal that concurrent executors should not perform any new work</span></div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                        m_bShutdownFlag = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;                    }</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; </div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;                        <span class="comment">// Signal that concurrent executors should not perform any new work</span></div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;                        m_bShutdownFlag = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;                    }</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;                    m_cvWakeup.notify_all();</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;                    joinAllConcurrentExecs();</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160; </div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;                    m_cvWakeup.notify_all();</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;                    <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160; </div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;                    joinAllConcurrentExecs();</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;                    <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160; </div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                    <span class="comment">// Signal to each incomplete task that it will not complete due to pool destruction.</span></div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;                    <span class="keywordflow">while</span>(popTask(currentTaskPackage))</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;                    {</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;                        <span class="keyword">auto</span> <span class="keyword">const</span> except(</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;                            std::runtime_error(<span class="stringliteral">&quot;Could not perform task before ConcurrentExecPool destruction&quot;</span>));</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;<span class="preprocessor">#if !(BOOST_COMP_CLANG_CUDA &amp;&amp; BOOST_ARCH_PTX)</span></div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;                        currentTaskPackage-&gt;setException(std::make_exception_ptr(except));</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;                    }</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;                }</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;<span class="comment">                //! Runs the given function on one of the pool in First In First Out (FIFO) order.</span></div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;<span class="comment">                //!</span></div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;<span class="comment">                //! \tparam TFnObj  The function type.</span></div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;<span class="comment">                //! \param task     Function object to be called on the pool.</span></div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="comment">                //!                 Takes an arbitrary number of arguments and arbitrary return type.</span></div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;<span class="comment">                //! \tparam TArgs   The argument types pack.</span></div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment">                //! \param args     Arguments for task, cannot be moved.</span></div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment">                //!                 If such parameters must be used, use a lambda and capture via move then move the</span></div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment">                //!                 lambda.</span></div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment">                //!</span></div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="comment">                //! \return Signals when the task has completed with either success or an exception.</span></div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment">                //!         Also results in an exception if the pool is destroyed before execution has begun.</span></div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="comment"></span>                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00477"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">  477</a></span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">enqueueTask</a>(TFnObj&amp;&amp; task, TArgs&amp;&amp;... args)</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;                {</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;                    <span class="keyword">auto</span> boundTask = [=]() { <span class="keywordflow">return</span> task(args...); };</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;                    <span class="keyword">auto</span> decrementNumActiveTasks = [<span class="keyword">this</span>]() { --m_numActiveTasks; };</div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160; </div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;                    <span class="keyword">auto</span> extendedTask = [boundTask, decrementNumActiveTasks]()</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;                    { <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1core_1_1detail.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec">invokeBothReturnFirst</a>(std::move(boundTask), std::move(decrementNumActiveTasks)); };</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;                    <span class="comment">// Signal to each incomplete task that it will not complete due to pool destruction.</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;                    <span class="keywordflow">while</span>(popTask(currentTaskPackage))</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;                    {</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;                        <span class="keyword">auto</span> <span class="keyword">const</span> except(</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                            std::runtime_error(<span class="stringliteral">&quot;Could not perform task before ConcurrentExecPool destruction&quot;</span>));</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="preprocessor">#if !(BOOST_COMP_CLANG_CUDA &amp;&amp; BOOST_ARCH_PTX)</span></div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;                        currentTaskPackage-&gt;setException(std::make_exception_ptr(except));</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;                    }</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;                }</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;<span class="comment">                //! Runs the given function on one of the pool in First In First Out (FIFO) order.</span></div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;<span class="comment">                //!</span></div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="comment">                //! \tparam TFnObj  The function type.</span></div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="comment">                //! \param task     Function object to be called on the pool.</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;<span class="comment">                //!                 Takes an arbitrary number of arguments and arbitrary return type.</span></div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;<span class="comment">                //! \tparam TArgs   The argument types pack.</span></div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;<span class="comment">                //! \param args     Arguments for task, cannot be moved.</span></div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;<span class="comment">                //!                 If such parameters must be used, use a lambda and capture via move then move the</span></div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="comment">                //!                 lambda.</span></div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;<span class="comment">                //!</span></div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment">                //! \return Signals when the task has completed with either success or an exception.</span></div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment">                //!         Also results in an exception if the pool is destroyed before execution has begun.</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment"></span>                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00473"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">  473</a></span>&#160;                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">enqueueTask</a>(TFnObj&amp;&amp; task, TArgs&amp;&amp;... args)</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;                {</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;                    <span class="keyword">auto</span> boundTask = [=]() { <span class="keywordflow">return</span> task(args...); };</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;                    <span class="keyword">auto</span> decrementNumActiveTasks = [<span class="keyword">this</span>]() { --m_numActiveTasks; };</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160; </div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;                    <span class="keyword">auto</span> extendedTask = [boundTask, decrementNumActiveTasks]()</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;                    { <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1core_1_1detail.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec">invokeBothReturnFirst</a>(std::move(boundTask), std::move(decrementNumActiveTasks)); };</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;                    <span class="keyword">using</span> TaskPackage = <a class="code" href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html">TaskPkg</a>&lt;TPromise, decltype(extendedTask)&gt;;</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;                    <span class="keyword">auto</span> pTaskPackage = <span class="keyword">new</span> TaskPackage(std::move(extendedTask));</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;                    std::shared_ptr&lt;ITaskPkg&gt; upTaskPackage(pTaskPackage);</div>
 <div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160; </div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;                    <span class="keyword">using</span> TaskPackage = <a class="code" href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html">TaskPkg</a>&lt;TPromise, decltype(extendedTask)&gt;;</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;                    <span class="keyword">auto</span> pTaskPackage = <span class="keyword">new</span> TaskPackage(std::move(extendedTask));</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;                    std::shared_ptr&lt;ITaskPkg&gt; upTaskPackage(pTaskPackage);</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160; </div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;                    <span class="keyword">auto</span> future = pTaskPackage-&gt;m_Promise.get_future();</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160; </div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;                    ++m_numActiveTasks;</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                    {</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;                        std::lock_guard&lt;TMutex&gt; lock(m_mtxWakeup);</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;                        m_qTasks.push(std::move(upTaskPackage));</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160; </div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;                        m_cvWakeup.notify_one();</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;                    }</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160; </div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;                    <span class="keywordflow">return</span> future;</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;                }<span class="comment"></span></div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;<span class="comment">                //! \return The number of concurrent executors available.</span></div>
-<div class="line"><a name="l00502"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a82498382f020ac76a709ef3facfc0047">  502</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a82498382f020ac76a709ef3facfc0047">getConcurrentExecutionCount</a>() const -&gt; TIdx</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;                {</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;                    <span class="keywordflow">return</span> m_vConcurrentExecs.size();</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;                }<span class="comment"></span></div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;<span class="comment">                //! \return If the thread pool is idle.</span></div>
-<div class="line"><a name="l00507"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963">  507</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963">isIdle</a>() const -&gt; <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;                {</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;                    <span class="keywordflow">return</span> m_numActiveTasks == 0u;</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;                }</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160; </div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;            <span class="keyword">private</span>:<span class="comment"></span></div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;<span class="comment">                //! The function the concurrent executors are executing.</span></div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> concurrentExecFn()</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;                {</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;                    <span class="comment">// Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).</span></div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;                    <span class="keywordflow">while</span>(!m_bShutdownFlag)</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;                    {</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;                        <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160; </div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;                        <span class="comment">// Use popTask so we only ever have one reference to the ITaskPkg</span></div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;                        <span class="keywordflow">if</span>(popTask(currentTaskPackage))</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;                        {</div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;                            currentTaskPackage-&gt;runTask();</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;                        }</div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;                        {</div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;                            std::unique_lock&lt;TMutex&gt; lock(m_mtxWakeup);</div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;                            <span class="keywordflow">if</span>(m_qTasks.empty())</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;                            {</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;                                <span class="comment">// If the shutdown flag has been set since the last check, return now.</span></div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;                                <span class="keywordflow">if</span>(m_bShutdownFlag)</div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;                                {</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;                                    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;                                }</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160; </div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;                                m_cvWakeup.wait(lock, [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> ((!m_qTasks.empty()) || m_bShutdownFlag); });</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;                            }</div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;                        }</div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;                    }</div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;                }</div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="comment">                //! Joins all concurrent executors.</span></div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> joinAllConcurrentExecs()</div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;                {</div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;                    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp;&amp; concurrentExec : m_vConcurrentExecs)</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;                    {</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;                        concurrentExec.join();</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;                    }</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;                }<span class="comment"></span></div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;<span class="comment">                //! Pops a task from the queue.</span></div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> popTask(std::shared_ptr&lt;ITaskPkg&gt;&amp; out) -&gt; <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;                {</div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;                    <span class="keywordflow">if</span>(m_qTasks.pop(out))</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;                    {</div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;                    }</div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;                }</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160; </div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;            <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;                std::vector&lt;TConcurrentExec&gt; m_vConcurrentExecs;</div>
-<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;                ThreadSafeQueue&lt;std::shared_ptr&lt;ITaskPkg&gt;&gt; m_qTasks;</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;                std::atomic&lt;std::uint32_t&gt; m_numActiveTasks;</div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160; </div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;                TMutex m_mtxWakeup;</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;                TCondVar m_cvWakeup;</div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;                std::atomic&lt;bool&gt; m_bShutdownFlag;</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;            };</div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        } <span class="comment">// namespace detail</span></div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    } <span class="comment">// namespace core</span></div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;                    <span class="keyword">auto</span> future = pTaskPackage-&gt;m_Promise.get_future();</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;                    ++m_numActiveTasks;</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;                    {</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;                        std::lock_guard&lt;TMutex&gt; lock(m_mtxWakeup);</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;                        m_qTasks.push(std::move(upTaskPackage));</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160; </div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                        m_cvWakeup.notify_one();</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;                    }</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160; </div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;                    <span class="keywordflow">return</span> future;</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;                }<span class="comment"></span></div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;<span class="comment">                //! \return The number of concurrent executors available.</span></div>
+<div class="line"><a name="l00498"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a82498382f020ac76a709ef3facfc0047">  498</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a82498382f020ac76a709ef3facfc0047">getConcurrentExecutionCount</a>() const -&gt; TIdx</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;                {</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;                    <span class="keywordflow">return</span> m_vConcurrentExecs.size();</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;                }<span class="comment"></span></div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;<span class="comment">                //! \return If the thread pool is idle.</span></div>
+<div class="line"><a name="l00503"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963">  503</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963">isIdle</a>() const -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;                {</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;                    <span class="keywordflow">return</span> m_numActiveTasks == 0u;</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;                }</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160; </div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;            <span class="keyword">private</span>:<span class="comment"></span></div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;<span class="comment">                //! The function the concurrent executors are executing.</span></div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> concurrentExecFn()</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;                {</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;                    <span class="comment">// Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).</span></div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;                    <span class="keywordflow">while</span>(!m_bShutdownFlag)</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;                    {</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;                        <span class="keyword">auto</span> currentTaskPackage = std::shared_ptr&lt;ITaskPkg&gt;{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160; </div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;                        <span class="comment">// Use popTask so we only ever have one reference to the ITaskPkg</span></div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;                        <span class="keywordflow">if</span>(popTask(currentTaskPackage))</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;                        {</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;                            currentTaskPackage-&gt;runTask();</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;                        }</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;                        {</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;                            std::unique_lock&lt;TMutex&gt; lock(m_mtxWakeup);</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;                            <span class="keywordflow">if</span>(m_qTasks.empty())</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;                            {</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;                                <span class="comment">// If the shutdown flag has been set since the last check, return now.</span></div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;                                <span class="keywordflow">if</span>(m_bShutdownFlag)</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;                                {</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;                                    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;                                }</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160; </div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;                                m_cvWakeup.wait(lock, [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> ((!m_qTasks.empty()) || m_bShutdownFlag); });</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;                            }</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;                        }</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;                    }</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;                }</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="comment">                //! Joins all concurrent executors.</span></div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;<span class="comment"></span>                <span class="keywordtype">void</span> joinAllConcurrentExecs()</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;                {</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;                    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp;&amp; concurrentExec : m_vConcurrentExecs)</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;                    {</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;                        concurrentExec.join();</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;                    }</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;                }<span class="comment"></span></div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;<span class="comment">                //! Pops a task from the queue.</span></div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> popTask(std::shared_ptr&lt;ITaskPkg&gt;&amp; out) -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;                {</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;                    <span class="keywordflow">if</span>(m_qTasks.pop(out))</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;                    {</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;                    }</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;                }</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160; </div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;            <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;                std::vector&lt;TConcurrentExec&gt; m_vConcurrentExecs;</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;                ThreadSafeQueue&lt;std::shared_ptr&lt;ITaskPkg&gt;&gt; m_qTasks;</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;                std::atomic&lt;std::uint32_t&gt; m_numActiveTasks;</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160; </div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;                TMutex m_mtxWakeup;</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;                TCondVar m_cvWakeup;</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;                std::atomic&lt;bool&gt; m_bShutdownFlag;</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;            };</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        } <span class="comment">// namespace detail</span></div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    } <span class="comment">// namespace core</span></div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4_html_abaab99cec77065ba53314c0ceb956ec4"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#abaab99cec77065ba53314c0ceb956ec4">alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, void &gt;::setException</a></div><div class="ttdeci">virtual auto setException(std::exception_ptr const &amp;exceptPtr) -&gt; void final</div><div class="ttdoc">Sets an exception.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00187">ConcurrentExecPool.hpp:187</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ITaskPkg_html_a60e339b89dc58f8a79669ed3458cff9c"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a60e339b89dc58f8a79669ed3458cff9c">alpaka::core::detail::ITaskPkg::runTask</a></div><div class="ttdeci">auto runTask() noexcept -&gt; void</div><div class="ttdoc">Runs this task.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00089">ConcurrentExecPool.hpp:89</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a839ac4be88794912a739f4bd061c2083"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a839ac4be88794912a739f4bd061c2083">alpaka::core::detail::ConcurrentExecPool::getConcurrentExecutionCount</a></div><div class="ttdeci">auto getConcurrentExecutionCount() const -&gt; TIdx</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00328">ConcurrentExecPool.hpp:328</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_a29842d9a59ee0a98e7f2cd99427784dc"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::enqueueTask</a></div><div class="ttdeci">auto enqueueTask(TFnObj &amp;&amp;task, TArgs &amp;&amp;... args)</div><div class="ttdoc">Runs the given function on one of the pool in First In First Out (FIFO) order.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00477">ConcurrentExecPool.hpp:477</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_aaac41c49f885aa725c922da24f537f86"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#aaac41c49f885aa725c922da24f537f86">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::ConcurrentExecPool</a></div><div class="ttdeci">ConcurrentExecPool(TIdx concurrentExecutionCount)</div><div class="ttdoc">Creates a concurrent executors pool with a specific number of concurrent executors and a maximum numb...</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00408">ConcurrentExecPool.hpp:408</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a839ac4be88794912a739f4bd061c2083"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a839ac4be88794912a739f4bd061c2083">alpaka::core::detail::ConcurrentExecPool::getConcurrentExecutionCount</a></div><div class="ttdeci">auto getConcurrentExecutionCount() const -&gt; TIdx</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00326">ConcurrentExecPool.hpp:326</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_a29842d9a59ee0a98e7f2cd99427784dc"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::enqueueTask</a></div><div class="ttdeci">auto enqueueTask(TFnObj &amp;&amp;task, TArgs &amp;&amp;... args)</div><div class="ttdoc">Runs the given function on one of the pool in First In First Out (FIFO) order.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00473">ConcurrentExecPool.hpp:473</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_aaac41c49f885aa725c922da24f537f86"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#aaac41c49f885aa725c922da24f537f86">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::ConcurrentExecPool</a></div><div class="ttdeci">ConcurrentExecPool(TIdx concurrentExecutionCount)</div><div class="ttdoc">Creates a concurrent executors pool with a specific number of concurrent executors and a maximum numb...</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00406">ConcurrentExecPool.hpp:406</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4_html_ae820fc9231c3b74996702a4c374a48b3"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#ae820fc9231c3b74996702a4c374a48b3">alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, void &gt;::m_Promise</a></div><div class="ttdeci">TPromise&lt; void &gt; m_Promise</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00192">ConcurrentExecPool.hpp:192</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a></div><div class="ttdoc">ConcurrentExecPool using yield.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00238">ConcurrentExecPool.hpp:238</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ThreadSafeQueue_html_a5d3d1573ed3ef4ebf26ce46b451fd6c9"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a5d3d1573ed3ef4ebf26ce46b451fd6c9">alpaka::core::detail::ThreadSafeQueue::push</a></div><div class="ttdeci">auto push(T &amp;&amp;t) -&gt; void</div><div class="ttdoc">Pushes the given value onto the back of the queue.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00049">ConcurrentExecPool.hpp:49</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_a82498382f020ac76a709ef3facfc0047"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a82498382f020ac76a709ef3facfc0047">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::getConcurrentExecutionCount</a></div><div class="ttdeci">auto getConcurrentExecutionCount() const -&gt; TIdx</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00502">ConcurrentExecPool.hpp:502</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_a82498382f020ac76a709ef3facfc0047"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a82498382f020ac76a709ef3facfc0047">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::getConcurrentExecutionCount</a></div><div class="ttdeci">auto getConcurrentExecutionCount() const -&gt; TIdx</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00498">ConcurrentExecPool.hpp:498</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ThreadSafeQueue_html_af4e0653f1eb58ddb338a7ff2dbaeeaee"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#af4e0653f1eb58ddb338a7ff2dbaeeaee">alpaka::core::detail::ThreadSafeQueue::empty</a></div><div class="ttdeci">auto empty() const -&gt; bool</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00044">ConcurrentExecPool.hpp:44</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ITaskPkg_html_a42025baac7befc45bf4a0c6362f5e050"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a42025baac7befc45bf4a0c6362f5e050">alpaka::core::detail::ITaskPkg::~ITaskPkg</a></div><div class="ttdeci">virtual ~ITaskPkg()=default</div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a3569557a259487b5136e46d4aee5585c"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c">alpaka::core::detail::ConcurrentExecPool::isIdle</a></div><div class="ttdeci">auto isIdle() const -&gt; bool</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00333">ConcurrentExecPool.hpp:333</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a3569557a259487b5136e46d4aee5585c"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c">alpaka::core::detail::ConcurrentExecPool::isIdle</a></div><div class="ttdeci">auto isIdle() const -&gt; bool</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00331">ConcurrentExecPool.hpp:331</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ITaskPkg_html"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html">alpaka::core::detail::ITaskPkg</a></div><div class="ttdoc">ITaskPkg.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00083">ConcurrentExecPool.hpp:83</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a3b76ff3fb042890756bfd174d5aaa85e"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3b76ff3fb042890756bfd174d5aaa85e">alpaka::core::detail::ConcurrentExecPool::ConcurrentExecPool</a></div><div class="ttdeci">ConcurrentExecPool(TIdx concurrentExecutionCount)</div><div class="ttdoc">Creates a concurrent executor pool with a specific number of concurrent executors and a maximum numbe...</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00247">ConcurrentExecPool.hpp:247</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1TaskPkg_html_a22efad2f8874363c677afb159a462948"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a22efad2f8874363c677afb159a462948">alpaka::core::detail::TaskPkg::m_Promise</a></div><div class="ttdeci">TPromise&lt; TFnObjReturn &gt; m_Promise</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00155">ConcurrentExecPool.hpp:155</a></div></div>
@@ -681,23 +677,23 @@ $(document).ready(function(){initNavTree('ConcurrentExecPool_8hpp_source.html','
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ThreadSafeQueue_html_a82030f637d0d2a4ea0205f6ff9485345"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a82030f637d0d2a4ea0205f6ff9485345">alpaka::core::detail::ThreadSafeQueue::ThreadSafeQueue</a></div><div class="ttdeci">ThreadSafeQueue()</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00040">ConcurrentExecPool.hpp:40</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1TaskPkg_html_ae1fd04f678266f305fb520250ad67192"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html#ae1fd04f678266f305fb520250ad67192">alpaka::core::detail::TaskPkg::setException</a></div><div class="ttdeci">virtual auto setException(std::exception_ptr const &amp;exceptPtr) -&gt; void final</div><div class="ttdoc">Sets an exception.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00150">ConcurrentExecPool.hpp:150</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ITaskPkg_html_afba4bb23cab652a79d1b0f4e2120cd29"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#afba4bb23cab652a79d1b0f4e2120cd29">alpaka::core::detail::ITaskPkg::setException</a></div><div class="ttdeci">virtual auto setException(std::exception_ptr const &amp;exceptPtr) -&gt; void=0</div><div class="ttdoc">Sets an exception.</div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_ac58d49b2614e9067ab2dd8cfa28c8963"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::isIdle</a></div><div class="ttdeci">auto isIdle() const -&gt; bool</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00507">ConcurrentExecPool.hpp:507</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_ac58d49b2614e9067ab2dd8cfa28c8963"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::isIdle</a></div><div class="ttdeci">auto isIdle() const -&gt; bool</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00503">ConcurrentExecPool.hpp:503</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1TaskPkg_html_a47a747dcb6498cf1fcec532eb92ccc2b"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a47a747dcb6498cf1fcec532eb92ccc2b">alpaka::core::detail::TaskPkg::TaskPkg</a></div><div class="ttdeci">TaskPkg(TFnObj &amp;&amp;func)</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00135">ConcurrentExecPool.hpp:135</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ThreadSafeQueue_html_a222a9cd9a349e58eef008696761a0d33"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a222a9cd9a349e58eef008696761a0d33">alpaka::core::detail::ThreadSafeQueue::pop</a></div><div class="ttdeci">auto pop(T &amp;t) -&gt; bool</div><div class="ttdoc">Pops the given value from the front of the queue.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00056">ConcurrentExecPool.hpp:56</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_abe02c25d7f0bade0d4faac3c387750a9"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::~ConcurrentExecPool</a></div><div class="ttdeci">~ConcurrentExecPool()</div><div class="ttdoc">Completes any currently running task normally. Signals a std::runtime_error exception to any other ta...</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00437">ConcurrentExecPool.hpp:437</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48_html_abe02c25d7f0bade0d4faac3c387750a9"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::~ConcurrentExecPool</a></div><div class="ttdeci">~ConcurrentExecPool()</div><div class="ttdoc">Completes any currently running task normally. Signals a std::runtime_error exception to any other ta...</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00433">ConcurrentExecPool.hpp:433</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a377b2ed2e34a0a7b72f758fdadc83fa0"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">alpaka::core::detail::ConcurrentExecPool::operator=</a></div><div class="ttdeci">auto operator=(ConcurrentExecPool const &amp;) -&gt; ConcurrentExecPool &amp;=delete</div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_ac272f9dc3b96a91228c98cf548e134c0"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">alpaka::core::detail::ConcurrentExecPool::~ConcurrentExecPool</a></div><div class="ttdeci">~ConcurrentExecPool()</div><div class="ttdoc">Completes any currently running task normally. Signals a std::runtime_error exception to any other ta...</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00274">ConcurrentExecPool.hpp:274</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_ac272f9dc3b96a91228c98cf548e134c0"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">alpaka::core::detail::ConcurrentExecPool::~ConcurrentExecPool</a></div><div class="ttdeci">~ConcurrentExecPool()</div><div class="ttdoc">Completes any currently running task normally. Signals a std::runtime_error exception to any other ta...</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00272">ConcurrentExecPool.hpp:272</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1core_1_1detail_html_ae1ea1d5b9fd8ccc4cb900940abcc8eec"><div class="ttname"><a href="namespacealpaka_1_1core_1_1detail.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec">alpaka::core::detail::invokeBothReturnFirst</a></div><div class="ttdeci">auto invokeBothReturnFirst(TFnObj0 &amp;&amp;fn0, TFnObj1 &amp;&amp;fn1)</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00204">ConcurrentExecPool.hpp:204</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00049">AccCpuFibers.hpp:49</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4_html_adf757b614ab9608ee11fb7f4c486b4c6"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#adf757b614ab9608ee11fb7f4c486b4c6">alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, void &gt;::TaskPkg</a></div><div class="ttdeci">TaskPkg(TFnObj &amp;&amp;func)</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00171">ConcurrentExecPool.hpp:171</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1TaskPkg_html"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html">alpaka::core::detail::TaskPkg</a></div><div class="ttdoc">TaskPkg with return type.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00124">ConcurrentExecPool.hpp:124</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ThreadSafeQueue_html"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html">alpaka::core::detail::ThreadSafeQueue</a></div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00037">ConcurrentExecPool.hpp:37</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a99eb1e7c7adb78ceef844da91f5103f5"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">alpaka::core::detail::ConcurrentExecPool::enqueueTask</a></div><div class="ttdeci">auto enqueueTask(TFnObj &amp;&amp;task, TArgs &amp;&amp;... args)</div><div class="ttdoc">Runs the given function on one of the pool in First In First Out (FIFO) order.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00308">ConcurrentExecPool.hpp:308</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html_a99eb1e7c7adb78ceef844da91f5103f5"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">alpaka::core::detail::ConcurrentExecPool::enqueueTask</a></div><div class="ttdeci">auto enqueueTask(TFnObj &amp;&amp;task, TArgs &amp;&amp;... args)</div><div class="ttdoc">Runs the given function on one of the pool in First In First Out (FIFO) order.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00306">ConcurrentExecPool.hpp:306</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="ConcurrentExecPool_8hpp.html">ConcurrentExecPool.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 14 2021 00:25:12 for alpaka by
+    <li class="footer">Generated on Thu Oct 14 2021 06:10:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

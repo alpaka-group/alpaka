@@ -14,7 +14,7 @@ var dir_820f4fd4051d8a4d65c2fe0dda35bb00 =
       [ "IdxType< gb::IdxGbRef< TDim, TIdx > >", "structalpaka_1_1traits_1_1IdxType_3_01gb_1_1IdxGbRef_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1IdxType_3_01gb_1_1IdxGbRef_3_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "IdxGbUniformCudaHipBuiltIn.hpp", "IdxGbUniformCudaHipBuiltIn_8hpp.html", [
-      [ "IdxGbUniformCudaHipBuiltIn", "classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html", "classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn" ],
+      [ "IdxGbUniformCudaHipBuiltIn", "classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html", null ],
       [ "DimType< gb::IdxGbUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "GetIdx< gb::IdxGbUniformCudaHipBuiltIn< TDim, TIdx >, origin::Grid, unit::Blocks >", "structalpaka_1_1traits_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00a8e3c87d049e39ec6d54cd4828e54539.html", "structalpaka_1_1traits_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00a8e3c87d049e39ec6d54cd4828e54539" ],
       [ "IdxType< gb::IdxGbUniformCudaHipBuiltIn< TDim, TIdx > >", "structalpaka_1_1traits_1_1IdxType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1IdxType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4" ]

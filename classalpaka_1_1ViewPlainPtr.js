@@ -4,7 +4,6 @@ var classalpaka_1_1ViewPlainPtr =
     [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#a5160c0f407398f5e3e21b1a3ed2ce1e8", null ],
     [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#a1ea73be548e7c28bbb2eca2c933bbb6f", null ],
     [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#af1eaf448d146968155ee533125c93239", null ],
-    [ "~ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#ac9a4c94f2fc97e80f4c2b0b7b87120cf", null ],
     [ "operator=", "classalpaka_1_1ViewPlainPtr.html#a937ca83df1d176d3b781234e7b291543", null ],
     [ "operator=", "classalpaka_1_1ViewPlainPtr.html#a15c97c5c40ec230c83bc5cf28f4cb95c", null ],
     [ "m_dev", "classalpaka_1_1ViewPlainPtr.html#add4f74d2b7dfe5797b3344f2e003f1a1", null ],

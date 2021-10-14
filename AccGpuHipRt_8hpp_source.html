@@ -142,53 +142,46 @@ $(document).ready(function(){initNavTree('AccGpuHipRt_8hpp_source.html',''); ini
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            : AccGpuUniformCudaHipRt&lt;TDim, TIdx&gt;(threadElemExtent)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        __device__ AccGpuHipRt(AccGpuHipRt <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        __device__ AccGpuHipRt(AccGpuHipRt&amp;&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        __device__ <span class="keyword">auto</span> operator=(AccGpuHipRt <span class="keyword">const</span>&amp;) -&gt; AccGpuHipRt&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        __device__ <span class="keyword">auto</span> operator=(AccGpuHipRt&amp;&amp;) -&gt; AccGpuHipRt&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        ~AccGpuHipRt() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">        //! The GPU HIP accelerator accelerator type trait specialization.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">        //! The GPU HIP accelerator accelerator type trait specialization.</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">struct </span>AccType&lt;AccGpuHipRt&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">using</span> type = AccGpuHipRt&lt;TDim, TIdx&gt;;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        };</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">        //! The GPU Hip accelerator name trait specialization.</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">struct </span>AccType&lt;AccGpuHipRt&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">struct </span>GetAccName&lt;AccGpuHipRt&lt;TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">using</span> type = AccGpuHipRt&lt;TDim, TIdx&gt;;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        };</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">        //! The GPU Hip accelerator name trait specialization.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">struct </span>GetAccName&lt;AccGpuHipRt&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1GetAccName.html#ad3842f22fb64f3100e6cfbb1cd737ece">getAccName</a>() -&gt; std::string</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;AccGpuHipRt&lt;&quot;</span> + std::to_string(TDim::value) + <span class="stringliteral">&quot;,&quot;</span> + <span class="keyword">typeid</span>(TIdx).name() + <span class="stringliteral">&quot;&gt;&quot;</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        };</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">        //! The GPU HIP accelerator execution task type trait specialization.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TWorkDiv, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">struct </span>CreateTaskKernel&lt;AccGpuHipRt&lt;TDim, TIdx&gt;, TWorkDiv, TKernelFnObj, TArgs...&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">createTaskKernel</a>(</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                TWorkDiv <span class="keyword">const</span>&amp; workDiv,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                TArgs&amp;&amp;... args)</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <span class="keywordflow">return</span> TaskKernelGpuUniformCudaHipRt&lt;AccGpuHipRt&lt;TDim, TIdx&gt;, TDim, TIdx, TKernelFnObj, TArgs...&gt;(</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    workDiv,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    kernelFnObj,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    std::forward&lt;TArgs&gt;(args)...);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        };</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1GetAccName.html#ad3842f22fb64f3100e6cfbb1cd737ece">getAccName</a>() -&gt; std::string</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">return</span> <span class="stringliteral">&quot;AccGpuHipRt&lt;&quot;</span> + std::to_string(TDim::value) + <span class="stringliteral">&quot;,&quot;</span> + <span class="keyword">typeid</span>(TIdx).name() + <span class="stringliteral">&quot;&gt;&quot;</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        };</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">        //! The GPU HIP accelerator execution task type trait specialization.</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TWorkDiv, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keyword">struct </span>CreateTaskKernel&lt;AccGpuHipRt&lt;TDim, TIdx&gt;, TWorkDiv, TKernelFnObj, TArgs...&gt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">createTaskKernel</a>(</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                TWorkDiv <span class="keyword">const</span>&amp; workDiv,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                TArgs&amp;&amp;... args)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="keywordflow">return</span> TaskKernelGpuUniformCudaHipRt&lt;AccGpuHipRt&lt;TDim, TIdx&gt;, TDim, TIdx, TKernelFnObj, TArgs...&gt;(</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                    workDiv,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    kernelFnObj,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    std::forward&lt;TArgs&gt;(args)...);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        };</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aHip_8hpp_html"><div class="ttname"><a href="Hip_8hpp.html">Hip.hpp</a></div></div>
@@ -206,7 +199,7 @@ $(document).ready(function(){initNavTree('AccGpuHipRt_8hpp_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGpuHipRt_8hpp.html">AccGpuHipRt.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 14 2021 00:25:12 for alpaka by
+    <li class="footer">Generated on Thu Oct 14 2021 06:10:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

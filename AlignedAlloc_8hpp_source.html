@@ -140,24 +140,21 @@ $(document).ready(function(){initNavTree('AlignedAlloc_8hpp_source.html',''); in
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">        //! destroy aligned object and free aligned memory</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1AlignedDelete.html">   53</a></span>&#160;<span class="comment"></span>        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1AlignedDelete.html">AlignedDelete</a></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            constexpr <a class="code" href="structalpaka_1_1core_1_1AlignedDelete.html#a1873e04602f145131c6df446271c862f">AlignedDelete</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">            //! Calls ~T() on ptr to destroy the object and then calls aligned_free to free the allocated memory.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91">   59</a></span>&#160;            <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91">operator()</a>(T* ptr)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">            </span>{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">if</span>(ptr)</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    ptr-&gt;~T();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">alignedFree</a>(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(ptr));</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        };</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    } <span class="comment">// namespace core</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {<span class="comment"></span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">            //! Calls ~T() on ptr to destroy the object and then calls aligned_free to free the allocated memory.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91">   57</a></span>&#160;            <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91">operator()</a>(T* ptr)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">            </span>{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="keywordflow">if</span>(ptr)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    ptr-&gt;~T();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">alignedFree</a>(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(ptr));</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        };</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    } <span class="comment">// namespace core</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructalpaka_1_1core_1_1AlignedDelete_html_a1873e04602f145131c6df446271c862f"><div class="ttname"><a href="structalpaka_1_1core_1_1AlignedDelete.html#a1873e04602f145131c6df446271c862f">alpaka::core::AlignedDelete::AlignedDelete</a></div><div class="ttdeci">constexpr AlignedDelete()=default</div></div>
-<div class="ttc" id="astructalpaka_1_1core_1_1AlignedDelete_html_afe12d3079d65fb40ccc2f7664dd7cf91"><div class="ttname"><a href="structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91">alpaka::core::AlignedDelete::operator()</a></div><div class="ttdeci">void operator()(T *ptr) const</div><div class="ttdoc">Calls ~T() on ptr to destroy the object and then calls aligned_free to free the allocated memory.</div><div class="ttdef"><b>Definition:</b> <a href="AlignedAlloc_8hpp_source.html#l00059">AlignedAlloc.hpp:59</a></div></div>
+<div class="ttc" id="astructalpaka_1_1core_1_1AlignedDelete_html_afe12d3079d65fb40ccc2f7664dd7cf91"><div class="ttname"><a href="structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91">alpaka::core::AlignedDelete::operator()</a></div><div class="ttdeci">void operator()(T *ptr) const</div><div class="ttdoc">Calls ~T() on ptr to destroy the object and then calls aligned_free to free the allocated memory.</div><div class="ttdef"><b>Definition:</b> <a href="AlignedAlloc_8hpp_source.html#l00057">AlignedAlloc.hpp:57</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a04896bbcd53fbb9da78612f51a4e1cf4"><div class="ttname"><a href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">alpaka::free</a></div><div class="ttdeci">ALPAKA_FN_HOST auto free(TAlloc const &amp;alloc, T const *const ptr) -&gt; void</div><div class="ttdoc">Frees the memory identified by the given pointer.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2alloc_2Traits_8hpp_source.html#l00046">Traits.hpp:46</a></div></div>
@@ -172,7 +169,7 @@ $(document).ready(function(){initNavTree('AlignedAlloc_8hpp_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="AlignedAlloc_8hpp.html">AlignedAlloc.hpp</a></li>
-    <li class="footer">Generated on Thu Oct 14 2021 00:25:12 for alpaka by
+    <li class="footer">Generated on Thu Oct 14 2021 06:10:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

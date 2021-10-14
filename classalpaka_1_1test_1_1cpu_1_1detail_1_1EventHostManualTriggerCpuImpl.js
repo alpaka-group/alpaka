@@ -2,8 +2,6 @@ var classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl =
 [
     [ "EventHostManualTriggerCpuImpl", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#a8e5c17dda4afd03c543b9202ab19c0ac", null ],
     [ "EventHostManualTriggerCpuImpl", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#a675bbf440dfde25de99b0043566dc15d", null ],
-    [ "EventHostManualTriggerCpuImpl", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ac060210cb0f423d6341a7297fdb0e668", null ],
-    [ "operator=", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#aa7dcec181e9f261dc107ba410bcbfef6", null ],
     [ "operator=", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#a1052f1339b0666f84e69d1d6c40d8846", null ],
     [ "trigger", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#a20e55e6eec3a781ae3b646a78430a4a5", null ],
     [ "m_bIsReady", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#acab93336c9819d7d39f9532496e7a5f6", null ],

@@ -5,7 +5,6 @@ var classalpaka_1_1WorkDivMembers =
     [ "WorkDivMembers", "classalpaka_1_1WorkDivMembers.html#ad6c260bb1d8458e268599bf2d6add333", null ],
     [ "WorkDivMembers", "classalpaka_1_1WorkDivMembers.html#aa3e64e490520aa521d8714c5b64c84f8", null ],
     [ "WorkDivMembers", "classalpaka_1_1WorkDivMembers.html#adfb7963f224f827a7ef13c1cd4cc0e16", null ],
-    [ "~WorkDivMembers", "classalpaka_1_1WorkDivMembers.html#a2f2d5d571a181aaa51832713ce53a58d", null ],
     [ "operator=", "classalpaka_1_1WorkDivMembers.html#a3bb471668188b5b230d2e41f0c5255ea", null ],
     [ "operator=", "classalpaka_1_1WorkDivMembers.html#a40aa8bde6d59476bc13936251358563d", null ],
     [ "operator=", "classalpaka_1_1WorkDivMembers.html#ad6ac2ae27cb8b1b47cb4f42e10de151e", null ],
