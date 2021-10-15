@@ -320,10 +320,23 @@ endif()
 #-------------------------------------------------------------------------------
 # Find CUDA.
 if(ALPAKA_ACC_GPU_CUDA_ENABLE)
+    # Save the user-defined host compiler (if any)
+    set(_ALPAKA_CUDA_HOST_COMPILER ${CMAKE_CUDA_HOST_COMPILER})
     include(CheckLanguage)
     check_language(CUDA)
 
     if(CMAKE_CUDA_COMPILER)
+        if(NOT CMAKE_CUDA_COMPILER_ID STREQUAL "Clang")
+            # Use user selected CMake CXX compiler or CMAKE_CUDA_HOST_COMPILER as cuda host compiler to avoid fallback to the default system CXX host compiler.
+            # CMAKE_CUDA_HOST_COMPILER is reset by check_language(CUDA) therefore definition passed by the user via -DCMAKE_CUDA_HOST_COMPILER are
+            # ignored by CMake (looks like a CMake bug).
+            if(_ALPAKA_CUDA_HOST_COMPILER)
+                set(CMAKE_CUDA_HOST_COMPILER ${_ALPAKA_CUDA_HOST_COMPILER})
+            elseif("$ENV{CUDAHOSTCXX}" STREQUAL "")
+                set(CMAKE_CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
+            endif()
+        endif()
+
         enable_language(CUDA)
         find_package(CUDAToolkit REQUIRED)
 
