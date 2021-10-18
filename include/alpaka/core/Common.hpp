@@ -90,7 +90,8 @@
 //!     alpaka::memcpy(queue, viewGlobalMemUninitialized, bufHost, extent);
 //! }
 //! \endcode
-#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX) || BOOST_LANG_HIP)
+#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
+    || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
 #else
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL
@@ -125,7 +126,8 @@
 //!     alpaka::memcpy(queue, viewGlobalMemUninitialized, bufHost, extent);
 //! }
 //! \endcode
-#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX) || BOOST_LANG_HIP)
+#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
+    || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
 #else
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT
