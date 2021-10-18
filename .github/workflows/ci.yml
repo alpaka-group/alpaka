@@ -376,9 +376,6 @@ jobs:
         - name: linux_nvcc-11.1_clang-10_release
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 10,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.1", CMAKE_CUDA_COMPILER: nvcc, CMAKE_CUDA_ARCHITECTURES: "86",              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
-        - name: linux_nvcc-11.1_clang-11_release
-          os: ubuntu-latest
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 11,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.1", CMAKE_CUDA_COMPILER: nvcc, CMAKE_CUDA_ARCHITECTURES: "86",              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
 
         ## CUDA 11.2
         # nvcc + g++
@@ -414,9 +411,6 @@ jobs:
         - name: linux_nvcc-11.2_clang-10_release
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 10,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.2", CMAKE_CUDA_COMPILER: nvcc, CMAKE_CUDA_ARCHITECTURES: "86",              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
-        - name: linux_nvcc-11.2_clang-11_release
-          os: ubuntu-latest
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 11,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.2", CMAKE_CUDA_COMPILER: nvcc, CMAKE_CUDA_ARCHITECTURES: "86",              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
 
         ## CUDA 11.3
         # nvcc + g++
@@ -452,9 +446,6 @@ jobs:
         - name: linux_nvcc-11.3_clang-10_release
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 10,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.3", CMAKE_CUDA_COMPILER: nvcc, CMAKE_CUDA_ARCHITECTURES: "86",              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
-        - name: linux_nvcc-11.3_clang-11_release
-          os: ubuntu-latest
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 11,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.19.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.3", CMAKE_CUDA_COMPILER: nvcc, CMAKE_CUDA_ARCHITECTURES: "86",              ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
 
         ## CUDA 11.4
         # nvcc + g++
