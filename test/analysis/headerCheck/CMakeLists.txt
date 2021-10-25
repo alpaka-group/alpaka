@@ -10,7 +10,7 @@
 
 if(NOT ALPAKA_CI OR (ALPAKA_CI AND ALPAKA_CI_ANALYSIS))
 
-    set(_TARGET_NAME "headerCheck")
+    set(_TARGET_NAME "headerCheckTest")
 
     #---------------------------------------------------------------------------
     # Create source files.
