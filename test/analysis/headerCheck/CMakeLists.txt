@@ -48,7 +48,7 @@ if(NOT ALPAKA_CI OR (ALPAKA_CI AND ALPAKA_CI_ANALYSIS))
         ${_TARGET_NAME}
         PRIVATE common)
 
-    set_target_properties(headerCheck PROPERTIES FOLDER "test/analysis")
+    set_target_properties(headerCheckTest PROPERTIES FOLDER "test/analysis")
 
     add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_ALPAKA_TEST_OPTIONS})
 
