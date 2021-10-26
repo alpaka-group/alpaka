@@ -212,6 +212,38 @@ It does not return raw pointers but reference counted memory buffer objects that
 Additionally the memory buffer objects know their extents, their pitches as well as the device they reside on.
 This allows buffers that possibly reside on different devices with different pitches to be copied only by providing the buffer objects as well as the extents of the region to copy (``alpaka::memcpy(bufDevA, bufDevB, copyExtents``).
 
+Accessors
+`````````
+
+An accessor is an interface to access the data stored by a buffer or, more generally, a view.
+Accessors take care of the multidimensionality of their underlying buffers when indexed, including pitched allocations.
+It is created via one of the following calls:
+
+.. code-block:: cpp
+
+   auto accessor = alpaka::experimental::access(buffer);      // read/write
+   auto accessor = alpaka::experimental::readAccess(buffer);  // read
+   auto accessor = alpaka::experimental::writeAccess(buffer); // write
+
+Accessors have many template parameter and users are adviced to use the ``BufferAccessor`` convenience alias to get the type of an accessor for a buffer of a given accelerator.
+Example kernel with 3D accessor:
+
+.. code-block:: c++
+
+   struct Kernel {
+      template<typename Acc>
+      ALPAKA_FN_ACC void operator()(Acc const & acc, alpaka::experimental::BufferAccessor<Acc, float, 3, alpaka::experimental::WriteAccess> data) const {
+         ...
+         for(Idx z = 0; z < data.extents[0];  ++z)
+             for(Idx y = 0; y < data.extents[1]; ++y)
+                 for(Idx x = 0; x < data.extents[2];  ++x)
+                     data(z, y, x) = 42.0f;
+      }
+   };
+   ...
+   alpaka::exec<Acc>(queue, workDiv, kernel, alpaka::experimental::writeAccess(buffer));
+
+
 Kernel Execution
 ````````````````
 

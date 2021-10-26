@@ -148,6 +148,11 @@ Get a raw pointer to a buffer or view initialization, etc.
      DataType* raw = view::getPtrNative(bufHost);
      DataType* rawViewPtr = view::getPtrNative(hostView);
 
+Get an accessor to a buffer and the accessor's type (experimental)
+  .. code-block:: c++
+
+     experimental::BufferAccessor<Acc, Elem, N, AccessTag> a = experimental::access(buffer);
+
 Allocate a buffer in device memory
   .. code-block:: c++
 
