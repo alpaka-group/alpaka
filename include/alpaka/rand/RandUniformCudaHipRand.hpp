@@ -64,9 +64,9 @@ namespace alpaka
                     // After calling this constructor the instance is not valid initialized and
                     // need to be overwritten with a valid object
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_FN_HOST_ACC Xor() : m_State(curandStateXORWOW_t{})
+                    ALPAKA_FN_HOST_ACC Xor() : state(curandStateXORWOW_t{})
 #    else
-                    ALPAKA_FN_HOST_ACC Xor() : m_State(hiprandStateXORWOW_t{})
+                    ALPAKA_FN_HOST_ACC Xor() : state(hiprandStateXORWOW_t{})
 #    endif
                     {
                     }
@@ -77,18 +77,44 @@ namespace alpaka
                         std::uint32_t const& offset = 0)
                     {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        curand_init(seed, subsequence, offset, &m_State);
+                        curand_init(seed, subsequence, offset, &state);
 #    else
-                        hiprand_init(seed, subsequence, offset, &m_State);
+                        hiprand_init(seed, subsequence, offset, &state);
 #    endif
                     }
 
                 public:
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                    curandStateXORWOW_t m_State;
+                    curandStateXORWOW_t state;
 #    else
-                    hiprandStateXORWOW_t m_State;
+                    hiprandStateXORWOW_t state;
 #    endif
+
+                    // STL UniformRandomBitGenerator concept. This is not strictly necessary as the distributions
+                    // contained in this file are aware of the API specifics of the CUDA/HIP XORWOW engine and STL
+                    // distributions might not work on the device, but it servers a compatibility bridge to other
+                    // potentially compatible alpaka distributions.
+#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+                    using result_type = decltype(curand(&state));
+#    else
+                    using result_type = decltype(hiprand(&state));
+#    endif
+                    ALPAKA_FN_HOST_ACC constexpr static result_type min()
+                    {
+                        return std::numeric_limits<result_type>::min();
+                    }
+                    ALPAKA_FN_HOST_ACC constexpr static result_type max()
+                    {
+                        return std::numeric_limits<result_type>::max();
+                    }
+                    __device__ result_type operator()()
+                    {
+#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+                        return curand(&state);
+#    else
+                        return hiprand(&state);
+#    endif
+                    }
                 };
             } // namespace uniform_cuda_hip
         } // namespace engine
@@ -109,9 +135,9 @@ namespace alpaka
                     __device__ auto operator()(TEngine& engine) -> float
                     {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        return curand_normal(&engine.m_State);
+                        return curand_normal(&engine.state);
 #    else
-                        return hiprand_normal(&engine.m_State);
+                        return hiprand_normal(&engine.state);
 #    endif
                     }
                 };
@@ -124,9 +150,9 @@ namespace alpaka
                     __device__ auto operator()(TEngine& engine) -> double
                     {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        return curand_normal_double(&engine.m_State);
+                        return curand_normal_double(&engine.state);
 #    else
-                        return hiprand_normal_double(&engine.m_State);
+                        return hiprand_normal_double(&engine.state);
 #    endif
                     }
                 };
@@ -145,9 +171,9 @@ namespace alpaka
                     {
                         // (0.f, 1.0f]
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        float const fUniformRand(curand_uniform(&engine.m_State));
+                        float const fUniformRand(curand_uniform(&engine.state));
 #    else
-                        float const fUniformRand(hiprand_uniform(&engine.m_State));
+                        float const fUniformRand(hiprand_uniform(&engine.state));
 #    endif
                         // NOTE: (1.0f - curand_uniform) does not work, because curand_uniform seems to return
                         // denormalized floats around 0.f. [0.f, 1.0f)
@@ -164,9 +190,9 @@ namespace alpaka
                     {
                         // (0.f, 1.0f]
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        double const fUniformRand(curand_uniform_double(&engine.m_State));
+                        double const fUniformRand(curand_uniform_double(&engine.state));
 #    else
-                        double const fUniformRand(hiprand_uniform_double(&engine.m_State));
+                        double const fUniformRand(hiprand_uniform_double(&engine.state));
 #    endif
                         // NOTE: (1.0f - curand_uniform_double) does not work, because curand_uniform_double seems to
                         // return denormalized floats around 0.f. [0.f, 1.0f)
@@ -187,9 +213,9 @@ namespace alpaka
                     __device__ auto operator()(TEngine& engine) -> unsigned int
                     {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        return curand(&engine.m_State);
+                        return curand(&engine.state);
 #    else
-                        return hiprand(&engine.m_State);
+                        return hiprand(&engine.state);
 #    endif
                     }
                 };
@@ -242,10 +268,11 @@ namespace alpaka
                 {
                     __device__ static auto createDefault(
                         RandUniformCudaHipRand const& /*rand*/,
-                        std::uint32_t const& seed,
-                        std::uint32_t const& subsequence) -> rand::engine::uniform_cuda_hip::Xor
+                        std::uint32_t const& seed = 0,
+                        std::uint32_t const& subsequence = 0,
+                        std::uint32_t const& offset = 0) -> rand::engine::uniform_cuda_hip::Xor
                     {
-                        return rand::engine::uniform_cuda_hip::Xor(seed, subsequence);
+                        return rand::engine::uniform_cuda_hip::Xor(seed, subsequence, offset);
                     }
                 };
             } // namespace traits

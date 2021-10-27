@@ -91,11 +91,12 @@ namespace alpaka
             template<typename TRand>
             ALPAKA_FN_HOST_ACC auto createDefault(
                 TRand const& rand,
-                std::uint32_t const& seed,
-                std::uint32_t const& subsequence)
+                std::uint32_t const& seed = 0,
+                std::uint32_t const& subsequence = 0,
+                std::uint32_t const& offset = 0)
             {
                 using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-                return traits::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence);
+                return traits::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
             }
         } // namespace engine
     } // namespace rand
