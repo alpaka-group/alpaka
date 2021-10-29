@@ -63,7 +63,8 @@ ELSE()
         # Higher levels (max is 5) produce some strange warnings
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wstrict-overflow=2")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wtrampolines")
-        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wfloat-equal")
+        # Too much noise
+        #LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wfloat-equal")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wundef")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wshadow")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wcast-qual")
