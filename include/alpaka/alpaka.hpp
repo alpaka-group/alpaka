@@ -142,6 +142,7 @@
 #include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/meta/CartesianProduct.hpp>
 #include <alpaka/meta/Concatenate.hpp>
+#include <alpaka/meta/CudaVectorArrayWrapper.hpp>
 #include <alpaka/meta/DependentFalseType.hpp>
 #include <alpaka/meta/Filter.hpp>
 #include <alpaka/meta/Fold.hpp>
