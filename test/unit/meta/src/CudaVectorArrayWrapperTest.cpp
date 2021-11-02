@@ -11,6 +11,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/Unused.hpp>
+#    include <alpaka/math/FloatEqualExact.hpp>
 #    include <alpaka/meta/CudaVectorArrayWrapper.hpp>
 #    include <alpaka/meta/IsStrictBase.hpp>
 #    include <alpaka/rand/Traits.hpp>
@@ -21,6 +22,28 @@
 
 #    include <type_traits>
 
+/* The tests here use equals for comparing float values for exact equality. This is not
+ * an issue of arithmetics. We are testing whether the values saved in a container are the same as the ones retrieved
+ * from it afterwards. In this case, returning a value that would not be exactly but only approximately equal to the
+ * one that was stored in the container would be a grave error.
+ */
+template<typename T1, typename T2>
+ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC bool equals(T1 a, T2 b)
+{
+    return a == static_cast<T1>(b);
+}
+
+template<>
+ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC bool equals<float, float>(float a, float b)
+{
+    return alpaka::math::floatEqualExactNoWarning(a, b);
+}
+
+template<>
+ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC bool equals<double, double>(double a, double b)
+{
+    return alpaka::math::floatEqualExactNoWarning(a, b);
+}
 
 template<typename T>
 class CudaVectorArrayWrapperTestKernel
@@ -37,29 +60,15 @@ public:
         static_assert(T1::size == 1, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T1>::value == 1, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t1[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-#    ifdef __GNUC__
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wfloat-equal"
-#    endif
-        ALPAKA_CHECK(*success, t1[0] == 0);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic pop
-#    endif
+        ALPAKA_CHECK(*success, equals(t1[0], T{0}));
 
         using T2 = alpaka::meta::CudaVectorArrayWrapper<T, 2>;
         T2 t2{0, 1};
         static_assert(T2::size == 2, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T2>::value == 2, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t2[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-#    ifdef __GNUC__
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wfloat-equal"
-#    endif
-        ALPAKA_CHECK(*success, t2[0] == 0);
-        ALPAKA_CHECK(*success, t2[1] == 1);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic pop
-#    endif
+        ALPAKA_CHECK(*success, equals(t2[0], T{0}));
+        ALPAKA_CHECK(*success, equals(t2[1], T{1}));
 
         using T3 = alpaka::meta::CudaVectorArrayWrapper<T, 3>;
         T3 t3{0, 0, 0};
@@ -67,16 +76,9 @@ public:
         static_assert(T3::size == 3, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T3>::value == 3, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t3[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-#    ifdef __GNUC__
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wfloat-equal"
-#    endif
-        ALPAKA_CHECK(*success, t3[0] == 0);
-        ALPAKA_CHECK(*success, t3[1] == 1);
-        ALPAKA_CHECK(*success, t3[2] == 2);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic pop
-#    endif
+        ALPAKA_CHECK(*success, equals(t3[0], T{0}));
+        ALPAKA_CHECK(*success, equals(t3[1], T{1}));
+        ALPAKA_CHECK(*success, equals(t3[2], T{2}));
 
         using T4 = alpaka::meta::CudaVectorArrayWrapper<T, 4>;
         T4 t4{0, 0, 0, 0};
@@ -86,17 +88,10 @@ public:
         static_assert(T4::size == 4, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T4>::value == 4, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t4[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-#    ifdef __GNUC__
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wfloat-equal"
-#    endif
-        ALPAKA_CHECK(*success, t4[0] == 0);
-        ALPAKA_CHECK(*success, t4[1] == 1);
-        ALPAKA_CHECK(*success, t4[2] == 2);
-        ALPAKA_CHECK(*success, t4[3] == 3);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic pop
-#    endif
+        ALPAKA_CHECK(*success, equals(t4[0], T{0}));
+        ALPAKA_CHECK(*success, equals(t4[1], T{1}));
+        ALPAKA_CHECK(*success, equals(t4[2], T{2}));
+        ALPAKA_CHECK(*success, equals(t4[3], T{3}));
     }
 };
 
@@ -132,14 +127,7 @@ TEST_CASE("cudaVectorArrayWrapperHost", "[meta]")
     STATIC_REQUIRE(std::tuple_size<Float1>::value == 1);
     STATIC_REQUIRE(std::is_same<decltype(floatWrapper1[0]), float&>::value);
     STATIC_REQUIRE(alpaka::meta::IsStrictBase<float1, Float1>::value);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wfloat-equal"
-#    endif
-    REQUIRE(floatWrapper1[0] == -1.0f);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic pop
-#    endif
+    REQUIRE(equals(floatWrapper1[0], -1.0f));
 
     using Int1 = alpaka::meta::CudaVectorArrayWrapper<int, 1>;
     Int1 intWrapper1 = {-42};
@@ -179,16 +167,9 @@ TEST_CASE("cudaVectorArrayWrapperHost", "[meta]")
     STATIC_REQUIRE(std::tuple_size<Double3>::value == 3);
     STATIC_REQUIRE(std::is_same<decltype(doubleWrapper3[0]), double&>::value);
     STATIC_REQUIRE(alpaka::meta::IsStrictBase<double3, Double3>::value);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wfloat-equal"
-#    endif
-    REQUIRE(doubleWrapper3[0] == 0.0);
-    REQUIRE(doubleWrapper3[1] == -1.0);
-    REQUIRE(doubleWrapper3[2] == -2.0);
-#    ifdef __GNUC__
-#        pragma GCC diagnostic pop
-#    endif
+    REQUIRE(equals(doubleWrapper3[0], 0.0));
+    REQUIRE(equals(doubleWrapper3[1], -1.0));
+    REQUIRE(equals(doubleWrapper3[2], -2.0));
 }
 
 #endif
