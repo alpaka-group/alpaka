@@ -208,6 +208,9 @@ var NAVTREEINDEX0 =
 "CtxBlockOacc_8hpp_source.html":[4,0,0,0,4,0,0],
 "CudaHipMath_8hpp.html":[4,0,0,0,3,11],
 "CudaHipMath_8hpp_source.html":[4,0,0,0,3,11],
+"CudaVectorArrayWrapper_8hpp.html":[4,0,0,0,16,4],
+"CudaVectorArrayWrapper_8hpp.html#af0644aac4a66556856ae415d4d3ed3c5":[4,0,0,0,16,4,23],
+"CudaVectorArrayWrapper_8hpp_source.html":[4,0,0,0,16,4],
 "Cuda_8hpp.html":[4,0,0,0,3,10],
 "Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05":[4,0,0,0,3,10,26],
 "Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b":[4,0,0,0,3,10,23],
@@ -227,8 +230,8 @@ var NAVTREEINDEX0 =
 "Decay_8hpp.html":[4,0,0,0,3,13],
 "Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11":[4,0,0,0,3,13,0],
 "Decay_8hpp_source.html":[4,0,0,0,3,13],
-"DependentFalseType_8hpp.html":[4,0,0,0,16,4],
-"DependentFalseType_8hpp_source.html":[4,0,0,0,16,4],
+"DependentFalseType_8hpp.html":[4,0,0,0,16,5],
+"DependentFalseType_8hpp_source.html":[4,0,0,0,16,5],
 "DevCpu_8hpp.html":[4,0,0,0,5,1],
 "DevCpu_8hpp.html#a5b74cbab627401664d95c8a91c859a42":[4,0,0,0,5,1,14],
 "DevCpu_8hpp.html#a63e1bf3207d308d5e6f7f4e012f2d00e":[4,0,0,0,5,1,13],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "DimArithmetic_8hpp.html":[4,0,0,0,6,0],
 "DimArithmetic_8hpp_source.html":[4,0,0,0,6,0],
 "DimIntegralConst_8hpp.html":[4,0,0,0,6,1],
-"DimIntegralConst_8hpp.html#ac486a72c51166125fb227c7af1884209":[4,0,0,0,6,1,0],
-"DimIntegralConst_8hpp_source.html":[4,0,0,0,6,1],
-"Engine_8hpp.html":[4,0,0,0,20,0,0],
-"Engine_8hpp_source.html":[4,0,0,0,20,0,0]
+"DimIntegralConst_8hpp.html#ac486a72c51166125fb227c7af1884209":[4,0,0,0,6,1,0]
 };

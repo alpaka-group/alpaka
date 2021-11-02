@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876":[3,0,0,2,1,11,4],
+"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b":[3,0,0,2,1,11,5],
+"classalpaka_1_1core_1_1detail_1_1TaskPkg.html":[3,0,0,2,1,12],
 "classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a22efad2f8874363c677afb159a462948":[3,0,0,2,1,12,2],
 "classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a47a747dcb6498cf1fcec532eb92ccc2b":[3,0,0,2,1,12,0],
 "classalpaka_1_1core_1_1detail_1_1TaskPkg.html#ae1fd04f678266f305fb520250ad67192":[3,0,0,2,1,12,1],
@@ -138,8 +141,8 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1math_1_1TanUniformCudaHipBuiltIn.html":[3,0,0,10,72],
 "classalpaka_1_1math_1_1TruncStdLib.html":[3,0,0,10,73],
 "classalpaka_1_1math_1_1TruncUniformCudaHipBuiltIn.html":[3,0,0,10,74],
-"classalpaka_1_1meta_1_1InheritFromList.html":[3,0,0,12,4],
-"classalpaka_1_1meta_1_1InheritFromList_3_01TList_3_01TBases_8_8_8_01_4_01_4.html":[3,0,0,12,5],
+"classalpaka_1_1meta_1_1InheritFromList.html":[3,0,0,12,9],
+"classalpaka_1_1meta_1_1InheritFromList_3_01TList_3_01TBases_8_8_8_01_4_01_4.html":[3,0,0,12,10],
 "classalpaka_1_1omp5_1_1detail_1_1DevOmp5Impl.html":[3,0,0,14,0,0],
 "classalpaka_1_1omp5_1_1detail_1_1DevOmp5Impl.html#a671b939ff19af35e21a621799fe74f23":[3,0,0,14,0,0,1],
 "classalpaka_1_1omp5_1_1detail_1_1DevOmp5Impl.html#a751713aa0e000d4f9c3d8ac8beb069fb":[3,0,0,14,0,0,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1test_1_1traits_1_1IteratorView.html#a9f6bbf6a25f91d20fca34eacf604fd14":[3,0,0,16,2,20,2],
 "classalpaka_1_1test_1_1traits_1_1IteratorView.html#a9ffdc06323b98ccf153079cb64087d85":[3,0,0,16,2,20,6],
 "classalpaka_1_1test_1_1traits_1_1IteratorView.html#abab0ff984af55291588aba6e7a23b44e":[3,0,0,16,2,20,7],
-"classalpaka_1_1test_1_1traits_1_1IteratorView.html#ac48113b89732df6ce30f159d86746727":[3,0,0,16,2,20,3],
-"classalpaka_1_1test_1_1traits_1_1IteratorView.html#afa5a8fa9eed9f780482bc858b1c62090":[3,0,0,16,2,20,8],
-"classalpaka_1_1test_1_1traits_1_1IteratorView.html#afdfaf8bca345ab587a0426c5191f55e2":[3,0,0,16,2,20,5],
-"classalpaka_1_1test_1_1uniform__cuda__hip_1_1detail_1_1EventHostManualTriggerCudaImpl.html":[3,0,0,16,3,0,0]
+"classalpaka_1_1test_1_1traits_1_1IteratorView.html#ac48113b89732df6ce30f159d86746727":[3,0,0,16,2,20,3]
 };

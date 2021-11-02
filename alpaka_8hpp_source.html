@@ -231,53 +231,54 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html',''); initResi
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ApplyTuple_8hpp.html">alpaka/meta/ApplyTuple.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="CartesianProduct_8hpp.html">alpaka/meta/CartesianProduct.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Concatenate_8hpp.html">alpaka/meta/Concatenate.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="DependentFalseType_8hpp.html">alpaka/meta/DependentFalseType.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Filter_8hpp.html">alpaka/meta/Filter.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Fold_8hpp.html">alpaka/meta/Fold.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/meta/ForEachType.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Functional_8hpp.html">alpaka/meta/Functional.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IntegerSequence_8hpp.html">alpaka/meta/IntegerSequence.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Integral_8hpp.html">alpaka/meta/Integral.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IsStrictBase_8hpp.html">alpaka/meta/IsStrictBase.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Metafunctions_8hpp.html">alpaka/meta/Metafunctions.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="NdLoop_8hpp.html">alpaka/meta/NdLoop.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="meta_2Set_8hpp.html">alpaka/meta/Set.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Transform_8hpp.html">alpaka/meta/Transform.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="TypeListOps_8hpp.html">alpaka/meta/TypeListOps.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Void_8hpp.html">alpaka/meta/Void.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">// offset</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="offset_2Traits_8hpp.html">alpaka/offset/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">// platform</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfCpu_8hpp.html">alpaka/pltf/PltfCpu.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfOacc_8hpp.html">alpaka/pltf/PltfOacc.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfOmp5_8hpp.html">alpaka/pltf/PltfOmp5.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfUniformCudaHipRt_8hpp.html">alpaka/pltf/PltfUniformCudaHipRt.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="pltf_2Traits_8hpp.html">alpaka/pltf/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">// rand</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RandUniformCudaHipRand_8hpp.html">alpaka/rand/RandUniformCudaHipRand.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="rand_2Traits_8hpp.html">alpaka/rand/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">// idx</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="idx_2Traits_8hpp.html">alpaka/idx/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">// queue</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Properties_8hpp.html">alpaka/queue/Properties.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueCpuBlocking_8hpp.html">alpaka/queue/QueueCpuBlocking.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueCpuNonBlocking_8hpp.html">alpaka/queue/QueueCpuNonBlocking.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueOaccBlocking_8hpp.html">alpaka/queue/QueueOaccBlocking.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueOmp5Blocking_8hpp.html">alpaka/queue/QueueOmp5Blocking.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueUniformCudaHipRtBlocking_8hpp.html">alpaka/queue/QueueUniformCudaHipRtBlocking.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueUniformCudaHipRtNonBlocking_8hpp.html">alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="queue_2Traits_8hpp.html">alpaka/queue/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">// time</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="time_2Traits_8hpp.html">alpaka/time/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">// wait</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="wait_2Traits_8hpp.html">alpaka/wait/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">// workdiv</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="workdiv_2Traits_8hpp.html">alpaka/workdiv/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/workdiv/WorkDivHelpers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivMembers_8hpp.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">// vec</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="vec_2Traits_8hpp.html">alpaka/vec/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/vec/Vec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="CudaVectorArrayWrapper_8hpp.html">alpaka/meta/CudaVectorArrayWrapper.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="DependentFalseType_8hpp.html">alpaka/meta/DependentFalseType.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Filter_8hpp.html">alpaka/meta/Filter.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Fold_8hpp.html">alpaka/meta/Fold.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/meta/ForEachType.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Functional_8hpp.html">alpaka/meta/Functional.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IntegerSequence_8hpp.html">alpaka/meta/IntegerSequence.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Integral_8hpp.html">alpaka/meta/Integral.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IsStrictBase_8hpp.html">alpaka/meta/IsStrictBase.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Metafunctions_8hpp.html">alpaka/meta/Metafunctions.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="NdLoop_8hpp.html">alpaka/meta/NdLoop.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="meta_2Set_8hpp.html">alpaka/meta/Set.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Transform_8hpp.html">alpaka/meta/Transform.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="TypeListOps_8hpp.html">alpaka/meta/TypeListOps.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Void_8hpp.html">alpaka/meta/Void.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">// offset</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="offset_2Traits_8hpp.html">alpaka/offset/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">// platform</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfCpu_8hpp.html">alpaka/pltf/PltfCpu.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfOacc_8hpp.html">alpaka/pltf/PltfOacc.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfOmp5_8hpp.html">alpaka/pltf/PltfOmp5.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PltfUniformCudaHipRt_8hpp.html">alpaka/pltf/PltfUniformCudaHipRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="pltf_2Traits_8hpp.html">alpaka/pltf/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">// rand</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RandUniformCudaHipRand_8hpp.html">alpaka/rand/RandUniformCudaHipRand.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="rand_2Traits_8hpp.html">alpaka/rand/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">// idx</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="idx_2Traits_8hpp.html">alpaka/idx/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">// queue</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Properties_8hpp.html">alpaka/queue/Properties.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueCpuBlocking_8hpp.html">alpaka/queue/QueueCpuBlocking.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueCpuNonBlocking_8hpp.html">alpaka/queue/QueueCpuNonBlocking.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueOaccBlocking_8hpp.html">alpaka/queue/QueueOaccBlocking.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueOmp5Blocking_8hpp.html">alpaka/queue/QueueOmp5Blocking.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueUniformCudaHipRtBlocking_8hpp.html">alpaka/queue/QueueUniformCudaHipRtBlocking.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="QueueUniformCudaHipRtNonBlocking_8hpp.html">alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="queue_2Traits_8hpp.html">alpaka/queue/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">// time</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="time_2Traits_8hpp.html">alpaka/time/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">// wait</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="wait_2Traits_8hpp.html">alpaka/wait/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">// workdiv</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="workdiv_2Traits_8hpp.html">alpaka/workdiv/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/workdiv/WorkDivHelpers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivMembers_8hpp.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">// vec</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="vec_2Traits_8hpp.html">alpaka/vec/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/vec/Vec.hpp</a>&gt;</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="atime_2Traits_8hpp_html"><div class="ttname"><a href="time_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -409,6 +410,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html',''); initResi
 <div class="ttc" id="aMemFenceUniformCudaHipBuiltIn_8hpp_html"><div class="ttname"><a href="MemFenceUniformCudaHipBuiltIn_8hpp.html">MemFenceUniformCudaHipBuiltIn.hpp</a></div></div>
 <div class="ttc" id="aBlockSyncBarrierThread_8hpp_html"><div class="ttname"><a href="BlockSyncBarrierThread_8hpp.html">BlockSyncBarrierThread.hpp</a></div></div>
 <div class="ttc" id="aPltfUniformCudaHipRt_8hpp_html"><div class="ttname"><a href="PltfUniformCudaHipRt_8hpp.html">PltfUniformCudaHipRt.hpp</a></div></div>
+<div class="ttc" id="aCudaVectorArrayWrapper_8hpp_html"><div class="ttname"><a href="CudaVectorArrayWrapper_8hpp.html">CudaVectorArrayWrapper.hpp</a></div></div>
 <div class="ttc" id="aBufOacc_8hpp_html"><div class="ttname"><a href="BufOacc_8hpp.html">BufOacc.hpp</a></div></div>
 <div class="ttc" id="avec_2Traits_8hpp_html"><div class="ttname"><a href="vec_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aBlockSharedMemStUniformCudaHipBuiltIn_8hpp_html"><div class="ttname"><a href="BlockSharedMemStUniformCudaHipBuiltIn_8hpp.html">BlockSharedMemStUniformCudaHipBuiltIn.hpp</a></div></div>
@@ -434,7 +436,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="alpaka_8hpp.html">alpaka.hpp</a></li>
-    <li class="footer">Generated on Sat Oct 30 2021 02:57:46 for alpaka by
+    <li class="footer">Generated on Tue Nov 2 2021 03:27:11 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -4,6 +4,7 @@ var dir_9b06e2d5421d26ecb89f5fc8cf901459 =
     [ "ApplyTuple.hpp", "ApplyTuple_8hpp.html", "ApplyTuple_8hpp" ],
     [ "CartesianProduct.hpp", "CartesianProduct_8hpp.html", "CartesianProduct_8hpp" ],
     [ "Concatenate.hpp", "Concatenate_8hpp.html", "Concatenate_8hpp" ],
+    [ "CudaVectorArrayWrapper.hpp", "CudaVectorArrayWrapper_8hpp.html", "CudaVectorArrayWrapper_8hpp" ],
     [ "DependentFalseType.hpp", "DependentFalseType_8hpp.html", [
       [ "DependentFalseType", "structalpaka_1_1meta_1_1DependentFalseType.html", null ]
     ] ],
