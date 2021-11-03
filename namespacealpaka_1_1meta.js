@@ -19,6 +19,11 @@ var namespacealpaka_1_1meta =
     [ "IntegralValuesInRange< T, Tmin, Tmax >", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4.html", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4" ],
     [ "IntegralValuesInRange< T, Tmin, Tmax, I, Tvals... >", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4" ],
     [ "IntegralValuesUnique", "structalpaka_1_1meta_1_1IntegralValuesUnique.html", "structalpaka_1_1meta_1_1IntegralValuesUnique" ],
+    [ "IsArrayOrVector", "structalpaka_1_1meta_1_1IsArrayOrVector.html", null ],
+    [ "IsArrayOrVector< CudaVectorArrayWrapper< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ],
+    [ "IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
+    [ "IsArrayOrVector< std::vector< T, A > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1vector_3_01T_00_01A_01_4_01_4.html", null ],
+    [ "IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ],
     [ "max", "structalpaka_1_1meta_1_1max.html", "structalpaka_1_1meta_1_1max" ],
     [ "min", "structalpaka_1_1meta_1_1min.html", "structalpaka_1_1meta_1_1min" ]
 ];

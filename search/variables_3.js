@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kind_4000',['kind',['../structalpaka_1_1omp_1_1Schedule.html#a9804c454062feeb123b51e3319f6e132',1,'alpaka::omp::Schedule']]]
+  ['head_4139',['head',['../structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html#a188f6eb67eafad3ac61ba2f1e555dc72',1,'utility::tuple::Tuple&lt; T, Ts... &gt;']]]
 ];

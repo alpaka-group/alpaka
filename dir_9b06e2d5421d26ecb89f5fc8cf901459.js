@@ -21,6 +21,13 @@ var dir_9b06e2d5421d26ecb89f5fc8cf901459 =
     ] ],
     [ "IntegerSequence.hpp", "IntegerSequence_8hpp.html", "IntegerSequence_8hpp" ],
     [ "Integral.hpp", "Integral_8hpp.html", "Integral_8hpp" ],
+    [ "IsArrayOrVector.hpp", "IsArrayOrVector_8hpp.html", [
+      [ "IsArrayOrVector", "structalpaka_1_1meta_1_1IsArrayOrVector.html", null ],
+      [ "IsArrayOrVector< CudaVectorArrayWrapper< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ],
+      [ "IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
+      [ "IsArrayOrVector< std::vector< T, A > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1vector_3_01T_00_01A_01_4_01_4.html", null ],
+      [ "IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ]
+    ] ],
     [ "IsStrictBase.hpp", "IsStrictBase_8hpp.html", "IsStrictBase_8hpp" ],
     [ "Metafunctions.hpp", "Metafunctions_8hpp.html", "Metafunctions_8hpp" ],
     [ "NdLoop.hpp", "NdLoop_8hpp.html", "NdLoop_8hpp" ],

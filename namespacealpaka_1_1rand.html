@@ -86,7 +86,8 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1rand.html',''); ini
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::rand Namespace Reference</div>  </div>
 </div><!--header-->
@@ -108,8 +109,14 @@ Namespaces</h2></td></tr>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1ConceptRand.html">ConceptRand</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1EngineCallHostAccProxy.html">EngineCallHostAccProxy</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1MersenneTwister.html">MersenneTwister</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The standard library mersenne twister implementation.  <a href="classalpaka_1_1rand_1_1MersenneTwister.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10.html">Philox4x32x10</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html">Philox4x32x10Vector</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1RandomDevice.html">RandomDevice</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The standard library rand device implementation.  <a href="classalpaka_1_1rand_1_1RandomDevice.html#details">More...</a><br /></td></tr>
@@ -120,11 +127,30 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1TinyMersenneTwister.html">TinyMersenneTwister</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Tiny" state mersenne twister implementation  <a href="classalpaka_1_1rand_1_1TinyMersenneTwister.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1UniformReal.html">UniformReal</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.  <a href="classalpaka_1_1rand_1_1UniformReal.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1UniformReal_3_01TResult_00_01std_1_1enable__if__t_3_01meta_1_1IsArrayOrVe06b6196947332d5cdc1d9c4750531508.html">UniformReal&lt; TResult, std::enable_if_t&lt; meta::IsArrayOrVector&lt; TResult &gt;::value &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.  <a href="classalpaka_1_1rand_1_1UniformReal_3_01TResult_00_01std_1_1enable__if__t_3_01meta_1_1IsArrayOrVe06b6196947332d5cdc1d9c4750531508.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1UniformReal_3_01TResult_00_01std_1_1enable__if__t_3_01std_1_1is__floating887d3a608c7c41641e14f433a9a612dc.html">UniformReal&lt; TResult, std::enable_if_t&lt; std::is_floating_point&lt; TResult &gt;::value &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a93da771a5926ecbf71428adf07417ac8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand.html#a93da771a5926ecbf71428adf07417ac8">RandStdLib</a> = <a class="el" href="classalpaka_1_1rand_1_1TinyMersenneTwister.html">TinyMersenneTwister</a></td></tr>
 <tr class="separator:a93da771a5926ecbf71428adf07417ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a318987e9ab8b229518001b6d2082eb78"><td class="memItemLeft" align="right" valign="top">constexpr static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand.html#a318987e9ab8b229518001b6d2082eb78">high32Bits</a> (std::uint64_t const x)</td></tr>
+<tr class="memdesc:a318987e9ab8b229518001b6d2082eb78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get high 32 bits of a 64-bit number.  <a href="namespacealpaka_1_1rand.html#a318987e9ab8b229518001b6d2082eb78">More...</a><br /></td></tr>
+<tr class="separator:a318987e9ab8b229518001b6d2082eb78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace73dc9802fa861bc9098e5d8b99d5ea"><td class="memItemLeft" align="right" valign="top">constexpr static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand.html#ace73dc9802fa861bc9098e5d8b99d5ea">low32Bits</a> (std::uint64_t const x)</td></tr>
+<tr class="memdesc:ace73dc9802fa861bc9098e5d8b99d5ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get low 32 bits of a 64-bit number.  <a href="namespacealpaka_1_1rand.html#ace73dc9802fa861bc9098e5d8b99d5ea">More...</a><br /></td></tr>
+<tr class="separator:ace73dc9802fa861bc9098e5d8b99d5ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78260ac74587972ea7408fa1305054c9"><td class="memItemLeft" align="right" valign="top">constexpr static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand.html#a78260ac74587972ea7408fa1305054c9">multiplyAndSplit64to32</a> (std::uint64_t const a, std::uint64_t const b, std::uint32_t &amp;resultHigh, std::uint32_t &amp;resultLow)</td></tr>
+<tr class="separator:a78260ac74587972ea7408fa1305054c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The random number generation specifics. </p>
@@ -145,13 +171,134 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a318987e9ab8b229518001b6d2082eb78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a318987e9ab8b229518001b6d2082eb78">&#9670;&nbsp;</a></span>high32Bits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> std::uint32_t alpaka::rand::high32Bits </td>
+          <td>(</td>
+          <td class="paramtype">std::uint64_t const&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get high 32 bits of a 64-bit number. </p>
+
+<p class="definition">Definition at line <a class="el" href="MultiplyAndSplit64to32_8hpp_source.html#l00019">19</a> of file <a class="el" href="MultiplyAndSplit64to32_8hpp_source.html">MultiplyAndSplit64to32.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ace73dc9802fa861bc9098e5d8b99d5ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace73dc9802fa861bc9098e5d8b99d5ea">&#9670;&nbsp;</a></span>low32Bits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> std::uint32_t alpaka::rand::low32Bits </td>
+          <td>(</td>
+          <td class="paramtype">std::uint64_t const&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get low 32 bits of a 64-bit number. </p>
+
+<p class="definition">Definition at line <a class="el" href="MultiplyAndSplit64to32_8hpp_source.html#l00025">25</a> of file <a class="el" href="MultiplyAndSplit64to32_8hpp_source.html">MultiplyAndSplit64to32.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a78260ac74587972ea7408fa1305054c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78260ac74587972ea7408fa1305054c9">&#9670;&nbsp;</a></span>multiplyAndSplit64to32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void alpaka::rand::multiplyAndSplit64to32 </td>
+          <td>(</td>
+          <td class="paramtype">std::uint64_t const&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint64_t const&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>resultHigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>resultLow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Multiply two 64-bit numbers and split the result into high and low 32 bits, also known as "mulhilo32"</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>first 64-bit multiplier </td></tr>
+    <tr><td class="paramname">b</td><td>second 64-bit multiplier </td></tr>
+    <tr><td class="paramname">resultHigh</td><td>high 32 bits of the product a*b </td></tr>
+    <tr><td class="paramname">resultLow</td><td>low 32 bits of the product a*b </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="MultiplyAndSplit64to32_8hpp_source.html#l00038">38</a> of file <a class="el" href="MultiplyAndSplit64to32_8hpp_source.html">MultiplyAndSplit64to32.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li>
-    <li class="footer">Generated on Wed Nov 3 2021 08:14:26 for alpaka by
+    <li class="footer">Generated on Wed Nov 3 2021 14:21:20 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

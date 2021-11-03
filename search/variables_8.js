@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['tail_4078',['tail',['../structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html#a20b1ac8227cd88dd8f5258f11640598a',1,'utility::tuple::Tuple&lt; T, Ts... &gt;']]],
-  ['tmat_4079',['tmat',['../structTINYMT32__T.html#a0e43df3eee3e3829d517bcba2f0ebc9b',1,'TINYMT32_T']]]
+  ['position_4217',['position',['../structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#abd52ce5279c239863287ec8d78694cda',1,'alpaka::rand::engine::PhiloxStateSingle']]],
+  ['prng_4218',['prng',['../structalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMTengine.html#a29a95091e48520aeff62cbb788800d68',1,'alpaka::rand::engine::cpu::TinyMTengine']]]
 ];

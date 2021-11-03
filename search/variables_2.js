@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['head_3999',['head',['../structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html#a188f6eb67eafad3ac61ba2f1e555dc72',1,'utility::tuple::Tuple&lt; T, Ts... &gt;']]]
+  ['enginevariant_4138',['engineVariant',['../classalpaka_1_1rand_1_1Philox4x32x10.html#a1c7bb740a597d9bfec31b1ac1f623b14',1,'alpaka::rand::Philox4x32x10::engineVariant()'],['../classalpaka_1_1rand_1_1Philox4x32x10Vector.html#aa3a520f357502936927622a86b78d60c',1,'alpaka::rand::Philox4x32x10Vector::engineVariant()']]]
 ];
