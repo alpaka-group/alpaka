@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4.html":[3,0,0,12,0,49],
+"structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4.html#a5a8155e7de709270c41f30a1cf9a8dbb":[3,0,0,12,0,49,0],
+"structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html":[3,0,0,12,0,50],
 "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html":[3,0,0,12,0,51],
 "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a44f2a099fe34476669968ee70ccbd45d":[3,0,0,12,0,51,0],
 "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a9ad0b7f6928a1b9dde767f5bc8c481ba":[3,0,0,12,0,51,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html#a581c8272ad9234901266b774e27746c3":[3,0,0,17,53,0],
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html":[3,0,0,17,54],
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html#a29512480947d586024e208d5d70a2a43":[3,0,0,17,54,0],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0eaa56304c54de49a8da79dabf5523139.html":[3,0,0,17,55],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0eaa56304c54de49a8da79dabf5523139.html#acdb9f7cf0b3a6de2e5ce0296113dae68":[3,0,0,17,55,0],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0f1a1c1ae99a7950af5630a838644fb68.html":[3,0,0,17,56],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0f1a1c1ae99a7950af5630a838644fb68.html#ac3dea856e768bf22f0598bb6106f94f7":[3,0,0,17,56,0]
+"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0eaa56304c54de49a8da79dabf5523139.html":[3,0,0,17,55]
 };

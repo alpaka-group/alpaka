@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"namespacemembers_func_o.html":[2,1,1,11],
+"namespacemembers_func_p.html":[2,1,1,12],
+"namespacemembers_func_r.html":[2,1,1,13],
 "namespacemembers_func_s.html":[2,1,1,14],
 "namespacemembers_func_t.html":[2,1,1,15],
 "namespacemembers_func_u.html":[2,1,1,16],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Guided_01_4.html#a3cfac7dff8d70956bf5b3d30863a7f2d":[3,0,0,5,34,0],
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Static_01_4.html":[3,0,0,5,35],
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Static_01_4.html#ac9d39a50395f5d0abe60038663b52506":[3,0,0,5,35,0],
-"structalpaka_1_1detail_1_1ParallelForStaticImpl.html":[3,0,0,5,42],
-"structalpaka_1_1detail_1_1ParallelForStaticImpl.html#ae3c5002b557886e709025c19d1076e19":[3,0,0,5,42,0],
-"structalpaka_1_1detail_1_1ParallelForStaticImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html":[3,0,0,5,43],
-"structalpaka_1_1detail_1_1ParallelForStaticImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html#a0f32cedf522860fda052efe4c6ffaa0c":[3,0,0,5,43,0]
+"structalpaka_1_1detail_1_1ParallelForStaticImpl.html":[3,0,0,5,42]
 };

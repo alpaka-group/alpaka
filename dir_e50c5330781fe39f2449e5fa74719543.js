@@ -24,6 +24,7 @@ var dir_e50c5330781fe39f2449e5fa74719543 =
     [ "sqrt", "dir_570084d6dc638e0a415be1d37eff4e4b.html", "dir_570084d6dc638e0a415be1d37eff4e4b" ],
     [ "tan", "dir_f4d2571511c2d8ce67abfc9ea3cb850a.html", "dir_f4d2571511c2d8ce67abfc9ea3cb850a" ],
     [ "trunc", "dir_3eb74e514d413767a2782056cfb3c129.html", "dir_3eb74e514d413767a2782056cfb3c129" ],
+    [ "FloatEqualExact.hpp", "FloatEqualExact_8hpp.html", "FloatEqualExact_8hpp" ],
     [ "MathStdLib.hpp", "MathStdLib_8hpp.html", [
       [ "MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
     ] ],
