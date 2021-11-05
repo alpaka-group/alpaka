@@ -23,6 +23,9 @@
 #    include <alpaka/math/exp/ExpUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/math/floor/FloorUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/math/fmod/FmodUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/math/isfinite/IsfiniteUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/math/isinf/IsinfUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/math/isnan/IsnanUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/math/log/LogUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/math/max/MaxUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/math/min/MinUniformCudaHipBuiltIn.hpp>
@@ -67,6 +70,9 @@ namespace alpaka
             , public SqrtUniformCudaHipBuiltIn
             , public TanUniformCudaHipBuiltIn
             , public TruncUniformCudaHipBuiltIn
+            , public IsnanUniformCudaHipBuiltIn
+            , public IsinfUniformCudaHipBuiltIn
+            , public IsfiniteUniformCudaHipBuiltIn
         {
         };
     } // namespace math
