@@ -126,8 +126,8 @@ namespace alpaka
                     Counter temp = counter;
                     counter[0] += low32Bits(offset);
                     counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
-                    counter[2] += (counter[0] < temp[1] ? 1 : 0);
-                    counter[3] += (counter[0] < temp[2] ? 1 : 0);
+                    counter[2] += (counter[0] < temp[1] ? 1u : 0u);
+                    counter[3] += (counter[0] < temp[2] ? 1u : 0u);
                 }
 
                 /** Advance the counter by the length of \a subsequence
@@ -156,7 +156,7 @@ namespace alpaka
                     Counter counter = singleRound(counter_in, key);
 
                     // TODO: Consider unrolling the loop for performance
-                    for(int n = 0; n < numRounds; ++n)
+                    for(unsigned int n = 0; n < numRounds; ++n)
                     {
                         key = bumpKey(key);
                         counter = singleRound(counter, key);

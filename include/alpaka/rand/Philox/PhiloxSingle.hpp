@@ -97,7 +97,7 @@ namespace alpaka
                 {
                     state.position += offset & 3;
                     offset += state.position < 4 ? 0 : 4;
-                    state.position += state.position < 4 ? 0 : -4;
+                    state.position -= state.position < 4 ? 0 : 4u;
                     this->skip4(offset / 4);
                 }
 
