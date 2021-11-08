@@ -175,6 +175,9 @@ var hierarchy =
     [ "alpaka::math::ConceptMathExp", "structalpaka_1_1math_1_1ConceptMathExp.html", null ],
     [ "alpaka::math::ConceptMathFloor", "structalpaka_1_1math_1_1ConceptMathFloor.html", null ],
     [ "alpaka::math::ConceptMathFmod", "structalpaka_1_1math_1_1ConceptMathFmod.html", null ],
+    [ "alpaka::math::ConceptMathIsfinite", "structalpaka_1_1math_1_1ConceptMathIsfinite.html", null ],
+    [ "alpaka::math::ConceptMathIsinf", "structalpaka_1_1math_1_1ConceptMathIsinf.html", null ],
+    [ "alpaka::math::ConceptMathIsnan", "structalpaka_1_1math_1_1ConceptMathIsnan.html", null ],
     [ "alpaka::math::ConceptMathLog", "structalpaka_1_1math_1_1ConceptMathLog.html", null ],
     [ "alpaka::math::ConceptMathMax", "structalpaka_1_1math_1_1ConceptMathMax.html", null ],
     [ "alpaka::math::ConceptMathMin", "structalpaka_1_1math_1_1ConceptMathMin.html", null ],
@@ -236,6 +239,15 @@ var hierarchy =
     [ "alpaka::math::traits::Fmod< FmodStdLib, Tx, Ty, std::enable_if_t< std::is_arithmetic< Tx >::value &&std::is_arithmetic< Ty >::value > >", "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_1e3992ec5d7497c79273d493839fc600.html", null ],
     [ "alpaka::math::traits::Fmod< FmodUniformCudaHipBuiltIn, float, float >", "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodUniformCudaHipBuiltIn_00_01float_00_01float_01_4.html", null ],
     [ "alpaka::math::traits::Fmod< FmodUniformCudaHipBuiltIn, Tx, Ty, std::enable_if_t< std::is_floating_point< Tx >::value &&std::is_floating_point< Ty >::value > >", "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_b44b41490d5667e770c9a877ec97185e.html", null ],
+    [ "alpaka::math::traits::Isfinite< T, TArg, TSfinae >", "structalpaka_1_1math_1_1traits_1_1Isfinite.html", null ],
+    [ "alpaka::math::traits::Isfinite< IsfiniteStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Isfinite_3_01IsfiniteStdLib_00_01TArg_00_01std_1_1enable__if__f76e88afaa1f8c06dff50dfb25398c08.html", null ],
+    [ "alpaka::math::traits::Isfinite< IsfiniteUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Isfinite_3_01IsfiniteUniformCudaHipBuiltIn_00_01TArg_00_01std_0bc9a8dcc7b75d530c0c8a941119d935.html", null ],
+    [ "alpaka::math::traits::Isinf< T, TArg, TSfinae >", "structalpaka_1_1math_1_1traits_1_1Isinf.html", null ],
+    [ "alpaka::math::traits::Isinf< IsinfStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Isinf_3_01IsinfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0185bdbee49f822615a4989aac8b1d7c37.html", null ],
+    [ "alpaka::math::traits::Isinf< IsinfUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Isinf_3_01IsinfUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enaeb24203a536a4d92b68197a1bd7e39af.html", null ],
+    [ "alpaka::math::traits::Isnan< T, TArg, TSfinae >", "structalpaka_1_1math_1_1traits_1_1Isnan.html", null ],
+    [ "alpaka::math::traits::Isnan< IsnanStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Isnan_3_01IsnanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0171175e919bc5f1b042ccbfc5f18de932.html", null ],
+    [ "alpaka::math::traits::Isnan< IsnanUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Isnan_3_01IsnanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1ena273e9714b8613c5ddac0458ad5c27662.html", null ],
     [ "alpaka::math::traits::Llround< T, TArg, TSfinae >", "structalpaka_1_1math_1_1traits_1_1Llround.html", null ],
     [ "alpaka::math::traits::Llround< RoundStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_1479f77b8e2b897b6ab5bc184777bb0d.html", null ],
     [ "alpaka::math::traits::Llround< RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1e574a51f56f64fcd8b52af964ab4bd706.html", null ],
@@ -1432,6 +1444,36 @@ var hierarchy =
     ] ],
     [ "alpaka::concepts::Implements< ConceptMathFmod, FmodUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::math::FmodUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1FmodUniformCudaHipBuiltIn.html", [
+        [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathIsfinite, IsfiniteStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::IsfiniteStdLib", "classalpaka_1_1math_1_1IsfiniteStdLib.html", [
+        [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::IsfiniteUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1IsfiniteUniformCudaHipBuiltIn.html", [
+        [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathIsinf, IsinfStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::IsinfStdLib", "classalpaka_1_1math_1_1IsinfStdLib.html", [
+        [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathIsinf, IsinfUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::IsinfUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1IsinfUniformCudaHipBuiltIn.html", [
+        [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathIsnan, IsnanStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::IsnanStdLib", "classalpaka_1_1math_1_1IsnanStdLib.html", [
+        [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathIsnan, IsnanUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::IsnanUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1IsnanUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],

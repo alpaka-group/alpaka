@@ -110,62 +110,70 @@ $(document).ready(function(){initNavTree('MathStdLib_8hpp_source.html',''); init
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ExpStdLib_8hpp.html">alpaka/math/exp/ExpStdLib.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="FloorStdLib_8hpp.html">alpaka/math/floor/FloorStdLib.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="FmodStdLib_8hpp.html">alpaka/math/fmod/FmodStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="LogStdLib_8hpp.html">alpaka/math/log/LogStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="MaxStdLib_8hpp.html">alpaka/math/max/MaxStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="MinStdLib_8hpp.html">alpaka/math/min/MinStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PowStdLib_8hpp.html">alpaka/math/pow/PowStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RemainderStdLib_8hpp.html">alpaka/math/remainder/RemainderStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RoundStdLib_8hpp.html">alpaka/math/round/RoundStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RsqrtStdLib_8hpp.html">alpaka/math/rsqrt/RsqrtStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SinStdLib_8hpp.html">alpaka/math/sin/SinStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SinCosStdLib_8hpp.html">alpaka/math/sincos/SinCosStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SqrtStdLib_8hpp.html">alpaka/math/sqrt/SqrtStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="TanStdLib_8hpp.html">alpaka/math/tan/TanStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="TruncStdLib_8hpp.html">alpaka/math/trunc/TruncStdLib.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{<span class="comment"></span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">    //! The mathematical operation specifics.</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>math</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">        //! The standard library math trait specializations.</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classalpaka_1_1math_1_1MathStdLib.html">   43</a></span>&#160;<span class="comment"></span>        <span class="keyword">class </span><a class="code" href="classalpaka_1_1math_1_1MathStdLib.html">MathStdLib</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            : <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AbsStdLib.html">AbsStdLib</a></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AcosStdLib.html">AcosStdLib</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AsinStdLib.html">AsinStdLib</a></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AtanStdLib.html">AtanStdLib</a></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1Atan2StdLib.html">Atan2StdLib</a></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1CbrtStdLib.html">CbrtStdLib</a></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1CeilStdLib.html">CeilStdLib</a></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1CosStdLib.html">CosStdLib</a></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1ErfStdLib.html">ErfStdLib</a></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1ExpStdLib.html">ExpStdLib</a></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1FloorStdLib.html">FloorStdLib</a></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1FmodStdLib.html">FmodStdLib</a></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1LogStdLib.html">LogStdLib</a></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1MaxStdLib.html">MaxStdLib</a></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1MinStdLib.html">MinStdLib</a></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1PowStdLib.html">PowStdLib</a></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1RemainderStdLib.html">RemainderStdLib</a></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1RoundStdLib.html">RoundStdLib</a></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1RsqrtStdLib.html">RsqrtStdLib</a></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1SinStdLib.html">SinStdLib</a></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1SinCosStdLib.html">SinCosStdLib</a></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1SqrtStdLib.html">SqrtStdLib</a></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1TanStdLib.html">TanStdLib</a></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1TruncStdLib.html">TruncStdLib</a></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        };</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    } <span class="comment">// namespace math</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IsfiniteStdLib_8hpp.html">alpaka/math/isfinite/IsfiniteStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IsinfStdLib_8hpp.html">alpaka/math/isinf/IsinfStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IsnanStdLib_8hpp.html">alpaka/math/isnan/IsnanStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="LogStdLib_8hpp.html">alpaka/math/log/LogStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="MaxStdLib_8hpp.html">alpaka/math/max/MaxStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="MinStdLib_8hpp.html">alpaka/math/min/MinStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="PowStdLib_8hpp.html">alpaka/math/pow/PowStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RemainderStdLib_8hpp.html">alpaka/math/remainder/RemainderStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RoundStdLib_8hpp.html">alpaka/math/round/RoundStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RsqrtStdLib_8hpp.html">alpaka/math/rsqrt/RsqrtStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SinStdLib_8hpp.html">alpaka/math/sin/SinStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SinCosStdLib_8hpp.html">alpaka/math/sincos/SinCosStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SqrtStdLib_8hpp.html">alpaka/math/sqrt/SqrtStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="TanStdLib_8hpp.html">alpaka/math/tan/TanStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="TruncStdLib_8hpp.html">alpaka/math/trunc/TruncStdLib.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">    //! The mathematical operation specifics.</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>math</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">        //! The standard library math trait specializations.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classalpaka_1_1math_1_1MathStdLib.html">   46</a></span>&#160;<span class="comment"></span>        <span class="keyword">class </span><a class="code" href="classalpaka_1_1math_1_1MathStdLib.html">MathStdLib</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            : <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AbsStdLib.html">AbsStdLib</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AcosStdLib.html">AcosStdLib</a></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AsinStdLib.html">AsinStdLib</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1AtanStdLib.html">AtanStdLib</a></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1Atan2StdLib.html">Atan2StdLib</a></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1CbrtStdLib.html">CbrtStdLib</a></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1CeilStdLib.html">CeilStdLib</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1CosStdLib.html">CosStdLib</a></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1ErfStdLib.html">ErfStdLib</a></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1ExpStdLib.html">ExpStdLib</a></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1FloorStdLib.html">FloorStdLib</a></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1FmodStdLib.html">FmodStdLib</a></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1LogStdLib.html">LogStdLib</a></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1MaxStdLib.html">MaxStdLib</a></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1MinStdLib.html">MinStdLib</a></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1PowStdLib.html">PowStdLib</a></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1RemainderStdLib.html">RemainderStdLib</a></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1RoundStdLib.html">RoundStdLib</a></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1RsqrtStdLib.html">RsqrtStdLib</a></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1SinStdLib.html">SinStdLib</a></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1SinCosStdLib.html">SinCosStdLib</a></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1SqrtStdLib.html">SqrtStdLib</a></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1TanStdLib.html">TanStdLib</a></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1TruncStdLib.html">TruncStdLib</a></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1IsnanStdLib.html">IsnanStdLib</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1IsinfStdLib.html">IsinfStdLib</a></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            , <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1IsfiniteStdLib.html">IsfiniteStdLib</a></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        };</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    } <span class="comment">// namespace math</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassalpaka_1_1math_1_1Atan2StdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1Atan2StdLib.html">alpaka::math::Atan2StdLib</a></div><div class="ttdoc">The standard library atan2.</div><div class="ttdef"><b>Definition:</b> <a href="Atan2StdLib_8hpp_source.html#l00023">Atan2StdLib.hpp:23</a></div></div>
+<div class="ttc" id="aIsinfStdLib_8hpp_html"><div class="ttname"><a href="IsinfStdLib_8hpp.html">IsinfStdLib.hpp</a></div></div>
+<div class="ttc" id="aIsnanStdLib_8hpp_html"><div class="ttname"><a href="IsnanStdLib_8hpp.html">IsnanStdLib.hpp</a></div></div>
 <div class="ttc" id="aExpStdLib_8hpp_html"><div class="ttname"><a href="ExpStdLib_8hpp.html">ExpStdLib.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1AbsStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1AbsStdLib.html">alpaka::math::AbsStdLib</a></div><div class="ttdoc">The standard library abs.</div><div class="ttdef"><b>Definition:</b> <a href="AbsStdLib_8hpp_source.html#l00024">AbsStdLib.hpp:24</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1SinStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1SinStdLib.html">alpaka::math::SinStdLib</a></div><div class="ttdoc">The standard library sin.</div><div class="ttdef"><b>Definition:</b> <a href="SinStdLib_8hpp_source.html#l00023">SinStdLib.hpp:23</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1FloorStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1FloorStdLib.html">alpaka::math::FloorStdLib</a></div><div class="ttdoc">The standard library floor.</div><div class="ttdef"><b>Definition:</b> <a href="FloorStdLib_8hpp_source.html#l00023">FloorStdLib.hpp:23</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1math_1_1MathStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1MathStdLib.html">alpaka::math::MathStdLib</a></div><div class="ttdoc">The standard library math trait specializations.</div><div class="ttdef"><b>Definition:</b> <a href="MathStdLib_8hpp_source.html#l00043">MathStdLib.hpp:43</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1math_1_1MathStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1MathStdLib.html">alpaka::math::MathStdLib</a></div><div class="ttdoc">The standard library math trait specializations.</div><div class="ttdef"><b>Definition:</b> <a href="MathStdLib_8hpp_source.html#l00046">MathStdLib.hpp:46</a></div></div>
 <div class="ttc" id="aRemainderStdLib_8hpp_html"><div class="ttname"><a href="RemainderStdLib_8hpp.html">RemainderStdLib.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1MinStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1MinStdLib.html">alpaka::math::MinStdLib</a></div><div class="ttdoc">The standard library min.</div><div class="ttdef"><b>Definition:</b> <a href="MinStdLib_8hpp_source.html#l00024">MinStdLib.hpp:24</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1AcosStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1AcosStdLib.html">alpaka::math::AcosStdLib</a></div><div class="ttdoc">The standard library acos.</div><div class="ttdef"><b>Definition:</b> <a href="AcosStdLib_8hpp_source.html#l00023">AcosStdLib.hpp:23</a></div></div>
@@ -193,6 +201,8 @@ $(document).ready(function(){initNavTree('MathStdLib_8hpp_source.html',''); init
 <div class="ttc" id="aclassalpaka_1_1math_1_1CbrtStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1CbrtStdLib.html">alpaka::math::CbrtStdLib</a></div><div class="ttdoc">The standard library cbrt.</div><div class="ttdef"><b>Definition:</b> <a href="CbrtStdLib_8hpp_source.html#l00023">CbrtStdLib.hpp:23</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1TanStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1TanStdLib.html">alpaka::math::TanStdLib</a></div><div class="ttdoc">The standard library tan.</div><div class="ttdef"><b>Definition:</b> <a href="TanStdLib_8hpp_source.html#l00023">TanStdLib.hpp:23</a></div></div>
 <div class="ttc" id="aTanStdLib_8hpp_html"><div class="ttname"><a href="TanStdLib_8hpp.html">TanStdLib.hpp</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1math_1_1IsfiniteStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1IsfiniteStdLib.html">alpaka::math::IsfiniteStdLib</a></div><div class="ttdoc">The standard library isfinite.</div><div class="ttdef"><b>Definition:</b> <a href="IsfiniteStdLib_8hpp_source.html#l00023">IsfiniteStdLib.hpp:23</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1math_1_1IsnanStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1IsnanStdLib.html">alpaka::math::IsnanStdLib</a></div><div class="ttdoc">The standard library isnan.</div><div class="ttdef"><b>Definition:</b> <a href="IsnanStdLib_8hpp_source.html#l00023">IsnanStdLib.hpp:23</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1AtanStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1AtanStdLib.html">alpaka::math::AtanStdLib</a></div><div class="ttdoc">The standard library atan.</div><div class="ttdef"><b>Definition:</b> <a href="AtanStdLib_8hpp_source.html#l00023">AtanStdLib.hpp:23</a></div></div>
 <div class="ttc" id="aErfStdLib_8hpp_html"><div class="ttname"><a href="ErfStdLib_8hpp.html">ErfStdLib.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1ErfStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1ErfStdLib.html">alpaka::math::ErfStdLib</a></div><div class="ttdoc">The standard library erf.</div><div class="ttdef"><b>Definition:</b> <a href="ErfStdLib_8hpp_source.html#l00023">ErfStdLib.hpp:23</a></div></div>
@@ -204,6 +214,8 @@ $(document).ready(function(){initNavTree('MathStdLib_8hpp_source.html',''); init
 <div class="ttc" id="aLogStdLib_8hpp_html"><div class="ttname"><a href="LogStdLib_8hpp.html">LogStdLib.hpp</a></div></div>
 <div class="ttc" id="aRoundStdLib_8hpp_html"><div class="ttname"><a href="RoundStdLib_8hpp.html">RoundStdLib.hpp</a></div></div>
 <div class="ttc" id="aAcosStdLib_8hpp_html"><div class="ttname"><a href="AcosStdLib_8hpp.html">AcosStdLib.hpp</a></div></div>
+<div class="ttc" id="aIsfiniteStdLib_8hpp_html"><div class="ttname"><a href="IsfiniteStdLib_8hpp.html">IsfiniteStdLib.hpp</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1math_1_1IsinfStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1IsinfStdLib.html">alpaka::math::IsinfStdLib</a></div><div class="ttdoc">The standard library isinf.</div><div class="ttdef"><b>Definition:</b> <a href="IsinfStdLib_8hpp_source.html#l00023">IsinfStdLib.hpp:23</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1RsqrtStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1RsqrtStdLib.html">alpaka::math::RsqrtStdLib</a></div><div class="ttdoc">The standard library rsqrt.</div><div class="ttdef"><b>Definition:</b> <a href="RsqrtStdLib_8hpp_source.html#l00023">RsqrtStdLib.hpp:23</a></div></div>
 <div class="ttc" id="aCbrtStdLib_8hpp_html"><div class="ttname"><a href="CbrtStdLib_8hpp.html">CbrtStdLib.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1math_1_1MaxStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1MaxStdLib.html">alpaka::math::MaxStdLib</a></div><div class="ttdoc">The standard library max.</div><div class="ttdef"><b>Definition:</b> <a href="MaxStdLib_8hpp_source.html#l00024">MaxStdLib.hpp:24</a></div></div>
@@ -214,7 +226,7 @@ $(document).ready(function(){initNavTree('MathStdLib_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="MathStdLib_8hpp.html">MathStdLib.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 3 2021 14:21:18 for alpaka by
+    <li class="footer">Generated on Mon Nov 8 2021 08:13:43 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

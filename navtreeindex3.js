@@ -1,5 +1,17 @@
 var NAVTREEINDEX3 =
 {
+"atomic_2Traits_8hpp.html#ac8d44ae90fcfe2fdb973c49542fd0db5":[4,0,0,0,1,8,9],
+"atomic_2Traits_8hpp.html#af0db95671aafbe9c7fe480f45d226041":[4,0,0,0,1,8,19],
+"atomic_2Traits_8hpp.html#afc0cabb316d5524d381a35c8c67edf81":[4,0,0,0,1,8,18],
+"atomic_2Traits_8hpp.html#afcb672dfb9494d1e3907cc68ac9f6bdc":[4,0,0,0,1,8,10],
+"atomic_2Traits_8hpp_source.html":[4,0,0,0,1,8],
+"block_2shared_2dyn_2Traits_8hpp.html":[4,0,0,0,2,0,0,2],
+"block_2shared_2dyn_2Traits_8hpp.html#a1a94cfffd5d547f55d97551bc8b5c78e":[4,0,0,0,2,0,0,2,2],
+"block_2shared_2dyn_2Traits_8hpp_source.html":[4,0,0,0,2,0,0,2],
+"block_2shared_2st_2Traits_8hpp.html":[4,0,0,0,2,0,1,5],
+"block_2shared_2st_2Traits_8hpp.html#af573b85c5c94948f067a60c24d76065e":[4,0,0,0,2,0,1,5,4],
+"block_2shared_2st_2Traits_8hpp.html#af7b7e7f67482b39bf05230d666dc9798":[4,0,0,0,2,0,1,5,3],
+"block_2shared_2st_2Traits_8hpp_source.html":[4,0,0,0,2,0,1,5],
 "block_2sync_2Traits_8hpp.html":[4,0,0,0,2,1,6],
 "block_2sync_2Traits_8hpp.html#a8abf917f5b376cf0c5a91f5d98c92af1":[4,0,0,0,2,1,6,6],
 "block_2sync_2Traits_8hpp.html#ada1e5add594d3a2699a818b6a87cabee":[4,0,0,0,2,1,6,7],
@@ -237,17 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#ae3fcc82813fe1d4bc2d966c47db46216":[3,0,0,118,1],
 "classalpaka_1_1bt_1_1IdxBtLinear.html":[3,0,0,0,0],
 "classalpaka_1_1bt_1_1IdxBtLinear.html#ac64d058b3f9e63e0ba3c16d39fc99bc4":[3,0,0,0,0,0],
-"classalpaka_1_1bt_1_1IdxBtLinear.html#ae95a0d6b4c50921d041e6f39807ed1e8":[3,0,0,0,0,1],
-"classalpaka_1_1bt_1_1IdxBtOmp.html":[3,0,0,0,1],
-"classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html":[3,0,0,0,2],
-"classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#a15fce46a03e3501d92df0e57b888d83a":[3,0,0,0,2,2],
-"classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#a7aa8f59738c88bf194e3f670537847fa":[3,0,0,0,2,0],
-"classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#aa2f46183262ab7f5e0a8da1ad60abd9f":[3,0,0,0,2,3],
-"classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#ad3f44b3a24b548eef9e2854b5de5da89":[3,0,0,0,2,1],
-"classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#adad96ba688871edf808f4d1f83c3744b":[3,0,0,0,2,4],
-"classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html":[3,0,0,0,3],
-"classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html#a102a7436b90bc635937c0eb88eb489c8":[3,0,0,0,3,1],
-"classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html#a3813547cff765efd6bb97e5b40e89321":[3,0,0,0,3,0],
-"classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html#a741637a0b389d044e18470c5e7747538":[3,0,0,0,3,2],
-"classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html#a7ddda54280726b2cb14ba69ec408cc28":[3,0,0,0,3,3]
+"classalpaka_1_1bt_1_1IdxBtLinear.html#ae95a0d6b4c50921d041e6f39807ed1e8":[3,0,0,0,0,1]
 };

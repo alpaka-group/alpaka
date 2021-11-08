@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Isfinite_3_01IsfiniteStdLib_00_01TArg_00_01std_1_1enable__if__f76e88afaa1f8c06dff50dfb25398c08 =
+[
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Isfinite_3_01IsfiniteStdLib_00_01TArg_00_01std_1_1enable__if__f76e88afaa1f8c06dff50dfb25398c08.html#a48999bedb6cde4c9b589bcfaf7200376", null ]
+];
