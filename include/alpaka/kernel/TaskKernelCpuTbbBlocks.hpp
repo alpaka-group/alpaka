@@ -98,23 +98,25 @@ namespace alpaka
                 throw std::runtime_error("A block for the TBB accelerator can only ever have one single thread!");
             }
 
-            tbb::this_task_arena::isolate([&] {
-                tbb::parallel_for(
-                    static_cast<TIdx>(0),
-                    static_cast<TIdx>(numBlocksInGrid),
-                    [&](TIdx i)
-                    {
-                        AccCpuTbbBlocks<TDim, TIdx> acc(
-                            *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
-                            blockSharedMemDynSizeBytes);
+            tbb::this_task_arena::isolate(
+                [&]
+                {
+                    tbb::parallel_for(
+                        static_cast<TIdx>(0),
+                        static_cast<TIdx>(numBlocksInGrid),
+                        [&](TIdx i)
+                        {
+                            AccCpuTbbBlocks<TDim, TIdx> acc(
+                                *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
+                                blockSharedMemDynSizeBytes);
 
-                        acc.m_gridBlockIdx
-                            = mapIdx<TDim::value>(Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(i)), gridBlockExtent);
+                            acc.m_gridBlockIdx
+                                = mapIdx<TDim::value>(Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(i)), gridBlockExtent);
 
-                        boundKernelFnObj(acc);
+                            boundKernelFnObj(acc);
 
-                        freeSharedVars(acc);
-                    });
+                            freeSharedVars(acc);
+                        });
                 });
         }
 
