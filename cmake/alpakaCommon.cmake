@@ -474,7 +474,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
         endif()
 
         target_link_libraries(alpaka INTERFACE CUDA::cudart)
-        target_include_directories(alpaka INTERFACE ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+        target_include_directories(alpaka SYSTEM INTERFACE ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
     else()
         message(FATAL_ERROR "Optional alpaka dependency CUDA could not be found!")
     endif()
@@ -620,7 +620,12 @@ if(TARGET alpaka)
     endif()
 
     # the alpaka library itself
-    target_include_directories(alpaka INTERFACE ${_ALPAKA_INCLUDE_DIRECTORY})
+    # SYSTEM voids showing warnings produced by alpaka when used in user applications.
+    if(BUILD_TESTING)
+        target_include_directories(alpaka INTERFACE ${_ALPAKA_INCLUDE_DIRECTORY})
+    else()
+        target_include_directories(alpaka SYSTEM INTERFACE ${_ALPAKA_INCLUDE_DIRECTORY})
+    endif()
 
     if(${ALPAKA_DEBUG} GREATER 1)
         # Link libraries.
