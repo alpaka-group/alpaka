@@ -277,14 +277,7 @@ endif()
 #-------------------------------------------------------------------------------
 # Find TBB.
 if(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
-    # Prefer TBB's own TBBConfig.cmake (available in more recent TBB versions)
-    find_package(TBB QUIET CONFIG)
-    
-    if(NOT TBB_FOUND)
-        message(STATUS "TBB not found in config mode. Retrying in module mode.")
-        find_package(TBB REQUIRED MODULE)
-    endif()
-
+    find_package(TBB 2021.4.0.0 REQUIRED)
     target_link_libraries(alpaka INTERFACE TBB::tbb)
 endif()
 

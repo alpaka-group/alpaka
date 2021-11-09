@@ -52,8 +52,7 @@ cmake --version
 #TBB
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
-    ALPAKA_TBB_BIN_DIR="${TBB_ROOT}/bin/intel64/vc14"
-    export PATH=${PATH}:"${ALPAKA_TBB_BIN_DIR}"
+    export PATH=${PATH}:"${TBB_ROOT}/redist/intel64/vc14"
 fi
 
 # CUDA
