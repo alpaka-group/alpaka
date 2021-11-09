@@ -19,10 +19,10 @@ else()
 endif()
 
 add_library(CatchMain src/CatchMain.cpp)
-# target_compile_features(CatchMain PUBLIC cxx_std_14)  # min C++14
+# target_compile_features(CatchMain PUBLIC cxx_std_17)  # min C++17
 set_target_properties(CatchMain PROPERTIES
     FOLDER "test"
-    CXX_STANDARD 14  # exactly C++14
+    CXX_STANDARD 17
     CXX_EXTENSIONS OFF
     CXX_STANDARD_REQUIRED ON
     POSITION_INDEPENDENT_CODE ON

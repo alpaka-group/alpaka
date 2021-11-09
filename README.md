@@ -5,13 +5,13 @@
 [![Continuous Integration](https://github.com/alpaka-group/alpaka/workflows/Continuous%20Integration/badge.svg)](https://github.com/alpaka-group/alpaka/actions?query=workflow%3A%22Continuous+Integration%22)
 [![Documentation Status](https://readthedocs.org/projects/alpaka/badge/?version=latest)](https://alpaka.readthedocs.io)
 [![Doxygen](https://img.shields.io/badge/API-Doxygen-blue.svg)](https://alpaka-group.github.io/alpaka)
-[![Language](https://img.shields.io/badge/language-C%2B%2B14-orange.svg)](https://isocpp.org/)
+[![Language](https://img.shields.io/badge/language-C%2B%2B17-orange.svg)](https://isocpp.org/)
 [![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20mac-lightgrey.svg)](https://github.com/alpaka-group/alpaka)
 [![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
 
 ![alpaka](docs/logo/alpaka_401x135.png)
 
-The **alpaka** library is a header-only C++14 abstraction library for accelerator development.
+The **alpaka** library is a header-only C++17 abstraction library for accelerator development.
 
 Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.
 
@@ -68,20 +68,20 @@ Accelerator Back-ends
 Supported Compilers
 -------------------
 
-This library uses C++14 (or newer when available).
+This library uses C++17 (or newer when available).
 
-|Accelerator Back-end|gcc 7.5 <br/> (Linux)|gcc 8.5 <br/> (Linux)|gcc 9.4 <br/> (Linux)|gcc 10.3 <br/> (Linux)|gcc 11.1 <br/> (Linux)|clang 5/6/7/8 <br/> (Linux)|clang 9 <br/> (Linux)|clang 10 <br/> (Linux)|clang 11 <br/> (Linux)|clang 12 <br/> (Linux)|Apple LLVM 11.3.1/12.4.0/12.5.1/13.0.0 <br /> (macOS)|MSVC 2019 <br/> (Windows)|
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
-|OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
-|OpenMP 5.0 (CPU)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:white_check_mark:|:white_check_mark:|:x:|:x:|
-| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
-|TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|
-|CUDA (nvcc)|:white_check_mark: <br/> (CUDA 9.2-11.4) |:white_check_mark: <br/> (CUDA 10.1-11.4) |:white_check_mark: <br/> (CUDA 11.0-11.4)|:x:|:x:|:white_check_mark: <br/> (CUDA 10.1-11.4)|:white_check_mark: <br/> (CUDA 11.0-11.4)|:white_check_mark: <br/> (CUDA 11.1-11.4)|:white_check_mark: <br/> (CUDA 11.4)| - |:x:|:white_check_mark: <br/> (CUDA 10.1,10.2,11.2,11.3, 11.4)|
-|CUDA (clang) | - | - | - | - | - | - | :white_check_mark: <br/> (CUDA 9.2-10.1) | :white_check_mark: <br/> (CUDA 9.2-10.1) | :white_check_mark: <br/> (CUDA 10.0-10.2) | - | - | - |
-|[HIP-4.0.1](https://alpaka.readthedocs.io/en/latest/install/HIP.html) (clang)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:white_check_mark:| - | - |
+|Accelerator Back-end|gcc 7.5 <br/> (Linux)|gcc 8.5 <br/> (Linux)|gcc 9.4 <br/> (Linux)|gcc 10.3 <br/> (Linux)|gcc 11.1 <br/> (Linux)|clang 5-9 <br/> (Linux)|clang 10 <br/> (Linux)|clang 11 <br/> (Linux)|clang 12 <br/> (Linux)|Apple LLVM 11.3.1/12.4.0/12.5.1/13.0.0 <br /> (macOS)|MSVC 2019 <br/> (Windows)|
+|---|---|---|---|---|---|---|---|---|---|---|---|
+|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
+|OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
+|OpenMP 5.0 (CPU)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:white_check_mark:|:white_check_mark:|:x:|:x:|
+| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
+|TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|
+|CUDA (nvcc)|:white_check_mark: <br/> (CUDA 11.0-11.4) |:white_check_mark: <br/> (CUDA 11.0-11.4) |:white_check_mark: <br/> (CUDA 11.0-11.4)|:x:|:x:|:white_check_mark: <br/> (CUDA 11.0-11.4)|:white_check_mark: <br/> (CUDA 11.1-11.4)|:white_check_mark: <br/> (CUDA 11.4)|:white_check_mark: <br/> (CUDA 11.4)|:x:|:white_check_mark: <br/> (CUDA 11.2-11.4)|
+|CUDA (clang) | - | - | - | - | - | - | :x: | :white_check_mark: <br/> (CUDA 9.2-10.1) | :white_check_mark: <br/> (CUDA 10.0-10.2) | - | - |
+|[HIP-4.0.1](https://alpaka.readthedocs.io/en/latest/install/HIP.html) (clang)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:white_check_mark:| - | - |
 
 Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.
 
@@ -92,10 +92,10 @@ Dependencies
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
-When an accelerator back-end using *Boost.Fiber* is enabled, `boost-fiber` and all of its dependencies are required to be built in C++14 mode `./b2 cxxflags="-std=c++14"`.
-When *Boost.Fiber* is enabled and alpaka is built in C++17 mode with clang and libstc++, Boost >= 1.67.0 is required.
+When an accelerator back-end using *Boost.Fiber* is enabled, `boost-fiber` and all of its dependencies are required to be built in C++17 mode `./b2 cxxflags="-std=c++17"`.
+When *Boost.Fiber* is enabled and alpaka is built with clang and libstc++, Boost >= 1.67.0 is required.
 
-When an accelerator back-end using *CUDA* is enabled, version *9.0* of the *CUDA SDK* is the minimum requirement.
+When an accelerator back-end using *CUDA* is enabled, version *11.0* (with nvcc as CUDA compiler) or version *9.2* (with clang as CUDA compiler) of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using nvcc as *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
 *NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with the *Boost.Fiber accelerator back-end* or any *OpenMP accelerator back-end* because this combination is currently unsupported.
 *NOTE*: Separable compilation is disabled by default and can be enabled via the CMake flag `CMAKE_CUDA_SEPARABLE_COMPILATION`.
@@ -109,7 +109,7 @@ Usage
 -----
 
 The library is header only so nothing has to be built.
-CMake 3.15+ is required to provide the correct defines and include paths.
+CMake 3.18+ is required to provide the correct defines and include paths.
 Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compiler in handling `.cu` and `.cpp` files are automatically taken care of.
 Source files do not need any special file ending.
 Examples of how to utilize alpaka within CMake can be found in the `example` folder.

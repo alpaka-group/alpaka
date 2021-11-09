@@ -114,7 +114,7 @@ then
     then
         if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
         then
-            ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++14"
+            ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++17"
         fi
         ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
     fi

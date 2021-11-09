@@ -39,6 +39,7 @@
 // Implementation details.
 #    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #    include <alpaka/core/Decay.hpp>
+#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
@@ -423,7 +424,7 @@ namespace alpaka
                 // Wait for the kernel execution to finish but do not check error return of this call.
                 // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom
                 // error message.
-                ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue);
+                ignore_unused(ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue));
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 std::string const msg(
                     "'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");

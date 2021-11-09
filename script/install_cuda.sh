@@ -37,17 +37,7 @@ then
     fi
 
     # Set the correct CUDA downloads
-    if [ "${ALPAKA_CI_CUDA_VERSION}" == "9.0" ]
-    then
-        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-0-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.0.176-1_amd64-deb
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "9.1" ]
-    then
-        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-1-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.1.85-1_amd64
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "9.2" ]
+    if [ "${ALPAKA_CI_CUDA_VERSION}" == "9.2" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-2-local
         ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.2.88-1_amd64
@@ -93,7 +83,7 @@ then
         ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.4.1-470.57.02-1_amd64.deb
         ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.4.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     else
-        echo CUDA versions other than 9.0, 9.1, 9.2, 10.0, 10.1, 10.2, 11.0, 11.1, 11.2, 11.3 and 11.4 are not currently supported on linux!
+        echo CUDA versions other than 9.2, 10.0, 10.1, 10.2, 11.0, 11.1, 11.2, 11.3 and 11.4 are not currently supported on linux!
     fi
     if [ -z "$(ls -A ${ALPAKA_CI_CUDA_DIR})" ]
     then
