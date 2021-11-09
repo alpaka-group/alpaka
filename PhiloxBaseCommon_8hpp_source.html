@@ -215,8 +215,8 @@ $(document).ready(function(){initNavTree('PhiloxBaseCommon_8hpp_source.html','')
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                    Counter temp = counter;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                    counter[0] += low32Bits(offset);</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                    counter[1] += high32Bits(offset) + (counter[0] &lt; temp[0] ? 1 : 0);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                    counter[2] += (counter[0] &lt; temp[1] ? 1 : 0);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                    counter[3] += (counter[0] &lt; temp[2] ? 1 : 0);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                    counter[2] += (counter[0] &lt; temp[1] ? 1u : 0u);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                    counter[3] += (counter[0] &lt; temp[2] ? 1u : 0u);</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                }</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">                /** Advance the counter by the length of \a subsequence</span></div>
@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('PhiloxBaseCommon_8hpp_source.html','')
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    Counter counter = singleRound(counter_in, key);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    // TODO: Consider unrolling the loop for performance</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    for(int n = 0; n &lt; numRounds; ++n)</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    for(unsigned int n = 0; n &lt; numRounds; ++n)</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    {</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                        key = bumpKey(key);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                        counter = singleRound(counter, key);</div>
@@ -273,7 +273,7 @@ $(document).ready(function(){initNavTree('PhiloxBaseCommon_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="dir_3fed8e0f808af832c9a01894efdb4599.html">Philox</a></li><li class="navelem"><a class="el" href="PhiloxBaseCommon_8hpp.html">PhiloxBaseCommon.hpp</a></li>
-    <li class="footer">Generated on Mon Nov 8 2021 08:13:43 for alpaka by
+    <li class="footer">Generated on Tue Nov 9 2021 08:38:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -398,13 +398,22 @@ var hierarchy =
     [ "alpaka::rand::distribution::cpu::NormalReal< T >", "classalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal.html", null ],
     [ "alpaka::rand::distribution::cpu::UniformReal< T >", "classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformReal.html", null ],
     [ "alpaka::rand::distribution::cpu::UniformUint< T >", "classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformUint.html", null ],
+    [ "alpaka::rand::distribution::gpu::detail::BitsType< TFloat >", "structalpaka_1_1rand_1_1distribution_1_1gpu_1_1detail_1_1BitsType.html", null ],
+    [ "alpaka::rand::distribution::gpu::detail::BitsType< double >", "structalpaka_1_1rand_1_1distribution_1_1gpu_1_1detail_1_1BitsType_3_01double_01_4.html", null ],
+    [ "alpaka::rand::distribution::gpu::detail::BitsType< float >", "structalpaka_1_1rand_1_1distribution_1_1gpu_1_1detail_1_1BitsType_3_01float_01_4.html", null ],
+    [ "alpaka::rand::distribution::gpu::NormalReal< Acc, T >", "classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html", null ],
+    [ "alpaka::rand::distribution::gpu::UniformReal< T >", "classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformReal.html", null ],
+    [ "alpaka::rand::distribution::gpu::UniformUint< T >", "classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformUint.html", null ],
     [ "alpaka::rand::distribution::traits::CreateNormalReal< TRand, T, TSfinae >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html", null ],
+    [ "alpaka::rand::distribution::traits::CreateNormalReal< RandDefault, T, std::enable_if_t< std::is_floating_point< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandDefault_00_01T_00_01s1cee4f39f86aa01a924409a70cc12d7d.html", null ],
     [ "alpaka::rand::distribution::traits::CreateNormalReal< RandStdLib, T, std::enable_if_t< std::is_floating_point< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandStdLib_00_01T_00_01st4c48488aa852f0d23ec5f6b6c9459319.html", null ],
     [ "alpaka::rand::distribution::traits::CreateNormalReal< RandUniformCudaHipRand, T, std::enable_if_t< std::is_floating_point< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandUniformCudaHipRand_0086567834de9cf84a32d3daf4aeb557af.html", null ],
     [ "alpaka::rand::distribution::traits::CreateUniformReal< TRand, T, TSfinae >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal.html", null ],
+    [ "alpaka::rand::distribution::traits::CreateUniformReal< RandDefault, T, std::enable_if_t< std::is_floating_point< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandDefault_00_01T_00_01157562d7fb1250d8c96bd1647cc75e6c.html", null ],
     [ "alpaka::rand::distribution::traits::CreateUniformReal< RandStdLib, T, std::enable_if_t< std::is_floating_point< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandStdLib_00_01T_00_01sa90b59fba9c266042f632e5037262b17.html", null ],
     [ "alpaka::rand::distribution::traits::CreateUniformReal< RandUniformCudaHipRand, T, std::enable_if_t< std::is_floating_point< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandUniformCudaHipRand_0c306cab7a6f815041daeb132157c86c2.html", null ],
     [ "alpaka::rand::distribution::traits::CreateUniformUint< TRand, T, TSfinae >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint.html", null ],
+    [ "alpaka::rand::distribution::traits::CreateUniformUint< RandDefault, T, std::enable_if_t< std::is_integral< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01RandDefault_00_01T_00_010721c02827ad9380f017a96c08af8e36.html", null ],
     [ "alpaka::rand::distribution::traits::CreateUniformUint< RandStdLib, T, std::enable_if_t< std::is_integral< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01RandStdLib_00_01T_00_01s92247269258d6f042cebf4ddb00bde7e.html", null ],
     [ "alpaka::rand::distribution::traits::CreateUniformUint< RandUniformCudaHipRand, T, std::enable_if_t< std::is_integral< T >::value > >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01RandUniformCudaHipRand_0aee7592c9676a6899eeb2efa0f5c9972.html", null ],
     [ "alpaka::rand::distribution::uniform_cuda_hip::NormalReal< T >", "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal.html", null ],
@@ -434,6 +443,7 @@ var hierarchy =
     [ "alpaka::rand::engine::PhiloxStateVector< TCounter, TKey >", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html", null ],
     [ "alpaka::rand::engine::traits::CreateDefault< TRand, TSfinae >", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault.html", null ],
     [ "alpaka::rand::engine::traits::CreateDefault< MersenneTwister >", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault_3_01MersenneTwister_01_4.html", null ],
+    [ "alpaka::rand::engine::traits::CreateDefault< RandDefault >", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault_3_01RandDefault_01_4.html", null ],
     [ "alpaka::rand::engine::traits::CreateDefault< RandomDevice >", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault_3_01RandomDevice_01_4.html", null ],
     [ "alpaka::rand::engine::traits::CreateDefault< RandUniformCudaHipRand >", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html", null ],
     [ "alpaka::rand::engine::traits::CreateDefault< TinyMersenneTwister >", "structalpaka_1_1rand_1_1engine_1_1traits_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html", null ],
@@ -1666,6 +1676,11 @@ var hierarchy =
     [ "alpaka::concepts::Implements< ConceptRand, Philox4x32x10Vector< TAcc > >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::rand::Philox4x32x10Vector< TAcc >", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html", null ]
     ] ],
+    [ "alpaka::concepts::Implements< ConceptRand, RandDefault >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::rand::RandDefault", "classalpaka_1_1rand_1_1RandDefault.html", [
+        [ "alpaka::AccOmp5< TDim, TIdx >", "classalpaka_1_1AccOmp5.html", null ]
+      ] ]
+    ] ],
     [ "alpaka::concepts::Implements< ConceptRand, RandomDevice >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::rand::RandomDevice", "classalpaka_1_1rand_1_1RandomDevice.html", null ]
     ] ],
@@ -1680,8 +1695,7 @@ var hierarchy =
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
         [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ],
-        [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ],
-        [ "alpaka::AccOmp5< TDim, TIdx >", "classalpaka_1_1AccOmp5.html", null ]
+        [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptRand, UniformReal< TResult > >", "structalpaka_1_1concepts_1_1Implements.html", [

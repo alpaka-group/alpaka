@@ -7,6 +7,7 @@ var namespacealpaka_1_1rand =
     [ "MersenneTwister", "classalpaka_1_1rand_1_1MersenneTwister.html", null ],
     [ "Philox4x32x10", "classalpaka_1_1rand_1_1Philox4x32x10.html", "classalpaka_1_1rand_1_1Philox4x32x10" ],
     [ "Philox4x32x10Vector", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html", "classalpaka_1_1rand_1_1Philox4x32x10Vector" ],
+    [ "RandDefault", "classalpaka_1_1rand_1_1RandDefault.html", null ],
     [ "RandomDevice", "classalpaka_1_1rand_1_1RandomDevice.html", null ],
     [ "RandUniformCudaHipRand", "classalpaka_1_1rand_1_1RandUniformCudaHipRand.html", null ],
     [ "TinyMersenneTwister", "classalpaka_1_1rand_1_1TinyMersenneTwister.html", null ],
