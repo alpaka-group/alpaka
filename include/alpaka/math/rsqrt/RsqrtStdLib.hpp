@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/rsqrt/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library rsqrt.
+        //! The standard library rsqrt, implementation covered by the general template.
         class RsqrtStdLib : public concepts::Implements<ConceptMathRsqrt, RsqrtStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library rsqrt trait specialization.
-            template<typename TArg>
-            struct Rsqrt<RsqrtStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(RsqrtStdLib const& rsqrt_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(rsqrt_ctx);
-                    return static_cast<TArg>(1) / std::sqrt(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka
