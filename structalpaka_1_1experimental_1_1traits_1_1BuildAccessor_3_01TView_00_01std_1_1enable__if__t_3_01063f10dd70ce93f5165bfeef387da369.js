@@ -1,0 +1,4 @@
+var structalpaka_1_1experimental_1_1traits_1_1BuildAccessor_3_01TView_00_01std_1_1enable__if__t_3_01063f10dd70ce93f5165bfeef387da369 =
+[
+    [ "buildAccessor", "structalpaka_1_1experimental_1_1traits_1_1BuildAccessor_3_01TView_00_01std_1_1enable__if__t_3_01063f10dd70ce93f5165bfeef387da369.html#af3b49d287cd4e7ebdc9ec593f6ff0743", null ]
+];

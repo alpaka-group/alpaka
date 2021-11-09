@@ -1,0 +1,4 @@
+var structalpaka_1_1experimental_1_1internal_1_1MemoryHandle_3_01Accessor_3_01TMemoryHandle_00_01TEld2199dd1bfe1d6b8c7c32bc0d080b289 =
+[
+    [ "type", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle_3_01Accessor_3_01TMemoryHandle_00_01TEld2199dd1bfe1d6b8c7c32bc0d080b289.html#ac4052fa4aa3507ff655882cb5f439638", null ]
+];
