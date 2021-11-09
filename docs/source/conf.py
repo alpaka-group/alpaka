@@ -126,7 +126,7 @@ texinfo_documents = [
     (master_doc, 'alpaka', u'alpaka Documentation',
      author, 'alpaka', 'Abstraction Library for Parallel Kernel Acceleration',
      """
-     The alpaka library is a header-only C++14 abstraction library for
+     The alpaka library is a header-only C++17 abstraction library for
      accelerator development. Its aim is to provide performance portability
      across accelerators through the abstraction (not hiding!) of the underlying
      levels of parallelism.

@@ -125,14 +125,14 @@ endif()
 set(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
 set_property(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 
-set(ALPAKA_CXX_STANDARD_DEFAULT "14")
+set(ALPAKA_CXX_STANDARD_DEFAULT "17")
 # Check whether ALPAKA_CXX_STANDARD has already been defined as a non-cached variable.
 if(DEFINED ALPAKA_CXX_STANDARD)
     set(ALPAKA_CXX_STANDARD_DEFAULT ${ALPAKA_CXX_STANDARD})
 endif()
 
 set(ALPAKA_CXX_STANDARD ${ALPAKA_CXX_STANDARD_DEFAULT} CACHE STRING "C++ standard version")
-set_property(CACHE ALPAKA_CXX_STANDARD PROPERTY STRINGS "14;17;20")
+set_property(CACHE ALPAKA_CXX_STANDARD PROPERTY STRINGS "17;20")
 
 if(NOT TARGET alpaka)
     add_library(alpaka INTERFACE)
@@ -415,11 +415,10 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 endif()
             endif()
 
-            # NOTE: Since CUDA 10.2 this option is also alternatively called '--extended-lambda'
             if(ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA STREQUAL ON)
-                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--expt-extended-lambda>)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--extended-lambda>)
             endif()
-            # This is mandatory because with c++14 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
+            # This is mandatory because with c++17 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
             alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>)
 
             if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
@@ -454,15 +453,6 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
             # avoids warnings on host-device signatured, default constructors/destructors
             alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=esa_on_defaulted_function_ignored>)
-
-            # avoids warnings on host-device signature of 'std::__shared_count<>'
-            if(CUDAToolkit_VERSION VERSION_EQUAL 10.0)
-                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=2905>)
-            elseif(CUDAToolkit_VERSION VERSION_EQUAL 10.1)
-                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=2912>)
-            elseif(CUDAToolkit_VERSION VERSION_EQUAL 10.2)
-                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=2976>)
-            endif()
 
             if(ALPAKA_CUDA_KEEP_FILES STREQUAL ON)
                 alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--keep>)

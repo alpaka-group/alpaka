@@ -12,7 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/BoostPredef.hpp>
-
+#    include <alpaka/core/Unused.hpp>
 
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
 #        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
@@ -63,7 +63,7 @@ namespace alpaka
 #    endif
                     ALPAKA_DEBUG_BREAK;
                     // reset the last error to allow user side error handling
-                    ALPAKA_API_PREFIX(GetLastError)();
+                    ignore_unused(ALPAKA_API_PREFIX(GetLastError)());
                     throw std::runtime_error(sError);
                 }
             }
@@ -90,7 +90,7 @@ namespace alpaka
                     else
                     {
                         // reset the last error to avoid propagation to the next CUDA/HIP API call
-                        ALPAKA_API_PREFIX(GetLastError)();
+                        ignore_unused(ALPAKA_API_PREFIX(GetLastError)());
                     }
                 }
             }
