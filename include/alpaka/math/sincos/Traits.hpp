@@ -13,6 +13,8 @@
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Unused.hpp>
 
+#include <cmath>
+
 namespace alpaka
 {
     namespace math
@@ -23,6 +25,20 @@ namespace alpaka
 
         namespace traits
         {
+            namespace detail
+            {
+                //! Fallback implementation when no better ADL match was found
+                template<typename TArg>
+                ALPAKA_FN_HOST_ACC auto sincos(TArg const& arg, TArg& result_sin, TArg& result_cos)
+                {
+                    // Still use ADL to try find sin(arg) and cos(arg)
+                    using std::sin;
+                    result_sin = sin(arg);
+                    using std::cos;
+                    result_cos = cos(arg);
+                }
+            } // namespace detail
+
             //! The sincos trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct SinCos
@@ -32,6 +48,7 @@ namespace alpaka
                     alpaka::ignore_unused(ctx);
                     // This is an ADL call. If you get a compile error here then your type is not supported by the
                     // backend and we could not find sincos(TArg, TArg&, TArg&) in the namespace of your type.
+                    using detail::sincos;
                     return sincos(arg, result_sin, result_cos);
                 }
             };

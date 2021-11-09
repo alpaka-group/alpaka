@@ -9,38 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/sincos/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library sincos.
+        //! The standard library sincos, implementation covered by the general template.
         class SinCosStdLib : public concepts::Implements<ConceptMathSinCos, SinCosStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library sincos trait specialization.
-            template<typename TArg>
-            struct SinCos<SinCosStdLib, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(
-                    SinCosStdLib const& sincos_ctx,
-                    TArg const& arg,
-                    TArg& result_sin,
-                    TArg& result_cos) -> void
-                {
-                    alpaka::ignore_unused(sincos_ctx);
-                    result_sin = std::sin(arg);
-                    result_cos = std::cos(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka
