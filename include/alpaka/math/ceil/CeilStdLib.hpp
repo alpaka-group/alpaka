@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/ceil/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library ceil.
+        //! The standard library ceil, implementation covered by the general template.
         class CeilStdLib : public concepts::Implements<ConceptMathCeil, CeilStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library ceil trait specialization.
-            template<typename TArg>
-            struct Ceil<CeilStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(CeilStdLib const& ceil_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(ceil_ctx);
-                    return std::ceil(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

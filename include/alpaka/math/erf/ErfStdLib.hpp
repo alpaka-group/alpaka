@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/erf/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library erf.
+        //! The standard library erf, implementation covered by the general template.
         class ErfStdLib : public concepts::Implements<ConceptMathErf, ErfStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library erf trait specialization.
-            template<typename TArg>
-            struct Erf<ErfStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(ErfStdLib const& erf_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(erf_ctx);
-                    return std::erf(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

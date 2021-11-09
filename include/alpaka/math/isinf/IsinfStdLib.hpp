@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/isinf/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library isinf.
+        //! The standard library isinf, implementation covered by the general template.
         class IsinfStdLib : public concepts::Implements<ConceptMathIsinf, IsinfStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library isinf trait specialization.
-            template<typename TArg>
-            struct Isinf<IsinfStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(IsinfStdLib const& ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(ctx);
-                    return std::isinf(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

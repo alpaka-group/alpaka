@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/tan/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library tan.
+        //! The standard library tan, implementation covered by the general template.
         class TanStdLib : public concepts::Implements<ConceptMathTan, TanStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library tan trait specialization.
-            template<typename TArg>
-            struct Tan<TanStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(TanStdLib const& tan_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(tan_ctx);
-                    return std::tan(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

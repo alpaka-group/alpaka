@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/exp/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library exp.
+        //! The standard library exp, implementation covered by the general template.
         class ExpStdLib : public concepts::Implements<ConceptMathExp, ExpStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library exp trait specialization.
-            template<typename TArg>
-            struct Exp<ExpStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(ExpStdLib const& exp_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(exp_ctx);
-                    return std::exp(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

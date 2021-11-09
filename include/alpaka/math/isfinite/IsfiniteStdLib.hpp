@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/isfinite/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library isfinite.
+        //! The standard library isfinite, implementation covered by the general template.
         class IsfiniteStdLib : public concepts::Implements<ConceptMathIsfinite, IsfiniteStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library isfinite trait specialization.
-            template<typename TArg>
-            struct Isfinite<IsfiniteStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(IsfiniteStdLib const& ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(ctx);
-                    return std::isfinite(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

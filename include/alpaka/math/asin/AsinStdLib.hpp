@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/asin/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library asin.
+        //! The standard library asin, implementation covered by the general template.
         class AsinStdLib : public concepts::Implements<ConceptMathAsin, AsinStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library asin trait specialization.
-            template<typename TArg>
-            struct Asin<AsinStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(AsinStdLib const& asin_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(asin_ctx);
-                    return std::asin(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

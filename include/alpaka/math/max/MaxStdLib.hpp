@@ -34,7 +34,8 @@ namespace alpaka
                 ALPAKA_FN_HOST auto operator()(MaxStdLib const& max_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(max_ctx);
-                    return std::max(x, y);
+                    using std::max;
+                    return max(x, y);
                 }
             };
             //! The standard library mixed integral floating point max trait specialization.
@@ -50,7 +51,8 @@ namespace alpaka
                 ALPAKA_FN_HOST auto operator()(MaxStdLib const& max_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(max_ctx);
-                    return std::fmax(x, y);
+                    using std::fmax;
+                    return fmax(x, y);
                 }
             };
         } // namespace traits

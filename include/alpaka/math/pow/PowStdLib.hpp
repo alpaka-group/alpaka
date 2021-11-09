@@ -9,37 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/pow/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library pow.
+        //! The standard library pow, implementation covered by the general template.
         class PowStdLib : public concepts::Implements<ConceptMathPow, PowStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library pow trait specialization.
-            template<typename TBase, typename TExp>
-            struct Pow<
-                PowStdLib,
-                TBase,
-                TExp,
-                std::enable_if_t<std::is_arithmetic<TBase>::value && std::is_arithmetic<TExp>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(PowStdLib const& pow_ctx, TBase const& base, TExp const& exp)
-                {
-                    alpaka::ignore_unused(pow_ctx);
-                    return std::pow(base, exp);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka
