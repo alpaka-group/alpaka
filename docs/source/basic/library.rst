@@ -225,14 +225,15 @@ It is created via one of the following calls:
    auto accessor = alpaka::experimental::readAccess(buffer);  // read
    auto accessor = alpaka::experimental::writeAccess(buffer); // write
 
-Accessors have many template parameter and users are adviced to use the ``BufferAccessor`` convenience alias to get the type of an accessor for a buffer of a given accelerator.
+Accessors have many template parameters and users are advised to use the ``BufferAccessor`` convenience alias to get the type of an accessor for a buffer of a given accelerator.
 Example kernel with 3D accessor:
 
 .. code-block:: c++
 
    struct Kernel {
       template<typename Acc>
-      ALPAKA_FN_ACC void operator()(Acc const & acc, alpaka::experimental::BufferAccessor<Acc, float, 3, alpaka::experimental::WriteAccess> data) const {
+      ALPAKA_FN_ACC void operator()(Acc const & acc,
+         alpaka::experimental::BufferAccessor<Acc, float, 3, alpaka::experimental::WriteAccess> data) const {
          ...
          for(Idx z = 0; z < data.extents[0];  ++z)
              for(Idx y = 0; y < data.extents[1]; ++y)
