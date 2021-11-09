@@ -34,7 +34,8 @@ namespace alpaka
                 ALPAKA_FN_HOST auto operator()(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(min_ctx);
-                    return std::min(x, y);
+                    using std::min;
+                    return min(x, y);
                 }
             };
             //! The standard library mixed integral floating point min trait specialization.
@@ -50,7 +51,8 @@ namespace alpaka
                 ALPAKA_FN_HOST auto operator()(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(min_ctx);
-                    return std::fmin(x, y);
+                    using std::fmin;
+                    return fmin(x, y);
                 }
             };
         } // namespace traits

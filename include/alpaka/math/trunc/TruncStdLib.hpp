@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/trunc/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library trunc.
+        //! The standard library trunc, implementation covered by the general template.
         class TruncStdLib : public concepts::Implements<ConceptMathTrunc, TruncStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library trunc trait specialization.
-            template<typename TArg>
-            struct Trunc<TruncStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(TruncStdLib const& trunc_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(trunc_ctx);
-                    return std::trunc(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

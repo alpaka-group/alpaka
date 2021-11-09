@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/sqrt/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library sqrt.
+        //! The standard library sqrt, implementation covered by the general template.
         class SqrtStdLib : public concepts::Implements<ConceptMathSqrt, SqrtStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library sqrt trait specialization.
-            template<typename TArg>
-            struct Sqrt<SqrtStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(SqrtStdLib const& sqrt_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(sqrt_ctx);
-                    return std::sqrt(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka

@@ -13,8 +13,6 @@
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Unused.hpp>
 
-#include <type_traits>
-
 namespace alpaka
 {
     namespace math

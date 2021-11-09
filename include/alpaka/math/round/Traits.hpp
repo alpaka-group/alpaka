@@ -13,7 +13,7 @@
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Unused.hpp>
 
-#include <type_traits>
+#include <cmath>
 
 namespace alpaka
 {
@@ -34,6 +34,7 @@ namespace alpaka
                     alpaka::ignore_unused(ctx);
                     // This is an ADL call. If you get a compile error here then your type is not supported by the
                     // backend and we could not find round(TArg) in the namespace of your type.
+                    using std::round;
                     return round(arg);
                 }
             };
@@ -47,6 +48,7 @@ namespace alpaka
                     alpaka::ignore_unused(ctx);
                     // This is an ADL call. If you get a compile error here then your type is not supported by the
                     // backend and we could not find lround(TArg) in the namespace of your type.
+                    using std::lround;
                     return lround(arg);
                 }
             };
@@ -60,6 +62,7 @@ namespace alpaka
                     alpaka::ignore_unused(ctx);
                     // This is an ADL call. If you get a compile error here then your type is not supported by the
                     // backend and we could not find llround(TArg) in the namespace of your type.
+                    using std::llround;
                     return llround(arg);
                 }
             };

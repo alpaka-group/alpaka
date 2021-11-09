@@ -9,33 +9,15 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/cos/Traits.hpp>
-
-#include <cmath>
-#include <type_traits>
 
 namespace alpaka
 {
     namespace math
     {
-        //! The standard library cos.
+        //! The standard library cos, implementation covered by the general template.
         class CosStdLib : public concepts::Implements<ConceptMathCos, CosStdLib>
         {
         };
-
-        namespace traits
-        {
-            //! The standard library cos trait specialization.
-            template<typename TArg>
-            struct Cos<CosStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
-            {
-                ALPAKA_FN_HOST auto operator()(CosStdLib const& cos_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(cos_ctx);
-                    return std::cos(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka
