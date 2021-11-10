@@ -75,3 +75,25 @@
   tags:
     - cuda
     - intel
+    
+.base_hip:
+  image: rocm/dev-ubuntu-${ALPAKA_CI_UBUNTU_VER}:${ALPAKA_CI_HIP_VERSION}
+  variables:
+    ALPAKA_CI_UBUNTU_VER: "20.04"
+    CC: clang
+    CXX: clang++
+    OMP_NUM_THREADS: 2
+    ALPAKA_CI_BUILD_JOBS: 2
+    ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: "OFF"
+    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+    ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "OFF"
+    ALPAKA_ACC_GPU_HIP_ENABLE: "ON"
+    ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
+    # use VEGA64 GPU
+    HIP_VISIBLE_DEVICES: "2"
+    GPU_TARGETS: gfx900
+  extends: .base
+  tags:
+    - amd
+    - rocm
+
