@@ -125,7 +125,13 @@ endif()
 set(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
 set_property(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 
-set(ALPAKA_CXX_STANDARD "14" CACHE STRING "C++ standard version")
+set(ALPAKA_CXX_STANDARD_DEFAULT "14")
+# Check whether ALPAKA_CXX_STANDARD has already been defined as a non-cached variable.
+if(DEFINED ALPAKA_CXX_STANDARD)
+    set(ALPAKA_CXX_STANDARD_DEFAULT ${ALPAKA_CXX_STANDARD})
+endif()
+
+set(ALPAKA_CXX_STANDARD ${ALPAKA_CXX_STANDARD_DEFAULT} CACHE STRING "C++ standard version")
 set_property(CACHE ALPAKA_CXX_STANDARD PROPERTY STRINGS "14;17;20")
 
 if(NOT TARGET alpaka)
