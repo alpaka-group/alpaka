@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_1479f77b8e2b897b6ab5bc184777bb0d =
-[
-    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_1479f77b8e2b897b6ab5bc184777bb0d.html#ad743b8a40b391d59c9415a150c5da4be", null ]
-];

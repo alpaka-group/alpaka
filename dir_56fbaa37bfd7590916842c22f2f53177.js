@@ -1,8 +1,7 @@
 var dir_56fbaa37bfd7590916842c22f2f53177 =
 [
     [ "PowStdLib.hpp", "PowStdLib_8hpp.html", [
-      [ "PowStdLib", "classalpaka_1_1math_1_1PowStdLib.html", null ],
-      [ "Pow< PowStdLib, TBase, TExp, std::enable_if_t< std::is_arithmetic< TBase >::value &&std::is_arithmetic< TExp >::value > >", "structalpaka_1_1math_1_1traits_1_1Pow_3_01PowStdLib_00_01TBase_00_01TExp_00_01std_1_1enable__if_e435b16d9023f8bfa84120e43bc91d9e.html", "structalpaka_1_1math_1_1traits_1_1Pow_3_01PowStdLib_00_01TBase_00_01TExp_00_01std_1_1enable__if_e435b16d9023f8bfa84120e43bc91d9e" ]
+      [ "PowStdLib", "classalpaka_1_1math_1_1PowStdLib.html", null ]
     ] ],
     [ "PowUniformCudaHipBuiltIn.hpp", "PowUniformCudaHipBuiltIn_8hpp.html", [
       [ "PowUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1PowUniformCudaHipBuiltIn.html", null ],

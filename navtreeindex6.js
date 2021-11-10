@@ -230,11 +230,13 @@ var NAVTREEINDEX6 =
 "math_2round_2Traits_8hpp_source.html":[4,0,0,0,14,20,2],
 "math_2rsqrt_2Traits_8hpp.html":[4,0,0,0,14,21,2],
 "math_2rsqrt_2Traits_8hpp.html#adfdbd6507181f6d7a57b348712a86ce1":[4,0,0,0,14,21,2,2],
+"math_2rsqrt_2Traits_8hpp.html#afe775cf21b2e709e2d65e93dd88d6792":[4,0,0,0,14,21,2,3],
 "math_2rsqrt_2Traits_8hpp_source.html":[4,0,0,0,14,21,2],
 "math_2sin_2Traits_8hpp.html":[4,0,0,0,14,22,2],
 "math_2sin_2Traits_8hpp.html#adbdc176977b31ba1b836644af26fca2a":[4,0,0,0,14,22,2,2],
 "math_2sin_2Traits_8hpp_source.html":[4,0,0,0,14,22,2],
 "math_2sincos_2Traits_8hpp.html":[4,0,0,0,14,23,2],
+"math_2sincos_2Traits_8hpp.html#a13c8f9f6dd445228651c17966172eee8":[4,0,0,0,14,23,2,3],
 "math_2sincos_2Traits_8hpp.html#aadc2de727af26c295aeccdba85fa56c9":[4,0,0,0,14,23,2,2],
 "math_2sincos_2Traits_8hpp_source.html":[4,0,0,0,14,23,2],
 "math_2sqrt_2Traits_8hpp.html":[4,0,0,0,14,24,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "math_2trunc_2Traits_8hpp.html#a870c86f26ec22dc2b10627f861c7120e":[4,0,0,0,14,26,0,2],
 "math_2trunc_2Traits_8hpp_source.html":[4,0,0,0,14,26,0],
 "mem_2alloc_2Traits_8hpp.html":[4,0,0,0,15,0,2],
-"mem_2alloc_2Traits_8hpp.html#a04896bbcd53fbb9da78612f51a4e1cf4":[4,0,0,0,15,0,2,3],
-"mem_2alloc_2Traits_8hpp.html#a30687ca1eaba239c74afd1bb2f26831c":[4,0,0,0,15,0,2,4],
-"mem_2alloc_2Traits_8hpp_source.html":[4,0,0,0,15,0,2]
+"mem_2alloc_2Traits_8hpp.html#a04896bbcd53fbb9da78612f51a4e1cf4":[4,0,0,0,15,0,2,3]
 };

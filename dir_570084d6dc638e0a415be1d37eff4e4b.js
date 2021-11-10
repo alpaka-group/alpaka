@@ -1,8 +1,7 @@
 var dir_570084d6dc638e0a415be1d37eff4e4b =
 [
     [ "SqrtStdLib.hpp", "SqrtStdLib_8hpp.html", [
-      [ "SqrtStdLib", "classalpaka_1_1math_1_1SqrtStdLib.html", null ],
-      [ "Sqrt< SqrtStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Sqrt_3_01SqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st249cdd228f3c91bfec62c7f09cd61b6b.html", "structalpaka_1_1math_1_1traits_1_1Sqrt_3_01SqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st249cdd228f3c91bfec62c7f09cd61b6b" ]
+      [ "SqrtStdLib", "classalpaka_1_1math_1_1SqrtStdLib.html", null ]
     ] ],
     [ "SqrtUniformCudaHipBuiltIn.hpp", "SqrtUniformCudaHipBuiltIn_8hpp.html", [
       [ "SqrtUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1SqrtUniformCudaHipBuiltIn.html", null ],

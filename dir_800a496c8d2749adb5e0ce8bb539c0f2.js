@@ -1,8 +1,7 @@
 var dir_800a496c8d2749adb5e0ce8bb539c0f2 =
 [
     [ "Atan2StdLib.hpp", "Atan2StdLib_8hpp.html", [
-      [ "Atan2StdLib", "classalpaka_1_1math_1_1Atan2StdLib.html", null ],
-      [ "Atan2< Atan2StdLib, Ty, Tx, std::enable_if_t< std::is_arithmetic< Ty >::value &&std::is_arithmetic< Tx >::value > >", "structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2StdLib_00_01Ty_00_01Tx_00_01std_1_1enable__if__b39be3dc087d212bcc5ce792009f7b8b.html", "structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2StdLib_00_01Ty_00_01Tx_00_01std_1_1enable__if__b39be3dc087d212bcc5ce792009f7b8b" ]
+      [ "Atan2StdLib", "classalpaka_1_1math_1_1Atan2StdLib.html", null ]
     ] ],
     [ "Atan2UniformCudaHipBuiltIn.hpp", "Atan2UniformCudaHipBuiltIn_8hpp.html", [
       [ "Atan2UniformCudaHipBuiltIn", "classalpaka_1_1math_1_1Atan2UniformCudaHipBuiltIn.html", null ],

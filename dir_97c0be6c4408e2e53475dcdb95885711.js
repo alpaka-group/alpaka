@@ -1,10 +1,7 @@
 var dir_97c0be6c4408e2e53475dcdb95885711 =
 [
     [ "RoundStdLib.hpp", "RoundStdLib_8hpp.html", [
-      [ "RoundStdLib", "classalpaka_1_1math_1_1RoundStdLib.html", null ],
-      [ "Llround< RoundStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_1479f77b8e2b897b6ab5bc184777bb0d.html", "structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_1479f77b8e2b897b6ab5bc184777bb0d" ],
-      [ "Lround< RoundStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0c9f451bd6954d8ba0740000e0804db0b.html", "structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0c9f451bd6954d8ba0740000e0804db0b" ],
-      [ "Round< RoundStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Round_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_015fef148c9e496a2a3697af35a7e839e2.html", "structalpaka_1_1math_1_1traits_1_1Round_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_015fef148c9e496a2a3697af35a7e839e2" ]
+      [ "RoundStdLib", "classalpaka_1_1math_1_1RoundStdLib.html", null ]
     ] ],
     [ "RoundUniformCudaHipBuiltIn.hpp", "RoundUniformCudaHipBuiltIn_8hpp.html", [
       [ "RoundUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1RoundUniformCudaHipBuiltIn.html", null ],

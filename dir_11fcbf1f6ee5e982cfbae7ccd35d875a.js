@@ -1,8 +1,7 @@
 var dir_11fcbf1f6ee5e982cfbae7ccd35d875a =
 [
     [ "AcosStdLib.hpp", "AcosStdLib_8hpp.html", [
-      [ "AcosStdLib", "classalpaka_1_1math_1_1AcosStdLib.html", null ],
-      [ "Acos< AcosStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6.html", "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6" ]
+      [ "AcosStdLib", "classalpaka_1_1math_1_1AcosStdLib.html", null ]
     ] ],
     [ "AcosUniformCudaHipBuiltIn.hpp", "AcosUniformCudaHipBuiltIn_8hpp.html", [
       [ "AcosUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AcosUniformCudaHipBuiltIn.html", null ],

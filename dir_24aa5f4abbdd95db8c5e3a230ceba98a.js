@@ -1,8 +1,7 @@
 var dir_24aa5f4abbdd95db8c5e3a230ceba98a =
 [
     [ "CeilStdLib.hpp", "CeilStdLib_8hpp.html", [
-      [ "CeilStdLib", "classalpaka_1_1math_1_1CeilStdLib.html", null ],
-      [ "Ceil< CeilStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Ceil_3_01CeilStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st748a1e05aafff69d8eaf858fcde4b36f.html", "structalpaka_1_1math_1_1traits_1_1Ceil_3_01CeilStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st748a1e05aafff69d8eaf858fcde4b36f" ]
+      [ "CeilStdLib", "classalpaka_1_1math_1_1CeilStdLib.html", null ]
     ] ],
     [ "CeilUniformCudaHipBuiltIn.hpp", "CeilUniformCudaHipBuiltIn_8hpp.html", [
       [ "CeilUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CeilUniformCudaHipBuiltIn.html", null ],

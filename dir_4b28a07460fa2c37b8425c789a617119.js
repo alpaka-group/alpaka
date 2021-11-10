@@ -1,8 +1,7 @@
 var dir_4b28a07460fa2c37b8425c789a617119 =
 [
     [ "ExpStdLib.hpp", "ExpStdLib_8hpp.html", [
-      [ "ExpStdLib", "classalpaka_1_1math_1_1ExpStdLib.html", null ],
-      [ "Exp< ExpStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_b591fc53013493bf13a82cfd79a1cfeb.html", "structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_b591fc53013493bf13a82cfd79a1cfeb" ]
+      [ "ExpStdLib", "classalpaka_1_1math_1_1ExpStdLib.html", null ]
     ] ],
     [ "ExpUniformCudaHipBuiltIn.hpp", "ExpUniformCudaHipBuiltIn_8hpp.html", [
       [ "ExpUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1ExpUniformCudaHipBuiltIn.html", null ],

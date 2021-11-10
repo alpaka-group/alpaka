@@ -98,53 +98,29 @@ $(document).ready(function(){initNavTree('ErfStdLib_8hpp_source.html',''); initR
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Unused_8hpp.html">alpaka/core/Unused.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="math_2erf_2Traits_8hpp.html">alpaka/math/erf/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">namespace </span>math</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">        //! The standard library erf.</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classalpaka_1_1math_1_1ErfStdLib.html">   23</a></span>&#160;<span class="comment"></span>        <span class="keyword">class </span><a class="code" href="classalpaka_1_1math_1_1ErfStdLib.html">ErfStdLib</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptMathErf, ErfStdLib&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        };</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {<span class="comment"></span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">            //! The standard library erf trait specialization.</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b.html">   31</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1math_1_1traits_1_1Erf.html">Erf</a>&lt;<a class="code" href="classalpaka_1_1math_1_1ErfStdLib.html">ErfStdLib</a>, TArg, std::enable_if_t&lt;std::is_arithmetic&lt;TArg&gt;::value&gt;&gt;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            {</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b.html#a45000aa7d1d72da3d3e526b354cccf9d">   33</a></span>&#160;                <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b.html#a45000aa7d1d72da3d3e526b354cccf9d">operator()</a>(<a class="code" href="classalpaka_1_1math_1_1ErfStdLib.html">ErfStdLib</a> <span class="keyword">const</span>&amp; erf_ctx, TArg <span class="keyword">const</span>&amp; arg)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    <a class="code" href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a>(erf_ctx);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#afe42ba3b12d947bf40eee66c62a54d01">std::erf</a>(arg);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            };</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    } <span class="comment">// namespace math</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="math_2erf_2Traits_8hpp.html">alpaka/math/erf/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">namespace </span>math</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">        //! The standard library erf, implementation covered by the general template.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classalpaka_1_1math_1_1ErfStdLib.html">   19</a></span>&#160;<span class="comment"></span>        <span class="keyword">class </span><a class="code" href="classalpaka_1_1math_1_1ErfStdLib.html">ErfStdLib</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptMathErf, ErfStdLib&gt;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        };</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    } <span class="comment">// namespace math</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aUnused_8hpp_html"><div class="ttname"><a href="Unused_8hpp.html">Unused.hpp</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="amath_2erf_2Traits_8hpp_html"><div class="ttname"><a href="math_2erf_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="astructalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b_html_a45000aa7d1d72da3d3e526b354cccf9d"><div class="ttname"><a href="structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b.html#a45000aa7d1d72da3d3e526b354cccf9d">alpaka::math::traits::Erf&lt; ErfStdLib, TArg, std::enable_if_t&lt; std::is_arithmetic&lt; TArg &gt;::value &gt; &gt;::operator()</a></div><div class="ttdeci">ALPAKA_FN_HOST auto operator()(ErfStdLib const &amp;erf_ctx, TArg const &amp;arg)</div><div class="ttdef"><b>Definition:</b> <a href="ErfStdLib_8hpp_source.html#l00033">ErfStdLib.hpp:33</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1math_html_afe42ba3b12d947bf40eee66c62a54d01"><div class="ttname"><a href="namespacealpaka_1_1math.html#afe42ba3b12d947bf40eee66c62a54d01">alpaka::math::erf</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto erf(T const &amp;erf_ctx, TArg const &amp;arg)</div><div class="ttdoc">Computes the error function of arg.</div><div class="ttdef"><b>Definition:</b> <a href="math_2erf_2Traits_8hpp_source.html#l00050">Traits.hpp:50</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1math_1_1ErfStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1ErfStdLib.html">alpaka::math::ErfStdLib</a></div><div class="ttdoc">The standard library erf.</div><div class="ttdef"><b>Definition:</b> <a href="ErfStdLib_8hpp_source.html#l00023">ErfStdLib.hpp:23</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1math_1_1ErfStdLib_html"><div class="ttname"><a href="classalpaka_1_1math_1_1ErfStdLib.html">alpaka::math::ErfStdLib</a></div><div class="ttdoc">The standard library erf, implementation covered by the general template.</div><div class="ttdef"><b>Definition:</b> <a href="ErfStdLib_8hpp_source.html#l00019">ErfStdLib.hpp:19</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00049">AccCpuFibers.hpp:49</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a20f2e6e4a15a2ed731ed862d824ccfdd"><div class="ttname"><a href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC void ignore_unused(Ts const &amp;...)</div><div class="ttdef"><b>Definition:</b> <a href="Unused_8hpp_source.html#l00018">Unused.hpp:18</a></div></div>
-<div class="ttc" id="astructalpaka_1_1math_1_1traits_1_1Erf_html"><div class="ttname"><a href="structalpaka_1_1math_1_1traits_1_1Erf.html">alpaka::math::traits::Erf</a></div><div class="ttdoc">The erf trait.</div><div class="ttdef"><b>Definition:</b> <a href="math_2erf_2Traits_8hpp_source.html#l00030">Traits.hpp:30</a></div></div>
 <div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00021">Concepts.hpp:21</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="dir_2e39533c881d854da7842ea6a7d50d14.html">erf</a></li><li class="navelem"><a class="el" href="ErfStdLib_8hpp.html">ErfStdLib.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 10 2021 11:16:24 for alpaka by
+    <li class="footer">Generated on Wed Nov 10 2021 13:27:08 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

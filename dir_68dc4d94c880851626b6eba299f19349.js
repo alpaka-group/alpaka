@@ -1,8 +1,7 @@
 var dir_68dc4d94c880851626b6eba299f19349 =
 [
     [ "RsqrtStdLib.hpp", "RsqrtStdLib_8hpp.html", [
-      [ "RsqrtStdLib", "classalpaka_1_1math_1_1RsqrtStdLib.html", null ],
-      [ "Rsqrt< RsqrtStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_019f28fdd56d9d420b26155357183db309.html", "structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_019f28fdd56d9d420b26155357183db309" ]
+      [ "RsqrtStdLib", "classalpaka_1_1math_1_1RsqrtStdLib.html", null ]
     ] ],
     [ "RsqrtUniformCudaHipBuiltIn.hpp", "RsqrtUniformCudaHipBuiltIn_8hpp.html", [
       [ "RsqrtUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1RsqrtUniformCudaHipBuiltIn.html", null ],

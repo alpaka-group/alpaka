@@ -1,8 +1,7 @@
 var dir_2e39533c881d854da7842ea6a7d50d14 =
 [
     [ "ErfStdLib.hpp", "ErfStdLib_8hpp.html", [
-      [ "ErfStdLib", "classalpaka_1_1math_1_1ErfStdLib.html", null ],
-      [ "Erf< ErfStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b.html", "structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b" ]
+      [ "ErfStdLib", "classalpaka_1_1math_1_1ErfStdLib.html", null ]
     ] ],
     [ "ErfUniformCudaHipBuiltIn.hpp", "ErfUniformCudaHipBuiltIn_8hpp.html", [
       [ "ErfUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1ErfUniformCudaHipBuiltIn.html", null ],

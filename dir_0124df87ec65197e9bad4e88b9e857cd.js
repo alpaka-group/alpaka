@@ -1,8 +1,7 @@
 var dir_0124df87ec65197e9bad4e88b9e857cd =
 [
     [ "FmodStdLib.hpp", "FmodStdLib_8hpp.html", [
-      [ "FmodStdLib", "classalpaka_1_1math_1_1FmodStdLib.html", null ],
-      [ "Fmod< FmodStdLib, Tx, Ty, std::enable_if_t< std::is_arithmetic< Tx >::value &&std::is_arithmetic< Ty >::value > >", "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_1e3992ec5d7497c79273d493839fc600.html", "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_1e3992ec5d7497c79273d493839fc600" ]
+      [ "FmodStdLib", "classalpaka_1_1math_1_1FmodStdLib.html", null ]
     ] ],
     [ "FmodUniformCudaHipBuiltIn.hpp", "FmodUniformCudaHipBuiltIn_8hpp.html", [
       [ "FmodUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1FmodUniformCudaHipBuiltIn.html", null ],

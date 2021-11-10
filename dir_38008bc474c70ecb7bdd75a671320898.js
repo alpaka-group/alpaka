@@ -1,8 +1,7 @@
 var dir_38008bc474c70ecb7bdd75a671320898 =
 [
     [ "CosStdLib.hpp", "CosStdLib_8hpp.html", [
-      [ "CosStdLib", "classalpaka_1_1math_1_1CosStdLib.html", null ],
-      [ "Cos< CosStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Cos_3_01CosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_2190fa7136be0fd417eccfe4b025377b.html", "structalpaka_1_1math_1_1traits_1_1Cos_3_01CosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_2190fa7136be0fd417eccfe4b025377b" ]
+      [ "CosStdLib", "classalpaka_1_1math_1_1CosStdLib.html", null ]
     ] ],
     [ "CosUniformCudaHipBuiltIn.hpp", "CosUniformCudaHipBuiltIn_8hpp.html", [
       [ "CosUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CosUniformCudaHipBuiltIn.html", null ],

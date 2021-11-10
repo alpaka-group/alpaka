@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('math_2rsqrt_2Traits_8hpp.html',''); in
 <div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Concepts_8hpp_source.html">alpaka/core/Concepts.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Unused_8hpp_source.html">alpaka/core/Unused.hpp</a>&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
 </div>
 <p><a href="math_2rsqrt_2Traits_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -117,6 +117,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1math_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math_1_1traits.html">alpaka::math::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1math_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The math traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1math_1_1traits_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math_1_1traits_1_1detail.html">alpaka::math::traits::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -124,6 +126,10 @@ Functions</h2></td></tr>
 <tr class="memitem:adfdbd6507181f6d7a57b348712a86ce1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#adfdbd6507181f6d7a57b348712a86ce1">alpaka::math::rsqrt</a> (T const &amp;rsqrt_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:adfdbd6507181f6d7a57b348712a86ce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the rsqrt.  <a href="namespacealpaka_1_1math.html#adfdbd6507181f6d7a57b348712a86ce1">More...</a><br /></td></tr>
 <tr class="separator:adfdbd6507181f6d7a57b348712a86ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe775cf21b2e709e2d65e93dd88d6792"><td class="memTemplParams" colspan="2">template&lt;typename TArg &gt; </td></tr>
+<tr class="memitem:afe775cf21b2e709e2d65e93dd88d6792"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math_1_1traits_1_1detail.html#afe775cf21b2e709e2d65e93dd88d6792">alpaka::math::traits::detail::rsqrt</a> (TArg const &amp;arg)</td></tr>
+<tr class="memdesc:afe775cf21b2e709e2d65e93dd88d6792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback implementation when no better ADL match was found.  <a href="namespacealpaka_1_1math_1_1traits_1_1detail.html#afe775cf21b2e709e2d65e93dd88d6792">More...</a><br /></td></tr>
+<tr class="separator:afe775cf21b2e709e2d65e93dd88d6792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -131,7 +137,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="dir_68dc4d94c880851626b6eba299f19349.html">rsqrt</a></li><li class="navelem"><a class="el" href="math_2rsqrt_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 10 2021 11:16:24 for alpaka by
+    <li class="footer">Generated on Wed Nov 10 2021 13:27:09 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

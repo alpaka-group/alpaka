@@ -1,8 +1,7 @@
 var dir_5c66db88250596543d60aac5cf05f0a0 =
 [
     [ "SinStdLib.hpp", "SinStdLib_8hpp.html", [
-      [ "SinStdLib", "classalpaka_1_1math_1_1SinStdLib.html", null ],
-      [ "Sin< SinStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Sin_3_01SinStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_db7a0f7c20ba5c69434ca84f7abb06b9.html", "structalpaka_1_1math_1_1traits_1_1Sin_3_01SinStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_db7a0f7c20ba5c69434ca84f7abb06b9" ]
+      [ "SinStdLib", "classalpaka_1_1math_1_1SinStdLib.html", null ]
     ] ],
     [ "SinUniformCudaHipBuiltIn.hpp", "SinUniformCudaHipBuiltIn_8hpp.html", [
       [ "SinUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1SinUniformCudaHipBuiltIn.html", null ],

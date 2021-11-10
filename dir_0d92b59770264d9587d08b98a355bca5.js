@@ -1,8 +1,7 @@
 var dir_0d92b59770264d9587d08b98a355bca5 =
 [
     [ "IsnanStdLib.hpp", "IsnanStdLib_8hpp.html", [
-      [ "IsnanStdLib", "classalpaka_1_1math_1_1IsnanStdLib.html", null ],
-      [ "Isnan< IsnanStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Isnan_3_01IsnanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0171175e919bc5f1b042ccbfc5f18de932.html", "structalpaka_1_1math_1_1traits_1_1Isnan_3_01IsnanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0171175e919bc5f1b042ccbfc5f18de932" ]
+      [ "IsnanStdLib", "classalpaka_1_1math_1_1IsnanStdLib.html", null ]
     ] ],
     [ "IsnanUniformCudaHipBuiltIn.hpp", "IsnanUniformCudaHipBuiltIn_8hpp.html", [
       [ "IsnanUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1IsnanUniformCudaHipBuiltIn.html", null ],

@@ -1,8 +1,7 @@
 var dir_bda8ed2023e85f4a942d62751ce2d9c8 =
 [
     [ "LogStdLib.hpp", "LogStdLib_8hpp.html", [
-      [ "LogStdLib", "classalpaka_1_1math_1_1LogStdLib.html", null ],
-      [ "Log< LogStdLib, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Log_3_01LogStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_8df4c1f66ecb23f8845b52e63c287a0f.html", "structalpaka_1_1math_1_1traits_1_1Log_3_01LogStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_8df4c1f66ecb23f8845b52e63c287a0f" ]
+      [ "LogStdLib", "classalpaka_1_1math_1_1LogStdLib.html", null ]
     ] ],
     [ "LogUniformCudaHipBuiltIn.hpp", "LogUniformCudaHipBuiltIn_8hpp.html", [
       [ "LogUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1LogUniformCudaHipBuiltIn.html", null ],
