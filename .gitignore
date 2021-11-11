@@ -1,6 +1,6 @@
 /docs/doxygen/*
 
-**/build
+**/build*
 
 # tmp files
 *~
@@ -27,7 +27,6 @@ cmake-build-*/
 .kdev?/
 *.kdev?
 spack-build*
-build/
 
 # Eclipse project files
 /.project
