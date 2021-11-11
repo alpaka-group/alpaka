@@ -36,3 +36,7 @@ build/
 
 # Visual Studio Code project files
 .cache/
+
+# Visual Studio project files
+.vs/
+out
