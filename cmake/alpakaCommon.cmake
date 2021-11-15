@@ -1,5 +1,6 @@
 #
-# Copyright 2023 Benjamin Worpitz, Erik Zenker, Axel Hübl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego
+# Copyright 2023 Benjamin Worpitz, Erik Zenker, Axel Hübl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci,
+#                Bernhard Manfred Gruber, Aurora Perego
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -130,6 +131,7 @@ if(NOT TARGET alpaka)
 endif()
 
 set(alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ, SYCL)")
+alpaka_compiler_option(RELOCATABLE_DEVICE_CODE "Enable relocatable device code for CUDA, HIP and SYCL devices" DEFAULT)
 
 # Random number generators
 option(alpaka_DISABLE_VENDOR_RNG "Disable the vendor specific random number generators (NVIDIA cuRAND, AMD rocRAND, Intel DPL)" OFF)
@@ -543,6 +545,13 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
             endif()
         endif()
 
+        if(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL ON)
+            alpaka_set_compiler_options(DEVICE target alpaka "-fgpu-rdc")
+            target_link_options(alpaka INTERFACE "-fgpu-rdc" "--hip-link")
+        elseif(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL OFF)
+            alpaka_set_compiler_options(DEVICE target alpaka "-fno-gpu-rdc")
+        endif()
+
         alpaka_set_compiler_options(HOST_DEVICE target alpaka -std=c++${alpaka_CXX_STANDARD})
 
         if(alpaka_HIP_KEEP_FILES STREQUAL ON)
@@ -646,6 +655,14 @@ if(alpaka_ACC_SYCL_ENABLE)
         #-----------------------------------------------------------------------------------------------------------------
         # Generic SYCL options
         alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
+
+        if(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL ON)
+            alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-rdc")
+            target_link_options(alpaka INTERFACE "-fsycl-rdc")
+        elseif(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL OFF)
+            alpaka_set_compiler_options(DEVICE target alpaka "-fno-sycl-rdc")
+            target_link_options(alpaka INTERFACE "-fno-sycl-rdc")
+        endif()
     else()
         message(FATAL_ERROR "alpaka currently does not support SYCL implementations other than oneAPI.")
     endif()
@@ -655,8 +672,6 @@ if(alpaka_ACC_SYCL_ENABLE)
         find_package(oneDPL REQUIRED)
         target_link_libraries(alpaka INTERFACE oneDPL)
     endif()
-
-    alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
 endif()
 
 #-------------------------------------------------------------------------------

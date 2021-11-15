@@ -197,11 +197,13 @@ alpaka_CUDA_EXPT_EXTENDED_LAMBDA
 
      Enable experimental, extended host-device lambdas in NVCC.
 
-CMAKE_CUDA_SEPARABLE_COMPILATION
+alpaka_RELOCATABLE_DEVICE_CODE
   .. code-block::
 
-     Enable separable compilation.
-
+     Enable relocatable device code. Note: This affects all targets in the
+     CMake scope where ``alpaka_RELOCATABLE_DEVICE_CODE`` is set. For the
+     effects on CUDA code see NVIDIA's blog post:
+     
 https://developer.nvidia.com/blog/separate-compilation-linking-cuda-device-code/
 
 alpaka_CUDA_SHOW_CODELINES
@@ -245,3 +247,27 @@ alpaka_HIP_KEEP_FILES
 
      Keep all intermediate files that are generated during internal compilation
      steps 'CMakeFiles/<targetname>.dir'.
+
+alpaka_RELOCATABLE_DEVICE_CODE
+  .. code-block::
+
+     Enable relocatable device code. Note: This affects all targets in the
+     CMake scope where ``alpaka_RELOCATABLE_DEVICE_CODE`` is set. For the
+     effects on HIP code see the NVIDIA blog post linked below; HIP follows
+     CUDA's behaviour.
+     
+https://developer.nvidia.com/blog/separate-compilation-linking-cuda-device-code/
+
+.. _sycl:
+
+SYCL
+----
+
+alpaka_RELOCATABLE_DEVICE_CODE
+  .. code-block::
+
+     Enable relocatable device code. Note: This affects all targets in the
+     CMake scope where ``alpaka_RELOCATABLE_DEVICE_CODE`` is set. For the
+     effects on SYCL code see Intel's documentation:
+     
+https://www.intel.com/content/www/us/en/docs/dpcpp-cpp-compiler/developer-guide-reference/2023-2/fsycl-rdc.html
