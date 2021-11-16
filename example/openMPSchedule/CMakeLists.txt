@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2020 Erik Zenker, Benjamin Worpitz, Jan Stephan, Sergei Bastrakov
+# Copyright 2021 Erik Zenker, Benjamin Worpitz, Jan Stephan, Sergei Bastrakov
 #
 # This file exemplifies usage of alpaka.
 #
@@ -19,7 +19,7 @@
 ################################################################################
 # Required CMake version.
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.18)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -28,7 +28,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(_TARGET_NAME openMPSchedule)
 
-project(${_TARGET_NAME})
+project(${_TARGET_NAME} LANGUAGES CXX)
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
