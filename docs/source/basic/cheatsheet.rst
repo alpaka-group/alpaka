@@ -307,5 +307,5 @@ Generate random numbers
   .. code-block:: c++
 
      auto distribution = rand::distribution::createNormalReal<double>(acc);
-     auto generator = rand::generator::createDefault(acc, seed, subsequence);
+     auto generator = rand::engine::createDefault(acc, seed, subsequence);
      auto number = distribution(generator);
