@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2020 Benjamin Worpitz, Axel Huebl
+# Copyright 2021 Benjamin Worpitz, Axel Huebl
 #
 # This file is part of alpaka.
 #
@@ -11,7 +11,7 @@
 option(ALPAKA_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON)
 
 if(ALPAKA_USE_INTERNAL_CATCH2)
-    message(STATUS "Catch2: Using INTERNAL version 2.13.3")
+    message(STATUS "Catch2: Using INTERNAL version 2.13.7")
 else()
     find_package(Catch2 2.13.3 CONFIG REQUIRED)
     set_target_properties(Catch2::Catch2 PROPERTIES IMPORTED_GLOBAL TRUE)
