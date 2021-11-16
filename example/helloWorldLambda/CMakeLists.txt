@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2020 Erik Zenker, Benjamin Worpitz, Jan Stephan
+# Copyright 2021 Erik Zenker, Benjamin Worpitz, Jan Stephan
 #
 # This file exemplifies usage of alpaka.
 #
@@ -28,7 +28,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(_TARGET_NAME helloWorldLambda)
 
-project(${_TARGET_NAME})
+project(${_TARGET_NAME} LANGUAGES CXX)
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
