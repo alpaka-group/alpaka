@@ -29,9 +29,9 @@
 #include <alpaka/acc/AccOmp5.hpp>
 #include <alpaka/acc/Traits.hpp>
 // atomic
+#include <alpaka/atomic/AtomicCpu.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
-#include <alpaka/atomic/AtomicStdLibLock.hpp>
 #include <alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp>
 #include <alpaka/atomic/Op.hpp>
 #include <alpaka/atomic/Traits.hpp>
