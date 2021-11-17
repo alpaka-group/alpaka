@@ -12,8 +12,8 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
 // Base classes.
+#    include <alpaka/atomic/AtomicCpu.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
-#    include <alpaka/atomic/AtomicStdLibLock.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp>
 #    include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
@@ -62,9 +62,9 @@ namespace alpaka
         public gb::IdxGbRef<TDim, TIdx>,
         public bt::IdxBtRefThreadIdMap<TDim, TIdx>,
         public AtomicHierarchy<
-            AtomicStdLibLock<16>, // grid atomics
-            AtomicStdLibLock<16>, // block atomics
-            AtomicStdLibLock<16>  // thread atomics
+            AtomicCpu, // grid atomics
+            AtomicCpu, // block atomics
+            AtomicCpu  // thread atomics
         >,
         public math::MathStdLib,
         public BlockSharedMemDynMember<>,
@@ -93,9 +93,9 @@ namespace alpaka
             , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
             , bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap)
             , AtomicHierarchy<
-                  AtomicStdLibLock<16>, // atomics between grids
-                  AtomicStdLibLock<16>, // atomics between blocks
-                  AtomicStdLibLock<16> // atomics between threads
+                  AtomicCpu, // atomics between grids
+                  AtomicCpu, // atomics between blocks
+                  AtomicCpu // atomics between threads
                   >()
             , math::MathStdLib()
             , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)

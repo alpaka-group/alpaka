@@ -12,9 +12,9 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
 // Base classes.
+#    include <alpaka/atomic/AtomicCpu.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicNoOp.hpp>
-#    include <alpaka/atomic/AtomicStdLibLock.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp>
 #    include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
@@ -65,8 +65,8 @@ namespace alpaka
         public gb::IdxGbRef<TDim, TIdx>,
         public bt::IdxBtRefFiberIdMap<TDim, TIdx>,
         public AtomicHierarchy<
-            AtomicStdLibLock<16>, // grid atomics
-            AtomicStdLibLock<16>, // block atomics
+            AtomicCpu, // grid atomics
+            AtomicCpu, // block atomics
             AtomicNoOp         // thread atomics
         >,
         public math::MathStdLib,
@@ -96,8 +96,8 @@ namespace alpaka
             , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
             , bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices)
             , AtomicHierarchy<
-                  AtomicStdLibLock<16>, // atomics between grids
-                  AtomicStdLibLock<16>, // atomics between blocks
+                  AtomicCpu, // atomics between grids
+                  AtomicCpu, // atomics between blocks
                   AtomicNoOp // atomics between threads
                   >()
             , math::MathStdLib()

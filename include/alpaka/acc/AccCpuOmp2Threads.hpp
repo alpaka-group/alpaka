@@ -16,9 +16,9 @@
 #    endif
 
 // Base classes.
+#    include <alpaka/atomic/AtomicCpu.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
-#    include <alpaka/atomic/AtomicStdLibLock.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp>
 #    include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
@@ -67,7 +67,7 @@ namespace alpaka
         public gb::IdxGbRef<TDim, TIdx>,
         public bt::IdxBtOmp<TDim, TIdx>,
         public AtomicHierarchy<
-            AtomicStdLibLock<16>,   // grid atomics
+            AtomicCpu,   // grid atomics
             AtomicOmpBuiltIn,    // block atomics
             AtomicOmpBuiltIn     // thread atomics
         >,
@@ -98,7 +98,7 @@ namespace alpaka
             , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
             , bt::IdxBtOmp<TDim, TIdx>()
             , AtomicHierarchy<
-                  AtomicStdLibLock<16>, // atomics between grids
+                  AtomicCpu, // atomics between grids
                   AtomicOmpBuiltIn, // atomics between blocks
                   AtomicOmpBuiltIn // atomics between threads
                   >()
