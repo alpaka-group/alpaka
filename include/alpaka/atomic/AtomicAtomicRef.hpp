@@ -30,7 +30,7 @@ namespace alpaka
 
     namespace traits
     {
-        //! The CPU threads accelerator AtomicAdd.
+        //! The CPU accelerators AtomicAdd.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicAdd, AtomicAtomicRef, T, THierarchy>
         {
@@ -45,7 +45,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicSub.
+        //! The CPU accelerators AtomicSub.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicSub, AtomicAtomicRef, T, THierarchy>
         {
@@ -60,7 +60,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicMin.
+        //! The CPU accelerators AtomicMin.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicMin, AtomicAtomicRef, T, THierarchy>
         {
@@ -83,7 +83,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicMax.
+        //! The CPU accelerators AtomicMax.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicMax, AtomicAtomicRef, T, THierarchy>
         {
@@ -106,7 +106,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicExch.
+        //! The CPU accelerators AtomicExch.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicExch, AtomicAtomicRef, T, THierarchy>
         {
@@ -127,7 +127,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicInc.
+        //! The CPU accelerators AtomicInc.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicInc, AtomicAtomicRef, T, THierarchy>
         {
@@ -148,7 +148,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicDec.
+        //! The CPU accelerators AtomicDec.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicDec, AtomicAtomicRef, T, THierarchy>
         {
@@ -169,7 +169,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicAnd.
+        //! The CPU accelerators AtomicAnd.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicAnd, AtomicAtomicRef, T, THierarchy>
         {
@@ -184,7 +184,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicOr.
+        //! The CPU accelerators AtomicOr.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicOr, AtomicAtomicRef, T, THierarchy>
         {
@@ -199,7 +199,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicXor.
+        //! The CPU accelerators AtomicXor.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicXor, AtomicAtomicRef, T, THierarchy>
         {
@@ -214,7 +214,7 @@ namespace alpaka
             }
         };
 
-        //! The CPU threads accelerator AtomicCas.
+        //! The CPU accelerators AtomicCas.
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicCas, AtomicAtomicRef, T, THierarchy>
         {
