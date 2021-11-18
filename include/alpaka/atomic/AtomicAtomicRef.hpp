@@ -19,7 +19,7 @@
 
 namespace alpaka
 {
-    //! The CPU threads accelerator atomic ops based on atomic_ref.
+    //! The atomic ops based on atomic_ref for CPU accelerators.
     //
     //  Atomics can be used in the grids, blocks and threads hierarchy levels.
     //
