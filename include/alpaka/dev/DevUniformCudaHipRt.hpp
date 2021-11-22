@@ -169,6 +169,9 @@ namespace alpaka
     template<typename TElem, typename TDim, typename TIdx>
     class BufUniformCudaHipRt;
 
+    template<typename TElem, typename TDim, typename TIdx>
+    class AsyncBufUniformCudaHipRt;
+
     namespace traits
     {
         //! The CUDA/HIP RT device memory buffer type trait specialization.
@@ -176,6 +179,12 @@ namespace alpaka
         struct BufType<DevUniformCudaHipRt, TElem, TDim, TIdx>
         {
             using type = BufUniformCudaHipRt<TElem, TDim, TIdx>;
+        };
+        //! The CUDA/HIP RT stream-ordered device memory buffer type trait specialization.
+        template<typename TElem, typename TDim, typename TIdx>
+        struct AsyncBufType<DevUniformCudaHipRt, TElem, TDim, TIdx>
+        {
+            using type = AsyncBufUniformCudaHipRt<TElem, TDim, TIdx>;
         };
 
         //! The CUDA/HIP RT device platform type trait specialization.

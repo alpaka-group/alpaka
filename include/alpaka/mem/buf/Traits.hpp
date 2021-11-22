@@ -25,6 +25,14 @@ namespace alpaka
         template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
         struct BufAlloc;
 
+        //! The stream-ordered memory buffer type trait.
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TSfinae = void>
+        struct AsyncBufType;
+
+        //! The stream-ordered memory allocator trait.
+        template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
+        struct AsyncBufAlloc;
+
         //! The memory mapping trait.
         template<typename TBuf, typename TDev, typename TSfinae = void>
         struct Map;
@@ -54,6 +62,10 @@ namespace alpaka
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
     using Buf = typename traits::BufType<alpaka::Dev<TDev>, TElem, TDim, TIdx>::type;
 
+    //! The stream-ordered memory buffer type trait alias template to remove the ::type.
+    template<typename TDev, typename TElem, typename TDim, typename TIdx>
+    using AsyncBuf = typename traits::AsyncBufType<alpaka::Dev<TDev>, TElem, TDim, TIdx>::type;
+
     //! Allocates memory on the given device.
     //!
     //! \tparam TElem The element type of the returned buffer.
@@ -67,6 +79,21 @@ namespace alpaka
     ALPAKA_FN_HOST auto allocBuf(TDev const& dev, TExtent const& extent = TExtent())
     {
         return traits::BufAlloc<TElem, Dim<TExtent>, TIdx, TDev>::allocBuf(dev, extent);
+    }
+
+    //! Allocates stream-ordered memory on the given device.
+    //!
+    //! \tparam TElem The element type of the returned buffer.
+    //! \tparam TIdx The linear index type of the buffer.
+    //! \tparam TExtent The extent type of the buffer.
+    //! \tparam TQueue The type of queue used to order the buffer allocation.
+    //! \param queue The queue used to order the buffer allocation.
+    //! \param extent The extent of the buffer.
+    //! \return The newly allocated buffer.
+    template<typename TElem, typename TIdx, typename TExtent, typename TQueue>
+    ALPAKA_FN_HOST auto allocAsyncBuf(TQueue queue, TExtent const& extent = TExtent())
+    {
+        return traits::AsyncBufAlloc<TElem, Dim<TExtent>, TIdx, alpaka::Dev<TQueue>>::allocAsyncBuf(queue, extent);
     }
 
     //! Maps the buffer into the memory of the given device.

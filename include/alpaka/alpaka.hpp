@@ -118,6 +118,8 @@
 #include <alpaka/mem/alloc/AllocCpuAligned.hpp>
 #include <alpaka/mem/alloc/AllocCpuNew.hpp>
 #include <alpaka/mem/alloc/Traits.hpp>
+#include <alpaka/mem/buf/AsyncBufCpu.hpp>
+#include <alpaka/mem/buf/AsyncBufUniformCudaHipRt.hpp>
 #include <alpaka/mem/buf/BufCpu.hpp>
 #include <alpaka/mem/buf/BufOacc.hpp>
 #include <alpaka/mem/buf/BufOmp5.hpp>

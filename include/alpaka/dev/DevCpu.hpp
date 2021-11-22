@@ -196,6 +196,9 @@ namespace alpaka
     template<typename TElem, typename TDim, typename TIdx>
     class BufCpu;
 
+    template<typename TElem, typename TDim, typename TIdx>
+    class AsyncBufCpu;
+
     namespace traits
     {
         //! The CPU device memory buffer type trait specialization.
@@ -203,6 +206,12 @@ namespace alpaka
         struct BufType<DevCpu, TElem, TDim, TIdx>
         {
             using type = BufCpu<TElem, TDim, TIdx>;
+        };
+        //! The CPU device memory buffer type trait specialization.
+        template<typename TElem, typename TDim, typename TIdx>
+        struct AsyncBufType<DevCpu, TElem, TDim, TIdx>
+        {
+            using type = AsyncBufCpu<TElem, TDim, TIdx>;
         };
 
         //! The CPU device platform type trait specialization.
