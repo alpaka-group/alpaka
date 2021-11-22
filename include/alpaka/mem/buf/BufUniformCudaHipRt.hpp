@@ -33,6 +33,7 @@
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
+#    include <alpaka/meta/DependentFalseType.hpp>
 #    include <alpaka/vec/Vec.hpp>
 
 #    include <functional>
@@ -338,6 +339,70 @@ namespace alpaka
                     extent);
             }
         };
+
+        //! The CUDA/HIP stream-ordered 1D memory allocation trait specialization.
+        template<typename TElem, typename TIdx>
+        struct AsyncBufAlloc<TElem, DimInt<1u>, TIdx, DevUniformCudaHipRt>
+        {
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA < BOOST_VERSION_NUMBER(11, 2, 0))
+            static_assert(
+                meta::DependentFalseType<TElem>::value,
+                "Support for stream-ordered memory buffers require CUDA 11.2 or higher.");
+#    endif
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+            static_assert(
+                meta::DependentFalseType<TElem>::value,
+                "HIP devices do not support stream-ordered memory buffers.");
+#    endif
+
+            template<typename TQueue, typename TExtent>
+            ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, TExtent const& extent)
+                -> BufUniformCudaHipRt<TElem, DimInt<1u>, TIdx>
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                DevUniformCudaHipRt const& dev = getDev(queue);
+
+                auto const width = extent::getWidth(extent);
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+
+                // Set the current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                // Allocate the buffer on this device.
+                void* memPtr;
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MallocAsync)(
+                    &memPtr,
+                    static_cast<std::size_t>(widthBytes),
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                // Prepare a deleter for this device
+                auto deleter = [queue = std::move(queue)](TElem* ptr)
+                {
+                    // Set the current device.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(getDev(queue).m_iDevice));
+                    // Free the buffer.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
+                        FreeAsync)(reinterpret_cast<void*>(ptr), queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                };
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << " ptr: " << memPtr << std::endl;
+#    endif
+                return BufUniformCudaHipRt<TElem, DimInt<1u>, TIdx>(
+                    dev,
+                    reinterpret_cast<TElem*>(memPtr),
+                    std::move(deleter),
+                    static_cast<TIdx>(widthBytes),
+                    extent);
+            }
+        };
+        //! The CUDA/HIP stream-ordered ND memory allocation trait specialization.
+        template<typename TElem, typename TDim, typename TIdx>
+        struct AsyncBufAlloc<TElem, TDim, TIdx, DevUniformCudaHipRt>
+        {
+            static_assert(
+                meta::DependentFalseType<TElem>::value,
+                "HIP/CUDA devices support only one-dimensional stream-ordered memory buffers.");
+        };
+
         //! The BufUniformCudaHipRt CUDA/HIP device memory mapping trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct Map<BufUniformCudaHipRt<TElem, TDim, TIdx>, DevUniformCudaHipRt>

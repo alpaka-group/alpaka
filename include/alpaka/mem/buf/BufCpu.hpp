@@ -240,6 +240,32 @@ namespace alpaka
                 return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
             }
         };
+        //! The BufCpu stream-ordered memory allocation trait specialization.
+        template<typename TElem, typename TDim, typename TIdx>
+        struct AsyncBufAlloc<TElem, TDim, TIdx, DevCpu>
+        {
+            template<typename TQueue, typename TExtent>
+            ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                static_assert(
+                    std::is_same<Dev<TQueue>, DevCpu>::value,
+                    "The BufCpu buffer can only be used with a queue on a DevCpu device!");
+                DevCpu const& dev = getDev(queue);
+
+                // alpaka::AllocCpuAligned is stateless
+                using Allocator
+                    = AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>;
+                static_assert(std::is_empty_v<Allocator>, "AllocCpuAligned is expected to be stateless");
+                TElem* memPtr
+                    = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(extent::getExtentProduct(extent)));
+                auto deleter = [queue = std::move(queue)](TElem* ptr) mutable
+                { alpaka::enqueue(queue, [ptr]() { alpaka::free(Allocator{}, ptr); }); };
+
+                return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
+            }
+        };
         //! The BufCpu memory mapping trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct Map<BufCpu<TElem, TDim, TIdx>, DevCpu>
