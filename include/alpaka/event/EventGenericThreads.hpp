@@ -102,6 +102,12 @@ namespace alpaka
     };
     namespace traits
     {
+        //! The CPU device event device type trait specialization.
+        template<typename TDev>
+        struct DevType<EventGenericThreads<TDev>>
+        {
+            using type = TDev;
+        };
         //! The CPU device event device get trait specialization.
         template<typename TDev>
         struct GetDev<EventGenericThreads<TDev>>

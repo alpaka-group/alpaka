@@ -123,6 +123,12 @@ namespace alpaka
     };
     namespace traits
     {
+        //! The CUDA/HIP RT device event device type trait specialization.
+        template<>
+        struct DevType<EventUniformCudaHipRt>
+        {
+            using type = DevUniformCudaHipRt;
+        };
         //! The CUDA/HIP RT device event device get trait specialization.
         template<>
         struct GetDev<EventUniformCudaHipRt>
