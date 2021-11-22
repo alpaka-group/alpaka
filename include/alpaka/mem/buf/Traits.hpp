@@ -1,4 +1,4 @@
-/* Copyright 2019 Alexander Matthes, Benjamin Worpitz
+/* Copyright 2021 Alexander Matthes, Benjamin Worpitz, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -24,6 +24,10 @@ namespace alpaka
         //! The memory allocator trait.
         template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
         struct BufAlloc;
+
+        //! The stream-ordered memory allocator trait.
+        template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
+        struct AsyncBufAlloc;
 
         //! The memory mapping trait.
         template<typename TBuf, typename TDev, typename TSfinae = void>
@@ -67,6 +71,21 @@ namespace alpaka
     ALPAKA_FN_HOST auto allocBuf(TDev const& dev, TExtent const& extent = TExtent())
     {
         return traits::BufAlloc<TElem, Dim<TExtent>, TIdx, TDev>::allocBuf(dev, extent);
+    }
+
+    //! Allocates stream-ordered memory on the given device.
+    //!
+    //! \tparam TElem The element type of the returned buffer.
+    //! \tparam TIdx The linear index type of the buffer.
+    //! \tparam TExtent The extent type of the buffer.
+    //! \tparam TQueue The type of queue used to order the buffer allocation.
+    //! \param queue The queue used to order the buffer allocation.
+    //! \param extent The extent of the buffer.
+    //! \return The newly allocated buffer.
+    template<typename TElem, typename TIdx, typename TExtent, typename TQueue>
+    ALPAKA_FN_HOST auto allocAsyncBuf(TQueue queue, TExtent const& extent = TExtent())
+    {
+        return traits::AsyncBufAlloc<TElem, Dim<TExtent>, TIdx, alpaka::Dev<TQueue>>::allocAsyncBuf(queue, extent);
     }
 
     //! Maps the buffer into the memory of the given device.
