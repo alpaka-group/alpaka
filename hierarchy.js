@@ -648,6 +648,8 @@ var hierarchy =
     [ "alpaka::traits::DevType< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1DevType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::traits::DevType< BufOmp5< TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1DevType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::traits::DevType< BufUniformCudaHipRt< TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1DevType_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
+    [ "alpaka::traits::DevType< EventGenericThreads< TDev > >", "structalpaka_1_1traits_1_1DevType_3_01EventGenericThreads_3_01TDev_01_4_01_4.html", null ],
+    [ "alpaka::traits::DevType< EventUniformCudaHipRt >", "structalpaka_1_1traits_1_1DevType_3_01EventUniformCudaHipRt_01_4.html", null ],
     [ "alpaka::traits::DevType< PltfCpu >", "structalpaka_1_1traits_1_1DevType_3_01PltfCpu_01_4.html", null ],
     [ "alpaka::traits::DevType< PltfOmp5 >", "structalpaka_1_1traits_1_1DevType_3_01PltfOmp5_01_4.html", null ],
     [ "alpaka::traits::DevType< PltfUniformCudaHipRt >", "structalpaka_1_1traits_1_1DevType_3_01PltfUniformCudaHipRt_01_4.html", null ],

@@ -21,7 +21,7 @@ var NAVTREEINDEX1 =
 "EventCpu_8hpp.html#acc8723b925f6ddf8b27631b71a7c22c6":[4,0,0,0,8,0,0],
 "EventCpu_8hpp_source.html":[4,0,0,0,8,0],
 "EventGenericThreads_8hpp.html":[4,0,0,0,8,1],
-"EventGenericThreads_8hpp.html#a954b1ec1c3ff1bec2c929a11c0bacb03":[4,0,0,0,8,1,16],
+"EventGenericThreads_8hpp.html#a954b1ec1c3ff1bec2c929a11c0bacb03":[4,0,0,0,8,1,17],
 "EventGenericThreads_8hpp_source.html":[4,0,0,0,8,1],
 "EventHostManualTrigger_8hpp.html":[4,0,0,0,22,2,0],
 "EventHostManualTrigger_8hpp.html#a3c2ecb6f6c9f8485fc099e4a51aa6f09":[4,0,0,0,22,2,0,21],

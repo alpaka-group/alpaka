@@ -7,6 +7,7 @@ var dir_cb41fd9734833cacff31b3343158f46b =
     [ "EventUniformCudaHipRt.hpp", "EventUniformCudaHipRt_8hpp.html", [
       [ "EventUniformCudaHipRt", "classalpaka_1_1EventUniformCudaHipRt.html", "classalpaka_1_1EventUniformCudaHipRt" ],
       [ "CurrentThreadWaitFor< EventUniformCudaHipRt >", "structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01EventUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01EventUniformCudaHipRt_01_4" ],
+      [ "DevType< EventUniformCudaHipRt >", "structalpaka_1_1traits_1_1DevType_3_01EventUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1DevType_3_01EventUniformCudaHipRt_01_4" ],
       [ "Enqueue< QueueUniformCudaHipRtBlocking, EventUniformCudaHipRt >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01EventUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01EventUniformCudaHipRt_01_4" ],
       [ "Enqueue< QueueUniformCudaHipRtNonBlocking, EventUniformCudaHipRt >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4" ],
       [ "GetDev< EventUniformCudaHipRt >", "structalpaka_1_1traits_1_1GetDev_3_01EventUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1GetDev_3_01EventUniformCudaHipRt_01_4" ],
