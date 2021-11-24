@@ -1,4 +1,4 @@
-/* Copyright 2019 Alexander Matthes, Axel Huebl, Benjamin Worpitz
+/* Copyright 2021 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -26,6 +26,7 @@
 #include <alpaka/mem/alloc/AllocCpuAligned.hpp>
 #include <alpaka/meta/DependentFalseType.hpp>
 
+#include <functional>
 #include <memory>
 #include <type_traits>
 
@@ -36,7 +37,6 @@ namespace alpaka
         //! The CPU memory buffer.
         template<typename TElem, typename TDim, typename TIdx>
         class BufCpuImpl final
-            : public AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
         {
             static_assert(
                 !std::is_const<TElem>::value,
@@ -46,11 +46,15 @@ namespace alpaka
 
         public:
             template<typename TExtent>
-            ALPAKA_FN_HOST BufCpuImpl(DevCpu const& dev, TExtent const& extent)
-                : AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>()
-                , m_dev(dev)
+            ALPAKA_FN_HOST BufCpuImpl(
+                DevCpu const& dev,
+                TElem* pMem,
+                std::function<void(TElem*)> deleter,
+                TExtent const& extent)
+                : m_dev(dev)
                 , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
-                , m_pMem(alpaka::malloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent))))
+                , m_pMem(pMem)
+                , m_deleter(std::move(deleter))
                 , m_pitchBytes(static_cast<TIdx>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
                 , m_bPinned(false)
@@ -82,23 +86,14 @@ namespace alpaka
                 unpin(*this);
 #endif
                 // NOTE: m_pMem is allowed to be a nullptr here.
-                alpaka::free(*this, m_pMem);
-            }
-
-        private:
-            //! \return The number of elements to allocate.
-            template<typename TExtent>
-            ALPAKA_FN_HOST static auto computeElementCount(TExtent const& extent) -> TIdx
-            {
-                auto const extentElementCount = extent::getExtentProduct(extent);
-
-                return extentElementCount;
+                m_deleter(m_pMem);
             }
 
         public:
             DevCpu const m_dev;
             Vec<TDim, TIdx> const m_extentElements;
             TElem* const m_pMem;
+            std::function<void(TElem*)> m_deleter;
             TIdx const m_pitchBytes;
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
             bool m_bPinned;
@@ -111,9 +106,10 @@ namespace alpaka
     class BufCpu
     {
     public:
-        template<typename TExtent>
-        ALPAKA_FN_HOST BufCpu(DevCpu const& dev, TExtent const& extent)
-            : m_spBufCpuImpl(std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, extent))
+        template<typename TExtent, typename Deleter>
+        ALPAKA_FN_HOST BufCpu(DevCpu const& dev, TElem* pMem, Deleter deleter, TExtent const& extent)
+            : m_spBufCpuImpl{
+                std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, pMem, std::move(deleter), extent)}
         {
         }
 
@@ -233,7 +229,15 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                return BufCpu<TElem, TDim, TIdx>(dev, extent);
+                // alpaka::AllocCpuAligned is stateless
+                using Allocator
+                    = AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>;
+                static_assert(std::is_empty_v<Allocator>, "AllocCpuAligned is expected to be stateless");
+                TElem* memPtr
+                    = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(extent::getExtentProduct(extent)));
+                auto deleter = [](TElem* ptr) { alpaka::free(Allocator{}, ptr); };
+
+                return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
             }
         };
         //! The BufCpu memory mapping trait specialization.
