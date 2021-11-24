@@ -1,4 +1,4 @@
-/* Copyright 2019 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2021 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -62,20 +62,16 @@ namespace alpaka
 
     public:
         //! Constructor
-        template<typename TExtent>
+        template<typename TExtent, typename Deleter>
         ALPAKA_FN_HOST BufUniformCudaHipRt(
             DevUniformCudaHipRt const& dev,
             TElem* const pMem,
+            Deleter deleter,
             TIdx const& pitchBytes,
             TExtent const& extent)
             : m_dev(dev)
             , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
-            , m_spMem(
-                  pMem,
-                  // NOTE: Because the BufUniformCudaHipRt object can be copied and the original object could have been
-                  // destroyed, a std::ref(m_dev) or a this pointer can not be bound to the callback because they are
-                  // not always valid at time of destruction.
-                  std::bind(&BufUniformCudaHipRt::freeBuffer, std::placeholders::_1, m_dev))
+            , m_spMem(pMem, std::move(deleter))
             , m_pitchBytes(pitchBytes)
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -89,21 +85,8 @@ namespace alpaka
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
         }
 
-    private:
-        //! Frees the shared buffer.
-        ALPAKA_FN_HOST static auto freeBuffer(TElem* const memPtr, DevUniformCudaHipRt const& dev) -> void
-        {
-            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-            // Set the current device.
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
-            // Free the buffer.
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(memPtr)));
-        }
-
     public:
-        DevUniformCudaHipRt m_dev; // NOTE: The device has to be destructed after the memory pointer because it is
-                                   // required for destruction.
+        DevUniformCudaHipRt m_dev;
         Vec<TDim, TIdx> m_extentElements;
         std::shared_ptr<TElem> m_spMem;
         TIdx m_pitchBytes;
@@ -234,13 +217,21 @@ namespace alpaka
                 void* memPtr;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     ALPAKA_API_PREFIX(Malloc)(&memPtr, static_cast<std::size_t>(widthBytes)));
-
+                // Prepare a deleter for this device
+                auto deleter = [dev](TElem* ptr)
+                {
+                    // Set the current device.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                    // Free the buffer.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
+                };
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << " ptr: " << memPtr << std::endl;
 #    endif
                 return BufUniformCudaHipRt<TElem, DimInt<1u>, TIdx>(
                     dev,
                     reinterpret_cast<TElem*>(memPtr),
+                    std::move(deleter),
                     static_cast<TIdx>(widthBytes),
                     extent);
             }
@@ -259,7 +250,6 @@ namespace alpaka
                 auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
                 auto const height = extent::getHeight(extent);
 
-
                 void* memPtr = nullptr;
                 std::size_t pitchBytes = 0u;
 #    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
@@ -269,8 +259,6 @@ namespace alpaka
                 {
                     // Set the current device.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
-
-
                     // Allocate the buffer on this device.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MallocPitch)(
                         &memPtr,
@@ -279,7 +267,14 @@ namespace alpaka
                         static_cast<std::size_t>(height)));
                     ALPAKA_ASSERT(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
                 }
-
+                // Prepare a deleter for this device
+                auto deleter = [dev](TElem* ptr)
+                {
+                    // Set the current device.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                    // Free the buffer.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
+                };
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " ew: " << width << " eh: " << height << " ewb: " << widthBytes
                           << " ptr: " << memPtr << " pitch: " << pitchBytes << std::endl;
@@ -287,6 +282,7 @@ namespace alpaka
                 return BufUniformCudaHipRt<TElem, DimInt<2u>, TIdx>(
                     dev,
                     reinterpret_cast<TElem*>(memPtr),
+                    std::move(deleter),
                     static_cast<TIdx>(pitchBytes),
                     extent);
             }
@@ -320,17 +316,24 @@ namespace alpaka
                     // Allocate the buffer on this device.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Malloc3D)(&pitchedPtrVal, extentVal));
                 }
-
+                // Prepare a deleter for this device
+                auto deleter = [dev](TElem* ptr)
+                {
+                    // Set the current device.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                    // Free the buffer.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
+                };
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " ew: " << extent::getWidth(extent) << " eh: " << extentVal.height
                           << " ed: " << extentVal.depth << " ewb: " << extentVal.width << " ptr: " << pitchedPtrVal.ptr
                           << " pitch: " << pitchedPtrVal.pitch << " wb: " << pitchedPtrVal.xsize
                           << " h: " << pitchedPtrVal.ysize << std::endl;
 #    endif
-
                 return BufUniformCudaHipRt<TElem, DimInt<3u>, TIdx>(
                     dev,
                     reinterpret_cast<TElem*>(pitchedPtrVal.ptr),
+                    std::move(deleter),
                     static_cast<TIdx>(pitchedPtrVal.pitch),
                     extent);
             }
