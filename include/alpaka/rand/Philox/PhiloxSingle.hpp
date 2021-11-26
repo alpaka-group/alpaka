@@ -95,7 +95,7 @@ namespace alpaka
                 /// Skips the next \a offset numbers
                 ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
                 {
-                    state.position += offset & 3;
+                    state.position = static_cast<decltype(state.position)>(state.position + (offset & 3));
                     offset += state.position < 4 ? 0 : 4;
                     state.position -= state.position < 4 ? 0 : 4u;
                     this->skip4(offset / 4);
