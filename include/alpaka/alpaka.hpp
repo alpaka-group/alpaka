@@ -68,6 +68,7 @@
 #include <alpaka/core/Hip.hpp>
 #include <alpaka/core/OmpSchedule.hpp>
 #include <alpaka/core/Positioning.hpp>
+#include <alpaka/core/RemoveRestrict.hpp>
 #include <alpaka/core/Unroll.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/core/Utility.hpp>
