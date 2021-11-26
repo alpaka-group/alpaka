@@ -39,6 +39,8 @@
 // Implementation details.
 #    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #    include <alpaka/core/Decay.hpp>
+#    include <alpaka/core/RemoveRestrict.hpp>
+#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
@@ -140,7 +142,7 @@ namespace alpaka
         }
 
         TKernelFnObj m_kernelFnObj;
-        std::tuple<std::decay_t<TArgs>...> m_args;
+        std::tuple<remove_restrict_t<std::decay_t<TArgs>>...> m_args;
     };
 
     namespace traits
@@ -226,7 +228,7 @@ namespace alpaka
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes = meta::apply(
-                    [&](ALPAKA_DECAY_T(TArgs) const&... args) {
+                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
                             blockThreadExtent,
@@ -241,7 +243,7 @@ namespace alpaka
                           << std::endl;
 #    endif
                 auto kernelName = uniform_cuda_hip::detail::
-                    uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
+                    uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, remove_restrict_t<std::decay_t<TArgs>>...>;
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
@@ -267,7 +269,7 @@ namespace alpaka
                 // (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the
                 // value location.
                 meta::apply(
-                    [&](ALPAKA_DECAY_T(TArgs) const&... args)
+                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
@@ -356,7 +358,7 @@ namespace alpaka
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes = meta::apply(
-                    [&](ALPAKA_DECAY_T(TArgs) const&... args) {
+                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
                             blockThreadExtent,
@@ -372,7 +374,7 @@ namespace alpaka
 #    endif
 
                 auto kernelName = uniform_cuda_hip::detail::
-                    uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
+                    uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, remove_restrict_t<std::decay_t<TArgs>>...>;
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // hipFuncAttributes not ported from HIP to HIP.
                 // TODO why this is currently not possible
@@ -395,7 +397,7 @@ namespace alpaka
 
                 // Enqueue the kernel execution.
                 meta::apply(
-                    [&](ALPAKA_DECAY_T(TArgs) const&... args)
+                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
