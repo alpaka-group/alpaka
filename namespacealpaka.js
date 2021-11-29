@@ -105,6 +105,8 @@ var namespacealpaka =
     [ "QueueGenericThreadsNonBlocking", "classalpaka_1_1QueueGenericThreadsNonBlocking.html", "classalpaka_1_1QueueGenericThreadsNonBlocking" ],
     [ "QueueUniformCudaHipRtBlocking", "classalpaka_1_1QueueUniformCudaHipRtBlocking.html", "classalpaka_1_1QueueUniformCudaHipRtBlocking" ],
     [ "QueueUniformCudaHipRtNonBlocking", "classalpaka_1_1QueueUniformCudaHipRtNonBlocking.html", "classalpaka_1_1QueueUniformCudaHipRtNonBlocking" ],
+    [ "remove_restrict", "structalpaka_1_1remove__restrict.html", "structalpaka_1_1remove__restrict" ],
+    [ "remove_restrict< T *__restrict__ >", "structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html", "structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4" ],
     [ "TaskKernelCpuFibers", "classalpaka_1_1TaskKernelCpuFibers.html", "classalpaka_1_1TaskKernelCpuFibers" ],
     [ "TaskKernelCpuOmp2Blocks", "classalpaka_1_1TaskKernelCpuOmp2Blocks.html", "classalpaka_1_1TaskKernelCpuOmp2Blocks" ],
     [ "TaskKernelCpuOmp2Threads", "classalpaka_1_1TaskKernelCpuOmp2Threads.html", "classalpaka_1_1TaskKernelCpuOmp2Threads" ],

@@ -450,6 +450,8 @@ var hierarchy =
     [ "alpaka::rand::engine::uniform_cuda_hip::Xor", "classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html", null ],
     [ "alpaka::rand::EngineCallHostAccProxy< TEngine >", "structalpaka_1_1rand_1_1EngineCallHostAccProxy.html", null ],
     [ "alpaka::rand::UniformReal< TResult, TSFINAE >", "classalpaka_1_1rand_1_1UniformReal.html", null ],
+    [ "alpaka::remove_restrict< T >", "structalpaka_1_1remove__restrict.html", null ],
+    [ "alpaka::remove_restrict< T *__restrict__ >", "structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html", null ],
     [ "alpaka::TaskKernelCpuFibers< TDim, TIdx, TKernelFnObj, TArgs >", "classalpaka_1_1TaskKernelCpuFibers.html", null ],
     [ "alpaka::TaskKernelCpuOmp2Blocks< TDim, TIdx, TKernelFnObj, TArgs >", "classalpaka_1_1TaskKernelCpuOmp2Blocks.html", null ],
     [ "alpaka::TaskKernelCpuOmp2Threads< TDim, TIdx, TKernelFnObj, TArgs >", "classalpaka_1_1TaskKernelCpuOmp2Threads.html", null ],

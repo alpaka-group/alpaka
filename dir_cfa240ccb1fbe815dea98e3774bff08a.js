@@ -30,6 +30,7 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
       [ "Grids", "structalpaka_1_1hierarchy_1_1Grids.html", null ],
       [ "Threads", "structalpaka_1_1hierarchy_1_1Threads.html", null ]
     ] ],
+    [ "RemoveRestrict.hpp", "RemoveRestrict_8hpp.html", "RemoveRestrict_8hpp" ],
     [ "Tuple.hpp", "Tuple_8hpp.html", "Tuple_8hpp" ],
     [ "UniformCudaHip.hpp", "UniformCudaHip_8hpp.html", "UniformCudaHip_8hpp" ],
     [ "Unroll.hpp", "Unroll_8hpp.html", "Unroll_8hpp" ],
