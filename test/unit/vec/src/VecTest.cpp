@@ -281,7 +281,6 @@ TEMPLATE_LIST_TEST_CASE("vecNDConstructionFromNonAlpakaVec", "[vec]", alpaka::te
     }
 }
 
-#ifdef __cpp_structured_bindings
 TEST_CASE("structuredBindings", "[vec]")
 {
     using Dim = alpaka::DimInt<2u>;
@@ -300,4 +299,3 @@ TEST_CASE("structuredBindings", "[vec]")
     CHECK(vec[0] == 2);
     CHECK(vec[1] == 3);
 }
-#endif

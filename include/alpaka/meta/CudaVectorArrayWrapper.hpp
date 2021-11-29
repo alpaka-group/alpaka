@@ -19,14 +19,6 @@
 #    include <numeric>
 #    include <type_traits>
 
-#    if(__cplusplus > 201402L)
-#        define CXX17_CONSTEXPR constexpr
-#    else
-// This is mostly needed because of nvcc 9 and should be removed upon moving to C++17.
-// Maybe some others need it too. GNU STL library uses the same trick.
-#        define CXX17_CONSTEXPR
-#    endif
-
 namespace alpaka
 {
     namespace meta
@@ -150,7 +142,7 @@ namespace alpaka
                 this->z = *it++;
                 this->w = *it++;
             }
-            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CXX17_CONSTEXPR value_type& operator[](int const k) noexcept
+            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
             {
                 assert(k >= 0 && k < 4);
                 return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
@@ -175,7 +167,7 @@ namespace alpaka
                 this->y = *it++;
                 this->z = *it++;
             }
-            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CXX17_CONSTEXPR value_type& operator[](int const k) noexcept
+            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
             {
                 assert(k >= 0 && k < 3);
                 return k == 0 ? this->x : (k == 1 ? this->y : this->z);
@@ -199,7 +191,7 @@ namespace alpaka
                 this->x = *it++;
                 this->y = *it++;
             }
-            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CXX17_CONSTEXPR value_type& operator[](int const k) noexcept
+            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
             {
                 assert(k >= 0 && k < 2);
                 return k == 0 ? this->x : this->y;
@@ -222,7 +214,7 @@ namespace alpaka
                 auto it = std::begin(init);
                 this->x = *it;
             }
-            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CXX17_CONSTEXPR value_type& operator[](int const k) noexcept
+            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
             {
                 assert(k == 0);
                 alpaka::ignore_unused(k);
