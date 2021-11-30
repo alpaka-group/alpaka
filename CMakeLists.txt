@@ -174,7 +174,4 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
                   "${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake"
                   "${_ALPAKA_ROOT_DIR}/cmake/common.cmake"
             DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
-
-    install(DIRECTORY "${_ALPAKA_ROOT_DIR}/cmake/modules"
-            DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
 endif()
