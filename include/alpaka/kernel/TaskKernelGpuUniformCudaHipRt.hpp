@@ -55,7 +55,6 @@
 
 #    include <alpaka/core/BoostPredef.hpp>
 #    include <alpaka/meta/ApplyTuple.hpp>
-#    include <alpaka/meta/Metafunctions.hpp>
 
 #    include <stdexcept>
 #    include <tuple>

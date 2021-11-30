@@ -155,7 +155,6 @@
 #include <alpaka/meta/Integral.hpp>
 #include <alpaka/meta/IsArrayOrVector.hpp>
 #include <alpaka/meta/IsStrictBase.hpp>
-#include <alpaka/meta/Metafunctions.hpp>
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/Set.hpp>
 #include <alpaka/meta/Transform.hpp>
