@@ -16,7 +16,6 @@
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
-#include <alpaka/meta/Void.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
