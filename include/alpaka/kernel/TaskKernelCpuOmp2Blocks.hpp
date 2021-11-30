@@ -30,7 +30,6 @@
 #    include <alpaka/idx/MapIdx.hpp>
 #    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/meta/ApplyTuple.hpp>
-#    include <alpaka/meta/Void.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #    include <omp.h>
@@ -194,7 +193,7 @@ namespace alpaka
         //!
         //! \tparam TKernel The kernel type.
         template<typename TKernel>
-        using HasScheduleChunkSize = alpaka::meta::Void<decltype(TKernel::ompScheduleChunkSize)>;
+        using HasScheduleChunkSize = std::void_t<decltype(TKernel::ompScheduleChunkSize)>;
 
         //! Helper executor of parallel OpenMP loop with the static schedule
         //!

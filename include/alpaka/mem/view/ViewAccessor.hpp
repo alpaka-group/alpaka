@@ -17,7 +17,8 @@
 
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/mem/view/Accessor.hpp>
-#include <alpaka/meta/Void.hpp>
+
+#include <type_traits>
 
 namespace alpaka
 {
@@ -198,7 +199,7 @@ namespace alpaka
                 template<typename TView>
                 struct IsView<
                     TView,
-                    meta::Void<
+                    std::void_t<
                         Idx<TView>,
                         Dim<TView>,
                         decltype(getPtrNative(std::declval<TView>())),
