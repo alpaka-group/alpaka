@@ -909,7 +909,13 @@ elseif (alpaka_USE_MDSPAN STREQUAL "FETCH")
         GIT_REPOSITORY https://github.com/kokkos/mdspan.git
         GIT_TAG 973ef6415a6396e5f0a55cb4c99afd1d1d541681
     )
-    FetchContent_MakeAvailable(mdspan)
+    # we don't use FetchContent_MakeAvailable(mdspan) since it would also install mdspan
+    # see also: https://stackoverflow.com/questions/65527126/how-to-disable-installation-a-fetchcontent-dependency
+    FetchContent_GetProperties(mdspan)
+    if(NOT mdspan_POPULATED)
+        FetchContent_Populate(mdspan)
+        add_subdirectory(${mdspan_SOURCE_DIR} ${mdspan_BINARY_DIR} EXCLUDE_FROM_ALL)
+    endif()
     target_link_libraries(alpaka INTERFACE std::mdspan)
     target_compile_definitions(alpaka INTERFACE ALPAKA_USE_MDSPAN)
 elseif (alpaka_USE_MDSPAN STREQUAL "OFF")
