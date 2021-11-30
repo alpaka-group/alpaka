@@ -25,6 +25,9 @@
 #include <iosfwd>
 #include <type_traits>
 #include <vector>
+#ifdef ALPAKA_USE_MDSPAN
+#    include <experimental/mdspan>
+#endif
 
 namespace alpaka
 {
