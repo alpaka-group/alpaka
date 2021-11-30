@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <alpaka/meta/Metafunctions.hpp>
-
 #include <type_traits>
 
 namespace alpaka
@@ -27,10 +25,10 @@ namespace alpaka
 
             template<template<typename...> class TList, typename... Ts, typename U, typename... Us>
             struct UniqueHelper<TList<Ts...>, U, Us...>
-                : std::conditional<
-                      (Disjunction<std::is_same<U, Ts>...>::value),
+                : std::conditional_t<
+                      (std::is_same_v<U, Ts> || ...),
                       UniqueHelper<TList<Ts...>, Us...>,
-                      UniqueHelper<TList<Ts..., U>, Us...>>::type
+                      UniqueHelper<TList<Ts..., U>, Us...>>
             {
             };
 
