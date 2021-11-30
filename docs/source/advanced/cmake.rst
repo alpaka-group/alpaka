@@ -78,6 +78,15 @@ alpaka_DEBUG_OFFLOAD_ASSUME_HOST
 
      Allow host-only contructs like assert in offload code in debug mode.
 
+alpaka_USE_MDSPAN
+  .. code-block::
+
+     Enable/Disable the use of `std::experimental::mdspan`:
+
+     "OFF" - Disable mdspan
+     "SYSTEM" - Enable mdspan and acquire it via `find_package` from your system
+     "FETCH" - Enable mdspan and download it via CMake's `FetchContent` from GitHub. The dependency will not be installed when you install alpaka.
+
 .. _cpu-serial:
 
 CPU Serial

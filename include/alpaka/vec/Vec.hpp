@@ -454,6 +454,19 @@ namespace alpaka
     template<typename TFirstIndex, typename... TRestIndices>
     Vec(TFirstIndex&&, TRestIndices&&...) -> Vec<DimInt<1 + sizeof...(TRestIndices)>, std::decay_t<TFirstIndex>>;
 
+    //! Converts a Vec to a std::array
+    template<typename TDim, typename TVal>
+    ALPAKA_FN_HOST_ACC constexpr auto toArray(Vec<TDim, TVal> const& v) -> std::array<TVal, TDim::value>
+    {
+        std::array<TVal, TDim::value> a{};
+        if constexpr(TDim::value > 0)
+        {
+            for(unsigned i = 0; i < TDim::value; i++)
+                a[i] = v[i];
+        }
+        return a;
+    }
+
     //! \return The element-wise minimum of one or more vectors.
     ALPAKA_NO_HOST_ACC_WARNING
     template<
