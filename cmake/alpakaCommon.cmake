@@ -891,3 +891,52 @@ if(alpaka_COMPILER_OPTIONS_DEVICE OR alpaka_COMPILER_OPTIONS_DEVICE)
     endif()
     message("")
 endif()
+
+#-------------------------------------------------------------------------------
+# Include mdspan
+
+set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka")
+set_property(CACHE alpaka_USE_MDSPAN PROPERTY STRINGS "SYSTEM;FETCH;OFF")
+
+if (alpaka_USE_MDSPAN STREQUAL "SYSTEM")
+    find_package(mdspan REQUIRED)
+    target_link_libraries(alpaka INTERFACE std::mdspan)
+    target_compile_definitions(alpaka INTERFACE ALPAKA_USE_MDSPAN)
+elseif (alpaka_USE_MDSPAN STREQUAL "FETCH")
+    include(FetchContent)
+    FetchContent_Declare(
+        mdspan
+        GIT_REPOSITORY https://github.com/kokkos/mdspan.git
+        GIT_TAG 973ef6415a6396e5f0a55cb4c99afd1d1d541681
+    )
+    FetchContent_MakeAvailable(mdspan)
+    target_link_libraries(alpaka INTERFACE std::mdspan)
+    target_compile_definitions(alpaka INTERFACE ALPAKA_USE_MDSPAN)
+elseif (alpaka_USE_MDSPAN STREQUAL "OFF")
+else()
+    message(FATAL_ERROR "Invalid option for alpaka_USE_MDSPAN")
+endif()
+
+if (NOT alpaka_USE_MDSPAN STREQUAL "OFF")
+    if (MSVC AND (alpaka_CXX_STANDARD LESS 20))
+        message(WARNING "std::mdspan on MSVC requires C++20. Please enable C++20 via alpaka_CXX_STANDARD. Use of std::mdspan has been disabled.")
+        set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
+    endif ()
+
+    if (alpaka_ACC_GPU_CUDA_ENABLE AND (CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA") AND (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+        # this issue actually only occurs when the host compiler (not the CXX compiler) is clang, but cmake does not let us query the host compiler id
+        # see: https://gitlab.kitware.com/cmake/cmake/-/issues/20901
+        message(WARNING "std::mdspan does not work with nvcc and clang as host compiler. Use of std::mdspan has been disabled.")
+        set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
+    endif ()
+
+    if ((alpaka_ACC_ANY_BT_OMP5_ENABLE OR alpaka_ACC_ANY_BT_OACC_ENABLE))
+        message(WARNING "std::mdspan is not yet compatible with alpaka's OpenMP5 and OpenAcc backends. Use of std::mdspan has been disabled.")
+        set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
+    endif ()
+
+    if (alpaka_ACC_GPU_CUDA_ENABLE AND (NOT alpaka_CUDA_EXPT_EXTENDED_LAMBDA STREQUAL ON))
+        message(WARNING "std::mdspan requires nvcc's extended lambdas. Use of std::mdspan has been disabled.")
+        set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
+    endif()
+endif()
