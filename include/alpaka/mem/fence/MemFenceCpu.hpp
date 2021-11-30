@@ -59,10 +59,7 @@ namespace alpaka
                  *   a == 10 && b == 20
                  */
 
-                /* TODO: Once we have C++17 enabled by default the following line should be turned into the usual
-                 * `auto x = ...` notation.
-                 */
-                static std::atomic<int> dummy{42};
+                static auto dummy = std::atomic<int>{42};
 
                 /* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use
                  * these dummy operations to ensure this.*/
