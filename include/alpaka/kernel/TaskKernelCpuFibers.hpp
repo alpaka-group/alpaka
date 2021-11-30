@@ -26,7 +26,6 @@
 #    include <alpaka/core/Fibers.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/meta/ApplyTuple.hpp>
 #    include <alpaka/meta/NdLoop.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
@@ -90,7 +89,7 @@ namespace alpaka
             auto const threadElemExtent = getWorkDiv<Thread, Elems>(*this);
 
             // Get the size of the block shared dynamic memory.
-            auto const blockSharedMemDynSizeBytes = meta::apply(
+            auto const blockSharedMemDynSizeBytes = std::apply(
                 [&](ALPAKA_DECAY_T(TArgs) const&... args)
                 {
                     return getBlockSharedMemDynSizeBytes<AccCpuFibers<TDim, TIdx>>(
@@ -118,7 +117,7 @@ namespace alpaka
             auto const blockThreadCount(blockThreadExtent.prod());
             FiberPool fiberPool(blockThreadCount);
 
-            auto const boundGridBlockExecHost = meta::apply(
+            auto const boundGridBlockExecHost = std::apply(
                 [this, &acc, &blockThreadExtent, &fiberPool](ALPAKA_DECAY_T(TArgs) const&... args)
                 {
                     // Bind the kernel and its arguments to the grid block function.
