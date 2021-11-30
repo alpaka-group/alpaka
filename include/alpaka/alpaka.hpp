@@ -142,7 +142,6 @@
 #include <alpaka/mem/view/ViewSubView.hpp>
 // meta
 #include <alpaka/meta/Apply.hpp>
-#include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/meta/CartesianProduct.hpp>
 #include <alpaka/meta/Concatenate.hpp>
 #include <alpaka/meta/CudaVectorArrayWrapper.hpp>

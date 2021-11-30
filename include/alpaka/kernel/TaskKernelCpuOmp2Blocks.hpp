@@ -29,7 +29,6 @@
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/idx/MapIdx.hpp>
 #    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/meta/ApplyTuple.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #    include <omp.h>
@@ -812,7 +811,7 @@ namespace alpaka
             auto const threadElemExtent = getWorkDiv<Thread, Elems>(*this);
 
             // Get the size of the block shared dynamic memory.
-            auto const blockSharedMemDynSizeBytes = meta::apply(
+            auto const blockSharedMemDynSizeBytes = std::apply(
                 [&](ALPAKA_DECAY_T(TArgs) const&... args)
                 {
                     return getBlockSharedMemDynSizeBytes<AccCpuOmp2Blocks<TDim, TIdx>>(
@@ -836,7 +835,7 @@ namespace alpaka
             }
 
             // Get the OpenMP schedule information for the given kernel and parameter types
-            auto const schedule = meta::apply(
+            auto const schedule = std::apply(
                 [&](ALPAKA_DECAY_T(TArgs) const&... args) {
                     return getOmpSchedule<AccCpuOmp2Blocks<TDim, TIdx>>(
                         m_kernelFnObj,

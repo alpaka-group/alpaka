@@ -54,7 +54,6 @@
 #    endif
 
 #    include <alpaka/core/BoostPredef.hpp>
-#    include <alpaka/meta/ApplyTuple.hpp>
 
 #    include <stdexcept>
 #    include <tuple>
@@ -226,7 +225,7 @@ namespace alpaka
 #    endif
 
                 // Get the size of the block shared dynamic memory.
-                auto const blockSharedMemDynSizeBytes = meta::apply(
+                auto const blockSharedMemDynSizeBytes = std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
@@ -267,7 +266,7 @@ namespace alpaka
                 // with std::forward to this function to be of type float instead of e.g. "float const & __ptr64"
                 // (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the
                 // value location.
-                meta::apply(
+                std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
@@ -356,7 +355,7 @@ namespace alpaka
 #    endif
 
                 // Get the size of the block shared dynamic memory.
-                auto const blockSharedMemDynSizeBytes = meta::apply(
+                auto const blockSharedMemDynSizeBytes = std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
@@ -395,7 +394,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(queue.m_spQueueImpl->m_dev.m_iDevice));
 
                 // Enqueue the kernel execution.
-                meta::apply(
+                std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
