@@ -73,6 +73,7 @@ env:
   ALPAKA_ACC_GPU_CUDA_ONLY_MODE: OFF
   ALPAKA_ACC_GPU_HIP_ENABLE: OFF
   ALPAKA_ACC_GPU_HIP_ONLY_MODE: OFF
+  CMAKE_INSTALL_PREFIX: ${{ github.workspace }}/_install
 
 jobs:
   clang-format:
