@@ -1,8 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"structalpaka_1_1traits_1_1GetAccName_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,294],
-"structalpaka_1_1traits_1_1GetAccName_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a443f27290d8e371313db2daaa02d9ae7":[3,0,0,18,294,0],
-"structalpaka_1_1traits_1_1GetAccName_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,295],
 "structalpaka_1_1traits_1_1GetAccName_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#af4159ab6eaa50df2aded0b7c7ebb9491":[3,0,0,18,295,0],
 "structalpaka_1_1traits_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,296],
 "structalpaka_1_1traits_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#a4aea7cae557543a66af48a1c5d2b553b":[3,0,0,18,296,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX14 =
 "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,18,429],
 "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a078c084b056fadb9e18e705d132b43bb":[3,0,0,18,429,0],
 "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,18,430],
-"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a3aaaad13bead112d3040938bc7d714b7":[3,0,0,18,430,0]
+"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a3aaaad13bead112d3040938bc7d714b7":[3,0,0,18,430,0],
+"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdxe41c261a0b4ea4fc66ced874106aec19.html":[3,0,0,18,431],
+"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdxe41c261a0b4ea4fc66ced874106aec19.html#a263ec411c4137d804ed4d94090b713fc":[3,0,0,18,431,0],
+"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,18,432]
 };

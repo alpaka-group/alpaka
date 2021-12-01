@@ -1805,7 +1805,7 @@ var hierarchy =
     ] ],
     [ "true_type", null, [
       [ "alpaka::experimental::internal::IsAccessor< Accessor< TMemoryHandle, TElem, TBufferIdx, Dim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor_3_01Accessor_3_01TMemoryHandle_00_01TElem2ee6a853bae07489e14aef9da67a07b3.html", null ],
-      [ "alpaka::experimental::traits::internal::IsView< TView, meta::Void< Idx< TView >, Dim< TView >, decltype(getPtrNative(std::declval< TView >())), decltype(getPitchBytes< 0 >(std::declval< TView >())), decltype(extent::getExtent< 0 >(std::declval< TView >()))> >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1IsView_3_01TView_00_01meta_1_1Void_3_01Idxdfb748d21301ed500edea3fd11a40191.html", null ],
+      [ "alpaka::experimental::traits::internal::IsView< TView, std::void_t< Idx< TView >, Dim< TView >, decltype(getPtrNative(std::declval< TView >())), decltype(getPitchBytes< 0 >(std::declval< TView >())), decltype(extent::getExtent< 0 >(std::declval< TView >()))> >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1IsView_3_01TView_00_01std_1_1void__t_3_01Icf3e64abba7130daf1e22eb2ea6e49b1.html", null ],
       [ "alpaka::meta::detail::ConjunctionImpl<... >", "structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl.html", null ],
       [ "alpaka::meta::IsArrayOrVector< CudaVectorArrayWrapper< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],

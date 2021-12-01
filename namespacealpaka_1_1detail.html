@@ -300,10 +300,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a11444be4e8469bafb6493553b09ab17c"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
 <tr class="memitem:a11444be4e8469bafb6493553b09ab17c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a11444be4e8469bafb6493553b09ab17c">CreateVecFromTwoIndexedVecsPlus</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::plus, Tidx &gt;</td></tr>
 <tr class="separator:a11444be4e8469bafb6493553b09ab17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a026cb623c9dea79f444585d229c35466"><td class="memTemplParams" colspan="2">template&lt;typename TKernel &gt; </td></tr>
-<tr class="memitem:a026cb623c9dea79f444585d229c35466"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a026cb623c9dea79f444585d229c35466">HasScheduleChunkSize</a> = <a class="el" href="namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c">alpaka::meta::Void</a>&lt; decltype(TKernel::ompScheduleChunkSize)&gt;</td></tr>
-<tr class="memdesc:a026cb623c9dea79f444585d229c35466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper type to check if TKernel has member ompScheduleChunkSize.  <a href="namespacealpaka_1_1detail.html#a026cb623c9dea79f444585d229c35466">More...</a><br /></td></tr>
-<tr class="separator:a026cb623c9dea79f444585d229c35466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d018fd0b09628f87378514527b6bbe"><td class="memTemplParams" colspan="2">template&lt;typename TKernel &gt; </td></tr>
+<tr class="memitem:a52d018fd0b09628f87378514527b6bbe"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe">HasScheduleChunkSize</a> = std::void_t&lt; decltype(TKernel::ompScheduleChunkSize)&gt;</td></tr>
+<tr class="memdesc:a52d018fd0b09628f87378514527b6bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper type to check if TKernel has member ompScheduleChunkSize.  <a href="namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe">More...</a><br /></td></tr>
+<tr class="separator:a52d018fd0b09628f87378514527b6bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b4a2d062279ca9b90a390b97b8c260b"><td class="memTemplParams" colspan="2">template&lt;typename TSchedule &gt; </td></tr>
 <tr class="memitem:a6b4a2d062279ca9b90a390b97b8c260b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b">IsOmpScheduleTraitSpecialized</a> = std::integral_constant&lt; bool, std::is_same&lt; TSchedule, <a class="el" href="structalpaka_1_1omp_1_1Schedule.html">omp::Schedule</a> &gt;::value &gt;</td></tr>
 <tr class="memdesc:a6b4a2d062279ca9b90a390b97b8c260b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper type to check if TSchedule is a type originating from OmpSchedule trait definition.  <a href="namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b">More...</a><br /></td></tr>
@@ -465,8 +465,8 @@ template&lt;std::size_t Tidx&gt; </div>
 
 </div>
 </div>
-<a id="a026cb623c9dea79f444585d229c35466"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a026cb623c9dea79f444585d229c35466">&#9670;&nbsp;</a></span>HasScheduleChunkSize</h2>
+<a id="a52d018fd0b09628f87378514527b6bbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52d018fd0b09628f87378514527b6bbe">&#9670;&nbsp;</a></span>HasScheduleChunkSize</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,7 +474,7 @@ template&lt;std::size_t Tidx&gt; </div>
 template&lt;typename TKernel &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a026cb623c9dea79f444585d229c35466">alpaka::detail::HasScheduleChunkSize</a> = typedef <a class="el" href="namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c">alpaka::meta::Void</a>&lt;decltype(TKernel::ompScheduleChunkSize)&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe">alpaka::detail::HasScheduleChunkSize</a> = typedef std::void_t&lt;decltype(TKernel::ompScheduleChunkSize)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -488,7 +488,7 @@ template&lt;typename TKernel &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00197">197</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00196">196</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
@@ -514,7 +514,7 @@ template&lt;typename TSchedule &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00717">717</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00716">716</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
@@ -542,7 +542,7 @@ template&lt;typename TKernel , typename TSchedule &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00728">728</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00727">727</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
@@ -754,7 +754,7 @@ template&lt;typename TKernel , typename TLoopBody , typename TIdx , typename TSc
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00778">778</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00777">777</a> of file <a class="el" href="TaskKernelCpuOmp2Blocks_8hpp_source.html">TaskKernelCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
@@ -797,7 +797,7 @@ template&lt;typename TValue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Nov 30 2021 10:21:35 for alpaka by
+    <li class="footer">Generated on Wed Dec 1 2021 11:15:56 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

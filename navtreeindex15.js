@@ -1,8 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdxe41c261a0b4ea4fc66ced874106aec19.html":[3,0,0,18,431],
-"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdxe41c261a0b4ea4fc66ced874106aec19.html#a263ec411c4137d804ed4d94090b713fc":[3,0,0,18,431,0],
-"structalpaka_1_1traits_1_1IdxType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,18,432],
 "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a3bc7a3cb035d9d8807c1baf0b86eef61":[3,0,0,18,432,0],
 "structalpaka_1_1traits_1_1IdxType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html":[3,0,0,18,434],
 "structalpaka_1_1traits_1_1IdxType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#a11f9015a5997a4fb0156038b2ca5e5cf":[3,0,0,18,434,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX15 =
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01DevUniformCudaHipRt_00_01EventUniformCudaHipRt_01_4.html":[3,0,0,18,557],
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01DevUniformCudaHipRt_00_01EventUniformCudaHipRt_01_4.html#a7948394f029f5ee4117d805863093924":[3,0,0,18,557,0],
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html":[3,0,0,18,558],
-"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html#a7df7ea8737343083d6ed3a8ba3d2bc51":[3,0,0,18,558,0]
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html#a7df7ea8737343083d6ed3a8ba3d2bc51":[3,0,0,18,558,0],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01Eventf80d91658a1202b3bab04f46987239a8.html":[3,0,0,18,559],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01Eventf80d91658a1202b3bab04f46987239a8.html#a040baeebd29060e0e8ab4233366f5648":[3,0,0,18,559,0],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01Ev74b109bb099985a9c713e6d997d8e888.html":[3,0,0,18,560]
 };

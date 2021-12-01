@@ -87,7 +87,7 @@ var NAVTREEINDEX2 =
 "TaskKernelCpuFibers_8hpp.html":[4,0,0,0,13,0],
 "TaskKernelCpuFibers_8hpp_source.html":[4,0,0,0,13,0],
 "TaskKernelCpuOmp2Blocks_8hpp.html":[4,0,0,0,13,1],
-"TaskKernelCpuOmp2Blocks_8hpp.html#a026cb623c9dea79f444585d229c35466":[4,0,0,0,13,1,25],
+"TaskKernelCpuOmp2Blocks_8hpp.html#a52d018fd0b09628f87378514527b6bbe":[4,0,0,0,13,1,25],
 "TaskKernelCpuOmp2Blocks_8hpp.html#a6b4a2d062279ca9b90a390b97b8c260b":[4,0,0,0,13,1,26],
 "TaskKernelCpuOmp2Blocks_8hpp.html#a93cfb90319ccb5e30631f043aff3cfdf":[4,0,0,0,13,1,28],
 "TaskKernelCpuOmp2Blocks_8hpp.html#aa4d5063ec3f3e7b763fc5fc02617e8f5":[4,0,0,0,13,1,27],
@@ -224,9 +224,6 @@ var NAVTREEINDEX2 =
 "ViewTest_8hpp.html#a490d7ae473e2c0ed15d387d265d5c5dc":[4,0,0,0,22,4,0,1,6],
 "ViewTest_8hpp.html#a523939d28799b680c9e823b912d487f9":[4,0,0,0,22,4,0,1,3],
 "ViewTest_8hpp_source.html":[4,0,0,0,22,4,0,1],
-"Void_8hpp.html":[4,0,0,0,16,21],
-"Void_8hpp.html#a74d93e6a2efc8f3ac7573990155bdf2c":[4,0,0,0,16,21,0],
-"Void_8hpp_source.html":[4,0,0,0,16,21],
 "Wait_8hpp.html":[4,0,0,0,5,0,1],
 "Wait_8hpp_source.html":[4,0,0,0,5,0,1],
 "WarpSingleThread_8hpp.html":[4,0,0,0,26,1],
@@ -249,5 +246,8 @@ var NAVTREEINDEX2 =
 "WorkDivMembers_8hpp.html":[4,0,0,0,27,2],
 "WorkDivMembers_8hpp.html#a02d161fc1fc6135444e5d1dcee47db1e":[4,0,0,0,27,2,6],
 "WorkDivMembers_8hpp_source.html":[4,0,0,0,27,2],
-"WorkDivUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,27,3]
+"WorkDivUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,27,3],
+"WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,27,3],
+"acc_2Traits_8hpp.html":[4,0,0,0,0,12],
+"acc_2Traits_8hpp.html#a0668b792050a8ae5f1575da61ffe6217":[4,0,0,0,0,12,12]
 };

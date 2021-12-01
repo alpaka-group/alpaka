@@ -104,7 +104,6 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp.html','')
 <code>#include &lt;<a class="el" href="MapIdx_8hpp_source.html">alpaka/idx/MapIdx.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="kernel_2Traits_8hpp_source.html">alpaka/kernel/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ApplyTuple_8hpp_source.html">alpaka/meta/ApplyTuple.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Void_8hpp_source.html">alpaka/meta/Void.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="WorkDivMembers_8hpp_source.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</code><br />
 <code>#include &lt;omp.h&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
@@ -207,10 +206,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a026cb623c9dea79f444585d229c35466"><td class="memTemplParams" colspan="2">template&lt;typename TKernel &gt; </td></tr>
-<tr class="memitem:a026cb623c9dea79f444585d229c35466"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a026cb623c9dea79f444585d229c35466">alpaka::detail::HasScheduleChunkSize</a> = <a class="el" href="namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c">alpaka::meta::Void</a>&lt; decltype(TKernel::ompScheduleChunkSize)&gt;</td></tr>
-<tr class="memdesc:a026cb623c9dea79f444585d229c35466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper type to check if TKernel has member ompScheduleChunkSize.  <a href="namespacealpaka_1_1detail.html#a026cb623c9dea79f444585d229c35466">More...</a><br /></td></tr>
-<tr class="separator:a026cb623c9dea79f444585d229c35466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d018fd0b09628f87378514527b6bbe"><td class="memTemplParams" colspan="2">template&lt;typename TKernel &gt; </td></tr>
+<tr class="memitem:a52d018fd0b09628f87378514527b6bbe"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe">alpaka::detail::HasScheduleChunkSize</a> = std::void_t&lt; decltype(TKernel::ompScheduleChunkSize)&gt;</td></tr>
+<tr class="memdesc:a52d018fd0b09628f87378514527b6bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper type to check if TKernel has member ompScheduleChunkSize.  <a href="namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe">More...</a><br /></td></tr>
+<tr class="separator:a52d018fd0b09628f87378514527b6bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b4a2d062279ca9b90a390b97b8c260b"><td class="memTemplParams" colspan="2">template&lt;typename TSchedule &gt; </td></tr>
 <tr class="memitem:a6b4a2d062279ca9b90a390b97b8c260b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b">alpaka::detail::IsOmpScheduleTraitSpecialized</a> = std::integral_constant&lt; bool, std::is_same&lt; TSchedule, omp::Schedule &gt;::value &gt;</td></tr>
 <tr class="memdesc:a6b4a2d062279ca9b90a390b97b8c260b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper type to check if TSchedule is a type originating from OmpSchedule trait definition.  <a href="namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b">More...</a><br /></td></tr>
@@ -233,7 +232,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuOmp2Blocks_8hpp.html">TaskKernelCpuOmp2Blocks.hpp</a></li>
-    <li class="footer">Generated on Tue Nov 30 2021 10:21:34 for alpaka by
+    <li class="footer">Generated on Wed Dec 1 2021 11:15:55 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

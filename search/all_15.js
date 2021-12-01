@@ -37,7 +37,5 @@ var searchData=
   ['viewstdvector_2ehpp_2125',['ViewStdVector.hpp',['../ViewStdVector_8hpp.html',1,'']]],
   ['viewsubview_2126',['ViewSubView',['../classalpaka_1_1ViewSubView.html',1,'alpaka::ViewSubView&lt; TDev, TElem, TDim, TIdx &gt;'],['../classalpaka_1_1ViewSubView.html#a1d0cac4be678bc34468de4da8fc83fb6',1,'alpaka::ViewSubView::ViewSubView(TView const &amp;view, TExtent const &amp;extentElements, TOffsets const &amp;relativeOffsetsElements=TOffsets())'],['../classalpaka_1_1ViewSubView.html#ab5c925feb02c2668367f8ec82cff6622',1,'alpaka::ViewSubView::ViewSubView(TView &amp;view, TExtent const &amp;extentElements, TOffsets const &amp;relativeOffsetsElements=TOffsets())'],['../classalpaka_1_1ViewSubView.html#aef754f6c2661b0cb5b386f83116be081',1,'alpaka::ViewSubView::ViewSubView(TView const &amp;view)'],['../classalpaka_1_1ViewSubView.html#a0532d4d290e63387290dade8a68364ef',1,'alpaka::ViewSubView::ViewSubView(TView &amp;view)']]],
   ['viewsubview_2ehpp_2127',['ViewSubView.hpp',['../ViewSubView_8hpp.html',1,'']]],
-  ['viewtest_2ehpp_2128',['ViewTest.hpp',['../ViewTest_8hpp.html',1,'']]],
-  ['void_2129',['Void',['../namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c',1,'alpaka::meta']]],
-  ['void_2ehpp_2130',['Void.hpp',['../Void_8hpp.html',1,'']]]
+  ['viewtest_2ehpp_2128',['ViewTest.hpp',['../ViewTest_8hpp.html',1,'']]]
 ];

@@ -1,8 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"math_2trunc_2Traits_8hpp_source.html":[4,0,0,0,14,26,0],
-"mem_2alloc_2Traits_8hpp.html":[4,0,0,0,15,0,2],
-"mem_2alloc_2Traits_8hpp.html#a04896bbcd53fbb9da78612f51a4e1cf4":[4,0,0,0,15,0,2,3],
 "mem_2alloc_2Traits_8hpp.html#a30687ca1eaba239c74afd1bb2f26831c":[4,0,0,0,15,0,2,4],
 "mem_2alloc_2Traits_8hpp_source.html":[4,0,0,0,15,0,2],
 "mem_2buf_2Traits_8hpp.html":[4,0,0,0,15,1,9],
@@ -249,5 +246,8 @@ var NAVTREEINDEX7 =
 "pltf_2Traits_8hpp.html#adefd54a5e3f0577ffd0cc800c40bb511":[4,0,0,0,18,4,7],
 "pltf_2Traits_8hpp_source.html":[4,0,0,0,18,4],
 "queue_2Traits_8hpp.html":[4,0,0,0,19,13],
-"queue_2Traits_8hpp.html#ab2b5f410b7b40fd9e91a9c6478e2e085":[4,0,0,0,19,13,4]
+"queue_2Traits_8hpp.html#ab2b5f410b7b40fd9e91a9c6478e2e085":[4,0,0,0,19,13,4],
+"queue_2Traits_8hpp.html#ab768cb4d64d49fbd5c722aea7c00d835":[4,0,0,0,19,13,5],
+"queue_2Traits_8hpp.html#aff6c69ef2f19b01caf21fdde471e9424":[4,0,0,0,19,13,3],
+"queue_2Traits_8hpp_source.html":[4,0,0,0,19,13]
 };
