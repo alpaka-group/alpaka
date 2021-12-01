@@ -41,7 +41,7 @@ echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 #-------------------------------------------------------------------------------
 # CUDA
 export ALPAKA_CI_INSTALL_CUDA="OFF"
-if [[ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" && -z "${GITLAB_CI+x}" ]]
+if [[ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]]
 then
     export ALPAKA_CI_INSTALL_CUDA="ON"
 fi
