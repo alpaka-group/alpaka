@@ -104,6 +104,16 @@ then
       sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-core-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-dev-"${ALPAKA_CI_CUDA_VERSION}"
     fi
     sudo ln -s /usr/local/cuda-"${ALPAKA_CI_CUDA_VERSION}" /usr/local/cuda
+    export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+    export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
+
+    # Install driver for runtime execution.
+    if [ -n "${GITLAB_CI+x}" ]
+    then
+        latestDriverPackage=$(sudo apt search nvidia-compute-utils 2>/dev/null| grep ^nvidia | sort | tail -n 1 | cut -d"/" -f1)
+        sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install $latestDriverPackage
+        export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+    fi
 
     if [ "${CMAKE_CUDA_COMPILER}" == "clang++" ]
     then

@@ -11,7 +11,7 @@
   interruptible: true
 
 .base_cuda_gcc:
-  image: nvidia/cuda:${ALPAKA_CI_CUDA_VERSION}-devel-ubuntu${ALPAKA_CI_UBUNTU_VER}
+  image: ubuntu:${ALPAKA_CI_UBUNTU_VER}
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     CC: gcc
@@ -30,7 +30,7 @@
     - intel
 
 .base_cuda_clang:
-  image: nvidia/cuda:${ALPAKA_CI_CUDA_VERSION}-devel-ubuntu${ALPAKA_CI_UBUNTU_VER}
+  image: ubuntu:${ALPAKA_CI_UBUNTU_VER}
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     CC: clang
