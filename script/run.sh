@@ -136,4 +136,8 @@ fi
 ./script/run_build.sh
 
 if [ "${ALPAKA_CI_RUN_TESTS}" == "ON" ] ; then ./script/run_tests.sh; fi
-if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ; then ./script/run_analysis.sh; fi
+if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;
+then
+    ./script/run_analysis.sh
+    ./script/run_install.sh
+fi

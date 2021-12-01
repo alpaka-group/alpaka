@@ -185,5 +185,9 @@ if [ ! -z "${CMAKE_CUDA_SEPARABLE_COMPILATION+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "CMAKE_CUDA_SEPARABLE_COMPILATION=${CMAKE_CUDA_SEPARABLE_COMPILATION}")
 fi
+if [ ! -z "${CMAKE_INSTALL_PREFIX+x}" ]
+then
+    ALPAKA_DOCKER_ENV_LIST+=("--env" "CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}")
+fi
 
 docker_retry docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash -c "source ./script/install.sh && ./script/run.sh"
