@@ -45,12 +45,12 @@ public:
         TIndex const& n,
         TIndex const& k,
         TElem const& alpha,
-        TElem const* const A,
+        TElem const* const a,
         TIndex const& lda,
-        TElem const* const B,
+        TElem const* const b,
         TIndex const& ldb,
         TElem const& beta,
-        TElem* const C,
+        TElem* const c,
         TIndex const& ldc) const -> void
     {
         static_assert(
@@ -58,50 +58,50 @@ public:
             "The accelerator used for the GemmAlpakaKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
-        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const& gridThreadIdxX = gridThreadIdx[1u];
-        auto const& gridThreadIdxY = gridThreadIdx[0u];
+        auto const grid_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const& grid_thread_idx_x = grid_thread_idx[1u];
+        auto const& grid_thread_idx_y = grid_thread_idx[0u];
 
         // Column and row inside the block of C to calculate.
-        auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
-        auto const& blockThreadIdxX = blockThreadIdx[1u];
-        auto const& blockThreadIdxY = blockThreadIdx[0u];
+        auto const block_thread_idx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
+        auto const& block_thread_idx_x = block_thread_idx[1u];
+        auto const& block_thread_idx_y = block_thread_idx[0u];
 
         // The block threads extent.
-        auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
-        auto const& blockThreadExtentX = blockThreadExtent[1u];
-        auto const& blockThreadExtentY = blockThreadExtent[0u];
+        auto const block_thread_extent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        auto const& block_thread_extent_x = block_thread_extent[1u];
+        auto const& block_thread_extent_y = block_thread_extent[0u];
         // ALPAKA_ASSERT(blockThreadExtentX == blockThreadExtentY);
-        auto const& blockThreadExtentVal = blockThreadExtentX;
+        auto const& block_thread_extent_val = block_thread_extent_x;
 
         // Shared memory used to store the current blocks of A and B.
-        auto* const pBlockSharedA = alpaka::getDynSharedMem<TElem>(acc);
-        auto* const pBlockSharedB = pBlockSharedA + blockThreadExtentX * blockThreadExtentY;
+        auto* const p_block_shared_a = alpaka::getDynSharedMem<TElem>(acc);
+        auto* const p_block_shared_b = p_block_shared_a + block_thread_extent_x * block_thread_extent_y;
 
-        auto const sharedBlockIdx1d = blockThreadIdxY * blockThreadExtentX + blockThreadIdxX;
+        auto const shared_block_idx1d = block_thread_idx_y * block_thread_extent_x + block_thread_idx_x;
 
         // If the element corresponding to the current thread is outside of the respective matrix.
-        bool const insideA(gridThreadIdxY < m);
-        bool const insideB(gridThreadIdxX < n);
-        bool const insideC(insideA && insideB);
+        bool const inside_a(grid_thread_idx_y < m);
+        bool const inside_b(grid_thread_idx_x < n);
+        bool const inside_c(inside_a && inside_b);
 
-        TElem dotProduct(0);
+        TElem dot_product(0);
 
         // Loop over all blocks of A and B that are required to compute the C block.
-        auto const blockMulCount
-            = static_cast<TIndex>(std::ceil(static_cast<float>(k) / static_cast<float>(blockThreadExtentVal)));
-        for(TIndex k2(0u); k2 < blockMulCount; ++k2)
+        auto const block_mul_count
+            = static_cast<TIndex>(std::ceil(static_cast<float>(k) / static_cast<float>(block_thread_extent_val)));
+        for(TIndex k2(0u); k2 < block_mul_count; ++k2)
         {
             // Copy the current blocks of A and B into shared memory in parallel.
             // If the element of the current thread is outside of the matrix, zero is written into the shared memory.
             // This is possible because zero is a result neutral extension of the matrices regarding the dot product.
-            auto const AIdxX = k2 * blockThreadExtentX + blockThreadIdxX;
-            auto const AIdx1d = gridThreadIdxY * lda + AIdxX;
-            pBlockSharedA[sharedBlockIdx1d] = (((!insideA) || (AIdxX >= k)) ? static_cast<TElem>(0) : A[AIdx1d]);
+            auto const a_idx_x = k2 * block_thread_extent_x + block_thread_idx_x;
+            auto const a_idx1d = grid_thread_idx_y * lda + a_idx_x;
+            p_block_shared_a[shared_block_idx1d] = (((!inside_a) || (a_idx_x >= k)) ? static_cast<TElem>(0) : a[a_idx1d]);
 
-            auto const BIdxY = k2 * blockThreadExtentY + blockThreadIdxY;
-            auto const BIdx1d = BIdxY * ldb + gridThreadIdxX;
-            pBlockSharedB[sharedBlockIdx1d] = (((!insideB) || (BIdxY >= k)) ? static_cast<TElem>(0) : B[BIdx1d]);
+            auto const b_idx_y = k2 * block_thread_extent_y + block_thread_idx_y;
+            auto const b_idx1d = b_idx_y * ldb + grid_thread_idx_x;
+            p_block_shared_b[shared_block_idx1d] = (((!inside_b) || (b_idx_y >= k)) ? static_cast<TElem>(0) : b[b_idx1d]);
 
             // Synchronize to make sure the complete blocks are loaded before starting the computation.
             alpaka::syncBlockThreads(acc);
@@ -110,10 +110,10 @@ public:
             // if(insideC)
             //{
             // Compute the dot products within shared memory.
-            for(TIndex k3(0); k3 < blockThreadExtentVal; ++k3)
+            for(TIndex k3(0); k3 < block_thread_extent_val; ++k3)
             {
-                dotProduct += pBlockSharedA[blockThreadIdxY * blockThreadExtentX + k3]
-                    * pBlockSharedB[k3 * blockThreadExtentY + blockThreadIdxX];
+                dot_product += p_block_shared_a[block_thread_idx_y * block_thread_extent_x + k3]
+                    * p_block_shared_b[k3 * block_thread_extent_y + block_thread_idx_x];
             }
             //}
 
@@ -124,10 +124,10 @@ public:
 
         // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful
         // results.
-        if(insideC)
+        if(inside_c)
         {
-            auto const CIdx1d = gridThreadIdxY * ldc + gridThreadIdxX;
-            C[CIdx1d] = alpha * dotProduct + beta * C[CIdx1d];
+            auto const c_idx1d = grid_thread_idx_y * ldc + grid_thread_idx_x;
+            c[c_idx1d] = alpha * dot_product + beta * c[c_idx1d];
         }
     }
 };
@@ -142,37 +142,37 @@ namespace alpaka
         {
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec, typename TIndex, typename TElem>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                MatMulKernel const& matMulKernel,
-                TVec const& blockThreadExtent,
-                TVec const& threadElemExtent,
+            ALPAKA_FN_HOST_ACC static auto get_block_shared_mem_dyn_size_bytes(
+                MatMulKernel const& mat_mul_kernel,
+                TVec const& block_thread_extent,
+                TVec const& thread_elem_extent,
                 TIndex const& m,
                 TIndex const& n,
                 TIndex const& k,
                 TElem const& alpha,
-                TElem const* const A,
+                TElem const* const a,
                 TIndex const& lda,
-                TElem const* const B,
+                TElem const* const b,
                 TIndex const& ldb,
                 TElem const& beta,
-                TElem* const C,
+                TElem* const c,
                 TIndex const& ldc)
             {
-                alpaka::ignore_unused(matMulKernel);
+                alpaka::ignore_unused(mat_mul_kernel);
                 alpaka::ignore_unused(m);
                 alpaka::ignore_unused(n);
                 alpaka::ignore_unused(k);
                 alpaka::ignore_unused(alpha);
-                alpaka::ignore_unused(A);
+                alpaka::ignore_unused(a);
                 alpaka::ignore_unused(lda);
-                alpaka::ignore_unused(B);
+                alpaka::ignore_unused(b);
                 alpaka::ignore_unused(ldb);
                 alpaka::ignore_unused(beta);
-                alpaka::ignore_unused(C);
+                alpaka::ignore_unused(c);
                 alpaka::ignore_unused(ldc);
 
                 // Reserve the buffer for the two blocks of A and B.
-                return static_cast<std::size_t>(2u * blockThreadExtent.prod() * threadElemExtent.prod())
+                return static_cast<std::size_t>(2u * block_thread_extent.prod() * thread_elem_extent.prod())
                     * sizeof(TElem);
             }
         };
@@ -204,104 +204,104 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     MatMulKernel kernel;
 
     // Get the host device.
-    DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0u);
+    DevHost const dev_host = alpaka::getDevByIdx<PltfHost>(0u);
 
     // Get a queue on the host device.
-    QueueHost queueHost(devHost);
+    QueueHost queue_host(dev_host);
 
     // Select a device to execute on.
-    DevAcc const devAcc = alpaka::getDevByIdx<PltfAcc>(0u);
+    DevAcc const dev_acc = alpaka::getDevByIdx<PltfAcc>(0u);
 
     // Get a queue on the accelerator device.
-    QueueAcc queueAcc(devAcc);
+    QueueAcc queue_acc(dev_acc);
 
     // Specify the input matrix extents.
-    Vec2 const extentA(static_cast<Idx>(m), static_cast<Idx>(k));
+    Vec2 const extent_a(static_cast<Idx>(m), static_cast<Idx>(k));
 
-    Vec2 const extentB(static_cast<Idx>(k), static_cast<Idx>(n));
+    Vec2 const extent_b(static_cast<Idx>(k), static_cast<Idx>(n));
 
     // Result matrix is MxN. We create one worker per result matrix cell.
-    Vec2 const extentC(static_cast<Idx>(m), static_cast<Idx>(n));
+    Vec2 const extent_c(static_cast<Idx>(m), static_cast<Idx>(n));
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        extentC,
+    alpaka::WorkDivMembers<Dim, Idx> const work_div(alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
+        extent_c,
         alpaka::Vec<Dim, Idx>::ones(),
         false,
         alpaka::GridBlockExtentSubDivRestrictions::EqualExtent));
 
     std::cout << "MatMulKernel("
               << "m:" << m << ", n:" << n << ", k:" << k << ", accelerator: " << alpaka::getAccName<Acc>()
-              << ", kernel: " << typeid(kernel).name() << ", workDiv: " << workDiv << ")" << std::endl;
+              << ", kernel: " << typeid(kernel).name() << ", workDiv: " << work_div << ")" << std::endl;
 
     // Allocate the A and B matrices as std::vectors because this allows them to be filled with uint32_t(1).
     // alpaka::set only supports setting all bytes leading to a value of 16843009 in all elements.
-    std::vector<Val> bufAHost1d(m * k, static_cast<Val>(1));
-    std::vector<Val> bufBHost1d(k * n, static_cast<Val>(1));
+    std::vector<Val> buf_a_host1d(m * k, static_cast<Val>(1));
+    std::vector<Val> buf_b_host1d(k * n, static_cast<Val>(1));
     // Wrap the std::vectors into a memory buffer object.
     // For 1D data this would not be required because alpaka::copy is specialized for std::vector and std::array.
     // For multi dimensional data you could directly create them using alpaka::malloc<Type>(devHost, extent), which is
     // not used here. Instead we create a View to wrap the data.
-    auto bufAHost = alpaka::createView(devHost, bufAHost1d.data(), extentA);
-    auto bufBHost = alpaka::createView(devHost, bufBHost1d.data(), extentB);
+    auto buf_a_host = alpaka::createView(dev_host, buf_a_host1d.data(), extent_a);
+    auto buf_b_host = alpaka::createView(dev_host, buf_b_host1d.data(), extent_b);
 
     // Allocate C and set it to zero.
-    auto bufCHost = alpaka::allocBuf<Val, Idx>(devHost, extentC);
-    alpaka::memset(queueHost, bufCHost, 0u, extentC);
+    auto buf_c_host = alpaka::allocBuf<Val, Idx>(dev_host, extent_c);
+    alpaka::memset(queue_host, buf_c_host, 0u, extent_c);
 
     // Allocate the buffers on the accelerator.
-    auto bufAAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentA);
-    auto bufBAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentB);
-    auto bufCAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentC);
+    auto buf_a_acc = alpaka::allocBuf<Val, Idx>(dev_acc, extent_a);
+    auto buf_b_acc = alpaka::allocBuf<Val, Idx>(dev_acc, extent_b);
+    auto buf_c_acc = alpaka::allocBuf<Val, Idx>(dev_acc, extent_c);
 
     // Copy Host -> Acc.
-    alpaka::memcpy(queueAcc, bufAAcc, bufAHost, extentA);
-    alpaka::memcpy(queueAcc, bufBAcc, bufBHost, extentB);
-    alpaka::wait(queueHost);
-    alpaka::memcpy(queueAcc, bufCAcc, bufCHost, extentC);
+    alpaka::memcpy(queue_acc, buf_a_acc, buf_a_host, extent_a);
+    alpaka::memcpy(queue_acc, buf_b_acc, buf_b_host, extent_b);
+    alpaka::wait(queue_host);
+    alpaka::memcpy(queue_acc, buf_c_acc, buf_c_host, extent_c);
 
     // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
+    auto const task_kernel = alpaka::createTaskKernel<Acc>(
+        work_div,
         kernel,
         m,
         n,
         k,
         static_cast<Val>(1),
-        alpaka::getPtrNative(bufAAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
-        alpaka::getPtrNative(bufBAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
+        alpaka::getPtrNative(buf_a_acc),
+        static_cast<Idx>(alpaka::getPitchBytes<1u>(buf_a_acc) / sizeof(Val)),
+        alpaka::getPtrNative(buf_b_acc),
+        static_cast<Idx>(alpaka::getPitchBytes<1u>(buf_b_acc) / sizeof(Val)),
         static_cast<Val>(1),
-        alpaka::getPtrNative(bufCAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufCAcc) / sizeof(Val)));
+        alpaka::getPtrNative(buf_c_acc),
+        static_cast<Idx>(alpaka::getPitchBytes<1u>(buf_c_acc) / sizeof(Val)));
 
     // Profile the kernel execution.
-    std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"
+    std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue_acc, task_kernel) << " ms"
               << std::endl;
 
     // Copy back the result.
-    alpaka::memcpy(queueAcc, bufCHost, bufCAcc, extentC);
+    alpaka::memcpy(queue_acc, buf_c_host, buf_c_acc, extent_c);
 
     // Wait for the queue to finish the memory operation.
-    alpaka::wait(queueAcc);
+    alpaka::wait(queue_acc);
 
     // Assert that the results are correct.
     // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.
-    auto const correctResult = static_cast<Val>(k);
+    auto const correct_result = static_cast<Val>(k);
 
-    bool resultCorrect = true;
-    auto const pHostData = alpaka::getPtrNative(bufCHost);
+    bool result_correct = true;
+    auto const p_host_data = alpaka::getPtrNative(buf_c_host);
     for(Idx i(0u); i < m * n; ++i)
     {
-        auto const& val(pHostData[i]);
-        if(val != correctResult)
+        auto const& val(p_host_data[i]);
+        if(val != correct_result)
         {
-            std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
-            resultCorrect = false;
+            std::cerr << "C[" << i << "] == " << val << " != " << correct_result << std::endl;
+            result_correct = false;
         }
     }
 
-    REQUIRE(resultCorrect);
+    REQUIRE(result_correct);
 }

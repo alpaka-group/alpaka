@@ -17,7 +17,7 @@
 class KernelWithConstructorAndMember
 {
 public:
-    ALPAKA_FN_HOST KernelWithConstructorAndMember(std::int32_t const val = 42) : m_val(val)
+    ALPAKA_FN_HOST explicit KernelWithConstructorAndMember(std::int32_t const val = 42) : m_val(val)
     {
     }
 

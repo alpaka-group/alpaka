@@ -226,7 +226,7 @@ namespace alpaka
 #        pragma omp for nowait schedule(static, kernel.ompScheduleChunkSize)
                 for(i = 0; i < iNumBlocksInGrid; ++i)
 #    else
-#        pragma omp for nowait schedule(static, kernel.ompScheduleChunkSize)
+#        pragma omp for nowait schedule(static, kernel.omp_schedule_chunk_size)
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
@@ -362,7 +362,7 @@ namespace alpaka
 #        pragma omp for nowait schedule(dynamic, kernel.ompScheduleChunkSize)
                 for(i = 0; i < iNumBlocksInGrid; ++i)
 #    else
-#        pragma omp for nowait schedule(dynamic, kernel.ompScheduleChunkSize)
+#        pragma omp for nowait schedule(dynamic, kernel.omp_schedule_chunk_size)
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
@@ -498,7 +498,7 @@ namespace alpaka
 #        pragma omp for nowait schedule(guided, kernel.ompScheduleChunkSize)
                 for(i = 0; i < iNumBlocksInGrid; ++i)
 #    else
-#        pragma omp for nowait schedule(guided, kernel.ompScheduleChunkSize)
+#        pragma omp for nowait schedule(guided, kernel.omp_schedule_chunk_size)
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
@@ -753,7 +753,7 @@ namespace alpaka
                 TSchedule const& schedule)
             {
                 // Forward to ParallelForImpl that performs dispatch by by chunk size
-                ParallelForImpl<TKernel, TSchedule, TKernel::ompScheduleKind>{}(
+                ParallelForImpl<TKernel, TSchedule, TKernel::omp_schedule_kind>{}(
                     kernel,
                     std::forward<TLoopBody>(loopBody),
                     numIterations,

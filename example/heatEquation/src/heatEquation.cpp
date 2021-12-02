@@ -43,8 +43,8 @@ struct HeatEquationKernel
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        double const* const uCurrBuf,
-        double* const uNextBuf,
+        double const* const u_curr_buf,
+        double* const u_next_buf,
         uint32_t const extent,
         double const dx,
         double const dt) const -> void
@@ -54,7 +54,7 @@ struct HeatEquationKernel
         int idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
         if(idx > 0 && idx < extent - 1u)
         {
-            uNextBuf[idx] = uCurrBuf[idx] * (1.0 - 2.0 * r) + uCurrBuf[idx - 1] * r + uCurrBuf[idx + 1] * r;
+            u_next_buf[idx] = u_curr_buf[idx] * (1.0 - 2.0 * r) + u_curr_buf[idx - 1] * r + u_curr_buf[idx + 1] * r;
         }
     }
 };
@@ -67,7 +67,7 @@ struct HeatEquationKernel
 //!
 //! \param x value of x
 //! \param t value of t
-double exactSolution(double const x, double const t)
+double exact_solution(double const x, double const t)
 {
     constexpr double pi = 3.14159265358979323846;
     return std::exp(-pi * pi * t) * std::sin(pi * x);
@@ -85,12 +85,12 @@ auto main() -> int
     return EXIT_SUCCESS;
 #else
     // Parameters (a user is supposed to change numNodesX, numTimeSteps)
-    uint32_t const numNodesX = 1000;
-    uint32_t const numTimeSteps = 10000;
-    double const tMax = 0.001;
+    uint32_t const num_nodes_x = 1000;
+    uint32_t const num_time_steps = 10000;
+    double const t_max = 0.001;
     // x in [0, 1], t in [0, tMax]
-    double const dx = 1.0 / static_cast<double>(numNodesX - 1);
-    double const dt = tMax / static_cast<double>(numTimeSteps - 1);
+    double const dx = 1.0 / static_cast<double>(num_nodes_x - 1);
+    double const dt = t_max / static_cast<double>(num_time_steps - 1);
 
     // Check the stability condition
     double const r = dt / (dx * dx);
@@ -112,90 +112,90 @@ auto main() -> int
     using DevHost = alpaka::DevCpu;
 
     // Select specific devices
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
-    auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_host = alpaka::getDevByIdx<DevHost>(0u);
 
     // Get valid workdiv for the given problem
-    uint32_t elemPerThread = 1;
-    alpaka::Vec<Dim, Idx> const extent{numNodesX};
+    uint32_t elem_per_thread = 1;
+    alpaka::Vec<Dim, Idx> const extent{num_nodes_x};
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     auto workdiv = WorkDiv{alpaka::getValidWorkDiv<Acc>(
-        devAcc,
+        dev_acc,
         extent,
-        elemPerThread,
+        elem_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
 
     // Select queue
     using QueueProperty = alpaka::Blocking;
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
-    QueueAcc queue{devAcc};
+    QueueAcc queue{dev_acc};
 
     // Initialize host-buffer
     using BufHost = alpaka::Buf<DevHost, double, Dim, Idx>;
     // This buffer holds the calculated values
-    auto uNextBufHost = BufHost{alpaka::allocBuf<double, Idx>(devHost, extent)};
+    auto u_next_buf_host = BufHost{alpaka::allocBuf<double, Idx>(dev_host, extent)};
     // This buffer will hold the current values (used for the next step)
-    auto uCurrBufHost = BufHost{alpaka::allocBuf<double, Idx>(devHost, extent)};
+    auto u_curr_buf_host = BufHost{alpaka::allocBuf<double, Idx>(dev_host, extent)};
 
-    double* const pCurrHost = alpaka::getPtrNative(uCurrBufHost);
-    double* const pNextHost = alpaka::getPtrNative(uNextBufHost);
+    double* const p_curr_host = alpaka::getPtrNative(u_curr_buf_host);
+    double* const p_next_host = alpaka::getPtrNative(u_next_buf_host);
 
     // Accelerator buffer
     using BufAcc = alpaka::Buf<Acc, double, Dim, Idx>;
-    auto uNextBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
-    auto uCurrBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
+    auto u_next_buf_acc = BufAcc{alpaka::allocBuf<double, Idx>(dev_acc, extent)};
+    auto u_curr_buf_acc = BufAcc{alpaka::allocBuf<double, Idx>(dev_acc, extent)};
 
-    double* pCurrAcc = alpaka::getPtrNative(uCurrBufAcc);
-    double* pNextAcc = alpaka::getPtrNative(uNextBufAcc);
+    double* p_curr_acc = alpaka::getPtrNative(u_curr_buf_acc);
+    double* p_next_acc = alpaka::getPtrNative(u_next_buf_acc);
 
     // Apply initial conditions for the test problem
-    for(uint32_t i = 0; i < numNodesX; i++)
+    for(uint32_t i = 0; i < num_nodes_x; i++)
     {
-        pCurrHost[i] = exactSolution(i * dx, 0.0);
+        p_curr_host[i] = exact_solution(i * dx, 0.0);
     }
 
     HeatEquationKernel kernel;
 
     // Copy host -> device
-    alpaka::memcpy(queue, uCurrBufAcc, uCurrBufHost, extent);
+    alpaka::memcpy(queue, u_curr_buf_acc, u_curr_buf_host, extent);
     // Copy to the buffer for next as well to have boundary values set
-    alpaka::memcpy(queue, uNextBufAcc, uCurrBufAcc, extent);
+    alpaka::memcpy(queue, u_next_buf_acc, u_curr_buf_acc, extent);
     alpaka::wait(queue);
 
-    for(uint32_t step = 0; step < numTimeSteps; step++)
+    for(uint32_t step = 0; step < num_time_steps; step++)
     {
         // Compute next values
-        alpaka::exec<Acc>(queue, workdiv, kernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+        alpaka::exec<Acc>(queue, workdiv, kernel, p_curr_acc, p_next_acc, num_nodes_x, dx, dt);
 
         // We assume the boundary conditions are constant and so these values
         // do not need to be updated.
         // So we just swap next to curr (shallow copy)
-        std::swap(pCurrAcc, pNextAcc);
+        std::swap(p_curr_acc, p_next_acc);
     }
 
     // Copy device -> host
-    alpaka::memcpy(queue, uNextBufHost, uNextBufAcc, extent);
+    alpaka::memcpy(queue, u_next_buf_host, u_next_buf_acc, extent);
     alpaka::wait(queue);
 
     // Calculate error
-    double maxError = 0.0;
-    for(uint32_t i = 0; i < numNodesX; i++)
+    double max_error = 0.0;
+    for(uint32_t i = 0; i < num_nodes_x; i++)
     {
-        auto const error = std::abs(pNextHost[i] - exactSolution(i * dx, tMax));
-        maxError = std::max(maxError, error);
+        auto const error = std::abs(p_next_host[i] - exact_solution(i * dx, t_max));
+        max_error = std::max(max_error, error);
     }
 
-    double const errorThreshold = 1e-5;
-    bool resultCorrect = (maxError < errorThreshold);
-    if(resultCorrect)
+    double const error_threshold = 1e-5;
+    bool result_correct = (max_error < error_threshold);
+    if(result_correct)
     {
         std::cout << "Execution results correct!" << std::endl;
         return EXIT_SUCCESS;
     }
     else
     {
-        std::cout << "Execution results incorrect: error = " << maxError << " (the grid resolution may be too low)"
+        std::cout << "Execution results incorrect: error = " << max_error << " (the grid resolution may be too low)"
                   << std::endl;
         return EXIT_FAILURE;
     }

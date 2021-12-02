@@ -20,20 +20,20 @@ TEST_CASE("isArrayOrVector", "[meta]")
     STATIC_REQUIRE(alpaka::meta::IsArrayOrVector<std::array<int, 10>>::value);
     STATIC_REQUIRE(alpaka::meta::IsArrayOrVector<std::vector<float>>::value);
 
-    float arrayFloat[4] = {1.0f, 2.0f, 3.0f, 4.0f};
-    STATIC_REQUIRE(alpaka::meta::IsArrayOrVector<decltype(arrayFloat)>::value);
+    float array_float[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+    STATIC_REQUIRE(alpaka::meta::IsArrayOrVector<decltype(array_float)>::value);
 }
 
 TEST_CASE("isActuallyNotArrayOrVector", "[meta]")
 {
-    float notAnArrayFloat = 15.0f;
-    STATIC_REQUIRE_FALSE(alpaka::meta::IsArrayOrVector<decltype(notAnArrayFloat)>::value);
+    float not_an_array_float = 15.0f;
+    STATIC_REQUIRE_FALSE(alpaka::meta::IsArrayOrVector<decltype(not_an_array_float)>::value);
 
-    float* notAnArrayFloatPointer = &notAnArrayFloat;
-    STATIC_REQUIRE_FALSE(alpaka::meta::IsArrayOrVector<decltype(notAnArrayFloatPointer)>::value);
+    float* not_an_array_float_pointer = &not_an_array_float;
+    STATIC_REQUIRE_FALSE(alpaka::meta::IsArrayOrVector<decltype(not_an_array_float_pointer)>::value);
 
-    std::string notAnArrayString{"alpaka"};
-    STATIC_REQUIRE_FALSE(alpaka::meta::IsArrayOrVector<decltype(notAnArrayString)>::value);
+    std::string not_an_array_string{"alpaka"};
+    STATIC_REQUIRE_FALSE(alpaka::meta::IsArrayOrVector<decltype(not_an_array_string)>::value);
 }
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)

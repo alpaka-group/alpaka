@@ -19,14 +19,14 @@ TEMPLATE_LIST_TEST_CASE("getAccDevProps", "[acc]", alpaka::test::TestAccs)
     using Dev = alpaka::Dev<Acc>;
     using Pltf = alpaka::Pltf<Dev>;
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
-    auto const devProps = alpaka::getAccDevProps<Acc>(dev);
+    auto const dev_props = alpaka::getAccDevProps<Acc>(dev);
 
-    REQUIRE(devProps.m_gridBlockExtentMax.min() > 0);
-    REQUIRE(devProps.m_blockThreadExtentMax.min() > 0);
-    REQUIRE(devProps.m_threadElemExtentMax.min() > 0);
-    REQUIRE(devProps.m_gridBlockCountMax > 0);
-    REQUIRE(devProps.m_blockThreadCountMax > 0);
-    REQUIRE(devProps.m_threadElemCountMax > 0);
-    REQUIRE(devProps.m_multiProcessorCount > 0);
-    REQUIRE(devProps.m_sharedMemSizeBytes > 0);
+    REQUIRE(dev_props.m_gridBlockExtentMax.min() > 0);
+    REQUIRE(dev_props.m_blockThreadExtentMax.min() > 0);
+    REQUIRE(dev_props.m_threadElemExtentMax.min() > 0);
+    REQUIRE(dev_props.m_gridBlockCountMax > 0);
+    REQUIRE(dev_props.m_blockThreadCountMax > 0);
+    REQUIRE(dev_props.m_threadElemCountMax > 0);
+    REQUIRE(dev_props.m_multiProcessorCount > 0);
+    REQUIRE(dev_props.m_sharedMemSizeBytes > 0);
 }

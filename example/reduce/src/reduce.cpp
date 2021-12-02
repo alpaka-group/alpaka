@@ -57,67 +57,68 @@ using MaxBlockSize = Accelerator::MaxBlockSize;
 //! \param func The reduction function.
 //!
 //! Returns true if the reduction was correct and false otherwise.
-template<typename T, typename DevHost, typename DevAcc, typename TFunc>
+template<typename T, typename TDevHost, typename TDevAcc, typename TFunc>
 T reduce(
-    DevHost devHost,
-    DevAcc devAcc,
+    TDevHost dev_host,
+    TDevAcc dev_acc,
     QueueAcc queue,
     uint64_t n,
-    alpaka::Buf<DevHost, T, Dim, Idx> hostMemory,
+    alpaka::Buf<TDevHost, T, Dim, Idx> host_memory,
     TFunc func)
 {
     static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
 
     // calculate optimal block size (8 times the MP count proved to be
     // relatively near to peak performance in benchmarks)
-    uint32_t blockCount = static_cast<uint32_t>(alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount * 8);
-    uint32_t maxBlockCount = static_cast<uint32_t>((((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
+    auto block_count = static_cast<uint32_t>(alpaka::getAccDevProps<Acc>(dev_acc).m_multiProcessorCount * 8);
+    auto max_block_count = static_cast<uint32_t>((((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
 
-    if(blockCount > maxBlockCount)
-        blockCount = maxBlockCount;
+    if(block_count > max_block_count)
+        block_count = max_block_count;
 
-    alpaka::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory = alpaka::allocBuf<T, Idx>(devAcc, n);
+    alpaka::Buf<TDevAcc, T, Dim, Extent> source_device_memory = alpaka::allocBuf<T, Idx>(dev_acc, n);
 
-    alpaka::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory
-        = alpaka::allocBuf<T, Idx>(devAcc, static_cast<Extent>(blockCount));
+    alpaka::Buf<TDevAcc, T, Dim, Extent> destination_device_memory
+        = alpaka::allocBuf<T, Idx>(dev_acc, static_cast<Extent>(block_count));
 
     // copy the data to the GPU
-    alpaka::memcpy(queue, sourceDeviceMemory, hostMemory, n);
+    alpaka::memcpy(queue, source_device_memory, host_memory, n);
 
     // create kernels with their workdivs
-    ReduceKernel<blockSize, T, TFunc> kernel1, kernel2;
-    WorkDiv workDiv1{static_cast<Extent>(blockCount), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
-    WorkDiv workDiv2{static_cast<Extent>(1), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
+    ReduceKernel<blockSize, T, TFunc> kernel1;
+    ReduceKernel<blockSize, T, TFunc> kernel2;
+    WorkDiv work_div1{static_cast<Extent>(block_count), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
+    WorkDiv work_div2{static_cast<Extent>(1), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
 
     // create main reduction kernel execution task
-    auto const taskKernelReduceMain = alpaka::createTaskKernel<Acc>(
-        workDiv1,
+    auto const task_kernel_reduce_main = alpaka::createTaskKernel<Acc>(
+        work_div1,
         kernel1,
-        alpaka::getPtrNative(sourceDeviceMemory),
-        alpaka::getPtrNative(destinationDeviceMemory),
+        alpaka::getPtrNative(source_device_memory),
+        alpaka::getPtrNative(destination_device_memory),
         n,
         func);
 
     // create last block reduction kernel execution task
-    auto const taskKernelReduceLastBlock = alpaka::createTaskKernel<Acc>(
-        workDiv2,
+    auto const task_kernel_reduce_last_block = alpaka::createTaskKernel<Acc>(
+        work_div2,
         kernel2,
-        alpaka::getPtrNative(destinationDeviceMemory),
-        alpaka::getPtrNative(destinationDeviceMemory),
-        blockCount,
+        alpaka::getPtrNative(destination_device_memory),
+        alpaka::getPtrNative(destination_device_memory),
+        block_count,
         func);
 
     // enqueue both kernel execution tasks
-    alpaka::enqueue(queue, taskKernelReduceMain);
-    alpaka::enqueue(queue, taskKernelReduceLastBlock);
+    alpaka::enqueue(queue, task_kernel_reduce_main);
+    alpaka::enqueue(queue, task_kernel_reduce_last_block);
 
     //  download result from GPU
-    T resultGpuHost;
-    auto resultGpuDevice = alpaka::createView(devHost, &resultGpuHost, static_cast<Extent>(blockSize));
+    T result_gpu_host;
+    auto result_gpu_device = alpaka::createView(dev_host, &result_gpu_host, static_cast<Extent>(blockSize));
 
-    alpaka::memcpy(queue, resultGpuDevice, destinationDeviceMemory, 1);
+    alpaka::memcpy(queue, result_gpu_device, destination_device_memory, 1);
 
-    return resultGpuHost;
+    return result_gpu_host;
 }
 
 int main()
@@ -127,41 +128,41 @@ int main()
     uint64_t n = 1 << 28;
 
     using T = uint32_t;
-    static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
+    static constexpr uint64_t block_size = getMaxBlockSize<Accelerator, 256>();
 
-    auto devAcc = alpaka::getDevByIdx<Acc>(dev);
-    auto devHost = alpaka::getDevByIdx<Host>(0u);
-    QueueAcc queue(devAcc);
+    auto dev_acc = alpaka::getDevByIdx<Acc>(dev);
+    auto dev_host = alpaka::getDevByIdx<Host>(0u);
+    QueueAcc queue(dev_acc);
 
     // calculate optimal block size (8 times the MP count proved to be
     // relatively near to peak performance in benchmarks)
-    uint32_t blockCount = static_cast<uint32_t>(alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount * 8);
-    uint32_t maxBlockCount = static_cast<uint32_t>((((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
+    uint32_t block_count = static_cast<uint32_t>(alpaka::getAccDevProps<Acc>(dev_acc).m_multiProcessorCount * 8);
+    auto max_block_count = static_cast<uint32_t>((((n + 1) / 2) - 1) / block_size + 1); // ceil(ceil(n/2.0)/blockSize)
 
-    if(blockCount > maxBlockCount)
-        blockCount = maxBlockCount;
+    if(block_count > max_block_count)
+        block_count = max_block_count;
 
     // allocate memory
-    auto hostMemory = alpaka::allocBuf<T, Idx>(devHost, n);
+    auto host_memory = alpaka::allocBuf<T, Idx>(dev_host, n);
 
-    T* nativeHostMemory = alpaka::getPtrNative(hostMemory);
+    T* native_host_memory = alpaka::getPtrNative(host_memory);
 
     // fill array with data
     for(uint64_t i = 0; i < n; i++)
-        nativeHostMemory[i] = static_cast<T>(i + 1);
+        native_host_memory[i] = static_cast<T>(i + 1);
 
     // define the reduction function
-    auto addFn = [] ALPAKA_FN_ACC(T a, T b) -> T { return a + b; };
+    auto add_fn = [] ALPAKA_FN_ACC(T a, T b) -> T { return a + b; };
 
     // reduce
-    T result = reduce<T>(devHost, devAcc, queue, n, hostMemory, addFn);
+    auto result = reduce<T>(dev_host, dev_acc, queue, n, host_memory, add_fn);
     alpaka::wait(queue);
 
     // check result
-    T expectedResult = static_cast<T>(n / 2 * (n + 1));
-    if(result != expectedResult)
+    auto expected_result = static_cast<T>(n / 2 * (n + 1));
+    if(result != expected_result)
     {
-        std::cerr << "Results don't match: " << result << " != " << expectedResult << "\n";
+        std::cerr << "Results don't match: " << result << " != " << expected_result << "\n";
         return EXIT_FAILURE;
     }
 

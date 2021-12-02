@@ -25,12 +25,12 @@
 struct QueueCollectiveTestKernel
 {
     template<typename TAcc>
-    auto operator()(TAcc const& acc, int* resultsPtr) const -> void
+    auto operator()(TAcc const& acc, int* results_ptr) const -> void
     {
-        size_t threadId = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
+        size_t thread_id = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
         // avoid that one thread is doing all the work
-        std::this_thread::sleep_for(std::chrono::milliseconds(200u * threadId));
-        resultsPtr[threadId] = static_cast<int>(threadId);
+        std::this_thread::sleep_for(std::chrono::milliseconds(200u * thread_id));
+        results_ptr[thread_id] = static_cast<int>(thread_id);
     }
 };
 
@@ -53,18 +53,18 @@ TEST_CASE("queueCollective", "[queue]")
     std::vector<int> results(4, -1);
 
     using Vec = alpaka::Vec<Dim, Idx>;
-    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
-    Vec const blocksPerGrid(results.size());
+    Vec const elements_per_thread(Vec::all(static_cast<Idx>(1)));
+    Vec const threads_per_block(Vec::all(static_cast<Idx>(1)));
+    Vec const blocks_per_grid(results.size());
 
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv(blocksPerGrid, threadsPerBlock, elementsPerThread);
+    WorkDiv const work_div(blocks_per_grid, threads_per_block, elements_per_thread);
 
 #    pragma omp parallel num_threads(static_cast <int>(results.size()))
     {
         // The kernel will be performed collectively.
         // OpenMP will distribute the work between the threads from the parallel region
-        alpaka::exec<Acc>(queue, workDiv, QueueCollectiveTestKernel{}, results.data());
+        alpaka::exec<Acc>(queue, work_div, QueueCollectiveTestKernel{}, results.data());
 
         alpaka::wait(queue);
     }
@@ -95,22 +95,22 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
 
     // Define the work division
     using Vec = alpaka::Vec<Dim, Idx>;
-    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
-    Vec const blocksPerGrid(results.size());
+    Vec const elements_per_thread(Vec::all(static_cast<Idx>(1)));
+    Vec const threads_per_block(Vec::all(static_cast<Idx>(1)));
+    Vec const blocks_per_grid(results.size());
 
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv(blocksPerGrid, threadsPerBlock, elementsPerThread);
+    WorkDiv const work_div(blocks_per_grid, threads_per_block, elements_per_thread);
 
 #    pragma omp parallel num_threads(static_cast <int>(results.size()))
     {
-        int threadId = omp_get_thread_num();
+        int thread_id = omp_get_thread_num();
 
-        auto dst = alpaka::createView(dev, results.data() + threadId, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
-        auto src = alpaka::createView(dev, &threadId, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
+        auto dst = alpaka::createView(dev, results.data() + thread_id, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
+        auto src = alpaka::createView(dev, &thread_id, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
 
         // avoid that the first thread is executing the copy (can not be guaranteed)
-        size_t sleep_ms = (results.size() - static_cast<uint32_t>(threadId)) * 100u;
+        size_t sleep_ms = (results.size() - static_cast<uint32_t>(thread_id)) * 100u;
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
 
         // only one thread will perform this memcpy
@@ -119,19 +119,19 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
         alpaka::wait(queue);
     }
 
-    uint32_t numFlippedValues = 0u;
-    uint32_t numNonIntitialValues = 0u;
+    uint32_t num_flipped_values = 0u;
+    uint32_t num_non_intitial_values = 0u;
     for(size_t i = 0; i < results.size(); ++i)
     {
         if(static_cast<int>(i) == results.at(i))
-            numFlippedValues++;
+            num_flipped_values++;
         if(results.at(i) != -1)
-            numNonIntitialValues++;
+            num_non_intitial_values++;
     }
     // only one thread is allowed to flip the value
-    REQUIRE(numFlippedValues == 1u);
+    REQUIRE(num_flipped_values == 1u);
     // only one value is allowed to differ from the initial value
-    REQUIRE(numNonIntitialValues == 1u);
+    REQUIRE(num_non_intitial_values == 1u);
 }
 
 #endif

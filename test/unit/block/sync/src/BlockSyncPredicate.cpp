@@ -23,26 +23,26 @@ public:
         using Idx = alpaka::Idx<TAcc>;
 
         // Get the index of the current thread within the block and the block extent and map them to 1D.
-        auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
-        auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
-        auto const blockThreadIdx1D = alpaka::mapIdx<1u>(blockThreadIdx, blockThreadExtent)[0u];
-        auto const blockThreadExtent1D = blockThreadExtent.prod();
+        auto const block_thread_idx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
+        auto const block_thread_extent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        auto const block_thread_idx1_d = alpaka::mapIdx<1u>(block_thread_idx, block_thread_extent)[0u];
+        auto const block_thread_extent1_d = block_thread_extent.prod();
 
         // syncBlockThreadsPredicate<alpaka::BlockCount>
         {
             Idx const modulus = 2u;
-            int const predicate = static_cast<int>(blockThreadIdx1D % modulus);
+            auto const predicate = static_cast<int>(block_thread_idx1_d % modulus);
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockCount>(acc, predicate);
-            auto const expectedResult = static_cast<int>(blockThreadExtent1D / modulus);
-            ALPAKA_CHECK(*success, expectedResult == result);
+            auto const expected_result = static_cast<int>(block_thread_extent1_d / modulus);
+            ALPAKA_CHECK(*success, expected_result == result);
         }
         {
             Idx const modulus = 3u;
-            int const predicate = static_cast<int>(blockThreadIdx1D % modulus);
+            auto const predicate = static_cast<int>(block_thread_idx1_d % modulus);
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockCount>(acc, predicate);
-            auto const expectedResult = static_cast<int>(
-                blockThreadExtent1D - ((blockThreadExtent1D + modulus - static_cast<Idx>(1u)) / modulus));
-            ALPAKA_CHECK(*success, expectedResult == result);
+            auto const expected_result = static_cast<int>(
+                block_thread_extent1_d - ((block_thread_extent1_d + modulus - static_cast<Idx>(1u)) / modulus));
+            ALPAKA_CHECK(*success, expected_result == result);
         }
 
         // syncBlockThreadsPredicate<alpaka::BlockAnd>
@@ -57,7 +57,7 @@ public:
             ALPAKA_CHECK(*success, result == 0);
         }
         {
-            int const predicate = blockThreadIdx1D != 0;
+            int const predicate = block_thread_idx1_d != 0;
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockAnd>(acc, predicate);
             ALPAKA_CHECK(*success, result == 0);
         }
@@ -74,7 +74,7 @@ public:
             ALPAKA_CHECK(*success, result == 0);
         }
         {
-            int const predicate = static_cast<int>(blockThreadIdx1D != 1);
+            auto const predicate = static_cast<int>(block_thread_idx1_d != 1);
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockOr>(acc, predicate);
             ALPAKA_CHECK(*success, result == 1);
         }

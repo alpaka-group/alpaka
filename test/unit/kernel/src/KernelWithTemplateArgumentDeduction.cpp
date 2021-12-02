@@ -21,9 +21,9 @@ class KernelInvocationTemplateDeductionValueSemantics
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename Acc, typename TByValue, typename TByConstValue, typename TByConstReference>
+    template<typename TAcc, typename TByValue, typename TByConstValue, typename TByConstReference>
     ALPAKA_FN_ACC auto operator()(
-        Acc const& acc,
+        TAcc const& acc,
         bool* success,
         TByValue,
         TByConstValue const,
@@ -31,7 +31,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByValue, TExpected>::value,
@@ -71,8 +71,8 @@ TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromConstValue", "[
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionValueSemantics<Value> kernel;
 
-    Value const constValue{};
-    REQUIRE(fixture(kernel, constValue, constValue, constValue));
+    Value const const_value{};
+    REQUIRE(fixture(kernel, const_value, const_value, const_value));
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromConstReference", "[kernel]", alpaka::test::TestAccs)
@@ -87,8 +87,8 @@ TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromConstReference"
     KernelInvocationTemplateDeductionValueSemantics<Value> kernel;
 
     Value value{};
-    Value const& constReference = value;
-    REQUIRE(fixture(kernel, constReference, constReference, constReference));
+    Value const& const_reference = value;
+    REQUIRE(fixture(kernel, const_reference, const_reference, const_reference));
 }
 
 template<typename TExpectedFirst, typename TExpectedSecond = TExpectedFirst>
@@ -96,12 +96,12 @@ class KernelInvocationTemplateDeductionPointerSemantics
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename Acc, typename TByPointer, typename TByPointerToConst>
-    ALPAKA_FN_ACC auto operator()(Acc const& acc, bool* success, TByPointer*, TByPointerToConst const*) const -> void
+    template<typename TAcc, typename TByPointer, typename TByPointerToConst>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, TByPointer*, TByPointerToConst const*) const -> void
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByPointer, TExpectedFirst>::value,
@@ -139,9 +139,9 @@ TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromPointerToConst"
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionPointerSemantics<Value const, Value> kernel;
 
-    Value const constValue{};
-    Value const* pointerToConst = &constValue;
-    REQUIRE(fixture(kernel, pointerToConst, pointerToConst));
+    Value const const_value{};
+    Value const* pointer_to_const = &const_value;
+    REQUIRE(fixture(kernel, pointer_to_const, pointer_to_const));
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromStaticArray", "[kernel]", alpaka::test::TestAccs)
@@ -155,8 +155,8 @@ TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromStaticArray", "
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionPointerSemantics<Value> kernel;
 
-    Value staticArray[4] = {};
-    REQUIRE(fixture(kernel, staticArray, staticArray));
+    Value static_array[4] = {};
+    REQUIRE(fixture(kernel, static_array, static_array));
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromConstStaticArray", "[kernel]", alpaka::test::TestAccs)
@@ -170,6 +170,6 @@ TEMPLATE_LIST_TEST_CASE("kernelFuntionObjectTemplateDeductionFromConstStaticArra
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionPointerSemantics<Value const, Value> kernel;
 
-    Value const constStaticArray[4] = {};
-    REQUIRE(fixture(kernel, constStaticArray, constStaticArray));
+    Value const const_static_array[4] = {};
+    REQUIRE(fixture(kernel, const_static_array, const_static_array));
 }

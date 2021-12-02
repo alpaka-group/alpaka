@@ -21,11 +21,11 @@
 #include <cstdint>
 #include <iostream>
 
-template<size_t width>
-ALPAKA_FN_ACC size_t linIdxToPitchedIdx(size_t const globalIdx, size_t const pitch)
+template<size_t TWidth>
+ALPAKA_FN_ACC size_t lin_idx_to_pitched_idx(size_t const global_idx, size_t const pitch)
 {
-    const size_t idx_x = globalIdx % width;
-    const size_t idx_y = globalIdx / width;
+    const size_t idx_x = global_idx % TWidth;
+    const size_t idx_y = global_idx / TWidth;
     return idx_x + idx_y * pitch;
 }
 
@@ -39,15 +39,15 @@ struct PrintBufferKernel
         TExtent const& extents,
         size_t const pitch) const -> void
     {
-        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_extent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
+        auto const linearized_global_thread_idx = alpaka::mapIdx<1u>(global_thread_idx, global_thread_extent);
 
-        for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
+        for(size_t i(linearized_global_thread_idx[0]); i < extents.prod(); i += global_thread_extent.prod())
         {
             // NOTE: hard-coded for unsigned int
-            printf("%u:%u ", static_cast<uint32_t>(i), static_cast<uint32_t>(buffer[linIdxToPitchedIdx<2>(i, pitch)]));
+            printf("%u:%u ", static_cast<uint32_t>(i), static_cast<uint32_t>(buffer[lin_idx_to_pitched_idx<2>(i, pitch)]));
         }
     }
 };
@@ -71,14 +71,14 @@ struct TestBufferKernel
 #endif
     ) const -> void
     {
-        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_extent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
+        auto const linearized_global_thread_idx = alpaka::mapIdx<1u>(global_thread_idx, global_thread_extent);
 
-        for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
+        for(size_t i(linearized_global_thread_idx[0]); i < extents.prod(); i += global_thread_extent.prod())
         {
-            ALPAKA_ASSERT_OFFLOAD(data[linIdxToPitchedIdx<2>(i, pitch)] == i);
+            ALPAKA_ASSERT_OFFLOAD(data[lin_idx_to_pitched_idx<2>(i, pitch)] == i);
         }
     }
 };
@@ -89,12 +89,12 @@ struct FillBufferKernel
     template<typename TAcc, typename TData, typename TExtent>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, TData* const data, TExtent const& extents) const -> void
     {
-        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const global_thread_extent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
+        auto const linearized_global_thread_idx = alpaka::mapIdx<1u>(global_thread_idx, global_thread_extent);
 
-        for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
+        for(size_t i(linearized_global_thread_idx[0]); i < extents.prod(); i += global_thread_extent.prod())
         {
             data[i] = static_cast<TData>(i);
         }
@@ -149,28 +149,28 @@ auto main() -> int
     using HostQueue = alpaka::Queue<Host, HostQueueProperty>;
 
     // Select devices
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
-    auto const devHost = alpaka::getDevByIdx<Host>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_host = alpaka::getDevByIdx<Host>(0u);
 
     // Create queues
-    DevQueue devQueue(devAcc);
-    HostQueue hostQueue(devHost);
+    DevQueue dev_queue(dev_acc);
+    HostQueue host_queue(dev_host);
 
     // Define the work division for kernels to be run on devAcc and devHost
     using Vec = alpaka::Vec<Dim, Idx>;
-    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerGrid(Vec::all(static_cast<Idx>(10)));
+    Vec const elements_per_thread(Vec::all(static_cast<Idx>(1)));
+    Vec const threads_per_grid(Vec::all(static_cast<Idx>(10)));
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const devWorkDiv = alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        threadsPerGrid,
-        elementsPerThread,
+    WorkDiv const dev_work_div = alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
+        threads_per_grid,
+        elements_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
-    WorkDiv const hostWorkDiv = alpaka::getValidWorkDiv<Host>(
-        devHost,
-        threadsPerGrid,
-        elementsPerThread,
+    WorkDiv const host_work_div = alpaka::getValidWorkDiv<Host>(
+        dev_host,
+        threads_per_grid,
+        elements_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
@@ -183,28 +183,28 @@ auto main() -> int
     // already existing allocations e.g. std::array,
     // std::vector or a simple call to new.
     using Data = std::uint32_t;
-    constexpr Idx nElementsPerDim = 2;
+    constexpr Idx n_elements_per_dim = 2;
 
-    const Vec extents(Vec::all(static_cast<Idx>(nElementsPerDim)));
+    const Vec extents(Vec::all(static_cast<Idx>(n_elements_per_dim)));
 
     // Allocate host memory buffers
     //
     // The `alloc` method returns a reference counted buffer handle.
     // When the last such handle is destroyed, the memory is freed automatically.
     using BufHost = alpaka::Buf<Host, Data, Dim, Idx>;
-    BufHost hostBuffer(alpaka::allocBuf<Data, Idx>(devHost, extents));
+    BufHost host_buffer(alpaka::allocBuf<Data, Idx>(dev_host, extents));
     // You can also use already allocated memory and wrap it within a view (irrespective of the device type).
     // The view does not own the underlying memory. So you have to make sure that
     // the view does not outlive its underlying memory.
-    std::array<Data, nElementsPerDim * nElementsPerDim * nElementsPerDim> plainBuffer;
-    auto hostViewPlainPtr = alpaka::createView(devHost, plainBuffer.data(), extents);
+    std::array<Data, n_elements_per_dim * n_elements_per_dim * n_elements_per_dim> plain_buffer{};
+    auto host_view_plain_ptr = alpaka::createView(dev_host, plain_buffer.data(), extents);
 
     // Allocate accelerator memory buffers
     //
     // The interface to allocate a buffer is the same on the host and on the device.
     using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;
-    BufAcc deviceBuffer1(alpaka::allocBuf<Data, Idx>(devAcc, extents));
-    BufAcc deviceBuffer2(alpaka::allocBuf<Data, Idx>(devAcc, extents));
+    BufAcc device_buffer1(alpaka::allocBuf<Data, Idx>(dev_acc, extents));
+    BufAcc device_buffer2(alpaka::allocBuf<Data, Idx>(dev_acc, extents));
 
 
     // Init host buffer
@@ -213,7 +213,7 @@ auto main() -> int
     // elements of a buffer directly, but
     // you can get the pointer to the memory
     // (getPtrNative).
-    Data* const pHostBuffer = alpaka::getPtrNative(hostBuffer);
+    Data* const p_host_buffer = alpaka::getPtrNative(host_buffer);
 
     // This pointer can be used to directly write
     // some values into the buffer memory.
@@ -221,21 +221,21 @@ auto main() -> int
     // The same holds true for device memory.
     for(Idx i(0); i < extents.prod(); ++i)
     {
-        pHostBuffer[i] = static_cast<Data>(i);
+        p_host_buffer[i] = static_cast<Data>(i);
     }
 
     // Memory views and buffers can also be initialized by executing a kernel.
     // To pass a buffer into a kernel, you can pass the
     // native pointer into the kernel invocation.
-    Data* const pHostViewPlainPtr = alpaka::getPtrNative(hostViewPlainPtr);
+    Data* const p_host_view_plain_ptr = alpaka::getPtrNative(host_view_plain_ptr);
 
-    FillBufferKernel fillBufferKernel;
+    FillBufferKernel fill_buffer_kernel;
 
     alpaka::exec<Host>(
-        hostQueue,
-        hostWorkDiv,
-        fillBufferKernel,
-        pHostViewPlainPtr, // 1st kernel argument
+        host_queue,
+        host_work_div,
+        fill_buffer_kernel,
+        p_host_view_plain_ptr, // 1st kernel argument
         extents); // 2nd kernel argument
 
 
@@ -250,42 +250,42 @@ auto main() -> int
     // not currently supported.
     // In this example both host buffers are copied
     // into device buffers.
-    alpaka::memcpy(devQueue, deviceBuffer1, hostViewPlainPtr, extents);
-    alpaka::memcpy(devQueue, deviceBuffer2, hostBuffer, extents);
+    alpaka::memcpy(dev_queue, device_buffer1, host_view_plain_ptr, extents);
+    alpaka::memcpy(dev_queue, device_buffer2, host_buffer, extents);
 
     // Depending on the accelerator, the allocation function may introduce
     // padding between rows/planes of multidimensional memory allocations.
     // Therefore the pitch (distance between consecutive rows/planes) may be
     // greater than the space required for the data.
-    Idx const deviceBuffer1Pitch(alpaka::getPitchBytes<2u>(deviceBuffer1) / sizeof(Data));
-    Idx const deviceBuffer2Pitch(alpaka::getPitchBytes<2u>(deviceBuffer2) / sizeof(Data));
-    Idx const hostBuffer1Pitch(alpaka::getPitchBytes<2u>(hostBuffer) / sizeof(Data));
-    Idx const hostViewPlainPtrPitch(alpaka::getPitchBytes<2u>(hostViewPlainPtr) / sizeof(Data));
+    Idx const device_buffer1_pitch(alpaka::getPitchBytes<2u>(device_buffer1) / sizeof(Data));
+    Idx const device_buffer2_pitch(alpaka::getPitchBytes<2u>(device_buffer2) / sizeof(Data));
+    Idx const host_buffer1_pitch(alpaka::getPitchBytes<2u>(host_buffer) / sizeof(Data));
+    Idx const host_view_plain_ptr_pitch(alpaka::getPitchBytes<2u>(host_view_plain_ptr) / sizeof(Data));
 
     // Test device Buffer
     //
     // This kernel tests if the copy operations
     // were successful. In the case something
     // went wrong an assert will fail.
-    Data const* const pDeviceBuffer1 = alpaka::getPtrNative(deviceBuffer1);
-    Data const* const pDeviceBuffer2 = alpaka::getPtrNative(deviceBuffer2);
+    Data const* const p_device_buffer1 = alpaka::getPtrNative(device_buffer1);
+    Data const* const p_device_buffer2 = alpaka::getPtrNative(device_buffer2);
 
-    TestBufferKernel testBufferKernel;
+    TestBufferKernel test_buffer_kernel;
     alpaka::exec<Acc>(
-        devQueue,
-        devWorkDiv,
-        testBufferKernel,
-        pDeviceBuffer1, // 1st kernel argument
+        dev_queue,
+        dev_work_div,
+        test_buffer_kernel,
+        p_device_buffer1, // 1st kernel argument
         extents, // 2nd kernel argument
-        deviceBuffer1Pitch); // 3rd kernel argument
+        device_buffer1_pitch); // 3rd kernel argument
 
     alpaka::exec<Acc>(
-        devQueue,
-        devWorkDiv,
-        testBufferKernel,
-        pDeviceBuffer2, // 1st kernel argument
+        dev_queue,
+        dev_work_div,
+        test_buffer_kernel,
+        p_device_buffer2, // 1st kernel argument
         extents, // 2nd kernel argument
-        deviceBuffer2Pitch); // 3rd kernel argument
+        device_buffer2_pitch); // 3rd kernel argument
 
 
     // Print device Buffer
@@ -298,45 +298,45 @@ auto main() -> int
     // the output can appear in any order or even
     // completely distorted.
 
-    PrintBufferKernel printBufferKernel;
+    PrintBufferKernel print_buffer_kernel;
     alpaka::exec<Acc>(
-        devQueue,
-        devWorkDiv,
-        printBufferKernel,
-        pDeviceBuffer1, // 1st kernel argument
+        dev_queue,
+        dev_work_div,
+        print_buffer_kernel,
+        p_device_buffer1, // 1st kernel argument
         extents, // 2nd kernel argument
-        deviceBuffer1Pitch); // 3rd kernel argument
-    alpaka::wait(devQueue);
+        device_buffer1_pitch); // 3rd kernel argument
+    alpaka::wait(dev_queue);
     std::cout << std::endl;
 
     alpaka::exec<Acc>(
-        devQueue,
-        devWorkDiv,
-        printBufferKernel,
-        pDeviceBuffer2, // 1st kernel argument
+        dev_queue,
+        dev_work_div,
+        print_buffer_kernel,
+        p_device_buffer2, // 1st kernel argument
         extents, // 2nd kernel argument
-        deviceBuffer2Pitch); // 3rd kernel argument
-    alpaka::wait(devQueue);
+        device_buffer2_pitch); // 3rd kernel argument
+    alpaka::wait(dev_queue);
     std::cout << std::endl;
 
     alpaka::exec<Host>(
-        hostQueue,
-        hostWorkDiv,
-        printBufferKernel,
-        pHostBuffer, // 1st kernel argument
+        host_queue,
+        host_work_div,
+        print_buffer_kernel,
+        p_host_buffer, // 1st kernel argument
         extents, // 2nd kernel argument
-        hostBuffer1Pitch); // 3rd kernel argument
-    alpaka::wait(hostQueue);
+        host_buffer1_pitch); // 3rd kernel argument
+    alpaka::wait(host_queue);
     std::cout << std::endl;
 
     alpaka::exec<Host>(
-        hostQueue,
-        hostWorkDiv,
-        printBufferKernel,
-        pHostViewPlainPtr, // 1st kernel argument
+        host_queue,
+        host_work_div,
+        print_buffer_kernel,
+        p_host_view_plain_ptr, // 1st kernel argument
         extents, // 2nd kernel argument
-        hostViewPlainPtrPitch); // 3rd kernel argument
-    alpaka::wait(hostQueue);
+        host_view_plain_ptr_pitch); // 3rd kernel argument
+    alpaka::wait(host_queue);
     std::cout << std::endl;
 
     return EXIT_SUCCESS;

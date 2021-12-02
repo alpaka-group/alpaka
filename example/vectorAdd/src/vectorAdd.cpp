@@ -40,27 +40,27 @@ public:
     template<typename TAcc, typename TElem, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        TElem const* const A,
-        TElem const* const B,
-        TElem* const C,
-        TIdx const& numElements) const -> void
+        TElem const* const a,
+        TElem const* const b,
+        TElem* const c,
+        TIdx const& num_elements) const -> void
     {
         static_assert(alpaka::Dim<TAcc>::value == 1, "The VectorAddKernel expects 1-dimensional indices!");
 
-        TIdx const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        TIdx const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
-        TIdx const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
+        TIdx const grid_thread_idx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        TIdx const thread_elem_extent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
+        TIdx const thread_first_elem_idx(grid_thread_idx * thread_elem_extent);
 
-        if(threadFirstElemIdx < numElements)
+        if(thread_first_elem_idx < num_elements)
         {
             // Calculate the number of elements to compute in this thread.
             // The result is uniform for all but the last thread.
-            TIdx const threadLastElemIdx(threadFirstElemIdx + threadElemExtent);
-            TIdx const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
+            TIdx const thread_last_elem_idx(thread_first_elem_idx + thread_elem_extent);
+            TIdx const thread_last_elem_idx_clipped((num_elements > thread_last_elem_idx) ? thread_last_elem_idx : num_elements);
 
-            for(TIdx i(threadFirstElemIdx); i < threadLastElemIdxClipped; ++i)
+            for(TIdx i(thread_first_elem_idx); i < thread_last_elem_idx_clipped; ++i)
             {
-                C[i] = A[i] + B[i];
+                c[i] = a[i] + b[i];
             }
         }
     }
@@ -100,21 +100,21 @@ auto main() -> int
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
 
     // Create a queue on the device
-    QueueAcc queue(devAcc);
+    QueueAcc queue(dev_acc);
 
     // Define the work division
-    Idx const numElements(123456);
-    Idx const elementsPerThread(8u);
-    alpaka::Vec<Dim, Idx> const extent(numElements);
+    Idx const num_elements(123456);
+    Idx const elements_per_thread(8u);
+    alpaka::Vec<Dim, Idx> const extent(num_elements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
-        devAcc,
+    alpaka::WorkDivMembers<Dim, Idx> const work_div(alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
         extent,
-        elementsPerThread,
+        elements_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
@@ -123,96 +123,96 @@ auto main() -> int
 
     // Get the host device for allocating memory on the host.
     using DevHost = alpaka::DevCpu;
-    auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
+    auto const dev_host = alpaka::getDevByIdx<DevHost>(0u);
 
     // Allocate 3 host memory buffers
     using BufHost = alpaka::Buf<DevHost, Data, Dim, Idx>;
-    BufHost bufHostA(alpaka::allocBuf<Data, Idx>(devHost, extent));
-    BufHost bufHostB(alpaka::allocBuf<Data, Idx>(devHost, extent));
-    BufHost bufHostC(alpaka::allocBuf<Data, Idx>(devHost, extent));
+    BufHost buf_host_a(alpaka::allocBuf<Data, Idx>(dev_host, extent));
+    BufHost buf_host_b(alpaka::allocBuf<Data, Idx>(dev_host, extent));
+    BufHost buf_host_c(alpaka::allocBuf<Data, Idx>(dev_host, extent));
 
     // Initialize the host input vectors A and B
-    Data* const pBufHostA(alpaka::getPtrNative(bufHostA));
-    Data* const pBufHostB(alpaka::getPtrNative(bufHostB));
-    Data* const pBufHostC(alpaka::getPtrNative(bufHostC));
+    Data* const p_buf_host_a(alpaka::getPtrNative(buf_host_a));
+    Data* const p_buf_host_b(alpaka::getPtrNative(buf_host_b));
+    Data* const p_buf_host_c(alpaka::getPtrNative(buf_host_c));
 
     // C++14 random generator for uniformly distributed numbers in {1,..,42}
     std::random_device rd{};
     std::default_random_engine eng{rd()};
     std::uniform_int_distribution<Data> dist(1, 42);
 
-    for(Idx i(0); i < numElements; ++i)
+    for(Idx i(0); i < num_elements; ++i)
     {
-        pBufHostA[i] = dist(eng);
-        pBufHostB[i] = dist(eng);
-        pBufHostC[i] = 0;
+        p_buf_host_a[i] = dist(eng);
+        p_buf_host_b[i] = dist(eng);
+        p_buf_host_c[i] = 0;
     }
 
     // Allocate 3 buffers on the accelerator
     using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;
-    BufAcc bufAccA(alpaka::allocBuf<Data, Idx>(devAcc, extent));
-    BufAcc bufAccB(alpaka::allocBuf<Data, Idx>(devAcc, extent));
-    BufAcc bufAccC(alpaka::allocBuf<Data, Idx>(devAcc, extent));
+    BufAcc buf_acc_a(alpaka::allocBuf<Data, Idx>(dev_acc, extent));
+    BufAcc buf_acc_b(alpaka::allocBuf<Data, Idx>(dev_acc, extent));
+    BufAcc buf_acc_c(alpaka::allocBuf<Data, Idx>(dev_acc, extent));
 
     // Copy Host -> Acc
-    alpaka::memcpy(queue, bufAccA, bufHostA, extent);
-    alpaka::memcpy(queue, bufAccB, bufHostB, extent);
-    alpaka::memcpy(queue, bufAccC, bufHostC, extent);
+    alpaka::memcpy(queue, buf_acc_a, buf_host_a, extent);
+    alpaka::memcpy(queue, buf_acc_b, buf_host_b, extent);
+    alpaka::memcpy(queue, buf_acc_c, buf_host_c, extent);
 
     // Instantiate the kernel function object
     VectorAddKernel kernel;
 
     // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
+    auto const task_kernel = alpaka::createTaskKernel<Acc>(
+        work_div,
         kernel,
-        alpaka::getPtrNative(bufAccA),
-        alpaka::getPtrNative(bufAccB),
-        alpaka::getPtrNative(bufAccC),
-        numElements);
+        alpaka::getPtrNative(buf_acc_a),
+        alpaka::getPtrNative(buf_acc_b),
+        alpaka::getPtrNative(buf_acc_c),
+        num_elements);
 
     // Enqueue the kernel execution task
     {
-        const auto beginT = std::chrono::high_resolution_clock::now();
-        alpaka::enqueue(queue, taskKernel);
+        const auto begin_t = std::chrono::high_resolution_clock::now();
+        alpaka::enqueue(queue, task_kernel);
         alpaka::wait(queue); // wait in case we are using an asynchronous queue to time actual kernel runtime
-        const auto endT = std::chrono::high_resolution_clock::now();
-        std::cout << "Time for kernel execution: " << std::chrono::duration<double>(endT - beginT).count() << 's'
+        const auto end_t = std::chrono::high_resolution_clock::now();
+        std::cout << "Time for kernel execution: " << std::chrono::duration<double>(end_t - begin_t).count() << 's'
                   << std::endl;
     }
 
     // Copy back the result
     {
-        auto beginT = std::chrono::high_resolution_clock::now();
-        alpaka::memcpy(queue, bufHostC, bufAccC, extent);
+        auto begin_t = std::chrono::high_resolution_clock::now();
+        alpaka::memcpy(queue, buf_host_c, buf_acc_c, extent);
         alpaka::wait(queue);
-        const auto endT = std::chrono::high_resolution_clock::now();
-        std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT - beginT).count() << 's'
+        const auto end_t = std::chrono::high_resolution_clock::now();
+        std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(end_t - begin_t).count() << 's'
                   << std::endl;
     }
 
-    int falseResults = 0;
-    static constexpr int MAX_PRINT_FALSE_RESULTS = 20;
-    for(Idx i(0u); i < numElements; ++i)
+    int false_results = 0;
+    static constexpr int max_print_false_results = 20;
+    for(Idx i(0u); i < num_elements; ++i)
     {
-        Data const& val(pBufHostC[i]);
-        Data const correctResult(pBufHostA[i] + pBufHostB[i]);
-        if(val != correctResult)
+        Data const& val(p_buf_host_c[i]);
+        Data const correct_result(p_buf_host_a[i] + p_buf_host_b[i]);
+        if(val != correct_result)
         {
-            if(falseResults < MAX_PRINT_FALSE_RESULTS)
-                std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
-            ++falseResults;
+            if(false_results < max_print_false_results)
+                std::cerr << "C[" << i << "] == " << val << " != " << correct_result << std::endl;
+            ++false_results;
         }
     }
 
-    if(falseResults == 0)
+    if(false_results == 0)
     {
         std::cout << "Execution results correct!" << std::endl;
         return EXIT_SUCCESS;
     }
     else
     {
-        std::cout << "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS
+        std::cout << "Found " << false_results << " false results, printed no more than " << max_print_false_results
                   << "\n"
                   << "Execution results incorrect!" << std::endl;
         return EXIT_FAILURE;

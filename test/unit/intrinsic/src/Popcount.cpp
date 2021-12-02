@@ -36,14 +36,14 @@ public:
                static_cast<TInput>(-1)};
         for(auto const input : inputs)
         {
-            int const expected = popcountNaive(input);
+            int const expected = popcount_naive(input);
             int const actual = alpaka::popcount(acc, input);
             ALPAKA_CHECK(*success, actual == expected);
         }
     }
 
 private:
-    ALPAKA_FN_ACC static auto popcountNaive(TInput value) -> int
+    ALPAKA_FN_ACC static auto popcount_naive(TInput value) -> int
     {
         int result = 0;
         while(value)

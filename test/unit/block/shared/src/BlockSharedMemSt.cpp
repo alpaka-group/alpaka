@@ -84,7 +84,7 @@ public:
     {
         // Allocations in the loop with same template signature should be equal too this allocation.
         // 21 byte is chosen to break nice alignment for all following calls of declareSharedVar.
-        auto& baseAllocation = alpaka::declareSharedVar<alpaka::test::Array<std::uint8_t, 21>, 42>(acc);
+        auto& base_allocation = alpaka::declareSharedVar<alpaka::test::Array<std::uint8_t, 21>, 42>(acc);
 
         // Multiple runs to make sure it really works.
         for(std::size_t i = 0u; i < 10; ++i)
@@ -115,11 +115,11 @@ public:
             auto& a = alpaka::declareSharedVar<alpaka::test::Array<std::uint8_t, 21>, 42>(acc);
             auto& b = alpaka::declareSharedVar<alpaka::test::Array<std::uint8_t, 21>, 42>(acc);
             ALPAKA_CHECK(*success, &a == &b);
-            ALPAKA_CHECK(*success, &a == &baseAllocation);
+            ALPAKA_CHECK(*success, &a == &base_allocation);
 
-            auto& lastAllocation = alpaka::declareSharedVar<alpaka::test::Array<std::uint8_t, 23>, 23>(acc);
+            auto& last_allocation = alpaka::declareSharedVar<alpaka::test::Array<std::uint8_t, 23>, 23>(acc);
             auto& c = alpaka::declareSharedVar<alpaka::test::Array<std::uint8_t, 23>, 23>(acc);
-            ALPAKA_CHECK(*success, &lastAllocation == &c);
+            ALPAKA_CHECK(*success, &last_allocation == &c);
         }
     }
 };

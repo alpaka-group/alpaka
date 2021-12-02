@@ -24,28 +24,28 @@ TEMPLATE_LIST_TEST_CASE("mapIdxPitchBytes", "[idx]", alpaka::test::TestDims)
     using Idx = std::size_t;
     using Vec = alpaka::Vec<Dim, Idx>;
 
-    auto const extentNd
+    auto const extent_nd
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using Elem = std::uint8_t;
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
-    auto parentView = alpaka::createView(devAcc, static_cast<Elem*>(nullptr), extentNd);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
+    auto parent_view = alpaka::createView(dev_acc, static_cast<Elem*>(nullptr), extent_nd);
 
     auto const offset = Vec::all(4u);
     auto const extent = Vec::all(4u);
-    auto const idxNd = Vec::all(2u);
-    auto view = alpaka::createSubView(parentView, extent, offset);
+    auto const idx_nd = Vec::all(2u);
+    auto view = alpaka::createSubView(parent_view, extent, offset);
     auto pitch = alpaka::getPitchBytesVec(view);
 
-    auto const idx1d = alpaka::mapIdxPitchBytes<1u>(idxNd, pitch);
-    auto const idx1dDelta = alpaka::mapIdx<1u>(idxNd + offset, extentNd) - alpaka::mapIdx<1u>(offset, extentNd);
+    auto const idx1d = alpaka::mapIdxPitchBytes<1u>(idx_nd, pitch);
+    auto const idx1d_delta = alpaka::mapIdx<1u>(idx_nd + offset, extent_nd) - alpaka::mapIdx<1u>(offset, extent_nd);
 
-    auto const idxNdResult = alpaka::mapIdxPitchBytes<Dim::value>(idx1d, pitch);
+    auto const idx_nd_result = alpaka::mapIdxPitchBytes<Dim::value>(idx1d, pitch);
 
     // linear index in pitched offset box should be the difference between
     // linear index in parent box and linear index of offset
-    REQUIRE(idx1d == idx1dDelta);
+    REQUIRE(idx1d == idx1d_delta);
     // roundtrip
-    REQUIRE(idxNd == idxNdResult);
+    REQUIRE(idx_nd == idx_nd_result);
 }

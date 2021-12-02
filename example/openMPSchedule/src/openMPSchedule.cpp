@@ -37,12 +37,12 @@ struct OpenMPScheduleDefaultKernel
     {
         // For simplicity assume 1d index space throughout this example
         using Idx = alpaka::Idx<TAcc>;
-        Idx const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        Idx const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
 
         // Print work distribution between threads for illustration
         printf(
             "alpaka global thread index %u is processed by OpenMP thread %d\n",
-            static_cast<std::uint32_t>(globalThreadIdx),
+            static_cast<std::uint32_t>(global_thread_idx),
             omp_get_thread_num());
     }
 };
@@ -55,11 +55,11 @@ struct OpenMPScheduleMemberKernel : public OpenMPScheduleDefaultKernel
 
     //! OpenMP schedule kind to be used by the AccCpuOmp2Blocks accelerator,
     //! has to be static and constexpr.
-    static constexpr auto ompScheduleKind = alpaka::omp::Schedule::Static;
+    static constexpr auto omp_schedule_kind = alpaka::omp::Schedule::Static;
 
     //! Member to set OpenMP chunk size, can be non-static and non-constexpr.
     //! Defining kind as member and not defining chunk will result in default chunk size for the kind.
-    static constexpr int ompScheduleChunkSize = 1;
+    static constexpr int omp_schedule_chunk_size = 1;
 };
 
 //! Kernel that sets the schedule via trait specialization.
@@ -81,17 +81,17 @@ namespace alpaka
         struct OmpSchedule<OpenMPScheduleTraitKernel, TAcc>
         {
             template<typename TDim, typename... TArgs>
-            ALPAKA_FN_HOST static auto getOmpSchedule(
-                OpenMPScheduleTraitKernel const& kernelFnObj,
-                Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
-                Vec<TDim, Idx<TAcc>> const& threadElemExtent,
+            ALPAKA_FN_HOST static auto get_omp_schedule(
+                OpenMPScheduleTraitKernel const& kernel_fn_obj,
+                Vec<TDim, Idx<TAcc>> const& block_thread_extent,
+                Vec<TDim, Idx<TAcc>> const& thread_elem_extent,
                 TArgs const&... args) -> alpaka::omp::Schedule
             {
                 // Determine schedule at runtime for the given kernel and run parameters.
                 // For this particular example kernel, TArgs is an empty pack and can be removed.
-                alpaka::ignore_unused(kernelFnObj);
-                alpaka::ignore_unused(blockThreadExtent);
-                alpaka::ignore_unused(threadElemExtent);
+                alpaka::ignore_unused(kernel_fn_obj);
+                alpaka::ignore_unused(block_thread_extent);
+                alpaka::ignore_unused(thread_elem_extent);
                 alpaka::ignore_unused(args...);
 
                 return alpaka::omp::Schedule{alpaka::omp::Schedule::Dynamic, 2};
@@ -119,34 +119,34 @@ auto main() -> int
     using Queue = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
 
     // Create a queue on the device
-    Queue queue(devAcc);
+    Queue queue(dev_acc);
 
     // Define the work division
-    Idx const threadsPerGrid = 16u;
-    Idx const elementsPerThread = 1u;
-    auto const workDiv = alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        threadsPerGrid,
-        elementsPerThread,
+    Idx const threads_per_grid = 16u;
+    Idx const elements_per_thread = 1u;
+    auto const work_div = alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
+        threads_per_grid,
+        elements_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Run the kernel setting no schedule explicitly.
     std::cout << "OpenMPScheduleDefaultKernel setting no schedule explicitly:\n";
-    alpaka::exec<Acc>(queue, workDiv, OpenMPScheduleDefaultKernel{});
+    alpaka::exec<Acc>(queue, work_div, OpenMPScheduleDefaultKernel{});
     alpaka::wait(queue);
 
     // Run the kernel setting the schedule via a trait
     std::cout << "\n\nOpenMPScheduleMemberKernel setting the schedule via a static member:\n";
-    alpaka::exec<Acc>(queue, workDiv, OpenMPScheduleMemberKernel{});
+    alpaka::exec<Acc>(queue, work_div, OpenMPScheduleMemberKernel{});
     alpaka::wait(queue);
 
     // Run the kernel setting the schedule via a trait
     std::cout << "\n\nOpenMPScheduleTraitKernel setting the schedule via trait:\n";
-    alpaka::exec<Acc>(queue, workDiv, OpenMPScheduleTraitKernel{});
+    alpaka::exec<Acc>(queue, work_div, OpenMPScheduleTraitKernel{});
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

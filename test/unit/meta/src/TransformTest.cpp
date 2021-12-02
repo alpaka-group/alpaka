@@ -14,8 +14,8 @@
 #include <tuple>
 #include <type_traits>
 
-template<typename T>
-using AddConst = T const;
+template<typename TT>
+using AddConst = TT const;
 
 TEST_CASE("transform", "[meta]")
 {

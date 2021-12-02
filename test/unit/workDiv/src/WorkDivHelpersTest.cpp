@@ -18,7 +18,7 @@
 namespace
 {
     template<typename TAcc>
-    auto getWorkDiv()
+    auto get_work_div()
     {
         using Dev = alpaka::Dev<TAcc>;
         using Pltf = alpaka::Pltf<Dev>;
@@ -26,15 +26,15 @@ namespace
         using Idx = alpaka::Idx<TAcc>;
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
-        auto const gridThreadExtent = alpaka::Vec<Dim, Idx>::all(10);
-        auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
-        auto const workDiv = alpaka::getValidWorkDiv<TAcc>(
+        auto const grid_thread_extent = alpaka::Vec<Dim, Idx>::all(10);
+        auto const thread_element_extent = alpaka::Vec<Dim, Idx>::ones();
+        auto const work_div = alpaka::getValidWorkDiv<TAcc>(
             dev,
-            gridThreadExtent,
-            threadElementExtent,
+            grid_thread_extent,
+            thread_element_extent,
             false,
             alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
-        return workDiv;
+        return work_div;
     }
 } // namespace
 
@@ -42,8 +42,8 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     // Note: getValidWorkDiv() is called inside getWorkDiv
-    auto const workDiv = getWorkDiv<Acc>();
-    alpaka::ignore_unused(workDiv);
+    auto const work_div = get_work_div<Acc>();
+    alpaka::ignore_unused(work_div);
 }
 
 TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
@@ -53,8 +53,8 @@ TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
     using Pltf = alpaka::Pltf<Dev>;
 
     Dev dev(alpaka::getDevByIdx<Pltf>(0u));
-    auto const workDiv = getWorkDiv<Acc>();
+    auto const work_div = get_work_div<Acc>();
     // Test both overloads
-    REQUIRE(alpaka::isValidWorkDiv(alpaka::getAccDevProps<Acc>(dev), workDiv));
-    REQUIRE(alpaka::isValidWorkDiv<Acc>(dev, workDiv));
+    REQUIRE(alpaka::isValidWorkDiv(alpaka::getAccDevProps<Acc>(dev), work_div));
+    REQUIRE(alpaka::isValidWorkDiv<Acc>(dev, work_div));
 }

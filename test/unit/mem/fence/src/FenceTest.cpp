@@ -46,7 +46,7 @@ public:
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u];
-        auto shared = const_cast<ALPAKA_DEVICE_VOLATILE int*>(alpaka::getDynSharedMem<int>(acc));
+        auto *shared = const_cast<ALPAKA_DEVICE_VOLATILE int*>(alpaka::getDynSharedMem<int>(acc));
 
         // Initialize
         if(idx == 0)
@@ -83,7 +83,7 @@ namespace alpaka
         {
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec, typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+            ALPAKA_FN_HOST_ACC static auto get_block_shared_mem_dyn_size_bytes(
                 BlockFenceTestKernel const&,
                 TVec const&,
                 TVec const&,
@@ -113,21 +113,21 @@ TEMPLATE_LIST_TEST_CASE("FenceTest", "[fence]", TestAccs)
     auto const dev = alpaka::getDevByIdx<Pltf>(0u);
     auto queue = Queue{dev};
 
-    auto const numElements = Idx{2ul};
-    auto const extent = alpaka::Vec<Dim, Idx>{numElements};
+    auto const num_elements = Idx{2ul};
+    auto const extent = alpaka::Vec<Dim, Idx>{num_elements};
     auto vars_host = alpaka::allocBuf<int, Idx>(host, extent);
     auto vars_dev = alpaka::allocBuf<int, Idx>(dev, extent);
 
-    auto const pVarsHost = alpaka::getPtrNative(vars_host);
-    pVarsHost[0] = 1;
-    pVarsHost[1] = 2;
+    auto const p_vars_host = alpaka::getPtrNative(vars_host);
+    p_vars_host[0] = 1;
+    p_vars_host[1] = 2;
 
     alpaka::memcpy(queue, vars_dev, vars_host, extent);
     alpaka::wait(queue);
 
-    DeviceFenceTestKernel deviceKernel;
-    REQUIRE(fixture(deviceKernel, alpaka::getPtrNative(vars_dev)));
+    DeviceFenceTestKernel device_kernel;
+    REQUIRE(fixture(device_kernel, alpaka::getPtrNative(vars_dev)));
 
-    BlockFenceTestKernel blockKernel;
-    REQUIRE(fixture(blockKernel));
+    BlockFenceTestKernel block_kernel;
+    REQUIRE(fixture(block_kernel));
 }

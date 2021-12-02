@@ -25,15 +25,15 @@ public:
 
         // Store the comparison result in a separate variable so that the function call is outside ALPAKA_CHECK.
         // In case ALPAKA_CHECK were ever somehow modified to silence the warning by itself.
-        bool testValue = false;
+        bool test_value = false;
 
-        float floatValue = -1.0f;
-        testValue = alpaka::math::floatEqualExactNoWarning(floatValue, -1.0f);
-        ALPAKA_CHECK(*success, testValue);
+        float float_value = -1.0f;
+        test_value = alpaka::math::floatEqualExactNoWarning(float_value, -1.0f);
+        ALPAKA_CHECK(*success, test_value);
 
-        double doubleValue = -1.0;
-        testValue = alpaka::math::floatEqualExactNoWarning(doubleValue, -1.0);
-        ALPAKA_CHECK(*success, testValue);
+        double double_value = -1.0;
+        test_value = alpaka::math::floatEqualExactNoWarning(double_value, -1.0);
+        ALPAKA_CHECK(*success, test_value);
     }
 };
 
@@ -43,15 +43,15 @@ TEMPLATE_LIST_TEST_CASE("floatEqualExactTest", "[math]", alpaka::test::TestAccs)
 
     // Store the comparison result in a separate variable so that the function call is outside REQUIRE.
     // In case REQUIRE were ever somehow modified to silence the warning by itself.
-    bool testValue = false;
+    bool test_value = false;
 
-    float floatValue = -1.0;
-    testValue = alpaka::math::floatEqualExactNoWarning(floatValue, -1.0f);
-    REQUIRE(testValue);
+    float float_value = -1.0;
+    test_value = alpaka::math::floatEqualExactNoWarning(float_value, -1.0f);
+    REQUIRE(test_value);
 
-    double doubleValue = -1.0;
-    testValue = alpaka::math::floatEqualExactNoWarning(doubleValue, -1.0);
-    REQUIRE(testValue);
+    double double_value = -1.0;
+    test_value = alpaka::math::floatEqualExactNoWarning(double_value, -1.0);
+    REQUIRE(test_value);
 
     // Device tests
 
@@ -61,6 +61,6 @@ TEMPLATE_LIST_TEST_CASE("floatEqualExactTest", "[math]", alpaka::test::TestAccs)
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
-    FloatEqualExactTestKernel kernelFloat;
-    REQUIRE(fixture(kernelFloat));
+    FloatEqualExactTestKernel kernel_float;
+    REQUIRE(fixture(kernel_float));
 }

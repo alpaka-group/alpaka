@@ -13,14 +13,14 @@
 
 struct Foo
 {
-    Foo(int num) : num_(num)
+    explicit Foo(int num) : m_num(num)
     {
     }
     auto add(int i) const -> int
     {
-        return num_ + i;
+        return m_num + i;
     }
-    int num_;
+    int m_num;
 };
 
 auto abs_num(int i) -> int;
@@ -52,7 +52,7 @@ TEST_CASE("invoke", "[meta]")
     REQUIRE(-314158 == alpaka::meta::invoke(&Foo::add, foo, 1));
 
     // invoke (access) a data member
-    REQUIRE(-314159 == alpaka::meta::invoke(&Foo::num_, foo));
+    REQUIRE(-314159 == alpaka::meta::invoke(&Foo::m_num, foo));
 
     // invoke a function object
     REQUIRE(18 == alpaka::meta::invoke(AbsNum(), -18));
@@ -64,8 +64,8 @@ auto add(int first, int second) -> int
     return first + second;
 }
 
-template<typename T>
-T add_generic(T first, T second)
+template<typename TT>
+TT add_generic(TT first, TT second)
 {
     return first + second;
 }

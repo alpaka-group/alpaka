@@ -40,14 +40,14 @@ public:
                std::numeric_limits<TInput>::min()};
         for(auto const input : inputs)
         {
-            std::int32_t const expected = ffsNaive(input);
+            std::int32_t const expected = ffs_naive(input);
             std::int32_t const actual = alpaka::ffs(acc, input);
             ALPAKA_CHECK(*success, actual == expected);
         }
     }
 
 private:
-    ALPAKA_FN_ACC static auto ffsNaive(TInput value) -> std::int32_t
+    ALPAKA_FN_ACC static auto ffs_naive(TInput value) -> std::int32_t
     {
         if(value == 0)
             return 0;

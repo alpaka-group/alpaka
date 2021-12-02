@@ -161,7 +161,7 @@ namespace alpaka
         Vec<TDim, Idx<TAcc>> const& threadElemExtent,
         TArgs const&... args) -> std::size_t
     {
-        return traits::BlockSharedMemDynSizeBytes<TKernelFnObj, TAcc>::getBlockSharedMemDynSizeBytes(
+        return traits::BlockSharedMemDynSizeBytes<TKernelFnObj, TAcc>::get_block_shared_mem_dyn_size_bytes(
             kernelFnObj,
             blockThreadExtent,
             threadElemExtent,
@@ -190,7 +190,7 @@ namespace alpaka
         Vec<TDim, Idx<TAcc>> const& threadElemExtent,
         TArgs const&... args)
     {
-        return traits::OmpSchedule<TKernelFnObj, TAcc>::getOmpSchedule(
+        return traits::OmpSchedule<TKernelFnObj, TAcc>::get_omp_schedule(
             kernelFnObj,
             blockThreadExtent,
             threadElemExtent,

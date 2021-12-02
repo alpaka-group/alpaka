@@ -28,25 +28,25 @@
 //! to lift an existing function into a kernel
 //! function.
 template<typename TAcc>
-void ALPAKA_FN_ACC hiWorldFunction(TAcc const& acc, size_t const nExclamationMarks)
+void ALPAKA_FN_ACC hi_world_function(TAcc const& acc, size_t const n_exclamation_marks)
 {
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
     using Vec = alpaka::Vec<Dim, Idx>;
     using Vec1 = alpaka::Vec<alpaka::DimInt<1u>, Idx>;
 
-    Vec const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-    Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
-    Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
+    Vec const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+    Vec const global_thread_extent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+    Vec1 const linearized_global_thread_idx = alpaka::mapIdx<1u>(global_thread_idx, global_thread_extent);
 
     printf(
         "[z:%u, y:%u, x:%u][linear:%u] Hi world from a function",
-        static_cast<unsigned>(globalThreadIdx[0]),
-        static_cast<unsigned>(globalThreadIdx[1]),
-        static_cast<unsigned>(globalThreadIdx[2]),
-        static_cast<unsigned>(linearizedGlobalThreadIdx[0]));
+        static_cast<unsigned>(global_thread_idx[0]),
+        static_cast<unsigned>(global_thread_idx[1]),
+        static_cast<unsigned>(global_thread_idx[2]),
+        static_cast<unsigned>(linearized_global_thread_idx[0]));
 
-    for(size_t i = 0; i < nExclamationMarks; ++i)
+    for(size_t i = 0; i < n_exclamation_marks; ++i)
     {
         printf("!");
     }
@@ -88,24 +88,24 @@ auto main() -> int
     using Queue = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
 
     // Create a queue on the device
-    Queue queue(devAcc);
+    Queue queue(dev_acc);
 
     // Define the work division
     using Vec = alpaka::Vec<Dim, Idx>;
-    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerGrid(Vec::all(static_cast<Idx>(8)));
+    Vec const elements_per_thread(Vec::all(static_cast<Idx>(1)));
+    Vec const threads_per_grid(Vec::all(static_cast<Idx>(8)));
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv = alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        threadsPerGrid,
-        elementsPerThread,
+    WorkDiv const work_div = alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
+        threads_per_grid,
+        elements_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
-    const size_t nExclamationMarks = 10;
+    const size_t n_exclamation_marks = 10;
 
     // Run "Hello World" kernel with a lambda function
     //
@@ -124,28 +124,28 @@ auto main() -> int
     // type is set to Acc.
     alpaka::exec<Acc>(
         queue,
-        workDiv,
-        [] ALPAKA_FN_ACC(Acc const& acc, size_t const nExclamationMarksAsArg) -> void
+        work_div,
+        [] ALPAKA_FN_ACC(Acc const& acc, size_t const n_exclamation_marks_as_arg) -> void
         {
-            auto globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-            auto globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
-            auto linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
+            auto global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+            auto global_thread_extent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+            auto linearized_global_thread_idx = alpaka::mapIdx<1u>(global_thread_idx, global_thread_extent);
 
             printf(
                 "[z:%u, y:%u, x:%u][linear:%u] Hello world from a lambda",
-                static_cast<unsigned>(globalThreadIdx[0]),
-                static_cast<unsigned>(globalThreadIdx[1]),
-                static_cast<unsigned>(globalThreadIdx[2]),
-                static_cast<unsigned>(linearizedGlobalThreadIdx[0]));
+                static_cast<unsigned>(global_thread_idx[0]),
+                static_cast<unsigned>(global_thread_idx[1]),
+                static_cast<unsigned>(global_thread_idx[2]),
+                static_cast<unsigned>(linearized_global_thread_idx[0]));
 
-            for(size_t i = 0; i < nExclamationMarksAsArg; ++i)
+            for(size_t i = 0; i < n_exclamation_marks_as_arg; ++i)
             {
                 printf("!");
             }
 
             printf("\n");
         },
-        nExclamationMarks);
+        n_exclamation_marks);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

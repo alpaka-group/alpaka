@@ -80,17 +80,17 @@ TEMPLATE_LIST_TEST_CASE("queueWaitShouldWork", "[queue]", TestQueues)
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
 
-    std::atomic<bool> callbackFinished{false};
+    std::atomic<bool> callback_finished{false};
     alpaka::enqueue(
         f.m_queue,
-        [&callbackFinished]() noexcept
+        [&callback_finished]() noexcept
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(100u));
-            callbackFinished = true;
+            callback_finished = true;
         });
 
     alpaka::wait(f.m_queue);
-    CHECK(callbackFinished.load() == true);
+    CHECK(callback_finished.load() == true);
 }
 
 TEMPLATE_LIST_TEST_CASE(
@@ -102,14 +102,14 @@ TEMPLATE_LIST_TEST_CASE(
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
 
-    std::atomic<bool> callbackFinished{false};
+    std::atomic<bool> callback_finished{false};
     alpaka::enqueue(
         f.m_queue,
-        [&f, &callbackFinished]() noexcept
+        [&f, &callback_finished]() noexcept
         {
             LOOPED_CHECK(30, 100, !alpaka::empty(f.m_queue));
             std::this_thread::sleep_for(std::chrono::milliseconds(100u));
-            callbackFinished = true;
+            callback_finished = true;
         });
 
     // A non-blocking queue will always stay empty because the task has been executed immediately.
@@ -118,7 +118,7 @@ TEMPLATE_LIST_TEST_CASE(
         alpaka::wait(f.m_queue);
     }
 
-    CHECK(callbackFinished.load() == true);
+    CHECK(callback_finished.load() == true);
     LOOPED_CHECK(30, 100, alpaka::empty(f.m_queue));
 }
 
@@ -128,37 +128,37 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
 
-    std::atomic<bool> taskIsExecuting(false);
-    std::promise<void> firstTaskFinished;
-    std::future<void> firstTaskFinishedFuture = firstTaskFinished.get_future();
-    std::promise<void> secondTaskFinished;
-    std::future<void> secondTaskFinishedFuture = secondTaskFinished.get_future();
+    std::atomic<bool> task_is_executing(false);
+    std::promise<void> first_task_finished;
+    std::future<void> first_task_finished_future = first_task_finished.get_future();
+    std::promise<void> second_task_finished;
+    std::future<void> second_task_finished_future = second_task_finished.get_future();
 
     std::thread thread1(
-        [&f, &taskIsExecuting, &firstTaskFinished]()
+        [&f, &task_is_executing, &first_task_finished]()
         {
             alpaka::enqueue(
                 f.m_queue,
-                [&taskIsExecuting, &firstTaskFinished]() noexcept
+                [&task_is_executing, &first_task_finished]() noexcept
                 {
-                    CHECK(!taskIsExecuting.exchange(true));
+                    CHECK(!task_is_executing.exchange(true));
                     std::this_thread::sleep_for(std::chrono::milliseconds(100u));
-                    CHECK(taskIsExecuting.exchange(false));
-                    firstTaskFinished.set_value();
+                    CHECK(task_is_executing.exchange(false));
+                    first_task_finished.set_value();
                 });
         });
 
     std::thread thread2(
-        [&f, &taskIsExecuting, &secondTaskFinished]()
+        [&f, &task_is_executing, &second_task_finished]()
         {
             alpaka::enqueue(
                 f.m_queue,
-                [&taskIsExecuting, &secondTaskFinished]() noexcept
+                [&task_is_executing, &second_task_finished]() noexcept
                 {
-                    CHECK(!taskIsExecuting.exchange(true));
+                    CHECK(!task_is_executing.exchange(true));
                     std::this_thread::sleep_for(std::chrono::milliseconds(100u));
-                    CHECK(taskIsExecuting.exchange(false));
-                    secondTaskFinished.set_value();
+                    CHECK(task_is_executing.exchange(false));
+                    second_task_finished.set_value();
                 });
         });
 
@@ -168,6 +168,6 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
 
     alpaka::wait(f.m_queue);
 
-    firstTaskFinishedFuture.get();
-    secondTaskFinishedFuture.get();
+    first_task_finished_future.get();
+    second_task_finished_future.get();
 }

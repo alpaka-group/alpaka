@@ -50,25 +50,25 @@ struct KernelWithMemberOmpScheduleKind : KernelWithOmpScheduleBase
 template<alpaka::omp::Schedule::Kind TKind>
 struct KernelWithConstexprStaticMemberOmpScheduleChunkSize : KernelWithConstexprMemberOmpScheduleKind<TKind>
 {
-    static constexpr int ompScheduleChunkSize = 5;
+    static constexpr int omp_schedule_chunk_size = 5;
 };
 
 // Kernel that sets the schedule chunk size via non-constexpr ompScheduleChunkSize in addition to schedule kind.
 template<alpaka::omp::Schedule::Kind TKind>
 struct KernelWithStaticMemberOmpScheduleChunkSize : KernelWithMemberOmpScheduleKind<TKind>
 {
-    static const int ompScheduleChunkSize;
+    static const int omp_schedule_chunk_size;
 };
 // In this case, the member has to be defined externally
 template<alpaka::omp::Schedule::Kind TKind>
-const int KernelWithStaticMemberOmpScheduleChunkSize<TKind>::ompScheduleChunkSize = 2;
+const int KernelWithStaticMemberOmpScheduleChunkSize<TKind>::omp_schedule_chunk_size = 2;
 
 // Kernel that sets the schedule chunk size via non-constexpr non-static ompScheduleChunkSize in addition to schedule
 // kind.
 template<alpaka::omp::Schedule::Kind TKind>
 struct KernelWithMemberOmpScheduleChunkSize : KernelWithConstexprMemberOmpScheduleKind<TKind>
 {
-    int ompScheduleChunkSize = 4;
+    int m_omp_schedule_chunk_size = 4;
 };
 
 // Kernel that copies the given base kernel and adds an OmpSchedule trait on top
@@ -86,15 +86,15 @@ namespace alpaka
         struct OmpSchedule<KernelWithTrait<TBase>, TAcc>
         {
             template<typename TDim, typename... TArgs>
-            ALPAKA_FN_HOST static auto getOmpSchedule(
-                KernelWithTrait<TBase> const& kernelFnObj,
-                Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
-                Vec<TDim, Idx<TAcc>> const& threadElemExtent,
+            ALPAKA_FN_HOST static auto get_omp_schedule(
+                KernelWithTrait<TBase> const& kernel_fn_obj,
+                Vec<TDim, Idx<TAcc>> const& block_thread_extent,
+                Vec<TDim, Idx<TAcc>> const& thread_elem_extent,
                 TArgs const&... args) -> alpaka::omp::Schedule
             {
-                alpaka::ignore_unused(kernelFnObj);
-                alpaka::ignore_unused(blockThreadExtent);
-                alpaka::ignore_unused(threadElemExtent);
+                alpaka::ignore_unused(kernel_fn_obj);
+                alpaka::ignore_unused(block_thread_extent);
+                alpaka::ignore_unused(thread_elem_extent);
                 alpaka::ignore_unused(args...);
 
                 return alpaka::omp::Schedule{alpaka::omp::Schedule::Static, 4};
@@ -105,7 +105,7 @@ namespace alpaka
 
 // Generic testing routine for the given kernel type
 template<typename TAcc, typename TKernel>
-void testKernel()
+void test_kernel()
 {
     using Acc = TAcc;
     using Dim = alpaka::Dim<Acc>;
@@ -118,8 +118,8 @@ void testKernel()
     REQUIRE(fixture(kernel));
 
     // Same members, but with OmpSchedule trait
-    KernelWithTrait<TKernel> kernelWithTrait;
-    REQUIRE(fixture(kernelWithTrait));
+    KernelWithTrait<TKernel> kernel_with_trait;
+    REQUIRE(fixture(kernel_with_trait));
 }
 
 // Note: it turned out not possible to test all possible combinations as it causes several compilers to crash in CI.
@@ -127,33 +127,33 @@ void testKernel()
 
 TEMPLATE_LIST_TEST_CASE("kernelWithOmpScheduleBase", "[kernel]", alpaka::test::TestAccs)
 {
-    testKernel<TestType, KernelWithOmpScheduleBase>();
+    test_kernel<TestType, KernelWithOmpScheduleBase>();
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelWithConstexprMemberOmpScheduleKind", "[kernel]", alpaka::test::TestAccs)
 {
-    testKernel<TestType, KernelWithConstexprMemberOmpScheduleKind<alpaka::omp::Schedule::NoSchedule>>();
+    test_kernel<TestType, KernelWithConstexprMemberOmpScheduleKind<alpaka::omp::Schedule::NoSchedule>>();
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelWithMemberOmpScheduleKind", "[kernel]", alpaka::test::TestAccs)
 {
-    testKernel<TestType, KernelWithMemberOmpScheduleKind<alpaka::omp::Schedule::Static>>();
+    test_kernel<TestType, KernelWithMemberOmpScheduleKind<alpaka::omp::Schedule::Static>>();
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelWithConstexprStaticMemberOmpScheduleChunkSize", "[kernel]", alpaka::test::TestAccs)
 {
-    testKernel<TestType, KernelWithConstexprStaticMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Dynamic>>();
+    test_kernel<TestType, KernelWithConstexprStaticMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Dynamic>>();
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelWithStaticMemberOmpScheduleChunkSize", "[kernel]", alpaka::test::TestAccs)
 {
-    testKernel<TestType, KernelWithStaticMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Guided>>();
+    test_kernel<TestType, KernelWithStaticMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Guided>>();
 }
 
 TEMPLATE_LIST_TEST_CASE("kernelWithMemberOmpScheduleChunkSize", "[kernel]", alpaka::test::TestAccs)
 {
 #if defined _OPENMP && _OPENMP >= 200805
-    testKernel<TestType, KernelWithMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Auto>>();
+    test_kernel<TestType, KernelWithMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Auto>>();
 #endif
-    testKernel<TestType, KernelWithMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Runtime>>();
+    test_kernel<TestType, KernelWithMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Runtime>>();
 }

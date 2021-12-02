@@ -14,7 +14,7 @@
 #include <tuple>
 #include <type_traits>
 
-template<typename... T>
+template<typename... TT>
 struct TypeList
 {
 };

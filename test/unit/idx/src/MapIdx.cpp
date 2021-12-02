@@ -21,13 +21,13 @@ TEMPLATE_LIST_TEST_CASE("mapIdx", "[idx]", alpaka::test::TestDims)
     using Idx = std::size_t;
     using Vec = alpaka::Vec<Dim, Idx>;
 
-    auto const extentNd
+    auto const extent_nd
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-    auto const idxNd = extentNd - Vec::all(4u);
+    auto const idx_nd = extent_nd - Vec::all(4u);
 
-    auto const idx1d = alpaka::mapIdx<1u>(idxNd, extentNd);
+    auto const idx1d = alpaka::mapIdx<1u>(idx_nd, extent_nd);
 
-    auto const idxNdResult = alpaka::mapIdx<Dim::value>(idx1d, extentNd);
+    auto const idx_nd_result = alpaka::mapIdx<Dim::value>(idx1d, extent_nd);
 
-    REQUIRE(idxNd == idxNdResult);
+    REQUIRE(idx_nd == idx_nd_result);
 }

@@ -43,8 +43,8 @@ struct Kernel
     ALPAKA_FN_ACC auto operator()(TAcc const& acc) const
     {
         // For simplicity assume 1d thread indexing
-        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
-        if(globalThreadIdx == 0u)
+        auto const global_thread_idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        if(global_thread_idx == 0u)
             printf("Running the general kernel implementation\n");
     }
 
@@ -95,23 +95,23 @@ auto main() -> int
     using Queue = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const dev_acc = alpaka::getDevByIdx<Acc>(0u);
 
     // Create a queue on the device
-    Queue queue(devAcc);
+    Queue queue(dev_acc);
 
     // Define the work division
-    std::size_t const threadsPerGrid = 16u;
-    std::size_t const elementsPerThread = 1u;
-    auto const workDiv = alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        threadsPerGrid,
-        elementsPerThread,
+    std::size_t const threads_per_grid = 16u;
+    std::size_t const elements_per_thread = 1u;
+    auto const work_div = alpaka::getValidWorkDiv<Acc>(
+        dev_acc,
+        threads_per_grid,
+        elements_per_thread,
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Run the kernel
-    alpaka::exec<Acc>(queue, workDiv, Kernel{});
+    alpaka::exec<Acc>(queue, work_div, Kernel{});
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

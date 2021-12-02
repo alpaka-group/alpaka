@@ -45,16 +45,16 @@ namespace alpaka
         {
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                BlockSharedMemDynTestKernel const& blockSharedMemDyn,
-                TVec const& blockThreadExtent,
-                TVec const& threadElemExtent,
+            ALPAKA_FN_HOST_ACC static auto get_block_shared_mem_dyn_size_bytes(
+                BlockSharedMemDynTestKernel const& block_shared_mem_dyn,
+                TVec const& block_thread_extent,
+                TVec const& thread_elem_extent,
                 bool* success) -> std::size_t
             {
-                alpaka::ignore_unused(blockSharedMemDyn);
+                alpaka::ignore_unused(block_shared_mem_dyn);
                 alpaka::ignore_unused(success);
-                auto const gridSize = blockThreadExtent.prod() * threadElemExtent.prod();
-                return static_cast<std::size_t>(gridSize) * sizeof(std::uint32_t);
+                auto const grid_size = block_thread_extent.prod() * thread_elem_extent.prod();
+                return static_cast<std::size_t>(grid_size) * sizeof(std::uint32_t);
             }
         };
     } // namespace traits
