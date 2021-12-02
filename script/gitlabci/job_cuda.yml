@@ -37,14 +37,14 @@ linux_nvcc-11.0_gcc-7_release_extended_lambda_off:
     ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"
 
 # nvcc + clang++
-linux_nvcc-11.0_clang-7-nvcc_release:
+linux_nvcc-11.0_clang-8-nvcc_release:
   extends: .base_cuda_clang
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
     CMAKE_CUDA_COMPILER: nvcc
     CMAKE_CUDA_ARCHITECTURES: "50;70"
-    ALPAKA_CI_CLANG_VER: 7
+    ALPAKA_CI_CLANG_VER: 8
     ALPAKA_CI_STDLIB: libstdc++
     CMAKE_BUILD_TYPE: Release
     ALPAKA_BOOST_VERSION: 1.65.1
