@@ -827,12 +827,6 @@ namespace alpaka
             std::cout << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
                       << std::endl;
 #    endif
-            // Bind all arguments except the accelerator.
-            // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
-            auto const boundKernelFnObj = meta::apply(
-                [this](ALPAKA_DECAY_T(TArgs) const&... args)
-                { return std::bind(std::ref(m_kernelFnObj), std::placeholders::_1, std::ref(args)...); },
-                m_args);
 
             // The number of blocks in the grid.
             TIdx const numBlocksInGrid(gridBlockExtent.prod());
@@ -857,7 +851,7 @@ namespace alpaka
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " already within a parallel region." << std::endl;
 #    endif
-                parallelFn(boundKernelFnObj, blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
+                parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
             }
             else
             {
@@ -865,14 +859,13 @@ namespace alpaka
                 std::cout << __func__ << " opening new parallel region." << std::endl;
 #    endif
 #    pragma omp parallel
-                parallelFn(boundKernelFnObj, blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
+                parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
             }
         }
 
     private:
-        template<typename FnObj, typename TSchedule>
+        template<typename TSchedule>
         ALPAKA_FN_HOST auto parallelFn(
-            FnObj const& boundKernelFnObj,
             std::size_t const& blockSharedMemDynSizeBytes,
             TIdx const& numBlocksInGrid,
             Vec<TDim, TIdx> const& gridBlockExtent,
@@ -910,7 +903,7 @@ namespace alpaka
 #    endif
                 acc.m_gridBlockIdx = mapIdx<TDim::value>(index, gridBlockExtent);
 
-                boundKernelFnObj(acc);
+                std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
                 // After a block has been processed, the shared memory has to be deleted.
                 freeSharedVars(acc);
