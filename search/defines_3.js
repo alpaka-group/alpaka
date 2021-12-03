@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['min_5floop_4550',['MIN_LOOP',['../tinymt32_8h.html#ad7a4b73a72fafba00138f2491676c498',1,'tinymt32.h']]]
+  ['pre_5floop_4549',['PRE_LOOP',['../tinymt32_8h.html#a27671e17b40aebc0e9aca6fcd7252e6a',1,'tinymt32.h']]]
 ];

@@ -10,7 +10,7 @@ var indexSectionsWithContent =
   7: "cgk",
   8: "acdefginrsu",
   9: ":t",
-  10: "abcmprtu",
+  10: "abmprtu",
   11: "t"
 };
 

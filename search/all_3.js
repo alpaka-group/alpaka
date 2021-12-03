@@ -238,6 +238,5 @@ var searchData=
   ['currentthreadwaitfor_3c_20queuegenericthreadsblocking_3c_20tdev_20_3e_20_3e_629',['CurrentThreadWaitFor&lt; QueueGenericThreadsBlocking&lt; TDev &gt; &gt;',['../structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html',1,'alpaka::traits']]],
   ['currentthreadwaitfor_3c_20queuegenericthreadsnonblocking_3c_20tdev_20_3e_20_3e_630',['CurrentThreadWaitFor&lt; QueueGenericThreadsNonBlocking&lt; TDev &gt; &gt;',['../structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html',1,'alpaka::traits']]],
   ['currentthreadwaitfor_3c_20uniform_5fcuda_5fhip_3a_3adetail_3a_3aqueueuniformcudahiprtbase_20_3e_631',['CurrentThreadWaitFor&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRtBase &gt;',['../structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html',1,'alpaka::traits']]],
-  ['currentthreadwaitfordevice_632',['currentThreadWaitForDevice',['../namespacealpaka_1_1traits_1_1generic.html#a954b1ec1c3ff1bec2c929a11c0bacb03',1,'alpaka::traits::generic']]],
-  ['cxx17_5fconstexpr_633',['CXX17_CONSTEXPR',['../CudaVectorArrayWrapper_8hpp.html#af0644aac4a66556856ae415d4d3ed3c5',1,'CudaVectorArrayWrapper.hpp']]]
+  ['currentthreadwaitfordevice_632',['currentThreadWaitForDevice',['../namespacealpaka_1_1traits_1_1generic.html#a954b1ec1c3ff1bec2c929a11c0bacb03',1,'alpaka::traits::generic']]]
 ];

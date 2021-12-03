@@ -219,7 +219,6 @@ var NAVTREEINDEX0 =
 "CudaHipMath_8hpp.html":[4,0,0,0,3,11],
 "CudaHipMath_8hpp_source.html":[4,0,0,0,3,11],
 "CudaVectorArrayWrapper_8hpp.html":[4,0,0,0,16,4],
-"CudaVectorArrayWrapper_8hpp.html#af0644aac4a66556856ae415d4d3ed3c5":[4,0,0,0,16,4,23],
 "CudaVectorArrayWrapper_8hpp_source.html":[4,0,0,0,16,4],
 "Cuda_8hpp.html":[4,0,0,0,3,10],
 "Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05":[4,0,0,0,3,10,26],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "DevCpu_8hpp_source.html":[4,0,0,0,5,1],
 "DevOacc_8hpp.html":[4,0,0,0,5,2],
 "DevOacc_8hpp_source.html":[4,0,0,0,5,2],
-"DevOmp5_8hpp.html":[4,0,0,0,5,3]
+"DevOmp5_8hpp.html":[4,0,0,0,5,3],
+"DevOmp5_8hpp.html#a1994bcdaa7cefe3ae066eb3033530826":[4,0,0,0,5,3,15]
 };
