@@ -78,12 +78,6 @@ namespace alpaka
             std::cout << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
                       << std::endl;
 #    endif
-            // Bind all arguments except the accelerator.
-            // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
-            auto const boundKernelFnObj = meta::apply(
-                [this](ALPAKA_DECAY_T(TArgs) const&... args)
-                { return std::bind(std::ref(m_kernelFnObj), std::placeholders::_1, std::ref(args)...); },
-                m_args);
 
             AccCpuSerial<TDim, TIdx> acc(
                 *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
@@ -101,7 +95,7 @@ namespace alpaka
                 {
                     acc.m_gridBlockIdx = blockThreadIdx;
 
-                    boundKernelFnObj(acc);
+                    std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
                     // After a block has been processed, the shared memory has to be deleted.
                     freeSharedVars(acc);
