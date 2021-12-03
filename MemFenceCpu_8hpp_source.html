@@ -148,20 +148,17 @@ $(document).ready(function(){initNavTree('MemFenceCpu_8hpp_source.html',''); ini
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">                 *   a == 10 &amp;&amp; b == 20</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">                 */</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="comment">/* TODO: Once we have C++17 enabled by default the following line should be turned into the usual</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">                 * `auto x = ...` notation.</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">                 */</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keyword">static</span> std::atomic&lt;int&gt; dummy{42};</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="comment">/* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">                 * these dummy operations to ensure this.*/</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">auto</span> x = dummy.load(std::memory_order_relaxed);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                std::atomic_thread_fence(std::memory_order_acq_rel);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                dummy.store(x, std::memory_order_relaxed);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        };</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keyword">static</span> <span class="keyword">auto</span> dummy = std::atomic&lt;int&gt;{42};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="comment">/* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">                 * these dummy operations to ensure this.*/</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keyword">auto</span> x = dummy.load(std::memory_order_relaxed);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                std::atomic_thread_fence(std::memory_order_acq_rel);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                dummy.store(x, std::memory_order_relaxed);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructalpaka_1_1traits_1_1MemFence_3_01MemFenceCpu_00_01TMemScope_01_4_html_ada398dac934bdbefa1d5c0cac7945010"><div class="ttname"><a href="structalpaka_1_1traits_1_1MemFence_3_01MemFenceCpu_00_01TMemScope_01_4.html#ada398dac934bdbefa1d5c0cac7945010">alpaka::traits::MemFence&lt; MemFenceCpu, TMemScope &gt;::mem_fence</a></div><div class="ttdeci">static auto mem_fence(MemFenceCpu const &amp;, TMemScope const &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceCpu_8hpp_source.html#l00029">MemFenceCpu.hpp:29</a></div></div>
@@ -175,7 +172,7 @@ $(document).ready(function(){initNavTree('MemFenceCpu_8hpp_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceCpu_8hpp.html">MemFenceCpu.hpp</a></li>
-    <li class="footer">Generated on Fri Dec 3 2021 15:15:17 for alpaka by
+    <li class="footer">Generated on Fri Dec 3 2021 16:40:55 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
