@@ -39,9 +39,9 @@ then
     # Set the correct CUDA downloads
     if [ "${ALPAKA_CI_CUDA_VERSION}" == "9.2" ]
     then
-        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-2-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.2.88-1_amd64
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604
+        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.2.148-1_amd64.deb
+        ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/${ALPAKA_CUDA_PKG_FILE_NAME}
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "10.0" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-10-0-local
