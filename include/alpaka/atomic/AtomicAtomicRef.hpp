@@ -28,6 +28,15 @@ namespace alpaka
     {
     };
 
+    template<typename T>
+    void isSupportedByAtomicAtomicRef()
+    {
+        static_assert(
+            std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
+            "Type not supported by AtomicAtomicRef, please recompile defining "
+            "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+    }
+
     namespace traits
     {
         //! The CPU accelerators AtomicAdd.
@@ -36,10 +45,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 return ref.fetch_add(value);
             }
@@ -51,10 +57,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 return ref.fetch_sub(value);
             }
@@ -66,10 +69,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = old;
@@ -89,10 +89,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = old;
@@ -112,10 +109,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = value;
@@ -133,10 +127,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = ((old >= value) ? 0 : static_cast<T>(old + 1));
@@ -154,10 +145,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = ((old >= value) ? 0 : static_cast<T>(old - 1));
@@ -175,10 +163,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 return ref.fetch_and(value);
             }
@@ -190,10 +175,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 return ref.fetch_or(value);
             }
@@ -205,10 +187,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const& atomic, T* const addr, T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 return ref.fetch_xor(value);
             }
@@ -224,10 +203,7 @@ namespace alpaka
                 T const& compare,
                 T const& value) -> T
             {
-                static_assert(
-                    std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
-                    "Type not supported by AtomicAtomicRef, please recompile defining "
-                    "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
+                isSupportedByAtomicAtomicRef<T>();
                 boost::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result;
