@@ -109,6 +109,8 @@ namespace alpaka
 
                 auto const& uniformCudaHipMemCpyKind(m_uniformMemCpyKind);
 
+                // cudaMemcpy variants on cudaMallocAsync'ed memory need to be called with the correct device,
+                // see https://github.com/fwyzard/nvidia_bug_3446335 .
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_iDstDevice));
                 // Initiate the memory copy.
@@ -216,6 +218,8 @@ namespace alpaka
                     return;
                 }
 
+                // cudaMemcpy variants on cudaMallocAsync'ed memory need to be called with the correct device,
+                // see https://github.com/fwyzard/nvidia_bug_3446335 .
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_iDstDevice));
                 // Initiate the memory copy.
@@ -346,6 +350,9 @@ namespace alpaka
                 // Create the struct describing the copy.
                 ALPAKA_API_PREFIX(Memcpy3DParms)
                 const uniformCudaHipMemCpy3DParms(buildUniformCudaHipMemcpy3DParms());
+
+                // cudaMemcpy variants on cudaMallocAsync'ed memory need to be called with the correct device,
+                // see https://github.com/fwyzard/nvidia_bug_3446335 .
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_iDstDevice));
 

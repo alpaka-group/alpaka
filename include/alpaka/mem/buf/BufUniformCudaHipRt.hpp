@@ -219,10 +219,8 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     ALPAKA_API_PREFIX(Malloc)(&memPtr, static_cast<std::size_t>(widthBytes)));
                 // Prepare a deleter for this device
-                auto deleter = [dev](TElem* ptr)
+                auto deleter = [](TElem* ptr)
                 {
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
                     // Free the buffer.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
                 };
@@ -269,10 +267,8 @@ namespace alpaka
                     ALPAKA_ASSERT(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
                 }
                 // Prepare a deleter for this device
-                auto deleter = [dev](TElem* ptr)
+                auto deleter = [](TElem* ptr)
                 {
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
                     // Free the buffer.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
                 };
@@ -318,10 +314,8 @@ namespace alpaka
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Malloc3D)(&pitchedPtrVal, extentVal));
                 }
                 // Prepare a deleter for this device
-                auto deleter = [dev](TElem* ptr)
+                auto deleter = [](TElem* ptr)
                 {
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
                     // Free the buffer.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
                 };
@@ -377,8 +371,6 @@ namespace alpaka
                 // Prepare a deleter for this device
                 auto deleter = [queue = std::move(queue)](TElem* ptr)
                 {
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(getDev(queue).m_iDevice));
                     // Free the buffer.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
                         FreeAsync)(reinterpret_cast<void*>(ptr), queue.m_spQueueImpl->m_UniformCudaHipQueue));
