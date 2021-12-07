@@ -261,7 +261,17 @@ namespace alpaka
                 TElem* memPtr
                     = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(extent::getExtentProduct(extent)));
                 auto deleter = [queue = std::move(queue)](TElem* ptr) mutable
-                { alpaka::enqueue(queue, [ptr]() { alpaka::free(Allocator{}, ptr); }); };
+                {
+                    alpaka::enqueue(
+                        queue,
+                        [ptr, queue]()
+                        {
+                            // free the memory
+                            alpaka::free(Allocator{}, ptr);
+                            // keep the queue alive until all memory operations are complete
+                            alpaka::ignore_unused(queue);
+                        });
+                };
 
                 return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
             }
