@@ -321,8 +321,6 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        // Set the current device.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaSetDevice(m_dev.m_iDevice));
                         // Free the buffer.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaFree(m_devMem));
                     }
@@ -537,7 +535,6 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipSetDevice(m_dev.m_iDevice));
                         // Free the buffer.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipFree(m_devMem));
                     }
