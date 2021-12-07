@@ -89,23 +89,19 @@ static auto testAsyncBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TA
     Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
     Queue queue(dev);
 
-    {
-        // memory is allocated when the queue reaches this point
-        auto buf = alpaka::allocAsyncBuf<Elem, Idx>(queue, extent);
+    // memory is allocated when the queue reaches this point
+    auto buf = alpaka::allocAsyncBuf<Elem, Idx>(queue, extent);
 
-        // asynchronous operations can be submitted to the queue immediately
-        alpaka::test::testViewMutable<TAcc>(queue, buf);
+    // asynchronous operations can be submitted to the queue immediately
+    alpaka::test::testViewMutable<TAcc>(queue, buf);
 
-        // synchronous operations must wait for the memory to be available
-        alpaka::wait(queue);
-        auto const offset = alpaka::Vec<Dim, Idx>::zeros();
-        alpaka::test::testViewImmutable<Elem>(buf, dev, extent, offset);
-
-        // the buffer will queue the deallocation of the memory when it goes out of scope
-        // the memory will be deallocated once the queue reaches this point
-    }
-
+    // synchronous operations must wait for the memory to be available
     alpaka::wait(queue);
+    auto const offset = alpaka::Vec<Dim, Idx>::zeros();
+    alpaka::test::testViewImmutable<Elem>(buf, dev, extent, offset);
+
+    // the buffer will queue the deallocation of the memory when it goes out of scope,
+    // and extend the lifetime of the queue until all memory operations have completed.
 }
 
 TEMPLATE_LIST_TEST_CASE("memBufBasicTest", "[memBuf]", alpaka::test::TestAccs)
@@ -211,20 +207,16 @@ static auto testAsyncBufferImmutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<
     Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
     Queue queue(dev);
 
-    {
-        // memory is allocated when the queue reaches this point
-        auto const buf = alpaka::allocAsyncBuf<Elem, Idx>(queue, extent);
+    // memory is allocated when the queue reaches this point
+    auto const buf = alpaka::allocAsyncBuf<Elem, Idx>(queue, extent);
 
-        // synchronous operations must wait for the memory to be available
-        alpaka::wait(queue);
-        auto const offset = alpaka::Vec<Dim, Idx>::zeros();
-        alpaka::test::testViewImmutable<Elem>(buf, dev, extent, offset);
-
-        // the buffer will queue the deallocation of the memory when it goes out of scope
-        // the memory will be deallocated once the queue reaches this point
-    }
-
+    // synchronous operations must wait for the memory to be available
     alpaka::wait(queue);
+    auto const offset = alpaka::Vec<Dim, Idx>::zeros();
+    alpaka::test::testViewImmutable<Elem>(buf, dev, extent, offset);
+
+    // the buffer will queue the deallocation of the memory when it goes out of scope,
+    // and extend the lifetime of the queue until all memory operations have completed.
 }
 
 TEMPLATE_LIST_TEST_CASE("memBufAsyncConstTest", "[memBuf]", alpaka::test::TestAccs)
