@@ -99,6 +99,9 @@ $(document).ready(function(){initNavTree('mem_2buf_2Traits_8hpp.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1AsyncBufAlloc.html">alpaka::traits::AsyncBufAlloc&lt; TElem, TDim, TIdx, TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stream-ordered memory allocator trait.  <a href="structalpaka_1_1traits_1_1AsyncBufAlloc.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1BufAlloc.html">alpaka::traits::BufAlloc&lt; TElem, TDim, TIdx, TDev, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory allocator trait.  <a href="structalpaka_1_1traits_1_1BufAlloc.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,6 +145,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad3079297a886e6434a3ab3750585d033"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TIdx , typename TExtent , typename TQueue &gt; </td></tr>
+<tr class="memitem:ad3079297a886e6434a3ab3750585d033"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad3079297a886e6434a3ab3750585d033">alpaka::allocAsyncBuf</a> (TQueue queue, TExtent const &amp;extent=TExtent())</td></tr>
+<tr class="memdesc:ad3079297a886e6434a3ab3750585d033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates stream-ordered memory on the given device.  <a href="namespacealpaka.html#ad3079297a886e6434a3ab3750585d033">More...</a><br /></td></tr>
+<tr class="separator:ad3079297a886e6434a3ab3750585d033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &gt; </td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">alpaka::allocBuf</a> (TDev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:a7ff762720c64dc454a53faa6622c227d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">More...</a><br /></td></tr>
@@ -177,7 +184,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Tue Dec 7 2021 08:13:16 for alpaka by
+    <li class="footer">Generated on Tue Dec 7 2021 09:15:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

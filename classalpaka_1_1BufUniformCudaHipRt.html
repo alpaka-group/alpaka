@@ -99,10 +99,10 @@ $(document).ready(function(){initNavTree('classalpaka_1_1BufUniformCudaHipRt.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a37fab0cf48758fce121d02ee2e3445c4"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
-<tr class="memitem:a37fab0cf48758fce121d02ee2e3445c4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html#a37fab0cf48758fce121d02ee2e3445c4">BufUniformCudaHipRt</a> (<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a> const &amp;dev, TElem *const pMem, TIdx const &amp;pitchBytes, TExtent const &amp;extent)</td></tr>
-<tr class="memdesc:a37fab0cf48758fce121d02ee2e3445c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classalpaka_1_1BufUniformCudaHipRt.html#a37fab0cf48758fce121d02ee2e3445c4">More...</a><br /></td></tr>
-<tr class="separator:a37fab0cf48758fce121d02ee2e3445c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e2f5207cf2c61a9cd2efe3d460dbd38"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename Deleter &gt; </td></tr>
+<tr class="memitem:a2e2f5207cf2c61a9cd2efe3d460dbd38"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html#a2e2f5207cf2c61a9cd2efe3d460dbd38">BufUniformCudaHipRt</a> (<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a> const &amp;dev, TElem *const pMem, Deleter deleter, TIdx const &amp;pitchBytes, TExtent const &amp;extent)</td></tr>
+<tr class="memdesc:a2e2f5207cf2c61a9cd2efe3d460dbd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classalpaka_1_1BufUniformCudaHipRt.html#a2e2f5207cf2c61a9cd2efe3d460dbd38">More...</a><br /></td></tr>
+<tr class="separator:a2e2f5207cf2c61a9cd2efe3d460dbd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -123,15 +123,15 @@ class alpaka::BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt;</h3>
 
 <p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00170">170</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a37fab0cf48758fce121d02ee2e3445c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37fab0cf48758fce121d02ee2e3445c4">&#9670;&nbsp;</a></span>BufUniformCudaHipRt()</h2>
+<a id="a2e2f5207cf2c61a9cd2efe3d460dbd38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e2f5207cf2c61a9cd2efe3d460dbd38">&#9670;&nbsp;</a></span>BufUniformCudaHipRt()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
 <div class="memtemplate">
-template&lt;typename TExtent &gt; </div>
+template&lt;typename TExtent , typename Deleter &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -147,6 +147,12 @@ template&lt;typename TExtent &gt; </div>
           <td></td>
           <td class="paramtype">TElem *const&#160;</td>
           <td class="paramname"><em>pMem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Deleter&#160;</td>
+          <td class="paramname"><em>deleter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -175,7 +181,7 @@ template&lt;typename TExtent &gt; </div>
 
 <p>Constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00066">66</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00067">67</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -194,7 +200,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00105">105</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00090">90</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -212,7 +218,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00107">107</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00091">91</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -230,7 +236,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00109">109</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00093">93</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -248,7 +254,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00108">108</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00092">92</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -262,7 +268,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html">BufUniformCudaHipRt</a></li>
-    <li class="footer">Generated on Tue Dec 7 2021 08:13:16 for alpaka by
+    <li class="footer">Generated on Tue Dec 7 2021 09:15:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

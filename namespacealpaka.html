@@ -535,6 +535,10 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad3079297a886e6434a3ab3750585d033"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TIdx , typename TExtent , typename TQueue &gt; </td></tr>
+<tr class="memitem:ad3079297a886e6434a3ab3750585d033"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad3079297a886e6434a3ab3750585d033">allocAsyncBuf</a> (TQueue queue, TExtent const &amp;extent=TExtent())</td></tr>
+<tr class="memdesc:ad3079297a886e6434a3ab3750585d033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates stream-ordered memory on the given device.  <a href="namespacealpaka.html#ad3079297a886e6434a3ab3750585d033">More...</a><br /></td></tr>
+<tr class="separator:ad3079297a886e6434a3ab3750585d033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &gt; </td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">allocBuf</a> (TDev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:a7ff762720c64dc454a53faa6622c227d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">More...</a><br /></td></tr>
@@ -1037,7 +1041,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 
 <p>The memory buffer type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00055">55</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00059">59</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1424,6 +1428,57 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ad3079297a886e6434a3ab3750585d033"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3079297a886e6434a3ab3750585d033">&#9670;&nbsp;</a></span>allocAsyncBuf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem , typename TIdx , typename TExtent , typename TQueue &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::allocAsyncBuf </td>
+          <td>(</td>
+          <td class="paramtype">TQueue&#160;</td>
+          <td class="paramname"><em>queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em> = <code>TExtent()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Allocates stream-ordered memory on the given device. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TElem</td><td>The element type of the returned buffer. </td></tr>
+    <tr><td class="paramname">TIdx</td><td>The linear index type of the buffer. </td></tr>
+    <tr><td class="paramname">TExtent</td><td>The extent type of the buffer. </td></tr>
+    <tr><td class="paramname">TQueue</td><td>The type of queue used to order the buffer allocation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">queue</td><td>The queue used to order the buffer allocation. </td></tr>
+    <tr><td class="paramname">extent</td><td>The extent of the buffer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00086">86</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a7ff762720c64dc454a53faa6622c227d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ff762720c64dc454a53faa6622c227d">&#9670;&nbsp;</a></span>allocBuf()</h2>
 
@@ -1471,7 +1526,7 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &g
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00067">67</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00071">71</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4488,7 +4543,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00121">121</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00140">140</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4704,7 +4759,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00079">79</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00098">98</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5294,7 +5349,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00101">101</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00120">120</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5427,7 +5482,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00132">132</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00151">151</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5962,7 +6017,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00091">91</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00110">110</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5999,7 +6054,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00111">111</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00130">130</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -6069,7 +6124,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Tue Dec 7 2021 08:13:16 for alpaka by
+    <li class="footer">Generated on Tue Dec 7 2021 09:15:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

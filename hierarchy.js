@@ -86,6 +86,7 @@ var hierarchy =
     [ "alpaka::detail::AtomicHierarchyConceptType< hierarchy::Threads >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4.html", null ],
     [ "alpaka::detail::BlockSharedMemDynMemberStatic< TStaticAllocKiB >", "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html", null ],
     [ "alpaka::detail::BlockSharedMemStMemberImpl< TMinDataAlignBytes >", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html", null ],
+    [ "alpaka::detail::BufCpuImpl< TElem, TDim, TIdx >", "classalpaka_1_1detail_1_1BufCpuImpl.html", null ],
     [ "alpaka::detail::BufOmp5Impl< TElem, TDim, TIdx >", "classalpaka_1_1detail_1_1BufOmp5Impl.html", null ],
     [ "alpaka::detail::CheckFnReturnType< TAcc, TSfinae >", "structalpaka_1_1detail_1_1CheckFnReturnType.html", null ],
     [ "alpaka::detail::CheckFnReturnType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
@@ -510,6 +511,10 @@ var hierarchy =
     [ "alpaka::traits::AccType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1AccType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::traits::AccType< TaskKernelGpuUniformCudaHipRt< TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1AccType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdx7edc4675b87f5e0e5e06b36f35659dfd.html", null ],
     [ "alpaka::traits::AccType< TaskKernelOmp5< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1AccType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", null ],
+    [ "alpaka::traits::AsyncBufAlloc< TElem, TDim, TIdx, TDev, TSfinae >", "structalpaka_1_1traits_1_1AsyncBufAlloc.html", null ],
+    [ "alpaka::traits::AsyncBufAlloc< TElem, DimInt< 1u >, TIdx, DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1AsyncBufAlloc_3_01TElem_00_01DimInt_3_011u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html", null ],
+    [ "alpaka::traits::AsyncBufAlloc< TElem, TDim, TIdx, DevCpu >", "structalpaka_1_1traits_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevCpu_01_4.html", null ],
+    [ "alpaka::traits::AsyncBufAlloc< TElem, TDim, TIdx, DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html", null ],
     [ "alpaka::traits::AtomicOp< TOp, TAtomic, T, THierarchy, TSfinae >", "structalpaka_1_1traits_1_1AtomicOp.html", null ],
     [ "alpaka::traits::AtomicOp< AtomicAdd, AtomicOmpBuiltIn, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html", null ],
     [ "alpaka::traits::AtomicOp< AtomicAdd, AtomicUniformCudaHipBuiltIn, double, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicUniformCudaHipBuiltIn_00_01double_00_01THierarchy_01_4.html", null ],
@@ -1603,11 +1608,6 @@ var hierarchy =
     [ "alpaka::concepts::Implements< ConceptMathTrunc, TruncUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::math::TruncUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1TruncUniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
-      ] ]
-    ] ],
-    [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuAligned< std::integral_constant< std::size_t, core::vectorization::defaultAlignment > > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::AllocCpuAligned< std::integral_constant< std::size_t, core::vectorization::defaultAlignment > >", "classalpaka_1_1AllocCpuAligned.html", [
-        [ "alpaka::detail::BufCpuImpl< TElem, TDim, TIdx >", "classalpaka_1_1detail_1_1BufCpuImpl.html", null ]
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuAligned< TAlignment > >", "structalpaka_1_1concepts_1_1Implements.html", [

@@ -1,5 +1,6 @@
 var mem_2buf_2Traits_8hpp =
 [
+    [ "AsyncBufAlloc", "structalpaka_1_1traits_1_1AsyncBufAlloc.html", null ],
     [ "BufAlloc", "structalpaka_1_1traits_1_1BufAlloc.html", null ],
     [ "BufType", "structalpaka_1_1traits_1_1BufType.html", null ],
     [ "IsPinned", "structalpaka_1_1traits_1_1IsPinned.html", null ],
@@ -9,6 +10,7 @@ var mem_2buf_2Traits_8hpp =
     [ "Unmap", "structalpaka_1_1traits_1_1Unmap.html", null ],
     [ "Unpin", "structalpaka_1_1traits_1_1Unpin.html", null ],
     [ "Buf", "mem_2buf_2Traits_8hpp.html#a00961ddf6d3f557f0adfaa9c1cf9417e", null ],
+    [ "allocAsyncBuf", "mem_2buf_2Traits_8hpp.html#ad3079297a886e6434a3ab3750585d033", null ],
     [ "allocBuf", "mem_2buf_2Traits_8hpp.html#a7ff762720c64dc454a53faa6622c227d", null ],
     [ "isPinned", "mem_2buf_2Traits_8hpp.html#a3aaedbd7debc6261ddacecaa58272a30", null ],
     [ "map", "mem_2buf_2Traits_8hpp.html#a25dff962c7a90b3ea42750c96af78edc", null ],
