@@ -24,6 +24,10 @@
     ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
     ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
     CMAKE_CUDA_COMPILER: nvcc
+    ALPAKA_CI_STDLIB: libstdc++
+    # CI contains a Quadro P5000 (sm_61) therefore we build by default for the base architecture
+    CMAKE_CUDA_ARCHITECTURES: "60"
+    CMAKE_BUILD_TYPE: Release
   extends: .base
   tags:
     - cuda
@@ -43,6 +47,10 @@
     ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
     ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
     CMAKE_CUDA_COMPILER: clang++
+    ALPAKA_CI_STDLIB: libstdc++
+    # CI contains a Quadro P5000 (sm_61) therefore we build by default for the base architecture
+    CMAKE_CUDA_ARCHITECTURES: "60"
+    CMAKE_BUILD_TYPE: Release
   extends: .base
   tags:
     - cuda

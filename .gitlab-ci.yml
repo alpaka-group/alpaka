@@ -28,5 +28,14 @@ variables:
 
 include:
   - local: '/script/gitlabci/job_base.yml'
-  - local: '/script/gitlabci/job_cuda.yml'
+  - local: '/script/gitlabci/job_cuda9.2.yml'
+  - local: '/script/gitlabci/job_cuda10.0.yml'
+  - local: '/script/gitlabci/job_cuda10.1.yml'
+  - local: '/script/gitlabci/job_cuda10.2.yml'
+  - local: '/script/gitlabci/job_cuda11.0.yml'
+  - local: '/script/gitlabci/job_cuda11.1.yml'
+  - local: '/script/gitlabci/job_cuda11.2.yml'
+  - local: '/script/gitlabci/job_cuda11.3.yml'
+  - local: '/script/gitlabci/job_cuda11.4.yml'
+  - local: '/script/gitlabci/job_cuda11.5.yml'
   - local: '/script/gitlabci/job_hip4.2.yml'
