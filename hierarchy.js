@@ -1095,10 +1095,6 @@ var hierarchy =
     [ "alpaka::warp::traits::Shfl< TWarp, TSfinae >", "structalpaka_1_1warp_1_1traits_1_1Shfl.html", null ],
     [ "alpaka::warp::traits::Shfl< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpSingleThread_01_4.html", null ],
     [ "alpaka::warp::traits::Shfl< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html", null ],
-    [ "B1", null, [
-      [ "alpaka::meta::detail::ConjunctionImpl< B1 >", "structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl_3_01B1_01_4.html", null ],
-      [ "alpaka::meta::detail::DisjunctionImpl< B1 >", "structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl_3_01B1_01_4.html", null ]
-    ] ],
     [ "alpaka::detail::BlockSharedMemStMemberImpl< 4 >", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html", [
       [ "alpaka::BlockSharedMemStOmp5", "classalpaka_1_1BlockSharedMemStOmp5.html", [
         [ "alpaka::AccOmp5< TDim, TIdx >", "classalpaka_1_1AccOmp5.html", null ]
@@ -1775,9 +1771,7 @@ var hierarchy =
     [ "type", null, [
       [ "utility::tuple::IndexRange< MIN, MAX >", "structutility_1_1tuple_1_1IndexRange.html", null ]
     ] ],
-    [ "type", null, [
-      [ "alpaka::meta::detail::ConjunctionImpl< B1, Bn... >", "structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl_3_01B1_00_01Bn_8_8_8_01_4.html", null ],
-      [ "alpaka::meta::detail::DisjunctionImpl< B1, Bn... >", "structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl_3_01B1_00_01Bn_8_8_8_01_4.html", null ],
+    [ "conditional_t", null, [
       [ "alpaka::meta::detail::UniqueHelper< TList< Ts... >, U, Us... >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html", null ]
     ] ],
     [ "enable_shared_from_this", null, [
@@ -1789,7 +1783,6 @@ var hierarchy =
       [ "alpaka::experimental::traits::internal::IsView< T, SFINAE >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1IsView.html", null ],
       [ "alpaka::meta::Contains< List, Value >", "structalpaka_1_1meta_1_1Contains.html", null ],
       [ "alpaka::meta::DependentFalseType< T >", "structalpaka_1_1meta_1_1DependentFalseType.html", null ],
-      [ "alpaka::meta::detail::DisjunctionImpl<... >", "structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl.html", null ],
       [ "alpaka::meta::IsArrayOrVector< T >", "structalpaka_1_1meta_1_1IsArrayOrVector.html", null ]
     ] ],
     [ "integral_constant", null, [
@@ -1806,7 +1799,6 @@ var hierarchy =
     [ "true_type", null, [
       [ "alpaka::experimental::internal::IsAccessor< Accessor< TMemoryHandle, TElem, TBufferIdx, Dim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor_3_01Accessor_3_01TMemoryHandle_00_01TElem2ee6a853bae07489e14aef9da67a07b3.html", null ],
       [ "alpaka::experimental::traits::internal::IsView< TView, std::void_t< Idx< TView >, Dim< TView >, decltype(getPtrNative(std::declval< TView >())), decltype(getPitchBytes< 0 >(std::declval< TView >())), decltype(extent::getExtent< 0 >(std::declval< TView >()))> >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1IsView_3_01TView_00_01std_1_1void__t_3_01Icf3e64abba7130daf1e22eb2ea6e49b1.html", null ],
-      [ "alpaka::meta::detail::ConjunctionImpl<... >", "structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl.html", null ],
       [ "alpaka::meta::IsArrayOrVector< CudaVectorArrayWrapper< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::vector< T, A > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1vector_3_01T_00_01A_01_4_01_4.html", null ],

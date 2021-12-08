@@ -173,15 +173,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a8ec9f76ad5048e654936626c56845f2c"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
 <tr class="memitem:a8ec9f76ad5048e654936626c56845f2c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a8ec9f76ad5048e654936626c56845f2c">Concatenate</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1ConcatenateImpl.html">detail::ConcatenateImpl</a>&lt; T... &gt;::type</td></tr>
 <tr class="separator:a8ec9f76ad5048e654936626c56845f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace1bc35019c688ccf332db52f77cec68"><td class="memTemplParams" colspan="2">template&lt;typename... B&gt; </td></tr>
-<tr class="memitem:ace1bc35019c688ccf332db52f77cec68"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#ace1bc35019c688ccf332db52f77cec68">Conjunction</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl.html">detail::ConjunctionImpl</a>&lt; B... &gt;::type</td></tr>
-<tr class="separator:ace1bc35019c688ccf332db52f77cec68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39137cbb1dfdb86f90c978f4cc59398e"><td class="memTemplParams" colspan="2">template&lt;typename TDstType , typename TIntegerSequence &gt; </td></tr>
 <tr class="memitem:a39137cbb1dfdb86f90c978f4cc59398e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a39137cbb1dfdb86f90c978f4cc59398e">ConvertIntegerSequence</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1ConvertIntegerSequence.html">detail::ConvertIntegerSequence</a>&lt; TDstType, TIntegerSequence &gt;::type</td></tr>
 <tr class="separator:a39137cbb1dfdb86f90c978f4cc59398e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae75ba172a46dd85354212e38393f100f"><td class="memTemplParams" colspan="2">template&lt;typename... B&gt; </td></tr>
-<tr class="memitem:ae75ba172a46dd85354212e38393f100f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#ae75ba172a46dd85354212e38393f100f">Disjunction</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl.html">detail::DisjunctionImpl</a>&lt; B... &gt;</td></tr>
-<tr class="separator:ae75ba172a46dd85354212e38393f100f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65e851602fef62781ed5eb23fb1d8fd6"><td class="memTemplParams" colspan="2">template&lt;typename TList , template&lt; typename &gt; class TPred&gt; </td></tr>
 <tr class="memitem:a65e851602fef62781ed5eb23fb1d8fd6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">Filter</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1FilterImpl.html">detail::FilterImpl</a>&lt; TList, TPred &gt;::type</td></tr>
 <tr class="separator:a65e851602fef62781ed5eb23fb1d8fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,9 +217,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a8e231c413f4066784715ce6383c1762b"><td class="memTemplParams" colspan="2">template&lt;typename T , T Tbegin, T Tsize&gt; </td></tr>
 <tr class="memitem:a8e231c413f4066784715ce6383c1762b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b">MakeIntegerSequenceOffset</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html">detail::MakeIntegerSequenceHelper</a>&lt;(Tsize&lt; 0),(Tsize==0), T, Tbegin, std::integral_constant&lt; T, Tbegin+Tsize &gt;, std::integer_sequence&lt; T &gt; &gt;::type</td></tr>
 <tr class="separator:a8e231c413f4066784715ce6383c1762b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad80a4bac8d17c8f81148dc12b0f58ac7"><td class="memTemplParams" colspan="2">template&lt;typename B &gt; </td></tr>
-<tr class="memitem:ad80a4bac8d17c8f81148dc12b0f58ac7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#ad80a4bac8d17c8f81148dc12b0f58ac7">Negation</a> = std::integral_constant&lt; bool, !B::value &gt;</td></tr>
-<tr class="separator:ad80a4bac8d17c8f81148dc12b0f58ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d6e5b453ca068f43742cf89a32593dd"><td class="memTemplParams" colspan="2">template&lt;typename Ts , template&lt; typename... &gt; class TOp&gt; </td></tr>
 <tr class="memitem:a4d6e5b453ca068f43742cf89a32593dd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a4d6e5b453ca068f43742cf89a32593dd">Transform</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1TransformImpl.html">detail::TransformImpl</a>&lt; Ts, TOp &gt;::type</td></tr>
 <tr class="separator:a4d6e5b453ca068f43742cf89a32593dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -316,24 +307,6 @@ template&lt;typename... T&gt; </div>
 
 </div>
 </div>
-<a id="ace1bc35019c688ccf332db52f77cec68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace1bc35019c688ccf332db52f77cec68">&#9670;&nbsp;</a></span>Conjunction</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... B&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#ace1bc35019c688ccf332db52f77cec68">alpaka::meta::Conjunction</a> = typedef typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl.html">detail::ConjunctionImpl</a>&lt;B...&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00037">37</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a39137cbb1dfdb86f90c978f4cc59398e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a39137cbb1dfdb86f90c978f4cc59398e">&#9670;&nbsp;</a></span>ConvertIntegerSequence</h2>
 
@@ -349,24 +322,6 @@ template&lt;typename TDstType , typename TIntegerSequence &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="IntegerSequence_8hpp_source.html#l00033">33</a> of file <a class="el" href="IntegerSequence_8hpp_source.html">IntegerSequence.hpp</a>.</p>
-
-</div>
-</div>
-<a id="ae75ba172a46dd85354212e38393f100f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae75ba172a46dd85354212e38393f100f">&#9670;&nbsp;</a></span>Disjunction</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... B&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#ae75ba172a46dd85354212e38393f100f">alpaka::meta::Disjunction</a> = typedef typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl.html">detail::DisjunctionImpl</a>&lt;B...&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00058">58</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
 
 </div>
 </div>
@@ -584,24 +539,6 @@ template&lt;typename T , T Tbegin, T Tsize&gt; </div>
 
 </div>
 </div>
-<a id="ad80a4bac8d17c8f81148dc12b0f58ac7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad80a4bac8d17c8f81148dc12b0f58ac7">&#9670;&nbsp;</a></span>Negation</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename B &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#ad80a4bac8d17c8f81148dc12b0f58ac7">alpaka::meta::Negation</a> = typedef std::integral_constant&lt;bool, !B::value&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00062">62</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a4d6e5b453ca068f43742cf89a32593dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d6e5b453ca068f43742cf89a32593dd">&#9670;&nbsp;</a></span>Transform</h2>
 
@@ -636,7 +573,7 @@ template&lt;typename TList &gt; </div>
 
 <p>Trait that returns a list with only unique (no equal) types (a set). Duplicates will be filtered out. </p>
 
-<p class="definition">Definition at line <a class="el" href="Unique_8hpp_source.html#l00049">49</a> of file <a class="el" href="Unique_8hpp_source.html">Unique.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Unique_8hpp_source.html#l00047">47</a> of file <a class="el" href="Unique_8hpp_source.html">Unique.hpp</a>.</p>
 
 </div>
 </div>
@@ -914,7 +851,7 @@ template&lt;typename TExtentVec , typename TFnObj &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1meta.html">meta</a></li>
-    <li class="footer">Generated on Wed Dec 8 2021 18:33:38 for alpaka by
+    <li class="footer">Generated on Wed Dec 8 2021 21:55:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

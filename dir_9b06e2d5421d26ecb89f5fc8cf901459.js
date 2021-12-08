@@ -53,7 +53,6 @@ var dir_9b06e2d5421d26ecb89f5fc8cf901459 =
       [ "IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ]
     ] ],
     [ "IsStrictBase.hpp", "IsStrictBase_8hpp.html", "IsStrictBase_8hpp" ],
-    [ "Metafunctions.hpp", "Metafunctions_8hpp.html", "Metafunctions_8hpp" ],
     [ "NdLoop.hpp", "NdLoop_8hpp.html", "NdLoop_8hpp" ],
     [ "Set.hpp", "meta_2Set_8hpp.html", "meta_2Set_8hpp" ],
     [ "Transform.hpp", "Transform_8hpp.html", "Transform_8hpp" ],
