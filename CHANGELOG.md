@@ -85,6 +85,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - all test executables have been renamed: `executable` is now called `executableTest` #1432
 - test infrastructure is now based on Catch2 v2.13.7 #1461
 - alpaka and all subprojects now only enable `CXX` by default #1473
+- Removed unnecessary disabling of MySQL #1524
 
 ## [0.7.0] - 2021-08-03
 ### Compatibility Changes:
