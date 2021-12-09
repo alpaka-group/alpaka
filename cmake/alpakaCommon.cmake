@@ -173,6 +173,10 @@ if(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE AND (ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAK
     message(FATAL_ERROR "Fibers and CUDA or HIP back-end can not be enabled both at the same time.")
 endif()
 
+if (ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.0)
+    message(FATAL_ERROR "Clang versions < 6.0 do not support Boost.Fiber!")
+endif()
+
 #-------------------------------------------------------------------------------
 # Compiler settings.
 
@@ -204,7 +208,7 @@ endif()
 
 #-------------------------------------------------------------------------------
 # Find Boost.
-set(_ALPAKA_BOOST_MIN_VER "1.65.1")
+set(_ALPAKA_BOOST_MIN_VER "1.74.0")
 
 if(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DEBUG ON)

@@ -91,10 +91,7 @@ then
     if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
         ALPAKA_BOOST_B2+=" --layout=versioned"
-        if [ "$ALPAKA_CI_CL_VER" = "2017" ]
-        then
-            ALPAKA_BOOST_B2+=" --toolset=msvc-14.1"
-        elif [ "$ALPAKA_CI_CL_VER" = "2019" ]
+        if [ "$ALPAKA_CI_CL_VER" = "2019" ]
         then
             ALPAKA_BOOST_B2+=" --toolset=msvc-14.2"
         fi
