@@ -79,6 +79,10 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+                    // Set the current device. \TODO: Is setting the current device before cuda/hip-EventDestroy
+                    // required?
+
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_dev.m_iDevice));
                     // In case event has been recorded but has not yet been completed when cuda/hip-EventDestroy() is
                     // called, the function will return immediately and the resources associated with event will be
                     // released automatically once the device has completed event.
