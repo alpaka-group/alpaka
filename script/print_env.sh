@@ -25,9 +25,6 @@ then
     # Show all running services
     sudo service --status-all
 
-    # Stop some unnecessary services to save memory
-    sudo /etc/init.d/mysql stop
-
     # Show memory stats
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install smem
     sudo smem
