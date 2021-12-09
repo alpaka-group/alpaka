@@ -157,20 +157,17 @@ then
             exit 1
         fi
     fi
+fi
 
-    if [ "${ALPAKA_CI_STDLIB}" == "libstdc++" ]
+if [ ! -z "${ALPAKA_CI_CLANG_VER+x}" ]
+then
+    if [ "${ALPAKA_CI_CLANG_VER}" == 5 ]
     then
-        if [ ! -z "${ALPAKA_CXX_STANDARD+x}" ]
+        if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
         then
-            if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
-            then
-                if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 67 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
-                then
-                    # https://github.com/boostorg/coroutine2/issues/26
-                    echo "libstdc++ in c++17 mode is not compatible with boost.fibers in boost-1.66 and below."
-                    exit 1
-                fi
-            fi
+            # https://github.com/boostorg/fiber/issues/272
+            echo "clang-5 is not compatible with boost.fibers."
+            exit 1
         fi
     fi
 fi
