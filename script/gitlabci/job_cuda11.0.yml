@@ -31,7 +31,7 @@ linux_nvcc-11.0_gcc-7_debug:
     CMAKE_BUILD_TYPE: Debug
     ALPAKA_BOOST_VERSION: 1.67.0
     ALPAKA_CI_CMAKE_VER: 3.20.0
-    CMAKE_CUDA_ARCHITECTURES: "35;80"
+    CMAKE_CUDA_ARCHITECTURES: "61;80"
 
 linux_nvcc-11.0_gcc-8_release:
   extends: .base_cuda_gcc
@@ -42,7 +42,6 @@ linux_nvcc-11.0_gcc-8_release:
     CMAKE_BUILD_TYPE: Release
     ALPAKA_BOOST_VERSION: 1.69.0
     ALPAKA_CI_CMAKE_VER: 3.18.6
-    CMAKE_CUDA_ARCHITECTURES: "35"
 
 linux_nvcc-11.0_gcc-9_release:
   extends: .base_cuda_gcc
@@ -52,7 +51,6 @@ linux_nvcc-11.0_gcc-9_release:
     ALPAKA_CI_GCC_VER: 9
     ALPAKA_BOOST_VERSION: 1.69.0
     ALPAKA_CI_CMAKE_VER: 3.19.7
-    CMAKE_CUDA_ARCHITECTURES: "35"
 
 # nvcc + clang
 linux_nvcc-11.0_clang-8_release:
@@ -60,7 +58,7 @@ linux_nvcc-11.0_clang-8_release:
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
-    CMAKE_CUDA_ARCHITECTURES: "35;70"
+    CMAKE_CUDA_ARCHITECTURES: "61;70"
     ALPAKA_CI_CLANG_VER: 8
     ALPAKA_BOOST_VERSION: 1.74.0
     ALPAKA_CI_CMAKE_VER: 3.20.0
@@ -71,7 +69,6 @@ linux_nvcc-11.0_clang-9_debug:
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
-    CMAKE_CUDA_ARCHITECTURES: "35"
     ALPAKA_CI_CLANG_VER: 9
     CMAKE_BUILD_TYPE: Debug
     ALPAKA_BOOST_VERSION: 1.73.0
@@ -83,7 +80,6 @@ linux_clang-12_cuda-11.0_release:
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
-    CMAKE_CUDA_ARCHITECTURES: "50;72"
     ALPAKA_CI_CLANG_VER: 12
     ALPAKA_BOOST_VERSION: 1.74.0
     ALPAKA_CI_CMAKE_VER: 3.19.7
