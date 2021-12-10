@@ -41,10 +41,14 @@ struct InitRandomKernel
         std::size_t pitchRand) const -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const linearIdx = alpaka::mapIdx<1u>(idx, extent)[0];
-        auto const memoryLocationIdx = idx[0] * pitchRand + idx[1];
-        TRandEngine engine(42, static_cast<std::uint32_t>(linearIdx));
-        states[memoryLocationIdx] = engine;
+
+        if(idx[0] < NUM_Y && idx[1] < NUM_X)
+        {
+            auto const linearIdx = alpaka::mapIdx<1u>(idx, extent)[0];
+            auto const memoryLocationIdx = idx[0] * pitchRand + idx[1];
+            TRandEngine engine(42, static_cast<std::uint32_t>(linearIdx));
+            states[memoryLocationIdx] = engine;
+        }
     }
 };
 
@@ -60,20 +64,24 @@ struct RunTimestepKernelSingle
         std::size_t pitchOut) const -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const memoryLocationRandIdx = idx[0] * pitchRand + idx[1];
-        auto const memoryLocationOutIdx = idx[0] * pitchOut + idx[1];
 
-        // Setup generator and distribution.
-        RandomEngineSingle<TAcc> engine(states[memoryLocationRandIdx]);
-        alpaka::rand::UniformReal<float> dist;
-
-        float sum = 0;
-        for(unsigned numCalculations = 0; numCalculations < NUM_CALCULATIONS; ++numCalculations)
+        if(idx[0] < NUM_Y && idx[1] < NUM_X)
         {
-            sum += dist(engine);
+            auto const memoryLocationRandIdx = idx[0] * pitchRand + idx[1];
+            auto const memoryLocationOutIdx = idx[0] * pitchOut + idx[1];
+
+            // Setup generator and distribution.
+            RandomEngineSingle<TAcc> engine(states[memoryLocationRandIdx]);
+            alpaka::rand::UniformReal<float> dist;
+
+            float sum = 0;
+            for(unsigned numCalculations = 0; numCalculations < NUM_CALCULATIONS; ++numCalculations)
+            {
+                sum += dist(engine);
+            }
+            cells[memoryLocationOutIdx] = sum / NUM_CALCULATIONS;
+            states[memoryLocationRandIdx] = engine;
         }
-        cells[memoryLocationOutIdx] = sum / NUM_CALCULATIONS;
-        states[memoryLocationRandIdx] = engine;
     }
 };
 
@@ -89,32 +97,37 @@ struct RunTimestepKernelVector
         std::size_t pitchOut) const -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const memoryLocationRandIdx = idx[0] * pitchRand + idx[1];
-        auto const memoryLocationOutIdx = idx[0] * pitchOut + idx[1];
 
-        // Setup generator and distribution.
-        RandomEngineVector<TAcc> engine(states[memoryLocationRandIdx]); // Load the state of the random engine
-        using DistributionResult =
-            typename RandomEngineVector<TAcc>::template ResultContainer<float>; // Container type which will store the
-                                                                                // distribution results
-        unsigned constexpr resultVectorSize = std::tuple_size<DistributionResult>::value; // Size of the result vector
-        alpaka::rand::UniformReal<DistributionResult> dist; // Vector-aware distribution function
-
-
-        float sum = 0;
-        static_assert(
-            NUM_CALCULATIONS % resultVectorSize == 0,
-            "Number of calculations must be a multiple of result vector size.");
-        for(unsigned numCalculations = 0; numCalculations < NUM_CALCULATIONS / resultVectorSize; ++numCalculations)
+        if(idx[0] < NUM_Y && idx[1] < NUM_X)
         {
-            auto result = dist(engine);
-            for(unsigned i = 0; i < resultVectorSize; ++i)
+            auto const memoryLocationRandIdx = idx[0] * pitchRand + idx[1];
+            auto const memoryLocationOutIdx = idx[0] * pitchOut + idx[1];
+
+            // Setup generator and distribution.
+            RandomEngineVector<TAcc> engine(states[memoryLocationRandIdx]); // Load the state of the random engine
+            using DistributionResult =
+                typename RandomEngineVector<TAcc>::template ResultContainer<float>; // Container type which will store
+                                                                                    // the distribution results
+            unsigned constexpr resultVectorSize
+                = std::tuple_size<DistributionResult>::value; // Size of the result vector
+            alpaka::rand::UniformReal<DistributionResult> dist; // Vector-aware distribution function
+
+
+            float sum = 0;
+            static_assert(
+                NUM_CALCULATIONS % resultVectorSize == 0,
+                "Number of calculations must be a multiple of result vector size.");
+            for(unsigned numCalculations = 0; numCalculations < NUM_CALCULATIONS / resultVectorSize; ++numCalculations)
             {
-                sum += result[i];
+                auto result = dist(engine);
+                for(unsigned i = 0; i < resultVectorSize; ++i)
+                {
+                    sum += result[i];
+                }
             }
+            cells[memoryLocationOutIdx] = sum / NUM_CALCULATIONS;
+            states[memoryLocationRandIdx] = engine;
         }
-        cells[memoryLocationOutIdx] = sum / NUM_CALCULATIONS;
-        states[memoryLocationRandIdx] = engine;
     }
 };
 
