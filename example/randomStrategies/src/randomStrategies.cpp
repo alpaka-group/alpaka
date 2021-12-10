@@ -1,4 +1,4 @@
-/* Copyright 2021 Jiri Vyskocil
+/* Copyright 2021 Jiri Vyskocil, Rene Widera
  *
  * This file is part of alpaka.
  *
@@ -112,8 +112,11 @@ struct InitRandomKernel<Strategy::seed>
     ) const -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]; ///< index of the current thread
-        TRandEngine engine(idx, 0, 0); // Initialize the engine
-        states[idx] = engine; // Save the initial state
+        if(idx < extent[0])
+        {
+            TRandEngine engine(idx, 0, 0); // Initialize the engine
+            states[idx] = engine; // Save the initial state
+        }
     }
 };
 
@@ -130,8 +133,11 @@ struct InitRandomKernel<Strategy::subsequence>
     {
         alpaka::ignore_unused(skipLength);
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]; ///< index of the current thread
-        TRandEngine engine(0, idx, 0); // Initialize the engine
-        states[idx] = engine; // Save the initial state
+        if(idx < extent[0])
+        {
+            TRandEngine engine(0, idx, 0); // Initialize the engine
+            states[idx] = engine; // Save the initial state
+        }
     }
 };
 
@@ -148,8 +154,11 @@ struct InitRandomKernel<Strategy::offset>
     {
         alpaka::ignore_unused(skipLength);
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]; ///< index of the current thread
-        TRandEngine engine(0, 0, idx * skipLength); // Initialize the engine
-        states[idx] = engine; // Save the initial state
+        if(idx < extent[0])
+        {
+            TRandEngine engine(0, 0, idx * skipLength); // Initialize the engine
+            states[idx] = engine; // Save the initial state
+        }
     }
 };
 
@@ -167,16 +176,21 @@ struct FillKernel
     {
         /// Index of the current thread. Each thread performs multiple "dice rolls".
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
-        /// Number of "dice rolls" to be performed by each thread.
-        auto const length = extent[0] / alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0];
-
-        RandomEngine<TAcc> engine(states[idx]); // Setup the PRNG using the saved state for this thread.
-        alpaka::rand::UniformReal<float> dist; // Setup the random number distribution
-        for(unsigned i = 0; i < length; ++i)
+        auto const numGridThreads = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0];
+        if(idx < NUM_POINTS)
         {
-            cells[length * idx + i] = dist(engine); // Roll the dice!
+            // each worker is handling one random state
+            auto const numWorkers
+                = alpaka::math::min(acc, numGridThreads, static_cast<decltype(numGridThreads)>(NUM_POINTS));
+
+            RandomEngine<TAcc> engine(states[idx]); // Setup the PRNG using the saved state for this thread.
+            alpaka::rand::UniformReal<float> dist; // Setup the random number distribution
+            for(uint32_t i = idx; i < extent[0]; i += numWorkers)
+            {
+                cells[i] = dist(engine); // Roll the dice!
+            }
+            states[idx] = engine; // Save the final PRNG state
         }
-        states[idx] = engine; // Save the final PRNG state
     }
 };
 

@@ -1,4 +1,4 @@
-/* Copyright 2021 Jiri Vyskocil
+/* Copyright 2021 Jiri Vyskocil, Rene Widera
  *
  * This file is part of alpaka.
  *
@@ -84,20 +84,43 @@ namespace alpaka
                  */
                 ALPAKA_FN_HOST_ACC auto nextNumber()
                 {
+                    // Element zero will always contain the next valid random number.
+                    auto result = state.result[0];
                     state.position++;
                     if(state.position == TParams::counterSize)
                     {
                         advanceState();
                     }
-                    return state.result[state.position];
+                    else
+                    {
+                        // Shift state results to allow hard coded access to element zero.
+                        // This will avoid high register usage on NVIDIA devices.
+                        // \todo Check if this shifting of the result vector is decreasing CPU performance.
+                        //       If so this optimization for GPUs (mostly NVIDIA) should be moved into
+                        //       PhiloxBaseCudaArray.
+                        state.result[0] = state.result[1];
+                        state.result[1] = state.result[2];
+                        state.result[2] = state.result[3];
+                    }
+
+                    return result;
                 }
 
                 /// Skips the next \a offset numbers
                 ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
                 {
+                    static_assert(TParams::counterSize == 4, "Only counterSize is supported.");
                     state.position = static_cast<decltype(state.position)>(state.position + (offset & 3));
                     offset += state.position < 4 ? 0 : 4;
                     state.position -= state.position < 4 ? 0 : 4u;
+                    for(auto numShifts = state.position; numShifts > 0; --numShifts)
+                    {
+                        // Shift state results to allow hard coded access to element zero.
+                        // This will avoid high register usage on NVIDIA devices.
+                        state.result[0] = state.result[1];
+                        state.result[1] = state.result[2];
+                        state.result[2] = state.result[3];
+                    }
                     this->skip4(offset / 4);
                 }
 
