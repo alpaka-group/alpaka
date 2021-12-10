@@ -48,5 +48,8 @@ clang++ --version
 which hipconfig
 hipconfig --platform
 hipconfig -v
+echo
+hipconfig
+rocm-smi
 # print newline as previous command does not do this
 echo
