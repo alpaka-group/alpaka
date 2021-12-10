@@ -58,19 +58,13 @@ public:
             "The accelerator used for the GemmAlpakaKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
-        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const& gridThreadIdxX = gridThreadIdx[1u];
-        auto const& gridThreadIdxY = gridThreadIdx[0u];
+        auto const [gridThreadIdxY, gridThreadIdxX] = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
 
         // Column and row inside the block of C to calculate.
-        auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
-        auto const& blockThreadIdxX = blockThreadIdx[1u];
-        auto const& blockThreadIdxY = blockThreadIdx[0u];
+        auto const [blockThreadIdxY, blockThreadIdxX] = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
 
         // The block threads extent.
-        auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
-        auto const& blockThreadExtentX = blockThreadExtent[1u];
-        auto const& blockThreadExtentY = blockThreadExtent[0u];
+        auto const [blockThreadExtentY, blockThreadExtentX] = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         // ALPAKA_ASSERT(blockThreadExtentX == blockThreadExtentY);
         auto const& blockThreadExtentVal = blockThreadExtentX;
 
@@ -88,8 +82,7 @@ public:
         TElem dotProduct(0);
 
         // Loop over all blocks of A and B that are required to compute the C block.
-        auto const blockMulCount
-            = static_cast<TIndex>(std::ceil(static_cast<float>(k) / static_cast<float>(blockThreadExtentVal)));
+        auto const blockMulCount = (k + blockThreadExtentVal - 1) / blockThreadExtentVal;
         for(TIndex k2(0u); k2 < blockMulCount; ++k2)
         {
             // Copy the current blocks of A and B into shared memory in parallel.
@@ -97,25 +90,21 @@ public:
             // This is possible because zero is a result neutral extension of the matrices regarding the dot product.
             auto const AIdxX = k2 * blockThreadExtentX + blockThreadIdxX;
             auto const AIdx1d = gridThreadIdxY * lda + AIdxX;
-            pBlockSharedA[sharedBlockIdx1d] = (((!insideA) || (AIdxX >= k)) ? static_cast<TElem>(0) : A[AIdx1d]);
+            pBlockSharedA[sharedBlockIdx1d] = (!insideA || AIdxX >= k) ? TElem{0} : A[AIdx1d];
 
             auto const BIdxY = k2 * blockThreadExtentY + blockThreadIdxY;
             auto const BIdx1d = BIdxY * ldb + gridThreadIdxX;
-            pBlockSharedB[sharedBlockIdx1d] = (((!insideB) || (BIdxY >= k)) ? static_cast<TElem>(0) : B[BIdx1d]);
+            pBlockSharedB[sharedBlockIdx1d] = (!insideB || BIdxY >= k) ? TElem{0} : B[BIdx1d];
 
             // Synchronize to make sure the complete blocks are loaded before starting the computation.
             alpaka::syncBlockThreads(acc);
 
-            // Not really necessary because we wrote zeros into those cells.
-            // if(insideC)
-            //{
             // Compute the dot products within shared memory.
             for(TIndex k3(0); k3 < blockThreadExtentVal; ++k3)
             {
                 dotProduct += pBlockSharedA[blockThreadIdxY * blockThreadExtentX + k3]
                     * pBlockSharedB[k3 * blockThreadExtentY + blockThreadIdxX];
             }
-            //}
 
             // Synchronize to make sure that the preceding computation is done before loading the next blocks of A and
             // B.
@@ -261,6 +250,15 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     alpaka::wait(queueHost);
     alpaka::memcpy(queueAcc, bufCAcc, bufCHost, extentC);
 
+    auto const pitchA = alpaka::getPitchBytes<1u>(bufAAcc);
+    auto const pitchB = alpaka::getPitchBytes<1u>(bufBAcc);
+    auto const pitchC = alpaka::getPitchBytes<1u>(bufCAcc);
+
+    // Assumptions we make
+    REQUIRE(pitchA % sizeof(Val) == 0);
+    REQUIRE(pitchB % sizeof(Val) == 0);
+    REQUIRE(pitchC % sizeof(Val) == 0);
+
     // Create the kernel execution task.
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
@@ -270,12 +268,12 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
         k,
         static_cast<Val>(1),
         alpaka::getPtrNative(bufAAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
+        static_cast<Idx>(pitchA / sizeof(Val)),
         alpaka::getPtrNative(bufBAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
+        static_cast<Idx>(pitchB / sizeof(Val)),
         static_cast<Val>(1),
         alpaka::getPtrNative(bufCAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufCAcc) / sizeof(Val)));
+        static_cast<Idx>(pitchC / sizeof(Val)));
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"
