@@ -21,6 +21,4 @@ add_subdirectory(common)
 
 list(APPEND _ALPAKA_TEST_OPTIONS --use-colour yes)
 
-add_subdirectory(analysis)
-add_subdirectory(integ)
 add_subdirectory(unit)
