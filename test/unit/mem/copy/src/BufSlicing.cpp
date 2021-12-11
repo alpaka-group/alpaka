@@ -106,6 +106,11 @@ struct TestContainer
             REQUIRE(ptrA[i] == Approx(ptrB[i]));
         }
     }
+
+    void synchronizeQueue() const
+    {
+        alpaka::wait(devQueue);
+    }
 };
 
 using DataTypes = std::tuple<int, float, double>;
@@ -160,6 +165,9 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest", "[memBuf]", TestAccWithDataTypes)
                                                       extents)[0]; // take the only element in the vector
         ptrNative[i] = static_cast<Data>(mappedTo1D);
     }
+
+    // Finish device tasks before comparing results.
+    slicingTest.synchronizeQueue();
 
     // resultBuffer will be compared with the manually computed results.
     slicingTest.compareBuffer(resultBuffer, correctResults, extentsSubView);
