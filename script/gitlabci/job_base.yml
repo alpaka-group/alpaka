@@ -89,8 +89,7 @@
     ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "OFF"
     ALPAKA_ACC_GPU_HIP_ENABLE: "ON"
     ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
-    # use VEGA64 GPU
-    HIP_VISIBLE_DEVICES: "2"
+    # compile for VEGA64 GPU
     GPU_TARGETS: gfx900
   before_script:
     - apt-get -y --quiet update || echo "ignore any errors"
