@@ -76,6 +76,11 @@ include(${_ALPAKA_ADD_LIBRARY_FILE})
 set(_ALPAKA_INCLUDE_DIRECTORY "${_ALPAKA_ROOT_DIR}/include")
 set(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
 
+# the sequential accelerator is required for the tests and examples
+if(NOT DEFINED ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE AND (alpaka_BUILD_EXAMPLES OR BUILD_TESTING))
+  option(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "enable alpaka serial accelerator" ON)
+endif()
+
 include(${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake)
 
 # Add all the source and include files in all recursive subdirectories and group them accordingly.
