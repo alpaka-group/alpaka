@@ -69,6 +69,14 @@ else
 fi
 
 #-------------------------------------------------------------------------------
+# OPENMP
+export ALPAKA_CI_INSTALL_OMP="OFF"
+if [ "$ALPAKA_CI_OS_NAME" = "macOS"  ]
+then
+    export ALPAKA_CI_INSTALL_OMP="ON"
+fi
+
+#-------------------------------------------------------------------------------
 # Fibers
 export ALPAKA_CI_INSTALL_FIBERS="OFF"
 if [ ! -z "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE+x}" ]
@@ -166,3 +174,4 @@ then
         fi
     fi
 fi
+
