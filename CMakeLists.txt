@@ -46,6 +46,9 @@ option(BUILD_TESTING "Build the testing tree." OFF)
 option(alpaka_INSTALL_TEST_HEADER "Install headers of the namespace alpaka::test. Attention, headers are not designed for production code, see documentation." OFF)
 include(CTest)
 
+include(CMakeDependentOption)
+cmake_dependent_option(ALPAKA_CHECK_HEADERS "Check all alpaka headers as part of the tests whether they can be compiled standalone." OFF BUILD_TESTING OFF)
+
 ################################################################################
 # Internal variables.
 
