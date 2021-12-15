@@ -26,6 +26,7 @@ variables:
   ALPAKA_ACC_GPU_HIP_ONLY_MODE: "OFF"
   # If ALPAKA_CI_ANALYSIS is OFF compile and execute runtime tests else compile only.
   ALPAKA_CI_ANALYSIS: "OFF"
+  ALPAKA_CI: GITLAB
   # needs to be enabled, that test on the GPU are executed
   ALPAKA_FORCE_RUNTIME_TEST: "ON"
   ALPAKA_CI_SANITIZERS: ""
