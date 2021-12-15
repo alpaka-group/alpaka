@@ -10,6 +10,7 @@ linux_clang-9_cuda-10.0_debug:
     ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+  stage: stage0
 
 linux_clang-10_cuda-10.0_release:
   extends: .base_cuda_clang
@@ -22,6 +23,7 @@ linux_clang-10_cuda-10.0_release:
     ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+  stage: stage1
 
 linux_clang-11_cuda-10.0_release:
   extends: .base_cuda_clang
@@ -34,3 +36,4 @@ linux_clang-11_cuda-10.0_release:
     ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+  stage: stage2
