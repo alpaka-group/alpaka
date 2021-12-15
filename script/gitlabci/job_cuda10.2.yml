@@ -10,3 +10,4 @@ linux_clang-11_cuda-10.2_release:
     ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+  stage: stage0
