@@ -1,6 +1,6 @@
 # nvcc + g++
 linux_nvcc-11.4_gcc-7_debug:
-  extends: .base_cuda_gcc
+  extends: .base_cuda_gcc_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.4"
@@ -9,17 +9,17 @@ linux_nvcc-11.4_gcc-7_debug:
     ALPAKA_BOOST_VERSION: 1.67.0
     ALPAKA_CI_CMAKE_VER: 3.20.0
     CMAKE_CUDA_ARCHITECTURES: "61;86"
-  stage: stage0
+  stage: stageCompile0
   
 linux_nvcc-11.4_gcc-8_release:
-  extends: .base_cuda_gcc
+  extends: .base_cuda_gcc_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.4"
     ALPAKA_CI_GCC_VER: 8
     ALPAKA_BOOST_VERSION: 1.69.0
     ALPAKA_CI_CMAKE_VER: 3.18.6
-  stage: stage1
+  stage: stageCompile1
   
 linux_nvcc-11.4_gcc-9_release:
   extends: .base_cuda_gcc
@@ -29,13 +29,13 @@ linux_nvcc-11.4_gcc-9_release:
     ALPAKA_CI_GCC_VER: 9
     ALPAKA_BOOST_VERSION: 1.69.0
     ALPAKA_CI_CMAKE_VER: 3.19.7
-  stage: stage2
+  stage: stageRun0
   
 # gcc 10 not included because of an GCC 10.3 bug: https://github.com/alpaka-group/alpaka/issues/1297
 
 # nvcc + clang
 linux_nvcc-11.4_clang-8_release:
-  extends: .base_cuda_clang
+  extends: .base_cuda_clang_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.4"
@@ -43,10 +43,10 @@ linux_nvcc-11.4_clang-8_release:
     ALPAKA_BOOST_VERSION: 1.74.0
     ALPAKA_CI_CMAKE_VER: 3.20.0
     CMAKE_CUDA_COMPILER: nvcc
-  stage: stage3
+  stage: stageCompile0
   
 linux_nvcc-11.4_clang-9_debug:
-  extends: .base_cuda_clang
+  extends: .base_cuda_clang_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.4"
@@ -55,10 +55,10 @@ linux_nvcc-11.4_clang-9_debug:
     ALPAKA_BOOST_VERSION: 1.73.0
     ALPAKA_CI_CMAKE_VER: 3.20.0
     CMAKE_CUDA_COMPILER: nvcc
-  stage: stage4
+  stage: stageCompile1
 
 linux_nvcc-11.4_clang-10_release:
-  extends: .base_cuda_clang
+  extends: .base_cuda_clang_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.4"
@@ -66,10 +66,10 @@ linux_nvcc-11.4_clang-10_release:
     ALPAKA_BOOST_VERSION: 1.72.0
     ALPAKA_CI_CMAKE_VER: 3.19.7
     CMAKE_CUDA_COMPILER: nvcc
-  stage: stage5
+  stage: stageCompile0
   
 linux_nvcc-11.4_clang-11_release:
-  extends: .base_cuda_clang
+  extends: .base_cuda_clang_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.4"
@@ -77,10 +77,10 @@ linux_nvcc-11.4_clang-11_release:
     ALPAKA_BOOST_VERSION: 1.72.0
     ALPAKA_CI_CMAKE_VER: 3.19.7
     CMAKE_CUDA_COMPILER: nvcc
-  stage: stage6
+  stage: stageCompile1
   
 linux_nvcc-11.4_clang-12_release:
-  extends: .base_cuda_clang
+  extends: .base_cuda_clang_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.4"
@@ -88,7 +88,7 @@ linux_nvcc-11.4_clang-12_release:
     ALPAKA_BOOST_VERSION: 1.72.0
     ALPAKA_CI_CMAKE_VER: 3.19.7
     CMAKE_CUDA_COMPILER: nvcc
-  stage: stage7
+  stage: stageRun1
   
 # nvhpc
 linux_nvhpc-21.9_cuda-11.4_oacc:
@@ -100,5 +100,4 @@ linux_nvhpc-21.9_cuda-11.4_oacc:
     CMAKE_BUILD_TYPE: ""
     ALPAKA_BOOST_VERSION: 1.74.0
     ALPAKA_CI_CMAKE_VER: 3.19.7
-  stage: stage8
-  
+  stage: stageRun0
