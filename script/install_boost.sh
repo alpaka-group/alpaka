@@ -29,7 +29,22 @@ then
     : "${ALPAKA_CI_CL_VER?'ALPAKA_CI_CL_VER must be specified'}"
 fi
 
-travis_retry rm -rf ${BOOST_ROOT} && git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
+then
+    # To speed up installing boost we use the tar ball, downloading the source via a shallow git clone took ~4 minutes, with wget ~20 seconds.
+    BOOST_BASE_NAME=$(echo -n ${ALPAKA_CI_BOOST_BRANCH} | tr "." "_" | tr "-" "_")
+    BOOST_BASE_VERSION=$(echo -n ${ALPAKA_CI_BOOST_BRANCH} | sed 's/boost-//')
+    BOOST_TAR_FILE_NAME="${BOOST_BASE_NAME}.tar.gz"
+    BOOST_DOWNLOAD_LINK="https://boostorg.jfrog.io/artifactory/main/release/${BOOST_BASE_VERSION}/source/${BOOST_TAR_FILE_NAME}"
+    travis_retry rm -rf ${BOOST_ROOT} && wget -q ${BOOST_DOWNLOAD_LINK}
+    tar -xf "$BOOST_TAR_FILE_NAME"
+    rm "$BOOST_TAR_FILE_NAME"
+
+    BOOST_UNCOMPRESSED_FOLDER_NAME=${BOOST_BASE_NAME}
+    mv "$BOOST_UNCOMPRESSED_FOLDER_NAME" "${BOOST_ROOT}"
+else
+    travis_retry rm -rf ${BOOST_ROOT} && git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
+fi
 
 # Bootstrap boost.
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
