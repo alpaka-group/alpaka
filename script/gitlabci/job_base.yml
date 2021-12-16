@@ -13,7 +13,8 @@
     - source ./script/run.sh
   interruptible: true
 
-.base_cuda_gcc:
+# ------ CUDA gcc ------
+.basecfg_cuda_gcc:
   image: ubuntu:${ALPAKA_CI_UBUNTU_VER}
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
@@ -30,11 +31,24 @@
     CMAKE_CUDA_ARCHITECTURES: "61"
     CMAKE_BUILD_TYPE: Release
   extends: .base
+
+
+.base_cuda_gcc_compile_only:
+  extends: .basecfg_cuda_gcc
+  variables:
+    ALPAKA_CI_RUN_TESTS: "OFF"
+  tags:
+    - cpuonly
+    - x86_64
+
+.base_cuda_gcc:
+  extends: .basecfg_cuda_gcc
   tags:
     - cuda
     - intel
 
-.base_cuda_clang:
+# ------ CUDA clang ------
+.basecfg_cuda_clang:
   image: ubuntu:${ALPAKA_CI_UBUNTU_VER}
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
@@ -51,6 +65,20 @@
     CMAKE_CUDA_ARCHITECTURES: "61"
     CMAKE_BUILD_TYPE: Release
   extends: .base
+  tags:
+    - cuda
+    - intel
+
+.base_cuda_clang_compile_only:
+  extends: .basecfg_cuda_clang
+  variables:
+    ALPAKA_CI_RUN_TESTS: "OFF"
+  tags:
+    - cpuonly
+    - x86_64
+
+.base_cuda_clang:
+  extends: .basecfg_cuda_clang
   tags:
     - cuda
     - intel
