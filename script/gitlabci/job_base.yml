@@ -109,7 +109,7 @@
     - cuda
     - intel
     
-.base_hip:
+.basecfg_hip:
   image: rocm/dev-ubuntu-${ALPAKA_CI_UBUNTU_VER}:${ALPAKA_CI_HIP_VERSION}
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
@@ -128,6 +128,17 @@
     # AMD container keys are outdated and must be updated
     - wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
   extends: .base
+
+.base_hip_compile_only:
+  extends: .basecfg_hip
+  variables:
+    ALPAKA_CI_RUN_TESTS: "OFF"
+  tags:
+    - cpuonly
+    - x86_64
+
+.base_hip:
+  extends: .basecfg_hip
   tags:
     - amd
     - rocm
