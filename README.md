@@ -109,7 +109,7 @@ Usage
 -----
 
 The library is header only so nothing has to be built.
-CMake 3.15+ is required to provide the correct defines and include paths.
+CMake 3.18+ is required to provide the correct defines and include paths.
 Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compiler in handling `.cu` and `.cpp` files are automatically taken care of.
 Source files do not need any special file ending.
 Examples of how to utilize alpaka within CMake can be found in the `example` folder.
@@ -214,12 +214,13 @@ Authors
 
 - Benjamin Worpitz* (original author)
 - Dr. Sergei Bastrakov*
+- Dr. Antonio Di Pilato
 - Simeon Ehrig
 - Bernhard Manfred Gruber
 - Dr. Axel Huebl*
 - Dr. Jeffrey Kelling
-- Dr. David M. Rogers
 - Jan Stephan*
+- Dr. Jiří Vyskočil
 - Rene Widera*
 
 ### Former Members, Contributions and Thanks
@@ -232,6 +233,7 @@ Authors
 - Alexander Matthes
 - Hauke Mewes
 - Phil Nash
+- Dr. David M. Rogers
 - Mutsuo Saito
 - Jonas Schenke
 - Daniel Vollmer
