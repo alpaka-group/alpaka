@@ -99,7 +99,6 @@ then
         ALPAKA_BOOST_B2+=" --layout=tagged --toolset=${CC}"
     fi
 
-    # TODO: Win32: adress-model=32
     ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 link=static threading=multi runtime-link=shared"
 
     if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
@@ -120,16 +119,12 @@ then
     then
         ALPAKA_BOOST_B2_CXXFLAGS+=" -Wunused-private-field -Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros"
     fi
-    # Select the libraries required.
-    # If the variable is not set, the backend will most probably be used by default so we install it.
-    if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
+    if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
     then
-        if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
-        then
-            ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++17"
-        fi
-        ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
+        ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++17"
     fi
+    ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
+
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
     then
         if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
