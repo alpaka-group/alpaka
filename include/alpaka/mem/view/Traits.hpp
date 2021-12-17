@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -191,6 +191,17 @@ namespace alpaka
         enqueue(queue, createTaskMemset(view, byte, extent));
     }
 
+    //! Sets the whole view to the given value.
+    //!
+    //! \param queue The queue to enqueue the view fill task into.
+    //! \param view The memory view to fill.
+    //! \param byte Value to set for each element of the specified view.
+    template<typename TView, typename TQueue>
+    ALPAKA_FN_HOST auto memset(TQueue& queue, TView& view, std::uint8_t const& byte) -> void
+    {
+        enqueue(queue, createTaskMemset(view, byte, extent::getExtentVec(view)));
+    }
+
     //! Creates a memory copy task.
     //!
     //! \param viewDst The destination memory view.
@@ -226,6 +237,17 @@ namespace alpaka
         -> void
     {
         enqueue(queue, createTaskMemcpy(viewDst, viewSrc, extent));
+    }
+
+    //! Copies the whole view possibly between different memory spaces.
+    //!
+    //! \param queue The queue to enqueue the view copy task into.
+    //! \param viewDst The destination memory view.
+    //! \param viewSrc The source memory view.
+    template<typename TViewSrc, typename TViewDst, typename TQueue>
+    ALPAKA_FN_HOST auto memcpy(TQueue& queue, TViewDst& viewDst, TViewSrc const& viewSrc) -> void
+    {
+        enqueue(queue, createTaskMemcpy(viewDst, viewSrc, extent::getExtentVec(viewSrc)));
     }
 
     namespace detail
