@@ -214,12 +214,13 @@ Authors
 
 - Benjamin Worpitz* (original author)
 - Dr. Sergei Bastrakov*
+- Dr. Antonio Di Pilato
 - Simeon Ehrig
 - Bernhard Manfred Gruber
 - Dr. Axel Huebl*
 - Dr. Jeffrey Kelling
-- Dr. David M. Rogers
 - Jan Stephan*
+- Dr. Jiří Vyskočil
 - Rene Widera*
 
 ### Former Members, Contributions and Thanks
@@ -232,6 +233,7 @@ Authors
 - Alexander Matthes
 - Hauke Mewes
 - Phil Nash
+- Dr. David M. Rogers
 - Mutsuo Saito
 - Jonas Schenke
 - Daniel Vollmer
