@@ -233,7 +233,7 @@ namespace alpaka
             auto plainBuf = alpaka::createView(devHost, v, extent);
 
             // Copy the generated content into the given view.
-            alpaka::memcpy(queue, view, plainBuf, extent);
+            alpaka::memcpy(queue, view, plainBuf);
 
             alpaka::wait(queue);
         }
@@ -253,12 +253,10 @@ namespace alpaka
                     "The value returned by getPtrNative has to be non-const when the view is non-const.");
             }
 
-            auto const extent = alpaka::extent::getExtentVec(view);
-
             // alpaka::set
             {
                 std::uint8_t const byte(static_cast<uint8_t>(42u));
-                alpaka::memset(queue, view, byte, extent);
+                alpaka::memset(queue, view, byte);
                 alpaka::wait(queue);
                 verifyBytesSet<TAcc>(view, byte);
             }
@@ -269,12 +267,13 @@ namespace alpaka
                 using Idx = alpaka::Idx<TView>;
 
                 auto const devAcc = alpaka::getDev(view);
+                auto const extent = alpaka::extent::getExtentVec(view);
 
                 // alpaka::copy into given view
                 {
                     auto srcBufAcc = alpaka::allocBuf<Elem, Idx>(devAcc, extent);
                     iotaFillView(queue, srcBufAcc);
-                    alpaka::memcpy(queue, view, srcBufAcc, extent);
+                    alpaka::memcpy(queue, view, srcBufAcc);
                     alpaka::wait(queue);
                     verifyViewsEqual<TAcc>(view, srcBufAcc);
                 }
@@ -282,7 +281,7 @@ namespace alpaka
                 // alpaka::copy from given view
                 {
                     auto dstBufAcc = alpaka::allocBuf<Elem, Idx>(devAcc, extent);
-                    alpaka::memcpy(queue, dstBufAcc, view, extent);
+                    alpaka::memcpy(queue, dstBufAcc, view);
                     alpaka::wait(queue);
                     verifyViewsEqual<TAcc>(dstBufAcc, view);
                 }

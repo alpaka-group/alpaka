@@ -250,8 +250,8 @@ auto main() -> int
     // not currently supported.
     // In this example both host buffers are copied
     // into device buffers.
-    alpaka::memcpy(devQueue, deviceBuffer1, hostViewPlainPtr, extents);
-    alpaka::memcpy(devQueue, deviceBuffer2, hostBuffer, extents);
+    alpaka::memcpy(devQueue, deviceBuffer1, hostViewPlainPtr);
+    alpaka::memcpy(devQueue, deviceBuffer2, hostBuffer);
 
     // Depending on the accelerator, the allocation function may introduce
     // padding between rows/planes of multidimensional memory allocations.

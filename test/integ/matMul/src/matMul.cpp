@@ -237,7 +237,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
 
     // Allocate C and set it to zero.
     auto bufCHost = alpaka::allocBuf<Val, Idx>(devHost, extentC);
-    alpaka::memset(queueHost, bufCHost, 0u, extentC);
+    alpaka::memset(queueHost, bufCHost, 0u);
 
     // Allocate the buffers on the accelerator.
     auto bufAAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentA);
@@ -245,10 +245,10 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     auto bufCAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentC);
 
     // Copy Host -> Acc.
-    alpaka::memcpy(queueAcc, bufAAcc, bufAHost, extentA);
-    alpaka::memcpy(queueAcc, bufBAcc, bufBHost, extentB);
+    alpaka::memcpy(queueAcc, bufAAcc, bufAHost);
+    alpaka::memcpy(queueAcc, bufBAcc, bufBHost);
     alpaka::wait(queueHost);
-    alpaka::memcpy(queueAcc, bufCAcc, bufCHost, extentC);
+    alpaka::memcpy(queueAcc, bufCAcc, bufCHost);
 
     auto const pitchA = alpaka::getPitchBytes<1u>(bufAAcc);
     auto const pitchB = alpaka::getPitchBytes<1u>(bufBAcc);
@@ -280,7 +280,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
               << std::endl;
 
     // Copy back the result.
-    alpaka::memcpy(queueAcc, bufCHost, bufCAcc, extentC);
+    alpaka::memcpy(queueAcc, bufCHost, bufCAcc);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queueAcc);

@@ -76,14 +76,14 @@ namespace alpaka
                     template<typename Queue>
                     auto copyToDevice(Queue queue) -> void
                     {
-                        alpaka::memcpy(queue, devBuffer, hostBuffer, Tcapacity);
+                        alpaka::memcpy(queue, devBuffer, hostBuffer);
                     }
 
                     // Copy Acc -> Host.
                     template<typename Queue>
                     auto copyFromDevice(Queue queue) -> void
                     {
-                        alpaka::memcpy(queue, hostBuffer, devBuffer, Tcapacity);
+                        alpaka::memcpy(queue, hostBuffer, devBuffer);
                     }
 
                     ALPAKA_FN_ACC

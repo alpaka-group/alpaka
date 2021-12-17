@@ -158,9 +158,9 @@ auto main() -> int
     HeatEquationKernel kernel;
 
     // Copy host -> device
-    alpaka::memcpy(queue, uCurrBufAcc, uCurrBufHost, extent);
+    alpaka::memcpy(queue, uCurrBufAcc, uCurrBufHost);
     // Copy to the buffer for next as well to have boundary values set
-    alpaka::memcpy(queue, uNextBufAcc, uCurrBufAcc, extent);
+    alpaka::memcpy(queue, uNextBufAcc, uCurrBufAcc);
     alpaka::wait(queue);
 
     for(uint32_t step = 0; step < numTimeSteps; step++)
@@ -175,7 +175,7 @@ auto main() -> int
     }
 
     // Copy device -> host
-    alpaka::memcpy(queue, uNextBufHost, uNextBufAcc, extent);
+    alpaka::memcpy(queue, uNextBufHost, uNextBufAcc);
     alpaka::wait(queue);
 
     // Calculate error
