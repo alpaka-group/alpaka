@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [0.8.0] - 2021-12-09
+## [0.8.0] - 2021-12-20
 ### Compatibility Changes:
 - Platform support added:
   - clang 12 #1385
@@ -86,6 +86,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - test infrastructure is now based on Catch2 v2.13.7 #1461
 - alpaka and all subprojects now only enable `CXX` by default #1473
 - Removed unnecessary disabling of MySQL #1524
+- Reflect HZDR GitLab CI node changes for HIP #1530
 
 ## [0.7.0] - 2021-08-03
 ### Compatibility Changes:
