@@ -155,9 +155,9 @@ auto main() -> int
     BufAcc bufAccC(alpaka::allocBuf<Data, Idx>(devAcc, extent));
 
     // Copy Host -> Acc
-    alpaka::memcpy(queue, bufAccA, bufHostA, extent);
-    alpaka::memcpy(queue, bufAccB, bufHostB, extent);
-    alpaka::memcpy(queue, bufAccC, bufHostC, extent);
+    alpaka::memcpy(queue, bufAccA, bufHostA);
+    alpaka::memcpy(queue, bufAccB, bufHostB);
+    alpaka::memcpy(queue, bufAccC, bufHostC);
 
     // Instantiate the kernel function object
     VectorAddKernel kernel;
@@ -184,7 +184,7 @@ auto main() -> int
     // Copy back the result
     {
         auto beginT = std::chrono::high_resolution_clock::now();
-        alpaka::memcpy(queue, bufHostC, bufAccC, extent);
+        alpaka::memcpy(queue, bufHostC, bufAccC);
         alpaka::wait(queue);
         const auto endT = std::chrono::high_resolution_clock::now();
         std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT - beginT).count() << 's'

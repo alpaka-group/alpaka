@@ -122,7 +122,7 @@ TEMPLATE_LIST_TEST_CASE("FenceTest", "[fence]", TestAccs)
     pVarsHost[0] = 1;
     pVarsHost[1] = 2;
 
-    alpaka::memcpy(queue, vars_dev, vars_host, extent);
+    alpaka::memcpy(queue, vars_dev, vars_host);
     alpaka::wait(queue);
 
     DeviceFenceTestKernel deviceKernel;

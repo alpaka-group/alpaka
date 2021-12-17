@@ -209,7 +209,7 @@ auto main() -> int
 
     /// \todo get the types from respective function parameters
     auto pitchBufAccS = alpaka::getPitchBytes<1u>(bufAccS) / sizeof(float);
-    alpaka::memcpy(queue, bufAccS, bufHostS, extent);
+    alpaka::memcpy(queue, bufAccS, bufHostS);
     RunTimestepKernelSingle runTimestepKernelSingle;
     alpaka::exec<Acc>(
         queue,
@@ -220,10 +220,10 @@ auto main() -> int
         ptrBufAccS,
         pitchBufAccRandS,
         pitchBufAccS);
-    alpaka::memcpy(queue, bufHostS, bufAccS, extent);
+    alpaka::memcpy(queue, bufHostS, bufAccS);
 
     auto pitchBufAccV = alpaka::getPitchBytes<1u>(bufAccV) / sizeof(float);
-    alpaka::memcpy(queue, bufAccV, bufHostV, extent);
+    alpaka::memcpy(queue, bufAccV, bufHostV);
     RunTimestepKernelVector runTimestepKernelVector;
     alpaka::exec<Acc>(
         queue,
@@ -234,7 +234,7 @@ auto main() -> int
         ptrBufAccV,
         pitchBufAccRandV,
         pitchBufAccV);
-    alpaka::memcpy(queue, bufHostV, bufAccV, extent);
+    alpaka::memcpy(queue, bufHostV, bufAccV);
     alpaka::wait(queue);
 
     float avgS = 0;

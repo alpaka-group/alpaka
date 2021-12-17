@@ -268,7 +268,7 @@ void runStrategy(Box& box)
 
     // OPTIONAL: copy the the initial states to host if you want to check them yourself
     // alpaka_rand::Philox4x32x10<Box::Acc>* const ptrBufHostRand{alpaka::getPtrNative(box.bufHostRand)};
-    // alpaka::memcpy(box.queue, box.bufHostRand, box.bufAccRand, box.extentRand);
+    // alpaka::memcpy(box.queue, box.bufHostRand, box.bufAccRand);
     // alpaka::wait(box.queue);
 
     // Set up the pointers to the results buffers
@@ -280,10 +280,10 @@ void runStrategy(Box& box)
         ptrBufHostResult[i] = 0;
 
     // Run the "computation" kernel filling the results buffer with random numbers in parallel
-    alpaka::memcpy(box.queue, box.bufAccResult, box.bufHostResult, box.extentResult);
+    alpaka::memcpy(box.queue, box.bufAccResult, box.bufHostResult);
     FillKernel fillKernel;
     alpaka::exec<Box::Acc>(box.queue, box.workdivResult, fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
-    alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult, box.extentResult);
+    alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult);
     alpaka::wait(box.queue);
 
     // save the results to a CSV file

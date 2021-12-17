@@ -240,7 +240,7 @@ TEST_CASE("projection", "[accessor]")
     auto dstBuffer = alpaka::allocBuf<int, Size>(devAcc, Size{1});
 
     std::array<int, 1> host{{42}};
-    alpaka::memcpy(queue, srcBuffer, host, 1);
+    alpaka::memcpy(queue, srcBuffer, host);
 
     auto const workdiv = alpaka::WorkDivMembers<Dim, Size>{
         alpaka::Vec<Dim, Size>{Size{1}},
@@ -248,7 +248,7 @@ TEST_CASE("projection", "[accessor]")
         alpaka::Vec<Dim, Size>{Size{1}}};
     alpaka::exec<Acc>(queue, workdiv, CopyKernel{}, alpakaex::readAccess(srcBuffer), alpakaex::writeAccess(dstBuffer));
 
-    alpaka::memcpy(queue, host, dstBuffer, 1);
+    alpaka::memcpy(queue, host, dstBuffer);
 
     REQUIRE(host[0] == 84);
 }

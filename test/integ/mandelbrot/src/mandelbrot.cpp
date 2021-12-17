@@ -315,7 +315,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
     auto bufColorAcc = alpaka::allocBuf<Val, Idx>(devAcc, extent);
 
     // Copy Host -> Acc.
-    alpaka::memcpy(queue, bufColorAcc, bufColorHost, extent);
+    alpaka::memcpy(queue, bufColorAcc, bufColorHost);
 
     // Create the kernel execution task.
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
@@ -336,7 +336,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
               << std::endl;
 
     // Copy back the result.
-    alpaka::memcpy(queue, bufColorHost, bufColorAcc, extent);
+    alpaka::memcpy(queue, bufColorHost, bufColorAcc);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queue);
