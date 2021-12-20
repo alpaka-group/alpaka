@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('KernelExecutionFixture_8hpp_source.htm
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="comment">// Allocate the result value</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keyword">auto</span> bufAccResult = alpaka::allocBuf&lt;bool, Idx&gt;(m_devAcc, <span class="keyword">static_cast&lt;</span><a class="code" href="classalpaka_1_1test_1_1KernelExecutionFixture.html#a3eb3a6e0568292a74bbe66f9f60f420a">Idx</a><span class="keyword">&gt;</span>(1u));</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <a class="code" href="namespacealpaka.html#a7cf3fa52c3c25aa060540a33fe6e6ee7">alpaka::memset</a>(m_queue, bufAccResult, <span class="keyword">static_cast&lt;</span>std::uint8_t<span class="keyword">&gt;</span>(<span class="keyword">true</span>), bufAccResult);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <a class="code" href="namespacealpaka.html#a7cf3fa52c3c25aa060540a33fe6e6ee7">alpaka::memset</a>(m_queue, bufAccResult, <span class="keyword">static_cast&lt;</span>std::uint8_t<span class="keyword">&gt;</span>(<span class="keyword">true</span>));</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                alpaka::exec&lt;Acc&gt;(</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    m_queue,</div>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('KernelExecutionFixture_8hpp_source.htm
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="comment">// Copy the result value to the host</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">auto</span> bufHostResult = alpaka::allocBuf&lt;bool, Idx&gt;(m_devHost, <span class="keyword">static_cast&lt;</span><a class="code" href="classalpaka_1_1test_1_1KernelExecutionFixture.html#a3eb3a6e0568292a74bbe66f9f60f420a">Idx</a><span class="keyword">&gt;</span>(1u));</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(m_queue, bufHostResult, bufAccResult, bufAccResult);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(m_queue, bufHostResult, bufAccResult);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(m_queue);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> result = *<a class="code" href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">alpaka::getPtrNative</a>(bufHostResult);</div>
@@ -175,7 +175,7 @@ $(document).ready(function(){initNavTree('KernelExecutionFixture_8hpp_source.htm
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespacealpaka_html_aba87713ec0232bbf70beb24e063e32ea"><div class="ttname"><a href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">alpaka::Dim</a></div><div class="ttdeci">typename traits::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a6f69abad399915756f7b28d19f221ace"><div class="ttname"><a href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDst &amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory possibly between different memory spaces.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00225">Traits.hpp:225</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a6f69abad399915756f7b28d19f221ace"><div class="ttname"><a href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDst &amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory possibly between different memory spaces.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00236">Traits.hpp:236</a></div></div>
 <div class="ttc" id="aQueue_8hpp_html"><div class="ttname"><a href="Queue_8hpp.html">Queue.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a1cdab91c7cbe490254da4f3562d56e71"><div class="ttname"><a href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">alpaka::Dev</a></div><div class="ttdeci">typename traits::DevType&lt; T &gt;::type Dev</div><div class="ttdoc">The device type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00051">Traits.hpp:51</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec</a></div><div class="ttdoc">A n-dimensional vector.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00037">Vec.hpp:37</a></div></div>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('KernelExecutionFixture_8hpp_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="KernelExecutionFixture_8hpp.html">KernelExecutionFixture.hpp</a></li>
-    <li class="footer">Generated on Mon Dec 20 2021 10:18:23 for alpaka by
+    <li class="footer">Generated on Mon Dec 20 2021 14:08:56 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

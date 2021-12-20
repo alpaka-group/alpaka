@@ -322,7 +322,7 @@ $(document).ready(function(){initNavTree('ViewTest_8hpp_source.html',''); initRe
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keyword">auto</span> plainBuf = <a class="code" href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">alpaka::createView</a>(devHost, v, extent);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <span class="comment">// Copy the generated content into the given view.</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(queue, view, plainBuf, extent);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(queue, view, plainBuf);</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(queue);</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        }</div>
@@ -342,48 +342,47 @@ $(document).ready(function(){initNavTree('ViewTest_8hpp_source.html',''); initRe
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                    <span class="stringliteral">&quot;The value returned by getPtrNative has to be non-const when the view is non-const.&quot;</span>);</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            }</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> extent = <a class="code" href="namespacealpaka_1_1extent.html#a0d7c73d18bce646baebbd36790d3c1a9">alpaka::extent::getExtentVec</a>(view);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="comment">// alpaka::set</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            {</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                std::uint8_t <span class="keyword">const</span> byte(<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(42u));</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                <a class="code" href="namespacealpaka.html#a7cf3fa52c3c25aa060540a33fe6e6ee7">alpaka::memset</a>(queue, view, <span class="keywordtype">byte</span>, extent);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(queue);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                verifyBytesSet&lt;TAcc&gt;(view, <span class="keywordtype">byte</span>);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            }</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="comment">// alpaka::copy</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            {</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a> = <a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">alpaka::Elem&lt;TView&gt;</a>;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a> = <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">alpaka::Idx&lt;TView&gt;</a>;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> devAcc = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">alpaka::getDev</a>(view);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                <span class="comment">// alpaka::copy into given view</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                {</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                    <span class="keyword">auto</span> srcBufAcc = alpaka::allocBuf&lt;Elem, Idx&gt;(devAcc, extent);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    <a class="code" href="namespacealpaka_1_1test.html#a2f2aac1d04ce746a78be008faa0266a7">iotaFillView</a>(queue, srcBufAcc);</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                    <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(queue, view, srcBufAcc, extent);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                    <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(queue);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                    verifyViewsEqual&lt;TAcc&gt;(view, srcBufAcc);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                }</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                <span class="comment">// alpaka::copy from given view</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                {</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                    <span class="keyword">auto</span> dstBufAcc = alpaka::allocBuf&lt;Elem, Idx&gt;(devAcc, extent);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                    <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(queue, dstBufAcc, view, extent);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                    <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(queue);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                    verifyViewsEqual&lt;TAcc&gt;(dstBufAcc, view);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                }</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            }</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        }</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    } <span class="comment">// namespace test</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            <span class="comment">// alpaka::set</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                std::uint8_t <span class="keyword">const</span> byte(<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(42u));</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                <a class="code" href="namespacealpaka.html#a7cf3fa52c3c25aa060540a33fe6e6ee7">alpaka::memset</a>(queue, view, <span class="keywordtype">byte</span>);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(queue);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                verifyBytesSet&lt;TAcc&gt;(view, <span class="keywordtype">byte</span>);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            }</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="comment">// alpaka::copy</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            {</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a> = <a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">alpaka::Elem&lt;TView&gt;</a>;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a> = <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">alpaka::Idx&lt;TView&gt;</a>;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> devAcc = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">alpaka::getDev</a>(view);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> extent = <a class="code" href="namespacealpaka_1_1extent.html#a0d7c73d18bce646baebbd36790d3c1a9">alpaka::extent::getExtentVec</a>(view);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                <span class="comment">// alpaka::copy into given view</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                    <span class="keyword">auto</span> srcBufAcc = alpaka::allocBuf&lt;Elem, Idx&gt;(devAcc, extent);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                    <a class="code" href="namespacealpaka_1_1test.html#a2f2aac1d04ce746a78be008faa0266a7">iotaFillView</a>(queue, srcBufAcc);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(queue, view, srcBufAcc);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                    <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(queue);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                    verifyViewsEqual&lt;TAcc&gt;(view, srcBufAcc);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                }</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                <span class="comment">// alpaka::copy from given view</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                {</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                    <span class="keyword">auto</span> dstBufAcc = alpaka::allocBuf&lt;Elem, Idx&gt;(devAcc, extent);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                    <a class="code" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a>(queue, dstBufAcc, view);</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                    <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">alpaka::wait</a>(queue);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                    verifyViewsEqual&lt;TAcc&gt;(dstBufAcc, view);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            }</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        }</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    } <span class="comment">// namespace test</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespacealpaka_html_aba87713ec0232bbf70beb24e063e32ea"><div class="ttname"><a href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">alpaka::Dim</a></div><div class="ttdeci">typename traits::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a6f69abad399915756f7b28d19f221ace"><div class="ttname"><a href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDst &amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory possibly between different memory spaces.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00225">Traits.hpp:225</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_adc3e9f88cfcde81a2ac9dd27cdaae903"><div class="ttname"><a href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">alpaka::createView</a></div><div class="ttdeci">auto createView(TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent)</div><div class="ttdoc">Creates a view to a device pointer.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00389">Traits.hpp:389</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a6f69abad399915756f7b28d19f221ace"><div class="ttname"><a href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDst &amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory possibly between different memory spaces.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00236">Traits.hpp:236</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_adc3e9f88cfcde81a2ac9dd27cdaae903"><div class="ttname"><a href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">alpaka::createView</a></div><div class="ttdeci">auto createView(TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent)</div><div class="ttdoc">Creates a view to a device pointer.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00411">Traits.hpp:411</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a1cdab91c7cbe490254da4f3562d56e71"><div class="ttname"><a href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">alpaka::Dev</a></div><div class="ttdeci">typename traits::DevType&lt; T &gt;::type Dev</div><div class="ttdoc">The device type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00051">Traits.hpp:51</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec&lt; TDim, TIdx &gt;</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html_aa8d02f0c4379afabdb7f4ee2e8f7954c"><div class="ttname"><a href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div><div class="ttdeci">#define ALPAKA_NO_HOST_ACC_WARNING</div><div class="ttdoc">Disable nvcc warning: 'calling a host function from host device function.' Usage: ALPAKA_NO_HOST_ACC_...</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00054">Common.hpp:54</a></div></div>
@@ -403,7 +402,7 @@ $(document).ready(function(){initNavTree('ViewTest_8hpp_source.html',''); initRe
 <div class="ttc" id="astructalpaka_1_1test_1_1VerifyViewsEqualKernel_html_ab1565a1b0093d1edee3f666bc30b0757"><div class="ttname"><a href="structalpaka_1_1test_1_1VerifyViewsEqualKernel.html#ab1565a1b0093d1edee3f666bc30b0757">alpaka::test::VerifyViewsEqualKernel::operator()</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_ACC void operator()(TAcc const &amp;acc, bool *success, TIterA beginA, TIterA const &amp;endA, TIterB beginB) const</div><div class="ttdef"><b>Definition:</b> <a href="ViewTest_8hpp_source.html#l00170">ViewTest.hpp:170</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a0dc8244519a754f60c4c8186a26a82fc"><div class="ttname"><a href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">alpaka::Idx</a></div><div class="ttdeci">typename traits::IdxType&lt; T &gt;::type Idx</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00033">Traits.hpp:33</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html_a4113677614d29718ffb0ce7c82d5d851"><div class="ttname"><a href="namespacealpaka_1_1test.html#a4113677614d29718ffb0ce7c82d5d851">alpaka::test::testViewMutable</a></div><div class="ttdeci">ALPAKA_FN_HOST auto testViewMutable(TQueue &amp;queue, TView &amp;view) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="ViewTest_8hpp_source.html#l00242">ViewTest.hpp:242</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a629297b80753ae06be95148cff7bd807"><div class="ttname"><a href="namespacealpaka.html#a629297b80753ae06be95148cff7bd807">alpaka::getPitchBytesVec</a></div><div class="ttdeci">auto getPitchBytesVec(TPitch const &amp;pitch=TPitch()) -&gt; Vec&lt; Dim&lt; TPitch &gt;, Idx&lt; TPitch &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00359">Traits.hpp:359</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a629297b80753ae06be95148cff7bd807"><div class="ttname"><a href="namespacealpaka.html#a629297b80753ae06be95148cff7bd807">alpaka::getPitchBytesVec</a></div><div class="ttdeci">auto getPitchBytesVec(TPitch const &amp;pitch=TPitch()) -&gt; Vec&lt; Dim&lt; TPitch &gt;, Idx&lt; TPitch &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00381">Traits.hpp:381</a></div></div>
 <div class="ttc" id="aalpaka_8hpp_html"><div class="ttname"><a href="alpaka_8hpp.html">alpaka.hpp</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html_a1bfb3a7f88316271e795e20d2810755a"><div class="ttname"><a href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_ACC</div><div class="ttdoc">All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_F...</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00035">Common.hpp:35</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html_a2da61c4004c9b54c965c74f9b28155f2"><div class="ttname"><a href="namespacealpaka_1_1test.html#a2da61c4004c9b54c965c74f9b28155f2">alpaka::test::verifyBytesSet</a></div><div class="ttdeci">ALPAKA_FN_HOST auto verifyBytesSet(TView const &amp;view, std::uint8_t const &amp;byte) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="ViewTest_8hpp_source.html#l00149">ViewTest.hpp:149</a></div></div>
@@ -423,7 +422,7 @@ $(document).ready(function(){initNavTree('ViewTest_8hpp_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="dir_3c205fa56fa7dd5c5c65492fc2472d1d.html">mem</a></li><li class="navelem"><a class="el" href="dir_2545cde98f97a30755b1e4e92dd58010.html">view</a></li><li class="navelem"><a class="el" href="ViewTest_8hpp.html">ViewTest.hpp</a></li>
-    <li class="footer">Generated on Mon Dec 20 2021 10:18:23 for alpaka by
+    <li class="footer">Generated on Mon Dec 20 2021 14:08:56 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

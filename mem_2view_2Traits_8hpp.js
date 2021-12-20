@@ -33,7 +33,9 @@ var mem_2view_2Traits_8hpp =
     [ "getPtrDev", "mem_2view_2Traits_8hpp.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd", null ],
     [ "getPtrNative", "mem_2view_2Traits_8hpp.html#ab0892f9211160310c93d8ffef300d3c1", null ],
     [ "getPtrNative", "mem_2view_2Traits_8hpp.html#a7524e1a8dac8cd18d9b9e07b10e36054", null ],
+    [ "memcpy", "mem_2view_2Traits_8hpp.html#ab95a5a07d4a5039a6f18aba73c9480af", null ],
     [ "memcpy", "mem_2view_2Traits_8hpp.html#a6f69abad399915756f7b28d19f221ace", null ],
+    [ "memset", "mem_2view_2Traits_8hpp.html#ad999a3d1a2f37d17d6f99c7facb507b9", null ],
     [ "memset", "mem_2view_2Traits_8hpp.html#a7cf3fa52c3c25aa060540a33fe6e6ee7", null ],
     [ "print", "mem_2view_2Traits_8hpp.html#a6e4d90e1f7462d76a92f07f09a263d93", null ]
 ];
