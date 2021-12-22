@@ -253,6 +253,13 @@ ALPAKA_ACC_GPU_HIP_ONLY_MODE
 
      Only back-ends using HIP can be enabled in this mode.
 
+GPU_TARGETS
+  .. code-block::
+
+     Set the GPU architecture: e.g. "gfx900;gfx906;gfx908".
+
+A list of the GPU architectures can be found `here <https://llvm.org/docs/AMDGPUUsage.html#processors>`_.
+
 ALPAKA_HIP_KEEP_FILES
   .. code-block::
 
