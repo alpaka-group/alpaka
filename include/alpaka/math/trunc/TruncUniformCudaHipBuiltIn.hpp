@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/trunc/Traits.hpp>
 
@@ -35,17 +36,13 @@ namespace alpaka
                 __device__ auto operator()(TruncUniformCudaHipBuiltIn const& trunc_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(trunc_ctx);
-                    return ::trunc(arg);
-                }
-            };
-            //! The CUDA trunc float specialization.
-            template<>
-            struct Trunc<TruncUniformCudaHipBuiltIn, float>
-            {
-                __device__ auto operator()(TruncUniformCudaHipBuiltIn const& trunc_ctx, float const& arg) -> float
-                {
-                    alpaka::ignore_unused(trunc_ctx);
-                    return ::truncf(arg);
+
+                    if constexpr(is_decayed_v<TArg, float>)
+                        return ::truncf(arg);
+                    else if constexpr(is_decayed_v<TArg, double>)
+                        return ::trunc(arg);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
         } // namespace traits

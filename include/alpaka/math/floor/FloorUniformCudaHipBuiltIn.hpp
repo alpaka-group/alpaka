@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/floor/Traits.hpp>
 
@@ -30,22 +31,18 @@ namespace alpaka
         {
             //! The CUDA floor trait specialization.
             template<typename TArg>
-            struct Floor<FloorUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+            struct Floor<FloorUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
             {
                 __device__ auto operator()(FloorUniformCudaHipBuiltIn const& floor_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(floor_ctx);
-                    return ::floor(arg);
-                }
-            };
-            //! The CUDA floor float specialization.
-            template<>
-            struct Floor<FloorUniformCudaHipBuiltIn, float>
-            {
-                __device__ auto operator()(FloorUniformCudaHipBuiltIn const& floor_ctx, float const& arg) -> float
-                {
-                    alpaka::ignore_unused(floor_ctx);
-                    return ::floorf(arg);
+
+                    if constexpr(is_decayed_v<TArg, float>)
+                        return ::floorf(arg);
+                    else if constexpr(is_decayed_v<TArg, double>)
+                        return ::floor(arg);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
         } // namespace traits

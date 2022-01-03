@@ -1,4 +1,4 @@
-/* Copyright 2019 Alexander Matthes, Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <alpaka/core/Decay.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/math/min/Traits.hpp>
 
@@ -27,32 +28,26 @@ namespace alpaka
 
         namespace traits
         {
-            //! The standard library integral min trait specialization.
+            //! The standard library min trait specialization.
             template<typename Tx, typename Ty>
-            struct Min<MinStdLib, Tx, Ty, std::enable_if_t<std::is_integral<Tx>::value && std::is_integral<Ty>::value>>
+            struct Min<MinStdLib, Tx, Ty, std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
             {
                 ALPAKA_FN_HOST auto operator()(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(min_ctx);
-                    using std::min;
-                    return min(x, y);
-                }
-            };
-            //! The standard library mixed integral floating point min trait specialization.
-            template<typename Tx, typename Ty>
-            struct Min<
-                MinStdLib,
-                Tx,
-                Ty,
-                std::enable_if_t<
-                    std::is_arithmetic<Tx>::value && std::is_arithmetic<Ty>::value
-                    && !(std::is_integral<Tx>::value && std::is_integral<Ty>::value)>>
-            {
-                ALPAKA_FN_HOST auto operator()(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
-                {
-                    alpaka::ignore_unused(min_ctx);
+
                     using std::fmin;
-                    return fmin(x, y);
+                    using std::min;
+
+                    if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
+                        return min(x, y);
+                    else if constexpr(
+                        is_decayed_v<
+                            Tx,
+                            float> || is_decayed_v<Ty, float> || is_decayed_v<Tx, double> || is_decayed_v<Ty, double>)
+                        return fmin(x, y);
+                    else
+                        static_assert(!sizeof(Tx), "Unsupported data type");
                 }
             };
         } // namespace traits

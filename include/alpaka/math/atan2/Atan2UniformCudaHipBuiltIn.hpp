@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/atan2/Traits.hpp>
 
@@ -34,23 +35,18 @@ namespace alpaka
                 Atan2UniformCudaHipBuiltIn,
                 Ty,
                 Tx,
-                std::enable_if_t<std::is_floating_point<Ty>::value && std::is_floating_point<Tx>::value>>
+                std::enable_if_t<std::is_floating_point_v<Ty> && std::is_floating_point_v<Tx>>>
             {
                 __device__ auto operator()(Atan2UniformCudaHipBuiltIn const& atan2_ctx, Ty const& y, Tx const& x)
                 {
                     alpaka::ignore_unused(atan2_ctx);
-                    return ::atan2(y, x);
-                }
-            };
 
-            template<>
-            struct Atan2<Atan2UniformCudaHipBuiltIn, float, float>
-            {
-                __device__ auto operator()(Atan2UniformCudaHipBuiltIn const& atan2_ctx, float const& y, float const& x)
-                    -> float
-                {
-                    alpaka::ignore_unused(atan2_ctx);
-                    return ::atan2f(y, x);
+                    if constexpr(is_decayed_v<Ty, float> && is_decayed_v<Tx, float>)
+                        return ::atan2f(y, x);
+                    else if constexpr(is_decayed_v<Ty, double> || is_decayed_v<Tx, double>)
+                        return ::atan2(y, x);
+                    else
+                        static_assert(!sizeof(Ty), "Unsupported data type");
                 }
             };
         } // namespace traits

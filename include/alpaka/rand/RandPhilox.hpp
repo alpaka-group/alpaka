@@ -1,4 +1,4 @@
-/* Copyright 2021 Jiri Vyskocil
+/* Copyright 2022 Jiri Vyskocil, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -154,19 +154,23 @@ namespace alpaka
         };
 
         /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
-        template<typename TResult, typename TSFINAE = void>
-        class UniformReal
+        template<typename TResult, typename TSfinae = void>
+        class UniformReal : public concepts::Implements<ConceptRand, UniformReal<TResult>>
         {
-        public:
-            UniformReal() = delete;
-        };
+            template<typename TRes, typename TEnable = void>
+            struct ResultType
+            {
+                using type = TRes;
+            };
 
-        /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
-        template<typename TResult>
-        class UniformReal<TResult, std::enable_if_t<meta::IsArrayOrVector<TResult>::value>>
-            : public concepts::Implements<ConceptRand, UniformReal<TResult>>
-        {
-            using T = typename TResult::value_type;
+            template<typename TRes>
+            struct ResultType<TRes, std::enable_if_t<meta::IsArrayOrVector<TRes>::value>>
+            {
+                using type = typename TRes::value_type;
+            };
+
+            using T = typename ResultType<TResult>::type;
+            static_assert(std::is_floating_point_v<T>, "Only floating-point types are supported");
 
         public:
             ALPAKA_FN_HOST_ACC UniformReal() : UniformReal(0, 1)
@@ -180,14 +184,22 @@ namespace alpaka
             template<typename TEngine>
             ALPAKA_FN_HOST_ACC TResult operator()(TEngine& engine)
             {
-                auto result = engine();
-                T scale = static_cast<T>(1) / engine.max() * _range;
-                TResult ret{
-                    static_cast<T>(result[0]) * scale + _min,
-                    static_cast<T>(result[1]) * scale + _min,
-                    static_cast<T>(result[2]) * scale + _min,
-                    static_cast<T>(result[3]) * scale + _min};
-                return ret;
+                if constexpr(meta::IsArrayOrVector<TResult>::value)
+                {
+                    auto result = engine();
+                    T scale = static_cast<T>(1) / engine.max() * _range;
+                    TResult ret{
+                        static_cast<T>(result[0]) * scale + _min,
+                        static_cast<T>(result[1]) * scale + _min,
+                        static_cast<T>(result[2]) * scale + _min,
+                        static_cast<T>(result[3]) * scale + _min};
+                    return ret;
+                }
+                else
+                {
+                    // Since it's possible to get a host-only engine here, the call has to go through proxy
+                    return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / engine.max() * _range + _min;
+                }
             }
 
         private:
@@ -195,34 +207,5 @@ namespace alpaka
             const T _max;
             const T _range;
         };
-
-        template<typename TResult>
-        class UniformReal<TResult, std::enable_if_t<std::is_floating_point<TResult>::value>>
-            : public concepts::Implements<ConceptRand, UniformReal<TResult>>
-        {
-            using T = TResult;
-
-        public:
-            ALPAKA_FN_HOST_ACC UniformReal() : UniformReal(0, 1)
-            {
-            }
-
-            ALPAKA_FN_HOST_ACC UniformReal(T min, T max) : _min(min), _max(max), _range(_max - _min)
-            {
-            }
-
-            template<typename TEngine>
-            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine)
-            {
-                // Since it's possible to get a host-only engine here, the call has to go through proxy
-                return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / engine.max() * _range + _min;
-            }
-
-        private:
-            const T _min;
-            const T _max;
-            const T _range;
-        };
-
     } // namespace rand
 } // namespace alpaka

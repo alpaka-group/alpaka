@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/remainder/Traits.hpp>
 
@@ -43,20 +44,13 @@ namespace alpaka
                     Ty const& y)
                 {
                     alpaka::ignore_unused(remainder_ctx);
-                    return ::remainder(x, y);
-                }
-            };
-            //! The CUDA remainder float specialization.
-            template<>
-            struct Remainder<RemainderUniformCudaHipBuiltIn, float, float>
-            {
-                __device__ auto operator()(
-                    RemainderUniformCudaHipBuiltIn const& remainder_ctx,
-                    float const& x,
-                    float const& y) -> float
-                {
-                    alpaka::ignore_unused(remainder_ctx);
-                    return ::remainderf(x, y);
+
+                    if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float>)
+                        return ::remainderf(x, y);
+                    else if constexpr(is_decayed_v<Tx, double> || is_decayed_v<Ty, double>)
+                        return ::remainder(x, y);
+                    else
+                        static_assert(!sizeof(Tx), "Unsupported data type");
                 }
             };
         } // namespace traits

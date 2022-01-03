@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <alpaka/core/Decay.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/math/max/Traits.hpp>
 
@@ -27,32 +28,26 @@ namespace alpaka
 
         namespace traits
         {
-            //! The standard library integral max trait specialization.
+            //! The standard library max trait specialization.
             template<typename Tx, typename Ty>
-            struct Max<MaxStdLib, Tx, Ty, std::enable_if_t<std::is_integral<Tx>::value && std::is_integral<Ty>::value>>
+            struct Max<MaxStdLib, Tx, Ty, std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
             {
                 ALPAKA_FN_HOST auto operator()(MaxStdLib const& max_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(max_ctx);
-                    using std::max;
-                    return max(x, y);
-                }
-            };
-            //! The standard library mixed integral floating point max trait specialization.
-            template<typename Tx, typename Ty>
-            struct Max<
-                MaxStdLib,
-                Tx,
-                Ty,
-                std::enable_if_t<
-                    std::is_arithmetic<Tx>::value && std::is_arithmetic<Ty>::value
-                    && !(std::is_integral<Tx>::value && std::is_integral<Ty>::value)>>
-            {
-                ALPAKA_FN_HOST auto operator()(MaxStdLib const& max_ctx, Tx const& x, Ty const& y)
-                {
-                    alpaka::ignore_unused(max_ctx);
+
                     using std::fmax;
-                    return fmax(x, y);
+                    using std::max;
+
+                    if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
+                        return max(x, y);
+                    else if constexpr(
+                        is_decayed_v<
+                            Tx,
+                            float> || is_decayed_v<Ty, float> || is_decayed_v<Tx, double> || is_decayed_v<Ty, double>)
+                        return fmax(x, y);
+                    else
+                        static_assert(!sizeof(Tx), "Unsupported data type");
                 }
             };
         } // namespace traits

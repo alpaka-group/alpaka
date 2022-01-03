@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/cbrt/Traits.hpp>
 
@@ -30,22 +31,18 @@ namespace alpaka
         {
             //! The CUDA cbrt trait specialization.
             template<typename TArg>
-            struct Cbrt<CbrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
+            struct Cbrt<CbrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
             {
                 __device__ auto operator()(CbrtUniformCudaHipBuiltIn const& cbrt_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(cbrt_ctx);
-                    return ::cbrt(arg);
-                }
-            };
 
-            template<>
-            struct Cbrt<CbrtUniformCudaHipBuiltIn, float>
-            {
-                __device__ auto operator()(CbrtUniformCudaHipBuiltIn const& cbrt_ctx, float const& arg) -> float
-                {
-                    alpaka::ignore_unused(cbrt_ctx);
-                    return ::cbrtf(arg);
+                    if constexpr(is_decayed_v<TArg, float>)
+                        return ::cbrtf(arg);
+                    else if constexpr(is_decayed_v<TArg, double> || std::is_integral_v<TArg>)
+                        return ::cbrt(arg);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
         } // namespace traits

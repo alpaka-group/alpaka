@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/pow/Traits.hpp>
 
@@ -34,25 +35,18 @@ namespace alpaka
                 PowUniformCudaHipBuiltIn,
                 TBase,
                 TExp,
-                std::enable_if_t<std::is_floating_point<TBase>::value && std::is_floating_point<TExp>::value>>
+                std::enable_if_t<std::is_floating_point_v<TBase> && std::is_floating_point_v<TExp>>>
             {
                 __device__ auto operator()(PowUniformCudaHipBuiltIn const& pow_ctx, TBase const& base, TExp const& exp)
                 {
                     alpaka::ignore_unused(pow_ctx);
-                    return ::pow(base, exp);
-                }
-            };
-            //! The CUDA pow float specialization.
-            template<>
-            struct Pow<PowUniformCudaHipBuiltIn, float, float>
-            {
-                __device__ auto operator()(
-                    PowUniformCudaHipBuiltIn const& pow_ctx,
-                    float const& base,
-                    float const& exp) -> float
-                {
-                    alpaka::ignore_unused(pow_ctx);
-                    return ::powf(base, exp);
+
+                    if constexpr(is_decayed_v<TBase, float> && is_decayed_v<TExp, float>)
+                        return ::powf(base, exp);
+                    else if constexpr(is_decayed_v<TBase, double> || is_decayed_v<TExp, double>)
+                        return ::pow(base, exp);
+                    else
+                        static_assert(!sizeof(TBase), "Unsupported data type");
                 }
             };
         } // namespace traits
