@@ -1,15 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"atomic_2Traits_8hpp.html":[4,0,0,0,1,8],
-"atomic_2Traits_8hpp.html#a0c8304545460e9c2aedf08a91626185d":[4,0,0,0,1,8,21],
-"atomic_2Traits_8hpp.html#a148285a6d01c5470b8a96a3c2987dc26":[4,0,0,0,1,8,13],
-"atomic_2Traits_8hpp.html#a3fd6532dee901bf4d991c2912d48b6fc":[4,0,0,0,1,8,20],
-"atomic_2Traits_8hpp.html#a4c6a0197f66257d016d1250a05030def":[4,0,0,0,1,8,17],
-"atomic_2Traits_8hpp.html#a4f18d8a56f1420bf97c3ae420c50b1ee":[4,0,0,0,1,8,16],
-"atomic_2Traits_8hpp.html#a63cfc71f3e70ac355d00d5d72c22c155":[4,0,0,0,1,8,14],
-"atomic_2Traits_8hpp.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12":[4,0,0,0,1,8,12],
-"atomic_2Traits_8hpp.html#a7e505040bed456f94ca7d67c410b3fdb":[4,0,0,0,1,8,15],
-"atomic_2Traits_8hpp.html#a802e615af70018a5f2a5d4972bc11a52":[4,0,0,0,1,8,8],
 "atomic_2Traits_8hpp.html#a87ead6541b9d6971fdbdc2d2e38e9676":[4,0,0,0,1,8,11],
 "atomic_2Traits_8hpp.html#ac8d44ae90fcfe2fdb973c49542fd0db5":[4,0,0,0,1,8,9],
 "atomic_2Traits_8hpp.html#af0db95671aafbe9c7fe480f45d226041":[4,0,0,0,1,8,19],
@@ -249,5 +239,15 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1WorkDivMembers.html#a4907d4628832e373ca736c03a6b2df13":[3,0,0,120,0],
 "classalpaka_1_1WorkDivMembers.html#a4a009b8132b692bb8b55cfd2764bcd25":[3,0,0,120,8],
 "classalpaka_1_1WorkDivMembers.html#a505994091860f2d0572f50988808a95f":[3,0,0,120,9],
-"classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff":[3,0,0,120,10]
+"classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff":[3,0,0,120,10],
+"classalpaka_1_1WorkDivMembers.html#aa3e64e490520aa521d8714c5b64c84f8":[3,0,0,120,3],
+"classalpaka_1_1WorkDivMembers.html#abecc96ddc3cabbabf9b0aa60cedea10f":[3,0,0,120,1],
+"classalpaka_1_1WorkDivMembers.html#ad6ac2ae27cb8b1b47cb4f42e10de151e":[3,0,0,120,7],
+"classalpaka_1_1WorkDivMembers.html#ad6c260bb1d8458e268599bf2d6add333":[3,0,0,120,2],
+"classalpaka_1_1WorkDivMembers.html#adfb7963f224f827a7ef13c1cd4cc0e16":[3,0,0,120,4],
+"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html":[3,0,0,121],
+"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#a8d1b809eee73e0eade6dac30468da237":[3,0,0,121,0],
+"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#ae3fcc82813fe1d4bc2d966c47db46216":[3,0,0,121,1],
+"classalpaka_1_1bt_1_1IdxBtLinear.html":[3,0,0,0,0],
+"classalpaka_1_1bt_1_1IdxBtLinear.html#ac64d058b3f9e63e0ba3c16d39fc99bc4":[3,0,0,0,0,0]
 };

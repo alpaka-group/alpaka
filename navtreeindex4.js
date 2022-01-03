@@ -1,15 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1WorkDivMembers.html#aa3e64e490520aa521d8714c5b64c84f8":[3,0,0,120,3],
-"classalpaka_1_1WorkDivMembers.html#abecc96ddc3cabbabf9b0aa60cedea10f":[3,0,0,120,1],
-"classalpaka_1_1WorkDivMembers.html#ad6ac2ae27cb8b1b47cb4f42e10de151e":[3,0,0,120,7],
-"classalpaka_1_1WorkDivMembers.html#ad6c260bb1d8458e268599bf2d6add333":[3,0,0,120,2],
-"classalpaka_1_1WorkDivMembers.html#adfb7963f224f827a7ef13c1cd4cc0e16":[3,0,0,120,4],
-"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html":[3,0,0,121],
-"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#a8d1b809eee73e0eade6dac30468da237":[3,0,0,121,0],
-"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#ae3fcc82813fe1d4bc2d966c47db46216":[3,0,0,121,1],
-"classalpaka_1_1bt_1_1IdxBtLinear.html":[3,0,0,0,0],
-"classalpaka_1_1bt_1_1IdxBtLinear.html#ac64d058b3f9e63e0ba3c16d39fc99bc4":[3,0,0,0,0,0],
 "classalpaka_1_1bt_1_1IdxBtLinear.html#ae95a0d6b4c50921d041e6f39807ed1e8":[3,0,0,0,0,1],
 "classalpaka_1_1bt_1_1IdxBtOmp.html":[3,0,0,0,1],
 "classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html":[3,0,0,0,2],
@@ -249,5 +239,15 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal.html#a1d0bacc01c0f5c2d937d0fbd45c46370":[3,0,0,16,0,0,0,0],
 "classalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal.html#a5cdf128e21c2fde9f8e85c3268646656":[3,0,0,16,0,0,0,1],
 "classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformReal.html":[3,0,0,16,0,0,1],
-"classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformReal.html#a13290d8348e5a4cc76cbe3e77f1d3f4a":[3,0,0,16,0,0,1,0]
+"classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformReal.html#a13290d8348e5a4cc76cbe3e77f1d3f4a":[3,0,0,16,0,0,1,0],
+"classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformReal.html#add408af7a1c2be773ab255d9fbab430f":[3,0,0,16,0,0,1,1],
+"classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformUint.html":[3,0,0,16,0,0,2],
+"classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformUint.html#a8cffde1b46c3098bc2621706da223011":[3,0,0,16,0,0,2,0],
+"classalpaka_1_1rand_1_1distribution_1_1cpu_1_1UniformUint.html#a9f5563280f3f2ac6aeb52a6bf2cad351":[3,0,0,16,0,0,2,1],
+"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html":[3,0,0,16,0,1,1],
+"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#a36a155dc6d56c020e982a351ed8724cc":[3,0,0,16,0,1,1,3],
+"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#aa4a039b81626e52e5c663c51145c2736":[3,0,0,16,0,1,1,1],
+"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#ac077eb3149d6355a9a1e6a8edabca4d1":[3,0,0,16,0,1,1,2],
+"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#ae9cff6634ea6bd3e68d87f893ca4e39b":[3,0,0,16,0,1,1,0],
+"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformReal.html":[3,0,0,16,0,1,2]
 };

@@ -1,15 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicMin_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html":[3,0,0,18,53],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicMin_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html#a8acc75ff3dfb30a15e9c9a59c4ebb078":[3,0,0,18,53,0],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicMin_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_06242a576223fdf67b554aa1f94dbfcc.html":[3,0,0,18,55],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicMin_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_06242a576223fdf67b554aa1f94dbfcc.html#aad8b18f0b5926606d502693546b9c5f9":[3,0,0,18,55,0],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicMin_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_80ca1431152329c02abf9f472c672319.html":[3,0,0,18,54],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicMin_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_80ca1431152329c02abf9f472c672319.html#a73bd313443f8a26db30c21fa3ba6afd3":[3,0,0,18,54,0],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html":[3,0,0,18,56],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#a4603f9f6eb47ce63f62027e7346942d8":[3,0,0,18,56,0],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html":[3,0,0,18,57],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html#a581c8272ad9234901266b774e27746c3":[3,0,0,18,57,0],
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html":[3,0,0,18,58],
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html#a29512480947d586024e208d5d70a2a43":[3,0,0,18,58,0],
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0eaa56304c54de49a8da79dabf5523139.html":[3,0,0,18,59],
@@ -249,5 +239,15 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1traits_1_1DimType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a050ac5d1e65a7c4a246e4d3e8b0f2ec6":[3,0,0,18,180,0],
 "structalpaka_1_1traits_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,181],
 "structalpaka_1_1traits_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#a447ca142e9a615d2c189783dbf5e6288":[3,0,0,18,181,0],
-"structalpaka_1_1traits_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,182]
+"structalpaka_1_1traits_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,182],
+"structalpaka_1_1traits_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#a0403940b14c7935b7acb1edd7c98a475":[3,0,0,18,182,0],
+"structalpaka_1_1traits_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,189],
+"structalpaka_1_1traits_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a45fab68b916efe288b50e73fd908b4c3":[3,0,0,18,189,0],
+"structalpaka_1_1traits_1_1DimType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,190],
+"structalpaka_1_1traits_1_1DimType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a12a619bff6bc70bd98acb590093824a6":[3,0,0,18,190,0],
+"structalpaka_1_1traits_1_1DimType_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,191],
+"structalpaka_1_1traits_1_1DimType_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a3e58f9313d06d58a295e0166de5cdca3":[3,0,0,18,191,0],
+"structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impb71be0be072a11f2f496ac1e8ea12c04.html":[3,0,0,18,202],
+"structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impb71be0be072a11f2f496ac1e8ea12c04.html#ae935905f9a4500ef8584cbfd7497e487":[3,0,0,18,202,0],
+"structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impb71be0be072a11f2f496ac1e8ea12c04.html#af6a8f5ce1a871492b4f458b7753d1078":[3,0,0,18,202,1]
 };

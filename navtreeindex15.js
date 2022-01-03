@@ -1,15 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"structalpaka_1_1traits_1_1IdxType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#a11f9015a5997a4fb0156038b2ca5e5cf":[3,0,0,18,438,0],
-"structalpaka_1_1traits_1_1IdxType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,439],
-"structalpaka_1_1traits_1_1IdxType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a2a4835d40815e44bf2ded30131744b1d":[3,0,0,18,439,0],
-"structalpaka_1_1traits_1_1IdxType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,440],
-"structalpaka_1_1traits_1_1IdxType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a1355bc60c966463a75d7a24deffc21aa":[3,0,0,18,440,0],
-"structalpaka_1_1traits_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,441],
-"structalpaka_1_1traits_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html#a38f15cf4d404d25987d3a14a44f88926":[3,0,0,18,441,0],
-"structalpaka_1_1traits_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,442],
-"structalpaka_1_1traits_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#ac5b82a7511f568714540d547e498f5db":[3,0,0,18,442,0],
-"structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,414],
 "structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html#ac735abd59c7cc4b3fef311c4cb08a349":[3,0,0,18,414,0],
 "structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,415],
 "structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html#a1f84f5e501880f7a485043465c7e2a18":[3,0,0,18,415,0],
@@ -249,5 +239,15 @@ var NAVTREEINDEX15 =
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01Eventf80d91658a1202b3bab04f46987239a8.html#a040baeebd29060e0e8ab4233366f5648":[3,0,0,18,563,0],
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01Ev74b109bb099985a9c713e6d997d8e888.html":[3,0,0,18,564],
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01Ev74b109bb099985a9c713e6d997d8e888.html#abe5f12cc1eb66c9e49089e56fd959778":[3,0,0,18,564,0],
-"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtBlocking_00_01EventUniformCudaHipRt_01_4.html":[3,0,0,18,565]
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtBlocking_00_01EventUniformCudaHipRt_01_4.html":[3,0,0,18,565],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtBlocking_00_01EventUniformCudaHipRt_01_4.html#afc091d1780d089126f8db0eca6127e02":[3,0,0,18,565,0],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4.html":[3,0,0,18,566],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4.html#a991e51ddc8073e6f4b7629ec6be4301b":[3,0,0,18,566,0],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01TDev_00_01EventGenericThreads_3_01TDev_01_4_01_4.html":[3,0,0,18,567],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01TDev_00_01EventGenericThreads_3_01TDev_01_4_01_4.html#a679e182e1d61564c41dce756a0b56346":[3,0,0,18,567,0],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBl80967a2c94d7d4ea1d317d4c484607d4.html":[3,0,0,18,558],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBl80967a2c94d7d4ea1d317d4c484607d4.html#a26cd34c48d92543045072e89e340e774":[3,0,0,18,558,0],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNoc1bd4e4ffec4aec31e10ebe149e23246.html":[3,0,0,18,559],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNoc1bd4e4ffec4aec31e10ebe149e23246.html#a5477e47aa083b9a79633e04221cc52e5":[3,0,0,18,559,0],
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl_00_01EventCpu_01_4.html":[3,0,0,18,560]
 };

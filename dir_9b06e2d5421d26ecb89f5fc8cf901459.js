@@ -1,7 +1,6 @@
 var dir_9b06e2d5421d26ecb89f5fc8cf901459 =
 [
     [ "Apply.hpp", "Apply_8hpp.html", "Apply_8hpp" ],
-    [ "ApplyTuple.hpp", "ApplyTuple_8hpp.html", "ApplyTuple_8hpp" ],
     [ "CartesianProduct.hpp", "CartesianProduct_8hpp.html", "CartesianProduct_8hpp" ],
     [ "Concatenate.hpp", "Concatenate_8hpp.html", "Concatenate_8hpp" ],
     [ "CudaVectorArrayWrapper.hpp", "CudaVectorArrayWrapper_8hpp.html", [
