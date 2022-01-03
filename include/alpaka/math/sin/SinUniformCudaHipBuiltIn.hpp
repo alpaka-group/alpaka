@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Valentin Gehrke
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Valentin Gehrke, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/sin/Traits.hpp>
 
@@ -35,17 +36,13 @@ namespace alpaka
                 __device__ auto operator()(SinUniformCudaHipBuiltIn const& sin_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(sin_ctx);
-                    return ::sin(arg);
-                }
-            };
-            //! The CUDA sin float specialization.
-            template<>
-            struct Sin<SinUniformCudaHipBuiltIn, float>
-            {
-                __device__ auto operator()(SinUniformCudaHipBuiltIn const& sin_ctx, float const& arg) -> float
-                {
-                    alpaka::ignore_unused(sin_ctx);
-                    return ::sinf(arg);
+
+                    if constexpr(is_decayed_v<TArg, float>)
+                        return ::sinf(arg);
+                    else if constexpr(is_decayed_v<TArg, double>)
+                        return ::sin(arg);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
         } // namespace traits

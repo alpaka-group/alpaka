@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/sincos/Traits.hpp>
 
@@ -28,36 +29,26 @@ namespace alpaka
 
         namespace traits
         {
-            //! sincos trait specialization.
-            template<>
-            struct SinCos<SinCosUniformCudaHipBuiltIn, double>
+            //! The CUDA sincos trait specialization.
+            template<typename TArg>
+            struct SinCos<SinCosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
             {
                 __device__ auto operator()(
                     SinCosUniformCudaHipBuiltIn const& sincos_ctx,
-                    double const& arg,
-                    double& result_sin,
-                    double& result_cos) -> void
+                    TArg const& arg,
+                    TArg& result_sin,
+                    TArg& result_cos) -> void
                 {
                     alpaka::ignore_unused(sincos_ctx);
-                    ::sincos(arg, &result_sin, &result_cos);
+
+                    if constexpr(is_decayed_v<TArg, float>)
+                        ::sincosf(arg, &result_sin, &result_cos);
+                    else if constexpr(is_decayed_v<TArg, double>)
+                        ::sincos(arg, &result_sin, &result_cos);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
-
-            //! The CUDA sin float specialization.
-            template<>
-            struct SinCos<SinCosUniformCudaHipBuiltIn, float>
-            {
-                __device__ auto operator()(
-                    SinCosUniformCudaHipBuiltIn const& sincos_ctx,
-                    float const& arg,
-                    float& result_sin,
-                    float& result_cos) -> void
-                {
-                    alpaka::ignore_unused(sincos_ctx);
-                    ::sincosf(arg, &result_sin, &result_cos);
-                }
-            };
-
         } // namespace traits
     } // namespace math
 } // namespace alpaka

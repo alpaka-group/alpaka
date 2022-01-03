@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/fmod/Traits.hpp>
 
@@ -34,23 +35,18 @@ namespace alpaka
                 FmodUniformCudaHipBuiltIn,
                 Tx,
                 Ty,
-                std::enable_if_t<std::is_floating_point<Tx>::value && std::is_floating_point<Ty>::value>>
+                std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
             {
                 __device__ auto operator()(FmodUniformCudaHipBuiltIn const& fmod_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(fmod_ctx);
-                    return ::fmod(x, y);
-                }
-            };
-            //! The CUDA fmod float specialization.
-            template<>
-            struct Fmod<FmodUniformCudaHipBuiltIn, float, float>
-            {
-                __device__ auto operator()(FmodUniformCudaHipBuiltIn const& fmod_ctx, float const& x, float const& y)
-                    -> float
-                {
-                    alpaka::ignore_unused(fmod_ctx);
-                    return ::fmodf(x, y);
+
+                    if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float>)
+                        return ::fmodf(x, y);
+                    else if constexpr(is_decayed_v<Tx, double> || is_decayed_v<Ty, double>)
+                        return ::fmod(x, y);
+                    else
+                        static_assert(!sizeof(Tx), "Unsupported data type");
                 }
             };
         } // namespace traits

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -37,29 +37,20 @@ namespace alpaka
     {
         namespace detail
         {
-            template<typename TArg, typename TSfinae = void>
-            struct AssertValueUnsigned;
             template<typename TArg>
-            struct AssertValueUnsigned<TArg, std::enable_if_t<!std::is_unsigned<TArg>::value>>
+            struct AssertValueUnsigned
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(TArg const& arg) -> void
+                ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(TArg const& arg)
                 {
                     alpaka::ignore_unused(arg);
-                    ALPAKA_ASSERT_OFFLOAD(arg >= 0);
-                }
-            };
-            template<typename TArg>
-            struct AssertValueUnsigned<TArg, std::enable_if_t<std::is_unsigned<TArg>::value>>
-            {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(TArg const& arg) -> void
-                {
-                    alpaka::ignore_unused(arg);
+                    if constexpr(std::is_signed_v<TArg>)
+                        ALPAKA_ASSERT_OFFLOAD(arg >= 0);
+
                     // Nothing to do for unsigned types.
                 }
             };
         } // namespace detail
+
         //! This method checks integral values if they are greater or equal zero.
         //! The implementation prevents warnings for checking this for unsigned types.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -71,41 +62,26 @@ namespace alpaka
 
         namespace detail
         {
-            template<typename TLhs, typename TRhs, typename TSfinae = void>
-            struct AssertGreaterThan;
             template<typename TLhs, typename TRhs>
-            struct AssertGreaterThan<
-                TLhs,
-                TRhs,
-                std::enable_if_t<!std::is_unsigned<TRhs>::value || (TLhs::value != 0u)>>
+            struct AssertGreaterThan
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto assertGreaterThan(TRhs const& lhs) -> void
+                ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto assertGreaterThan(TRhs const& rhs)
                 {
-                    alpaka::ignore_unused(lhs);
-                    ALPAKA_ASSERT_OFFLOAD(TLhs::value > lhs);
-                }
-            };
-            template<typename TLhs, typename TRhs>
-            struct AssertGreaterThan<
-                TLhs,
-                TRhs,
-                std::enable_if_t<std::is_unsigned<TRhs>::value && (TLhs::value == 0u)>>
-            {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto assertGreaterThan(TRhs const& lhs) -> void
-                {
-                    alpaka::ignore_unused(lhs);
-                    // Nothing to do for unsigned types camparing to zero.
+                    alpaka::ignore_unused(rhs);
+                    if constexpr(std::is_signed_v<TRhs> || (TLhs::value != 0u))
+                        ALPAKA_ASSERT_OFFLOAD(TLhs::value > rhs);
+
+                    // Nothing to do for unsigned types comparing to zero.
                 }
             };
         } // namespace detail
-        //! This method asserts that the integral value TArg is less than Tidx.
+
+        //! This function asserts that the integral value TLhs is greater than TRhs.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TLhs, typename TRhs>
-        ALPAKA_FN_HOST_ACC auto assertGreaterThan(TRhs const& lhs) -> void
+        ALPAKA_FN_HOST_ACC auto assertGreaterThan(TRhs const& rhs) -> void
         {
-            detail::AssertGreaterThan<TLhs, TRhs>::assertGreaterThan(lhs);
+            detail::AssertGreaterThan<TLhs, TRhs>::assertGreaterThan(rhs);
         }
     } // namespace core
 } // namespace alpaka

@@ -197,25 +197,20 @@ namespace alpaka
                 std::remove_reference_t<TFnObj> m_FnObj;
             };
 
-            template<
-                typename TFnObj0,
-                typename TFnObj1,
-                typename = std::enable_if_t<!std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>>
+            template<typename TFnObj0, typename TFnObj1>
             auto invokeBothReturnFirst(TFnObj0&& fn0, TFnObj1&& fn1)
             {
-                auto ret = fn0();
-                fn1();
-                return std::move(ret);
-            }
-
-            template<
-                typename TFnObj0,
-                typename TFnObj1,
-                typename = std::enable_if_t<std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>>
-            auto invokeBothReturnFirst(TFnObj0&& fn0, TFnObj1&& fn1) -> void
-            {
-                fn0();
-                fn1();
+                if constexpr(!std::is_same_v<void, decltype(std::declval<TFnObj0>()())>)
+                {
+                    auto ret = fn0();
+                    fn1();
+                    return std::move(ret);
+                }
+                else
+                {
+                    fn0();
+                    fn1();
+                }
             }
 
             //! ConcurrentExecPool using yield.

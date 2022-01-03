@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
+#    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/round/Traits.hpp>
 
@@ -35,37 +36,47 @@ namespace alpaka
                 __device__ auto operator()(RoundUniformCudaHipBuiltIn const& round_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(round_ctx);
-                    return ::round(arg);
+
+                    if constexpr(is_decayed_v<TArg, float>)
+                        return ::roundf(arg);
+                    else if constexpr(is_decayed_v<TArg, double>)
+                        return ::round(arg);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
+
             //! The CUDA lround trait specialization.
             template<typename TArg>
             struct Lround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& lround_ctx, TArg const& arg) -> long int
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& lround_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(lround_ctx);
-                    return ::lround(arg);
+
+                    if constexpr(is_decayed_v<TArg, float>)
+                        return ::lroundf(arg);
+                    else if constexpr(is_decayed_v<TArg, double>)
+                        return ::lround(arg);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
+
             //! The CUDA llround trait specialization.
             template<typename TArg>
             struct Llround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& llround_ctx, TArg const& arg) -> long int
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& llround_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(llround_ctx);
-                    return ::llround(arg);
-                }
-            };
-            //! The CUDA round float specialization.
-            template<>
-            struct Round<RoundUniformCudaHipBuiltIn, float>
-            {
-                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& round_ctx, float const& arg) -> float
-                {
-                    alpaka::ignore_unused(round_ctx);
-                    return ::roundf(arg);
+
+                    if constexpr(is_decayed_v<TArg, float>)
+                        return ::llroundf(arg);
+                    else if constexpr(is_decayed_v<TArg, double>)
+                        return ::llround(arg);
+                    else
+                        static_assert(!sizeof(TArg), "Unsupported data type");
                 }
             };
         } // namespace traits

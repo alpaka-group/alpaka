@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -450,40 +450,24 @@ namespace alpaka
 
         //! Specialization for selecting a sub-vector.
         template<typename TDim, typename TVal, std::size_t... TIndices>
-        struct SubVecFromIndices<
-            Vec<TDim, TVal>,
-            std::integer_sequence<std::size_t, TIndices...>,
-            std::enable_if_t<!std::is_same<
-                std::integer_sequence<std::size_t, TIndices...>,
-                std::make_integer_sequence<std::size_t, TDim::value>>::value>>
+        struct SubVecFromIndices<Vec<TDim, TVal>, std::integer_sequence<std::size_t, TIndices...>>
         {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto subVecFromIndices(Vec<TDim, TVal> const& vec)
-                -> Vec<DimInt<sizeof...(TIndices)>, TVal>
+            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto subVecFromIndices(Vec<TDim, TVal> const& vec)
             {
                 // In the case of a zero dimensional vector, vec is unused.
                 alpaka::ignore_unused(vec);
 
                 static_assert(
                     sizeof...(TIndices) <= TDim::value,
-                    "The sub-vector has to be smaller (or same size) than the origin vector.");
+                    "The sub-vector's dimensionality must be smaller than or equal to the original dimensionality.");
 
-                return Vec<DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
-            }
-        };
-        //! Specialization for selecting the whole vector.
-        template<typename TDim, typename TVal, std::size_t... TIndices>
-        struct SubVecFromIndices<
-            Vec<TDim, TVal>,
-            std::integer_sequence<std::size_t, TIndices...>,
-            std::enable_if_t<std::is_same<
-                std::integer_sequence<std::size_t, TIndices...>,
-                std::make_integer_sequence<std::size_t, TDim::value>>::value>>
-        {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto subVecFromIndices(Vec<TDim, TVal> const& vec) -> Vec<TDim, TVal>
-            {
-                return vec;
+
+                if constexpr(!std::is_same_v<
+                                 std::integer_sequence<std::size_t, TIndices...>,
+                                 std::make_integer_sequence<std::size_t, TDim::value>>)
+                    return Vec<DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...); // Return sub-vector.
+                else
+                    return vec; // Return whole vector.
             }
         };
     } // namespace traits
