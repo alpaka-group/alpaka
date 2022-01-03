@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -279,13 +279,13 @@ namespace alpaka
                     intersects[(i - 1u) % 2u] = gridThreadExtentDivisors[0];
                     intersects[(i) % 2u].clear();
                     set_intersection(
-                        intersects[(i - 1u) % 2u].begin(),
-                        intersects[(i - 1u) % 2u].end(),
-                        gridThreadExtentDivisors[i].begin(),
-                        gridThreadExtentDivisors[i].end(),
-                        std::inserter(intersects[i % 2], intersects[i % 2u].begin()));
+                        std::begin(intersects[(i - 1u) % 2u]),
+                        std::end(intersects[(i - 1u) % 2u]),
+                        std::begin(gridThreadExtentDivisors[i]),
+                        std::end(gridThreadExtentDivisors[i]),
+                        std::inserter(intersects[i % 2], std::begin(intersects[i % 2u])));
                 }
-                TIdx const maxCommonDivisor(*(--intersects[(TDim::value - 1) % 2u].end()));
+                TIdx const maxCommonDivisor(*(--std::end(intersects[(TDim::value - 1) % 2u])));
                 for(typename TDim::value_type i(0u); i < TDim::value; ++i)
                 {
                     blockThreadExtent[i] = maxCommonDivisor;

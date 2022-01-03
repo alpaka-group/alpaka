@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, René Widera
+/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -325,7 +325,7 @@ namespace alpaka
                 //! \return The number of concurrent executors available.
                 auto getConcurrentExecutionCount() const -> TIdx
                 {
-                    return m_vConcurrentExecs.size();
+                    return std::size(m_vConcurrentExecs);
                 }
                 //! \return If the thread pool is idle.
                 auto isIdle() const -> bool
@@ -497,7 +497,7 @@ namespace alpaka
                 //! \return The number of concurrent executors available.
                 auto getConcurrentExecutionCount() const -> TIdx
                 {
-                    return m_vConcurrentExecs.size();
+                    return std::size(m_vConcurrentExecs);
                 }
                 //! \return If the thread pool is idle.
                 auto isIdle() const -> bool

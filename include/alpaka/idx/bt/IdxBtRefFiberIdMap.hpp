@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -65,7 +65,7 @@ namespace alpaka
                 alpaka::ignore_unused(workDiv);
                 auto const fiberId(boost::this_fiber::get_id());
                 auto const fiberEntry(idx.m_fibersToIndices.find(fiberId));
-                ALPAKA_ASSERT(fiberEntry != idx.m_fibersToIndices.end());
+                ALPAKA_ASSERT(fiberEntry != std::end(idx.m_fibersToIndices));
                 return fiberEntry->second;
             }
         };

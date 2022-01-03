@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -82,8 +82,8 @@ namespace alpaka
                     std::array<Error_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{ignoredErrorCodes...};
 
                     // If the error code is not one of the ignored ones.
-                    if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error)
-                       == aIgnoredErrorCodes.cend())
+                    if(std::find(std::cbegin(aIgnoredErrorCodes), std::cend(aIgnoredErrorCodes), error)
+                       == std::cend(aIgnoredErrorCodes))
                     {
                         rtCheck(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
                     }

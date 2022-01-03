@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, René Widera
+/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -157,7 +157,8 @@ namespace alpaka
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #    if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             // Wait for the completion of the block thread kernels.
-            std::for_each(futuresInBlock.begin(), futuresInBlock.end(), [](std::future<void>& t) { t.wait(); });
+            for(auto& t : futuresInBlock)
+                t.wait();
 #    endif
             // Clean up.
             futuresInBlock.clear();

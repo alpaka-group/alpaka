@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, René Widera
+/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -165,10 +165,9 @@ namespace alpaka
             meta::ndLoopIncIdx(blockThreadExtent, boundBlockThreadExecHost);
 
             // Wait for the completion of the block thread kernels.
-            std::for_each(
-                futuresInBlock.begin(),
-                futuresInBlock.end(),
-                [](boost::fibers::future<void>& t) { t.wait(); });
+            for(auto& t : futuresInBlock)
+                t.wait();
+
             // Clean up.
             futuresInBlock.clear();
 

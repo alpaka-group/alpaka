@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -65,7 +65,7 @@ namespace alpaka
                 alpaka::ignore_unused(workDiv);
                 auto const threadId = std::this_thread::get_id();
                 auto const threadEntry = idx.m_threadToIndexMap.find(threadId);
-                ALPAKA_ASSERT(threadEntry != idx.m_threadToIndexMap.end());
+                ALPAKA_ASSERT(threadEntry != std::end(idx.m_threadToIndexMap));
                 return threadEntry->second;
             }
         };
