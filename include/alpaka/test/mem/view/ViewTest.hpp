@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -229,7 +229,7 @@ namespace alpaka
 
             // Init buf with increasing values
             std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
-            std::iota(v.begin(), v.end(), static_cast<Elem>(0));
+            std::iota(std::begin(v), std::end(v), static_cast<Elem>(0));
             auto plainBuf = alpaka::createView(devHost, v, extent);
 
             // Copy the generated content into the given view.

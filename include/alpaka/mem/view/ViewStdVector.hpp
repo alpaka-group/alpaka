@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -6,6 +6,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+/* TODO: Once C++20 is available remove this file and replace with a generic ContiguousContainer solution based on
+ * concepts. It should be sufficient to check for the existence of Container.size() and Container.data() */
 
 #pragma once
 
@@ -64,7 +67,7 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto getExtent(std::vector<TElem, TAllocator> const& extent)
                     -> Idx<std::vector<TElem, TAllocator>>
                 {
-                    return extent.size();
+                    return std::size(extent);
                 }
             };
         } // namespace traits
@@ -77,11 +80,11 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getPtrNative(std::vector<TElem, TAllocator> const& view) -> TElem const*
             {
-                return view.data();
+                return std::data(view);
             }
             ALPAKA_FN_HOST static auto getPtrNative(std::vector<TElem, TAllocator>& view) -> TElem*
             {
-                return view.data();
+                return std::data(view);
             }
         };
 
@@ -92,7 +95,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getPitchBytes(std::vector<TElem, TAllocator> const& pitch)
                 -> Idx<std::vector<TElem, TAllocator>>
             {
-                return sizeof(TElem) * pitch.size();
+                return sizeof(TElem) * std::size(pitch);
             }
         };
 

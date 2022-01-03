@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Andrea Bocci
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -435,55 +435,30 @@ namespace alpaka
         return traits::CreateViewPlainPtr<TDev>::createViewPlainPtr(dev, pMem, extent, pitch);
     }
 
-    //! Creates a view to a device std::vector
+    //! Creates a view to a contiguous container of device-accessible memory.
     //!
-    //! \param dev Device from where vec can be accessed.
-    //! \param vec std::vector container. The data hold by the container the must be accessible from the given device.
+    //! \param dev Device from which the container can be accessed.
+    //! \param con Contiguous container. The container must provide a `data()` method. The data held by the container
+    //!            must be accessible from the given device. The `GetExtent` trait must be defined for the container.
     //! \return A view to device memory.
-    template<typename TDev, typename TElem, typename TAllocator>
-    auto createView(TDev const& dev, std::vector<TElem, TAllocator>& vec)
+    template<typename TDev, typename TContainer>
+    auto createView(TDev const& dev, TContainer& con)
     {
-        //! \todo With C++17 use std::data() and add support for all contiguous container
-        return createView(dev, vec.data(), extent::getExtent(vec));
+        return createView(dev, std::data(con), extent::getExtent(con));
     }
 
-    //! Creates a view to a device std::vector
+    //! Creates a view to a contiguous container of device-accessible memory.
     //!
-    //! \param dev Device from where pMem can be accessed.
-    //! \param vec std::vector container. The data hold by the container the must be accessible from the given device.
-    //! \param extent Number of elements represented by vec.
-    //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
-    //!               by vec.
+    //! \param dev Device from which the container can be accessed.
+    //! \param con Contiguous container. The container must provide a `data()` method. The data held by the container
+    //!            must be accessible from the given device. The `GetExtent` trait must be defined for the container.
+    //! \param extent Number of elements held by the container. Using a multi-dimensional extent will result in a
+    //!               multi-dimensional view to the memory represented by the container.
     //! \return A view to device memory.
-    template<typename TDev, typename TElem, typename TAllocator, typename TExtent>
-    auto createView(TDev const& dev, std::vector<TElem, TAllocator>& vec, TExtent const& extent)
+    template<typename TDev, typename TContainer, typename TExtent>
+    auto createView(TDev const& dev, TContainer& con, TExtent const& extent)
     {
-        return createView(dev, vec.data(), extent);
-    }
-
-    //! Creates a view to a device std::array
-    //!
-    //! \param dev Device from where array can be accessed.
-    //! \param array std::array container. The data hold by the container the must be accessible from the given device.
-    //! \return A view to device memory.
-    template<typename TDev, typename TElem, std::size_t Tsize>
-    auto createView(TDev const& dev, std::array<TElem, Tsize>& array)
-    {
-        return createView(dev, array.data(), extent::getExtent(array));
-    }
-
-    //! Creates a view to a device std::vector
-    //!
-    //! \param dev Device from where array can be accessed.
-    //! \param array std::array container. The data hold by the container the must be accessible from the given device
-    //! \param extent Number of elements represented by array.
-    //!               Using a multi dimensional extent will result in a multi dimension view to the memory represented
-    //!               by array.
-    //! \return A view to device memory.
-    template<typename TDev, typename TElem, std::size_t Tsize, typename TExtent>
-    auto createView(TDev const& dev, std::array<TElem, Tsize>& array, TExtent const& extent)
-    {
-        return createView(dev, array.data(), extent);
+        return createView(dev, std::data(con), extent);
     }
 
     //! Creates a sub view to an existing view.

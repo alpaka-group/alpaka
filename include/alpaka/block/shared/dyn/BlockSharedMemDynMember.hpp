@@ -1,4 +1,4 @@
-/* Copyright 2020 Jeffrey Kelling
+/* Copyright 2022 Jeffrey Kelling, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -55,14 +55,14 @@ namespace alpaka
 
         uint8_t* dynMemBegin() const
         {
-            return m_mem.data();
+            return std::data(m_mem);
         }
 
         /*! \return the pointer to the begin of data after the portion allocated as dynamical shared memory.
          */
         uint8_t* staticMemBegin() const
         {
-            return m_mem.data() + m_dynPitch;
+            return std::data(m_mem) + m_dynPitch;
         }
 
         /*! \return the remaining capacity for static block shared memory,

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -55,9 +55,9 @@ namespace alpaka
                     std::vector<std::shared_ptr<cpu::ICpuQueue>> vspQueues;
 
                     std::lock_guard<std::mutex> lk(m_Mutex);
-                    vspQueues.reserve(m_queues.size());
+                    vspQueues.reserve(std::size(m_queues));
 
-                    for(auto it = m_queues.begin(); it != m_queues.end();)
+                    for(auto it = std::begin(m_queues); it != std::end(m_queues);)
                     {
                         auto spQueue(it->lock());
                         if(spQueue)
