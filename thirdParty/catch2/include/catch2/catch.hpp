@@ -1,9 +1,9 @@
 /*
- *  Catch v2.13.7
- *  Generated: 2021-12-16 14:53:26.959816
+ *  Catch v2.13.8
+ *  Generated: 2022-01-03 21:20:09.589503
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
- *  Copyright (c) 2021 Two Blue Cubes Ltd. All rights reserved.
+ *  Copyright (c) 2022 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 13
-#define CATCH_VERSION_PATCH 7
+#define CATCH_VERSION_PATCH 8
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -15387,7 +15387,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 13, 7, "", 0 );
+        static Version version( 2, 13, 8, "", 0 );
         return version;
     }
 
