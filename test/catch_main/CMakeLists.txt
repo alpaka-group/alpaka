@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Benjamin Worpitz, Axel Huebl
+# Copyright 2022 Benjamin Worpitz, Axel Huebl, Jan Stephan
 #
 # This file is part of alpaka.
 #
@@ -11,20 +11,18 @@
 option(ALPAKA_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON)
 
 if(ALPAKA_USE_INTERNAL_CATCH2)
-    message(STATUS "Catch2: Using INTERNAL version 2.13.7")
+    message(STATUS "Catch2: Using INTERNAL version 2.13.8")
 else()
-    find_package(Catch2 2.13.3 CONFIG REQUIRED)
+    find_package(Catch2 2.13.8 CONFIG REQUIRED)
     set_target_properties(Catch2::Catch2 PROPERTIES IMPORTED_GLOBAL TRUE)
     message(STATUS "Catch2: Found version ${Catch2_VERSION}")
 endif()
 
 add_library(CatchMain src/CatchMain.cpp)
-# target_compile_features(CatchMain PUBLIC cxx_std_17)  # min C++17
+target_compile_features(CatchMain PUBLIC cxx_std_17)
 set_target_properties(CatchMain PROPERTIES
     FOLDER "test"
-    CXX_STANDARD 17
     CXX_EXTENSIONS OFF
-    CXX_STANDARD_REQUIRED ON
     POSITION_INDEPENDENT_CODE ON
     WINDOWS_EXPORT_ALL_SYMBOLS ON
 )
