@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('UniformCudaHip_8hpp_source.html',''); 
 <div class="title">UniformCudaHip.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="UniformCudaHip_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera</span></div>
+<a href="UniformCudaHip_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -171,8 +171,8 @@ $(document).ready(function(){initNavTree('UniformCudaHip_8hpp_source.html',''); 
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    std::array&lt;<a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a>, <span class="keyword">sizeof</span>...(ignoredErrorCodes)&gt; <span class="keyword">const</span> aIgnoredErrorCodes{ignoredErrorCodes...};</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                    <span class="comment">// If the error code is not one of the ignored ones.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keywordflow">if</span>(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                       == aIgnoredErrorCodes.cend())</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keywordflow">if</span>(std::find(std::cbegin(aIgnoredErrorCodes), std::cend(aIgnoredErrorCodes), error)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                       == std::cend(aIgnoredErrorCodes))</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                    {</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                        <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a4036712750530f0a63110f5bff29bb65">rtCheck</a>(error, (<span class="stringliteral">&quot;&#39;&quot;</span> + std::string(cmd) + <span class="stringliteral">&quot;&#39; returned error &quot;</span>).c_str(), file, line);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    }</div>
@@ -241,7 +241,7 @@ $(document).ready(function(){initNavTree('UniformCudaHip_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="UniformCudaHip_8hpp.html">UniformCudaHip.hpp</a></li>
-    <li class="footer">Generated on Mon Jan 3 2022 16:50:44 for alpaka by
+    <li class="footer">Generated on Tue Jan 4 2022 08:40:41 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

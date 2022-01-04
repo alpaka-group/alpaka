@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemDynMember_8hpp_source.ht
 <div class="title">BlockSharedMemDynMember.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="BlockSharedMemDynMember_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2020 Jeffrey Kelling</span></div>
+<a href="BlockSharedMemDynMember_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jeffrey Kelling, Jan Stephan</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -144,14 +144,14 @@ $(document).ready(function(){initNavTree('BlockSharedMemDynMember_8hpp_source.ht
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classalpaka_1_1BlockSharedMemDynMember.html#a4c97f20cb71d7947d0dc18fc9126ea36">   56</a></span>&#160;        uint8_t* <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#a4c97f20cb71d7947d0dc18fc9126ea36">dynMemBegin</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> m_mem.data();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> std::data(m_mem);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">        /*! \return the pointer to the begin of data after the portion allocated as dynamical shared memory.</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">         */</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classalpaka_1_1BlockSharedMemDynMember.html#a3270b5f30feaff786dc436304690bb40">   63</a></span>&#160;        uint8_t* <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#a3270b5f30feaff786dc436304690bb40">staticMemBegin</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> m_mem.data() + m_dynPitch;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> std::data(m_mem) + m_dynPitch;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">        /*! \return the remaining capacity for static block shared memory,</span></div>
@@ -231,7 +231,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemDynMember_8hpp_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_0864fd1327d23bd6a262ac55462cb31e.html">block</a></li><li class="navelem"><a class="el" href="dir_80053b06cd80a729c5eaac439ea18035.html">shared</a></li><li class="navelem"><a class="el" href="dir_60be6ec9b9f6430d01be52510748f004.html">dyn</a></li><li class="navelem"><a class="el" href="BlockSharedMemDynMember_8hpp.html">BlockSharedMemDynMember.hpp</a></li>
-    <li class="footer">Generated on Mon Jan 3 2022 16:50:44 for alpaka by
+    <li class="footer">Generated on Tue Jan 4 2022 08:40:41 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

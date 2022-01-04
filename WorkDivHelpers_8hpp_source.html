@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div class="title">WorkDivHelpers.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="WorkDivHelpers_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2019 Benjamin Worpitz, Matthias Werner</span></div>
+<a href="WorkDivHelpers_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -368,13 +368,13 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                    intersects[(i - 1u) % 2u] = gridThreadExtentDivisors[0];</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                    intersects[(i) % 2u].clear();</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                    set_intersection(</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                        intersects[(i - 1u) % 2u].<a class="code" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">begin</a>(),</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                        intersects[(i - 1u) % 2u].<a class="code" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">end</a>(),</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                        gridThreadExtentDivisors[i].<a class="code" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">begin</a>(),</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                        gridThreadExtentDivisors[i].<a class="code" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">end</a>(),</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                        std::inserter(intersects[i % 2], intersects[i % 2u].<a class="code" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">begin</a>()));</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                        <a class="code" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">std::begin</a>(intersects[(i - 1u) % 2u]),</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                        <a class="code" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">std::end</a>(intersects[(i - 1u) % 2u]),</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                        <a class="code" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">std::begin</a>(gridThreadExtentDivisors[i]),</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                        <a class="code" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">std::end</a>(gridThreadExtentDivisors[i]),</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                        std::inserter(intersects[i % 2], <a class="code" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">std::begin</a>(intersects[i % 2u])));</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                }</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                TIdx <span class="keyword">const</span> maxCommonDivisor(*(--intersects[(TDim::value - 1) % 2u].<a class="code" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">end</a>()));</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                TIdx <span class="keyword">const</span> maxCommonDivisor(*(--<a class="code" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">std::end</a>(intersects[(TDim::value - 1) % 2u])));</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                <span class="keywordflow">for</span>(<span class="keyword">typename</span> TDim::value_type i(0u); i &lt; TDim::value; ++i)</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                {</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                    blockThreadExtent[i] = maxCommonDivisor;</div>
@@ -556,7 +556,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_43271bcfd261ba185a35bd5280ac7ea9.html">workdiv</a></li><li class="navelem"><a class="el" href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></li>
-    <li class="footer">Generated on Mon Jan 3 2022 16:50:45 for alpaka by
+    <li class="footer">Generated on Tue Jan 4 2022 08:40:42 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

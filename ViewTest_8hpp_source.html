@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('ViewTest_8hpp_source.html',''); initRe
 <div class="title">ViewTest.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="ViewTest_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner</span></div>
+<a href="ViewTest_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -318,7 +318,7 @@ $(document).ready(function(){initNavTree('ViewTest_8hpp_source.html',''); initRe
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <span class="comment">// Init buf with increasing values</span></div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            std::vector&lt;Elem&gt; v(<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(extent.prod()), <span class="keyword">static_cast&lt;</span><a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a><span class="keyword">&gt;</span>(0));</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            std::iota(v.begin(), v.end(), <span class="keyword">static_cast&lt;</span><a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a><span class="keyword">&gt;</span>(0));</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            std::iota(<a class="code" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">std::begin</a>(v), <a class="code" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">std::end</a>(v), <span class="keyword">static_cast&lt;</span><a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a><span class="keyword">&gt;</span>(0));</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keyword">auto</span> plainBuf = <a class="code" href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">alpaka::createView</a>(devHost, v, extent);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <span class="comment">// Copy the generated content into the given view.</span></div>
@@ -422,7 +422,7 @@ $(document).ready(function(){initNavTree('ViewTest_8hpp_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="dir_3c205fa56fa7dd5c5c65492fc2472d1d.html">mem</a></li><li class="navelem"><a class="el" href="dir_2545cde98f97a30755b1e4e92dd58010.html">view</a></li><li class="navelem"><a class="el" href="ViewTest_8hpp.html">ViewTest.hpp</a></li>
-    <li class="footer">Generated on Mon Jan 3 2022 16:50:45 for alpaka by
+    <li class="footer">Generated on Tue Jan 4 2022 08:40:42 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

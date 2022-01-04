@@ -635,22 +635,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a730e9a7d0baa70426246af2bb311417a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a730e9a7d0baa70426246af2bb311417a">createVecFromIndexedFnOffset</a> (TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a730e9a7d0baa70426246af2bb311417a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [TIdxOffset, TIdxOffset + TDim].  <a href="namespacealpaka.html#a730e9a7d0baa70426246af2bb311417a">More...</a><br /></td></tr>
 <tr class="separator:a730e9a7d0baa70426246af2bb311417a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acef6cd37a399201200514adb676e6266"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , std::size_t Tsize&gt; </td></tr>
-<tr class="memitem:acef6cd37a399201200514adb676e6266"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#acef6cd37a399201200514adb676e6266">createView</a> (TDev const &amp;dev, std::array&lt; TElem, Tsize &gt; &amp;array)</td></tr>
-<tr class="memdesc:acef6cd37a399201200514adb676e6266"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::array.  <a href="namespacealpaka.html#acef6cd37a399201200514adb676e6266">More...</a><br /></td></tr>
-<tr class="separator:acef6cd37a399201200514adb676e6266"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae82c506e09dbd4ce3589243d3e9656ad"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , std::size_t Tsize, typename TExtent &gt; </td></tr>
-<tr class="memitem:ae82c506e09dbd4ce3589243d3e9656ad"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae82c506e09dbd4ce3589243d3e9656ad">createView</a> (TDev const &amp;dev, std::array&lt; TElem, Tsize &gt; &amp;array, TExtent const &amp;extent)</td></tr>
-<tr class="memdesc:ae82c506e09dbd4ce3589243d3e9656ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::vector.  <a href="namespacealpaka.html#ae82c506e09dbd4ce3589243d3e9656ad">More...</a><br /></td></tr>
-<tr class="separator:ae82c506e09dbd4ce3589243d3e9656ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TAllocator &gt; </td></tr>
-<tr class="memitem:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3cc206658f4ffdc109ca9ae82a2663b3">createView</a> (TDev const &amp;dev, std::vector&lt; TElem, TAllocator &gt; &amp;vec)</td></tr>
-<tr class="memdesc:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::vector.  <a href="namespacealpaka.html#a3cc206658f4ffdc109ca9ae82a2663b3">More...</a><br /></td></tr>
-<tr class="separator:a3cc206658f4ffdc109ca9ae82a2663b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a251e44ab7e6da4c81bf8173170506329"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TAllocator , typename TExtent &gt; </td></tr>
-<tr class="memitem:a251e44ab7e6da4c81bf8173170506329"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a251e44ab7e6da4c81bf8173170506329">createView</a> (TDev const &amp;dev, std::vector&lt; TElem, TAllocator &gt; &amp;vec, TExtent const &amp;extent)</td></tr>
-<tr class="memdesc:a251e44ab7e6da4c81bf8173170506329"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device std::vector.  <a href="namespacealpaka.html#a251e44ab7e6da4c81bf8173170506329">More...</a><br /></td></tr>
-<tr class="separator:a251e44ab7e6da4c81bf8173170506329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afac180d8eebadd1b7e96eb61517dd69f"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TContainer &gt; </td></tr>
+<tr class="memitem:afac180d8eebadd1b7e96eb61517dd69f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#afac180d8eebadd1b7e96eb61517dd69f">createView</a> (TDev const &amp;dev, TContainer &amp;con)</td></tr>
+<tr class="memdesc:afac180d8eebadd1b7e96eb61517dd69f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a contiguous container of device-accessible memory.  <a href="namespacealpaka.html#afac180d8eebadd1b7e96eb61517dd69f">More...</a><br /></td></tr>
+<tr class="separator:afac180d8eebadd1b7e96eb61517dd69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0580041d23c64bdc559cf814a5789c40"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TContainer , typename TExtent &gt; </td></tr>
+<tr class="memitem:a0580041d23c64bdc559cf814a5789c40"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0580041d23c64bdc559cf814a5789c40">createView</a> (TDev const &amp;dev, TContainer &amp;con, TExtent const &amp;extent)</td></tr>
+<tr class="memdesc:a0580041d23c64bdc559cf814a5789c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a contiguous container of device-accessible memory.  <a href="namespacealpaka.html#a0580041d23c64bdc559cf814a5789c40">More...</a><br /></td></tr>
+<tr class="separator:a0580041d23c64bdc559cf814a5789c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TExtent &gt; </td></tr>
 <tr class="memitem:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">createView</a> (TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent)</td></tr>
 <tr class="memdesc:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device pointer.  <a href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">More...</a><br /></td></tr>
@@ -2536,7 +2528,7 @@ template&lt;typename TView , typename TExtent , typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A sub view to a existing view. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00496">496</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00471">471</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2773,13 +2765,13 @@ template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typenam
 
 </div>
 </div>
-<a id="acef6cd37a399201200514adb676e6266"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acef6cd37a399201200514adb676e6266">&#9670;&nbsp;</a></span>createView() <span class="overload">[1/6]</span></h2>
+<a id="afac180d8eebadd1b7e96eb61517dd69f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afac180d8eebadd1b7e96eb61517dd69f">&#9670;&nbsp;</a></span>createView() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDev , typename TElem , std::size_t Tsize&gt; </div>
+template&lt;typename TDev , typename TContainer &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">auto alpaka::createView </td>
@@ -2790,8 +2782,8 @@ template&lt;typename TDev , typename TElem , std::size_t Tsize&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::array&lt; TElem, Tsize &gt; &amp;&#160;</td>
-          <td class="paramname"><em>array</em>&#160;</td>
+          <td class="paramtype">TContainer &amp;&#160;</td>
+          <td class="paramname"><em>con</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2801,27 +2793,27 @@ template&lt;typename TDev , typename TElem , std::size_t Tsize&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a view to a device std::array. </p>
+<p>Creates a view to a contiguous container of device-accessible memory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dev</td><td>Device from where array can be accessed. </td></tr>
-    <tr><td class="paramname">array</td><td>std::array container. The data hold by the container the must be accessible from the given device. </td></tr>
+    <tr><td class="paramname">dev</td><td>Device from which the container can be accessed. </td></tr>
+    <tr><td class="paramname">con</td><td>Contiguous container. The container must provide a <code>data()</code> method. The data held by the container must be accessible from the given device. The <code>GetExtent</code> trait must be defined for the container. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A view to device memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00470">470</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00445">445</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ae82c506e09dbd4ce3589243d3e9656ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae82c506e09dbd4ce3589243d3e9656ad">&#9670;&nbsp;</a></span>createView() <span class="overload">[2/6]</span></h2>
+<a id="a0580041d23c64bdc559cf814a5789c40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0580041d23c64bdc559cf814a5789c40">&#9670;&nbsp;</a></span>createView() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDev , typename TElem , std::size_t Tsize, typename TExtent &gt; </div>
+template&lt;typename TDev , typename TContainer , typename TExtent &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">auto alpaka::createView </td>
@@ -2832,8 +2824,8 @@ template&lt;typename TDev , typename TElem , std::size_t Tsize, typename TExtent
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::array&lt; TElem, Tsize &gt; &amp;&#160;</td>
-          <td class="paramname"><em>array</em>, </td>
+          <td class="paramtype">TContainer &amp;&#160;</td>
+          <td class="paramname"><em>con</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2849,104 +2841,12 @@ template&lt;typename TDev , typename TElem , std::size_t Tsize, typename TExtent
       </table>
 </div><div class="memdoc">
 
-<p>Creates a view to a device std::vector. </p>
+<p>Creates a view to a contiguous container of device-accessible memory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dev</td><td>Device from where array can be accessed. </td></tr>
-    <tr><td class="paramname">array</td><td>std::array container. The data hold by the container the must be accessible from the given device </td></tr>
-    <tr><td class="paramname">extent</td><td>Number of elements represented by array. Using a multi dimensional extent will result in a multi dimension view to the memory represented by array. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A view to device memory. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00484">484</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a3cc206658f4ffdc109ca9ae82a2663b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cc206658f4ffdc109ca9ae82a2663b3">&#9670;&nbsp;</a></span>createView() <span class="overload">[3/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TDev , typename TElem , typename TAllocator &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">auto alpaka::createView </td>
-          <td>(</td>
-          <td class="paramtype">TDev const &amp;&#160;</td>
-          <td class="paramname"><em>dev</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; TElem, TAllocator &gt; &amp;&#160;</td>
-          <td class="paramname"><em>vec</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates a view to a device std::vector. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dev</td><td>Device from where vec can be accessed. </td></tr>
-    <tr><td class="paramname">vec</td><td>std::vector container. The data hold by the container the must be accessible from the given device. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A view to device memory. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>With C++17 use std::data() and add support for all contiguous container </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00444">444</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a251e44ab7e6da4c81bf8173170506329"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a251e44ab7e6da4c81bf8173170506329">&#9670;&nbsp;</a></span>createView() <span class="overload">[4/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TDev , typename TElem , typename TAllocator , typename TExtent &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">auto alpaka::createView </td>
-          <td>(</td>
-          <td class="paramtype">TDev const &amp;&#160;</td>
-          <td class="paramname"><em>dev</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; TElem, TAllocator &gt; &amp;&#160;</td>
-          <td class="paramname"><em>vec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TExtent const &amp;&#160;</td>
-          <td class="paramname"><em>extent</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates a view to a device std::vector. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dev</td><td>Device from where pMem can be accessed. </td></tr>
-    <tr><td class="paramname">vec</td><td>std::vector container. The data hold by the container the must be accessible from the given device. </td></tr>
-    <tr><td class="paramname">extent</td><td>Number of elements represented by vec. Using a multi dimensional extent will result in a multi dimension view to the memory represented by vec. </td></tr>
+    <tr><td class="paramname">dev</td><td>Device from which the container can be accessed. </td></tr>
+    <tr><td class="paramname">con</td><td>Contiguous container. The container must provide a <code>data()</code> method. The data held by the container must be accessible from the given device. The <code>GetExtent</code> trait must be defined for the container. </td></tr>
+    <tr><td class="paramname">extent</td><td>Number of elements held by the container. Using a multi-dimensional extent will result in a multi-dimensional view to the memory represented by the container. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2957,7 +2857,7 @@ template&lt;typename TDev , typename TElem , typename TAllocator , typename TExt
 </div>
 </div>
 <a id="adc3e9f88cfcde81a2ac9dd27cdaae903"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc3e9f88cfcde81a2ac9dd27cdaae903">&#9670;&nbsp;</a></span>createView() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adc3e9f88cfcde81a2ac9dd27cdaae903">&#9670;&nbsp;</a></span>createView() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3006,7 +2906,7 @@ template&lt;typename TDev , typename TElem , typename TExtent &gt; </div>
 </div>
 </div>
 <a id="a57b70a30fda25553ded3fe93739b0c95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57b70a30fda25553ded3fe93739b0c95">&#9670;&nbsp;</a></span>createView() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a57b70a30fda25553ded3fe93739b0c95">&#9670;&nbsp;</a></span>createView() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6230,7 +6130,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Mon Jan 3 2022 16:50:45 for alpaka by
+    <li class="footer">Generated on Tue Jan 4 2022 08:40:42 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
