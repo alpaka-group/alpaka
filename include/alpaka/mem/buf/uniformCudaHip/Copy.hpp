@@ -56,16 +56,13 @@ namespace alpaka
 
             static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
 
-            static_assert(
-                Dim<TViewDst>::value == Dim<TViewSrc>::value,
-                "The source and the destination view are required to have the same dimensionality!");
-            static_assert(
-                Dim<TViewDst>::value == Dim<TExtent>::value,
-                "The views and the extent are required to have the same dimensionality!");
+            static_assert(Dim<TViewSrc>::value == 0u, "The source view is required to have dimensionality 0!");
+            static_assert(Dim<TViewDst>::value == 0u, "The destination view is required to have dimensionality 0!");
+            static_assert(Dim<TExtent>::value == 0u, "The extent is required to have dimensionality 0!");
             // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
             static_assert(
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
-                "The source and the destination view are required to have the same element type!");
+                "The source and the destination views are required to have the same element type!");
 
             using Idx = Idx<TExtent>;
 
@@ -141,16 +138,13 @@ namespace alpaka
 
             static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
 
-            static_assert(
-                Dim<TViewDst>::value == Dim<TViewSrc>::value,
-                "The source and the destination view are required to have the same dimensionality!");
-            static_assert(
-                Dim<TViewDst>::value == Dim<TExtent>::value,
-                "The views and the extent are required to have the same dimensionality!");
+            static_assert(Dim<TViewSrc>::value == 1u, "The source view is required to have dimensionality 1!");
+            static_assert(Dim<TViewDst>::value == 1u, "The destination view is required to have dimensionality 1!");
+            static_assert(Dim<TExtent>::value == 1u, "The extent is required to have dimensionality 1!");
             // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
             static_assert(
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
-                "The source and the destination view are required to have the same element type!");
+                "The source and the destination views are required to have the same element type!");
 
             using Idx = Idx<TExtent>;
 
@@ -234,16 +228,13 @@ namespace alpaka
 
             static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
 
-            static_assert(
-                Dim<TViewDst>::value == Dim<TViewSrc>::value,
-                "The source and the destination view are required to have the same dimensionality!");
-            static_assert(
-                Dim<TViewDst>::value == Dim<TExtent>::value,
-                "The views and the extent are required to have the same dimensionality!");
+            static_assert(Dim<TViewSrc>::value == 2u, "The source view is required to have dimensionality 2!");
+            static_assert(Dim<TViewDst>::value == 2u, "The destination view is required to have dimensionality 2!");
+            static_assert(Dim<TExtent>::value == 2u, "The extent is required to have dimensionality 2!");
             // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
             static_assert(
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
-                "The source and the destination view are required to have the same element type!");
+                "The source and the destination views are required to have the same element type!");
 
             using Idx = Idx<TExtent>;
 
@@ -360,16 +351,13 @@ namespace alpaka
 
             static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
 
-            static_assert(
-                Dim<TViewDst>::value == Dim<TViewSrc>::value,
-                "The source and the destination view are required to have the same dimensionality!");
-            static_assert(
-                Dim<TViewDst>::value == Dim<TExtent>::value,
-                "The views and the extent are required to have the same dimensionality!");
+            static_assert(Dim<TViewSrc>::value == 3u, "The source view is required to have dimensionality 3!");
+            static_assert(Dim<TViewDst>::value == 3u, "The destination view is required to have dimensionality 3!");
+            static_assert(Dim<TExtent>::value == 3u, "The extent is required to have dimensionality 3!");
             // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
             static_assert(
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
-                "The source and the destination view are required to have the same element type!");
+                "The source and the destination views are required to have the same element type!");
 
             using Idx = Idx<TExtent>;
 
