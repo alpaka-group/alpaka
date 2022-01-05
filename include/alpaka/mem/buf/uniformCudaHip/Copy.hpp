@@ -1,5 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner,
- *                Rene Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -49,9 +48,9 @@ namespace alpaka
         template<typename TDim, typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyUniformCudaHip;
 
-        //! The 1D CUDA/HIP memory copy trait.
+        //! The scalar CUDA/HIP memory copy trait.
         template<typename TViewDst, typename TViewSrc, typename TExtent>
-        struct TaskCopyUniformCudaHip<DimInt<1>, TViewDst, TViewSrc, TExtent>
+        struct TaskCopyUniformCudaHip<DimInt<0u>, TViewDst, TViewSrc, TExtent>
         {
             using MemcpyKind = ALPAKA_API_PREFIX(MemcpyKind);
 
@@ -80,7 +79,91 @@ namespace alpaka
                 : m_uniformMemCpyKind(uniformMemCpyKind)
                 , m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                , m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst)))
+                , m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc)))
+#    endif
+                , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
+                , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
+            {
+                alpaka::ignore_unused(extent);
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                ALPAKA_ASSERT(Idx(1u) <= m_dstWidth);
+                ALPAKA_ASSERT(Idx(1u) <= m_srcWidth);
+#    endif
+            }
 
+            template<typename TQueue>
+            auto enqueue(TQueue& queue) const -> void
+            {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                printDebug();
+#    endif
+                // cudaMemcpy variants on cudaMallocAsync'ed memory need to be called with the correct device,
+                // see https://github.com/fwyzard/nvidia_bug_3446335 .
+                // Set the current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_iDstDevice));
+                // Initiate the memory copy.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MemcpyAsync)(
+                    m_dstMemNative,
+                    m_srcMemNative,
+                    sizeof(Elem<TViewDst>),
+                    m_uniformMemCpyKind,
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+
+        private:
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+            ALPAKA_FN_HOST auto printDebug() const -> void
+            {
+                std::cout << __func__ << " ddev: " << m_iDstDevice << " ew: " << Idx(1u)
+                          << " ewb: " << static_cast<Idx>(sizeof(Elem<TViewDst>)) << " dw: " << m_dstWidth
+                          << " dptr: " << m_dstMemNative << " sdev: " << m_iSrcDevice << " sw: " << m_srcWidth
+                          << " sptr: " << m_srcMemNative << std::endl;
+            }
+#    endif
+
+            MemcpyKind m_uniformMemCpyKind;
+            int m_iDstDevice;
+            int m_iSrcDevice;
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+            Idx m_dstWidth;
+            Idx m_srcWidth;
+#    endif
+            void* m_dstMemNative;
+            void const* m_srcMemNative;
+        };
+        //! The 1D CUDA/HIP memory copy trait.
+        template<typename TViewDst, typename TViewSrc, typename TExtent>
+        struct TaskCopyUniformCudaHip<DimInt<1u>, TViewDst, TViewSrc, TExtent>
+        {
+            using MemcpyKind = ALPAKA_API_PREFIX(MemcpyKind);
+
+            static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
+
+            static_assert(
+                Dim<TViewDst>::value == Dim<TViewSrc>::value,
+                "The source and the destination view are required to have the same dimensionality!");
+            static_assert(
+                Dim<TViewDst>::value == Dim<TExtent>::value,
+                "The views and the extent are required to have the same dimensionality!");
+            // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
+            static_assert(
+                std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
+                "The source and the destination view are required to have the same element type!");
+
+            using Idx = Idx<TExtent>;
+
+            ALPAKA_FN_HOST TaskCopyUniformCudaHip(
+                TViewDst& viewDst,
+                TViewSrc const& viewSrc,
+                TExtent const& extent,
+                MemcpyKind const& uniformMemCpyKind,
+                int const& iDstDevice,
+                int const& iSrcDevice)
+                : m_uniformMemCpyKind(uniformMemCpyKind)
+                , m_iDstDevice(iDstDevice)
+                , m_iSrcDevice(iSrcDevice)
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 , m_extentWidth(extent::getWidth(extent))
                 , m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst)))
@@ -107,8 +190,6 @@ namespace alpaka
                     return;
                 }
 
-                auto const& uniformCudaHipMemCpyKind(m_uniformMemCpyKind);
-
                 // cudaMemcpy variants on cudaMallocAsync'ed memory need to be called with the correct device,
                 // see https://github.com/fwyzard/nvidia_bug_3446335 .
                 // Set the current device.
@@ -118,7 +199,7 @@ namespace alpaka
                     m_dstMemNative,
                     m_srcMemNative,
                     static_cast<std::size_t>(m_extentWidthBytes),
-                    uniformCudaHipMemCpyKind,
+                    m_uniformMemCpyKind,
                     queue.m_spQueueImpl->m_UniformCudaHipQueue));
             }
 
@@ -147,7 +228,7 @@ namespace alpaka
         };
         //! The 2D CUDA/HIP memory copy trait.
         template<typename TViewDst, typename TViewSrc, typename TExtent>
-        struct TaskCopyUniformCudaHip<DimInt<2>, TViewDst, TViewSrc, TExtent>
+        struct TaskCopyUniformCudaHip<DimInt<2u>, TViewDst, TViewSrc, TExtent>
         {
             using MemcpyKind = ALPAKA_API_PREFIX(MemcpyKind);
 
@@ -273,7 +354,7 @@ namespace alpaka
         };
         //! The 3D CUDA/HIP memory copy trait.
         template<typename TViewDst, typename TViewSrc, typename TExtent>
-        struct TaskCopyUniformCudaHip<DimInt<3>, TViewDst, TViewSrc, TExtent>
+        struct TaskCopyUniformCudaHip<DimInt<3u>, TViewDst, TViewSrc, TExtent>
         {
             using MemcpyKind = ALPAKA_API_PREFIX(MemcpyKind);
 
@@ -505,6 +586,39 @@ namespace alpaka
             }
         };
 
+        //! The CUDA/HIP non-blocking device queue scalar copy enqueue trait specialization.
+        template<typename TExtent, typename TViewSrc, typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            alpaka::detail::TaskCopyUniformCudaHip<DimInt<0u>, TViewDst, TViewSrc, TExtent>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking& queue,
+                alpaka::detail::TaskCopyUniformCudaHip<DimInt<0u>, TViewDst, TViewSrc, TExtent> const& task) -> void
+            {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                task.enqueue(queue);
+            }
+        };
+        //! The CUDA/HIP blocking device queue scalar copy enqueue trait specialization.
+        template<typename TExtent, typename TViewSrc, typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            alpaka::detail::TaskCopyUniformCudaHip<DimInt<0u>, TViewDst, TViewSrc, TExtent>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking& queue,
+                alpaka::detail::TaskCopyUniformCudaHip<DimInt<0u>, TViewDst, TViewSrc, TExtent> const& task) -> void
+            {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                task.enqueue(queue);
+
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
         //! The CUDA/HIP non-blocking device queue 1D copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<
