@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -69,13 +69,48 @@ namespace alpaka
         template<typename TDim, typename TView, typename TExtent>
         struct TaskSetUniformCudaHip;
 
-        //! The 1D CUDA/HIP memory set task.
+        //! The scalar CUDA/HIP memory set task.
         template<typename TView, typename TExtent>
-        struct TaskSetUniformCudaHip<DimInt<1>, TView, TExtent>
-            : public TaskSetUniformCudaHipBase<DimInt<1>, TView, TExtent>
+        struct TaskSetUniformCudaHip<DimInt<0u>, TView, TExtent>
+            : public TaskSetUniformCudaHipBase<DimInt<0u>, TView, TExtent>
         {
             TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                : TaskSetUniformCudaHipBase<DimInt<1>, TView, TExtent>(view, byte, extent)
+                : TaskSetUniformCudaHipBase<DimInt<0u>, TView, TExtent>(view, byte, extent)
+            {
+            }
+
+            template<typename TQueue>
+            auto enqueue(TQueue& queue) const -> void
+            {
+                static_assert(
+                    Dim<TView>::value == 0u,
+                    "The destination buffer is required to be 0-dimensional (scalar) for this specialization!");
+                static_assert(
+                    Dim<TView>::value == Dim<TExtent>::value,
+                    "The destination buffer and the extent are required to have the same dimensionality!");
+
+                auto& view = this->m_view;
+#    if !defined(NDEBUG)
+                auto const dstWidth = extent::getWidth(view);
+#    endif
+                auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
+                ALPAKA_ASSERT(1u <= dstWidth);
+
+                // Initiate the memory set.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MemsetAsync)(
+                    dstNativePtr,
+                    static_cast<int>(this->m_byte),
+                    sizeof(Elem<TView>),
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
+        //! The 1D CUDA/HIP memory set task.
+        template<typename TView, typename TExtent>
+        struct TaskSetUniformCudaHip<DimInt<1u>, TView, TExtent>
+            : public TaskSetUniformCudaHipBase<DimInt<1u>, TView, TExtent>
+        {
+            TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
+                : TaskSetUniformCudaHipBase<DimInt<1u>, TView, TExtent>(view, byte, extent)
             {
             }
 
@@ -118,11 +153,11 @@ namespace alpaka
         };
         //! The 2D CUDA/HIP memory set task.
         template<typename TView, typename TExtent>
-        struct TaskSetUniformCudaHip<DimInt<2>, TView, TExtent>
-            : public TaskSetUniformCudaHipBase<DimInt<2>, TView, TExtent>
+        struct TaskSetUniformCudaHip<DimInt<2u>, TView, TExtent>
+            : public TaskSetUniformCudaHipBase<DimInt<2u>, TView, TExtent>
         {
             TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                : TaskSetUniformCudaHipBase<DimInt<2>, TView, TExtent>(view, byte, extent)
+                : TaskSetUniformCudaHipBase<DimInt<2u>, TView, TExtent>(view, byte, extent)
             {
             }
 
@@ -172,11 +207,11 @@ namespace alpaka
         };
         //! The 3D CUDA/HIP memory set task.
         template<typename TView, typename TExtent>
-        struct TaskSetUniformCudaHip<DimInt<3>, TView, TExtent>
-            : public TaskSetUniformCudaHipBase<DimInt<3>, TView, TExtent>
+        struct TaskSetUniformCudaHip<DimInt<3u>, TView, TExtent>
+            : public TaskSetUniformCudaHipBase<DimInt<3u>, TView, TExtent>
         {
             TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                : TaskSetUniformCudaHipBase<DimInt<3>, TView, TExtent>(view, byte, extent)
+                : TaskSetUniformCudaHipBase<DimInt<3u>, TView, TExtent>(view, byte, extent)
             {
             }
 
@@ -256,6 +291,38 @@ namespace alpaka
             }
         };
 
+        //! The CUDA non-blocking device queue scalar set enqueue trait specialization.
+        template<typename TView, typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            alpaka::detail::TaskSetUniformCudaHip<DimInt<0u>, TView, TExtent>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking& queue,
+                alpaka::detail::TaskSetUniformCudaHip<DimInt<0u>, TView, TExtent> const& task) -> void
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                task.enqueue(queue);
+            }
+        };
+        //! The CUDA blocking device queue scalar set enqueue trait specialization.
+        template<typename TView, typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            alpaka::detail::TaskSetUniformCudaHip<DimInt<0u>, TView, TExtent>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking& queue,
+                alpaka::detail::TaskSetUniformCudaHip<DimInt<0u>, TView, TExtent> const& task) -> void
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                task.enqueue(queue);
+
+                wait(queue);
+            }
+        };
         //! The CUDA non-blocking device queue 1D set enqueue trait specialization.
         template<typename TView, typename TExtent>
         struct Enqueue<

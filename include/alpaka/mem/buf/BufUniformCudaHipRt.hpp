@@ -217,8 +217,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
                 // Allocate the buffer on this device.
                 void* memPtr;
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(Malloc)(&memPtr, sizeof(TElem)));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Malloc)(&memPtr, sizeof(TElem)));
                 // Prepare a deleter for this device
                 auto deleter = [](TElem* ptr)
                 {
@@ -401,10 +400,8 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
                 // Allocate the buffer on this device.
                 void* memPtr;
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MallocAsync)(
-                    &memPtr,
-                    sizeof(TElem),
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
+                    MallocAsync)(&memPtr, sizeof(TElem), queue.m_spQueueImpl->m_UniformCudaHipQueue));
                 // Prepare a deleter for this device
                 auto deleter = [queue = std::move(queue)](TElem* ptr)
                 {
