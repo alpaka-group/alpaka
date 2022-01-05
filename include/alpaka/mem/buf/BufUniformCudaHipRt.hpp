@@ -1,4 +1,4 @@
-/* Copyright 2021 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci
+/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -199,6 +199,43 @@ namespace alpaka
             }
         };
 
+        //! The CUDA/HIP scalar memory allocation trait specialization.
+        template<typename TElem, typename TIdx>
+        struct BufAlloc<TElem, DimInt<0u>, TIdx, DevUniformCudaHipRt>
+        {
+            template<typename TExtent>
+            ALPAKA_FN_HOST static auto allocBuf(DevUniformCudaHipRt const& dev, TExtent const& extent)
+                -> BufUniformCudaHipRt<TElem, DimInt<0u>, TIdx>
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                alpaka::ignore_unused(extent);
+                using Scalar = alpaka::Vec<alpaka::DimInt<0u>, TIdx>;
+                ALPAKA_ASSERT(Scalar{} == extent);
+
+                // Set the current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                // Allocate the buffer on this device.
+                void* memPtr;
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(Malloc)(&memPtr, sizeof(TElem)));
+                // Prepare a deleter for this device
+                auto deleter = [](TElem* ptr)
+                {
+                    // Free the buffer.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
+                };
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << __func__ << " ew: " << 1u << " ewb: " << sizeof(TElem) << " ptr: " << memPtr << std::endl;
+#    endif
+                return BufUniformCudaHipRt<TElem, DimInt<0u>, TIdx>(
+                    dev,
+                    reinterpret_cast<TElem*>(memPtr),
+                    std::move(deleter),
+                    static_cast<TIdx>(sizeof(TElem)),
+                    Scalar{});
+            }
+        };
         //! The CUDA/HIP 1D memory allocation trait specialization.
         template<typename TElem, typename TIdx>
         struct BufAlloc<TElem, DimInt<1u>, TIdx, DevUniformCudaHipRt>
@@ -334,6 +371,58 @@ namespace alpaka
             }
         };
 
+        //! The CUDA/HIP stream-ordered scalar memory allocation trait specialization.
+        template<typename TElem, typename TIdx>
+        struct AsyncBufAlloc<TElem, DimInt<0u>, TIdx, DevUniformCudaHipRt>
+        {
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA < BOOST_VERSION_NUMBER(11, 2, 0))
+            static_assert(
+                meta::DependentFalseType<TElem>::value,
+                "Support for stream-ordered memory buffers requires CUDA 11.2 or higher.");
+#    endif
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+            static_assert(
+                meta::DependentFalseType<TElem>::value,
+                "HIP devices do not support stream-ordered memory buffers.");
+#    endif
+
+            template<typename TQueue, typename TExtent>
+            ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, TExtent const& extent)
+                -> BufUniformCudaHipRt<TElem, DimInt<0u>, TIdx>
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                alpaka::ignore_unused(extent);
+                using Scalar = alpaka::Vec<alpaka::DimInt<0u>, TIdx>;
+                ALPAKA_ASSERT(Scalar{} == extent);
+
+                // Set the current device.
+                DevUniformCudaHipRt const& dev = getDev(queue);
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                // Allocate the buffer on this device.
+                void* memPtr;
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MallocAsync)(
+                    &memPtr,
+                    sizeof(TElem),
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                // Prepare a deleter for this device
+                auto deleter = [queue = std::move(queue)](TElem* ptr)
+                {
+                    // Free the buffer.
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
+                        FreeAsync)(reinterpret_cast<void*>(ptr), queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                };
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << __func__ << " ew: " << 1u << " ewb: " << sizeof(TElem) << " ptr: " << memPtr << std::endl;
+#    endif
+                return BufUniformCudaHipRt<TElem, DimInt<0u>, TIdx>(
+                    dev,
+                    reinterpret_cast<TElem*>(memPtr),
+                    std::move(deleter),
+                    static_cast<TIdx>(sizeof(TElem)),
+                    Scalar{});
+            }
+        };
         //! The CUDA/HIP stream-ordered 1D memory allocation trait specialization.
         template<typename TElem, typename TIdx>
         struct AsyncBufAlloc<TElem, DimInt<1u>, TIdx, DevUniformCudaHipRt>
@@ -341,7 +430,7 @@ namespace alpaka
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA < BOOST_VERSION_NUMBER(11, 2, 0))
             static_assert(
                 meta::DependentFalseType<TElem>::value,
-                "Support for stream-ordered memory buffers require CUDA 11.2 or higher.");
+                "Support for stream-ordered memory buffers requires CUDA 11.2 or higher.");
 #    endif
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             static_assert(
@@ -355,12 +444,11 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                DevUniformCudaHipRt const& dev = getDev(queue);
-
                 auto const width = extent::getWidth(extent);
                 auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 
                 // Set the current device.
+                DevUniformCudaHipRt const& dev = getDev(queue);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
                 // Allocate the buffer on this device.
                 void* memPtr;

@@ -83,7 +83,7 @@ namespace alpaka
                 std::index_sequence<TIndices...> const& indices) -> Idx<TExtent>
             {
                 alpaka::ignore_unused(indices);
-                return meta::foldr(std::multiplies<Idx<TExtent>>(), Idx<TExtent>(1u), getExtent<TIndices>(extent)...);
+                return (getExtent<TIndices>(extent) * ... * Idx<TExtent>(1u));
             }
         } // namespace detail
 
