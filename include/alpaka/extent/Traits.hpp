@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -83,8 +83,7 @@ namespace alpaka
                 std::index_sequence<TIndices...> const& indices) -> Idx<TExtent>
             {
                 alpaka::ignore_unused(indices);
-
-                return meta::foldr(std::multiplies<Idx<TExtent>>(), getExtent<TIndices>(extent)...);
+                return meta::foldr(std::multiplies<Idx<TExtent>>(), Idx<TExtent>(1u), getExtent<TIndices>(extent)...);
             }
         } // namespace detail
 
