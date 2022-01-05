@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -12,11 +12,6 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #    include <alpaka/core/BoostPredef.hpp>
-
-#    if !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
 #    include <alpaka/elem/Traits.hpp>
 #    include <alpaka/extent/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>

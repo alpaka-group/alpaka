@@ -11,12 +11,6 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if !BOOST_LANG_CUDA && !BOOST_LANG_HIP
-#        error Compiler has to support CUDA/HIP!
-#    endif
-
 #    include <alpaka/core/Assert.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
