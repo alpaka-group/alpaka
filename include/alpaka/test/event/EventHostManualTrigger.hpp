@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -282,7 +282,7 @@ namespace alpaka
 
 #    include <cuda.h>
 
-#    if !BOOST_LANG_CUDA
+#    if !BOOST_LANG_CUDA && !defined(ALPAKA_HOST_ONLY)
 #        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #    endif
 
@@ -496,7 +496,7 @@ namespace alpaka
 
 #    include <hip/hip_runtime.h>
 
-#    if !BOOST_LANG_HIP
+#    if !BOOST_LANG_HIP && !defined(ALPAKA_HOST_ONLY)
 #        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #    endif
 

@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -12,15 +12,6 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
-
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/Positioning.hpp>
 #    include <alpaka/idx/Traits.hpp>
@@ -45,6 +36,16 @@ namespace alpaka
         };
     } // namespace bt
 
+#    if !defined(ALPAKA_HOST_ONLY)
+
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#        endif
+
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#        endif
+
     namespace traits
     {
         //! The GPU CUDA/HIP accelerator index dimension get trait specialization.
@@ -63,14 +64,14 @@ namespace alpaka
             __device__ static auto getIdx(bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx> const& /* idx */, TWorkDiv const&)
                 -> Vec<TDim, TIdx>
             {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 return castVec<TIdx>(getOffsetVecEnd<TDim>(threadIdx));
-#    else
+#        else
                 return getOffsetVecEnd<TDim>(Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
                     static_cast<TIdx>(hipThreadIdx_z),
                     static_cast<TIdx>(hipThreadIdx_y),
                     static_cast<TIdx>(hipThreadIdx_x)));
-#    endif
+#        endif
             }
         };
 
@@ -81,6 +82,9 @@ namespace alpaka
             using type = TIdx;
         };
     } // namespace traits
+
+#    endif
+
 } // namespace alpaka
 
 #endif

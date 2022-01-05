@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -10,12 +10,6 @@
 #pragma once
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
 
 // Base classes.
 #    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
@@ -49,7 +43,7 @@ namespace alpaka
             "Index type is not supported, consider using int or a larger type.");
 
     public:
-        __device__ AccGpuHipRt(Vec<TDim, TIdx> const& threadElemExtent)
+        ALPAKA_FN_HOST_ACC AccGpuHipRt(Vec<TDim, TIdx> const& threadElemExtent)
             : AccGpuUniformCudaHipRt<TDim, TIdx>(threadElemExtent)
         {
         }

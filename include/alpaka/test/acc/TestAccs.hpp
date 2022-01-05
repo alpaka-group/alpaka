@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Erik Zenker, Matthias Werner
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -120,7 +120,8 @@ namespace alpaka
             template<typename TDim, typename TIdx>
             using AccOaccIfAvailableElseInt = int;
 #endif
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA || defined(ALPAKA_HOST_ONLY)))                           \
+    || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && (BOOST_LANG_HIP || defined(ALPAKA_HOST_ONLY)))
             template<typename TDim, typename TIdx>
             using AccGpuUniformCudaHipRtIfAvailableElseInt = alpaka::AccGpuUniformCudaHipRt<TDim, TIdx>;
 #else
@@ -128,14 +129,14 @@ namespace alpaka
             using AccGpuUniformCudaHipRtIfAvailableElseInt = int;
 #endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA || defined(ALPAKA_HOST_ONLY))
             template<typename TDim, typename TIdx>
             using AccGpuCudaRtIfAvailableElseInt = alpaka::AccGpuCudaRt<TDim, TIdx>;
 #else
             template<typename TDim, typename TIdx>
             using AccGpuCudaRtIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && (BOOST_LANG_HIP || defined(ALPAKA_HOST_ONLY))
             template<typename TDim, typename TIdx>
             using AccGpuHipRtIfAvailableElseInt = typename std::conditional<
                 std::is_same<TDim, alpaka::DimInt<3u>>::value == false,

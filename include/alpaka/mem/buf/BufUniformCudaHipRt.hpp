@@ -11,16 +11,6 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
-
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 #        include <alpaka/core/Cuda.hpp>
@@ -422,7 +412,7 @@ namespace alpaka
         template<typename TElem, typename TIdx>
         struct AsyncBufAlloc<TElem, DimInt<1u>, TIdx, DevUniformCudaHipRt>
         {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA < BOOST_VERSION_NUMBER(11, 2, 0))
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (CUDA_VERSION < 11020)
             static_assert(
                 meta::DependentFalseType<TElem>::value,
                 "Support for stream-ordered memory buffers requires CUDA 11.2 or higher.");
