@@ -1,4 +1,4 @@
-/* Copyright 2021 Benjamin Worpitz, René Widera, Jan Stephan
+/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -10,16 +10,6 @@
 #pragma once
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
 
 // Base classes.
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
@@ -87,7 +77,7 @@ namespace alpaka
             "Index type is not supported, consider using int or a larger type.");
 
     public:
-        __device__ AccGpuUniformCudaHipRt(Vec<TDim, TIdx> const& threadElemExtent)
+        ALPAKA_FN_HOST_ACC AccGpuUniformCudaHipRt(Vec<TDim, TIdx> const& threadElemExtent)
             : WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent)
             , gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>()
             , bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>()

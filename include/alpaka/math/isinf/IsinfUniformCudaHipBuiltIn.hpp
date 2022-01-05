@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jeffrey Kelling
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jeffrey Kelling, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -11,6 +11,7 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
+#    include <alpaka/core/BoostPredef.hpp>
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/isinf/Traits.hpp>
@@ -26,6 +27,9 @@ namespace alpaka
         {
         };
 
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA                                                       \
+        || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
+
         namespace traits
         {
             //! The CUDA isinf trait specialization.
@@ -39,6 +43,9 @@ namespace alpaka
                 }
             };
         } // namespace traits
+
+#    endif
+
     } // namespace math
 } // namespace alpaka
 

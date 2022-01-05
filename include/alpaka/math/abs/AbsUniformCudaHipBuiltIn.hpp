@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -11,6 +11,8 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
+#    include <alpaka/core/BoostPredef.hpp>
+#    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
 #    include <alpaka/core/Unused.hpp>
@@ -26,6 +28,9 @@ namespace alpaka
         class AbsUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAbs, AbsUniformCudaHipBuiltIn>
         {
         };
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA                                                       \
+        || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
 
         namespace traits
         {
@@ -52,6 +57,9 @@ namespace alpaka
                 }
             };
         } // namespace traits
+
+#    endif
+
     } // namespace math
 } // namespace alpaka
 

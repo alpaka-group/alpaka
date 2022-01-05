@@ -1,4 +1,4 @@
-/* Copyright 2021 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci
+/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -56,7 +56,7 @@ namespace alpaka
                 , m_pMem(pMem)
                 , m_deleter(std::move(deleter))
                 , m_pitchBytes(static_cast<TIdx>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 , m_bPinned(false)
 #endif
             {
@@ -81,7 +81,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 // Unpin this memory if it is currently pinned.
                 unpin(*this);
 #endif
@@ -95,7 +95,7 @@ namespace alpaka
             TElem* const m_pMem;
             std::function<void(TElem*)> m_deleter;
             TIdx const m_pitchBytes;
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             bool m_bPinned;
 #endif
         };
@@ -316,7 +316,7 @@ namespace alpaka
 
                 if(!isPinned(buf))
                 {
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                     if(buf.m_spBufCpuImpl->m_extentElements.prod() != 0)
                     {
                         // - cudaHostRegisterDefault:
@@ -360,7 +360,7 @@ namespace alpaka
 
                 if(isPinned(bufImpl))
                 {
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
                         ALPAKA_API_PREFIX(HostUnregister)(
                             const_cast<void*>(reinterpret_cast<void const*>(bufImpl.m_pMem))),
@@ -392,7 +392,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 return bufImpl.m_bPinned;
 #else
                 alpaka::ignore_unused(bufImpl);
@@ -409,7 +409,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 // to optimize the data transfer performance between a cuda/hip device the cpu buffer has to be pinned,
                 // for exclusive cpu use, no preparing is needed
-#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 pin(buf);
 #else
                 alpaka::ignore_unused(buf);

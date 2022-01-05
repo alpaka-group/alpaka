@@ -1,4 +1,4 @@
-/* Copyright 2020-2021 Sergei Bastrakov, David M. Rogers
+/* Copyright 2022-2021 Sergei Bastrakov, David M. Rogers, Andrea Bocci
  *
  * This file is part of Alpaka.
  *
@@ -12,15 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
-
+#    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/warp/Traits.hpp>
 
@@ -34,6 +26,9 @@ namespace alpaka
         class WarpUniformCudaHipBuiltIn : public concepts::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
         {
         };
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA                                                       \
+        || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
 
         namespace traits
         {
@@ -50,25 +45,25 @@ namespace alpaka
             struct Activemask<WarpUniformCudaHipBuiltIn>
             {
                 __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     -> std::uint32_t
-#    else
+#        else
                     -> std::uint64_t
-#    endif
+#        endif
                 {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Workaround for clang + CUDA 9.2 which uses the wrong PTX ISA,
                     // discussion in https://github.com/alpaka-group/alpaka/pull/1003
                     // Can't use __activemask(), so emulate with __ballot_sync()
-#        if BOOST_COMP_CLANG_CUDA && BOOST_LANG_CUDA == BOOST_VERSION_NUMBER(9, 2, 0)
+#            if BOOST_COMP_CLANG_CUDA && BOOST_LANG_CUDA == BOOST_VERSION_NUMBER(9, 2, 0)
                     return __ballot_sync(0xffffffff, 1);
-#        else
+#            else
                     return __activemask();
-#        endif
-#    else
+#            endif
+#        else
                     // No HIP intrinsic for it, emulate via ballot
                     return __ballot(1);
-#    endif
+#        endif
                 }
             };
 
@@ -78,12 +73,12 @@ namespace alpaka
                 __device__ static auto all(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
                     -> std::int32_t
                 {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __all_sync(activemask(warp), predicate);
-#    else
+#        else
                     ignore_unused(warp);
                     return __all(predicate);
-#    endif
+#        endif
                 }
             };
 
@@ -93,12 +88,12 @@ namespace alpaka
                 __device__ static auto any(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
                     -> std::int32_t
                 {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __any_sync(activemask(warp), predicate);
-#    else
+#        else
                     ignore_unused(warp);
                     return __any(predicate);
-#    endif
+#        endif
                 }
             };
 
@@ -107,18 +102,18 @@ namespace alpaka
             {
                 __device__ static auto ballot(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
                 // return type is required by the compiler
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     -> std::uint32_t
-#    else
+#        else
                     -> std::uint64_t
-#    endif
+#        endif
                 {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __ballot_sync(activemask(warp), predicate);
-#    else
+#        else
                     ignore_unused(warp);
                     return __ballot(predicate);
-#    endif
+#        endif
                 }
             };
 
@@ -132,12 +127,12 @@ namespace alpaka
                     int srcLane,
                     std::int32_t width) -> float
                 {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __shfl_sync(activemask(warp), val, srcLane, width);
-#    else
+#        else
                     alpaka::ignore_unused(warp);
                     return __shfl(val, srcLane, width);
-#    endif
+#        endif
                 }
                 //-------------------------------------------------------------
                 __device__ static auto shfl(
@@ -146,15 +141,18 @@ namespace alpaka
                     int srcLane,
                     std::int32_t width) -> std::int32_t
                 {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __shfl_sync(activemask(warp), val, srcLane, width);
-#    else
+#        else
                     alpaka::ignore_unused(warp);
                     return __shfl(val, srcLane, width);
-#    endif
+#        endif
                 }
             };
         } // namespace traits
+
+#    endif
+
     } // namespace warp
 } // namespace alpaka
 
