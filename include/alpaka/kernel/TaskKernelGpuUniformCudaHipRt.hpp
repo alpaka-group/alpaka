@@ -11,56 +11,58 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/BoostPredef.hpp>
+#    if !defined(ALPAKA_HOST_API)
 
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
+#        include <alpaka/core/BoostPredef.hpp>
 
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#        endif
+
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#        endif
 
 // Specialized traits.
-#    include <alpaka/acc/Traits.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/idx/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/queue/Traits.hpp>
-
-// Backend specific includes.
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#        include <alpaka/core/Cuda.hpp>
-#    else
-#        include <alpaka/core/Hip.hpp>
-#    endif
-
-// Implementation details.
-#    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
-#    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/RemoveRestrict.hpp>
-#    include <alpaka/core/Unused.hpp>
-#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
-#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
-
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        include <alpaka/acc/Traits.hpp>
 #        include <alpaka/dev/Traits.hpp>
-#        include <alpaka/workdiv/WorkDivHelpers.hpp>
-#    endif
+#        include <alpaka/dim/Traits.hpp>
+#        include <alpaka/idx/Traits.hpp>
+#        include <alpaka/pltf/Traits.hpp>
+#        include <alpaka/queue/Traits.hpp>
 
-#    include <alpaka/core/BoostPredef.hpp>
+// Backend specific includes.
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#            include <alpaka/core/Cuda.hpp>
+#        else
+#            include <alpaka/core/Hip.hpp>
+#        endif
 
-#    include <stdexcept>
-#    include <tuple>
-#    include <type_traits>
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-#        include <iostream>
-#    endif
+// Implementation details.
+#        include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
+#        include <alpaka/core/Decay.hpp>
+#        include <alpaka/core/RemoveRestrict.hpp>
+#        include <alpaka/core/Unused.hpp>
+#        include <alpaka/dev/DevUniformCudaHipRt.hpp>
+#        include <alpaka/kernel/Traits.hpp>
+#        include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
+#        include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
+#        include <alpaka/workdiv/WorkDivMembers.hpp>
+
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#            include <alpaka/acc/Traits.hpp>
+#            include <alpaka/dev/Traits.hpp>
+#            include <alpaka/workdiv/WorkDivHelpers.hpp>
+#        endif
+
+#        include <alpaka/core/BoostPredef.hpp>
+
+#        include <stdexcept>
+#        include <tuple>
+#        include <type_traits>
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#            include <iostream>
+#        endif
 
 namespace alpaka
 {
@@ -76,18 +78,18 @@ namespace alpaka
                 TKernelFnObj const kernelFnObj,
                 TArgs... args)
             {
-#    if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
-#        error "Device capability >= 2.0 is required!"
-#    endif
+#        if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
+#            error "Device capability >= 2.0 is required!"
+#        endif
 
                 const TAcc acc(threadElemExtent);
 
 // with clang it is not possible to query std::result_of for a pure device lambda created on the host side
-#    if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
+#        if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
                 static_assert(
                     std::is_same<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>::value,
                     "The TKernelFnObj is required to return void!");
-#    endif
+#        endif
                 kernelFnObj(const_cast<TAcc const&>(acc), args...);
             }
 
@@ -193,14 +195,14 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // std::size_t printfFifoSize;
                 // cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                 // std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
                 // cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
                 // cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                 // std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
-#    endif
+#        endif
                 auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(task);
                 auto const blockThreadExtent = getWorkDiv<Block, Threads>(task);
                 auto const threadElemExtent = getWorkDiv<Thread, Elems>(task);
@@ -209,12 +211,12 @@ namespace alpaka
                 dim3 const blockDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent);
                 uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " gridDim: " << gridDim.z << " " << gridDim.y << " " << gridDim.x
                           << " blockDim: " << blockDim.z << " " << blockDim.y << " " << blockDim.x << std::endl;
-#    endif
+#        endif
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 // This checks for a valid work division that is also compliant with the maxima of the accelerator.
                 if(!isValidWorkDiv<TAcc>(getDev(queue), task))
                 {
@@ -222,7 +224,7 @@ namespace alpaka
                         "The given work division is not valid or not supported by the device of type "
                         + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                 }
-#    endif
+#        endif
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes = std::apply(
@@ -235,16 +237,16 @@ namespace alpaka
                     },
                     task.m_args);
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the block shared memory idx.
                 std::cout << __func__ << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
                           << std::endl;
-#    endif
+#        endif
                 auto kernelName = uniform_cuda_hip::detail::
                     uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, remove_restrict_t<std::decay_t<TArgs>>...>;
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#            if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 
                 // Log the function attributes.
                 cudaFuncAttributes funcAttrs;
@@ -255,8 +257,8 @@ namespace alpaka
                           << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
                           << " numRegs: " << funcAttrs.numRegs << " ptxVersion: " << funcAttrs.ptxVersion
                           << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B" << std::endl;
+#            endif
 #        endif
-#    endif
 
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(queue.m_spQueueImpl->m_dev.m_iDevice));
@@ -269,7 +271,7 @@ namespace alpaka
                 std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
                             gridDim,
                             blockDim,
@@ -278,7 +280,7 @@ namespace alpaka
                             threadElemExtent,
                             task.m_kernelFnObj,
                             args...);
-#    else
+#        else
                         hipLaunchKernelGGL(
                             HIP_KERNEL_NAME(kernelName),
                             gridDim,
@@ -288,11 +290,11 @@ namespace alpaka
                             threadElemExtent,
                             task.m_kernelFnObj,
                             args...);
-#    endif
+#        endif
                     },
                     task.m_args);
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 // Wait for the kernel execution to finish but do not check error return of this call.
                 // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom
                 // error message.
@@ -300,7 +302,7 @@ namespace alpaka
                 std::string const msg(
                     "'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
                 ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-#    endif
+#        endif
             }
         };
         //! The CUDA/HIP synchronous kernel enqueue trait specialization.
@@ -316,35 +318,35 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // std::size_t printfFifoSize;
                 // cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                 // std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
                 // cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
                 // cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                 // std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
-#    endif
+#        endif
                 auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(task);
                 auto const blockThreadExtent = getWorkDiv<Block, Threads>(task);
                 auto const threadElemExtent = getWorkDiv<Thread, Elems>(task);
 
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 dim3 const gridDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent);
                 dim3 const blockDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent);
-#    else
+#        else
                 dim3 gridDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent);
                 dim3 blockDim = uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent);
-#    endif
+#        endif
                 uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << "gridDim: " << gridDim.z << " " << gridDim.y << " " << gridDim.x << std::endl;
                 std::cout << __func__ << "blockDim: " << blockDim.z << " " << blockDim.y << " " << blockDim.x
                           << std::endl;
-#    endif
+#        endif
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 // This checks for a valid work division that is also compliant with the maxima of the accelerator.
                 if(!isValidWorkDiv<TAcc>(getDev(queue), task))
                 {
@@ -352,7 +354,7 @@ namespace alpaka
                         "The given work division is not valid or not supported by the device of type "
                         + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                 }
-#    endif
+#        endif
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes = std::apply(
@@ -365,20 +367,20 @@ namespace alpaka
                     },
                     task.m_args);
 
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the block shared memory idx.
                 std::cout << __func__ << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
                           << std::endl;
-#    endif
+#        endif
 
                 auto kernelName = uniform_cuda_hip::detail::
                     uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, remove_restrict_t<std::decay_t<TArgs>>...>;
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // hipFuncAttributes not ported from HIP to HIP.
                 // TODO why this is currently not possible
                 //
                 // Log the function attributes.
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#            if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 ALPAKA_API_PREFIX(FuncAttributes) funcAttrs;
                 ALPAKA_API_PREFIX(FuncGetAttributes)(&funcAttrs, kernelName);
                 std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
@@ -387,8 +389,8 @@ namespace alpaka
                           << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
                           << " numRegs: " << funcAttrs.numRegs << " ptxVersion: " << funcAttrs.ptxVersion
                           << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B" << std::endl;
+#            endif
 #        endif
-#    endif
 
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(queue.m_spQueueImpl->m_dev.m_iDevice));
@@ -397,7 +399,7 @@ namespace alpaka
                 std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
                             gridDim,
                             blockDim,
@@ -406,7 +408,7 @@ namespace alpaka
                             threadElemExtent,
                             task.m_kernelFnObj,
                             args...);
-#    else
+#        else
                         hipLaunchKernelGGL(
                             HIP_KERNEL_NAME(kernelName),
                             gridDim,
@@ -416,7 +418,7 @@ namespace alpaka
                             threadElemExtent,
                             task.m_kernelFnObj,
                             args...);
-#    endif
+#        endif
                     },
                     task.m_args);
 
@@ -424,14 +426,16 @@ namespace alpaka
                 // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom
                 // error message.
                 ignore_unused(ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 std::string const msg(
                     "'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
                 ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-#    endif
+#        endif
             }
         };
     } // namespace traits
 } // namespace alpaka
+
+#    endif
 
 #endif

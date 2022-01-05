@@ -1,4 +1,4 @@
-/* Copyright 2019-2021 Benjamin Worpitz, René Widera, Sergei Bastrakov
+/* Copyright 2022-2021 Benjamin Worpitz, René Widera, Sergei Bastrakov, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/UniformCudaHip.hpp>
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)

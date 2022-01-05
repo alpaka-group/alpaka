@@ -10,16 +10,6 @@
 #pragma once
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
-
 #    include <alpaka/core/Assert.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
@@ -64,7 +54,7 @@ namespace alpaka
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
                 "The source and the destination views are required to have the same element type!");
 
-            using Idx = Idx<TExtent>;
+            using Idx = alpaka::Idx<TExtent>;
 
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
                 TViewDst& viewDst,
@@ -130,6 +120,7 @@ namespace alpaka
             void* m_dstMemNative;
             void const* m_srcMemNative;
         };
+
         //! The 1D CUDA/HIP memory copy trait.
         template<typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyUniformCudaHip<DimInt<1u>, TViewDst, TViewSrc, TExtent>
@@ -146,7 +137,7 @@ namespace alpaka
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
                 "The source and the destination views are required to have the same element type!");
 
-            using Idx = Idx<TExtent>;
+            using Idx = alpaka::Idx<TExtent>;
 
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
                 TViewDst& viewDst,
@@ -220,6 +211,7 @@ namespace alpaka
             void* m_dstMemNative;
             void const* m_srcMemNative;
         };
+
         //! The 2D CUDA/HIP memory copy trait.
         template<typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyUniformCudaHip<DimInt<2u>, TViewDst, TViewSrc, TExtent>
@@ -236,7 +228,7 @@ namespace alpaka
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
                 "The source and the destination views are required to have the same element type!");
 
-            using Idx = Idx<TExtent>;
+            using Idx = alpaka::Idx<TExtent>;
 
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
                 TViewDst& viewDst,
@@ -321,7 +313,6 @@ namespace alpaka
             MemcpyKind m_uniformMemCpyKind;
             int m_iDstDevice;
             int m_iSrcDevice;
-
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             Idx m_extentWidth;
 #    endif
@@ -339,10 +330,10 @@ namespace alpaka
             Idx m_dstPitchBytesY;
             Idx m_srcPitchBytesY;
 
-
             void* m_dstMemNative;
             void const* m_srcMemNative;
         };
+
         //! The 3D CUDA/HIP memory copy trait.
         template<typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyUniformCudaHip<DimInt<3u>, TViewDst, TViewSrc, TExtent>
@@ -359,7 +350,7 @@ namespace alpaka
                 std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
                 "The source and the destination views are required to have the same element type!");
 
-            using Idx = Idx<TExtent>;
+            using Idx = alpaka::Idx<TExtent>;
 
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
                 TViewDst& viewDst,
@@ -529,6 +520,7 @@ namespace alpaka
                     iDevice);
             }
         };
+
         //! The CPU to CUDA/HIP memory copy trait specialization.
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevUniformCudaHipRt, DevCpu>
@@ -552,6 +544,7 @@ namespace alpaka
                     iDevice);
             }
         };
+
         //! The CUDA/HIP to CUDA/HIP memory copy trait specialization.
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevUniformCudaHipRt, DevUniformCudaHipRt>
@@ -589,6 +582,7 @@ namespace alpaka
                 task.enqueue(queue);
             }
         };
+
         //! The CUDA/HIP blocking device queue scalar copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<
@@ -607,6 +601,7 @@ namespace alpaka
                     ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue));
             }
         };
+
         //! The CUDA/HIP non-blocking device queue 1D copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<
@@ -622,6 +617,7 @@ namespace alpaka
                 task.enqueue(queue);
             }
         };
+
         //! The CUDA/HIP blocking device queue 1D copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<
@@ -640,6 +636,7 @@ namespace alpaka
                     ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue));
             }
         };
+
         //! The CUDA/HIP non-blocking device queue 2D copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<
@@ -655,6 +652,7 @@ namespace alpaka
                 task.enqueue(queue);
             }
         };
+
         //! The CUDA/HIP blocking device queue 2D copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<
@@ -673,6 +671,7 @@ namespace alpaka
                     ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue));
             }
         };
+
         //! The CUDA/HIP non-blocking device queue 3D copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<
@@ -688,6 +687,7 @@ namespace alpaka
                 task.enqueue(queue);
             }
         };
+
         //! The CUDA/HIP blocking device queue 3D copy enqueue trait specialization.
         template<typename TExtent, typename TViewSrc, typename TViewDst>
         struct Enqueue<

@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, René Widera
+/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -12,15 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
-
+#    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #    include <alpaka/rand/Traits.hpp>
 
@@ -41,7 +33,6 @@
 #        pragma clang diagnostic pop
 #    endif
 
-
 #    include <type_traits>
 
 namespace alpaka
@@ -53,6 +44,16 @@ namespace alpaka
         {
         };
 
+#    if !defined(ALPAKA_HOST_API)
+
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#        endif
+
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#        endif
+
         namespace engine
         {
             namespace uniform_cuda_hip
@@ -63,11 +64,11 @@ namespace alpaka
                 public:
                     // After calling this constructor the instance is not valid initialized and
                     // need to be overwritten with a valid object
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     ALPAKA_FN_HOST_ACC Xor() : state(curandStateXORWOW_t{})
-#    else
+#        else
                     ALPAKA_FN_HOST_ACC Xor() : state(hiprandStateXORWOW_t{})
-#    endif
+#        endif
                     {
                     }
 
@@ -76,29 +77,29 @@ namespace alpaka
                         std::uint32_t const& subsequence = 0,
                         std::uint32_t const& offset = 0)
                     {
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         curand_init(seed, subsequence, offset, &state);
-#    else
+#        else
                         hiprand_init(seed, subsequence, offset, &state);
-#    endif
+#        endif
                     }
 
                 public:
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     curandStateXORWOW_t state;
-#    else
+#        else
                     hiprandStateXORWOW_t state;
-#    endif
+#        endif
 
                     // STL UniformRandomBitGenerator concept. This is not strictly necessary as the distributions
                     // contained in this file are aware of the API specifics of the CUDA/HIP XORWOW engine and STL
                     // distributions might not work on the device, but it servers a compatibility bridge to other
                     // potentially compatible alpaka distributions.
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     using result_type = decltype(curand(&state));
-#    else
+#        else
                     using result_type = decltype(hiprand(&state));
-#    endif
+#        endif
                     ALPAKA_FN_HOST_ACC constexpr static result_type min()
                     {
                         return std::numeric_limits<result_type>::min();
@@ -109,15 +110,16 @@ namespace alpaka
                     }
                     __device__ result_type operator()()
                     {
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         return curand(&state);
-#    else
+#        else
                         return hiprand(&state);
-#    endif
+#        endif
                     }
                 };
             } // namespace uniform_cuda_hip
         } // namespace engine
+
         namespace distribution
         {
             namespace uniform_cuda_hip
@@ -134,13 +136,14 @@ namespace alpaka
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> float
                     {
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         return curand_normal(&engine.state);
-#    else
+#        else
                         return hiprand_normal(&engine.state);
-#    endif
+#        endif
                     }
                 };
+
                 //! The CUDA/HIP random number float normal distribution.
                 template<>
                 class NormalReal<double>
@@ -149,11 +152,11 @@ namespace alpaka
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> double
                     {
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         return curand_normal_double(&engine.state);
-#    else
+#        else
                         return hiprand_normal_double(&engine.state);
-#    endif
+#        endif
                     }
                 };
 
@@ -170,16 +173,17 @@ namespace alpaka
                     __device__ auto operator()(TEngine& engine) -> float
                     {
                         // (0.f, 1.0f]
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         float const fUniformRand(curand_uniform(&engine.state));
-#    else
+#        else
                         float const fUniformRand(hiprand_uniform(&engine.state));
-#    endif
+#        endif
                         // NOTE: (1.0f - curand_uniform) does not work, because curand_uniform seems to return
                         // denormalized floats around 0.f. [0.f, 1.0f)
                         return fUniformRand * static_cast<float>(fUniformRand != 1.0f);
                     }
                 };
+
                 //! The CUDA/HIP random number float uniform distribution.
                 template<>
                 class UniformReal<double>
@@ -189,11 +193,11 @@ namespace alpaka
                     __device__ auto operator()(TEngine& engine) -> double
                     {
                         // (0.f, 1.0f]
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         double const fUniformRand(curand_uniform_double(&engine.state));
-#    else
+#        else
                         double const fUniformRand(hiprand_uniform_double(&engine.state));
-#    endif
+#        endif
                         // NOTE: (1.0f - curand_uniform_double) does not work, because curand_uniform_double seems to
                         // return denormalized floats around 0.f. [0.f, 1.0f)
                         return fUniformRand * static_cast<double>(fUniformRand != 1.0);
@@ -212,11 +216,11 @@ namespace alpaka
                     template<typename TEngine>
                     __device__ auto operator()(TEngine& engine) -> unsigned int
                     {
-#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         return curand(&engine.state);
-#    else
+#        else
                         return hiprand(&engine.state);
-#    endif
+#        endif
                     }
                 };
             } // namespace uniform_cuda_hip
@@ -236,6 +240,7 @@ namespace alpaka
                         return rand::distribution::uniform_cuda_hip::NormalReal<T>();
                     }
                 };
+
                 //! The CUDA/HIP random number float uniform distribution get trait specialization.
                 template<typename T>
                 struct CreateUniformReal<RandUniformCudaHipRand, T, std::enable_if_t<std::is_floating_point<T>::value>>
@@ -246,6 +251,7 @@ namespace alpaka
                         return rand::distribution::uniform_cuda_hip::UniformReal<T>();
                     }
                 };
+
                 //! The CUDA/HIP random number integer uniform distribution get trait specialization.
                 template<typename T>
                 struct CreateUniformUint<RandUniformCudaHipRand, T, std::enable_if_t<std::is_integral<T>::value>>
@@ -258,6 +264,7 @@ namespace alpaka
                 };
             } // namespace traits
         } // namespace distribution
+
         namespace engine
         {
             namespace traits
@@ -277,6 +284,9 @@ namespace alpaka
                 };
             } // namespace traits
         } // namespace engine
+
+#    endif
+
     } // namespace rand
 } // namespace alpaka
 

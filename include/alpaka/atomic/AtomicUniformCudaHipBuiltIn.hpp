@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, René Widera
+/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -11,18 +11,9 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
-
 #    include <alpaka/atomic/Op.hpp>
 #    include <alpaka/atomic/Traits.hpp>
+#    include <alpaka/core/BoostPredef.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/meta/DependentFalseType.hpp>
 
@@ -38,6 +29,16 @@ namespace alpaka
     {
     };
 
+#    if !defined(ALPAKA_HOST_API)
+
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#        endif
+
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#        endif
+
     namespace traits
     {
         //! The specializations to execute the requested atomic ops of the CUDA/HIP accelerator.
@@ -46,7 +47,7 @@ namespace alpaka
 
         // Add.
 
-        //! The GPU CUDA/HIPaccelerator atomic operation.
+        //! The GPU CUDA/HIP accelerator atomic operation.
         template<typename THierarchy>
         struct AtomicOp<AtomicAdd, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
@@ -78,13 +79,13 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicAdd(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
+#        else // ULONG_MAX == ULLONG_MAX LP64
                 return ::atomicAdd(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#    endif
+#        endif
             }
         };
         //! The GPU CUDA/HIP accelerator atomic operation.
@@ -120,9 +121,9 @@ namespace alpaka
                 double* const addr,
                 double const& value) -> double
             {
-#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(6, 0, 0)
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(6, 0, 0)
                 return ::atomicAdd(addr, value);
-#    else
+#        else
                 // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 
                 unsigned long long int* address_as_ull(reinterpret_cast<unsigned long long int*>(addr));
@@ -139,7 +140,7 @@ namespace alpaka
                     // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
                 } while(assumed != old);
                 return __longlong_as_double(static_cast<long long>(old));
-#    endif
+#        endif
             }
         };
 
@@ -177,16 +178,16 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicSub(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
+#        else // ULONG_MAX == ULLONG_MAX LP64
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicSub, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when "
                     "sizeof(unsigned long int) == 4");
-#    endif
+#        endif
             }
         };
 
@@ -224,22 +225,22 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicMin(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
-#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        else // ULONG_MAX == ULLONG_MAX LP64
+#            if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMin(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#        else
+#            else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
                     "3.5");
+#            endif
 #        endif
-#    endif
             }
         };
         //! The GPU CUDA/HIPaccelerator atomic operation.
@@ -251,16 +252,16 @@ namespace alpaka
                 unsigned long long int* const addr,
                 unsigned long long int const& value) -> unsigned long long int
             {
-#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMin(addr, value);
-#    else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
                     ">= 3.5");
-#    endif
+#        endif
             }
         };
 
@@ -298,22 +299,22 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicMax(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
-#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        else // ULONG_MAX == ULLONG_MAX LP64
+#            if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMax(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#        else
+#            else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
                     "3.5");
+#            endif
 #        endif
-#    endif
             }
         };
         //! The GPU CUDA/HIPaccelerator atomic operation.
@@ -325,16 +326,16 @@ namespace alpaka
                 unsigned long long int* const addr,
                 unsigned long long int const& value) -> unsigned long long int
             {
-#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMax(addr, value);
-#    else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
                     ">= 3.5");
-#    endif
+#        endif
             }
         };
 
@@ -372,13 +373,13 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicExch(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
+#        else // ULONG_MAX == ULLONG_MAX LP64
                 return ::atomicExch(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#    endif
+#        endif
             }
         };
         //! The GPU CUDA/HIPaccelerator atomic operation.
@@ -428,16 +429,16 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicInc(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
+#        else // ULONG_MAX == ULLONG_MAX LP64
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicInc, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when "
                     "sizeof(unsigned long int) == 4");
-#    endif
+#        endif
             }
         };
 
@@ -465,16 +466,16 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicDec(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
+#        else // ULONG_MAX == ULLONG_MAX LP64
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicDec, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when "
                     "sizeof(unsigned long int) == 4");
-#    endif
+#        endif
             }
         };
 
@@ -512,22 +513,22 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicAnd(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
-#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        else // ULONG_MAX == ULLONG_MAX LP64
+#            if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicAnd(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#        else
+#            else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
                     "3.5");
+#            endif
 #        endif
-#    endif
             }
         };
         //! The GPU CUDA/HIPaccelerator atomic operation.
@@ -539,16 +540,16 @@ namespace alpaka
                 unsigned long long int* const addr,
                 unsigned long long int const& value) -> unsigned long long int
             {
-#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicAnd(addr, value);
-#    else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
                     ">= 3.5");
-#    endif
+#        endif
             }
         };
 
@@ -586,22 +587,22 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicOr(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
-#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        else // ULONG_MAX == ULLONG_MAX LP64
+#            if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicOr(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#        else
+#            else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
                     "3.5");
+#            endif
 #        endif
-#    endif
             }
         };
         //! The GPU CUDA/HIPaccelerator atomic operation.
@@ -613,16 +614,16 @@ namespace alpaka
                 unsigned long long int* const addr,
                 unsigned long long int const& value) -> unsigned long long int
             {
-#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicOr(addr, value);
-#    else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
                     ">= 3.5");
-#    endif
+#        endif
             }
         };
 
@@ -660,22 +661,22 @@ namespace alpaka
                 unsigned long int* const addr,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicXor(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
-#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        else // ULONG_MAX == ULLONG_MAX LP64
+#            if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicXor(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#        else
+#            else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
                     "3.5");
+#            endif
 #        endif
-#    endif
             }
         };
         //! The GPU CUDA/HIPaccelerator atomic operation.
@@ -687,16 +688,16 @@ namespace alpaka
                 unsigned long long int* const addr,
                 unsigned long long int const& value) -> unsigned long long int
             {
-#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicXor(addr, value);
-#    else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
                     "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
                     ">= 3.5");
-#    endif
+#        endif
             }
         };
 
@@ -739,17 +740,17 @@ namespace alpaka
                 unsigned long int const& compare,
                 unsigned long int const& value) -> unsigned long int
             {
-#    if UINT_MAX == ULONG_MAX // LLP64
+#        if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicCAS(
                     reinterpret_cast<unsigned int*>(addr),
                     static_cast<unsigned int>(compare),
                     static_cast<unsigned int>(value));
-#    else // ULONG_MAX == ULLONG_MAX LP64
+#        else // ULONG_MAX == ULLONG_MAX LP64
                 return ::atomicCAS(
                     reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(compare),
                     static_cast<unsigned long long int>(value));
-#    endif
+#        endif
             }
         };
         //! The GPU CUDA/HIPaccelerator atomic operation.
@@ -800,6 +801,9 @@ namespace alpaka
             }
         };
     } // namespace traits
+
+#    endif
+
 } // namespace alpaka
 
 #endif
