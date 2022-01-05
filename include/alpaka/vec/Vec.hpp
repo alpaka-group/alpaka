@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -174,11 +174,19 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto operator==(Vec const& rhs) const -> bool
         {
-            for(typename TDim::value_type i(0); i < TDim::value; ++i)
+            if constexpr(TDim::value == 0)
             {
-                if((*this)[i] != rhs[i])
+                // all zero-dimensional vectors are equivalent
+                return true;
+            }
+            else
+            {
+                for(typename TDim::value_type i(0); i < TDim::value; ++i)
                 {
-                    return false;
+                    if((*this)[i] != rhs[i])
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -199,10 +207,27 @@ namespace alpaka
             return meta::foldr(f, ((*this)[TIndices])...);
         }
         ALPAKA_NO_HOST_ACC_WARNING
+        template<typename TFnObj, std::size_t... TIndices>
+        ALPAKA_FN_HOST_ACC auto foldrByIndices(
+            TFnObj const& f,
+            std::integer_sequence<std::size_t, TIndices...> const& indices,
+            TVal initial) const
+        {
+            alpaka::ignore_unused(indices);
+
+            return meta::foldr(f, ((*this)[TIndices])..., initial);
+        }
+        ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj>
         ALPAKA_FN_HOST_ACC auto foldrAll(TFnObj const& f) const
         {
             return foldrByIndices(f, IdxSequence());
+        }
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<typename TFnObj>
+        ALPAKA_FN_HOST_ACC auto foldrAll(TFnObj const& f, TVal initial) const
+        {
+            return foldrByIndices(f, IdxSequence(), initial);
         }
 // suppress strange warning produced by nvcc+MSVC in release mode
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
@@ -213,7 +238,7 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto prod() const -> TVal
         {
-            return foldrAll(std::multiplies<TVal>());
+            return foldrAll(std::multiplies<TVal>(), TVal(1));
         }
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 #    pragma warning(pop)
@@ -222,7 +247,7 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto sum() const -> TVal
         {
-            return foldrAll(std::plus<TVal>());
+            return foldrAll(std::plus<TVal>(), TVal(0));
         }
         //! \return The min of all values.
         ALPAKA_NO_HOST_ACC_WARNING
