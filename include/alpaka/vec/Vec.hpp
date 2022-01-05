@@ -412,13 +412,20 @@ namespace alpaka
     ALPAKA_FN_HOST auto operator<<(std::ostream& os, Vec<TDim, TVal> const& v) -> std::ostream&
     {
         os << "(";
-        for(typename TDim::value_type i(0); i < TDim::value; ++i)
+        if constexpr(TDim::value > typename TDim::value_type(0))
         {
-            os << v[i];
-            if(i != TDim::value - 1)
+            for(typename TDim::value_type i(0); i < TDim::value; ++i)
             {
-                os << ", ";
+                os << v[i];
+                if(i != TDim::value - 1)
+                {
+                    os << ", ";
+                }
             }
+        }
+        else
+        {
+            os << ".";
         }
         os << ")";
 
