@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci
  *
  * This file is part of Alpaka.
  *
@@ -184,10 +184,10 @@ namespace alpaka
                 }
             };
 
-            //! The 1d OpenACC memory copy task.
+            //! The OpenACC 1D memory copy task.
             template<typename TViewDst, typename TViewSrc, typename TExtent, typename TCopyPred>
-            struct TaskCopyOacc<DimInt<1>, TViewDst, TViewSrc, TExtent, TCopyPred>
-                : public TaskCopyOaccBase<DimInt<1>, TViewDst, TViewSrc, TExtent, TCopyPred>
+            struct TaskCopyOacc<DimInt<1u>, TViewDst, TViewSrc, TExtent, TCopyPred>
+                : public TaskCopyOaccBase<DimInt<1u>, TViewDst, TViewSrc, TExtent, TCopyPred>
             {
                 using TaskCopyOaccBase<DimInt<1u>, TViewDst, TViewSrc, TExtent, TCopyPred>::TaskCopyOaccBase;
 
@@ -208,6 +208,71 @@ namespace alpaka
                     }
                 }
             };
+
+            //! The OpenACC scalar memory copy task.
+            template<typename TViewDst, typename TViewSrc, typename TExtent, typename TCopyPred>
+            struct TaskCopyOacc<DimInt<0u>, TViewDst, TViewSrc, TExtent, TCopyPred>
+            {
+                using ExtentSize = alpaka::Idx<TExtent>;
+                using DstSize = alpaka::Idx<TViewDst>;
+                using SrcSize = alpaka::Idx<TViewSrc>;
+                using Elem = alpaka::Elem<TViewSrc>;
+                using Idx = alpaka::Idx<TExtent>;
+
+                static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
+
+                static_assert(Dim<TViewSrc>::value == 0u, "The source view is required to have dimensionality 0!");
+                static_assert(Dim<TViewDst>::value == 0u, "The source view is required to have dimensionality 0!");
+                static_assert(Dim<TExtent>::value == 0u, "The extent is required to have dimensionality 0!");
+                // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
+                static_assert(
+                    std::is_same<alpaka::Elem<TViewDst>, typename std::remove_const<alpaka::Elem<TViewSrc>>::type>::
+                        value,
+                    "The source and the destination views are required to have the same element type!");
+
+                ALPAKA_FN_HOST TaskCopyOacc(
+                    TViewDst& viewDst,
+                    TViewSrc const& viewSrc,
+                    TExtent const& extent,
+                    DevOacc const& dev,
+                    TCopyPred copyPred)
+                    : m_dev(dev)
+                    , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
+                    , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
+                    , m_copyPred(copyPred)
+                {
+                    alpaka::ignore_unused(extent);
+                }
+
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                ALPAKA_FN_HOST auto printDebug() const -> void
+                {
+                    std::cout << __func__ << " dev: " << m_dev.iDevice() << " ew: " << Idx(1u) << " dw: " << Idx(1u)
+                              << " dptr: " << static_cast<const void*>(m_dstMemNative) << " sw: " << Idx(1u)
+                              << " sptr: " << static_cast<const void*>(m_srcMemNative) << std::endl;
+                }
+#    endif
+
+                ALPAKA_FN_HOST auto operator()() const -> void
+                {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    printDebug();
+#    endif
+                    m_dev.makeCurrent();
+                    m_copyPred(
+                        reinterpret_cast<void*>(this->m_dstMemNative),
+                        const_cast<void*>(reinterpret_cast<void const*>(this->m_srcMemNative)),
+                        sizeof(Elem));
+                }
+
+                const DevOacc m_dev;
+                std::uint8_t* const m_dstMemNative;
+                std::uint8_t const* const m_srcMemNative;
+                TCopyPred m_copyPred;
+            };
+
         } // namespace detail
     } // namespace oacc
 
