@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -11,16 +11,6 @@
 
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
 
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>

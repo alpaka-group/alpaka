@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jeffrey Kelling
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jeffrey Kelling, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -12,10 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/isfinite/Traits.hpp>
-
-#    include <type_traits>
 
 namespace alpaka
 {
@@ -26,20 +23,6 @@ namespace alpaka
             : public concepts::Implements<ConceptMathIsfinite, IsfiniteUniformCudaHipBuiltIn>
         {
         };
-
-        namespace traits
-        {
-            //! The CUDA isfinite trait specialization.
-            template<typename TArg>
-            struct Isfinite<IsfiniteUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
-            {
-                __device__ auto operator()(IsfiniteUniformCudaHipBuiltIn const& ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(ctx);
-                    return ::isfinite(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka
 

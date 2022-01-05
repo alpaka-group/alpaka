@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jan Stephan, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -11,12 +11,8 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/CudaHipMath.hpp>
-#    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/math/exp/Traits.hpp>
-
-#    include <type_traits>
 
 namespace alpaka
 {
@@ -26,26 +22,6 @@ namespace alpaka
         class ExpUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathExp, ExpUniformCudaHipBuiltIn>
         {
         };
-
-        namespace traits
-        {
-            //! The CUDA exp trait specialization.
-            template<typename TArg>
-            struct Exp<ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
-            {
-                __device__ auto operator()(ExpUniformCudaHipBuiltIn const& exp_ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(exp_ctx);
-
-                    if constexpr(is_decayed_v<TArg, float>)
-                        return ::expf(arg);
-                    else if constexpr(is_decayed_v<TArg, double>)
-                        return ::exp(arg);
-                    else
-                        static_assert(!sizeof(TArg), "Unsupported data type");
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka
 

@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -10,16 +10,6 @@
 #pragma once
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include <alpaka/core/BoostPredef.hpp>
-
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
 
 // Specialized traits.
 #    include <alpaka/acc/Traits.hpp>
@@ -38,7 +28,9 @@
 
 // Implementation details.
 #    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
+#    include <alpaka/core/BoostPredef.hpp>
 #    include <alpaka/core/Decay.hpp>
+#    include <alpaka/core/DeviceOnly.hpp>
 #    include <alpaka/core/RemoveRestrict.hpp>
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
@@ -52,8 +44,6 @@
 #        include <alpaka/dev/Traits.hpp>
 #        include <alpaka/workdiv/WorkDivHelpers.hpp>
 #    endif
-
-#    include <alpaka/core/BoostPredef.hpp>
 
 #    include <stdexcept>
 #    include <tuple>

@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jeffrey Kelling
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, Jeffrey Kelling, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -12,10 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/CudaHipMath.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/isnan/Traits.hpp>
-
-#    include <type_traits>
 
 namespace alpaka
 {
@@ -25,20 +22,6 @@ namespace alpaka
         class IsnanUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathIsnan, IsnanUniformCudaHipBuiltIn>
         {
         };
-
-        namespace traits
-        {
-            //! The CUDA isnan trait specialization.
-            template<typename TArg>
-            struct Isnan<IsnanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
-            {
-                __device__ auto operator()(IsnanUniformCudaHipBuiltIn const& ctx, TArg const& arg)
-                {
-                    alpaka::ignore_unused(ctx);
-                    return ::isnan(arg);
-                }
-            };
-        } // namespace traits
     } // namespace math
 } // namespace alpaka
 
