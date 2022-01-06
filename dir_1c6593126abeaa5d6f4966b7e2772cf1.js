@@ -5,8 +5,7 @@ var dir_1c6593126abeaa5d6f4966b7e2772cf1 =
     ] ],
     [ "CbrtUniformCudaHipBuiltIn.hpp", "CbrtUniformCudaHipBuiltIn_8hpp.html", [
       [ "CbrtUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1CbrtUniformCudaHipBuiltIn.html", null ],
-      [ "Cbrt< CbrtUniformCudaHipBuiltIn, float >", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01float_01_4.html", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01float_01_4" ],
-      [ "Cbrt< CbrtUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_arithmetic< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabl42fa53caf50255a036b2d344dc4e49e5.html", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabl42fa53caf50255a036b2d344dc4e49e5" ]
+      [ "Cbrt< CbrtUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_arithmetic_v< TArg > > >", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablc922a39fa8bad3a8e7831a32122de2aa.html", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablc922a39fa8bad3a8e7831a32122de2aa" ]
     ] ],
     [ "Traits.hpp", "math_2cbrt_2Traits_8hpp.html", "math_2cbrt_2Traits_8hpp" ]
 ];

@@ -84,7 +84,9 @@ $(document).ready(function(){initNavTree('Decay_8hpp.html',''); initResizable();
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Decay.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -94,11 +96,24 @@ $(document).ready(function(){initNavTree('Decay_8hpp.html',''); initResizable();
 </div>
 <p><a href="Decay_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
+<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:afba6dfdddd358c0ee5a1c6406afd2c11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(Type)&#160;&#160;&#160;std::decay_t&lt;Type&gt;</td></tr>
 <tr class="memdesc:afba6dfdddd358c0ee5a1c6406afd2c11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper around std::decay_t for parameter pack expansion expressions.  <a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">More...</a><br /></td></tr>
 <tr class="separator:afba6dfdddd358c0ee5a1c6406afd2c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:abd223e5dfb4b62614c25046db2a1d1de"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
+<tr class="memitem:abd223e5dfb4b62614c25046db2a1d1de"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de">alpaka::is_decayed_v</a> = std::is_same_v&lt;std::decay_t&lt; T &gt;, std::decay_t&lt; U &gt;&gt;</td></tr>
+<tr class="memdesc:abd223e5dfb4b62614c25046db2a1d1de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a decaying wrapper around std::is_same. Example: is_decayed_v&lt;volatile float, float&gt; returns true.  <a href="namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de">More...</a><br /></td></tr>
+<tr class="separator:abd223e5dfb4b62614c25046db2a1d1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="afba6dfdddd358c0ee5a1c6406afd2c11"></a>
@@ -129,7 +144,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Decay_8hpp.html">Decay.hpp</a></li>
-    <li class="footer">Generated on Wed Jan 5 2022 14:46:59 for alpaka by
+    <li class="footer">Generated on Thu Jan 6 2022 13:04:15 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

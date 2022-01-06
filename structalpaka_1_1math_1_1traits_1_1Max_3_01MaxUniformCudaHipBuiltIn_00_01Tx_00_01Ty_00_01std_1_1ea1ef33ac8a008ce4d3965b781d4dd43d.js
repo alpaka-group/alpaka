@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1ea1ef33ac8a008ce4d3965b781d4dd43d =
-[
-    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1ea1ef33ac8a008ce4d3965b781d4dd43d.html#a12ad757f424303c2966bdfbb5de9d057", null ]
-];

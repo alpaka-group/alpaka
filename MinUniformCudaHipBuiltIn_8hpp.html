@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('MinUniformCudaHipBuiltIn_8hpp.html',''
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="CudaHipMath_8hpp_source.html">alpaka/core/CudaHipMath.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Decay_8hpp_source.html">alpaka/core/Decay.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Unused_8hpp_source.html">alpaka/core/Unused.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="math_2min_2Traits_8hpp_source.html">alpaka/math/min/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -102,11 +103,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1math_1_1MinUniformCudaHipBuiltIn.html">alpaka::math::MinUniformCudaHipBuiltIn</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA built in min.  <a href="classalpaka_1_1math_1_1MinUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eb56de2973bbb01e640ff9c7fc643003e.html">alpaka::math::traits::Min&lt; MinUniformCudaHipBuiltIn, Tx, Ty, std::enable_if_t&lt; std::is_arithmetic&lt; Tx &gt;::value &amp;&amp;std::is_arithmetic&lt; Ty &gt;::value &amp;&amp;!(std::is_integral&lt; Tx &gt;::value &amp;&amp;std::is_integral&lt; Ty &gt;::value)&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The standard library mixed integral floating point min trait specialization.  <a href="structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eb56de2973bbb01e640ff9c7fc643003e.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eebad49c29051801f4418adfcef336233.html">alpaka::math::traits::Min&lt; MinUniformCudaHipBuiltIn, Tx, Ty, std::enable_if_t&lt; std::is_integral&lt; Tx &gt;::value &amp;&amp;std::is_integral&lt; Ty &gt;::value &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA integral min trait specialization.  <a href="structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eebad49c29051801f4418adfcef336233.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1e6891e8bb718eb3bafa5357a62db0f90a.html">alpaka::math::traits::Min&lt; MinUniformCudaHipBuiltIn, Tx, Ty, std::enable_if_t&lt; std::is_arithmetic_v&lt; Tx &gt; &amp;&amp;std::is_arithmetic_v&lt; Ty &gt; &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA min trait specialization.  <a href="structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1e6891e8bb718eb3bafa5357a62db0f90a.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -127,7 +125,7 @@ Namespaces</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="dir_6040d481ede9327b5bb8d12cdffd886b.html">min</a></li><li class="navelem"><a class="el" href="MinUniformCudaHipBuiltIn_8hpp.html">MinUniformCudaHipBuiltIn.hpp</a></li>
-    <li class="footer">Generated on Wed Jan 5 2022 14:46:59 for alpaka by
+    <li class="footer">Generated on Thu Jan 6 2022 13:04:15 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

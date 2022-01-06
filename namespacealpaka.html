@@ -88,7 +88,8 @@ $(document).ready(function(){initNavTree('namespacealpaka.html',''); initResizab
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka Namespace Reference</div>  </div>
 </div><!--header-->
@@ -960,6 +961,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a751547dd588408ae790584281af1775f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a751547dd588408ae790584281af1775f">wait</a> (TWaiter &amp;waiter, TAwaited const &amp;awaited) -&gt; void</td></tr>
 <tr class="memdesc:a751547dd588408ae790584281af1775f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The waiter waits for the given awaited action to complete.  <a href="namespacealpaka.html#a751547dd588408ae790584281af1775f">More...</a><br /></td></tr>
 <tr class="separator:a751547dd588408ae790584281af1775f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:abd223e5dfb4b62614c25046db2a1d1de"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
+<tr class="memitem:abd223e5dfb4b62614c25046db2a1d1de"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de">is_decayed_v</a> = std::is_same_v&lt;std::decay_t&lt; T &gt;, std::decay_t&lt; U &gt;&gt;</td></tr>
+<tr class="memdesc:abd223e5dfb4b62614c25046db2a1d1de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a decaying wrapper around std::is_same. Example: is_decayed_v&lt;volatile float, float&gt; returns true.  <a href="namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de">More...</a><br /></td></tr>
+<tr class="separator:abd223e5dfb4b62614c25046db2a1d1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Suggests vectorization of the directly following loop to the compiler. </p>
@@ -3824,7 +3832,7 @@ template&lt;typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00655">655</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00639">639</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -3854,7 +3862,7 @@ template&lt;typename TDim , typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector but only the last N elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00663">663</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00647">647</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -6124,13 +6132,42 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="abd223e5dfb4b62614c25046db2a1d1de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd223e5dfb4b62614c25046db2a1d1de">&#9670;&nbsp;</a></span>is_decayed_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto alpaka::is_decayed_v = std::is_same_v&lt;std::decay_t&lt; T &gt;, std::decay_t&lt; U &gt;&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Provides a decaying wrapper around std::is_same. Example: is_decayed_v&lt;volatile float, float&gt; returns true. </p>
+
+<p class="definition">Definition at line <a class="el" href="Decay_8hpp_source.html#l00043">43</a> of file <a class="el" href="Decay_8hpp_source.html">Decay.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Jan 5 2022 14:46:59 for alpaka by
+    <li class="footer">Generated on Thu Jan 6 2022 13:04:15 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

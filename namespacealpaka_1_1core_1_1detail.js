@@ -1,11 +1,7 @@
 var namespacealpaka_1_1core_1_1detail =
 [
-    [ "AssertGreaterThan", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", null ],
-    [ "AssertGreaterThan< TLhs, TRhs, std::enable_if_t< std::is_unsigned< TRhs >::value &&(TLhs::value==0u)> >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b" ],
-    [ "AssertGreaterThan< TLhs, TRhs, std::enable_if_t<!std::is_unsigned< TRhs >::value||(TLhs::value !=0u)> >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336" ],
-    [ "AssertValueUnsigned", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html", null ],
-    [ "AssertValueUnsigned< TArg, std::enable_if_t< std::is_unsigned< TArg >::value > >", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_01stdb72af6a8675947df196653993d534c13.html", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_01stdb72af6a8675947df196653993d534c13" ],
-    [ "AssertValueUnsigned< TArg, std::enable_if_t<!std::is_unsigned< TArg >::value > >", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_9std_6cb140c1f390c6f74ef7d28a958c1cab.html", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_9std_6cb140c1f390c6f74ef7d28a958c1cab" ],
+    [ "AssertGreaterThan", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan" ],
+    [ "AssertValueUnsigned", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned" ],
     [ "ConcurrentExecPool", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool" ],
     [ "ConcurrentExecPool< TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false >", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48" ],
     [ "ITaskPkg", "classalpaka_1_1core_1_1detail_1_1ITaskPkg.html", "classalpaka_1_1core_1_1detail_1_1ITaskPkg" ],

@@ -101,17 +101,9 @@ $(document).ready(function(){initNavTree('Assert_8hpp.html',''); initResizable()
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html">alpaka::core::detail::AssertGreaterThan&lt; TLhs, TRhs, TSfinae &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html">alpaka::core::detail::AssertGreaterThan&lt; TLhs, TRhs &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html">alpaka::core::detail::AssertGreaterThan&lt; TLhs, TRhs, std::enable_if_t&lt; std::is_unsigned&lt; TRhs &gt;::value &amp;&amp;(TLhs::value==0u)&gt; &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html">alpaka::core::detail::AssertGreaterThan&lt; TLhs, TRhs, std::enable_if_t&lt;!std::is_unsigned&lt; TRhs &gt;::value||(TLhs::value !=0u)&gt; &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html">alpaka::core::detail::AssertValueUnsigned&lt; TArg, TSfinae &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_01stdb72af6a8675947df196653993d534c13.html">alpaka::core::detail::AssertValueUnsigned&lt; TArg, std::enable_if_t&lt; std::is_unsigned&lt; TArg &gt;::value &gt; &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01std_1_1enable__if__t_3_9std_6cb140c1f390c6f74ef7d28a958c1cab.html">alpaka::core::detail::AssertValueUnsigned&lt; TArg, std::enable_if_t&lt;!std::is_unsigned&lt; TArg &gt;::value &gt; &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html">alpaka::core::detail::AssertValueUnsigned&lt; TArg &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -134,10 +126,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a42d5ffb31558d590b656b262a269a8d6"><td class="memTemplParams" colspan="2">template&lt;typename TLhs , typename TRhs &gt; </td></tr>
-<tr class="memitem:a42d5ffb31558d590b656b262a269a8d6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a42d5ffb31558d590b656b262a269a8d6">alpaka::core::assertGreaterThan</a> (TRhs const &amp;lhs) -&gt; void</td></tr>
-<tr class="memdesc:a42d5ffb31558d590b656b262a269a8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method asserts that the integral value TArg is less than Tidx.  <a href="namespacealpaka_1_1core.html#a42d5ffb31558d590b656b262a269a8d6">More...</a><br /></td></tr>
-<tr class="separator:a42d5ffb31558d590b656b262a269a8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae21d505b1db54808793c1b81fe75d81b"><td class="memTemplParams" colspan="2">template&lt;typename TLhs , typename TRhs &gt; </td></tr>
+<tr class="memitem:ae21d505b1db54808793c1b81fe75d81b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#ae21d505b1db54808793c1b81fe75d81b">alpaka::core::assertGreaterThan</a> (TRhs const &amp;rhs) -&gt; void</td></tr>
+<tr class="memdesc:ae21d505b1db54808793c1b81fe75d81b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function asserts that the integral value TLhs is greater than TRhs.  <a href="namespacealpaka_1_1core.html#ae21d505b1db54808793c1b81fe75d81b">More...</a><br /></td></tr>
+<tr class="separator:ae21d505b1db54808793c1b81fe75d81b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a841600e3344adc10ea85eac5834e35a2"><td class="memTemplParams" colspan="2">template&lt;typename TArg &gt; </td></tr>
 <tr class="memitem:a841600e3344adc10ea85eac5834e35a2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a841600e3344adc10ea85eac5834e35a2">alpaka::core::assertValueUnsigned</a> (TArg const &amp;arg) -&gt; void</td></tr>
 <tr class="memdesc:a841600e3344adc10ea85eac5834e35a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method checks integral values if they are greater or equal zero. The implementation prevents warnings for checking this for unsigned types.  <a href="namespacealpaka_1_1core.html#a841600e3344adc10ea85eac5834e35a2">More...</a><br /></td></tr>
@@ -190,7 +182,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Assert_8hpp.html">Assert.hpp</a></li>
-    <li class="footer">Generated on Wed Jan 5 2022 14:46:59 for alpaka by
+    <li class="footer">Generated on Thu Jan 6 2022 13:04:15 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

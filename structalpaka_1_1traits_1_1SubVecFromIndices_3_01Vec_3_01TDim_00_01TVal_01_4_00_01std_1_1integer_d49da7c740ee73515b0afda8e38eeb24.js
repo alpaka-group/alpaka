@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_d49da7c740ee73515b0afda8e38eeb24 =
+[
+    [ "subVecFromIndices", "structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_d49da7c740ee73515b0afda8e38eeb24.html#a88b4b75d9b754e34bcad12016d42cebe", null ]
+];
