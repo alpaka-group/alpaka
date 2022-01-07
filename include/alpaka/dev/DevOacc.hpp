@@ -46,12 +46,10 @@ namespace alpaka
             class DevOaccImpl
             {
             public:
-                DevOaccImpl(int iDevice) noexcept
-                    : m_deviceType(::acc_get_device_type())
-                    , m_iDevice(iDevice)
-                    , m_gridsLock(reinterpret_cast<std::uint32_t*>(acc_malloc(2 * sizeof(std::uint32_t))))
+                DevOaccImpl(int iDevice) noexcept : m_deviceType(::acc_get_device_type()), m_iDevice(iDevice)
                 {
                     makeCurrent();
+                    m_gridsLock = reinterpret_cast<std::uint32_t*>(acc_malloc(2 * sizeof(std::uint32_t)));
                     const auto gridsLock = m_gridsLock;
 #    pragma acc parallel loop vector default(present) deviceptr(gridsLock)
                     for(std::size_t a = 0; a < 2; ++a)
