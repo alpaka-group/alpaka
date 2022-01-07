@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -164,16 +164,13 @@ namespace alpaka
                 meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
                 "The view and the extent are required to have compatible idx type!");
 
-            TaskSetCpu(TView& view, std::uint8_t const& byte, TExtent const& extent)
+            TaskSetCpu(TView& view, std::uint8_t const& byte, [[maybe_unused]] TExtent const& extent)
                 : m_byte(byte)
                 , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
             {
                 // all zero-sized extents are equivalent
                 ALPAKA_ASSERT(extent::getExtentVec(extent).prod() == 1u);
                 ALPAKA_ASSERT(extent::getExtentVec(view).prod() == 1u);
-#ifdef NDEBUG
-                alpaka::ignore_unused(extent);
-#endif
             }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

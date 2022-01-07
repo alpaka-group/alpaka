@@ -1,4 +1,5 @@
-/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
+ *                Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -69,8 +70,8 @@
 #include <alpaka/core/OmpSchedule.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/RemoveRestrict.hpp>
+#include <alpaka/core/Unreachable.hpp>
 #include <alpaka/core/Unroll.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/core/Utility.hpp>
 #include <alpaka/core/Vectorize.hpp>
 // dev
@@ -135,7 +136,6 @@
 #include <alpaka/mem/view/Accessor.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/mem/view/ViewAccessor.hpp>
-#include <alpaka/mem/view/ViewCompileTimeArray.hpp>
 #include <alpaka/mem/view/ViewPlainPtr.hpp>
 #include <alpaka/mem/view/ViewStdArray.hpp>
 #include <alpaka/mem/view/ViewStdVector.hpp>

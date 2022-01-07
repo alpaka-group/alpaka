@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Decay.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/min/Traits.hpp>
 
 #include <algorithm>
@@ -32,10 +31,8 @@ namespace alpaka
             template<typename Tx, typename Ty>
             struct Min<MinStdLib, Tx, Ty, std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
             {
-                ALPAKA_FN_HOST auto operator()(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
+                ALPAKA_FN_HOST auto operator()(MinStdLib const& /* min_ctx */, Tx const& x, Ty const& y)
                 {
-                    alpaka::ignore_unused(min_ctx);
-
                     using std::fmin;
                     using std::min;
 

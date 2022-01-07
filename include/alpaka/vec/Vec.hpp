@@ -13,7 +13,7 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
+#include <alpaka/core/Unreachable.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/extent/Traits.hpp>
@@ -46,11 +46,9 @@ namespace alpaka
         typename TIdxSize,
         TIdxSize... TIndices>
     ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-        std::integer_sequence<TIdxSize, TIndices...> const& indices,
+        std::integer_sequence<TIdxSize, TIndices...> const& /* indices */,
         TArgs&&... args)
     {
-        alpaka::ignore_unused(indices);
-
         return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
             (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
     }
@@ -200,21 +198,17 @@ namespace alpaka
         template<typename TFnObj, std::size_t... TIndices>
         ALPAKA_FN_HOST_ACC auto foldrByIndices(
             TFnObj const& f,
-            std::integer_sequence<std::size_t, TIndices...> const& indices) const
+            std::integer_sequence<std::size_t, TIndices...> const& /* indices */) const
         {
-            alpaka::ignore_unused(indices);
-
             return meta::foldr(f, ((*this)[TIndices])...);
         }
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj, std::size_t... TIndices>
         ALPAKA_FN_HOST_ACC auto foldrByIndices(
             TFnObj const& f,
-            std::integer_sequence<std::size_t, TIndices...> const& indices,
+            std::integer_sequence<std::size_t, TIndices...> const& /* indices */,
             TVal initial) const
         {
-            alpaka::ignore_unused(indices);
-
             return meta::foldr(f, ((*this)[TIndices])..., initial);
         }
         ALPAKA_NO_HOST_ACC_WARNING
@@ -452,15 +446,12 @@ namespace alpaka
         template<typename TDim, typename TVal, std::size_t... TIndices>
         struct SubVecFromIndices<Vec<TDim, TVal>, std::integer_sequence<std::size_t, TIndices...>>
         {
-            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto subVecFromIndices(Vec<TDim, TVal> const& vec)
+            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
+                [[maybe_unused]] Vec<TDim, TVal> const& vec)
             {
-                // In the case of a zero dimensional vector, vec is unused.
-                alpaka::ignore_unused(vec);
-
                 static_assert(
                     sizeof...(TIndices) <= TDim::value,
                     "The sub-vector's dimensionality must be smaller than or equal to the original dimensionality.");
-
 
                 if constexpr(!std::is_same_v<
                                  std::integer_sequence<std::size_t, TIndices...>,
@@ -468,6 +459,14 @@ namespace alpaka
                     return Vec<DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...); // Return sub-vector.
                 else
                     return vec; // Return whole vector.
+
+                using Ret [[maybe_unused]] = std::conditional_t<
+                    !std::is_same_v<
+                        std::integer_sequence<std::size_t, TIndices...>,
+                        std::make_integer_sequence<std::size_t, TDim::value>>,
+                    Vec<DimInt<sizeof...(TIndices)>, TVal>,
+                    Vec<TDim, TVal>>;
+                ALPAKA_UNREACHABLE(Ret{vec[TIndices]...});
             }
         };
     } // namespace traits

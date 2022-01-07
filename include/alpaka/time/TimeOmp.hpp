@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,7 +12,6 @@
 #ifdef _OPENMP
 
 #    include <alpaka/core/Common.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/time/Traits.hpp>
 
 #    include <omp.h>
@@ -30,9 +29,8 @@ namespace alpaka
         template<>
         struct Clock<TimeOmp>
         {
-            ALPAKA_FN_HOST static auto clock(TimeOmp const& time) -> std::uint64_t
+            ALPAKA_FN_HOST static auto clock(TimeOmp const& /* time */) -> std::uint64_t
             {
-                alpaka::ignore_unused(time);
                 // NOTE: We compute the number of clock ticks by dividing the following durations:
                 // - omp_get_wtime returns the elapsed wall clock time in seconds.
                 // - omp_get_wtick gets the timer precision, i.e., the number of seconds between two successive clock

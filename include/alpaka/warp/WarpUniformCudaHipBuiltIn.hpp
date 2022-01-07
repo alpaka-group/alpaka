@@ -1,4 +1,4 @@
-/* Copyright 2020-2021 Sergei Bastrakov, David M. Rogers
+/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -21,7 +21,6 @@
 #        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #    endif
 
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/warp/Traits.hpp>
 
 #    include <cstdint>
@@ -75,13 +74,13 @@ namespace alpaka
             template<>
             struct All<WarpUniformCudaHipBuiltIn>
             {
-                __device__ static auto all(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
-                    -> std::int32_t
+                __device__ static auto all(
+                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                    std::int32_t predicate) -> std::int32_t
                 {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __all_sync(activemask(warp), predicate);
 #    else
-                    ignore_unused(warp);
                     return __all(predicate);
 #    endif
                 }
@@ -90,13 +89,13 @@ namespace alpaka
             template<>
             struct Any<WarpUniformCudaHipBuiltIn>
             {
-                __device__ static auto any(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
-                    -> std::int32_t
+                __device__ static auto any(
+                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                    std::int32_t predicate) -> std::int32_t
                 {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __any_sync(activemask(warp), predicate);
 #    else
-                    ignore_unused(warp);
                     return __any(predicate);
 #    endif
                 }
@@ -105,7 +104,9 @@ namespace alpaka
             template<>
             struct Ballot<WarpUniformCudaHipBuiltIn>
             {
-                __device__ static auto ballot(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
+                __device__ static auto ballot(
+                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                    std::int32_t predicate)
                 // return type is required by the compiler
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     -> std::uint32_t
@@ -116,7 +117,6 @@ namespace alpaka
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __ballot_sync(activemask(warp), predicate);
 #    else
-                    ignore_unused(warp);
                     return __ballot(predicate);
 #    endif
                 }
@@ -127,7 +127,7 @@ namespace alpaka
             {
                 //-------------------------------------------------------------
                 __device__ static auto shfl(
-                    warp::WarpUniformCudaHipBuiltIn const& warp,
+                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                     float val,
                     int srcLane,
                     std::int32_t width) -> float
@@ -135,13 +135,12 @@ namespace alpaka
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __shfl_sync(activemask(warp), val, srcLane, width);
 #    else
-                    alpaka::ignore_unused(warp);
                     return __shfl(val, srcLane, width);
 #    endif
                 }
                 //-------------------------------------------------------------
                 __device__ static auto shfl(
-                    warp::WarpUniformCudaHipBuiltIn const& warp,
+                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                     std::int32_t val,
                     int srcLane,
                     std::int32_t width) -> std::int32_t
@@ -149,7 +148,6 @@ namespace alpaka
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __shfl_sync(activemask(warp), val, srcLane, width);
 #    else
-                    alpaka::ignore_unused(warp);
                     return __shfl(val, srcLane, width);
 #    endif
                 }

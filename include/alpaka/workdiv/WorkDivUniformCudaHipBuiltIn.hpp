@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -28,7 +28,6 @@
 #        include <alpaka/core/Hip.hpp>
 #    endif
 
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/idx/Traits.hpp>
 #    include <alpaka/vec/Vec.hpp>
 #    include <alpaka/workdiv/Traits.hpp>
@@ -73,10 +72,9 @@ namespace alpaka
         struct GetWorkDiv<WorkDivUniformCudaHipBuiltIn<TDim, TIdx>, origin::Grid, unit::Blocks>
         {
             //! \return The number of blocks in each dimension of the grid.
-            __device__ static auto getWorkDiv(WorkDivUniformCudaHipBuiltIn<TDim, TIdx> const& workDiv)
+            __device__ static auto getWorkDiv(WorkDivUniformCudaHipBuiltIn<TDim, TIdx> const& /* workDiv */)
                 -> Vec<TDim, TIdx>
             {
-                alpaka::ignore_unused(workDiv);
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 return castVec<TIdx>(extent::getExtentVecEnd<TDim>(gridDim));
 #    else
@@ -93,10 +91,9 @@ namespace alpaka
         struct GetWorkDiv<WorkDivUniformCudaHipBuiltIn<TDim, TIdx>, origin::Block, unit::Threads>
         {
             //! \return The number of threads in each dimension of a block.
-            __device__ static auto getWorkDiv(WorkDivUniformCudaHipBuiltIn<TDim, TIdx> const& workDiv)
+            __device__ static auto getWorkDiv(WorkDivUniformCudaHipBuiltIn<TDim, TIdx> const& /* workDiv */)
                 -> Vec<TDim, TIdx>
             {
-                alpaka::ignore_unused(workDiv);
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 return castVec<TIdx>(extent::getExtentVecEnd<TDim>(blockDim));
 #    else

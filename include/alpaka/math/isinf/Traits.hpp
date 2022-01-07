@@ -1,4 +1,4 @@
-/* Copyright 2021 Benjamin Worpitz, Jeffrey Kelling
+/* Copyright 2022 Benjamin Worpitz, Jeffrey Kelling, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -11,7 +11,6 @@
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <cmath>
 
@@ -25,13 +24,12 @@ namespace alpaka
 
         namespace traits
         {
-            //! The exp trait.
+            //! The isinf trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Isinf
             {
-                ALPAKA_FN_HOST_ACC auto operator()(T const& ctx, TArg const& arg)
+                ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(ctx);
                     // This is an ADL call. If you get a compile error here then your type is not supported by the
                     // backend and we could not find isinf(TArg) in the namespace of your type.
                     using std::isinf;

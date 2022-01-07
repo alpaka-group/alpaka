@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -132,34 +132,21 @@ namespace alpaka
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec, typename TIndex, typename TElem>
             ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                MatMulKernel const& matMulKernel,
+                MatMulKernel const& /* matMulKernel */,
                 TVec const& blockThreadExtent,
                 TVec const& threadElemExtent,
-                TIndex const& m,
-                TIndex const& n,
-                TIndex const& k,
-                TElem const& alpha,
-                TElem const* const A,
-                TIndex const& lda,
-                TElem const* const B,
-                TIndex const& ldb,
-                TElem const& beta,
-                TElem* const C,
-                TIndex const& ldc)
+                TIndex const& /* m */,
+                TIndex const& /* n */,
+                TIndex const& /* k */,
+                TElem const& /* alpha */,
+                TElem const* const /* A */,
+                TIndex const& /* lda */,
+                TElem const* const /* B */,
+                TIndex const& /* ldb */,
+                TElem const& /* beta */,
+                TElem* const /* C */,
+                TIndex const& /* ldc */)
             {
-                alpaka::ignore_unused(matMulKernel);
-                alpaka::ignore_unused(m);
-                alpaka::ignore_unused(n);
-                alpaka::ignore_unused(k);
-                alpaka::ignore_unused(alpha);
-                alpaka::ignore_unused(A);
-                alpaka::ignore_unused(lda);
-                alpaka::ignore_unused(B);
-                alpaka::ignore_unused(ldb);
-                alpaka::ignore_unused(beta);
-                alpaka::ignore_unused(C);
-                alpaka::ignore_unused(ldc);
-
                 // Reserve the buffer for the two blocks of A and B.
                 return static_cast<std::size_t>(2u * blockThreadExtent.prod() * threadElemExtent.prod())
                     * sizeof(TElem);

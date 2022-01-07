@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -23,7 +23,6 @@
 
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/Positioning.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/idx/Traits.hpp>
 #    include <alpaka/vec/Vec.hpp>
 
@@ -61,10 +60,9 @@ namespace alpaka
         {
             //! \return The index of the current thread in the block.
             template<typename TWorkDiv>
-            __device__ static auto getIdx(bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx> const& idx, TWorkDiv const&)
+            __device__ static auto getIdx(bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx> const& /* idx */, TWorkDiv const&)
                 -> Vec<TDim, TIdx>
             {
-                alpaka::ignore_unused(idx);
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 return castVec<TIdx>(getOffsetVecEnd<TDim>(threadIdx));
 #    else

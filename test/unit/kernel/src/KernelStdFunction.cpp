@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz
+/* Copyright 2022 Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -25,10 +25,8 @@ TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
 #endif
 
 template<typename Acc>
-void ALPAKA_FN_ACC kernelFn(Acc const& acc, bool* success, std::int32_t val)
+void ALPAKA_FN_ACC kernelFn(Acc const& /* acc */, bool* success, std::int32_t val)
 {
-    alpaka::ignore_unused(acc);
-
     ALPAKA_CHECK(*success, 42 == val);
 }
 

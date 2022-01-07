@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/exp/Traits.hpp>
 
 #    include <type_traits>
@@ -33,16 +33,16 @@ namespace alpaka
             template<typename TArg>
             struct Exp<ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
             {
-                __device__ auto operator()(ExpUniformCudaHipBuiltIn const& exp_ctx, TArg const& arg)
+                __device__ auto operator()(ExpUniformCudaHipBuiltIn const& /* exp_ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(exp_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         return ::expf(arg);
                     else if constexpr(is_decayed_v<TArg, double>)
                         return ::exp(arg);
                     else
                         static_assert(!sizeof(TArg), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(TArg{});
                 }
             };
         } // namespace traits

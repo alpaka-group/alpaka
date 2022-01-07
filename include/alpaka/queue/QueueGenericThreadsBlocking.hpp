@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>

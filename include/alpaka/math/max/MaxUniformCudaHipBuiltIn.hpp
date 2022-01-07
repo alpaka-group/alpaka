@@ -12,7 +12,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/max/Traits.hpp>
 
 #    include <type_traits>
@@ -36,10 +36,8 @@ namespace alpaka
                 Ty,
                 std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
             {
-                __device__ auto operator()(MaxUniformCudaHipBuiltIn const& max_ctx, Tx const& x, Ty const& y)
+                __device__ auto operator()(MaxUniformCudaHipBuiltIn const& /* max_ctx */, Tx const& x, Ty const& y)
                 {
-                    alpaka::ignore_unused(max_ctx);
-
                     if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
                         return ::max(x, y);
                     else if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float>)
@@ -52,6 +50,12 @@ namespace alpaka
                         return ::fmax(x, y);
                     else
                         static_assert(!sizeof(Tx), "Unsupported data type");
+
+                    using Ret [[maybe_unused]] = std::conditional_t<
+                        std::is_integral_v<Tx> && std::is_integral_v<Ty>,
+                        decltype(::max(x, y)),
+                        std::conditional_t<is_decayed_v<Tx, float> && is_decayed_v<Ty, float>, float, double>>;
+                    ALPAKA_UNREACHABLE(Ret{});
                 }
             };
         } // namespace traits

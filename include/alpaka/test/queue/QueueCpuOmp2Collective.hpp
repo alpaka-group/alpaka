@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -15,7 +15,6 @@
 #        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
 
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/event/EventCpu.hpp>

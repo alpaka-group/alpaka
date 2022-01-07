@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/rand/TinyMT/Engine.hpp>
 #include <alpaka/rand/Traits.hpp>
 
@@ -220,10 +219,9 @@ namespace alpaka
                 template<typename T>
                 struct CreateNormalReal<RandStdLib, T, std::enable_if_t<std::is_floating_point<T>::value>>
                 {
-                    ALPAKA_FN_HOST static auto createNormalReal(RandStdLib const& rand)
+                    ALPAKA_FN_HOST static auto createNormalReal(RandStdLib const& /* rand */)
                         -> rand::distribution::cpu::NormalReal<T>
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::distribution::cpu::NormalReal<T>();
                     }
                 };
@@ -231,10 +229,9 @@ namespace alpaka
                 template<typename T>
                 struct CreateUniformReal<RandStdLib, T, std::enable_if_t<std::is_floating_point<T>::value>>
                 {
-                    ALPAKA_FN_HOST static auto createUniformReal(RandStdLib const& rand)
+                    ALPAKA_FN_HOST static auto createUniformReal(RandStdLib const& /* rand */)
                         -> rand::distribution::cpu::UniformReal<T>
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::distribution::cpu::UniformReal<T>();
                     }
                 };
@@ -242,10 +239,9 @@ namespace alpaka
                 template<typename T>
                 struct CreateUniformUint<RandStdLib, T, std::enable_if_t<std::is_integral<T>::value>>
                 {
-                    ALPAKA_FN_HOST static auto createUniformUint(RandStdLib const& rand)
+                    ALPAKA_FN_HOST static auto createUniformUint(RandStdLib const& /* rand */)
                         -> rand::distribution::cpu::UniformUint<T>
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::distribution::cpu::UniformUint<T>();
                     }
                 };
@@ -260,12 +256,11 @@ namespace alpaka
                 struct CreateDefault<TinyMersenneTwister>
                 {
                     ALPAKA_FN_HOST static auto createDefault(
-                        TinyMersenneTwister const& rand,
+                        TinyMersenneTwister const& /* rand */,
                         std::uint32_t const& seed = 0,
                         std::uint32_t const& subsequence = 0,
                         std::uint32_t const& offset = 0) -> rand::engine::cpu::TinyMersenneTwister
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::engine::cpu::TinyMersenneTwister(seed, subsequence, offset);
                     }
                 };
@@ -274,12 +269,11 @@ namespace alpaka
                 struct CreateDefault<MersenneTwister>
                 {
                     ALPAKA_FN_HOST static auto createDefault(
-                        MersenneTwister const& rand,
+                        MersenneTwister const& /* rand */,
                         std::uint32_t const& seed = 0,
                         std::uint32_t const& subsequence = 0,
                         std::uint32_t const& offset = 0) -> rand::engine::cpu::MersenneTwister
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::engine::cpu::MersenneTwister(seed, subsequence, offset);
                     }
                 };
@@ -288,12 +282,11 @@ namespace alpaka
                 struct CreateDefault<RandomDevice>
                 {
                     ALPAKA_FN_HOST static auto createDefault(
-                        RandomDevice const& rand,
+                        RandomDevice const& /* rand */,
                         std::uint32_t const& seed = 0,
                         std::uint32_t const& subsequence = 0,
                         std::uint32_t const& offset = 0) -> rand::engine::cpu::RandomDevice
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::engine::cpu::RandomDevice(seed, subsequence, offset);
                     }
                 };

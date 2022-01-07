@@ -236,10 +236,8 @@ namespace alpaka
         template<>
         struct GetWarpSize<DevOacc>
         {
-            ALPAKA_FN_HOST static auto getWarpSize(DevOacc const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getWarpSize(DevOacc const& /* dev */) -> std::size_t
             {
-                alpaka::ignore_unused(dev);
-
                 return 1u;
             }
         };
@@ -248,9 +246,9 @@ namespace alpaka
         template<>
         struct Reset<DevOacc>
         {
-            ALPAKA_FN_HOST static auto reset(DevOacc const& dev) -> void
+            ALPAKA_FN_HOST static auto reset(DevOacc const& /* dev */) -> void
             {
-                alpaka::ignore_unused(dev); //! \TODO
+                //! \TODO
             }
         };
     } // namespace traits

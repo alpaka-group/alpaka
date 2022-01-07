@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -47,7 +47,6 @@
 // Implementation details.
 #    include <alpaka/core/ClipCast.hpp>
 #    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevOmp5.hpp>
 
 #    include <limits>
@@ -134,10 +133,8 @@ namespace alpaka
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccOmp5<TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getAccDevProps(DevOmp5 const& dev) -> AccDevProps<TDim, TIdx>
+            ALPAKA_FN_HOST static auto getAccDevProps(DevOmp5 const& /* dev */) -> AccDevProps<TDim, TIdx>
             {
-                alpaka::ignore_unused(dev);
-
 #    if defined(ALPAKA_OFFLOAD_MAX_BLOCK_SIZE) && ALPAKA_OFFLOAD_MAX_BLOCK_SIZE > 0
                 auto const blockThreadCount = std::min(::omp_get_max_threads(), ALPAKA_OFFLOAD_MAX_BLOCK_SIZE);
 #    else

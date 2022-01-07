@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -11,7 +11,6 @@
 
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Positioning.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
@@ -48,10 +47,9 @@ namespace alpaka
         {
             //! \return The index of the current block in the grid.
             template<typename TWorkDiv>
-            ALPAKA_FN_HOST static auto getIdx(gb::IdxGbRef<TDim, TIdx> const& idx, TWorkDiv const& workDiv)
+            ALPAKA_FN_HOST static auto getIdx(gb::IdxGbRef<TDim, TIdx> const& idx, TWorkDiv const& /* workDiv */)
                 -> Vec<TDim, TIdx>
             {
-                alpaka::ignore_unused(workDiv);
                 return idx.m_gridBlockIdx;
             }
         };

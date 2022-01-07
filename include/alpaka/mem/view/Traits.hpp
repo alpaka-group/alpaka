@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/elem/Traits.hpp>
@@ -295,18 +294,15 @@ namespace alpaka
         struct Print<DimInt<Dim<TView>::value - 1u>, TView>
         {
             ALPAKA_FN_HOST static auto print(
-                TView const& view,
+                TView const& /* view */,
                 Elem<TView> const* const ptr,
                 Vec<Dim<TView>, Idx<TView>> const& extent,
                 std::ostream& os,
                 std::string const& elementSeparator,
-                std::string const& rowSeparator,
+                std::string const& /* rowSeparator */,
                 std::string const& rowPrefix,
                 std::string const& rowSuffix) -> void
             {
-                alpaka::ignore_unused(view);
-                alpaka::ignore_unused(rowSeparator);
-
                 os << rowPrefix;
 
                 auto const lastIdx(extent[Dim<TView>::value - 1u] - 1u);

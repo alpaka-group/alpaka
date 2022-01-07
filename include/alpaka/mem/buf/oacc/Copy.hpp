@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -233,7 +233,7 @@ namespace alpaka
                 ALPAKA_FN_HOST TaskCopyOacc(
                     TViewDst& viewDst,
                     TViewSrc const& viewSrc,
-                    TExtent const& extent,
+                    TExtent const& /* extent */,
                     DevOacc const& dev,
                     TCopyPred copyPred)
                     : m_dev(dev)
@@ -241,7 +241,6 @@ namespace alpaka
                     , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
                     , m_copyPred(copyPred)
                 {
-                    alpaka::ignore_unused(extent);
                 }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

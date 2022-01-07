@@ -1,4 +1,4 @@
-/* Copyright 2021 Jiri Vyskocil
+/* Copyright 2022 Jiří Vyskočil, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/math/FloatEqualExact.hpp>
 #    include <alpaka/meta/CudaVectorArrayWrapper.hpp>
 #    include <alpaka/meta/IsStrictBase.hpp>
@@ -51,10 +50,8 @@ class CudaVectorArrayWrapperTestKernel
 public:
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    ALPAKA_FN_ACC auto operator()(TAcc const& /* acc */, bool* success) const -> void
     {
-        alpaka::ignore_unused(acc);
-
         using T1 = alpaka::meta::CudaVectorArrayWrapper<T, 1>;
         T1 t1{0};
         static_assert(T1::size == 1, "CudaVectorArrayWrapper in-kernel size test failed!");

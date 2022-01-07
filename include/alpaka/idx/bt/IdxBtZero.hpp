@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -11,7 +11,6 @@
 
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Positioning.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
 
@@ -41,11 +40,10 @@ namespace alpaka
         {
             //! \return The index of the current thread in the block.
             template<typename TWorkDiv>
-            ALPAKA_FN_HOST static auto getIdx(bt::IdxBtZero<TDim, TIdx> const& idx, TWorkDiv const& workDiv)
-                -> Vec<TDim, TIdx>
+            ALPAKA_FN_HOST static auto getIdx(
+                bt::IdxBtZero<TDim, TIdx> const& /* idx */,
+                TWorkDiv const& /* workDiv */) -> Vec<TDim, TIdx>
             {
-                alpaka::ignore_unused(idx);
-                alpaka::ignore_unused(workDiv);
                 return Vec<TDim, TIdx>::zeros();
             }
         };

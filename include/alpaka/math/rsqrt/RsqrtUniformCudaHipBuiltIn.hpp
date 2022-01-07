@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/rsqrt/Traits.hpp>
 
 #    include <type_traits>
@@ -33,16 +33,16 @@ namespace alpaka
             template<typename TArg>
             struct Rsqrt<RsqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
             {
-                __device__ auto operator()(RsqrtUniformCudaHipBuiltIn const& rsqrt_ctx, TArg const& arg)
+                __device__ auto operator()(RsqrtUniformCudaHipBuiltIn const& /* rsqrt_ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(rsqrt_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         return ::rsqrtf(arg);
                     else if constexpr(is_decayed_v<TArg, double> || std::is_integral_v<TArg>)
                         return ::rsqrt(arg);
                     else
                         static_assert(!sizeof(TArg), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(TArg{});
                 }
             };
         } // namespace traits

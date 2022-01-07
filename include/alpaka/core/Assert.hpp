@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <cassert>
 #include <type_traits>
@@ -40,9 +39,9 @@ namespace alpaka
             template<typename TArg>
             struct AssertValueUnsigned
             {
-                ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(TArg const& arg)
+                ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
+                    [[maybe_unused]] TArg const& arg)
                 {
-                    alpaka::ignore_unused(arg);
                     if constexpr(std::is_signed_v<TArg>)
                         ALPAKA_ASSERT_OFFLOAD(arg >= 0);
 
@@ -65,9 +64,9 @@ namespace alpaka
             template<typename TLhs, typename TRhs>
             struct AssertGreaterThan
             {
-                ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto assertGreaterThan(TRhs const& rhs)
+                ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto assertGreaterThan(
+                    [[maybe_unused]] TRhs const& rhs)
                 {
-                    alpaka::ignore_unused(rhs);
                     if constexpr(std::is_signed_v<TRhs> || (TLhs::value != 0u))
                         ALPAKA_ASSERT_OFFLOAD(TLhs::value > rhs);
 

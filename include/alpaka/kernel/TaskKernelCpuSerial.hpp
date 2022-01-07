@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -21,7 +21,6 @@
 // Implementation details.
 #    include <alpaka/acc/AccCpuSerial.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/meta/NdLoop.hpp>

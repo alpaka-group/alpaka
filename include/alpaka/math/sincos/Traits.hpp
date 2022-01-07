@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -11,7 +11,6 @@
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <cmath>
 
@@ -43,9 +42,12 @@ namespace alpaka
             template<typename T, typename TArg, typename TSfinae = void>
             struct SinCos
             {
-                ALPAKA_FN_HOST_ACC auto operator()(T const& ctx, TArg const& arg, TArg& result_sin, TArg& result_cos)
+                ALPAKA_FN_HOST_ACC auto operator()(
+                    T const& /* ctx */,
+                    TArg const& arg,
+                    TArg& result_sin,
+                    TArg& result_cos)
                 {
-                    alpaka::ignore_unused(ctx);
                     // This is an ADL call. If you get a compile error here then your type is not supported by the
                     // backend and we could not find sincos(TArg, TArg&, TArg&) in the namespace of your type.
                     using detail::sincos;

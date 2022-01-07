@@ -1,4 +1,4 @@
-/* Copyright 2022 Andrea Bocci
+/* Copyright 2022 Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -66,6 +66,8 @@ static constexpr auto isAsyncBufferSupported() -> bool
 #endif // ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
         return true;
+
+    ALPAKA_UNREACHABLE(bool{});
 }
 
 template<typename TAcc, typename TElem, typename TIdx, typename TQueue, typename TExtent>
@@ -80,6 +82,8 @@ auto allocAsyncBufIfSupported(TQueue const& queue, TExtent const& extent)
     {
         return alpaka::allocBuf<TElem, TIdx>(alpaka::getDev(queue), extent);
     }
+
+    ALPAKA_UNREACHABLE(alpaka::allocBuf<TElem, TIdx>(alpaka::getDev(queue), extent));
 }
 
 // 0- and 1- dimensional space

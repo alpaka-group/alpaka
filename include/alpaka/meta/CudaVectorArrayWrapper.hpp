@@ -1,4 +1,4 @@
-/* Copyright 2021 Jiri Vyskocil
+/* Copyright 2022 Jiří Vyskočil, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,7 +12,6 @@
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 
 #    include <alpaka/core/Common.hpp>
-#    include <alpaka/core/Unused.hpp>
 
 #    include <functional>
 #    include <initializer_list>
@@ -214,17 +213,16 @@ namespace alpaka
                 auto it = std::begin(init);
                 this->x = *it;
             }
-            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
+            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[]([[maybe_unused]] int const k) noexcept
             {
                 assert(k == 0);
-                alpaka::ignore_unused(k);
                 return this->x;
             }
 
-            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr const value_type& operator[](int const k) const noexcept
+            ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr const value_type& operator[](
+                [[maybe_unused]] int const k) const noexcept
             {
                 assert(k == 0);
-                alpaka::ignore_unused(k);
                 return this->x;
             }
         };

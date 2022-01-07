@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Bert Wesarg, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bert Wesarg, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -25,7 +25,6 @@
 // Implementation details.
 #    include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/meta/NdLoop.hpp>
@@ -91,8 +90,7 @@ namespace alpaka
 
             // The number of threads in this block.
             TIdx const blockThreadCount(blockThreadExtent.prod());
-            int const iBlockThreadCount(static_cast<int>(blockThreadCount));
-            alpaka::ignore_unused(iBlockThreadCount);
+            [[maybe_unused]] int const iBlockThreadCount(static_cast<int>(blockThreadCount));
 
             if(::omp_in_parallel() != 0)
             {
@@ -119,25 +117,30 @@ namespace alpaka
 // mapping is required. Therefore we use 'omp parallel' with the specified number of threads in a block.
 #    pragma omp parallel num_threads(iBlockThreadCount)
                     {
-                    // The guard is for gcc internal compiler error, as discussed in #735
-#    if(!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 1, 0))
-#        pragma omp single nowait
+                        // The guard is for gcc internal compiler error, as discussed in #735
+                        if constexpr((!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 1, 0)))
                         {
-                            // The OpenMP runtime does not create a parallel region when only one thread is required in
-                            // the num_threads clause. In all other cases we expect to be in a parallel region now.
-                            if((iBlockThreadCount > 1) && (::omp_in_parallel() == 0))
+#    pragma omp single nowait
                             {
-                                throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
-                            }
+                                // The OpenMP runtime does not create a parallel region when only one thread is
+                                // required in the num_threads clause. In all other cases we expect to be in a parallel
+                                // region now.
+                                if((iBlockThreadCount > 1) && (::omp_in_parallel() == 0))
+                                {
+                                    throw std::runtime_error(
+                                        "The OpenMP 2.0 runtime did not create a parallel region!");
+                                }
 
-                            int const numThreads(::omp_get_num_threads());
-                            if(numThreads != iBlockThreadCount)
-                            {
-                                throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads "
-                                                         "that had been required!");
+                                int const numThreads(::omp_get_num_threads());
+                                if(numThreads != iBlockThreadCount)
+                                {
+                                    throw std::runtime_error(
+                                        "The OpenMP 2.0 runtime did not use the number of threads "
+                                        "that had been required!");
+                                }
                             }
                         }
-#    endif
+
                         std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));
 
                         // Wait for all threads to finish before deleting the shared memory.

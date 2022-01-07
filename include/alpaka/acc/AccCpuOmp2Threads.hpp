@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -42,7 +42,6 @@
 // Implementation details.
 #    include <alpaka/core/ClipCast.hpp>
 #    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 
 #    include <omp.h>

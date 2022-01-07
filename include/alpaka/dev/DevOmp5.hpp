@@ -201,10 +201,9 @@ namespace alpaka
         template<>
         struct GetMemBytes<DevOmp5>
         {
-            ALPAKA_FN_HOST static auto getMemBytes(DevOmp5 const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getMemBytes(DevOmp5 const& /* dev */) -> std::size_t
             {
-                alpaka::ignore_unused(dev); //! \todo query device .. somehow
-
+                //! \todo query device .. somehow
                 return 0u;
             }
         };
@@ -215,10 +214,8 @@ namespace alpaka
         template<>
         struct GetFreeMemBytes<DevOmp5>
         {
-            ALPAKA_FN_HOST static auto getFreeMemBytes(DevOmp5 const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getFreeMemBytes(DevOmp5 const& /* dev */) -> std::size_t
             {
-                alpaka::ignore_unused(dev);
-
                 return 0u;
             }
         };
@@ -227,10 +224,8 @@ namespace alpaka
         template<>
         struct GetWarpSize<DevOmp5>
         {
-            ALPAKA_FN_HOST static auto getWarpSize(DevOmp5 const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getWarpSize(DevOmp5 const& /* dev */) -> std::size_t
             {
-                alpaka::ignore_unused(dev);
-
                 return 1u;
             }
         };
@@ -239,9 +234,9 @@ namespace alpaka
         template<>
         struct Reset<DevOmp5>
         {
-            ALPAKA_FN_HOST static auto reset(DevOmp5 const& dev) -> void
+            ALPAKA_FN_HOST static auto reset(DevOmp5 const& /* dev */) -> void
             {
-                alpaka::ignore_unused(dev); //! \TODO
+                //! \TODO
             }
         };
     } // namespace traits

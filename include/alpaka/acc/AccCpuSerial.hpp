@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -37,7 +37,6 @@
 
 // Implementation details.
 #    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 
 #    include <memory>
@@ -123,10 +122,8 @@ namespace alpaka
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccCpuSerial<TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> AccDevProps<TDim, TIdx>
+            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& /* dev */) -> AccDevProps<TDim, TIdx>
             {
-                alpaka::ignore_unused(dev);
-
                 return {// m_multiProcessorCount
                         static_cast<TIdx>(1),
                         // m_gridBlockExtentMax
