@@ -17,6 +17,7 @@
 
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
+#    include <alpaka/pltf/PltfOacc.hpp>
 #    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/queue/Properties.hpp>
 #    include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
@@ -27,16 +28,14 @@
 
 #    include <openacc.h>
 
+#    include <memory>
+#    include <mutex>
+#    include <sstream>
+#    include <vector>
+
 namespace alpaka
 {
     class DevOacc;
-
-    namespace traits
-    {
-        template<typename TPltf, typename TSfinae>
-        struct GetDevByIdx;
-    }
-    class PltfOacc;
 
     namespace oacc
     {
@@ -136,6 +135,7 @@ namespace alpaka
             };
         } // namespace detail
     } // namespace oacc
+
     //! The OpenACC device handle.
     class DevOacc
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevOacc>
@@ -143,8 +143,30 @@ namespace alpaka
     {
         friend struct traits::GetDevByIdx<PltfOacc>;
 
+        static auto& device(int iDevice)
+        {
+            static std::vector<std::shared_ptr<oacc::detail::DevOaccImpl>> devices;
+            static std::mutex mutex;
+
+            if(!devices.size())
+            {
+                std::lock_guard<std::mutex> lock(mutex);
+                if(!devices.size())
+                    devices.resize(getDevCount<PltfOacc>());
+            }
+            auto& d = devices.at(static_cast<unsigned>(iDevice));
+            if(!d)
+            {
+                std::lock_guard<std::mutex> lock(mutex);
+                if(!d)
+                    return devices[static_cast<unsigned>(iDevice)]
+                        = std::make_shared<oacc::detail::DevOaccImpl>(iDevice);
+            }
+            return d;
+        }
+
     protected:
-        DevOacc(int iDevice) : m_spDevOaccImpl(std::make_shared<oacc::detail::DevOaccImpl>(iDevice))
+        DevOacc(int iDevice) : m_spDevOaccImpl(device(iDevice))
         {
         }
 
@@ -302,6 +324,36 @@ namespace alpaka
                 generic::currentThreadWaitForDevice(dev);
             }
         };
+
+        //! The OpenACC platform device type trait specialization.
+        template<>
+        struct DevType<PltfOacc>
+        {
+            using type = DevOacc;
+        };
+
+        //! The OpenACC platform device get trait specialization.
+        template<>
+        struct GetDevByIdx<PltfOacc>
+        {
+            //! \param devIdx device id, less than GetDevCount
+            ALPAKA_FN_HOST static auto getDevByIdx(std::size_t devIdx) -> DevOacc
+            {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                std::size_t const devCount(getDevCount<PltfOacc>());
+                if(devIdx >= devCount)
+                {
+                    std::stringstream ssErr;
+                    ssErr << "Unable to return device handle for OpenACC device with index " << devIdx
+                          << " because there are only " << devCount << " devices!";
+                    throw std::runtime_error(ssErr.str());
+                }
+
+                return {static_cast<int>(devIdx)};
+            }
+        };
+
     } // namespace traits
 } // namespace alpaka
 
