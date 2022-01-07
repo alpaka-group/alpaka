@@ -335,29 +335,39 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                ALPAKA_ASSERT(
-                    getDev(viewDst).m_spDevOaccImpl->iDevice() == getDev(viewSrc).m_spDevOaccImpl->iDevice());
-
-                return alpaka::oacc::detail::
-                    makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
-                        viewDst,
-                        viewSrc,
-                        extent,
-                        getDev(viewDst),
 #    if _OPENACC >= 201510 && (!defined __GNUC__)
-                        acc_memcpy_device
-#    else
-                        // acc_memcpy_device is only available since OpenACC2.5
-                        // , but we want the tests to compile anyway
-                        [](void* dst, void* src, std::size_t size)
-                        {
-                            void* buf = core::alignedAlloc(core::vectorization::defaultAlignment, size);
-                            acc_memcpy_from_device(buf, src, size);
-                            acc_memcpy_to_device(dst, buf, size);
-                            core::alignedFree(buf);
-                        }
+                // acc_memcpy_device is only available since OpenACC2.5
+                // , but we want the tests to compile anyway
+                if(getDev(viewDst).m_spDevOaccImpl->iDevice() == getDev(viewSrc).m_spDevOaccImpl->iDevice())
+                {
+                    return alpaka::oacc::detail::
+                        makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
+                            viewDst,
+                            viewSrc,
+                            extent,
+                            getDev(viewDst),
+                            acc_memcpy_device);
+                }
+                else
 #    endif
-                    );
+                {
+                    return alpaka::oacc::detail::
+                        makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
+                            viewDst,
+                            viewSrc,
+                            extent,
+                            getDev(viewDst),
+                            [devSrc = getDev(viewSrc),
+                             devDst = getDev(viewDst)](void* dst, void* src, std::size_t size)
+                            {
+                                void* buf = core::alignedAlloc(core::vectorization::defaultAlignment, size);
+                                devSrc.makeCurrent();
+                                acc_memcpy_from_device(buf, src, size);
+                                devDst.makeCurrent();
+                                acc_memcpy_to_device(dst, buf, size);
+                                core::alignedFree(buf);
+                            });
+                }
             }
         };
     } // namespace traits
