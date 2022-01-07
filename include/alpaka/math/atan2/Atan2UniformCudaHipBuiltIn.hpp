@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/atan2/Traits.hpp>
 
 #    include <type_traits>
@@ -37,16 +37,16 @@ namespace alpaka
                 Tx,
                 std::enable_if_t<std::is_floating_point_v<Ty> && std::is_floating_point_v<Tx>>>
             {
-                __device__ auto operator()(Atan2UniformCudaHipBuiltIn const& atan2_ctx, Ty const& y, Tx const& x)
+                __device__ auto operator()(Atan2UniformCudaHipBuiltIn const& /* atan2_ctx */, Ty const& y, Tx const& x)
                 {
-                    alpaka::ignore_unused(atan2_ctx);
-
                     if constexpr(is_decayed_v<Ty, float> && is_decayed_v<Tx, float>)
                         return ::atan2f(y, x);
                     else if constexpr(is_decayed_v<Ty, double> || is_decayed_v<Tx, double>)
                         return ::atan2(y, x);
                     else
                         static_assert(!sizeof(Ty), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(Ty{});
                 }
             };
         } // namespace traits

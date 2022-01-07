@@ -12,7 +12,6 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/BoostPredef.hpp>
-#    include <alpaka/core/Unused.hpp>
 
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
 #        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
@@ -35,6 +34,7 @@
 #    include <iostream>
 #    include <sstream>
 #    include <stdexcept>
+#    include <tuple>
 
 namespace alpaka
 {
@@ -149,7 +149,7 @@ namespace alpaka
                     // Return the previous error from cudaStreamCreate.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(rc);
                     // Reset the Error state.
-                    ignore_unused(ALPAKA_API_PREFIX(GetLastError)());
+                    std::ignore = ALPAKA_API_PREFIX(GetLastError)();
                     return false;
                 }
             }

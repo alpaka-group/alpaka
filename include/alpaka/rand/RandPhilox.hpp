@@ -1,4 +1,4 @@
-/* Copyright 2022 Jiri Vyskocil, Jan Stephan
+/* Copyright 2022 Jiří Vyskočil, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/meta/IsArrayOrVector.hpp>
 #include <alpaka/rand/Philox/PhiloxSingle.hpp>
 #include <alpaka/rand/Philox/PhiloxVector.hpp>
@@ -200,6 +199,8 @@ namespace alpaka
                     // Since it's possible to get a host-only engine here, the call has to go through proxy
                     return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / engine.max() * _range + _min;
                 }
+
+                ALPAKA_UNREACHABLE(TResult{});
             }
 
         private:

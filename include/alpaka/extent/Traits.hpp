@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Andrea Bocci
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/meta/Fold.hpp>
@@ -80,9 +79,8 @@ namespace alpaka
             template<typename TExtent, size_t... TIndices>
             ALPAKA_FN_HOST_ACC auto getExtentProductInternal(
                 TExtent const& extent,
-                std::index_sequence<TIndices...> const& indices) -> Idx<TExtent>
+                std::index_sequence<TIndices...> const& /* indices */) -> Idx<TExtent>
             {
-                alpaka::ignore_unused(indices);
                 return (getExtent<TIndices>(extent) * ... * Idx<TExtent>(1u));
             }
         } // namespace detail

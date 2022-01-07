@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -211,7 +211,7 @@ namespace alpaka
                 std::is_same<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>::value,
                 "The source and the destination view are required to have the same element type!");
 
-            TaskCopyCpu(TViewDst& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
+            TaskCopyCpu(TViewDst& viewDst, TViewSrc const& viewSrc, [[maybe_unused]] TExtent const& extent)
                 : m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
             {
@@ -219,9 +219,6 @@ namespace alpaka
                 ALPAKA_ASSERT(extent::getExtentVec(extent).prod() == 1u);
                 ALPAKA_ASSERT(extent::getExtentVec(viewDst).prod() == 1u);
                 ALPAKA_ASSERT(extent::getExtentVec(viewSrc).prod() == 1u);
-#ifdef NDEBUG
-                alpaka::ignore_unused(extent);
-#endif
             }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

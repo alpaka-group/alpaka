@@ -1,4 +1,4 @@
-/** Copyright 2019 Jakob Krude, Benjamin Worpitz
+/** Copyright 2022 Jakob Krude, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -87,9 +87,8 @@ namespace alpaka
                     }
 
                     ALPAKA_FN_ACC
-                    auto operator()(size_t idx, TAcc const& acc) const -> TData&
+                    auto operator()(size_t idx, TAcc const& /* acc */) const -> TData&
                     {
-                        alpaka::ignore_unused(acc);
                         return pDevBuffer[idx];
                     }
 

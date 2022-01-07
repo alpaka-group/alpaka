@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -8,7 +8,6 @@
  */
 
 #include <alpaka/atomic/Traits.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/FloatEqualExact.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -352,12 +351,11 @@ class AtomicTestKernel<
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuUniformCudaHipRt<TDim, TIdx> const& acc, bool* success, T operandOrig)
-        const -> void
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuUniformCudaHipRt<TDim, TIdx> const& /* acc */,
+        bool* /* success */,
+        T /* operandOrig */) const -> void
     {
-        alpaka::ignore_unused(acc);
-        alpaka::ignore_unused(success);
-        alpaka::ignore_unused(operandOrig);
     }
 };
 
@@ -371,12 +369,11 @@ class AtomicTestKernel<
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuUniformCudaHipRt<TDim, TIdx> const& acc, bool* success, T operandOrig)
-        const -> void
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuUniformCudaHipRt<TDim, TIdx> const& /* acc */,
+        bool* /* success */,
+        T /* operandOrig */) const -> void
     {
-        alpaka::ignore_unused(acc);
-        alpaka::ignore_unused(success);
-        alpaka::ignore_unused(operandOrig);
     }
 };
 #endif
@@ -590,12 +587,11 @@ class AtomicTestKernel<
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuCudaRt<TDim, TIdx> const& acc, bool* success, T operandOrig) const
-        -> void
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuCudaRt<TDim, TIdx> const& /* acc */,
+        bool* success,
+        T /* operandOrig */) const -> void
     {
-        alpaka::ignore_unused(acc);
-        alpaka::ignore_unused(operandOrig);
-
         // All other types are not supported by CUDA atomic operations.
         ALPAKA_CHECK(*success, true);
     }
@@ -811,12 +807,9 @@ class AtomicTestKernel<
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuHipRt<TDim, TIdx> const& acc, bool* success, T operandOrig) const
-        -> void
+    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuHipRt<TDim, TIdx> const& /* acc */, bool* success, T /* operandOrig */)
+        const -> void
     {
-        alpaka::ignore_unused(acc);
-        alpaka::ignore_unused(operandOrig);
-
         // All other types are not supported by HIP atomic operations.
         ALPAKA_CHECK(*success, true);
     }
@@ -832,11 +825,9 @@ class AtomicTestKernel<
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccOacc<TDim, TIdx> const& acc, bool* success, T operandOrig) const -> void
+    ALPAKA_FN_ACC auto operator()(alpaka::AccOacc<TDim, TIdx> const& /* acc */, bool* success, T /* operandOrig */)
+        const -> void
     {
-        alpaka::ignore_unused(acc);
-        alpaka::ignore_unused(operandOrig);
-
         // All other types are not supported by Oacc atomic operations.
         ALPAKA_CHECK(*success, true);
     }

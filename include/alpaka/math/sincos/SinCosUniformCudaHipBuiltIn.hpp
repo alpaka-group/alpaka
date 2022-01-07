@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/sincos/Traits.hpp>
 
 #    include <type_traits>
@@ -34,13 +34,11 @@ namespace alpaka
             struct SinCos<SinCosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
             {
                 __device__ auto operator()(
-                    SinCosUniformCudaHipBuiltIn const& sincos_ctx,
+                    SinCosUniformCudaHipBuiltIn const& /* sincos_ctx */,
                     TArg const& arg,
                     TArg& result_sin,
                     TArg& result_cos) -> void
                 {
-                    alpaka::ignore_unused(sincos_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         ::sincosf(arg, &result_sin, &result_cos);
                     else if constexpr(is_decayed_v<TArg, double>)

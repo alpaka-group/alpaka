@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/abs/Traits.hpp>
 
 #    include <type_traits>
@@ -33,10 +33,8 @@ namespace alpaka
             template<typename TArg>
             struct Abs<AbsUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_signed_v<TArg>>>
             {
-                __device__ auto operator()(AbsUniformCudaHipBuiltIn const& abs_ctx, TArg const& arg)
+                __device__ auto operator()(AbsUniformCudaHipBuiltIn const& /* abs_ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(abs_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         return ::fabsf(arg);
                     else if constexpr(is_decayed_v<TArg, double>)
@@ -49,6 +47,8 @@ namespace alpaka
                         return ::llabs(arg);
                     else
                         static_assert(!sizeof(TArg), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(TArg{});
                 }
             };
         } // namespace traits

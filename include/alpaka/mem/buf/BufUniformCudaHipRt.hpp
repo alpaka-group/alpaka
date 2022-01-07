@@ -1,4 +1,4 @@
-/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci
+/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -204,12 +204,11 @@ namespace alpaka
         struct BufAlloc<TElem, DimInt<0u>, TIdx, DevUniformCudaHipRt>
         {
             template<typename TExtent>
-            ALPAKA_FN_HOST static auto allocBuf(DevUniformCudaHipRt const& dev, TExtent const& extent)
+            ALPAKA_FN_HOST static auto allocBuf(DevUniformCudaHipRt const& dev, [[maybe_unused]] TExtent const& extent)
                 -> BufUniformCudaHipRt<TElem, DimInt<0u>, TIdx>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                alpaka::ignore_unused(extent);
                 using Scalar = alpaka::Vec<alpaka::DimInt<0u>, TIdx>;
                 ALPAKA_ASSERT(Scalar{} == extent);
 
@@ -386,12 +385,11 @@ namespace alpaka
 #    endif
 
             template<typename TQueue, typename TExtent>
-            ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, TExtent const& extent)
+            ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, [[maybe_unused]] TExtent const& extent)
                 -> BufUniformCudaHipRt<TElem, DimInt<0u>, TIdx>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                alpaka::ignore_unused(extent);
                 using Scalar = alpaka::Vec<alpaka::DimInt<0u>, TIdx>;
                 ALPAKA_ASSERT(Scalar{} == extent);
 

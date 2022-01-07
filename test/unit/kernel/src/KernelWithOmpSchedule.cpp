@@ -1,4 +1,4 @@
-/* Copyright 2020-2021 Sergei Bastrakov
+/* Copyright 2022 Sergei Bastrakov, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -22,10 +22,9 @@ struct KernelWithOmpScheduleBase
 {
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    ALPAKA_FN_ACC auto operator()(TAcc const& /* acc */, bool* success) const -> void
     {
         // No run-time check is performed
-        alpaka::ignore_unused(acc);
         ALPAKA_CHECK(*success, true);
     }
 };
@@ -87,16 +86,11 @@ namespace alpaka
         {
             template<typename TDim, typename... TArgs>
             ALPAKA_FN_HOST static auto getOmpSchedule(
-                KernelWithTrait<TBase> const& kernelFnObj,
-                Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
-                Vec<TDim, Idx<TAcc>> const& threadElemExtent,
-                TArgs const&... args) -> alpaka::omp::Schedule
+                KernelWithTrait<TBase> const& /* kernelFnObj */,
+                Vec<TDim, Idx<TAcc>> const& /* blockThreadExtent */,
+                Vec<TDim, Idx<TAcc>> const& /* threadElemExtent */,
+                TArgs const&... /* args */) -> alpaka::omp::Schedule
             {
-                alpaka::ignore_unused(kernelFnObj);
-                alpaka::ignore_unused(blockThreadExtent);
-                alpaka::ignore_unused(threadElemExtent);
-                alpaka::ignore_unused(args...);
-
                 return alpaka::omp::Schedule{alpaka::omp::Schedule::Static, 4};
             }
         };

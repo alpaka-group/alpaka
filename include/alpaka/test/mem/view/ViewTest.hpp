@@ -125,14 +125,12 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<typename TAcc, typename TIter>
             ALPAKA_FN_ACC void operator()(
-                TAcc const& acc,
+                TAcc const& /* acc */,
                 bool* success,
                 TIter const& begin,
                 TIter const& end,
                 std::uint8_t const& byte) const
             {
-                alpaka::ignore_unused(acc);
-
                 constexpr auto elemSizeInByte = sizeof(decltype(*begin));
                 for(auto it = begin; it != end; ++it)
                 {
@@ -168,14 +166,12 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<typename TAcc, typename TIterA, typename TIterB>
             ALPAKA_FN_ACC void operator()(
-                TAcc const& acc,
+                TAcc const& /* acc */,
                 bool* success,
                 TIterA beginA,
                 TIterA const& endA,
                 TIterB beginB) const
             {
-                alpaka::ignore_unused(acc);
-
                 for(; beginA != endA; ++beginA, ++beginB)
                 {
 #if BOOST_COMP_CLANG

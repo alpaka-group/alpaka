@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -18,10 +17,8 @@ namespace alpaka
     {
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj, typename T>
-        ALPAKA_FN_HOST_ACC auto foldr(TFnObj const& f, T const& t) -> T
+        ALPAKA_FN_HOST_ACC auto foldr(TFnObj const& /* f */, T const& t) -> T
         {
-            alpaka::ignore_unused(f);
-
             return t;
         }
         ALPAKA_NO_HOST_ACC_WARNING

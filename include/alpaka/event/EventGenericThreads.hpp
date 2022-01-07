@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/core/Utility.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -83,10 +82,9 @@ namespace alpaka
     {
     public:
         //! \param bBusyWaiting Unused. EventGenericThreads never does busy waiting.
-        EventGenericThreads(TDev const& dev, bool bBusyWaiting = true)
+        EventGenericThreads(TDev const& dev, [[maybe_unused]] bool bBusyWaiting = true)
             : m_spEventImpl(std::make_shared<generic::detail::EventGenericThreadsImpl<TDev>>(dev))
         {
-            alpaka::ignore_unused(bBusyWaiting);
         }
         auto operator==(EventGenericThreads<TDev> const& rhs) const -> bool
         {
@@ -136,12 +134,9 @@ namespace alpaka
         struct Enqueue<alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>, EventGenericThreads<TDev>>
         {
             ALPAKA_FN_HOST static auto enqueue(
-                alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>& queueImpl,
+                [[maybe_unused]] alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>& queueImpl,
                 EventGenericThreads<TDev>& event) -> void
             {
-#if(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                alpaka::ignore_unused(queueImpl);
-#endif
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Copy the shared pointer of the event implementation.
@@ -154,23 +149,26 @@ namespace alpaka
 
                 ++spEventImpl->m_enqueueCount;
 
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                auto const enqueueCount = spEventImpl->m_enqueueCount;
+                // Workaround: Clang can not support this when natively compiling device code. See
+                // ConcurrentExecPool.hpp.
+                if constexpr(!((BOOST_COMP_CLANG_CUDA != BOOST_VERSION_NUMBER_NOT_AVAILABLE)
+                               && (BOOST_ARCH_PTX != BOOST_VERSION_NUMBER_NOT_AVAILABLE)))
+                {
+                    auto const enqueueCount = spEventImpl->m_enqueueCount;
 
-                // Enqueue a task that only resets the events flag if it is completed.
-                spEventImpl->m_future = queueImpl.m_workerThread.enqueueTask(
-                    [spEventImpl, enqueueCount]()
-                    {
-                        std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-
-                        // Nothing to do if it has been re-enqueued to a later position in the queue.
-                        if(enqueueCount == spEventImpl->m_enqueueCount)
+                    // Enqueue a task that only resets the events flag if it is completed.
+                    spEventImpl->m_future = queueImpl.m_workerThread.enqueueTask(
+                        [spEventImpl, enqueueCount]()
                         {
-                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
-                        }
-                    });
-#endif
+                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
+
+                            // Nothing to do if it has been re-enqueued to a later position in the queue.
+                            if(enqueueCount == spEventImpl->m_enqueueCount)
+                            {
+                                spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+                            }
+                        });
+                }
             }
         };
         //! The CPU non-blocking device queue enqueue trait specialization.
@@ -345,11 +343,9 @@ namespace alpaka
         struct WaiterWaitFor<alpaka::generic::detail::QueueGenericThreadsBlockingImpl<TDev>, EventGenericThreads<TDev>>
         {
             ALPAKA_FN_HOST static auto waiterWaitFor(
-                alpaka::generic::detail::QueueGenericThreadsBlockingImpl<TDev>& queueImpl,
+                alpaka::generic::detail::QueueGenericThreadsBlockingImpl<TDev>& /* queueImpl */,
                 EventGenericThreads<TDev> const& event) -> void
             {
-                alpaka::ignore_unused(queueImpl);
-
                 // NOTE: Difference to non-blocking version: directly wait for event.
                 wait(*event.m_spEventImpl);
             }

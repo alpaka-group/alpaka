@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/round/Traits.hpp>
 
 #    include <type_traits>
@@ -33,16 +33,16 @@ namespace alpaka
             template<typename TArg>
             struct Round<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& round_ctx, TArg const& arg)
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* round_ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(round_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         return ::roundf(arg);
                     else if constexpr(is_decayed_v<TArg, double>)
                         return ::round(arg);
                     else
                         static_assert(!sizeof(TArg), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(TArg{});
                 }
             };
 
@@ -50,16 +50,16 @@ namespace alpaka
             template<typename TArg>
             struct Lround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& lround_ctx, TArg const& arg)
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* lround_ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(lround_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         return ::lroundf(arg);
                     else if constexpr(is_decayed_v<TArg, double>)
                         return ::lround(arg);
                     else
                         static_assert(!sizeof(TArg), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(long{});
                 }
             };
 
@@ -67,16 +67,18 @@ namespace alpaka
             template<typename TArg>
             struct Llround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& llround_ctx, TArg const& arg)
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* llround_ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(llround_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         return ::llroundf(arg);
                     else if constexpr(is_decayed_v<TArg, double>)
                         return ::llround(arg);
                     else
                         static_assert(!sizeof(TArg), "Unsupported data type");
+
+                    // NVCC versions before 11.3 are unable to compile 'long long{}': "type name is not allowed".
+                    using Ret [[maybe_unused]] = long long;
+                    ALPAKA_UNREACHABLE(Ret{});
                 }
             };
         } // namespace traits

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
 
@@ -31,11 +30,11 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<typename TIndex, typename TExtentVec, typename TFnObj>
-                ALPAKA_FN_HOST_ACC static auto ndLoop(TIndex& idx, TExtentVec const& extent, TFnObj const& f) -> void
+                ALPAKA_FN_HOST_ACC static auto ndLoop(
+                    TIndex& /* idx */,
+                    TExtentVec const& /* extent */,
+                    TFnObj const& /* f */) -> void
                 {
-                    alpaka::ignore_unused(idx);
-                    alpaka::ignore_unused(extent);
-                    alpaka::ignore_unused(f);
                 }
             };
             //! N-dimensional loop iteration template.
@@ -98,12 +97,10 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TExtentVec, typename TFnObj, std::size_t... Tdims>
         ALPAKA_FN_HOST_ACC auto ndLoop(
-            std::index_sequence<Tdims...> const& indexSequence,
+            [[maybe_unused]] std::index_sequence<Tdims...> const& indexSequence,
             TExtentVec const& extent,
             TFnObj const& f) -> void
         {
-            alpaka::ignore_unused(indexSequence);
-
             static_assert(
                 Dim<TExtentVec>::value > 0u,
                 "The dimension of the extent given to ndLoop has to be larger than zero!");

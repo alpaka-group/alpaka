@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -98,12 +98,11 @@ namespace alpaka
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec, typename... TArgs>
             ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                SharedMemKernel<TnumUselessWork, Val> const& sharedMemKernel,
+                SharedMemKernel<TnumUselessWork, Val> const& /* sharedMemKernel */,
                 TVec const& blockThreadExtent,
                 TVec const& threadElemExtent,
                 TArgs&&...) -> std::size_t
             {
-                alpaka::ignore_unused(sharedMemKernel);
                 return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
             }
         };

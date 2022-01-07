@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz
+/* Copyright 2022 Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -11,7 +11,6 @@
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <cmath>
 
@@ -29,9 +28,8 @@ namespace alpaka
             template<typename T, typename Ty, typename Tx, typename TSfinae = void>
             struct Atan2
             {
-                ALPAKA_FN_HOST_ACC auto operator()(T const& ctx, Ty const& y, Tx const& x)
+                ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, Ty const& y, Tx const& x)
                 {
-                    alpaka::ignore_unused(ctx);
                     // This is an ADL call. If you get a compile error here then your type is not supported by the
                     // backend and we could not find atan2(Tx, Ty) in the namespace of your type.
                     using std::atan2;

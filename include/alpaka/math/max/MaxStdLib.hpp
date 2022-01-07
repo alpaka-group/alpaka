@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Decay.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/max/Traits.hpp>
 
 #include <algorithm>
@@ -32,10 +31,8 @@ namespace alpaka
             template<typename Tx, typename Ty>
             struct Max<MaxStdLib, Tx, Ty, std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
             {
-                ALPAKA_FN_HOST auto operator()(MaxStdLib const& max_ctx, Tx const& x, Ty const& y)
+                ALPAKA_FN_HOST auto operator()(MaxStdLib const& /* max_ctx */, Tx const& x, Ty const& y)
                 {
-                    alpaka::ignore_unused(max_ctx);
-
                     using std::fmax;
                     using std::max;
 

@@ -1,4 +1,4 @@
-/* Copyright 2021 Jiri Vyskocil, Rene Widera
+/* Copyright 2022 Jiří Vyskočil, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -128,10 +128,9 @@ struct InitRandomKernel<Strategy::subsequence>
         TAcc const& acc, ///< current accelerator
         TExtent const extent, ///< size of the PRNG states buffer
         TRandEngine* const states, ///< PRNG states buffer
-        unsigned const skipLength = 0 ///< number of PRNG elements to skip (offset strategy only)
+        unsigned const /* skipLength */ = 0 ///< number of PRNG elements to skip (offset strategy only)
     ) const -> void
     {
-        alpaka::ignore_unused(skipLength);
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]; ///< index of the current thread
         if(idx < extent[0])
         {
@@ -152,7 +151,6 @@ struct InitRandomKernel<Strategy::offset>
         unsigned const skipLength = 0 ///< number of PRNG elements to skip (offset strategy only)
     ) const -> void
     {
-        alpaka::ignore_unused(skipLength);
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]; ///< index of the current thread
         if(idx < extent[0])
         {

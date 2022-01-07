@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dev/cpu/SysInfo.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
@@ -134,10 +133,8 @@ namespace alpaka
         template<>
         struct GetName<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getName(DevCpu const& dev) -> std::string
+            ALPAKA_FN_HOST static auto getName(DevCpu const& /* dev */) -> std::string
             {
-                alpaka::ignore_unused(dev);
-
                 return cpu::detail::getCpuName();
             }
         };
@@ -146,10 +143,8 @@ namespace alpaka
         template<>
         struct GetMemBytes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getMemBytes(DevCpu const& /* dev */) -> std::size_t
             {
-                alpaka::ignore_unused(dev);
-
                 return cpu::detail::getTotalGlobalMemSizeBytes();
             }
         };
@@ -158,10 +153,8 @@ namespace alpaka
         template<>
         struct GetFreeMemBytes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getFreeMemBytes(DevCpu const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getFreeMemBytes(DevCpu const& /* dev */) -> std::size_t
             {
-                alpaka::ignore_unused(dev);
-
                 return cpu::detail::getFreeGlobalMemSizeBytes();
             }
         };
@@ -170,10 +163,8 @@ namespace alpaka
         template<>
         struct GetWarpSize<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getWarpSize(DevCpu const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getWarpSize(DevCpu const& /* dev */) -> std::size_t
             {
-                alpaka::ignore_unused(dev);
-
                 return 1u;
             }
         };
@@ -182,12 +173,9 @@ namespace alpaka
         template<>
         struct Reset<DevCpu>
         {
-            ALPAKA_FN_HOST static auto reset(DevCpu const& dev) -> void
+            ALPAKA_FN_HOST static auto reset(DevCpu const& /* dev */) -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                alpaka::ignore_unused(dev);
-
                 // The CPU does nothing on reset.
             }
         };

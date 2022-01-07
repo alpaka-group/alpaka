@@ -1,4 +1,4 @@
-/* Copyright 2021 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci
+/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/core/Vectorize.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/dev/Traits.hpp>
@@ -29,6 +28,7 @@
 #include <functional>
 #include <memory>
 #include <type_traits>
+#include <utility>
 
 namespace alpaka
 {
@@ -269,7 +269,7 @@ namespace alpaka
                             // free the memory
                             alpaka::free(Allocator{}, ptr);
                             // keep the queue alive until all memory operations are complete
-                            alpaka::ignore_unused(queue);
+                            [&queue = std::as_const(queue)]() {}();
                         });
                 };
 
@@ -388,14 +388,14 @@ namespace alpaka
         template<typename TElem, typename TDim, typename TIdx>
         struct IsPinned<alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto isPinned(alpaka::detail::BufCpuImpl<TElem, TDim, TIdx> const& bufImpl) -> bool
+            ALPAKA_FN_HOST static auto isPinned(
+                [[maybe_unused]] alpaka::detail::BufCpuImpl<TElem, TDim, TIdx> const& bufImpl) -> bool
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
                 return bufImpl.m_bPinned;
 #else
-                alpaka::ignore_unused(bufImpl);
                 return false;
 #endif
             }
@@ -404,15 +404,13 @@ namespace alpaka
         template<typename TElem, typename TDim, typename TIdx>
         struct PrepareForAsyncCopy<BufCpu<TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto prepareForAsyncCopy(BufCpu<TElem, TDim, TIdx>& buf) -> void
+            ALPAKA_FN_HOST static auto prepareForAsyncCopy([[maybe_unused]] BufCpu<TElem, TDim, TIdx>& buf) -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 // to optimize the data transfer performance between a cuda/hip device the cpu buffer has to be pinned,
                 // for exclusive cpu use, no preparing is needed
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
                 pin(buf);
-#else
-                alpaka::ignore_unused(buf);
 #endif
             }
         };

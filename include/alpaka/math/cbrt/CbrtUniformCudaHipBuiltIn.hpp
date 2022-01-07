@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/cbrt/Traits.hpp>
 
 #    include <type_traits>
@@ -33,16 +33,16 @@ namespace alpaka
             template<typename TArg>
             struct Cbrt<CbrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
             {
-                __device__ auto operator()(CbrtUniformCudaHipBuiltIn const& cbrt_ctx, TArg const& arg)
+                __device__ auto operator()(CbrtUniformCudaHipBuiltIn const& /* cbrt_ctx */, TArg const& arg)
                 {
-                    alpaka::ignore_unused(cbrt_ctx);
-
                     if constexpr(is_decayed_v<TArg, float>)
                         return ::cbrtf(arg);
                     else if constexpr(is_decayed_v<TArg, double> || std::is_integral_v<TArg>)
                         return ::cbrt(arg);
                     else
                         static_assert(!sizeof(TArg), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(TArg{});
                 }
             };
         } // namespace traits

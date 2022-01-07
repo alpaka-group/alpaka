@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,7 +12,6 @@
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Positioning.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
@@ -89,12 +88,10 @@ namespace alpaka
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TIdxWorkDiv, typename TGridThreadIdx, typename TThreadElemExtent>
     ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
-        TIdxWorkDiv const& idxWorkDiv,
+        [[maybe_unused]] TIdxWorkDiv const& idxWorkDiv,
         TGridThreadIdx const& gridThreadIdx,
         TThreadElemExtent const& threadElemExtent) -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
     {
-        alpaka::ignore_unused(idxWorkDiv);
-
         return gridThreadIdx * threadElemExtent;
     }
     //! Get the index of the first element this thread computes.

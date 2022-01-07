@@ -1,4 +1,4 @@
-/* Copyright 2021 Jeffrey Kelling
+/* Copyright 2022 Jeffrey Kelling, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/cos/Traits.hpp>
 #include <alpaka/math/isnan/Traits.hpp>
 #include <alpaka/math/log/Traits.hpp>
@@ -191,9 +190,8 @@ namespace alpaka
                 template<typename T>
                 struct CreateUniformReal<RandDefault, T, std::enable_if_t<std::is_floating_point<T>::value>>
                 {
-                    ALPAKA_FN_HOST_ACC static auto createUniformReal(RandDefault const& rand)
+                    ALPAKA_FN_HOST_ACC static auto createUniformReal(RandDefault const& /* rand */)
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::distribution::gpu::UniformReal<T>();
                     }
                 };
@@ -201,9 +199,8 @@ namespace alpaka
                 template<typename T>
                 struct CreateUniformUint<RandDefault, T, std::enable_if_t<std::is_integral<T>::value>>
                 {
-                    ALPAKA_FN_HOST_ACC static auto createUniformUint(RandDefault const& rand)
+                    ALPAKA_FN_HOST_ACC static auto createUniformUint(RandDefault const& /* rand */)
                     {
-                        alpaka::ignore_unused(rand);
                         return rand::distribution::gpu::UniformUint<T>();
                     }
                 };
@@ -219,12 +216,11 @@ namespace alpaka
                 {
                     template<typename TAcc>
                     ALPAKA_FN_HOST_ACC static auto createDefault(
-                        TAcc const& acc,
+                        TAcc const& /* acc */,
                         std::uint32_t const& seed,
                         std::uint32_t const& subsequence,
                         std::uint32_t const& offset) -> rand::Philox4x32x10<TAcc>
                     {
-                        alpaka::ignore_unused(acc);
                         return rand::Philox4x32x10<TAcc>(seed, subsequence, offset);
                     }
                 };

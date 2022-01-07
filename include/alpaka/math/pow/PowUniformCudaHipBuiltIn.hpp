@@ -13,7 +13,7 @@
 
 #    include <alpaka/core/CudaHipMath.hpp>
 #    include <alpaka/core/Decay.hpp>
-#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Unreachable.hpp>
 #    include <alpaka/math/pow/Traits.hpp>
 
 #    include <type_traits>
@@ -37,16 +37,21 @@ namespace alpaka
                 TExp,
                 std::enable_if_t<std::is_floating_point_v<TBase> && std::is_floating_point_v<TExp>>>
             {
-                __device__ auto operator()(PowUniformCudaHipBuiltIn const& pow_ctx, TBase const& base, TExp const& exp)
+                __device__ auto operator()(
+                    PowUniformCudaHipBuiltIn const& /* pow_ctx */,
+                    TBase const& base,
+                    TExp const& exp)
                 {
-                    alpaka::ignore_unused(pow_ctx);
-
                     if constexpr(is_decayed_v<TBase, float> && is_decayed_v<TExp, float>)
                         return ::powf(base, exp);
                     else if constexpr(is_decayed_v<TBase, double> || is_decayed_v<TExp, double>)
                         return ::pow(base, exp);
                     else
                         static_assert(!sizeof(TBase), "Unsupported data type");
+
+                    using Ret [[maybe_unused]]
+                    = std::conditional_t<is_decayed_v<TBase, float> && is_decayed_v<TExp, float>, float, double>;
+                    ALPAKA_UNREACHABLE(Ret{});
                 }
             };
         } // namespace traits

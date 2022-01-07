@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <utility>
 
@@ -27,10 +26,8 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<typename TFnObj, typename... TArgs>
-                ALPAKA_FN_HOST_ACC static auto forEachTypeHelper(TFnObj&& f, TArgs&&... args) -> void
+                ALPAKA_FN_HOST_ACC static auto forEachTypeHelper(TFnObj&& /* f */, TArgs&&... /* args */) -> void
                 {
-                    alpaka::ignore_unused(f);
-                    alpaka::ignore_unused(args...);
                 }
             };
             template<template<typename...> class TList, typename T, typename... Ts>

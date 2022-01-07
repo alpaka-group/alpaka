@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Erik Zenker
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 #include <type_traits>
@@ -34,10 +33,8 @@ namespace alpaka
             template<typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
                 Vec<DimInt<TidxDim>, TElem> const& idx,
-                Vec<DimInt<TidxDim>, TElem> const& extent) -> Vec<DimInt<TidxDim>, TElem>
+                [[maybe_unused]] Vec<DimInt<TidxDim>, TElem> const& extent) -> Vec<DimInt<TidxDim>, TElem>
             {
-                alpaka::ignore_unused(extent);
-
                 return idx;
             }
         };
@@ -106,8 +103,7 @@ namespace alpaka
     //! \tparam TidxDimOut Dimension of the index vector to map to.
     //! \tparam TidxDimIn Dimension of the index vector to map from.
     //! \tparam TElem Type of the elements of the index vector to map from.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem>
+    ALPAKA_NO_HOST_ACC_WARNING template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem>
     ALPAKA_FN_HOST_ACC auto mapIdx(
         Vec<DimInt<TidxDimIn>, TElem> const& idx,
         Vec<DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const& extent)
@@ -136,10 +132,8 @@ namespace alpaka
             template<typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
                 Vec<DimInt<TidxDim>, TElem> const& idx,
-                Vec<DimInt<TidxDim>, TElem> const& pitch) -> Vec<DimInt<TidxDim>, TElem>
+                [[maybe_unused]] Vec<DimInt<TidxDim>, TElem> const& pitch) -> Vec<DimInt<TidxDim>, TElem>
             {
-                alpaka::ignore_unused(pitch);
-
                 return idx;
             }
         };

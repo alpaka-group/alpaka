@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <condition_variable>
 #include <mutex>
@@ -681,8 +680,9 @@ namespace alpaka
         template<>
         struct Enqueue<QueueHipRtBlocking, test::EventHostManualTriggerHip>
         {
-            ALPAKA_FN_HOST static auto enqueue(QueueHipRtBlocking& queue, test::EventHostManualTriggerHip& event)
-                -> void
+            ALPAKA_FN_HOST static auto enqueue(
+                [[maybe_unused]] QueueHipRtBlocking& queue,
+                test::EventHostManualTriggerHip& event) -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -711,7 +711,6 @@ namespace alpaka
                     0x01010101u,
                     CU_STREAM_WAIT_VALUE_GEQ)));
 #    else
-                ignore_unused(queue);
                 // workaround for missing cuStreamWaitValue32 in HIP
                 std::uint32_t hmem = 0;
                 do

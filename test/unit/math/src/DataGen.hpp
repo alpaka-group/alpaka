@@ -1,4 +1,4 @@
-/** Copyright 2019 Jakob Krude, Benjamin Worpitz, Jeffrey Kelling
+/** Copyright 2022 Jakob Krude, Benjamin Worpitz, Jeffrey Kelling, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -59,7 +59,7 @@ namespace alpaka
                     std::uniform_real_distribution<TData> distOne(-1, 1);
                     for(size_t k = 0; k < TFunctor::arity_nr; ++k)
                     {
-                        bool matchedSwitch = false;
+                        [[maybe_unused]] bool matchedSwitch = false;
                         switch(functor.ranges[k])
                         {
                         case Range::OneNeighbourhood:
@@ -143,8 +143,6 @@ namespace alpaka
                             }
                             break;
                         }
-                        // disable gcc-warning "unused variable"
-                        alpaka::ignore_unused(matchedSwitch);
                         assert(matchedSwitch);
                     }
                 }

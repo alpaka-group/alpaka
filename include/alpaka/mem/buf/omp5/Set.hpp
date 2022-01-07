@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -91,7 +91,10 @@ namespace alpaka
         struct CreateTaskMemset<DimInt<0u>, DevOmp5>
         {
             template<typename TExtent, typename TView>
-            ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
+            ALPAKA_FN_HOST static auto createTaskMemset(
+                TView& view,
+                std::uint8_t const& byte,
+                TExtent const& /* extent */)
             {
                 using Idx = typename alpaka::traits::IdxType<TExtent>::type;
                 using Dim1D = DimInt<1u>;
@@ -99,8 +102,6 @@ namespace alpaka
 
                 static_assert(Dim<TView>::value == 0u, "The view is required to have dimensionality 0!");
                 static_assert(Dim<TExtent>::value == 0u, "The extent is required to have dimensionality 0!");
-
-                alpaka::ignore_unused(extent);
 
                 return createTaskKernel<AccOmp5<Dim1D, Idx>>(
                     WorkDivMembers<Dim1D, Idx>(Vec1D::zeros(), Vec1D::zeros(), Vec1D::zeros()),

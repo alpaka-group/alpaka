@@ -1,4 +1,4 @@
-/* Copyright 2019-2021 Benjamin Worpitz, Erik Zenker, Sergei Bastrakov
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Sergei Bastrakov, Jan Stephan
  *
  * This file exemplifies usage of alpaka.
  *
@@ -82,18 +82,13 @@ namespace alpaka
         {
             template<typename TDim, typename... TArgs>
             ALPAKA_FN_HOST static auto getOmpSchedule(
-                OpenMPScheduleTraitKernel const& kernelFnObj,
-                Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
-                Vec<TDim, Idx<TAcc>> const& threadElemExtent,
-                TArgs const&... args) -> alpaka::omp::Schedule
+                OpenMPScheduleTraitKernel const& /* kernelFnObj */,
+                Vec<TDim, Idx<TAcc>> const& /* blockThreadExtent */,
+                Vec<TDim, Idx<TAcc>> const& /* threadElemExtent */,
+                TArgs const&... /* args */) -> alpaka::omp::Schedule
             {
                 // Determine schedule at runtime for the given kernel and run parameters.
                 // For this particular example kernel, TArgs is an empty pack and can be removed.
-                alpaka::ignore_unused(kernelFnObj);
-                alpaka::ignore_unused(blockThreadExtent);
-                alpaka::ignore_unused(threadElemExtent);
-                alpaka::ignore_unused(args...);
-
                 return alpaka::omp::Schedule{alpaka::omp::Schedule::Dynamic, 2};
             }
         };

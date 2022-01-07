@@ -13,7 +13,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/pltf/PltfCpu.hpp>
@@ -35,9 +34,8 @@ namespace alpaka
         template<typename TElem, std::size_t Tsize>
         struct GetDev<std::array<TElem, Tsize>>
         {
-            ALPAKA_FN_HOST static auto getDev(std::array<TElem, Tsize> const& view) -> DevCpu
+            ALPAKA_FN_HOST static auto getDev(std::array<TElem, Tsize> const& /* view */) -> DevCpu
             {
-                alpaka::ignore_unused(view);
                 return getDevByIdx<PltfCpu>(0u);
             }
         };

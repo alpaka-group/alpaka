@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -11,7 +11,6 @@
 
 #include <alpaka/core/AlignedAlloc.hpp>
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/mem/alloc/Traits.hpp>
 
 #include <algorithm>
@@ -32,8 +31,9 @@ namespace alpaka
         template<typename T, typename TAlignment>
         struct Malloc<T, AllocCpuAligned<TAlignment>>
         {
-            ALPAKA_FN_HOST static auto malloc(AllocCpuAligned<TAlignment> const& alloc, std::size_t const& sizeElems)
-                -> T*
+            ALPAKA_FN_HOST static auto malloc(
+                AllocCpuAligned<TAlignment> const& /* alloc */,
+                std::size_t const& sizeElems) -> T*
             {
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
                 // For CUDA host memory must be aligned to 4 kib to pin it with `cudaHostRegister`,
@@ -49,7 +49,6 @@ namespace alpaka
 #else
                 constexpr size_t minAlignement = TAlignment::value;
 #endif
-                alpaka::ignore_unused(alloc);
                 return reinterpret_cast<T*>(
                     core::alignedAlloc(std::max(TAlignment::value, minAlignement), sizeElems * sizeof(T)));
             }
@@ -59,9 +58,8 @@ namespace alpaka
         template<typename T, typename TAlignment>
         struct Free<T, AllocCpuAligned<TAlignment>>
         {
-            ALPAKA_FN_HOST static auto free(AllocCpuAligned<TAlignment> const& alloc, T const* const ptr) -> void
+            ALPAKA_FN_HOST static auto free(AllocCpuAligned<TAlignment> const& /* alloc */, T const* const ptr) -> void
             {
-                alpaka::ignore_unused(alloc);
                 core::alignedFree(const_cast<void*>(reinterpret_cast<void const*>(ptr)));
             }
         };

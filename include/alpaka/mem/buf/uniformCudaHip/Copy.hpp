@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -69,7 +69,7 @@ namespace alpaka
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
                 TViewDst& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent,
+                [[maybe_unused]] TExtent const& extent,
                 MemcpyKind const& uniformMemCpyKind,
                 int const& iDstDevice,
                 int const& iSrcDevice)
@@ -83,7 +83,6 @@ namespace alpaka
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {
-                alpaka::ignore_unused(extent);
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 ALPAKA_ASSERT(Idx(1u) <= m_dstWidth);
                 ALPAKA_ASSERT(Idx(1u) <= m_srcWidth);
