@@ -116,7 +116,7 @@ void testKernel()
     REQUIRE(fixture(kernelWithTrait));
 }
 
-// Disaling these tests for GCC + OMP5 & OACC because GCC does not like static
+// Disabling these tests for GCC + OMP5 & OACC because GCC does not like static
 // data members in mapped variables when offlading.
 #if !(BOOST_COMP_GNUC && (defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) || defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)))
 
