@@ -116,6 +116,10 @@ void testKernel()
     REQUIRE(fixture(kernelWithTrait));
 }
 
+// Disaling these tests for GCC + OMP5 & OACC because GCC does not like static
+// data members in mapped variables when offlading.
+#if !(BOOST_COMP_GNUC && (defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) || defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)))
+
 // Note: it turned out not possible to test all possible combinations as it causes several compilers to crash in CI.
 // However the following tests should cover all important cases
 
@@ -146,8 +150,9 @@ TEMPLATE_LIST_TEST_CASE("kernelWithStaticMemberOmpScheduleChunkSize", "[kernel]"
 
 TEMPLATE_LIST_TEST_CASE("kernelWithMemberOmpScheduleChunkSize", "[kernel]", alpaka::test::TestAccs)
 {
-#if defined _OPENMP && _OPENMP >= 200805
+#    if defined _OPENMP && _OPENMP >= 200805
     testKernel<TestType, KernelWithMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Auto>>();
-#endif
+#    endif
     testKernel<TestType, KernelWithMemberOmpScheduleChunkSize<alpaka::omp::Schedule::Runtime>>();
 }
+#endif
