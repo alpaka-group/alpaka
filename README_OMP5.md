@@ -39,6 +39,7 @@ environment requirements. Add flags to set the required compiler and linker flag
   ```
     -DCMAKE_CXX_FLAGS="-foffload=disable -fno-lto"
   ```
+  - To run set the environment variable `OMP_TARGET_OFFLOAD=DISABLED`.
 - XL, offload:
   ```
     -DCMAKE_CXX_FLAGS="-qoffload -qsmp"
