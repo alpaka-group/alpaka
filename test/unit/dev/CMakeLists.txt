@@ -12,12 +12,14 @@ set(_TARGET_NAME "devTest")
 
 append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
 
-alpaka_add_executable(
+add_executable(
     ${_TARGET_NAME}
     ${_FILES_SOURCE})
 target_link_libraries(
     ${_TARGET_NAME}
     PRIVATE common)
+
+target_compile_definitions(${_TARGET_NAME} PRIVATE ALPAKA_HOST_ONLY ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
 
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
 
