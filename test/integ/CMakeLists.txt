@@ -22,6 +22,7 @@ project("alpakaIntegTest" LANGUAGES CXX)
 
 add_subdirectory("axpy/")
 add_subdirectory("cudaOnly/")
+add_subdirectory("hostOnlyAPI/")
 add_subdirectory("mandelbrot/")
 add_subdirectory("matMul/")
 add_subdirectory("separableCompilation/")
