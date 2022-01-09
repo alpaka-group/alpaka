@@ -10,6 +10,15 @@
 #pragma once
 
 #include <alpaka/alpaka.hpp>
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#    error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#    error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#endif
+
 #include <alpaka/test/Check.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
