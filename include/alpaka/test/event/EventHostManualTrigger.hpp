@@ -279,15 +279,9 @@ namespace alpaka
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#    include <alpaka/core/BoostPredef.hpp>
+#    include <alpaka/core/Cuda.hpp>
 
 #    include <cuda.h>
-
-#    if !BOOST_LANG_CUDA
-#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#    endif
-
-#    include <alpaka/core/Cuda.hpp>
 
 namespace alpaka
 {
@@ -495,13 +489,9 @@ namespace alpaka
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
-#    include <hip/hip_runtime.h>
-
-#    if !BOOST_LANG_HIP
-#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#    endif
-
 #    include <alpaka/core/Hip.hpp>
+
+#    include <hip/hip_runtime.h>
 
 namespace alpaka
 {
