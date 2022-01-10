@@ -388,12 +388,12 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
             # libstdc++ since version 7 when GNU extensions are enabled (e.g. -std=gnu++11)
             # uses `__CUDACC__` to avoid defining overloads using non-standard `__float128`.
             # This is fixed in clang-11: https://github.com/llvm/llvm-project/commit/8e20516540444618ad32dd11e835c05804053697
-            if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
-                target_compile_definitions(alpaka INTERFACE "__CUDACC__")
+            if(CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.0)
+                target_compile_definitions(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:__CUDACC__>)
             endif()
 
-            if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 11.0)
-                target_compile_options(alpaka INTERFACE "-Wno-unknown-cuda-version")
+            if(CMAKE_CUDA_COMPILER_VERSION GREATER_EQUAL 11.0)
+                target_compile_options(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Wno-unknown-cuda-version>)
             endif()
 
             # This flag silences the warning produced by the Dummy.cpp files:
