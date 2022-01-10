@@ -145,15 +145,9 @@ namespace alpaka
 
         static auto& device(int iDevice)
         {
-            static std::vector<std::shared_ptr<oacc::detail::DevOaccImpl>> devices;
+            static std::vector<std::shared_ptr<oacc::detail::DevOaccImpl>> devices(getDevCount<PltfOacc>());
             static std::mutex mutex;
 
-            if(!devices.size())
-            {
-                std::lock_guard<std::mutex> lock(mutex);
-                if(!devices.size())
-                    devices.resize(getDevCount<PltfOacc>());
-            }
             auto& d = devices.at(static_cast<unsigned>(iDevice));
             if(!d)
             {
