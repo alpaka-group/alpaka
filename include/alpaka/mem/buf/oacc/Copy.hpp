@@ -335,8 +335,7 @@ namespace alpaka
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
 #    if _OPENACC >= 201510 && (!defined __GNUC__)
-                // acc_memcpy_device is only available since OpenACC2.5
-                // , but we want the tests to compile anyway
+                // acc_memcpy_device is only available since OpenACC2.5, but we want the tests to compile anyway
                 if(getDev(viewDst).m_spDevOaccImpl->iDevice() == getDev(viewSrc).m_spDevOaccImpl->iDevice())
                 {
                     return alpaka::oacc::detail::
@@ -359,12 +358,14 @@ namespace alpaka
                             [devSrc = getDev(viewSrc),
                              devDst = getDev(viewDst)](void* dst, void* src, std::size_t size)
                             {
-                                void* buf = core::alignedAlloc(core::vectorization::defaultAlignment, size);
+                                static const auto alignedDeleter = [](void* p) { core::alignedFree(p); };
+                                std::unique_ptr<void, decltype(alignedDeleter)> buf(
+                                    core::alignedAlloc(core::vectorization::defaultAlignment, size),
+                                    alignedDeleter);
                                 devSrc.makeCurrent();
-                                acc_memcpy_from_device(buf, src, size);
+                                acc_memcpy_from_device(buf.get(), src, size);
                                 devDst.makeCurrent();
-                                acc_memcpy_to_device(dst, buf, size);
-                                core::alignedFree(buf);
+                                acc_memcpy_to_device(dst, buf.get(), size);
                             });
                 }
             }
