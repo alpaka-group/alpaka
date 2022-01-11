@@ -143,7 +143,7 @@ namespace alpaka
     {
         friend struct traits::GetDevByIdx<PltfOacc>;
 
-        static auto& device(int iDevice)
+        static auto device(int iDevice)
         {
             static std::vector<std::unique_ptr<oacc::detail::DevOaccImpl>> devices(getDevCount<PltfOacc>());
             static std::mutex mutex;
@@ -155,7 +155,7 @@ namespace alpaka
                 if(!d)
                     d = std::make_unique<oacc::detail::DevOaccImpl>(iDevice);
             }
-            return *d;
+            return d.get();
         }
 
     protected:
@@ -166,7 +166,7 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOacc const& rhs) const -> bool
         {
-            return m_devOaccImpl.iDevice() == rhs.m_devOaccImpl.iDevice();
+            return m_devOaccImpl->iDevice() == rhs.m_devOaccImpl->iDevice();
         }
         ALPAKA_FN_HOST auto operator!=(DevOacc const& rhs) const -> bool
         {
@@ -174,43 +174,43 @@ namespace alpaka
         }
         int iDevice() const
         {
-            return m_devOaccImpl.iDevice();
+            return m_devOaccImpl->iDevice();
         }
         acc_device_t deviceType() const
         {
-            return m_devOaccImpl.deviceType();
+            return m_devOaccImpl->deviceType();
         }
         void makeCurrent() const
         {
-            m_devOaccImpl.makeCurrent();
+            m_devOaccImpl->makeCurrent();
         }
 
         std::uint32_t* gridsLock() const
         {
-            return m_devOaccImpl.gridsLock();
+            return m_devOaccImpl->gridsLock();
         }
 
         ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>>
         {
-            return m_devOaccImpl.getAllExistingQueues();
+            return m_devOaccImpl->getAllExistingQueues();
         }
 
         //! Create and/or return staticlly mapped device pointer of host address.
         template<typename TElem, typename TExtent>
         ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) const -> TElem*
         {
-            return m_devOaccImpl.mapStatic(pHost, extent);
+            return m_devOaccImpl->mapStatic(pHost, extent);
         }
 
         //! Registers the given queue on this device.
         //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
         ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOacc>> spQueue) const -> void
         {
-            m_devOaccImpl.registerQueue(spQueue);
+            m_devOaccImpl->registerQueue(spQueue);
         }
 
     private:
-        oacc::detail::DevOaccImpl& m_devOaccImpl;
+        oacc::detail::DevOaccImpl* m_devOaccImpl;
     };
 
     namespace traits
