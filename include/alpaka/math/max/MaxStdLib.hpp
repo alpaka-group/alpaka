@@ -45,6 +45,8 @@ namespace alpaka
                         return fmax(x, y);
                     else
                         static_assert(!sizeof(Tx), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(std::common_type_t<Tx, Ty>{});
                 }
             };
         } // namespace traits
