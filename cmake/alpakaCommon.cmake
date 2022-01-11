@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan, René Widera, Jeffrey Kelling
+# Copyright 2022 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci
 #
 # This file is part of alpaka.
 #
@@ -81,6 +81,7 @@ option(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block 
 option(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" OFF)
 option(ALPAKA_ACC_ANY_BT_OMP5_ENABLE "Enable the OpenMP 5.0 CPU block and block thread back-end" OFF)
 option(ALPAKA_ACC_ANY_BT_OACC_ENABLE "Enable the OpenACC block and block thread back-end" OFF)
+option(ALPAKA_ACC_CPU_DISABLE_ATOMIC_REF "Disable boost::atomic_ref for CPU back-ends" OFF)
 
 # Unified compiler options
 alpaka_compiler_option(FAST_MATH "Enable fast-math" DEFAULT)
@@ -218,9 +219,26 @@ if(${ALPAKA_DEBUG} GREATER 1)
 endif()
 
 find_package(Boost ${_ALPAKA_BOOST_MIN_VER} REQUIRED
-             OPTIONAL_COMPONENTS fiber)
+             OPTIONAL_COMPONENTS atomic fiber)
 
 target_link_libraries(alpaka INTERFACE Boost::headers)
+
+if(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
+   ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE OR
+   ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OR
+   ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OR
+   ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
+   ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
+    if(NOT ALPAKA_ACC_CPU_DISABLE_ATOMIC_REF)
+        if(NOT Boost_ATOMIC_FOUND)
+            message(FATAL_ERROR "Optional alpaka dependency Boost.Atomic could not be found!")
+        endif()
+        target_link_libraries(alpaka INTERFACE Boost::atomic)
+    else()
+        message(WARNING "boost::atomic_ref was manually disabled. Falling back to lock-based CPU atomics.")
+        target_compile_definitions(alpaka INTERFACE ALPAKA_DISABLE_ATOMIC_ATOMICREF)
+    endif()
+endif()
 
 if(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
     if(NOT Boost_FIBER_FOUND)
