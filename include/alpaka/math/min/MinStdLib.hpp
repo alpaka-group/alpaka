@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/core/Decay.hpp>
+#include <alpaka/core/Unreachable.hpp>
 #include <alpaka/math/min/Traits.hpp>
 
 #include <algorithm>
@@ -45,6 +46,8 @@ namespace alpaka
                         return fmin(x, y);
                     else
                         static_assert(!sizeof(Tx), "Unsupported data type");
+
+                    ALPAKA_UNREACHABLE(std::common_type_t<Tx, Ty>{});
                 }
             };
         } // namespace traits

@@ -186,8 +186,9 @@ namespace alpaka
                         return false;
                     }
                 }
+                return true;
             }
-            return true;
+            ALPAKA_UNREACHABLE(bool{});
         }
         ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto operator!=(Vec const& rhs) const -> bool
