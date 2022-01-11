@@ -253,7 +253,7 @@ namespace alpaka
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << " ptr: " << memPtr
-                          << " device: " << dev.m_spDevOaccImpl->iDevice() << std::endl;
+                          << " device: " << dev.iDevice() << std::endl;
 #    endif
                 return BufOacc<TElem, DimInt<1u>, TIdx>(dev, reinterpret_cast<TElem*>(memPtr), extent);
             }
@@ -275,7 +275,7 @@ namespace alpaka
                 void* memPtr = acc_malloc(size);
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << "alloc'd " << TDim::value << "D device ptr: " << memPtr << " on device "
-                          << dev.m_spDevOaccImpl->iDevice() << " size: " << size << std::endl;
+                          << dev.iDevice() << " size: " << size << std::endl;
 #    endif
                 return BufOacc<TElem, TDim, TIdx>(dev, reinterpret_cast<TElem*>(memPtr), extent);
             }

@@ -145,7 +145,7 @@ namespace alpaka
 
         static auto& device(int iDevice)
         {
-            static std::vector<std::shared_ptr<oacc::detail::DevOaccImpl>> devices(getDevCount<PltfOacc>());
+            static std::vector<std::unique_ptr<oacc::detail::DevOaccImpl>> devices(getDevCount<PltfOacc>());
             static std::mutex mutex;
 
             auto& d = devices.at(static_cast<unsigned>(iDevice));
@@ -153,21 +153,20 @@ namespace alpaka
             {
                 std::lock_guard<std::mutex> lock(mutex);
                 if(!d)
-                    return devices[static_cast<unsigned>(iDevice)]
-                        = std::make_shared<oacc::detail::DevOaccImpl>(iDevice);
+                    d = std::make_unique<oacc::detail::DevOaccImpl>(iDevice);
             }
-            return d;
+            return *d;
         }
 
     protected:
-        DevOacc(int iDevice) : m_spDevOaccImpl(device(iDevice))
+        DevOacc(int iDevice) : m_devOaccImpl(device(iDevice))
         {
         }
 
     public:
         ALPAKA_FN_HOST auto operator==(DevOacc const& rhs) const -> bool
         {
-            return m_spDevOaccImpl->iDevice() == rhs.m_spDevOaccImpl->iDevice();
+            return m_devOaccImpl.iDevice() == rhs.m_devOaccImpl.iDevice();
         }
         ALPAKA_FN_HOST auto operator!=(DevOacc const& rhs) const -> bool
         {
@@ -175,43 +174,43 @@ namespace alpaka
         }
         int iDevice() const
         {
-            return m_spDevOaccImpl->iDevice();
+            return m_devOaccImpl.iDevice();
         }
         acc_device_t deviceType() const
         {
-            return m_spDevOaccImpl->deviceType();
+            return m_devOaccImpl.deviceType();
         }
         void makeCurrent() const
         {
-            m_spDevOaccImpl->makeCurrent();
+            m_devOaccImpl.makeCurrent();
         }
 
         std::uint32_t* gridsLock() const
         {
-            return m_spDevOaccImpl->gridsLock();
+            return m_devOaccImpl.gridsLock();
         }
 
         ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>>
         {
-            return m_spDevOaccImpl->getAllExistingQueues();
+            return m_devOaccImpl.getAllExistingQueues();
         }
 
         //! Create and/or return staticlly mapped device pointer of host address.
         template<typename TElem, typename TExtent>
         ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) const -> TElem*
         {
-            return m_spDevOaccImpl->mapStatic(pHost, extent);
+            return m_devOaccImpl.mapStatic(pHost, extent);
         }
 
         //! Registers the given queue on this device.
         //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
         ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOacc>> spQueue) const -> void
         {
-            m_spDevOaccImpl->registerQueue(spQueue);
+            m_devOaccImpl.registerQueue(spQueue);
         }
 
-    public:
-        std::shared_ptr<oacc::detail::DevOaccImpl> m_spDevOaccImpl;
+    private:
+        oacc::detail::DevOaccImpl& m_devOaccImpl;
     };
 
     namespace traits
