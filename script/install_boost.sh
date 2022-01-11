@@ -23,6 +23,7 @@ fi
 : "${CXX?'CXX must be specified'}"
 : "${CC?'CC must be specified'}"
 : "${ALPAKA_CI_INSTALL_FIBERS?'ALPAKA_CI_INSTALL_FIBERS must be specified'}"
+: "${ALPAKA_CI_INSTALL_ATOMIC?'ALPAKA_CI_INSTALL_ATOMIC must be specified'}"
 : "${ALPAKA_CI_BOOST_LIB_DIR?'ALPAKA_CI_BOOST_LIB_DIR must be specified'}"
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
@@ -66,7 +67,7 @@ else
 fi
 
 # Only build boost if we need some of the non-header-only libraries
-if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
+if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ] || [ "${ALPAKA_CI_INSTALL_ATOMIC}" == "ON" ]
 then
     # Prepare the library destination directory.
     mkdir -p "${ALPAKA_CI_BOOST_LIB_DIR}"

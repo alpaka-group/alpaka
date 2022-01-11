@@ -38,6 +38,18 @@ echo ALPAKA_CI_BOOST_BRANCH_MAJOR: "${ALPAKA_CI_BOOST_BRANCH_MAJOR}"
 ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
 echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
+export ALPAKA_CI_INSTALL_ATOMIC="OFF"
+# If the variable is not set, the backend will most probably be used by default so we install Boost.Atomic
+if [ "${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE-ON}" == "ON" ] ||
+    [ "${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE-ON}" == "ON" ] ||
+    [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE-ON}" == "ON" ] ||
+    [ "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE-ON}" == "ON" ] ||
+    [ "${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE-ON}" == "ON" ] ||
+    [ "${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE-ON}" == "ON" ]
+then
+  export ALPAKA_CI_INSTALL_ATOMIC="ON"
+fi
+
 #-------------------------------------------------------------------------------
 # CUDA
 export ALPAKA_CI_INSTALL_CUDA="OFF"
