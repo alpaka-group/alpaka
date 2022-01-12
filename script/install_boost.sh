@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017-2019 Benjamin Worpitz
+# Copyright 2022 Benjamin Worpitz, René Widera, Axel Huebl, Bernhard Manfred Gruber, Andrea Bocci
 #
 # This file is part of alpaka.
 #
@@ -24,7 +24,6 @@ fi
 : "${CC?'CC must be specified'}"
 : "${ALPAKA_CI_INSTALL_FIBERS?'ALPAKA_CI_INSTALL_FIBERS must be specified'}"
 : "${ALPAKA_CI_INSTALL_ATOMIC?'ALPAKA_CI_INSTALL_ATOMIC must be specified'}"
-: "${ALPAKA_CI_BOOST_LIB_DIR?'ALPAKA_CI_BOOST_LIB_DIR must be specified'}"
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     : "${ALPAKA_CI_CL_VER?'ALPAKA_CI_CL_VER must be specified'}"
@@ -47,21 +46,42 @@ else
     travis_retry rm -rf ${BOOST_ROOT} && git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
 fi
 
+# Set the toolset based on the compiler
+if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
+then
+    if [ "$ALPAKA_CI_CL_VER" = "2017" ]
+    then
+        TOOLSET="msvc-14.1"
+    elif [ "$ALPAKA_CI_CL_VER" = "2019" ]
+    then
+        TOOLSET="msvc-14.2"
+    fi
+    # Add new versions as needed
+elif [ "${CXX}" == "icpc" ]
+then
+    TOOLSET="intel-linux"
+else
+    TOOLSET="${CC}"
+fi
+
 # Bootstrap boost.
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
-    (cd "${BOOST_ROOT}"; ./bootstrap.bat)
-elif [ "${CXX}" == "icpc" ]
+    (cd "${BOOST_ROOT}"; ./bootstrap.bat --with-toolset="${TOOLSET}")
+elif [ "${TOOLSET}" == "intel-linux" ]
 then
-    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux" || cat bootstrap.log)
+    (cd "${BOOST_ROOT}"; sudo $SHELL -c "source /opt/intel/oneapi/setvars.sh; ./bootstrap.sh --with-toolset='${TOOLSET}'" || cat bootstrap.log)
 else
-    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}" || cat bootstrap.log)
+    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${TOOLSET}" || cat bootstrap.log)
 fi
 
 # Create file links.
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     (cd "${BOOST_ROOT}"; ./b2 headers)
+elif [ "${TOOLSET}" == "intel-linux" ]
+then
+    (cd "${BOOST_ROOT}"; sudo $SHELL -c "source /opt/intel/oneapi/setvars.sh; ./b2 headers")
 else
     (cd "${BOOST_ROOT}"; sudo ./b2 headers)
 fi
@@ -77,10 +97,6 @@ then
     ALPAKA_BOOST_B2_CFLAGS=""
     ALPAKA_BOOST_B2_CXXFLAGS=""
 
-    if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
-    then
-        ALPAKA_BOOST_B2+="sudo "
-    fi
     ALPAKA_BOOST_B2+="./b2 -j1"
 
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
@@ -92,12 +108,13 @@ then
     if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
         ALPAKA_BOOST_B2+=" --layout=versioned"
-        if [ "$ALPAKA_CI_CL_VER" = "2019" ]
-        then
-            ALPAKA_BOOST_B2+=" --toolset=msvc-14.2"
-        fi
     else
-        ALPAKA_BOOST_B2+=" --layout=tagged --toolset=${CC}"
+        ALPAKA_BOOST_B2+=" --layout=tagged"
+    fi
+
+    if [ "${TOOLSET}" ]
+    then
+        ALPAKA_BOOST_B2+=" --toolset=${TOOLSET}"
     fi
 
     ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 link=static threading=multi runtime-link=shared"
@@ -154,11 +171,19 @@ then
         fi
     fi
 
-    ALPAKA_BOOST_B2+=" --stagedir=${ALPAKA_CI_BOOST_LIB_DIR} stage"
+    # The extra quotes are necessary to protect \ characters in Windows paths in the eval
+    ALPAKA_BOOST_B2+=" --stagedir=\"${ALPAKA_CI_BOOST_LIB_DIR}\" stage"
 
     # Build boost.
-    #echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
-    (cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
+    if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
+    then
+        (cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
+    elif [ "${TOOLSET}" == "intel-linux" ]
+    then
+        (cd "${BOOST_ROOT}"; sudo $SHELL -c "source /opt/intel/oneapi/setvars.sh; ${ALPAKA_BOOST_B2}")
+    else
+        (cd "${BOOST_ROOT}"; eval "sudo ${ALPAKA_BOOST_B2}")
+    fi
 
     # Clean the intermediate build files.
     if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
