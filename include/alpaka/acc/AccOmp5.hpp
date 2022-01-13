@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Jeffrey Kelling
  *
  * This file is part of alpaka.
  *
@@ -24,8 +24,11 @@
 // Base classes.
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
+#    include <alpaka/block/shared/OffloadUseBuiltInSharedMem.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
+#    include <alpaka/block/shared/dyn/BlockSharedMemDynOmp5BuiltIn.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStOmp5.hpp>
+#    include <alpaka/block/shared/st/BlockSharedMemStOmp5BuiltIn.hpp>
 #    include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
 #    include <alpaka/idx/bt/IdxBtOmp.hpp>
 #    include <alpaka/idx/gb/IdxGbLinear.hpp>
@@ -50,12 +53,55 @@
 #    include <alpaka/dev/DevOmp5.hpp>
 
 #    include <limits>
+#    include <type_traits>
 #    include <typeinfo>
 
 namespace alpaka
 {
     template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelOmp5;
+
+    namespace detail
+    {
+        template<OffloadUseBuiltInSharedMem TSharedMem = OffloadUseBuiltInSharedMem::OFF>
+        struct AccOmp5BlockSharedMem
+            : public BlockSharedMemDynMember<>
+            , public BlockSharedMemStOmp5
+        {
+            AccOmp5BlockSharedMem(std::size_t sizeBytes)
+                : BlockSharedMemDynMember<>(sizeBytes)
+                , BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity())
+
+            {
+            }
+        };
+
+#    if _OPENMP >= 201811
+        template<>
+        struct AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::DYN_FIXED>
+            : public BlockSharedMemDynOmp5BuiltInFixed
+            , public BlockSharedMemStOmp5BuiltIn
+        {
+            AccOmp5BlockSharedMem(std::size_t sizeBytes)
+                : BlockSharedMemDynOmp5BuiltInFixed(sizeBytes)
+                , BlockSharedMemStOmp5BuiltIn()
+            {
+            }
+        };
+
+        template<>
+        struct AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::DYN_ALLOC>
+            : public BlockSharedMemDynOmp5BuiltInOmpAlloc
+            , public BlockSharedMemStOmp5BuiltIn
+        {
+            AccOmp5BlockSharedMem(std::size_t sizeBytes)
+                : BlockSharedMemDynOmp5BuiltInOmpAlloc(sizeBytes)
+                , BlockSharedMemStOmp5BuiltIn()
+            {
+            }
+        };
+#    endif
+    } // namespace detail
 
     //! The CPU OpenMP 5.0 accelerator.
     //!
@@ -73,8 +119,12 @@ namespace alpaka
             AtomicOmpBuiltIn     // thread atomics
         >,
         public math::MathStdLib,
-        public BlockSharedMemDynMember<>,
-        public BlockSharedMemStOmp5,
+#    if _OPENMP >= 201811
+        public detail::AccOmp5BlockSharedMem<OFFLOAD_USE_BUILTIN_SHARED_MEM>,
+#    else
+          public detail::AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::OFF>
+        ,
+#    endif
         public BlockSyncBarrierOmp,
         // cannot determine which intrinsics are safe to use (depends on target), using fallback
         public IntrinsicFallback,
@@ -109,10 +159,11 @@ namespace alpaka
                   AtomicOmpBuiltIn // atomics between threads
                   >()
             , math::MathStdLib()
-            , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
-            ,
-            //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
-            BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity())
+#    if _OPENMP >= 201811
+            , detail::AccOmp5BlockSharedMem<OFFLOAD_USE_BUILTIN_SHARED_MEM>(blockSharedMemDynSizeBytes)
+#    else
+            , detail::AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::OFF>(blockSharedMemDynSizeBytes)
+#    endif
             , BlockSyncBarrierOmp()
             , MemFenceOmp5()
             , rand::RandDefault()

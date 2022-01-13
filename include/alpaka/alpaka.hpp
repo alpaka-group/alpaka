@@ -39,11 +39,13 @@
 // shared
 // dynamic
 #include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynOmp5BuiltIn.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
 #include <alpaka/block/shared/dyn/Traits.hpp>
 // static
 #include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStOmp5BuiltIn.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
 #include <alpaka/block/shared/st/Traits.hpp>
 // sync
