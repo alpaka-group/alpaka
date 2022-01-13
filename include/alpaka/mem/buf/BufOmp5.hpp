@@ -20,6 +20,7 @@
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
+#    include <alpaka/mem/view/ViewAccessOps.hpp>
 #    include <alpaka/queue/QueueOmp5Blocking.hpp>
 #    include <alpaka/vec/Vec.hpp>
 
@@ -98,7 +99,7 @@ namespace alpaka
     } // namespace detail
 
     template<typename TElem, typename TDim, typename TIdx>
-    class BufOmp5
+    class BufOmp5 : public internal::ViewAccessOps<BufOmp5<TElem, TDim, TIdx>>
     {
     public:
         //! Constructor

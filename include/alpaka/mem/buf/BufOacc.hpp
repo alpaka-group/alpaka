@@ -20,6 +20,7 @@
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
+#    include <alpaka/mem/view/ViewAccessOps.hpp>
 #    include <alpaka/queue/QueueOaccBlocking.hpp>
 #    include <alpaka/vec/Vec.hpp>
 
@@ -102,7 +103,7 @@ namespace alpaka
     } // namespace oacc
 
     template<typename TElem, typename TDim, typename TIdx>
-    class BufOacc
+    class BufOacc : public internal::ViewAccessOps<BufOacc<TElem, TDim, TIdx>>
     {
     public:
         //! Constructor

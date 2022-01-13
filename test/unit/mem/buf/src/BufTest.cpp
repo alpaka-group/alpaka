@@ -1,4 +1,4 @@
-/* Copyright 2021 Axel Huebl, Benjamin Worpitz, Andrea Bocci
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -241,4 +241,66 @@ TEMPLATE_LIST_TEST_CASE("memBufAsyncConstTest", "[memBuf]", alpaka::test::TestAc
     {
         INFO("Stream-ordered memory buffers are not supported in this configuration.")
     }
+}
+
+template<typename TAcc>
+static auto testBufferAccessorAdaptor(
+    alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent,
+    alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& index) -> void
+{
+    using Dev = alpaka::Dev<TAcc>;
+    using Pltf = alpaka::Pltf<Dev>;
+
+    using Elem = float;
+    using Dim = alpaka::Dim<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
+
+    // assume dimensionality up to 4
+    CHECK(Dim::value <= 4);
+
+    Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+
+    // alpaka::malloc
+    auto buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
+
+    // check that the array subscript operator access the correct element
+    auto const& pitch = alpaka::getPitchBytesVec(buf);
+    INFO("buffer extent: " << extent << " elements")
+    INFO("buffer pitch: " << pitch << " bytes")
+    CHECK((index < extent).foldrAll(std::logical_and<bool>()));
+
+    uintptr_t base = reinterpret_cast<uintptr_t>(std::data(buf));
+    uintptr_t expected = base;
+    if constexpr(Dim::value > 1)
+    {
+        expected += static_cast<uintptr_t>(pitch[1] * index[0]);
+    }
+    if constexpr(Dim::value > 2)
+    {
+        expected += static_cast<uintptr_t>(pitch[2] * index[1]);
+    }
+    if constexpr(Dim::value > 3)
+    {
+        expected += static_cast<uintptr_t>(pitch[3] * index[2]);
+    }
+    expected += sizeof(Elem) * static_cast<uintptr_t>(index[Dim::value - 1]);
+
+    INFO("element " << index << " expected at offset " << expected - base)
+    INFO("element " << index << " returned at offset " << reinterpret_cast<uintptr_t>(&buf[index]) - base)
+    CHECK(reinterpret_cast<Elem*>(expected) == &buf[index]);
+
+    // check that an out-of-bound access is detected
+    CHECK_THROWS_AS((void) buf.at(extent), std::out_of_range);
+}
+
+TEMPLATE_LIST_TEST_CASE("memBufAccessorAdaptorTest", "[memBuf]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Dim = alpaka::Dim<Acc>;
+    using Idx = alpaka::Idx<Acc>;
+
+    auto extent = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
+    auto index = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>();
+
+    testBufferAccessorAdaptor<Acc>(extent, index);
 }

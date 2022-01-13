@@ -33,6 +33,7 @@
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
+#    include <alpaka/mem/view/ViewAccessOps.hpp>
 #    include <alpaka/meta/DependentFalseType.hpp>
 #    include <alpaka/vec/Vec.hpp>
 
@@ -49,7 +50,7 @@ namespace alpaka
 
     //! The CUDA/HIP memory buffer.
     template<typename TElem, typename TDim, typename TIdx>
-    class BufUniformCudaHipRt
+    class BufUniformCudaHipRt : public internal::ViewAccessOps<BufUniformCudaHipRt<TElem, TDim, TIdx>>
     {
         static_assert(
             !std::is_const<TElem>::value,
