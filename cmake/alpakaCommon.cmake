@@ -1,6 +1,5 @@
 #
-# Copyright 2014-2020 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan
-#                     Rene Widera
+# Copyright 2022 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan, René Widera, Jeffrey Kelling
 #
 # This file is part of alpaka.
 #
@@ -144,6 +143,9 @@ if(NOT TARGET alpaka)
         target_compile_definitions(alpaka INTERFACE "__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1")
         # reports many unused variables declared by catch test macros
         target_compile_options(alpaka INTERFACE "--diag_suppress 177")
+        # prevent NVHPC from warning about unreachable code sections. TODO: Remove this line once the
+        # ALPAKA_UNUSED macro has been removed (dropping support for CUDA < 11.5).
+        target_compile_options(alpaka INTERFACE "--diag_suppress 111")
     endif()
 
     add_library(alpaka::alpaka ALIAS alpaka)
