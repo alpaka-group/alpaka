@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2022 Jan Stephan, Jeffrey Kelling
  *
  * This file is part of alpaka.
  *
@@ -23,7 +23,7 @@
 #    endif
 #elif BOOST_COMP_MSVC
 #    define ALPAKA_UNREACHABLE(...) __assume(false)
-#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL || BOOST_COMP_PGI
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
 #    define ALPAKA_UNREACHABLE(...) __builtin_unreachable()
 #else
 #    define ALPAKA_UNREACHABLE(...)
