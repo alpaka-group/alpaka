@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: /home/runner/work/alpaka/alpaka/include/alpaka/mem/view/ViewCompileTimeArray.hpp File Reference</title>
+<title>alpaka: /home/runner/work/alpaka/alpaka/include/alpaka/core/Unreachable.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('ViewCompileTimeArray_8hpp.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('Unreachable_8hpp.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -84,33 +84,57 @@ $(document).ready(function(){initNavTree('ViewCompileTimeArray_8hpp.html',''); i
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">ViewCompileTimeArray.hpp File Reference</div>  </div>
+<div class="title">Unreachable.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Unused_8hpp_source.html">alpaka/core/Unused.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="DevCpu_8hpp_source.html">alpaka/dev/DevCpu.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="mem_2buf_2Traits_8hpp_source.html">alpaka/mem/buf/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="PltfCpu_8hpp_source.html">alpaka/pltf/PltfCpu.hpp</a>&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&gt;</code><br />
 </div>
-<p><a href="ViewCompileTimeArray_8hpp_source.html">Go to the source code of this file.</a></p>
+<p><a href="Unreachable_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
-<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae11d52dff9103cac2bdd047bcf218e19"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Unreachable_8hpp.html#ae11d52dff9103cac2bdd047bcf218e19">ALPAKA_UNREACHABLE</a>(...)</td></tr>
+<tr class="memdesc:ae11d52dff9103cac2bdd047bcf218e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Before CUDA 11.5 nvcc is unable to correctly identify return statements in 'if constexpr' branches. It will issue a false warning about a missing return statement unless it is told that the following code section is unreachable.  <a href="Unreachable_8hpp.html#ae11d52dff9103cac2bdd047bcf218e19">More...</a><br /></td></tr>
+<tr class="separator:ae11d52dff9103cac2bdd047bcf218e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae11d52dff9103cac2bdd047bcf218e19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae11d52dff9103cac2bdd047bcf218e19">&#9670;&nbsp;</a></span>ALPAKA_UNREACHABLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ALPAKA_UNREACHABLE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Before CUDA 11.5 nvcc is unable to correctly identify return statements in 'if constexpr' branches. It will issue a false warning about a missing return statement unless it is told that the following code section is unreachable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>A dummy value for the expected return type of the calling function. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Unreachable_8hpp_source.html#l00029">29</a> of file <a class="el" href="Unreachable_8hpp_source.html">Unreachable.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="ViewCompileTimeArray_8hpp.html">ViewCompileTimeArray.hpp</a></li>
-    <li class="footer">Generated on Thu Jan 6 2022 13:04:15 for alpaka by
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Unreachable_8hpp.html">Unreachable.hpp</a></li>
+    <li class="footer">Generated on Thu Jan 13 2022 15:44:03 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

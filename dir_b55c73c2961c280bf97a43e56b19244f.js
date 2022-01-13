@@ -3,7 +3,6 @@ var dir_b55c73c2961c280bf97a43e56b19244f =
     [ "Accessor.hpp", "Accessor_8hpp.html", "Accessor_8hpp" ],
     [ "Traits.hpp", "mem_2view_2Traits_8hpp.html", "mem_2view_2Traits_8hpp" ],
     [ "ViewAccessor.hpp", "ViewAccessor_8hpp.html", "ViewAccessor_8hpp" ],
-    [ "ViewCompileTimeArray.hpp", "ViewCompileTimeArray_8hpp.html", null ],
     [ "ViewPlainPtr.hpp", "ViewPlainPtr_8hpp.html", [
       [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01ViewPlainPtr_3_01TDev_0f065ba667e57141ade49f81e594cb12d.html", null ],
       [ "CreateStaticDevMemView< DevCpu >", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1CreateStaticDevMemView_3_01DevCpu_01_4" ],

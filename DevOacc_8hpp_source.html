@@ -325,80 +325,78 @@ $(document).ready(function(){initNavTree('DevOacc_8hpp_source.html',''); initRes
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keyword">struct </span>GetWarpSize&lt;DevOacc&gt;</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        {</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a259c97b673e9a8ca3ec58c50abe05591">getWarpSize</a>(DevOacc <span class="keyword">const</span>&amp; dev) -&gt; std::size_t</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a259c97b673e9a8ca3ec58c50abe05591">getWarpSize</a>(DevOacc <span class="keyword">const</span>&amp; <span class="comment">/* dev */</span>) -&gt; std::size_t</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                <a class="code" href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a>(dev);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                <span class="keywordflow">return</span> 1u;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            }</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        };</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">        //! The OpenACC device reset trait specialization.</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keyword">struct </span>Reset&lt;DevOacc&gt;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        {</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943">reset</a>(DevOacc <span class="keyword">const</span>&amp; dev) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            {</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                <a class="code" href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a>(dev); <span class="comment">//! \TODO</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"></span>            }</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        };</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">class </span>BufOacc;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">        //! The OpenACC device memory buffer type trait specialization.</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keyword">struct </span>BufType&lt;DevOacc, TElem, TDim, TIdx&gt;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keyword">using</span> type = BufOacc&lt;TElem, TDim, TIdx&gt;;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        };</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">        //! The OpenACC device platform type trait specialization.</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <span class="keyword">struct </span>PltfType&lt;DevOacc&gt;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        {</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            <span class="keyword">using</span> type = PltfOacc;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        };</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">using</span> QueueOaccNonBlocking = QueueGenericThreadsNonBlocking&lt;DevOacc&gt;;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keyword">using</span> QueueOaccBlocking = QueueGenericThreadsBlocking&lt;DevOacc&gt;;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    {</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keyword">struct </span>QueueType&lt;DevOacc, Blocking&gt;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        {</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keyword">using</span> type = QueueOaccBlocking;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        };</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="keyword">struct </span>QueueType&lt;DevOacc, NonBlocking&gt;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keyword">using</span> type = QueueOaccNonBlocking;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        };</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        //! The thread OpenACC device wait specialization.</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">        //!</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">        //! Blocks until the device has completed all preceding requested tasks.</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">        //! Tasks that are enqueued or queues that are created after this call is made are not waited for.</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keyword">struct </span>CurrentThreadWaitFor&lt;DevOacc&gt;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        {</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> currentThreadWaitFor(DevOacc <span class="keyword">const</span>&amp; dev) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            {</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                <a class="code" href="namespacealpaka_1_1traits_1_1generic.html#a954b1ec1c3ff1bec2c929a11c0bacb03">generic::currentThreadWaitForDevice</a>(dev);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            }</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        };</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                <span class="keywordflow">return</span> 1u;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            }</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        };</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">        //! The OpenACC device reset trait specialization.</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keyword">struct </span>Reset&lt;DevOacc&gt;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        {</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943">reset</a>(DevOacc <span class="keyword">const</span>&amp; <span class="comment">/* dev */</span>) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            {<span class="comment"></span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">                //! \TODO</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment"></span>            }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        };</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">class </span>BufOacc;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment">        //! The OpenACC device memory buffer type trait specialization.</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keyword">struct </span>BufType&lt;DevOacc, TElem, TDim, TIdx&gt;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        {</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="keyword">using</span> type = BufOacc&lt;TElem, TDim, TIdx&gt;;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        };</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">        //! The OpenACC device platform type trait specialization.</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <span class="keyword">struct </span>PltfType&lt;DevOacc&gt;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        {</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keyword">using</span> type = PltfOacc;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        };</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keyword">using</span> QueueOaccNonBlocking = QueueGenericThreadsNonBlocking&lt;DevOacc&gt;;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keyword">using</span> QueueOaccBlocking = QueueGenericThreadsBlocking&lt;DevOacc&gt;;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    {</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keyword">struct </span>QueueType&lt;DevOacc, Blocking&gt;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        {</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            <span class="keyword">using</span> type = QueueOaccBlocking;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        };</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keyword">struct </span>QueueType&lt;DevOacc, NonBlocking&gt;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        {</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="keyword">using</span> type = QueueOaccNonBlocking;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        };</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">        //! The thread OpenACC device wait specialization.</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">        //!</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        //! Blocks until the device has completed all preceding requested tasks.</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">        //! Tasks that are enqueued or queues that are created after this call is made are not waited for.</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        <span class="keyword">struct </span>CurrentThreadWaitFor&lt;DevOacc&gt;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        {</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> currentThreadWaitFor(DevOacc <span class="keyword">const</span>&amp; dev) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            {</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                <a class="code" href="namespacealpaka_1_1traits_1_1generic.html#a954b1ec1c3ff1bec2c929a11c0bacb03">generic::currentThreadWaitForDevice</a>(dev);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        };</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -416,10 +414,9 @@ $(document).ready(function(){initNavTree('DevOacc_8hpp_source.html',''); initRes
 <div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="amem_2buf_2Traits_8hpp_html"><div class="ttname"><a href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aProperties_8hpp_html"><div class="ttname"><a href="Properties_8hpp.html">Properties.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00049">AccCpuFibers.hpp:49</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1traits_1_1generic_html_a954b1ec1c3ff1bec2c929a11c0bacb03"><div class="ttname"><a href="namespacealpaka_1_1traits_1_1generic.html#a954b1ec1c3ff1bec2c929a11c0bacb03">alpaka::traits::generic::currentThreadWaitForDevice</a></div><div class="ttdeci">ALPAKA_FN_HOST auto currentThreadWaitForDevice(TDev const &amp;dev) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="EventGenericThreads_8hpp_source.html#l00242">EventGenericThreads.hpp:242</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1traits_1_1generic_html_a954b1ec1c3ff1bec2c929a11c0bacb03"><div class="ttname"><a href="namespacealpaka_1_1traits_1_1generic.html#a954b1ec1c3ff1bec2c929a11c0bacb03">alpaka::traits::generic::currentThreadWaitForDevice</a></div><div class="ttdeci">ALPAKA_FN_HOST auto currentThreadWaitForDevice(TDev const &amp;dev) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="EventGenericThreads_8hpp_source.html#l00240">EventGenericThreads.hpp:240</a></div></div>
 <div class="ttc" id="anamespaceutility_1_1tuple_html_a3ee33aa9c095eefbb760200218a320fc"><div class="ttname"><a href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">utility::tuple::size</a></div><div class="ttdeci">static constexpr size_t size(Tuple&lt; Args... &gt; &amp;)</div><div class="ttdoc">size</div><div class="ttdef"><b>Definition:</b> <a href="STLTuple_8hpp_source.html#l00248">STLTuple.hpp:248</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a20f2e6e4a15a2ed731ed862d824ccfdd"><div class="ttname"><a href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC void ignore_unused(Ts const &amp;...)</div><div class="ttdef"><b>Definition:</b> <a href="Unused_8hpp_source.html#l00018">Unused.hpp:18</a></div></div>
 <div class="ttc" id="aQueueGenericThreadsNonBlocking_8hpp_html"><div class="ttname"><a href="QueueGenericThreadsNonBlocking_8hpp.html">QueueGenericThreadsNonBlocking.hpp</a></div></div>
 <div class="ttc" id="aqueue_2Traits_8hpp_html"><div class="ttname"><a href="queue_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aIGenericThreadsQueue_8hpp_html"><div class="ttname"><a href="IGenericThreadsQueue_8hpp.html">IGenericThreadsQueue.hpp</a></div></div>
@@ -427,7 +424,7 @@ $(document).ready(function(){initNavTree('DevOacc_8hpp_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="DevOacc_8hpp.html">DevOacc.hpp</a></li>
-    <li class="footer">Generated on Thu Jan 6 2022 13:04:14 for alpaka by
+    <li class="footer">Generated on Thu Jan 13 2022 15:44:02 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

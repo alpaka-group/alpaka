@@ -101,29 +101,29 @@ $(document).ready(function(){initNavTree('PltfUniformCudaHipRt_8hpp_source.html'
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Unused_8hpp.html">alpaka/core/Unused.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; !BOOST_LANG_CUDA</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) &amp;&amp; !BOOST_LANG_HIP</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="DevUniformCudaHipRt_8hpp.html">alpaka/dev/DevUniformCudaHipRt.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="dev_2Traits_8hpp.html">alpaka/dev/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// Backend specific includes.</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Cuda_8hpp.html">alpaka/core/Cuda.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Hip_8hpp.html">alpaka/core/Hip.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#    include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#    include &lt;sstream&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#    include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; !BOOST_LANG_CUDA</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) &amp;&amp; !BOOST_LANG_HIP</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="DevUniformCudaHipRt_8hpp.html">alpaka/dev/DevUniformCudaHipRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="dev_2Traits_8hpp.html">alpaka/dev/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Backend specific includes.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Cuda_8hpp.html">alpaka/core/Cuda.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Hip_8hpp.html">alpaka/core/Hip.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#    include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#    include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#    include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#    include &lt;tuple&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{<span class="comment"></span></div>
@@ -238,7 +238,7 @@ $(document).ready(function(){initNavTree('PltfUniformCudaHipRt_8hpp_source.html'
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                    <span class="comment">// Return the previous error from cudaStreamCreate.</span></div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(rc);</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    <span class="comment">// Reset the Error state.</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    <a class="code" href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">ignore_unused</a>(<a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(GetLastError)());</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    std::ignore = <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(GetLastError)();</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                }</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            }</div>
@@ -376,13 +376,12 @@ $(document).ready(function(){initNavTree('PltfUniformCudaHipRt_8hpp_source.html'
 </div><!-- doc-content -->
 <div class="ttc" id="astructalpaka_1_1traits_1_1DevType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1DevType.html">alpaka::traits::DevType</a></div><div class="ttdoc">The device type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00022">Traits.hpp:22</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="aUniformCudaHip_8hpp_html_aad1e1de5a82a5f770453aed02324a99f"><div class="ttname"><a href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a></div><div class="ttdeci">#define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cmd)</div><div class="ttdoc">CUDA runtime error checking with log and exception.</div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00133">UniformCudaHip.hpp:133</a></div></div>
+<div class="ttc" id="aUniformCudaHip_8hpp_html_aad1e1de5a82a5f770453aed02324a99f"><div class="ttname"><a href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a></div><div class="ttdeci">#define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cmd)</div><div class="ttdoc">CUDA runtime error checking with log and exception.</div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00135">UniformCudaHip.hpp:135</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac65b6c44ec8afefe76a919847dd5ccec"><div class="ttname"><a href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_FULL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00070">Debug.hpp:70</a></div></div>
 <div class="ttc" id="astructalpaka_1_1traits_1_1GetDevCount_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevCount.html">alpaka::traits::GetDevCount</a></div><div class="ttdoc">The device count get trait.</div><div class="ttdef"><b>Definition:</b> <a href="pltf_2Traits_8hpp_source.html#l00041">Traits.hpp:41</a></div></div>
 <div class="ttc" id="astructalpaka_1_1traits_1_1GetDevCount_3_01PltfUniformCudaHipRt_01_4_html_aa798e7bcccf504fd4d80b5dee7f81818"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfUniformCudaHipRt_01_4.html#aa798e7bcccf504fd4d80b5dee7f81818">alpaka::traits::GetDevCount&lt; PltfUniformCudaHipRt &gt;::getDevCount</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getDevCount() -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="PltfUniformCudaHipRt_8hpp_source.html#l00061">PltfUniformCudaHipRt.hpp:61</a></div></div>
 <div class="ttc" id="aHip_8hpp_html"><div class="ttname"><a href="Hip_8hpp.html">Hip.hpp</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
-<div class="ttc" id="aUnused_8hpp_html"><div class="ttname"><a href="Unused_8hpp.html">Unused.hpp</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1PltfUniformCudaHipRt_html_aa96e4c2db9a5179adb7bc9f05c9a0034"><div class="ttname"><a href="classalpaka_1_1PltfUniformCudaHipRt.html#aa96e4c2db9a5179adb7bc9f05c9a0034">alpaka::PltfUniformCudaHipRt::PltfUniformCudaHipRt</a></div><div class="ttdeci">ALPAKA_FN_HOST PltfUniformCudaHipRt()=delete</div></div>
 <div class="ttc" id="aclassalpaka_1_1PltfUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1PltfUniformCudaHipRt.html">alpaka::PltfUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT platform.</div><div class="ttdef"><b>Definition:</b> <a href="PltfUniformCudaHipRt_8hpp_source.html#l00042">PltfUniformCudaHipRt.hpp:42</a></div></div>
@@ -390,10 +389,9 @@ $(document).ready(function(){initNavTree('PltfUniformCudaHipRt_8hpp_source.html'
 <div class="ttc" id="aDevUniformCudaHipRt_8hpp_html"><div class="ttname"><a href="DevUniformCudaHipRt_8hpp.html">DevUniformCudaHipRt.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1DevUniformCudaHipRt_html_a025b8b1836a3bf829adfc7777e02f88c"><div class="ttname"><a href="classalpaka_1_1DevUniformCudaHipRt.html#a025b8b1836a3bf829adfc7777e02f88c">alpaka::DevUniformCudaHipRt::m_iDevice</a></div><div class="ttdeci">int m_iDevice</div><div class="ttdef"><b>Definition:</b> <a href="DevUniformCudaHipRt_8hpp_source.html#l00070">DevUniformCudaHipRt.hpp:70</a></div></div>
 <div class="ttc" id="aCuda_8hpp_html"><div class="ttname"><a href="Cuda_8hpp.html">Cuda.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00049">AccCpuFibers.hpp:49</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1DevUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevUniformCudaHipRt_8hpp_source.html#l00050">DevUniformCudaHipRt.hpp:50</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a20f2e6e4a15a2ed731ed862d824ccfdd"><div class="ttname"><a href="namespacealpaka.html#a20f2e6e4a15a2ed731ed862d824ccfdd">alpaka::ignore_unused</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC void ignore_unused(Ts const &amp;...)</div><div class="ttdef"><b>Definition:</b> <a href="Unused_8hpp_source.html#l00018">Unused.hpp:18</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevByIdx_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevByIdx.html">alpaka::traits::GetDevByIdx</a></div><div class="ttdoc">The device get trait.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00040">DevCpu.hpp:40</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevByIdx_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevByIdx.html">alpaka::traits::GetDevByIdx</a></div><div class="ttdoc">The device get trait.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00039">DevCpu.hpp:39</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1uniform__cuda__hip_1_1detail_html_a48180eda98f53c8391a17fa921d7b958"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">alpaka::uniform_cuda_hip::detail::Error_t</a></div><div class="ttdeci">cudaError Error_t</div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00044">UniformCudaHip.hpp:44</a></div></div>
 <div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00021">Concepts.hpp:21</a></div></div>
 <div class="ttc" id="astructalpaka_1_1traits_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_01_4_html_a14221a146db22a226d9fb4add1abc4d2"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_01_4.html#a14221a146db22a226d9fb4add1abc4d2">alpaka::traits::GetDevByIdx&lt; PltfUniformCudaHipRt &gt;::getDevByIdx</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getDevByIdx(std::size_t const &amp;devIdx) -&gt; DevUniformCudaHipRt</div><div class="ttdef"><b>Definition:</b> <a href="PltfUniformCudaHipRt_8hpp_source.html#l00078">PltfUniformCudaHipRt.hpp:78</a></div></div>
@@ -401,7 +399,7 @@ $(document).ready(function(){initNavTree('PltfUniformCudaHipRt_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_3da4cf0d8582bc897be6864cae72e9ae.html">pltf</a></li><li class="navelem"><a class="el" href="PltfUniformCudaHipRt_8hpp.html">PltfUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Thu Jan 6 2022 13:04:14 for alpaka by
+    <li class="footer">Generated on Thu Jan 13 2022 15:44:03 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,8 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"dir_bda8ed2023e85f4a942d62751ce2d9c8.html":[4,0,0,0,14,15],
-"dir_c201f7a35756f890108797586165839d.html":[4,0,0,0,5,0],
-"dir_c5cf9ed9382b03cfc499b005edfaca3a.html":[4,0,0,0,22,0],
 "dir_cb41fd9734833cacff31b3343158f46b.html":[4,0,0,0,8],
 "dir_cb81ee58db3e712c22e42160ee07004a.html":[4,0,0,0,14,10],
 "dir_cfa240ccb1fbe815dea98e3774bff08a.html":[4,0,0,0,3],
@@ -29,9 +26,9 @@ var NAVTREEINDEX6 =
 "event_2Traits_8hpp_source.html":[4,0,0,0,8,5],
 "extent_2Traits_8hpp.html":[4,0,0,0,10,0],
 "extent_2Traits_8hpp.html#a25a3c3fcfea86d28f241e22b8d8a5786":[4,0,0,0,10,0,9],
-"extent_2Traits_8hpp.html#a3465c3e6eb6ca672bc1a0a00c0595861":[4,0,0,0,10,0,7],
 "extent_2Traits_8hpp.html#a481e301cb6fbf3b1e0d0bd82cff06084":[4,0,0,0,10,0,6],
 "extent_2Traits_8hpp.html#a61837968639dbbe2c1f125d3162098b9":[4,0,0,0,10,0,13],
+"extent_2Traits_8hpp.html#a66a4f901fd8bf6edf0f897c91050e556":[4,0,0,0,10,0,7],
 "extent_2Traits_8hpp.html#aa15d83e423b1c298fc62193686c4737a":[4,0,0,0,10,0,12],
 "extent_2Traits_8hpp.html#aa5daf1efc2e922c9fc9399df232f98e1":[4,0,0,0,10,0,10],
 "extent_2Traits_8hpp.html#acd41dd4212ab1d312e2d32934c7da73d":[4,0,0,0,10,0,5],
@@ -131,8 +128,8 @@ var NAVTREEINDEX6 =
 "idx_2Traits_8hpp.html":[4,0,0,0,11,4],
 "idx_2Traits_8hpp.html#a0dc8244519a754f60c4c8186a26a82fc":[4,0,0,0,11,4,5],
 "idx_2Traits_8hpp_source.html":[4,0,0,0,11,4],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "intrinsic_2Traits_8hpp.html":[4,0,0,0,12,3],
 "intrinsic_2Traits_8hpp.html#a2a62cce3174fe200218ab6bc06b134ed":[4,0,0,0,12,3,6],
 "intrinsic_2Traits_8hpp.html#a67995b6d001811d321496aab52684356":[4,0,0,0,12,3,4],
@@ -249,5 +246,8 @@ var NAVTREEINDEX6 =
 "mem_2buf_2cpu_2Set_8hpp_source.html":[4,0,0,0,15,1,0,1],
 "mem_2buf_2oacc_2Set_8hpp.html":[4,0,0,0,15,1,1,1],
 "mem_2buf_2oacc_2Set_8hpp_source.html":[4,0,0,0,15,1,1,1],
-"mem_2buf_2omp5_2Set_8hpp.html":[4,0,0,0,15,1,2,1]
+"mem_2buf_2omp5_2Set_8hpp.html":[4,0,0,0,15,1,2,1],
+"mem_2buf_2omp5_2Set_8hpp_source.html":[4,0,0,0,15,1,2,1],
+"mem_2buf_2uniformCudaHip_2Set_8hpp.html":[4,0,0,0,15,1,3,1],
+"mem_2buf_2uniformCudaHip_2Set_8hpp_source.html":[4,0,0,0,15,1,3,1]
 };

@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp.html',''); initResizable(); }
 <code>#include &lt;<a class="el" href="Assert_8hpp_source.html">alpaka/core/Assert.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Unused_8hpp_source.html">alpaka/core/Unused.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Unreachable_8hpp_source.html">alpaka/core/Unreachable.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DimIntegralConst_8hpp_source.html">alpaka/dim/DimIntegralConst.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="extent_2Traits_8hpp_source.html">alpaka/extent/Traits.hpp</a>&gt;</code><br />
@@ -231,10 +231,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a8c3580b7a262d20a172b62cb8b6153c5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8c3580b7a262d20a172b62cb8b6153c5">alpaka::createVecFromIndexedFn</a> (TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a8c3580b7a262d20a172b62cb8b6153c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [0, TDim].  <a href="namespacealpaka.html#a8c3580b7a262d20a172b62cb8b6153c5">More...</a><br /></td></tr>
 <tr class="separator:a8c3580b7a262d20a172b62cb8b6153c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="memTemplParams" colspan="2">template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename... TArgs, typename TIdxSize , TIdxSize... TIndices&gt; </td></tr>
-<tr class="memitem:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab1ea0e2c9c7d20f30f7802e9b1f00225">alpaka::createVecFromIndexedFnArbitrary</a> (std::integer_sequence&lt; TIdxSize, TIndices... &gt; const &amp;indices, TArgs &amp;&amp;... args)</td></tr>
-<tr class="memdesc:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single value constructor helper.  <a href="namespacealpaka.html#ab1ea0e2c9c7d20f30f7802e9b1f00225">More...</a><br /></td></tr>
-<tr class="separator:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7b06f6d6c5bb61fc4ec65fa95e6ec4"><td class="memTemplParams" colspan="2">template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename... TArgs, typename TIdxSize , TIdxSize... TIndices&gt; </td></tr>
+<tr class="memitem:a6e7b06f6d6c5bb61fc4ec65fa95e6ec4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6e7b06f6d6c5bb61fc4ec65fa95e6ec4">alpaka::createVecFromIndexedFnArbitrary</a> (std::integer_sequence&lt; TIdxSize, TIndices... &gt; const &amp;, TArgs &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a6e7b06f6d6c5bb61fc4ec65fa95e6ec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single value constructor helper.  <a href="namespacealpaka.html#a6e7b06f6d6c5bb61fc4ec65fa95e6ec4">More...</a><br /></td></tr>
+<tr class="separator:a6e7b06f6d6c5bb61fc4ec65fa95e6ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a730e9a7d0baa70426246af2bb311417a"><td class="memTemplParams" colspan="2">template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename TIdxOffset , typename... TArgs&gt; </td></tr>
 <tr class="memitem:a730e9a7d0baa70426246af2bb311417a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a730e9a7d0baa70426246af2bb311417a">alpaka::createVecFromIndexedFnOffset</a> (TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a730e9a7d0baa70426246af2bb311417a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [TIdxOffset, TIdxOffset + TDim].  <a href="namespacealpaka.html#a730e9a7d0baa70426246af2bb311417a">More...</a><br /></td></tr>
@@ -283,7 +283,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7056b9f7cd8b764aedbfcd44587c0438.html">vec</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Thu Jan 6 2022 13:04:15 for alpaka by
+    <li class="footer">Generated on Thu Jan 13 2022 15:44:03 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

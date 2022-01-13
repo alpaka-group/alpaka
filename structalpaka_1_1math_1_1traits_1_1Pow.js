@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Pow =
 [
-    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Pow.html#ab6a34e3bebe6e03de4509e08d2ab04f0", null ]
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Pow.html#a28502d287f1e62ce52c72c13797e174a", null ]
 ];

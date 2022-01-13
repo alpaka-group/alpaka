@@ -92,7 +92,6 @@ $(document).ready(function(){initNavTree('extent_2Traits_8hpp.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Unused_8hpp_source.html">alpaka/core/Unused.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DimIntegralConst_8hpp_source.html">alpaka/dim/DimIntegralConst.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="idx_2Traits_8hpp_source.html">alpaka/idx/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Fold_8hpp_source.html">alpaka/meta/Fold.hpp</a>&gt;</code><br />
@@ -142,9 +141,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a481e301cb6fbf3b1e0d0bd82cff06084"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
 <tr class="memitem:a481e301cb6fbf3b1e0d0bd82cff06084"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a481e301cb6fbf3b1e0d0bd82cff06084">alpaka::extent::getExtentProduct</a> (TExtent const &amp;extent=TExtent()) -&gt; Idx&lt; TExtent &gt;</td></tr>
 <tr class="separator:a481e301cb6fbf3b1e0d0bd82cff06084"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3465c3e6eb6ca672bc1a0a00c0595861"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , size_t... TIndices&gt; </td></tr>
-<tr class="memitem:a3465c3e6eb6ca672bc1a0a00c0595861"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1detail.html#a3465c3e6eb6ca672bc1a0a00c0595861">alpaka::extent::detail::getExtentProductInternal</a> (TExtent const &amp;extent, std::index_sequence&lt; TIndices... &gt; const &amp;indices) -&gt; Idx&lt; TExtent &gt;</td></tr>
-<tr class="separator:a3465c3e6eb6ca672bc1a0a00c0595861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66a4f901fd8bf6edf0f897c91050e556"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , size_t... TIndices&gt; </td></tr>
+<tr class="memitem:a66a4f901fd8bf6edf0f897c91050e556"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1detail.html#a66a4f901fd8bf6edf0f897c91050e556">alpaka::extent::detail::getExtentProductInternal</a> (TExtent const &amp;extent, std::index_sequence&lt; TIndices... &gt; const &amp;) -&gt; Idx&lt; TExtent &gt;</td></tr>
+<tr class="separator:a66a4f901fd8bf6edf0f897c91050e556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd52d01edce843e60d775bd16b4541f0"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
 <tr class="memitem:afd52d01edce843e60d775bd16b4541f0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#afd52d01edce843e60d775bd16b4541f0">alpaka::extent::getHeight</a> (TExtent const &amp;extent=TExtent()) -&gt; Idx&lt; TExtent &gt;</td></tr>
 <tr class="separator:afd52d01edce843e60d775bd16b4541f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,7 +173,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_66e792f3497a1da76ece4e164463459b.html">extent</a></li><li class="navelem"><a class="el" href="extent_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Thu Jan 6 2022 13:04:15 for alpaka by
+    <li class="footer">Generated on Thu Jan 13 2022 15:44:03 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

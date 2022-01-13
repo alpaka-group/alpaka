@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1GetIdx_3_01bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4 =
 [
-    [ "getIdx", "structalpaka_1_1traits_1_1GetIdx_3_01bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#a1bcd1b1c454a5d6acdff6f71094a351f", null ]
+    [ "getIdx", "structalpaka_1_1traits_1_1GetIdx_3_01bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#ac3579517e75e12230117262075f5e4a0", null ]
 ];

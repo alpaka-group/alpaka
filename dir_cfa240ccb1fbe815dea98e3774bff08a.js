@@ -33,8 +33,8 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "RemoveRestrict.hpp", "RemoveRestrict_8hpp.html", "RemoveRestrict_8hpp" ],
     [ "Tuple.hpp", "Tuple_8hpp.html", "Tuple_8hpp" ],
     [ "UniformCudaHip.hpp", "UniformCudaHip_8hpp.html", "UniformCudaHip_8hpp" ],
+    [ "Unreachable.hpp", "Unreachable_8hpp.html", "Unreachable_8hpp" ],
     [ "Unroll.hpp", "Unroll_8hpp.html", "Unroll_8hpp" ],
-    [ "Unused.hpp", "Unused_8hpp.html", "Unused_8hpp" ],
     [ "Utility.hpp", "Utility_8hpp.html", null ],
     [ "Vectorize.hpp", "Vectorize_8hpp.html", "Vectorize_8hpp" ]
 ];

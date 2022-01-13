@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1GetAccDevPro
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a4c6ed1b127e3c84b2d78c792b015367c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#a4c6ed1b127e3c84b2d78c792b015367c">getAccDevProps</a> (<a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> const &amp;dev) -&gt; <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, <a class="el" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a> &gt;</td></tr>
-<tr class="separator:a4c6ed1b127e3c84b2d78c792b015367c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4182ab812c891138e2211e5e6d2ea8ba"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#a4182ab812c891138e2211e5e6d2ea8ba">getAccDevProps</a> (<a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> const &amp;) -&gt; <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, <a class="el" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a> &gt;</td></tr>
+<tr class="separator:a4182ab812c891138e2211e5e6d2ea8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TDim, typename TIdx&gt;<br />
@@ -107,10 +107,10 @@ struct alpaka::traits::GetAccDevProps&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;</h3>
 
 <p>The OpenMP 5.0 accelerator device properties get trait specialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00135">135</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00134">134</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4c6ed1b127e3c84b2d78c792b015367c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c6ed1b127e3c84b2d78c792b015367c">&#9670;&nbsp;</a></span>getAccDevProps()</h2>
+<a id="a4182ab812c891138e2211e5e6d2ea8ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4182ab812c891138e2211e5e6d2ea8ba">&#9670;&nbsp;</a></span>getAccDevProps()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -124,7 +124,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
           <td class="memname">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="structalpaka_1_1traits_1_1GetAccDevProps.html">alpaka::traits::GetAccDevProps</a>&lt; <a class="el" href="classalpaka_1_1AccOmp5.html">AccOmp5</a>&lt; TDim, <a class="el" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a> &gt; &gt;::getAccDevProps </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> const &amp;&#160;</td>
-          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> -&gt; <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt;TDim, <a class="el" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a>&gt;
             </td>
         </tr>
@@ -137,7 +137,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </div><div class="memdoc">
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>for a later OpenMP (or when compilers work with a GPU target): fix max block size for target On CPU we would want gridBlockCountMax = ::omp_get_max_threads() / blockThreadCountMax but this would lead to only one block running on GPU, or too small blocks (see ALPAKA_OFFLOAD_MAX_BLOCK_SIZE). OpenMP 5.0 may actually mandate, that ::omp_get_max_threads() == max_teams * threads_per_team , however with the maximum grid size (i.e. max_teams) being INT_MAX this may not work. We actually want to set gridBlockCountMax = ::omp_get_max_teams() but there is no function ::omp_get_max_teams(). Instead we set ::omp_get_max_threads() again, to have a number which does not kill CPUs and is reasonable (::omp_get_max_threads() seems to return the block size) for GPUs. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00137">137</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00136">136</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -150,7 +150,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html">GetAccDevProps&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;</a></li>
-    <li class="footer">Generated on Thu Jan 6 2022 13:04:17 for alpaka by
+    <li class="footer">Generated on Thu Jan 13 2022 15:44:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
