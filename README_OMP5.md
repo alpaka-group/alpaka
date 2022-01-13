@@ -49,6 +49,30 @@ environment requirements. Add flags to set the required compiler and linker flag
     -DCMAKE_CXX_FLAGS=""
   ```
 
+## Block-shared Memory
+
+Shared memory if implemented using a small object allocator in
+`BlockSharedMemStOmp5` using a fixed-size buffer allocated by
+`BlockSharedMemDynMember`, making these two elements linked.
+
+OpenMP 5 offers the directive `omp allocate allocator(omp_pteam_mem_alloc)`
+(used by `BlockSharedMemStOmp5BuiltIn`) which can in theory be used for *static*
+shared memory variable. There is no useful built-in support for dynamic
+block-shared memory to got with that. Usage of the built-in can be configured
+using the `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM` flag:
+* `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=OFF`: Do not use `omp allocate` (default,
+  only available behavior with OpenMP < 5).
+* `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=DYN_FIXED`: Use `omp allocate`, use a
+  fixed size team-shared array for dynamic shared mem (fixed size is
+  `ALPAKA_BLOCK_SHARED_DYN_MEMBER_KIB`).
+* `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=DYN_ALLOC`: Use `omp allocate`, use a
+  `omp_alloc()` API call in target region to allocate dynamic shared memory. The
+  standard appears to allow for this, but is not useful for some reasons:
+  * In the best case, this would lead to an on-device `malloc` on GPU, which has
+    bad performance and does not use on-chip memory.
+  * At least in clang GPU targets (nvptx64, hsa), the symbols `omp_alloc` and `omp_free`
+    are undefined (linker error, code compiles).
+
 ## Limitations
 
 * *No separabel compilation*. OpenMP 5 requires functions for which device code should be generated for a

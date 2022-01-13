@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp>
 #include <alpaka/block/shared/dyn/Traits.hpp>
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Vectorize.hpp>
@@ -16,10 +17,6 @@
 #include <array>
 #include <cstdint>
 #include <type_traits>
-
-#ifndef ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB
-#    define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB 47u
-#endif
 
 namespace alpaka
 {
@@ -43,7 +40,7 @@ namespace alpaka
     //! Dynamic block shared memory provider using fixed-size
     //! member array to allocate memory on the stack or in shared
     //! memory.
-    template<std::size_t TStaticAllocKiB = ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB>
+    template<std::size_t TStaticAllocKiB = BlockSharedDynMemberAllocKiB>
     class alignas(core::vectorization::defaultAlignment) BlockSharedMemDynMember
         : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKiB>>
     {
