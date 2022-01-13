@@ -16,6 +16,7 @@
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
+#include <alpaka/mem/view/ViewAccessOps.hpp>
 #include <alpaka/mem/view/ViewPlainPtr.hpp>
 #include <alpaka/offset/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
@@ -27,7 +28,7 @@ namespace alpaka
 {
     //! A sub-view to a view.
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
-    class ViewSubView
+    class ViewSubView : public internal::ViewAccessOps<ViewSubView<TDev, TElem, TDim, TIdx>>
     {
         static_assert(!std::is_const<TIdx>::value, "The idx type of the view can not be const!");
 

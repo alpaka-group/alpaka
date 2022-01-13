@@ -14,6 +14,7 @@
 #include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #include <alpaka/mem/view/Traits.hpp>
+#include <alpaka/mem/view/ViewAccessOps.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 #include <type_traits>
@@ -22,7 +23,7 @@ namespace alpaka
 {
     //! The memory view to wrap plain pointers.
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
-    class ViewPlainPtr final
+    class ViewPlainPtr final : public internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
     {
         static_assert(!std::is_const<TIdx>::value, "The idx type of the view can not be const!");
 

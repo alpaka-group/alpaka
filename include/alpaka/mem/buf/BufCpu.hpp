@@ -13,6 +13,7 @@
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
+#include <alpaka/mem/view/ViewAccessOps.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 // Backend specific includes.
@@ -103,7 +104,7 @@ namespace alpaka
 
     //! The CPU memory buffer.
     template<typename TElem, typename TDim, typename TIdx>
-    class BufCpu
+    class BufCpu : public internal::ViewAccessOps<BufCpu<TElem, TDim, TIdx>>
     {
     public:
         template<typename TExtent, typename Deleter>
