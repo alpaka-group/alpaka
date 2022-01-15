@@ -143,19 +143,30 @@ namespace alpaka
     {
         friend struct traits::GetDevByIdx<PltfOacc>;
 
+        template<typename T>
+        class OnceInitialized
+        {
+        public:
+            template<typename... TArgs>
+            T& operator()(TArgs&&... args)
+            {
+                std::call_once(
+                    m_once,
+                    [&]() { m_data = std::make_unique<oacc::detail::DevOaccImpl>(std::forward<TArgs>(args)...); });
+
+                return *m_data;
+            }
+
+        private:
+            std::once_flag m_once;
+            std::unique_ptr<T> m_data = nullptr;
+        };
+
         static auto device(int iDevice)
         {
-            static std::vector<std::unique_ptr<oacc::detail::DevOaccImpl>> devices(getDevCount<PltfOacc>());
-            static std::mutex mutex;
+            static std::vector<OnceInitialized<oacc::detail::DevOaccImpl>> devices(getDevCount<PltfOacc>());
 
-            auto& d = devices.at(static_cast<unsigned>(iDevice));
-            if(!d)
-            {
-                std::lock_guard<std::mutex> lock(mutex);
-                if(!d)
-                    d = std::make_unique<oacc::detail::DevOaccImpl>(iDevice);
-            }
-            return d.get();
+            return &devices.at(static_cast<unsigned>(iDevice))(iDevice);
         }
 
     protected:
