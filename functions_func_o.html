@@ -255,6 +255,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 </li>
 <li>operator*()
 : <a class="el" href="classalpaka_1_1BufOmp5.html#a53aae0794193e7ed9239fb2d3accb676">alpaka::BufOmp5&lt; TElem, TDim, TIdx &gt;</a>
+, <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#a8d990a012d769f8abe7ad8b0f157543d">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
 , <a class="el" href="classalpaka_1_1test_1_1traits_1_1IteratorView.html#ac48113b89732df6ce30f159d86746727">alpaka::test::traits::IteratorView&lt; TView, TSfinae &gt;</a>
 </li>
 <li>operator++()
@@ -262,6 +263,9 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 </li>
 <li>operator--()
 : <a class="el" href="classalpaka_1_1test_1_1traits_1_1IteratorView.html#abab0ff984af55291588aba6e7a23b44e">alpaka::test::traits::IteratorView&lt; TView, TSfinae &gt;</a>
+</li>
+<li>operator-&gt;()
+: <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#aec19df26decf41d5adfe9d0784ffd126">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
 </li>
 <li>operator=()
 : <a class="el" href="classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#aa2f46183262ab7f5e0a8da1ad60abd9f">alpaka::bt::IdxBtRefFiberIdMap&lt; TDim, TIdx &gt;</a>
@@ -281,7 +285,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a7b07da29c79a7b44bfaf16875630ff8c">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>
 , <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a0f753524b226278604787dd3cf67555f">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl</a>
 , <a class="el" href="classalpaka_1_1ViewPlainPtr.html#a15c97c5c40ec230c83bc5cf28f4cb95c">alpaka::ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt;</a>
-, <a class="el" href="classalpaka_1_1WorkDivMembers.html#a3bb471668188b5b230d2e41f0c5255ea">alpaka::WorkDivMembers&lt; TDim, TIdx &gt;</a>
+, <a class="el" href="classalpaka_1_1WorkDivMembers.html#a40aa8bde6d59476bc13936251358563d">alpaka::WorkDivMembers&lt; TDim, TIdx &gt;</a>
 </li>
 <li>operator==()
 : <a class="el" href="classalpaka_1_1DevCpu.html#a3492d59ae31f40221aae144c0d0a945e">alpaka::DevCpu</a>
@@ -303,11 +307,12 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <li>operator[]()
 : <a class="el" href="structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_011_00_01TAccessModes_01_4.html#a07772bed43358b409c5296cb6200b066">alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, 1, TAccessModes &gt;</a>
 , <a class="el" href="structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#acd148ab9116875358fdad68dfc88cb4a">alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, TDim, TAccessModes &gt;</a>
+, <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#a7543ae7559a3b9150fc4a21ae82fc69b">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
 , <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#adaf57668af893d5f5bc40a295bf88d86">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 1 &gt;</a>
-, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#abefb94f77518716a675e72590684b089">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 2 &gt;</a>
-, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html#a2ba188be4a4c25498d94dc2b7b3936b1">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 3 &gt;</a>
-, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html#a0c0368727b999ad54e850faab0c3c5ec">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 4 &gt;</a>
-, <a class="el" href="structalpaka_1_1test_1_1Array.html#a2fbe4fb784a63e4a2498994b72011261">alpaka::test::Array&lt; TType, TSize &gt;</a>
+, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a33172063ca5dd6c61e7aed1a7c881339">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 2 &gt;</a>
+, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html#a0b47a9109804b98aa1b1702cbff7ad37">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 3 &gt;</a>
+, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html#aaa8cbee4b86f50bde78aa11c0a638e48">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 4 &gt;</a>
+, <a class="el" href="structalpaka_1_1test_1_1Array.html#ad65a5b6316f03d3c8e35914c3418d357">alpaka::test::Array&lt; TType, TSize &gt;</a>
 , <a class="el" href="classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03">alpaka::Vec&lt; TDim, TVal &gt;</a>
 </li>
 </ul>
@@ -316,7 +321,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 17 2022 11:55:14 for alpaka by
+    <li class="footer">Generated on Mon Jan 17 2022 19:40:11 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

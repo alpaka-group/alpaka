@@ -186,6 +186,7 @@ var hierarchy =
       [ "alpaka::generic::detail::QueueGenericThreadsBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html", null ],
       [ "alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html", null ]
     ] ],
+    [ "alpaka::internal::ViewAccessOps< TView >", "structalpaka_1_1internal_1_1ViewAccessOps.html", null ],
     [ "alpaka::math::ConceptMathAbs", "structalpaka_1_1math_1_1ConceptMathAbs.html", null ],
     [ "alpaka::math::ConceptMathAcos", "structalpaka_1_1math_1_1ConceptMathAcos.html", null ],
     [ "alpaka::math::ConceptMathAsin", "structalpaka_1_1math_1_1ConceptMathAsin.html", null ],
@@ -1064,8 +1065,6 @@ var hierarchy =
     [ "alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html", null ],
     [ "alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html", null ],
     [ "alpaka::Vec< TDim, TVal >", "classalpaka_1_1Vec.html", null ],
-    [ "alpaka::ViewPlainPtr< TDev, TElem, TDim, TIdx >", "classalpaka_1_1ViewPlainPtr.html", null ],
-    [ "alpaka::ViewSubView< TDev, TElem, TDim, TIdx >", "classalpaka_1_1ViewSubView.html", null ],
     [ "alpaka::warp::ConceptWarp", "structalpaka_1_1warp_1_1ConceptWarp.html", null ],
     [ "alpaka::warp::traits::Activemask< TWarp, TSfinae >", "structalpaka_1_1warp_1_1traits_1_1Activemask.html", null ],
     [ "alpaka::warp::traits::Activemask< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1Activemask_3_01WarpSingleThread_01_4.html", null ],
@@ -1846,7 +1845,15 @@ var hierarchy =
     [ "alpaka::Vec< TDim, size_t >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, SrcSize >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, TIdx >", "classalpaka_1_1Vec.html", null ],
-    [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "classalpaka_1_1ViewPlainPtr.html", null ],
+    [ "alpaka::internal::ViewAccessOps< ViewPlainPtr< Dev, TElem, TDim, TIdx > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
+      [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "classalpaka_1_1ViewPlainPtr.html", null ]
+    ] ],
+    [ "alpaka::internal::ViewAccessOps< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
+      [ "alpaka::ViewPlainPtr< TDev, TElem, TDim, TIdx >", "classalpaka_1_1ViewPlainPtr.html", null ]
+    ] ],
+    [ "alpaka::internal::ViewAccessOps< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
+      [ "alpaka::ViewSubView< TDev, TElem, TDim, TIdx >", "classalpaka_1_1ViewSubView.html", null ]
+    ] ],
     [ "TBases", null, [
       [ "alpaka::meta::InheritFromList< TList< TBases... > >", "classalpaka_1_1meta_1_1InheritFromList_3_01TList_3_01TBases_8_8_8_01_4_01_4.html", null ]
     ] ]

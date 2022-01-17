@@ -11,6 +11,7 @@ var namespacealpaka =
     [ "gb", "namespacealpaka_1_1gb.html", "namespacealpaka_1_1gb" ],
     [ "generic", "namespacealpaka_1_1generic.html", "namespacealpaka_1_1generic" ],
     [ "hierarchy", "namespacealpaka_1_1hierarchy.html", "namespacealpaka_1_1hierarchy" ],
+    [ "internal", "namespacealpaka_1_1internal.html", "namespacealpaka_1_1internal" ],
     [ "math", "namespacealpaka_1_1math.html", "namespacealpaka_1_1math" ],
     [ "memory_scope", "namespacealpaka_1_1memory__scope.html", "namespacealpaka_1_1memory__scope" ],
     [ "meta", "namespacealpaka_1_1meta.html", "namespacealpaka_1_1meta" ],
