@@ -1,5 +1,13 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1WorkDivMembers.html#ad6ac2ae27cb8b1b47cb4f42e10de151e":[3,0,0,121,7],
+"classalpaka_1_1WorkDivMembers.html#ad6c260bb1d8458e268599bf2d6add333":[3,0,0,121,2],
+"classalpaka_1_1WorkDivMembers.html#adfb7963f224f827a7ef13c1cd4cc0e16":[3,0,0,121,4],
+"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html":[3,0,0,122],
+"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#a8d1b809eee73e0eade6dac30468da237":[3,0,0,122,0],
+"classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#ae3fcc82813fe1d4bc2d966c47db46216":[3,0,0,122,1],
+"classalpaka_1_1bt_1_1IdxBtLinear.html":[3,0,0,0,0],
+"classalpaka_1_1bt_1_1IdxBtLinear.html#ac64d058b3f9e63e0ba3c16d39fc99bc4":[3,0,0,0,0,0],
 "classalpaka_1_1bt_1_1IdxBtLinear.html#ae95a0d6b4c50921d041e6f39807ed1e8":[3,0,0,0,0,1],
 "classalpaka_1_1bt_1_1IdxBtOmp.html":[3,0,0,0,1],
 "classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html":[3,0,0,0,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html":[3,0,0,16,0,1,1],
 "classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#a36a155dc6d56c020e982a351ed8724cc":[3,0,0,16,0,1,1,3],
 "classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#aa4a039b81626e52e5c663c51145c2736":[3,0,0,16,0,1,1,1],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#ac077eb3149d6355a9a1e6a8edabca4d1":[3,0,0,16,0,1,1,2],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#ae9cff6634ea6bd3e68d87f893ca4e39b":[3,0,0,16,0,1,1,0],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformReal.html":[3,0,0,16,0,1,2],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformReal.html#a25d4deccf58e9e55645216112fa768ad":[3,0,0,16,0,1,2,1],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformReal.html#a9534ff47dc8fcf125917c887b1cf72b4":[3,0,0,16,0,1,2,0],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformUint.html":[3,0,0,16,0,1,3],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformUint.html#a3e286896ff3c9d8ab6eb70cb67617ac6":[3,0,0,16,0,1,3,0],
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1UniformUint.html#a81650421080ab90d994f46367d63d254":[3,0,0,16,0,1,3,1],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal.html":[3,0,0,16,0,3,0]
+"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#ac077eb3149d6355a9a1e6a8edabca4d1":[3,0,0,16,0,1,1,2]
 };

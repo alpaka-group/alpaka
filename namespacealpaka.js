@@ -34,6 +34,7 @@ var namespacealpaka =
     [ "AllocCpuNew", "classalpaka_1_1AllocCpuNew.html", null ],
     [ "AtomicAdd", "structalpaka_1_1AtomicAdd.html", "structalpaka_1_1AtomicAdd" ],
     [ "AtomicAnd", "structalpaka_1_1AtomicAnd.html", "structalpaka_1_1AtomicAnd" ],
+    [ "AtomicAtomicRef", "classalpaka_1_1AtomicAtomicRef.html", null ],
     [ "AtomicCas", "structalpaka_1_1AtomicCas.html", "structalpaka_1_1AtomicCas" ],
     [ "AtomicDec", "structalpaka_1_1AtomicDec.html", "structalpaka_1_1AtomicDec" ],
     [ "AtomicExch", "structalpaka_1_1AtomicExch.html", "structalpaka_1_1AtomicExch" ],

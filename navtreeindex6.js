@@ -1,5 +1,13 @@
 var NAVTREEINDEX6 =
 {
+"dir_b0220b247b6d146638519e84a2a8e9ad.html":[4,0,0,0,15,2],
+"dir_b55c73c2961c280bf97a43e56b19244f.html":[4,0,0,0,15,3],
+"dir_b5a8ec4893e1f83a89980c2613a4602b.html":[4,0,0,0,6],
+"dir_b922c4a5a5940d6bf5e8199aeedb6920.html":[4,0,0,0,14,19],
+"dir_bcbca66e58b540e9262b43d4981a33a7.html":[4,0,0,0,22,3],
+"dir_bda8ed2023e85f4a942d62751ce2d9c8.html":[4,0,0,0,14,15],
+"dir_c201f7a35756f890108797586165839d.html":[4,0,0,0,5,0],
+"dir_c5cf9ed9382b03cfc499b005edfaca3a.html":[4,0,0,0,22,0],
 "dir_cb41fd9734833cacff31b3343158f46b.html":[4,0,0,0,8],
 "dir_cb81ee58db3e712c22e42160ee07004a.html":[4,0,0,0,14,10],
 "dir_cfa240ccb1fbe815dea98e3774bff08a.html":[4,0,0,0,3],
@@ -128,8 +136,8 @@ var NAVTREEINDEX6 =
 "idx_2Traits_8hpp.html":[4,0,0,0,11,4],
 "idx_2Traits_8hpp.html#a0dc8244519a754f60c4c8186a26a82fc":[4,0,0,0,11,4,5],
 "idx_2Traits_8hpp_source.html":[4,0,0,0,11,4],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "intrinsic_2Traits_8hpp.html":[4,0,0,0,12,3],
 "intrinsic_2Traits_8hpp.html#a2a62cce3174fe200218ab6bc06b134ed":[4,0,0,0,12,3,6],
 "intrinsic_2Traits_8hpp.html#a67995b6d001811d321496aab52684356":[4,0,0,0,12,3,4],
@@ -241,13 +249,5 @@ var NAVTREEINDEX6 =
 "mem_2buf_2Traits_8hpp.html#a7ff762720c64dc454a53faa6622c227d":[4,0,0,0,15,1,9,11],
 "mem_2buf_2Traits_8hpp.html#a93d03d799a39746ab0418ec48f73a4eb":[4,0,0,0,15,1,9,15],
 "mem_2buf_2Traits_8hpp.html#ad3079297a886e6434a3ab3750585d033":[4,0,0,0,15,1,9,10],
-"mem_2buf_2Traits_8hpp_source.html":[4,0,0,0,15,1,9],
-"mem_2buf_2cpu_2Set_8hpp.html":[4,0,0,0,15,1,0,1],
-"mem_2buf_2cpu_2Set_8hpp_source.html":[4,0,0,0,15,1,0,1],
-"mem_2buf_2oacc_2Set_8hpp.html":[4,0,0,0,15,1,1,1],
-"mem_2buf_2oacc_2Set_8hpp_source.html":[4,0,0,0,15,1,1,1],
-"mem_2buf_2omp5_2Set_8hpp.html":[4,0,0,0,15,1,2,1],
-"mem_2buf_2omp5_2Set_8hpp_source.html":[4,0,0,0,15,1,2,1],
-"mem_2buf_2uniformCudaHip_2Set_8hpp.html":[4,0,0,0,15,1,3,1],
-"mem_2buf_2uniformCudaHip_2Set_8hpp_source.html":[4,0,0,0,15,1,3,1]
+"mem_2buf_2Traits_8hpp_source.html":[4,0,0,0,15,1,9]
 };

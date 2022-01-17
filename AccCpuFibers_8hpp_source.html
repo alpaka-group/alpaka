@@ -101,9 +101,9 @@ $(document).ready(function(){initNavTree('AccCpuFibers_8hpp_source.html',''); in
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// Base classes.</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AtomicHierarchy_8hpp.html">alpaka/atomic/AtomicHierarchy.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AtomicNoOp_8hpp.html">alpaka/atomic/AtomicNoOp.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AtomicStdLibLock_8hpp.html">alpaka/atomic/AtomicStdLibLock.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AtomicCpu_8hpp.html">alpaka/atomic/AtomicCpu.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AtomicHierarchy_8hpp.html">alpaka/atomic/AtomicHierarchy.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AtomicNoOp_8hpp.html">alpaka/atomic/AtomicNoOp.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BlockSharedMemDynMember_8hpp.html">alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BlockSharedMemStMemberMasterSync_8hpp.html">alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BlockSyncBarrierFiber_8hpp.html">alpaka/block/sync/BlockSyncBarrierFiber.hpp</a>&gt;</span></div>
@@ -153,8 +153,8 @@ $(document).ready(function(){initNavTree('AccCpuFibers_8hpp_source.html',''); in
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">public</span> <a class="code" href="classalpaka_1_1gb_1_1IdxGbRef.html">gb::IdxGbRef</a>&lt;TDim, TIdx&gt;,</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">public</span> <a class="code" href="classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html">bt::IdxBtRefFiberIdMap</a>&lt;TDim, TIdx&gt;,</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">public</span> <a class="code" href="classalpaka_1_1meta_1_1InheritFromList.html">AtomicHierarchy</a>&lt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            AtomicStdLibLock&lt;16&gt;, <span class="comment">// grid atomics</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            AtomicStdLibLock&lt;16&gt;, <span class="comment">// block atomics</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            AtomicCpu, <span class="comment">// grid atomics</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            AtomicCpu, <span class="comment">// block atomics</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            AtomicNoOp         <span class="comment">// thread atomics</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        &gt;,</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">public</span> <a class="code" href="classalpaka_1_1math_1_1MathStdLib.html">math::MathStdLib</a>,</div>
@@ -184,8 +184,8 @@ $(document).ready(function(){initNavTree('AccCpuFibers_8hpp_source.html',''); in
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            , gb::<a class="code" href="classalpaka_1_1gb_1_1IdxGbRef.html#a00bc2c10f46eae71b10bff2b5dfe4484">IdxGbRef</a>&lt;TDim, TIdx&gt;(m_gridBlockIdx)</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            , bt::<a class="code" href="classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#ad3f44b3a24b548eef9e2854b5de5da89">IdxBtRefFiberIdMap</a>&lt;TDim, TIdx&gt;(m_fibersToIndices)</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            , <a class="code" href="classalpaka_1_1meta_1_1InheritFromList.html">AtomicHierarchy</a>&lt;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                  <a class="code" href="classalpaka_1_1AtomicStdLibLock.html">AtomicStdLibLock</a>&lt;16&gt;, <span class="comment">// atomics between grids</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                  <a class="code" href="classalpaka_1_1AtomicStdLibLock.html">AtomicStdLibLock</a>&lt;16&gt;, <span class="comment">// atomics between blocks</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                  <a class="code" href="classalpaka_1_1AtomicStdLibLock.html">AtomicCpu</a>, <span class="comment">// atomics between grids</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                  <a class="code" href="classalpaka_1_1AtomicStdLibLock.html">AtomicCpu</a>, <span class="comment">// atomics between blocks</span></div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                  <a class="code" href="classalpaka_1_1AtomicNoOp.html">AtomicNoOp</a> <span class="comment">// atomics between threads</span></div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                  &gt;()</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            , math::MathStdLib()</div>
@@ -320,6 +320,7 @@ $(document).ready(function(){initNavTree('AccCpuFibers_8hpp_source.html',''); in
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1traits_1_1CreateTaskKernel_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1CreateTaskKernel.html">alpaka::traits::CreateTaskKernel</a></div><div class="ttdoc">The kernel execution task creation trait.</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2Traits_8hpp_source.html#l00039">Traits.hpp:39</a></div></div>
 <div class="ttc" id="aIntrinsicCpu_8hpp_html"><div class="ttname"><a href="IntrinsicCpu_8hpp.html">IntrinsicCpu.hpp</a></div></div>
+<div class="ttc" id="aAtomicCpu_8hpp_html"><div class="ttname"><a href="AtomicCpu_8hpp.html">AtomicCpu.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a69d68a30000dc80ea5a1c09139f2b789"><div class="ttname"><a href="namespacealpaka.html#a69d68a30000dc80ea5a1c09139f2b789">alpaka::getMemBytes</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getMemBytes(TDev const &amp;dev) -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00075">Traits.hpp:75</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a8abf917f5b376cf0c5a91f5d98c92af1"><div class="ttname"><a href="namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1">alpaka::syncBlockThreads</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_ACC auto syncBlockThreads(TBlockSync const &amp;blockSync) -&gt; void</div><div class="ttdoc">Synchronizes all threads within the current block (independently for all blocks).</div><div class="ttdef"><b>Definition:</b> <a href="block_2sync_2Traits_8hpp_source.html#l00041">Traits.hpp:41</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1BlockSharedMemDynMember_html_a3270b5f30feaff786dc436304690bb40"><div class="ttname"><a href="classalpaka_1_1BlockSharedMemDynMember.html#a3270b5f30feaff786dc436304690bb40">alpaka::BlockSharedMemDynMember&lt;&gt;::staticMemBegin</a></div><div class="ttdeci">uint8_t * staticMemBegin() const</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemDynMember_8hpp_source.html#l00063">BlockSharedMemDynMember.hpp:63</a></div></div>
@@ -356,7 +357,6 @@ $(document).ready(function(){initNavTree('AccCpuFibers_8hpp_source.html',''); in
 <div class="ttc" id="astructalpaka_1_1AccDevProps_html"><div class="ttname"><a href="structalpaka_1_1AccDevProps.html">alpaka::AccDevProps</a></div><div class="ttdoc">The acceleration properties on a device.</div><div class="ttdef"><b>Definition:</b> <a href="AccDevProps_8hpp_source.html#l00025">AccDevProps.hpp:25</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1PltfCpu_html"><div class="ttname"><a href="classalpaka_1_1PltfCpu.html">alpaka::PltfCpu</a></div><div class="ttdoc">The CPU device platform.</div><div class="ttdef"><b>Definition:</b> <a href="PltfCpu_8hpp_source.html#l00022">PltfCpu.hpp:22</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1DevCpu_html"><div class="ttname"><a href="classalpaka_1_1DevCpu.html">alpaka::DevCpu</a></div><div class="ttdoc">The CPU device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00093">DevCpu.hpp:93</a></div></div>
-<div class="ttc" id="aAtomicStdLibLock_8hpp_html"><div class="ttname"><a href="AtomicStdLibLock_8hpp.html">AtomicStdLibLock.hpp</a></div></div>
 <div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1bt_1_1IdxBtRefFiberIdMap_html"><div class="ttname"><a href="classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html">alpaka::bt::IdxBtRefFiberIdMap</a></div><div class="ttdoc">The fibers accelerator index provider.</div><div class="ttdef"><b>Definition:</b> <a href="IdxBtRefFiberIdMap_8hpp_source.html#l00029">IdxBtRefFiberIdMap.hpp:29</a></div></div>
 <div class="ttc" id="aBlockSyncBarrierFiber_8hpp_html"><div class="ttname"><a href="BlockSyncBarrierFiber_8hpp.html">BlockSyncBarrierFiber.hpp</a></div></div>
@@ -387,7 +387,7 @@ $(document).ready(function(){initNavTree('AccCpuFibers_8hpp_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccCpuFibers_8hpp.html">AccCpuFibers.hpp</a></li>
-    <li class="footer">Generated on Mon Jan 17 2022 11:09:46 for alpaka by
+    <li class="footer">Generated on Mon Jan 17 2022 11:55:10 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
