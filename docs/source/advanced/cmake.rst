@@ -1,7 +1,7 @@
 CMake Arguments
 ===============
 
-Alpaka configures a lot of its functionality at compile time. Therefore a lot of compiler and link flags are needed, which are set by ``CMake`` arguments. The beginning of this section introduces the general Alpaca flag. The last parts of the section describe back-end specific flags.
+Alpaka configures a lot of its functionality at compile time. Therefore a lot of compiler and link flags are needed, which are set by CMake arguments. The beginning of this section introduces the general Alpaca flag. The last parts of the section describe back-end specific flags.
 
 .. hint::
 

@@ -39,6 +39,7 @@ Individual chapters are based on the information of the chapters before.
 
    basic/intro.rst
    basic/install.rst
+   basic/example.rst
    basic/abstraction.rst
    basic/library.rst
    basic/cheatsheet.rst
