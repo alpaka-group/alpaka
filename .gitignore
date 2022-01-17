@@ -1,4 +1,6 @@
 /docs/doxygen/*
+/docs/source/_build
+/docs/cheatsheet/cheatsheet.pdf
 
 **/build*
 
@@ -34,6 +36,7 @@ spack-build*
 /.settings/
 
 # Visual Studio Code project files
+.vscode/
 .cache/
 
 # Visual Studio project files
