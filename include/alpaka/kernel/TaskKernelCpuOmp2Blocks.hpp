@@ -34,6 +34,7 @@
 #    include <omp.h>
 
 #    include <functional>
+#    include <sstream>
 #    include <stdexcept>
 #    include <tuple>
 #    include <type_traits>
@@ -914,7 +915,12 @@ namespace alpaka
                 // In all other cases we expect to be in a parallel region now.
                 if((numBlocksInGrid > 1) && (::omp_get_max_threads() > 1) && (::omp_in_parallel() == 0))
                 {
-                    throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
+                    std::ostringstream os;
+                    os << "The OpenMP 2.0 runtime did not create a parallel region! ("
+                        << " numBlocksInGrid= " << numBlocksInGrid
+                        << " omp_get_max_threads()= " << ::omp_get_max_threads()
+                        << " omp_in_parallel()= " << ::omp_in_parallel();
+                    throw std::runtime_error(os.str());
                 }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
