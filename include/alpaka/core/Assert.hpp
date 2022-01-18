@@ -27,7 +27,10 @@
                 __builtin_trap();                                                                                     \
         } while(false)
 #else
-#    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)
+#    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)                                                                         \
+        do                                                                                                            \
+        {                                                                                                             \
+        } while(false)
 #endif
 
 namespace alpaka
