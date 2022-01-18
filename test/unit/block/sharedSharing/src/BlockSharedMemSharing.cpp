@@ -143,6 +143,21 @@ namespace alpaka
                 return sizeof(std::uint32_t);
             }
         };
+
+        // Specialize the trait for kernels of type KernelWithTrait<>
+        template<typename TAcc>
+        struct OmpSchedule<BlockSharedMemDynSharingTestKernel, TAcc>
+        {
+            template<typename TVec, typename... TArgs>
+            ALPAKA_FN_HOST static auto getOmpSchedule(
+                BlockSharedMemDynSharingTestKernel const& /* kernelFnObj */,
+                TVec const& /* blockThreadExtent */,
+                TVec const& /* threadElemExtent */,
+                TArgs const&... /* args */) -> alpaka::omp::Schedule
+            {
+                return alpaka::omp::Schedule::NoSchedule;
+            }
+        };
     } // namespace traits
 } // namespace alpaka
 
