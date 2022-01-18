@@ -23,7 +23,7 @@
 
 //! This tests checks if block-shared memory is shared correctly: only between all threads in a block.
 //!
-//! The check is done each thread atomically adding 1 to a variable `shared`. Possible outcomes are:
+//! The check is done by each thread atomically adding 1 to a variable `shared`. Possible outcomes are:
 //! * `shared < blockThreadCount`: memory is not shared between all threads of a block; usually `shared == 1`: memory
 //!   is thread-private (fail)
 //! * `shared > blockThreadCount`: memory is shared between blocks (fail)
@@ -39,7 +39,7 @@ ALPAKA_FN_ACC void blockSharedMemSharingTestKernelHelper(TAcc const& acc, std::u
 
     alpaka::syncBlockThreads(acc);
 
-    // In the expected case We need only `hierarchy::Blocks` here, but in
+    // In the expected case we only need `hierarchy::Blocks` here, but in
     // case shared memory is shared between blocks we need atomicity
     // between blocks to get the correct result telling us so.
     alpaka::atomicAdd(acc, &shared, 1u, alpaka::hierarchy::Blocks());

@@ -156,7 +156,7 @@ set(ALPAKA_OFFLOAD_MAX_BLOCK_SIZE "256" CACHE STRING "Maximum number threads per
 option(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST "Allow host-only contructs like assert in offload code in debug mode." ON)
 set(ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ)")
 
-set(ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM "OFF" CACHE STRING "Whether to use OMP5 built-in directive for block-shared memory and how to treat dynamic shared memory.")
+set(ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM "OFF" CACHE STRING "Whether to use OMP5 built-in directives for block-shared memory and how to treat dynamic shared memory.")
 set_property(CACHE ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM PROPERTY STRINGS "OFF;DYN_FIXED;DYN_ALLOC")
 
 #-------------------------------------------------------------------------------
@@ -608,7 +608,11 @@ if(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST)
 endif()
 target_compile_definitions(alpaka INTERFACE "ALPAKA_OFFLOAD_MAX_BLOCK_SIZE=${ALPAKA_OFFLOAD_MAX_BLOCK_SIZE}")
 target_compile_definitions(alpaka INTERFACE "ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB=${ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB}")
-target_compile_definitions(alpaka INTERFACE "ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=${ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM}")
+if(ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM STREQUAL "DYN_FIXED")
+    target_compile_definitions(alpaka INTERFACE ALPAKA_OFFLOAD_BUILTIN_SHARED_MEM_FIXED)
+elseif(ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM STREQUAL "DYN_ALLOC")
+    target_compile_definitions(alpaka INTERFACE ALPAKA_OFFLOAD_BUILTIN_SHARED_MEM_ALLOC)
+endif()
 
 if(ALPAKA_CI)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_CI")

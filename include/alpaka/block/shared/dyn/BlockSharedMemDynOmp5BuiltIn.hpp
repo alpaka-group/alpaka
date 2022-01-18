@@ -82,7 +82,7 @@ namespace alpaka
     class alignas(core::vectorization::defaultAlignment) BlockSharedMemDynOmp5BuiltInFixed
         : public BlockSharedMemDynOmp5BuiltIn
     {
-        std::array<std::byte, BlockSharedDynMemberAllocKiB << 10u> m_fixed;
+        std::array<std::byte, (BlockSharedDynMemberAllocKiB << 10u)> m_fixed;
 
     public:
         BlockSharedMemDynOmp5BuiltInFixed(std::size_t /* bytes */) : BlockSharedMemDynOmp5BuiltIn(nullptr)

@@ -63,7 +63,7 @@ namespace alpaka
 
     namespace detail
     {
-        template<OffloadUseBuiltInSharedMem TSharedMem = OffloadUseBuiltInSharedMem::OFF>
+        template<typename TBuiltinSharedMem = OffloadBuiltInSharedMemOff>
         struct AccOmp5BlockSharedMem
             : public BlockSharedMemDynMember<>
             , public BlockSharedMemStOmp5
@@ -78,7 +78,7 @@ namespace alpaka
 
 #    if _OPENMP >= 201811
         template<>
-        struct AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::DYN_FIXED>
+        struct AccOmp5BlockSharedMem<OffloadBuiltInSharedMemFixed>
             : public BlockSharedMemDynOmp5BuiltInFixed
             , public BlockSharedMemStOmp5BuiltIn
         {
@@ -90,7 +90,7 @@ namespace alpaka
         };
 
         template<>
-        struct AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::DYN_ALLOC>
+        struct AccOmp5BlockSharedMem<OffloadBuiltInSharedMemAlloc>
             : public BlockSharedMemDynOmp5BuiltInOmpAlloc
             , public BlockSharedMemStOmp5BuiltIn
         {
@@ -120,9 +120,9 @@ namespace alpaka
         >,
         public math::MathStdLib,
 #    if _OPENMP >= 201811
-        public detail::AccOmp5BlockSharedMem<OFFLOAD_USE_BUILTIN_SHARED_MEM>,
+        public detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMem>, // default value determined by CMake flag
 #    else
-          public detail::AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::OFF>
+          public detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMemOff>
         ,
 #    endif
         public BlockSyncBarrierOmp,
@@ -160,9 +160,9 @@ namespace alpaka
                   >()
             , math::MathStdLib()
 #    if _OPENMP >= 201811
-            , detail::AccOmp5BlockSharedMem<OFFLOAD_USE_BUILTIN_SHARED_MEM>(blockSharedMemDynSizeBytes)
+            , detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMem>(blockSharedMemDynSizeBytes)
 #    else
-            , detail::AccOmp5BlockSharedMem<OffloadUseBuiltInSharedMem::OFF>(blockSharedMemDynSizeBytes)
+            , detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMemOff>(blockSharedMemDynSizeBytes)
 #    endif
             , BlockSyncBarrierOmp()
             , MemFenceOmp5()
