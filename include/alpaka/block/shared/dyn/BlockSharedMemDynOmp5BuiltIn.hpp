@@ -78,6 +78,10 @@ namespace alpaka
     };
 #    endif
 
+#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#        pragma warning(push)
+#        pragma warning(disable : 4324) // warning C4324: structure was padded due to alignment specifier
+#    endif
     //! The OpenMP 5.0 block dynamic shared memory allocator with fixed amount of smem
     class alignas(core::vectorization::defaultAlignment) BlockSharedMemDynOmp5BuiltInFixed
         : public BlockSharedMemDynOmp5BuiltIn
@@ -90,6 +94,9 @@ namespace alpaka
             m_mem = m_fixed.data();
         }
     };
+#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#        pragma warning(pop)
+#    endif
 
     namespace traits
     {
@@ -98,6 +105,10 @@ namespace alpaka
         {
             static auto getMem(BlockSharedMemDynOmp5BuiltIn const& dyn)
             {
+                static_assert(
+                    core::vectorization::defaultAlignment >= alignof(T),
+                    "Unable to get block shared dynamic memory for types with alignment higher than "
+                    "defaultAlignment!");
                 return reinterpret_cast<T*>(dyn.mem());
             }
         };
