@@ -73,6 +73,37 @@ using the `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM` flag:
   * At least in clang GPU targets (nvptx64, hsa), the symbols `omp_alloc` and `omp_free`
     are undefined (linker error, code compiles).
 
+### Compiler support
+
+[blockSharedSharingTest](test/unit/block/sharedSharing/src/BlockSharedMemSharing.cpp) tests correct sharing.
+
+| compiler | target | `OFF` | `DYN_FIXED` | `DYN_ALLOC` |
+| --- | --- | --- | --- | --- |
+| clang 14 (1.) | x86 | S | S (2.) | S (2.) |
+| clang 14 (1.) | nvptx | S | S | E (3.) |
+| clang 14 (1.) | hsa | C | C | E (3.) |
+| gcc 11 | x86 | S | N | N |
+| gcc 11 | nvptx | S/F (4.) | N | N |
+| nvhpc 22.1 | x86 | S | N (5.) | N (5.) |
+
+Keys:
+* S: Test Passes.
+* Fl: Test fails, shared mem not shared.
+* Fg: Test fails, shared mem gloal/shared too widely.
+* F: Test fails for other reason.
+* C: Test compiles, not run.
+* E: Test does not build.
+* N: Not supported.
+
+Footnotes:
+1. git main `95a436f8cca6991dc0f30588d9b1af3223818168`
+2. `omp allocate` does not actually work, the variable being `static` makes it
+   work, which in itself is non-conforming behavior.
+3. Linker error: no symbols `omp_alloc`, `omp_free` for target code.
+4. Apparently gcc's OpenMP runtime will not run more than 8 threads per block on
+   GPU: Pass for `blockThreadCount <= 8`, fail for more.
+5. NVHPC 22.1 claims to support OpenMP 5.1 (`_OPENMP = 202011`).
+
 ## Limitations
 
 * *No separabel compilation*. OpenMP 5 requires functions for which device code should be generated for a
