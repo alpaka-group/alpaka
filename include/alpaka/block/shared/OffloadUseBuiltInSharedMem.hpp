@@ -11,16 +11,20 @@
 
 namespace alpaka
 {
-#ifndef ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM
-#    define ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM OFF
-#endif
-    enum class OffloadUseBuiltInSharedMem : char
+    struct OffloadBuiltInSharedMemOff
     {
-        OFF, //! Do not use built-in shared memory facilites, use BlockSharedMemDynMember
-        DYN_FIXED, //! Use built-in shared memory, allocate fixed space for dyn smem
-        DYN_ALLOC //! Use built-in shared memory, use runtime allocation API
     };
-
-    constexpr OffloadUseBuiltInSharedMem OFFLOAD_USE_BUILTIN_SHARED_MEM
-        = OffloadUseBuiltInSharedMem::ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM;
+    struct OffloadBuiltInSharedMemFixed
+    {
+    };
+    struct OffloadBuiltInSharedMemAlloc
+    {
+    };
+#ifdef ALPAKA_OFFLOAD_BUILTIN_SHARED_MEM_FIXED
+    using OffloadBuiltInSharedMem = OffloadBuiltInSharedMemFixed;
+#elif defined(ALPAKA_OFFLOAD_BUILTIN_SHARED_MEM_ALLOC)
+    using OffloadBuiltInSharedMem = OffloadBuiltInSharedMemAlloc;
+#else
+    using OffloadBuiltInSharedMem = OffloadBuiltInSharedMemOff;
+#endif
 } // namespace alpaka

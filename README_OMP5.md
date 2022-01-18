@@ -51,14 +51,14 @@ environment requirements. Add flags to set the required compiler and linker flag
 
 ## Block-shared Memory
 
-Shared memory if implemented using a small object allocator in
+Shared memory is implemented using a small object allocator in
 `BlockSharedMemStOmp5` using a fixed-size buffer allocated by
 `BlockSharedMemDynMember`, making these two elements linked.
 
 OpenMP 5 offers the directive `omp allocate allocator(omp_pteam_mem_alloc)`
 (used by `BlockSharedMemStOmp5BuiltIn`) which can in theory be used for *static*
-shared memory variable. There is no useful built-in support for dynamic
-block-shared memory to got with that. Usage of the built-in can be configured
+shared memory variables. There is no useful built-in support for dynamic
+block-shared memory to go with that. Usage of the built-in can be configured
 using the `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM` flag:
 * `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=OFF`: Do not use `omp allocate` (default,
   only available behavior with OpenMP < 5).
@@ -66,8 +66,8 @@ using the `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM` flag:
   fixed size team-shared array for dynamic shared mem (fixed size is
   `ALPAKA_BLOCK_SHARED_DYN_MEMBER_KIB`).
 * `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=DYN_ALLOC`: Use `omp allocate`, use a
-  `omp_alloc()` API call in target region to allocate dynamic shared memory. The
-  standard appears to allow for this, but is not useful for some reasons:
+  `omp_alloc()` API call in the target region to allocate dynamic shared memory. The
+  standard appears to allow this, but is not useful for some reasons:
   * In the best case, this would lead to an on-device `malloc` on GPU, which has
     bad performance and does not use on-chip memory.
   * At least in clang GPU targets (nvptx64, hsa), the symbols `omp_alloc` and `omp_free`
@@ -79,18 +79,18 @@ using the `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM` flag:
 
 | compiler | target | `OFF` | `DYN_FIXED` | `DYN_ALLOC` |
 | --- | --- | --- | --- | --- |
-| clang 14 (1.) | x86 | S | S (2.) | S (2.) |
-| clang 14 (1.) | nvptx | S | S | E (3.) |
+| clang 14 (1.) | x86 | :white_check_mark: | :white_check_mark: (2.) | :white_check_mark: (2.) |
+| clang 14 (1.) | nvptx | :white_check_mark: | :white_check_mark: | E (3.) |
 | clang 14 (1.) | hsa | C | C | E (3.) |
-| gcc 11 | x86 | S | N | N |
-| gcc 11 | nvptx | S/F (4.) | N | N |
-| nvhpc 22.1 | x86 | S | N (5.) | N (5.) |
+| gcc 11 | x86 | :white_check_mark: | N | N |
+| gcc 11 | nvptx | :white_check_mark:/:x: (4.) | N | N |
+| nvhpc 22.1 | x86 | :white_check_mark: | N (5.) | N (5.) |
 
 Keys:
-* S: Test Passes.
-* Fl: Test fails, shared mem not shared.
-* Fg: Test fails, shared mem gloal/shared too widely.
-* F: Test fails for other reason.
+* :white_check_mark:: Test Passes.
+* :x:l: Test fails, shared mem not shared.
+* :x:g: Test fails, shared mem gloal/shared too widely.
+* :x:: Test fails for other reason.
 * C: Test compiles, not run.
 * E: Test does not build.
 * N: Not supported.

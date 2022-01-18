@@ -9,12 +9,12 @@
 
 #pragma once
 
-#if(defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENBLED))                           \
+#if(defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED))                          \
     && _OPENMP >= 201811 // omp allocate requires OpenMP 5.0
 
 #    include <alpaka/block/shared/st/Traits.hpp>
 
-#include <omp.h>
+#    include <omp.h>
 
 namespace alpaka
 {
