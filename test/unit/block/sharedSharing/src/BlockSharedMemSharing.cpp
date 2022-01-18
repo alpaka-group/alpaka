@@ -66,6 +66,8 @@ void BlockSharedMemSharingTest(TKernel kernel)
     const auto workDiv
         = alpaka::WorkDivMembers<Dim, Idx>(Vec(gridBlockCount), Vec(blockThreadCount), Vec(static_cast<Idx>(1u)));
 
+    std::cout << "BlockSharedMemSharingTest::workdiv: " << workDiv << std::endl;
+
     auto queue = alpaka::Queue<TAcc, alpaka::Blocking>(devAcc);
 
     auto bufAcc = alpaka::allocBuf<std::uint32_t, Idx>(devAcc, gridBlockCount);
