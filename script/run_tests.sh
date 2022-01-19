@@ -37,6 +37,8 @@ then
         # export NVCOMPILER_ACC_NOTIFY=3 # exceeds mximum log length
     fi
 
+    gdb ./test/unit/block/sharedSharing/blockSharedSharingTest -ex "run" -ex bt
+
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
     then
         ctest -V

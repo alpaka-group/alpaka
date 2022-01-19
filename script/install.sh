@@ -33,7 +33,7 @@ then
     # software-properties-common: 'add-apt-repository' and certificates for wget https download
     # binutils: ld
     # xz-utils: xzcat
-    travis_retry sudo DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils xz-utils gnupg2
+    travis_retry sudo DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils xz-utils gnupg2 gdb
 fi
 
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
