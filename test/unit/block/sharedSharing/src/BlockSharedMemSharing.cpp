@@ -60,7 +60,7 @@ void BlockSharedMemSharingTest(TKernel kernel)
     auto const devAcc = alpaka::getDevByIdx<TAcc>(0u);
 
     const auto accDevProps = alpaka::getAccDevProps<TAcc>(devAcc);
-    const Idx gridBlockCount = 4u;
+    const Idx gridBlockCount = 2u;
     const Idx blockThreadCount = accDevProps.m_blockThreadCountMax;
 
     const auto workDiv
