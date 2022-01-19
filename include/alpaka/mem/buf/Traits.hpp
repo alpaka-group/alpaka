@@ -29,6 +29,12 @@ namespace alpaka
         template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
         struct AsyncBufAlloc;
 
+        //! The stream-ordered memory allocator capability trait.
+        template<typename TDim, typename TDev>
+        struct HasAsyncBufSupport : public std::false_type
+        {
+        };
+
         //! The memory mapping trait.
         template<typename TBuf, typename TDev, typename TSfinae = void>
         struct Map;
@@ -87,6 +93,13 @@ namespace alpaka
     {
         return traits::AsyncBufAlloc<TElem, Dim<TExtent>, TIdx, alpaka::Dev<TQueue>>::allocAsyncBuf(queue, extent);
     }
+
+    //! Check if the given device can allocate a stream-ordered memory buffer of the given dimensionality.
+    //!
+    //! TDev is the type of device to allocate the buffer on.
+    //! TDim is the dimensionality of the buffer to allocate.
+    template<typename TDev, typename TDim>
+    constexpr inline bool hasAsyncBufSupport = traits::HasAsyncBufSupport<TDim, TDev>::value;
 
     //! Maps the buffer into the memory of the given device.
     //!

@@ -25,51 +25,12 @@ constexpr T memset_value(int c)
     return t;
 }
 
-//! check if asynchronous (queue-ordered) memory buffers are supported by the given Accelerator
-template<typename TDev, typename TDim>
-static constexpr auto isAsyncBufferSupported() -> bool
-{
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-    if constexpr(std::is_same_v<TDev, alpaka::DevCudaRt>)
-    {
-        return (CUDA_VERSION >= 11020) && (TDim::value == 1);
-    }
-    else
-#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
-
-#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-        if constexpr(std::is_same_v<TDev, alpaka::DevHipRt>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_GPU_HIP_ENABLED
-
-#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
-        if constexpr(std::is_same_v<TDev, alpaka::DevOacc>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_ANY_BT_OACC_ENABLED
-
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        if constexpr(std::is_same_v<TDev, alpaka::DevOmp5>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-
-        return true;
-}
-
 template<typename TElem, typename TQueue, typename TExtent>
 auto allocAsyncBufIfSupported(TQueue const& queue, TExtent const& extent)
     -> alpaka::Buf<alpaka::Dev<TQueue>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>
 {
     using Idx = alpaka::Idx<TExtent>;
-    if constexpr(isAsyncBufferSupported<alpaka::Dev<TQueue>, alpaka::Dim<TExtent>>())
+    if constexpr(alpaka::hasAsyncBufSupport<alpaka::Dev<TQueue>, alpaka::Dim<TExtent>>)
     {
         return alpaka::allocAsyncBuf<TElem, Idx>(queue, extent);
     }

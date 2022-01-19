@@ -468,6 +468,18 @@ namespace alpaka
                 meta::DependentFalseType<TElem>::value,
                 "HIP/CUDA devices support only one-dimensional stream-ordered memory buffers.");
         };
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (CUDA_VERSION >= 11020)
+        //! The CUDA/HIP stream-ordered scalar memory allocation capability trait specialization.
+        template<>
+        struct HasAsyncBufSupport<DimInt<0u>, DevUniformCudaHipRt> : public std::true_type
+        {
+        };
+        //! The CUDA/HIP stream-ordered 1D memory allocation capability trait specialization.
+        template<>
+        struct HasAsyncBufSupport<DimInt<1u>, DevUniformCudaHipRt> : public std::true_type
+        {
+        };
+#    endif
 
         //! The BufUniformCudaHipRt CUDA/HIP device memory mapping trait specialization.
         template<typename TElem, typename TDim, typename TIdx>

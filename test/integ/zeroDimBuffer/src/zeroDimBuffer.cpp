@@ -29,52 +29,11 @@ constexpr T memset_value(int c)
     return t;
 }
 
-//! check if asynchronous (queue-ordered) memory buffers are supported by the given Accelerator
-template<typename TAcc>
-static constexpr auto isAsyncBufferSupported() -> bool
-{
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-    if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCudaRt>)
-    {
-        return (BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(11, 2, 0)) && (alpaka::Dim<TAcc>::value == 1);
-    }
-    else
-#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
-
-#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-        if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevHipRt>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_GPU_HIP_ENABLED
-
-#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
-        if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevOacc>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_ANY_BT_OACC_ENABLED
-
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevOmp5>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-
-        return true;
-
-    ALPAKA_UNREACHABLE(bool{});
-}
-
 template<typename TAcc, typename TElem, typename TIdx, typename TQueue, typename TExtent>
 auto allocAsyncBufIfSupported(TQueue const& queue, TExtent const& extent)
     -> alpaka::Buf<alpaka::Dev<TQueue>, TElem, alpaka::Dim<TExtent>, TIdx>
 {
-    if constexpr(isAsyncBufferSupported<TAcc>())
+    if constexpr(alpaka::hasAsyncBufSupport<alpaka::Dev<TAcc>, alpaka::Dim<TExtent>>)
     {
         return alpaka::allocAsyncBuf<TElem, TIdx>(queue, extent);
     }
