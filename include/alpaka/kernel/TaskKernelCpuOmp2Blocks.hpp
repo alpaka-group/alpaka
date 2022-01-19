@@ -79,6 +79,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: NoSchedule.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -127,6 +130,9 @@ namespace alpaka
                 TIdx const numIterations,
                 omp::Schedule const& schedule)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Static(" << schedule.chunkSize << ").\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -168,6 +174,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Static.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -218,6 +227,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Static krnl cs.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -271,6 +283,9 @@ namespace alpaka
                 TIdx const numIterations,
                 omp::Schedule const& schedule)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Dynamic(" << schedule.chunkSize << ").\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -312,6 +327,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Dynamic.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -354,6 +372,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Dynamic krnl cs.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -407,6 +428,9 @@ namespace alpaka
                 TIdx const numIterations,
                 omp::Schedule const& schedule)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Guided(" << schedule.chunkSize << ").\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -448,6 +472,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Guided.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -490,6 +517,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: Guided krnl cs.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
@@ -544,6 +574,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: auto.\n";
+#        endif
 #        pragma omp for nowait schedule(auto)
                 for(TIdx i = 0; i < numIterations; ++i)
                 {
@@ -578,6 +611,9 @@ namespace alpaka
                 TIdx const numIterations,
                 TSchedule const&)
             {
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "OMP Blocks Loop body, schedule: runtime.\n";
+#    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
                 std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(numIterations));
