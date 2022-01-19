@@ -41,6 +41,21 @@
 #    include <utility>
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        include <iostream>
+static void printParallel(const char* tag = "")
+{
+    std::ostringstream os;
+    os << tag << " threadNum=" << ::omp_get_thread_num()
+        << " max threads=" << ::omp_get_max_threads() 
+        << " omp_get_num_threads=" << ::omp_get_num_threads()
+        << " level=" <<  ::omp_get_level()
+        << " activeLevel=" << ::omp_get_active_level()
+        << " parallel?=" << ::omp_in_parallel() << '\n';
+    std::cerr << os.str();
+}
+#    else
+static void printParallel(const char* tag = "")
+{
+}
 #    endif
 
 namespace alpaka
@@ -894,8 +909,12 @@ namespace alpaka
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cerr << __func__ << " opening new parallel region." << std::endl;
 #    endif
+            printParallel("before-par");
 #    pragma omp parallel
+            {
+                printParallel("just-in-par");
                 parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
+            }
             }
         }
 
@@ -907,8 +926,10 @@ namespace alpaka
             Vec<TDim, TIdx> const& gridBlockExtent,
             TSchedule const& schedule) const -> void
         {
+            printParallel("before-single");
 #    pragma omp single nowait
             {
+                printParallel("in-single");
                 // The OpenMP runtime does not create a parallel region when either:
                 // * only one thread is required in the num_threads clause
                 // * or only one thread is available
@@ -920,8 +941,7 @@ namespace alpaka
                         << " numBlocksInGrid= " << numBlocksInGrid
                         << " omp_get_max_threads()= " << ::omp_get_max_threads()
                         << " omp_in_parallel()= " << ::omp_in_parallel();
-                    std::cerr << os.str() << '\n';
-                    // throw std::runtime_error(os.str());
+                    throw std::runtime_error(os.str());
                 }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
