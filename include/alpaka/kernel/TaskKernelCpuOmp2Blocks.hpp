@@ -920,7 +920,8 @@ namespace alpaka
                         << " numBlocksInGrid= " << numBlocksInGrid
                         << " omp_get_max_threads()= " << ::omp_get_max_threads()
                         << " omp_in_parallel()= " << ::omp_in_parallel();
-                    throw std::runtime_error(os.str());
+                    std::cerr << os.str() << '\n';
+                    // throw std::runtime_error(os.str());
                 }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
