@@ -81,7 +81,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: NoSchedule.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: NoSchedule.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -132,7 +132,7 @@ namespace alpaka
                 omp::Schedule const& schedule)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Static(" << schedule.chunkSize << ").\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Static(" << schedule.chunkSize << ").\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -176,7 +176,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Static.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Static.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -229,7 +229,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Static krnl cs.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Static krnl cs.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -285,7 +285,7 @@ namespace alpaka
                 omp::Schedule const& schedule)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Dynamic(" << schedule.chunkSize << ").\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Dynamic(" << schedule.chunkSize << ").\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -329,7 +329,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Dynamic.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Dynamic.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -374,7 +374,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Dynamic krnl cs.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Dynamic krnl cs.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -430,7 +430,7 @@ namespace alpaka
                 omp::Schedule const& schedule)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Guided(" << schedule.chunkSize << ").\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Guided(" << schedule.chunkSize << ").\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -474,7 +474,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Guided.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Guided.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -519,7 +519,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: Guided krnl cs.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: Guided krnl cs.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -576,7 +576,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: auto.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: auto.\n";
 #        endif
 #        pragma omp for nowait schedule(auto)
                 for(TIdx i = 0; i < numIterations; ++i)
@@ -613,7 +613,7 @@ namespace alpaka
                 TSchedule const&)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << "OMP Blocks Loop body, schedule: runtime.\n";
+                std::cerr << "OMP Blocks Loop body, schedule: runtime.\n";
 #    endif
 #    if _OPENMP < 200805 // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop
                          // header.
@@ -860,7 +860,7 @@ namespace alpaka
                 m_args);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            std::cout << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
+            std::cerr << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
                       << std::endl;
 #    endif
 
@@ -885,14 +885,14 @@ namespace alpaka
             if(::omp_in_parallel() != 0)
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << __func__ << " already within a parallel region." << std::endl;
+                std::cerr << __func__ << " already within a parallel region." << std::endl;
 #    endif
                 parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
             }
             else
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << __func__ << " opening new parallel region." << std::endl;
+                std::cerr << __func__ << " opening new parallel region." << std::endl;
 #    endif
 #    pragma omp parallel
                 parallelFn(blockSharedMemDynSizeBytes, numBlocksInGrid, gridBlockExtent, schedule);
@@ -924,7 +924,7 @@ namespace alpaka
                 }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cout << __func__ << " omp_get_num_threads: " << ::omp_get_num_threads() << std::endl;
+                std::cerr << __func__ << " omp_get_num_threads: " << ::omp_get_num_threads() << std::endl;
 #    endif
             }
 
