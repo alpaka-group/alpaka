@@ -106,33 +106,30 @@ namespace alpaka
     //! The CPU OpenMP 5.0 accelerator.
     //!
     //! This accelerator allows parallel kernel execution on an OpenMP target device.
-    template<
-        typename TDim,
-        typename TIdx>
-    class AccOmp5 final :
-        public WorkDivMembers<TDim, TIdx>,
-        public gb::IdxGbLinear<TDim, TIdx>,
-        public bt::IdxBtOmp<TDim, TIdx>,
-        public AtomicHierarchy<
-            AtomicOmpBuiltIn,   // grid atomics
-            AtomicOmpBuiltIn,    // block atomics
-            AtomicOmpBuiltIn     // thread atomics
-        >,
-        public math::MathStdLib,
+    template<typename TDim, typename TIdx>
+    class AccOmp5 final
+        : public WorkDivMembers<TDim, TIdx>
+        , public gb::IdxGbLinear<TDim, TIdx>
+        , public bt::IdxBtOmp<TDim, TIdx>
+        , public AtomicHierarchy<
+              AtomicOmpBuiltIn, // grid atomics
+              AtomicOmpBuiltIn, // block atomics
+              AtomicOmpBuiltIn // thread atomics
+              >
+        , public math::MathStdLib
 #    if _OPENMP >= 201811
-        public detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMem>, // default value determined by CMake flag
+        , public detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMem /*default value determined by CMake flag*/>
 #    else
-          public detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMemOff>
-        ,
+        , public detail::AccOmp5BlockSharedMem<OffloadBuiltInSharedMemOff>
 #    endif
-        public BlockSyncBarrierOmp,
-        // cannot determine which intrinsics are safe to use (depends on target), using fallback
-        public IntrinsicFallback,
-        public MemFenceOmp5,
-        public rand::RandDefault,
-        public TimeOmp,
-        public warp::WarpSingleThread,
-        public concepts::Implements<ConceptAcc, AccOmp5<TDim, TIdx>>
+        , public BlockSyncBarrierOmp
+        , public IntrinsicFallback // cannot determine which intrinsics are safe to use (depends on target), using
+                                   // fallback
+        , public MemFenceOmp5
+        , public rand::RandDefault
+        , public TimeOmp
+        , public warp::WarpSingleThread
+        , public concepts::Implements<ConceptAcc, AccOmp5<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),
