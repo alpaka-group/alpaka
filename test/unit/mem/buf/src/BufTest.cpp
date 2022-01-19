@@ -19,46 +19,6 @@
 #include <type_traits>
 
 template<typename TAcc>
-static constexpr auto isAsyncBufferSupported() -> bool
-{
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-    if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevCudaRt>)
-    {
-        return (BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(11, 2, 0)) && (alpaka::Dim<TAcc>::value == 1);
-    }
-    else
-#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
-
-#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-        if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevHipRt>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_GPU_HIP_ENABLED
-
-#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
-        if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevOacc>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_ANY_BT_OACC_ENABLED
-
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        if constexpr(std::is_same_v<alpaka::Dev<TAcc>, alpaka::DevOmp5>)
-    {
-        return false;
-    }
-    else
-#endif // ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-
-        return true;
-
-    ALPAKA_UNREACHABLE(bool{});
-}
-
-template<typename TAcc>
 static auto testBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
     using Dev = alpaka::Dev<TAcc>;
@@ -139,7 +99,7 @@ TEMPLATE_LIST_TEST_CASE("memBufAsyncBasicTest", "[memBuf]", alpaka::test::TestAc
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    if constexpr(isAsyncBufferSupported<Acc>())
+    if constexpr(alpaka::hasAsyncBufSupport<alpaka::Dev<Acc>, Dim>)
     {
         auto const extent
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
@@ -157,7 +117,7 @@ TEMPLATE_LIST_TEST_CASE("memBufAsyncZeroSizeTest", "[memBuf]", alpaka::test::Tes
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    if constexpr(isAsyncBufferSupported<Acc>())
+    if constexpr(alpaka::hasAsyncBufSupport<alpaka::Dev<Acc>, Dim>)
     {
         auto const extent = alpaka::Vec<Dim, Idx>::zeros();
         testAsyncBufferMutable<Acc>(extent);
@@ -231,7 +191,7 @@ TEMPLATE_LIST_TEST_CASE("memBufAsyncConstTest", "[memBuf]", alpaka::test::TestAc
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    if constexpr(isAsyncBufferSupported<Acc>())
+    if constexpr(alpaka::hasAsyncBufSupport<alpaka::Dev<Acc>, Dim>)
     {
         auto const extent
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();

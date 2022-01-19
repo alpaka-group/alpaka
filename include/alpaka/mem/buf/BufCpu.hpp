@@ -277,6 +277,12 @@ namespace alpaka
                 return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
             }
         };
+        //! The BufCpu stream-ordered memory allocation capability trait specialization.
+        template<typename TDim>
+        struct HasAsyncBufSupport<TDim, DevCpu> : public std::true_type
+        {
+        };
+
         //! The BufCpu memory mapping trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct Map<BufCpu<TElem, TDim, TIdx>, DevCpu>
