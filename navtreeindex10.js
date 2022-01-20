@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1math_1_1traits_1_1Isinf_3_01IsinfUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enaeb24203a536a4d92b68197a1bd7e39af.html":[3,0,0,12,0,27],
 "structalpaka_1_1math_1_1traits_1_1Isinf_3_01IsinfUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enaeb24203a536a4d92b68197a1bd7e39af.html#a82b3a1bf55b5241280aef782a006742d":[3,0,0,12,0,27,0],
 "structalpaka_1_1math_1_1traits_1_1Isnan.html":[3,0,0,12,0,28],
 "structalpaka_1_1math_1_1traits_1_1Isnan.html#a09becd5ba268a1e313921b60c63beca5":[3,0,0,12,0,28,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1rand_1_1distribution_1_1gpu_1_1detail_1_1BitsType_3_01double_01_4.html#acd2d698d159b549070730d846cecca8e":[3,0,0,17,0,1,0,1,0],
 "structalpaka_1_1rand_1_1distribution_1_1gpu_1_1detail_1_1BitsType_3_01float_01_4.html":[3,0,0,17,0,1,0,2],
 "structalpaka_1_1rand_1_1distribution_1_1gpu_1_1detail_1_1BitsType_3_01float_01_4.html#a8491b69e34753b9c663d6ebc151b1b47":[3,0,0,17,0,1,0,2,0],
-"structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html":[3,0,0,17,0,2,0],
-"structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandDefault_00_01T_00_01s1cee4f39f86aa01a924409a70cc12d7d.html":[3,0,0,17,0,2,1]
+"structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html":[3,0,0,17,0,2,0]
 };

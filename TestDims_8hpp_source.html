@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('TestDims_8hpp_source.html',''); initRe
 <div class="title">TestDims.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="TestDims_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2019 Benjamin Worpitz</span></div>
+<a href="TestDims_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Andrea Bocci</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -108,32 +108,30 @@ $(document).ready(function(){initNavTree('TestDims_8hpp_source.html',''); initRe
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">namespace </span>test</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {<span class="comment"></span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">        //! A std::tuple holding dimensions.</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"></span>        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1test.html#a789ae1d75fe800cea2c319884b37236b">TestDims</a> = std::tuple&lt;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"></span>        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1test.html#a7044b4d57724c2998104af048ab38cf5">TestDims</a> = std::tuple&lt;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt&lt;1u&gt;</a>,</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt&lt;2u&gt;</a>,</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt&lt;3u&gt;</a></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="comment">// The CUDA &amp; HIP accelerators do not currently support 4D buffers and 4D acceleration.</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; BOOST_LANG_CUDA)</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#    if !(defined(ALPAKA_ACC_GPU_HIP_ENABLED) &amp;&amp; BOOST_LANG_HIP)</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            ,</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt&lt;4u&gt;</a></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1test.html#a789ae1d75fe800cea2c319884b37236b">   33</a></span>&#160;            &gt;;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    } <span class="comment">// namespace test</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; !defined(ALPAKA_ACC_GPU_HIP_ENABLED)</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            ,</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt&lt;4u&gt;</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1test.html#a7044b4d57724c2998104af048ab38cf5">   31</a></span>&#160;            &gt;;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    } <span class="comment">// namespace test</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespacealpaka_html_ac486a72c51166125fb227c7af1884209"><div class="ttname"><a href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt</a></div><div class="ttdeci">std::integral_constant&lt; std::size_t, N &gt; DimInt</div><div class="ttdef"><b>Definition:</b> <a href="DimIntegralConst_8hpp_source.html#l00020">DimIntegralConst.hpp:20</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1test_html_a789ae1d75fe800cea2c319884b37236b"><div class="ttname"><a href="namespacealpaka_1_1test.html#a789ae1d75fe800cea2c319884b37236b">alpaka::test::TestDims</a></div><div class="ttdeci">std::tuple&lt; alpaka::DimInt&lt; 1u &gt;, alpaka::DimInt&lt; 2u &gt;, alpaka::DimInt&lt; 3u &gt;, alpaka::DimInt&lt; 4u &gt; &gt; TestDims</div><div class="ttdoc">A std::tuple holding dimensions.</div><div class="ttdef"><b>Definition:</b> <a href="TestDims_8hpp_source.html#l00033">TestDims.hpp:33</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1test_html_a7044b4d57724c2998104af048ab38cf5"><div class="ttname"><a href="namespacealpaka_1_1test.html#a7044b4d57724c2998104af048ab38cf5">alpaka::test::TestDims</a></div><div class="ttdeci">std::tuple&lt; alpaka::DimInt&lt; 1u &gt;, alpaka::DimInt&lt; 2u &gt;, alpaka::DimInt&lt; 3u &gt; &gt; TestDims</div><div class="ttdoc">A std::tuple holding dimensions.</div><div class="ttdef"><b>Definition:</b> <a href="TestDims_8hpp_source.html#l00031">TestDims.hpp:31</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <div class="ttc" id="aDimIntegralConst_8hpp_html"><div class="ttname"><a href="DimIntegralConst_8hpp.html">DimIntegralConst.hpp</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="dir_503cb11d94d05cb253eec124a79b720b.html">dim</a></li><li class="navelem"><a class="el" href="TestDims_8hpp.html">TestDims.hpp</a></li>
-    <li class="footer">Generated on Tue Jan 18 2022 11:22:05 for alpaka by
+    <li class="footer">Generated on Thu Jan 20 2022 12:54:56 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
