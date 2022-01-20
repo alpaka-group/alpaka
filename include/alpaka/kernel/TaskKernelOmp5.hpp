@@ -147,8 +147,8 @@ namespace alpaka
                     {
                         int const iNumTeams(::omp_get_num_teams());
                         printf("%s omp_get_num_teams: %d\n", __func__, iNumTeams);
+                        printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
                     }
-                    printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
 #    endif
                     AccOmp5<TDim, TIdx>
                         acc(gridBlockExtent, blockThreadExtent, threadElemExtent, t, blockSharedMemDynSizeBytes);
