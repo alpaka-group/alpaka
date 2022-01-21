@@ -98,8 +98,17 @@ namespace alpaka
     //!
     //! TDev is the type of device to allocate the buffer on.
     //! TDim is the dimensionality of the buffer to allocate.
+    /* TODO: Remove the following pragmas once support for clang 5 and 6 is removed. They are necessary because these
+    /  clang versions incorrectly warn about a missing 'extern'. */
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wmissing-variable-declarations"
+#endif
     template<typename TDev, typename TDim>
     constexpr inline bool hasAsyncBufSupport = traits::HasAsyncBufSupport<TDim, TDev>::value;
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
 
     //! Maps the buffer into the memory of the given device.
     //!
