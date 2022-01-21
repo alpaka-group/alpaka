@@ -205,7 +205,7 @@ namespace alpaka
                 ALPAKA_ASSERT(Scalar{} == extent);
 
                 // Set the current device.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.iDevice()));
                 // Allocate the buffer on this device.
                 void* memPtr;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Malloc)(&memPtr, sizeof(TElem)));
@@ -240,7 +240,7 @@ namespace alpaka
                 auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 
                 // Set the current device.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.iDevice()));
                 // Allocate the buffer on this device.
                 void* memPtr;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
@@ -284,7 +284,7 @@ namespace alpaka
 #    endif
                 {
                     // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.iDevice()));
                     // Allocate the buffer on this device.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MallocPitch)(
                         &memPtr,
@@ -336,7 +336,7 @@ namespace alpaka
 #    endif
                 {
                     // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.iDevice()));
                     // Allocate the buffer on this device.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Malloc3D)(&pitchedPtrVal, extentVal));
                 }
@@ -387,7 +387,7 @@ namespace alpaka
 
                 // Set the current device.
                 DevUniformCudaHipRt const& dev = getDev(queue);
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.iDevice()));
                 // Allocate the buffer on this device.
                 void* memPtr;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
@@ -436,7 +436,7 @@ namespace alpaka
 
                 // Set the current device.
                 DevUniformCudaHipRt const& dev = getDev(queue);
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.iDevice()));
                 // Allocate the buffer on this device.
                 void* memPtr;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MallocAsync)(

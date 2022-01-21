@@ -83,7 +83,7 @@ namespace alpaka
 
                 if(isDevUsable(devIdx))
                 {
-                    dev.m_iDevice = static_cast<int>(devIdx);
+                    dev.setDevice(static_cast<int>(devIdx));
 
                     // Log this device.
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -92,7 +92,7 @@ namespace alpaka
 #        else
                     hipDeviceProp_t devProp;
 #        endif
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.m_iDevice));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.iDevice()));
 #    endif
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     printDeviceProperties(devProp);
