@@ -92,8 +92,11 @@ $(document).ready(function(){initNavTree('AccOmp5_8hpp.html',''); initResizable(
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="AtomicHierarchy_8hpp_source.html">alpaka/atomic/AtomicHierarchy.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="AtomicOmpBuiltIn_8hpp_source.html">alpaka/atomic/AtomicOmpBuiltIn.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="OffloadUseBuiltInSharedMem_8hpp_source.html">alpaka/block/shared/OffloadUseBuiltInSharedMem.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BlockSharedMemDynMember_8hpp_source.html">alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSharedMemDynOmp5BuiltIn_8hpp_source.html">alpaka/block/shared/dyn/BlockSharedMemDynOmp5BuiltIn.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BlockSharedMemStOmp5_8hpp_source.html">alpaka/block/shared/st/BlockSharedMemStOmp5.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSharedMemStOmp5BuiltIn_8hpp_source.html">alpaka/block/shared/st/BlockSharedMemStOmp5BuiltIn.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BlockSyncBarrierOmp_8hpp_source.html">alpaka/block/sync/BlockSyncBarrierOmp.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="IdxBtOmp_8hpp_source.html">alpaka/idx/bt/IdxBtOmp.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="IdxGbLinear_8hpp_source.html">alpaka/idx/gb/IdxGbLinear.hpp</a>&gt;</code><br />
@@ -113,6 +116,7 @@ $(document).ready(function(){initNavTree('AccOmp5_8hpp.html',''); initResizable(
 <code>#include &lt;<a class="el" href="Concepts_8hpp_source.html">alpaka/core/Concepts.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevOmp5_8hpp_source.html">alpaka/dev/DevOmp5.hpp</a>&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;typeinfo&gt;</code><br />
 </div>
 <p><a href="AccOmp5_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -121,6 +125,8 @@ $(document).ready(function(){initNavTree('AccOmp5_8hpp.html',''); initResizable(
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1AccOmp5.html">alpaka::AccOmp5&lt; TDim, TIdx &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 5.0 accelerator.  <a href="classalpaka_1_1AccOmp5.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1AccOmp5BlockSharedMem.html">alpaka::detail::AccOmp5BlockSharedMem&lt; TBuiltinSharedMem &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1TaskKernelOmp5.html">alpaka::TaskKernelOmp5&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The OpenMP 5.0 accelerator execution task.  <a href="classalpaka_1_1TaskKernelOmp5.html#details">More...</a><br /></td></tr>
@@ -155,6 +161,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html">alpaka::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,7 +173,7 @@ Namespaces</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccOmp5_8hpp.html">AccOmp5.hpp</a></li>
-    <li class="footer">Generated on Thu Jan 20 2022 12:54:57 for alpaka by
+    <li class="footer">Generated on Fri Jan 21 2022 10:31:14 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

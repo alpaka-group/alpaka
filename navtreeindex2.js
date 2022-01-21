@@ -1,5 +1,15 @@
 var NAVTREEINDEX2 =
 {
+"QueueOaccNonBlocking_8hpp.html":[4,0,0,0,19,8],
+"QueueOaccNonBlocking_8hpp_source.html":[4,0,0,0,19,8],
+"QueueOmp5Blocking_8hpp.html":[4,0,0,0,19,9],
+"QueueOmp5Blocking_8hpp_source.html":[4,0,0,0,19,9],
+"QueueOmp5NonBlocking_8hpp.html":[4,0,0,0,19,10],
+"QueueOmp5NonBlocking_8hpp_source.html":[4,0,0,0,19,10],
+"QueueTestFixture_8hpp.html":[4,0,0,0,22,5,2],
+"QueueTestFixture_8hpp_source.html":[4,0,0,0,22,5,2],
+"QueueUniformCudaHipRtBase_8hpp.html":[4,0,0,0,19,1,0],
+"QueueUniformCudaHipRtBase_8hpp_source.html":[4,0,0,0,19,1,0],
 "QueueUniformCudaHipRtBlocking_8hpp.html":[4,0,0,0,19,11],
 "QueueUniformCudaHipRtBlocking_8hpp.html#a311549e8bc3033e0f1387da53b6f4618":[4,0,0,0,19,11,5],
 "QueueUniformCudaHipRtBlocking_8hpp_source.html":[4,0,0,0,19,11],
@@ -239,15 +249,5 @@ var NAVTREEINDEX2 =
 "WorkDivMembers_8hpp_source.html":[4,0,0,0,27,2],
 "WorkDivUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,27,3],
 "WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,27,3],
-"acc_2Traits_8hpp.html":[4,0,0,0,0,12],
-"acc_2Traits_8hpp.html#a0668b792050a8ae5f1575da61ffe6217":[4,0,0,0,0,12,12],
-"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,12,13],
-"acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,12,14],
-"acc_2Traits_8hpp_source.html":[4,0,0,0,0,12],
-"alpaka_8hpp.html":[4,0,0,0,28],
-"alpaka_8hpp_source.html":[4,0,0,0,28],
-"annotated.html":[3,0],
-"atomic_2Traits_8hpp.html":[4,0,0,0,1,10],
-"atomic_2Traits_8hpp.html#a0c8304545460e9c2aedf08a91626185d":[4,0,0,0,1,10,21],
-"atomic_2Traits_8hpp.html#a148285a6d01c5470b8a96a3c2987dc26":[4,0,0,0,1,10,13]
+"acc_2Traits_8hpp.html":[4,0,0,0,0,12]
 };

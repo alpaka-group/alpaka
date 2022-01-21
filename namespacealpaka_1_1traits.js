@@ -346,6 +346,7 @@ var namespacealpaka_1_1traits =
     [ "GetDevCount< PltfUniformCudaHipRt >", "structalpaka_1_1traits_1_1GetDevCount_3_01PltfUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1GetDevCount_3_01PltfUniformCudaHipRt_01_4" ],
     [ "GetDynSharedMem", "structalpaka_1_1traits_1_1GetDynSharedMem.html", null ],
     [ "GetDynSharedMem< T, BlockSharedMemDynMember< TStaticAllocKiB > >", "structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynMember_3_01TStaticAllocKiB_01_4_01_4.html", "structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynMember_3_01TStaticAllocKiB_01_4_01_4" ],
+    [ "GetDynSharedMem< T, BlockSharedMemDynOmp5BuiltIn >", "structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynOmp5BuiltIn_01_4.html", "structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynOmp5BuiltIn_01_4" ],
     [ "GetDynSharedMem< T, BlockSharedMemDynUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4" ],
     [ "GetFreeMemBytes", "structalpaka_1_1traits_1_1GetFreeMemBytes.html", null ],
     [ "GetFreeMemBytes< DevCpu >", "structalpaka_1_1traits_1_1GetFreeMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1GetFreeMemBytes_3_01DevCpu_01_4" ],

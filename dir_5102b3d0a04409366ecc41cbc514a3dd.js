@@ -88,6 +88,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
     [ "AccOacc.hpp", "AccOacc_8hpp.html", null ],
     [ "AccOmp5.hpp", "AccOmp5_8hpp.html", [
       [ "AccOmp5", "classalpaka_1_1AccOmp5.html", "classalpaka_1_1AccOmp5" ],
+      [ "AccOmp5BlockSharedMem", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem.html", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem" ],
       [ "TaskKernelOmp5", "classalpaka_1_1TaskKernelOmp5.html", "classalpaka_1_1TaskKernelOmp5" ],
       [ "AccType< AccOmp5< TDim, TIdx > >", "structalpaka_1_1traits_1_1AccType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1AccType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "CreateTaskKernel< AccOmp5< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_00_01TWorkDiv_00_2bc7b6b63807a8cb919971f149839dc6.html", "structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_00_01TWorkDiv_00_2bc7b6b63807a8cb919971f149839dc6" ],

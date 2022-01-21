@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['key_4257',['key',['../structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#aaed7d38d17a6dd55a8b25a869d93f5a4',1,'alpaka::rand::engine::PhiloxStateSingle::key()'],['../structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a9e0c1f598cdeb0079e49144809716e75',1,'alpaka::rand::engine::PhiloxStateVector::key()']]],
-  ['kind_4258',['kind',['../structalpaka_1_1omp_1_1Schedule.html#a9804c454062feeb123b51e3319f6e132',1,'alpaka::omp::Schedule']]]
+  ['is_5fdecayed_5fv_4290',['is_decayed_v',['../namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de',1,'alpaka']]],
+  ['isgpu_4291',['isGPU',['../namespacealpaka_1_1rand_1_1engine_1_1traits.html#ac59a1ba3c5d36f4487c76a74fb5fe50d',1,'alpaka::rand::engine::traits']]]
 ];
