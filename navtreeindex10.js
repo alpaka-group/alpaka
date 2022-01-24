@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1math_1_1traits_1_1Ceil_3_01CeilUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabl5766ee41dfb83a13845ae6ad77a278b7.html#a0ab93fd87760d5c3ad7295cb92b5432a":[3,0,0,12,0,13,0],
 "structalpaka_1_1math_1_1traits_1_1Cos.html":[3,0,0,12,0,14],
 "structalpaka_1_1math_1_1traits_1_1Cos.html#a87623c4a607203b71bf6d0a5ab26d561":[3,0,0,12,0,14,0],
 "structalpaka_1_1math_1_1traits_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_325b1b6bab84c5729e0f407ffd22454d.html":[3,0,0,12,0,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4.html#a6c4840eae7f9f0c723ad97bec153b0a4":[3,0,0,14,0,57,0],
 "structalpaka_1_1meta_1_1detail_1_1UniqueHelper.html":[3,0,0,14,0,58],
 "structalpaka_1_1meta_1_1detail_1_1UniqueHelper.html#a9761112a2a77861f9eefe75bd7bc38b1":[3,0,0,14,0,58,0],
-"structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html":[3,0,0,14,0,59],
-"structalpaka_1_1meta_1_1detail_1_1UniqueImpl.html":[3,0,0,14,0,60]
+"structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html":[3,0,0,14,0,59]
 };

@@ -87,7 +87,8 @@ $(document).ready(function(){initNavTree('mem_2buf_2Traits_8hpp.html',''); initR
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Traits.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -107,6 +108,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1BufType.html">alpaka::traits::BufType&lt; TDev, TElem, TDim, TIdx, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer type trait.  <a href="structalpaka_1_1traits_1_1BufType.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1HasAsyncBufSupport.html">alpaka::traits::HasAsyncBufSupport&lt; TDim, TDev &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stream-ordered memory allocator capability trait.  <a href="structalpaka_1_1traits_1_1HasAsyncBufSupport.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1IsPinned.html">alpaka::traits::IsPinned&lt; TBuf, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory pin state trait.  <a href="structalpaka_1_1traits_1_1IsPinned.html#details">More...</a><br /></td></tr>
@@ -177,6 +181,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e7e62dca166ed6d04974a1e393c5229"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6e7e62dca166ed6d04974a1e393c5229">alpaka::unpin</a> (TBuf &amp;buf) -&gt; void</td></tr>
 <tr class="memdesc:a6e7e62dca166ed6d04974a1e393c5229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unpins the buffer.  <a href="namespacealpaka.html#a6e7e62dca166ed6d04974a1e393c5229">More...</a><br /></td></tr>
 <tr class="separator:a6e7e62dca166ed6d04974a1e393c5229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8a8e81d9d160079842607c98825b67ce"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TDim &gt; </td></tr>
+<tr class="memitem:a8a8e81d9d160079842607c98825b67ce"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce">alpaka::hasAsyncBufSupport</a> = traits::HasAsyncBufSupport&lt;TDim, TDev&gt;::value</td></tr>
+<tr class="memdesc:a8a8e81d9d160079842607c98825b67ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the given device can allocate a stream-ordered memory buffer of the given dimensionality.  <a href="namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce">More...</a><br /></td></tr>
+<tr class="separator:a8a8e81d9d160079842607c98825b67ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -184,7 +195,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Fri Jan 21 2022 10:31:14 for alpaka by
+    <li class="footer">Generated on Mon Jan 24 2022 10:11:07 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1meta_1_1detail_1_1UniqueImpl.html":[3,0,0,14,0,60],
 "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html":[3,0,0,14,0,61],
 "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html#a21f60d3ddb65aabefb73fa0f194e2e16":[3,0,0,14,0,61,0],
 "structalpaka_1_1meta_1_1max.html":[3,0,0,14,24],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicDec_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_7fca16c7d2e5d24507b528a7df0a4200.html":[3,0,0,19,44],
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicDec_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_7fca16c7d2e5d24507b528a7df0a4200.html#ae7938aa5a8595ed5e2cb483054da14d3":[3,0,0,19,44,0],
 "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicExch_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html":[3,0,0,19,45],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicExch_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#a8e2cb8cb49f2f9fef27d134acaf38772":[3,0,0,19,45,0],
-"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicExch_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html":[3,0,0,19,46]
+"structalpaka_1_1traits_1_1AtomicOp_3_01AtomicExch_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#a8e2cb8cb49f2f9fef27d134acaf38772":[3,0,0,19,45,0]
 };
