@@ -116,32 +116,36 @@ namespace alpaka
                 // Reading only the necessary attributes with cudaDeviceGetAttribute is faster than reading all with
                 // cuda https://devblogs.nvidia.com/cuda-pro-tip-the-fast-way-to-query-device-properties/
                 int multiProcessorCount = {};
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&multiProcessorCount, cudaDevAttrMultiProcessorCount, dev.iDevice()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &multiProcessorCount,
+                    cudaDevAttrMultiProcessorCount,
+                    dev.getNativeHandle()));
 
                 int maxGridSize[3] = {};
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&maxGridSize[0], cudaDevAttrMaxGridDimX, dev.iDevice()));
+                    cudaDeviceGetAttribute(&maxGridSize[0], cudaDevAttrMaxGridDimX, dev.getNativeHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&maxGridSize[1], cudaDevAttrMaxGridDimY, dev.iDevice()));
+                    cudaDeviceGetAttribute(&maxGridSize[1], cudaDevAttrMaxGridDimY, dev.getNativeHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&maxGridSize[2], cudaDevAttrMaxGridDimZ, dev.iDevice()));
+                    cudaDeviceGetAttribute(&maxGridSize[2], cudaDevAttrMaxGridDimZ, dev.getNativeHandle()));
 
                 int maxBlockDim[3] = {};
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&maxBlockDim[0], cudaDevAttrMaxBlockDimX, dev.iDevice()));
+                    cudaDeviceGetAttribute(&maxBlockDim[0], cudaDevAttrMaxBlockDimX, dev.getNativeHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&maxBlockDim[1], cudaDevAttrMaxBlockDimY, dev.iDevice()));
+                    cudaDeviceGetAttribute(&maxBlockDim[1], cudaDevAttrMaxBlockDimY, dev.getNativeHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&maxBlockDim[2], cudaDevAttrMaxBlockDimZ, dev.iDevice()));
+                    cudaDeviceGetAttribute(&maxBlockDim[2], cudaDevAttrMaxBlockDimZ, dev.getNativeHandle()));
 
                 int maxThreadsPerBlock = {};
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&maxThreadsPerBlock, cudaDevAttrMaxThreadsPerBlock, dev.iDevice()));
+                    cudaDeviceGetAttribute(&maxThreadsPerBlock, cudaDevAttrMaxThreadsPerBlock, dev.getNativeHandle()));
 
                 int sharedMemSizeBytes = {};
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    cudaDeviceGetAttribute(&sharedMemSizeBytes, cudaDevAttrMaxSharedMemoryPerBlock, dev.iDevice()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &sharedMemSizeBytes,
+                    cudaDevAttrMaxSharedMemoryPerBlock,
+                    dev.getNativeHandle()));
 
                 return {// m_multiProcessorCount
                         alpaka::core::clipCast<TIdx>(multiProcessorCount),
@@ -168,7 +172,7 @@ namespace alpaka
 
 #    else
                 hipDeviceProp_t hipDevProp;
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipGetDeviceProperties(&hipDevProp, dev.iDevice()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipGetDeviceProperties(&hipDevProp, dev.getNativeHandle()));
 
                 return {// m_multiProcessorCount
                         alpaka::core::clipCast<TIdx>(hipDevProp.multiProcessorCount),

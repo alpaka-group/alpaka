@@ -308,7 +308,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaSetDevice(m_dev.iDevice()));
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaSetDevice(m_dev.getNativeHandle()));
                         // Allocate the buffer on this device.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaMalloc(&m_devMem, static_cast<size_t>(sizeof(int32_t))));
                         // Initiate the memory set.
@@ -331,7 +331,7 @@ namespace alpaka
                         m_bIsReady = true;
 
                         // Set the current device.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaSetDevice(m_dev.iDevice()));
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaSetDevice(m_dev.getNativeHandle()));
                         // Initiate the memory set.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             cudaMemset(m_devMem, static_cast<int>(1u), static_cast<size_t>(sizeof(int32_t))));
@@ -389,7 +389,7 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto isSupported(alpaka::DevCudaRt const& dev) -> bool
                 {
                     int result = 0;
-                    cuDeviceGetAttribute(&result, CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS, dev.iDevice());
+                    cuDeviceGetAttribute(&result, CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS, dev.getNativeHandle());
                     return result != 0;
                 }
             };
@@ -522,7 +522,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipSetDevice(m_dev.iDevice()));
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipSetDevice(m_dev.getNativeHandle()));
                         // Allocate the buffer on this device.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMalloc(&m_devMem, static_cast<size_t>(sizeof(int32_t))));
                         // Initiate the memory set.
@@ -545,7 +545,7 @@ namespace alpaka
                         m_bIsReady = true;
 
                         // Set the current device.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipSetDevice(m_dev.iDevice()));
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipSetDevice(m_dev.getNativeHandle()));
                         // Initiate the memory set.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             hipMemset(m_devMem, static_cast<int>(1u), static_cast<size_t>(sizeof(int32_t))));

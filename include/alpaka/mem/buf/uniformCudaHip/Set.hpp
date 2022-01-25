@@ -43,7 +43,7 @@ namespace alpaka
                 : m_view(view)
                 , m_byte(byte)
                 , m_extent(extent)
-                , m_iDevice(getDev(view).m_iDevice)
+                , m_iDevice(getDev(view).getNativeHandle())
             {
                 static_assert(!std::is_const<TView>::value, "The destination view can not be const!");
 
