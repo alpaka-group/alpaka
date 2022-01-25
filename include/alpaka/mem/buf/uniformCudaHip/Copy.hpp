@@ -509,7 +509,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                auto const iDevice = getDev(viewSrc).iDevice();
+                auto const iDevice = getDev(viewSrc).getNativeHandle();
 
                 return alpaka::detail::TaskCopyUniformCudaHip<TDim, TViewDst, TViewSrc, TExtent>(
                     viewDst,
@@ -533,7 +533,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                auto const iDevice = getDev(viewDst).iDevice();
+                auto const iDevice = getDev(viewDst).getNativeHandle();
 
                 return alpaka::detail::TaskCopyUniformCudaHip<TDim, TViewDst, TViewSrc, TExtent>(
                     viewDst,
@@ -562,8 +562,8 @@ namespace alpaka
                     viewSrc,
                     extent,
                     ALPAKA_API_PREFIX(MemcpyDeviceToDevice),
-                    getDev(viewDst).iDevice(),
-                    getDev(viewSrc).iDevice());
+                    getDev(viewDst).getNativeHandle(),
+                    getDev(viewSrc).getNativeHandle());
             }
         };
 

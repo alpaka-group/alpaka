@@ -70,8 +70,6 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                DevUniformCudaHipRt dev;
-
                 std::size_t const devCount(getDevCount<PltfUniformCudaHipRt>());
                 if(devIdx >= devCount)
                 {
@@ -83,7 +81,7 @@ namespace alpaka
 
                 if(isDevUsable(devIdx))
                 {
-                    dev.setDevice(static_cast<int>(devIdx));
+                    DevUniformCudaHipRt dev(static_cast<int>(devIdx));
 
                     // Log this device.
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -92,13 +90,15 @@ namespace alpaka
 #        else
                     hipDeviceProp_t devProp;
 #        endif
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.iDevice()));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeHandle()));
 #    endif
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     printDeviceProperties(devProp);
 #    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     std::cout << __func__ << devProp.name << std::endl;
 #    endif
+                    return dev;
                 }
                 else
                 {
@@ -106,8 +106,6 @@ namespace alpaka
                     ssErr << "Unable to return device handle for device " << devIdx << ". It is not accessible!";
                     throw std::runtime_error(ssErr.str());
                 }
-
-                return dev;
             }
 
         private:
