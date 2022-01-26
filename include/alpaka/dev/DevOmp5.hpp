@@ -48,12 +48,24 @@ namespace alpaka
         public:
             DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
             {
+<<<<<<< HEAD
             }
             ~DevOmp5Impl()
             {
                 for(auto& a : m_staticMemMap)
                     omp_target_free(a.second.first, iDevice());
             }
+=======
+            public:
+                DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
+                {
+                }
+                ~DevOmp5Impl()
+                {
+                    for(auto& a : m_staticMemMap)
+                        omp_target_free(a.second.first, getNativeHandle());
+                }
+>>>>>>> Renamed iDevice() method for DevOmp5
 
             ALPAKA_FN_HOST auto getAllExistingQueues() const
                 -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
@@ -89,7 +101,7 @@ namespace alpaka
                 m_queues.push_back(spQueue);
             }
 
-            auto iDevice() const -> int
+            auto getNativeHandle() const -> int
             {
                 return m_iDevice;
             }
@@ -112,13 +124,13 @@ namespace alpaka
                     return reinterpret_cast<TElem*>(m->second.first);
                 }
 
-                void* pDev = omp_target_alloc(sizeB, iDevice());
+                void* pDev = omp_target_alloc(sizeB, getNativeHandle());
                 if(!pDev)
                     return nullptr;
 
                 /*! Associating pointers for good measure. Not actually
                  * required as long a not `target enter data` is done */
-                omp_target_associate_ptr(pHost, pDev, sizeB, 0u, iDevice());
+                omp_target_associate_ptr(pHost, pDev, sizeB, 0u, getNativeHandle());
 
                 m_staticMemMap[pHost] = std::make_pair(pDev, sizeB);
                 return reinterpret_cast<TElem*>(pDev);
@@ -146,15 +158,16 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOmp5 const& rhs) const -> bool
         {
-            return m_spDevOmp5Impl->iDevice() == rhs.m_spDevOmp5Impl->iDevice();
+            return m_spDevOmp5Impl->getNativeHandle() == rhs.m_spDevOmp5Impl->getNativeHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevOmp5 const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
-        [[nodiscard]] auto iDevice() const -> int
+
+        int getNativeHandle() const
         {
-            return m_spDevOmp5Impl->iDevice();
+            return m_spDevOmp5Impl->getNativeHandle();
         }
 
         //! Create and/or return staticlly mapped device pointer of host address.
