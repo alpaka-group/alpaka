@@ -121,7 +121,7 @@ namespace alpaka
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 ALPAKA_FN_HOST auto printDebug() const -> void
                 {
-                    std::cout << __func__ << " dev: " << m_dev.iDevice() << " ew: " << m_extent
+                    std::cout << __func__ << " dev: " << m_dev.getNativeHandle() << " ew: " << m_extent
                               << " dw: " << m_dstExtent << " dptr: " << static_cast<const void*>(m_dstMemNative)
                               << " sw: " << m_srcExtent << " sptr: " << static_cast<const void*>(m_srcMemNative)
                               << std::endl;
@@ -247,9 +247,10 @@ namespace alpaka
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 ALPAKA_FN_HOST auto printDebug() const -> void
                 {
-                    std::cout << __func__ << " dev: " << m_dev.iDevice() << " ew: " << Idx(1u) << " dw: " << Idx(1u)
-                              << " dptr: " << static_cast<const void*>(m_dstMemNative) << " sw: " << Idx(1u)
-                              << " sptr: " << static_cast<const void*>(m_srcMemNative) << std::endl;
+                    std::cout << __func__ << " dev: " << m_dev.getNativeHandle() << " ew: " << Idx(1u)
+                              << " dw: " << Idx(1u) << " dptr: " << static_cast<const void*>(m_dstMemNative)
+                              << " sw: " << Idx(1u) << " sptr: " << static_cast<const void*>(m_srcMemNative)
+                              << std::endl;
                 }
 #    endif
 
@@ -337,7 +338,8 @@ namespace alpaka
 
 #    if _OPENACC >= 201510 && (!defined __GNUC__)
                 // acc_memcpy_device is only available since OpenACC2.5, but we want the tests to compile anyway
-                if(getDev(viewDst).m_spDevOaccImpl->iDevice() == getDev(viewSrc).m_spDevOaccImpl->iDevice())
+                if(getDev(viewDst).m_spDevOaccImpl->getNativeHandle()
+                   == getDev(viewSrc).m_spDevOaccImpl->getNativeHandle())
                 {
                     return alpaka::oacc::detail::
                         makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
