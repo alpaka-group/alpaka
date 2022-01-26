@@ -120,6 +120,11 @@ namespace alpaka
             m_spDevCpuImpl->registerQueue(spQueue);
         }
 
+        int getNativeHandle()
+        {
+            return 0;
+        }
+
     public:
         std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
     };
