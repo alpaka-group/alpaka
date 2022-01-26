@@ -87,7 +87,7 @@ namespace alpaka
                 m_queues.push_back(std::move(spQueue));
             }
 
-            int iDevice() const
+            int getNativeHandle() const
             {
                 return m_iDevice;
             }
@@ -99,9 +99,9 @@ namespace alpaka
             void makeCurrent() const
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << "acc_set_device_num( " << iDevice() << ", [type] )" << std::endl;
+                std::cout << "acc_set_device_num( " << getNativeHandle() << ", [type] )" << std::endl;
 #    endif
-                acc_set_device_num(iDevice(), deviceType());
+                acc_set_device_num(getNativeHandle(), deviceType());
             }
 
             std::uint32_t* gridsLock() const
@@ -174,15 +174,15 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOacc const& rhs) const -> bool
         {
-            return m_devOaccImpl->iDevice() == rhs.m_devOaccImpl->iDevice();
+            return m_devOaccImpl->getNativeHandle() == rhs.m_devOaccImpl->getNativeHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevOacc const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
-        int iDevice() const
+        int getNativeHandle() const
         {
-            return m_devOaccImpl->iDevice();
+            return m_devOaccImpl->getNativeHandle();
         }
         acc_device_t deviceType() const
         {
@@ -239,7 +239,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevOacc const& dev) -> std::size_t
             {
-                return acc_get_property(dev.iDevice(), dev.deviceType(), acc_property_memory);
+                return acc_get_property(dev.getNativeHandle(), dev.deviceType(), acc_property_memory);
             }
         };
 
@@ -249,7 +249,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevOacc const& dev) -> std::size_t
             {
-                return acc_get_property(dev.iDevice(), dev.deviceType(), acc_property_free_memory);
+                return acc_get_property(dev.getNativeHandle(), dev.deviceType(), acc_property_free_memory);
             }
         };
 
