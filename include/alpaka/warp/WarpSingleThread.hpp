@@ -1,4 +1,4 @@
-/* Copyright 2020-2021 Sergei Bastrakov, David M. Rogers
+/* Copyright 2021 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *

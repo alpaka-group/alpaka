@@ -1,4 +1,4 @@
-/* Copyright 2021 Jan Stephan
+/* Copyright 2021 Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

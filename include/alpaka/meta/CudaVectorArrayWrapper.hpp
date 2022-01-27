@@ -1,4 +1,4 @@
-/* Copyright 2022 Jiří Vyskočil, Jan Stephan
+/* Copyright 2022 Jiří Vyskočil, Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

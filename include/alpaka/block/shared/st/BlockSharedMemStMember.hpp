@@ -1,4 +1,4 @@
-/* Copyright 2020 Jeffrey Kelling, Rene Widera
+/* Copyright 2020 Jeffrey Kelling, Rene Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

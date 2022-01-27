@@ -1,4 +1,4 @@
-/* Copyright 2019 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2021 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *

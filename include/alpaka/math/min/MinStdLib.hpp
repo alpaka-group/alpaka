@@ -1,4 +1,4 @@
-/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz
+/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

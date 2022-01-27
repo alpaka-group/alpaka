@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci
+# Copyright 2022 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci, Bernhard Manfred Gruber
 #
 # This file is part of alpaka.
 #

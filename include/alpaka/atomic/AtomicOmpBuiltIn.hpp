@@ -1,4 +1,4 @@
-/* Copyright 2019 René Widera
+/* Copyright 2021 René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

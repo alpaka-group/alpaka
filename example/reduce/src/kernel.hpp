@@ -1,4 +1,4 @@
-/* Copyright 2019 Jonas Schenke
+/* Copyright 2020 Jonas Schenke, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *

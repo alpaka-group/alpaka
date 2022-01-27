@@ -1,4 +1,4 @@
-/* Copyright 2021 Jiri Vyskocil, Rene Widera
+/* Copyright 2021 Jiri Vyskocil, Rene Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

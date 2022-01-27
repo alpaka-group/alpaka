@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov, Jeffrey Kelling
+/* Copyright 2021 Sergei Bastrakov, Jeffrey Kelling, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
