@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci
+/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *

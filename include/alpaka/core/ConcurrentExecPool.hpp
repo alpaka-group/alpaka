@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan
+/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

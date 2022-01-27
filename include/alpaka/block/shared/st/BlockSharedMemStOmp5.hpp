@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Erik Zenker, René Widera
+/* Copyright 2020 Benjamin Worpitz, Erik Zenker, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *

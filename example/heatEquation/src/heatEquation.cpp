@@ -1,5 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Matthias Werner, Jakob Krude,
- *                Sergei Bastrakov
+/* Copyright 2020 Benjamin Worpitz, Matthias Werner, Jakob Krude, Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *

@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Andrea Bocci
+/* Copyright 2022 Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

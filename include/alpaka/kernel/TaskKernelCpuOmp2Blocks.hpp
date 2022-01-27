@@ -1,4 +1,4 @@
-/* Copyright 2019-2021 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov
+/* Copyright 2021 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

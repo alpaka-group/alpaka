@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2021 Axel Huebl, Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

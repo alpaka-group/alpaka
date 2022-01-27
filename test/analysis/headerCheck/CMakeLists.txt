@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2020 Benjamin Worpitz, Axel Huebl, Jan Stephan
+# Copyright 2021 Benjamin Worpitz, Axel Huebl, Jan Stephan, Bernhard Manfred Gruber
 #
 # This file is part of alpaka.
 #

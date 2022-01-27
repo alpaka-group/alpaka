@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Jakob Krude
+/* Copyright 2020 Axel Huebl, Benjamin Worpitz, Jakob Krude, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *

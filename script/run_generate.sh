@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2014-2019 Benjamin Worpitz
+# Copyright 2021 Benjamin Worpitz, Bernhard Manfred Gruber
 #
 # This file is part of alpaka.
 #

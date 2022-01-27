@@ -1,4 +1,4 @@
-/** Copyright 2019 Jakob Krude, Benjamin Worpitz
+/** Copyright 2021 Jakob Krude, Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

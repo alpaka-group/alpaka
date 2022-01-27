@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov
+/* Copyright 2020 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

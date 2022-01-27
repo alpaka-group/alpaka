@@ -1,4 +1,4 @@
-/* Copyright 2021 Alexander Matthes, Benjamin Worpitz, Andrea Bocci
+/* Copyright 2021 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

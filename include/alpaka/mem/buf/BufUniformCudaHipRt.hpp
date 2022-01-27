@@ -1,4 +1,5 @@
-/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan
+/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
+ * Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

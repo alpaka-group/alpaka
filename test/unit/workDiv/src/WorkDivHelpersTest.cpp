@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, Jan Stephan
+/* Copyright 2022 Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

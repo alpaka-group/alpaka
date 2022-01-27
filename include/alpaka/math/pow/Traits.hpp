@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

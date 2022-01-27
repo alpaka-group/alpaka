@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Erik Zenker
+/* Copyright 2020 Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *

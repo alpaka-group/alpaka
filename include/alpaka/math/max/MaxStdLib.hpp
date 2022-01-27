@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *

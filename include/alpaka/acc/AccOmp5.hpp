@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Jeffrey Kelling
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Jeffrey Kelling, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
