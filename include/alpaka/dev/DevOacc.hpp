@@ -87,7 +87,7 @@ namespace alpaka
                 m_queues.push_back(std::move(spQueue));
             }
 
-            int getNativeHandle() const
+            int getNativeHandle() const noexcept
             {
                 return m_iDevice;
             }
