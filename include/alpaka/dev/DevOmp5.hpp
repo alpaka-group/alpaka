@@ -48,24 +48,12 @@ namespace alpaka
         public:
             DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
             {
-<<<<<<< HEAD
             }
             ~DevOmp5Impl()
             {
                 for(auto& a : m_staticMemMap)
-                    omp_target_free(a.second.first, iDevice());
+                    omp_target_free(a.second.first, getNativeHandle());
             }
-=======
-            public:
-                DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
-                {
-                }
-                ~DevOmp5Impl()
-                {
-                    for(auto& a : m_staticMemMap)
-                        omp_target_free(a.second.first, getNativeHandle());
-                }
->>>>>>> Renamed iDevice() method for DevOmp5
 
             ALPAKA_FN_HOST auto getAllExistingQueues() const
                 -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
@@ -101,7 +89,7 @@ namespace alpaka
                 m_queues.push_back(spQueue);
             }
 
-            auto getNativeHandle() const -> int
+            auto getNativeHandle() const noexcept -> int
             {
                 return m_iDevice;
             }

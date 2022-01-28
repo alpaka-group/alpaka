@@ -60,7 +60,7 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        int getNativeHandle() const
+        int getNativeHandle() const noexcept
         {
             return m_iDevice;
         }

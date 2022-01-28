@@ -120,7 +120,7 @@ namespace alpaka
             m_spDevCpuImpl->registerQueue(spQueue);
         }
 
-        int getNativeHandle()
+        int getNativeHandle() const noexcept
         {
             return 0;
         }
