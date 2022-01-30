@@ -55,6 +55,9 @@ then
     elif [ "$ALPAKA_CI_CL_VER" = "2019" ]
     then
         TOOLSET="msvc-14.2"
+    elif [ "$ALPAKA_CI_CL_VER" = "2022" ]
+    then
+        TOOLSET="msvc-14.3"
     fi
     # Add new versions as needed
 elif [ "${CXX}" == "icpc" ]
