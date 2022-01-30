@@ -73,6 +73,9 @@ then
     elif [ "$ALPAKA_CI_CL_VER" = "2019" ]
     then
         ALPAKA_CI_CMAKE_GENERATOR="Visual Studio 16 2019"
+    elif [ "$ALPAKA_CI_CL_VER" = "2022" ]
+    then
+        ALPAKA_CI_CMAKE_GENERATOR="Visual Studio 17 2022"
     fi
     ALPAKA_CI_CMAKE_GENERATOR_PLATFORM="-A x64"
 fi
