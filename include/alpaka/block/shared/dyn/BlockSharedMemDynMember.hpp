@@ -50,14 +50,14 @@ namespace alpaka
             ALPAKA_ASSERT_OFFLOAD(static_cast<std::uint32_t>(sizeBytes) <= staticAllocBytes());
         }
 
-        uint8_t* dynMemBegin() const
+        auto dynMemBegin() const -> uint8_t*
         {
             return std::data(m_mem);
         }
 
         /*! \return the pointer to the begin of data after the portion allocated as dynamical shared memory.
          */
-        uint8_t* staticMemBegin() const
+        auto staticMemBegin() const -> uint8_t*
         {
             return std::data(m_mem) + m_dynPitch;
         }
@@ -65,7 +65,7 @@ namespace alpaka
         /*! \return the remaining capacity for static block shared memory,
                     returns a 32-bit type for register efficiency on GPUs
             */
-        std::uint32_t staticMemCapacity() const
+        auto staticMemCapacity() const -> std::uint32_t
         {
             return staticAllocBytes() - m_dynPitch;
         }
@@ -73,13 +73,13 @@ namespace alpaka
         //! \return size of statically allocated memory available for both
         //!         dynamic and static shared memory. Value is of a 32-bit type
         //!         for register efficiency on GPUs
-        static constexpr std::uint32_t staticAllocBytes()
+        static constexpr auto staticAllocBytes() -> std::uint32_t
         {
             return detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes;
         }
 
     private:
-        static std::uint32_t getPitch(std::size_t sizeBytes)
+        static auto getPitch(std::size_t sizeBytes) -> std::uint32_t
         {
             constexpr auto alignment = core::vectorization::defaultAlignment;
             return static_cast<std::uint32_t>((sizeBytes / alignment + (sizeBytes % alignment > 0u)) * alignment);

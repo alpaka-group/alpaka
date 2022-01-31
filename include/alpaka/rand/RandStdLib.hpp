@@ -64,15 +64,15 @@ namespace alpaka
 
                     // STL UniformRandomBitGenerator concept interface
                     using result_type = std::mt19937::result_type;
-                    ALPAKA_FN_HOST constexpr static result_type min()
+                    ALPAKA_FN_HOST constexpr static auto min() -> result_type
                     {
                         return std::mt19937::min();
                     }
-                    ALPAKA_FN_HOST constexpr static result_type max()
+                    ALPAKA_FN_HOST constexpr static auto max() -> result_type
                     {
                         return std::mt19937::max();
                     }
-                    ALPAKA_FN_HOST result_type operator()()
+                    ALPAKA_FN_HOST auto operator()() -> result_type
                     {
                         return state();
                     }
@@ -107,15 +107,15 @@ namespace alpaka
 
                     // STL UniformRandomBitGenerator concept interface
                     using result_type = TinyMTengine::result_type;
-                    ALPAKA_FN_HOST constexpr static result_type min()
+                    ALPAKA_FN_HOST constexpr static auto min() -> result_type
                     {
                         return TinyMTengine::min();
                     }
-                    ALPAKA_FN_HOST constexpr static result_type max()
+                    ALPAKA_FN_HOST constexpr static auto max() -> result_type
                     {
                         return TinyMTengine::max();
                     }
-                    ALPAKA_FN_HOST result_type operator()()
+                    ALPAKA_FN_HOST auto operator()() -> result_type
                     {
                         return state();
                     }
@@ -148,15 +148,15 @@ namespace alpaka
 
                     // STL UniformRandomBitGenerator concept interface
                     using result_type = std::random_device::result_type;
-                    ALPAKA_FN_HOST constexpr static result_type min()
+                    ALPAKA_FN_HOST constexpr static auto min() -> result_type
                     {
                         return std::random_device::min();
                     }
-                    ALPAKA_FN_HOST constexpr static result_type max()
+                    ALPAKA_FN_HOST constexpr static auto max() -> result_type
                     {
                         return std::random_device::max();
                     }
-                    ALPAKA_FN_HOST result_type operator()()
+                    ALPAKA_FN_HOST auto operator()() -> result_type
                     {
                         return state();
                     }

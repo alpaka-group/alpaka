@@ -68,15 +68,15 @@ namespace alpaka
             // STL UniformRandomBitGenerator concept
             // https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator
             using result_type = std::uint32_t;
-            ALPAKA_FN_HOST_ACC constexpr result_type min()
+            ALPAKA_FN_HOST_ACC constexpr auto min() -> result_type
             {
                 return 0;
             }
-            ALPAKA_FN_HOST_ACC constexpr result_type max()
+            ALPAKA_FN_HOST_ACC constexpr auto max() -> result_type
             {
                 return std::numeric_limits<result_type>::max();
             }
-            ALPAKA_FN_HOST_ACC result_type operator()()
+            ALPAKA_FN_HOST_ACC auto operator()() -> result_type
             {
                 return engineVariant();
             }
@@ -126,15 +126,15 @@ namespace alpaka
 
             using ResultInt = std::uint32_t;
             using ResultVec = decltype(engineVariant());
-            ALPAKA_FN_HOST_ACC constexpr ResultInt min()
+            ALPAKA_FN_HOST_ACC constexpr auto min() -> ResultInt
             {
                 return 0;
             }
-            ALPAKA_FN_HOST_ACC constexpr ResultInt max()
+            ALPAKA_FN_HOST_ACC constexpr auto max() -> ResultInt
             {
                 return std::numeric_limits<ResultInt>::max();
             }
-            ALPAKA_FN_HOST_ACC ResultVec operator()()
+            ALPAKA_FN_HOST_ACC auto operator()() -> ResultVec
             {
                 return engineVariant();
             }
@@ -181,7 +181,7 @@ namespace alpaka
             }
 
             template<typename TEngine>
-            ALPAKA_FN_HOST_ACC TResult operator()(TEngine& engine)
+            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> TResult
             {
                 if constexpr(meta::IsArrayOrVector<TResult>::value)
                 {

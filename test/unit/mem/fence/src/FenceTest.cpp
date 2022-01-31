@@ -73,27 +73,24 @@ public:
     }
 };
 
-namespace alpaka
+namespace alpaka::traits
 {
-    namespace traits
+    //! The trait for getting the size of the block shared dynamic memory for a kernel.
+    template<typename TAcc>
+    struct BlockSharedMemDynSizeBytes<BlockFenceTestKernel, TAcc>
     {
-        //! The trait for getting the size of the block shared dynamic memory for a kernel.
-        template<typename TAcc>
-        struct BlockSharedMemDynSizeBytes<BlockFenceTestKernel, TAcc>
+        //! \return The size of the shared memory allocated for a block.
+        template<typename TVec, typename... TArgs>
+        ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+            BlockFenceTestKernel const&,
+            TVec const&,
+            TVec const&,
+            TArgs&&...) -> std::size_t
         {
-            //! \return The size of the shared memory allocated for a block.
-            template<typename TVec, typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                BlockFenceTestKernel const&,
-                TVec const&,
-                TVec const&,
-                TArgs&&...) -> std::size_t
-            {
-                return 2 * sizeof(int);
-            }
-        };
-    } // namespace traits
-} // namespace alpaka
+            return 2 * sizeof(int);
+        }
+    };
+} // namespace alpaka::traits
 
 using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 

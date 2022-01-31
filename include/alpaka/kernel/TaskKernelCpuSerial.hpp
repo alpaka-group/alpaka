@@ -29,6 +29,7 @@
 #    include <functional>
 #    include <tuple>
 #    include <type_traits>
+#    include <utility>
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        include <iostream>
 #    endif
@@ -41,9 +42,9 @@ namespace alpaka
     {
     public:
         template<typename TWorkDiv>
-        ALPAKA_FN_HOST TaskKernelCpuSerial(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+        ALPAKA_FN_HOST TaskKernelCpuSerial(TWorkDiv&& workDiv, TKernelFnObj kernelFnObj, TArgs&&... args)
             : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
-            , m_kernelFnObj(kernelFnObj)
+            , m_kernelFnObj(std::move(kernelFnObj))
             , m_args(std::forward<TArgs>(args)...)
         {
             static_assert(

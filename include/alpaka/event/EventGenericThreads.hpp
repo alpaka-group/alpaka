@@ -20,6 +20,7 @@
 #include <condition_variable>
 #include <future>
 #include <mutex>
+#include <utility>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #    include <iostream>
 #endif
@@ -36,7 +37,7 @@ namespace alpaka
                 : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
             {
             public:
-                EventGenericThreadsImpl(TDev const& dev) noexcept : m_dev(dev)
+                EventGenericThreadsImpl(TDev dev) noexcept : m_dev(std::move(dev))
                 {
                 }
                 EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> const&) = delete;

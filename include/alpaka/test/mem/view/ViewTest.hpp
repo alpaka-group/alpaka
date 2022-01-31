@@ -251,7 +251,7 @@ namespace alpaka
 
             // alpaka::set
             {
-                std::uint8_t const byte(static_cast<uint8_t>(42u));
+                auto const byte(static_cast<uint8_t>(42u));
                 alpaka::memset(queue, view, byte);
                 alpaka::wait(queue);
                 verifyBytesSet<TAcc>(view, byte);

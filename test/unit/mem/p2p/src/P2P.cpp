@@ -45,7 +45,7 @@ static auto testP2P(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& ext
     auto buf1 = alpaka::allocBuf<Elem, Idx>(dev1, extent);
 
     // fill each byte with value 42
-    std::uint8_t const byte(static_cast<uint8_t>(42u));
+    auto const byte(static_cast<uint8_t>(42u));
     alpaka::memset(queue1, buf1, byte);
     alpaka::wait(queue1);
 

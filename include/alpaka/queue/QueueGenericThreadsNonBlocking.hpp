@@ -57,7 +57,7 @@ namespace alpaka
                     false>; // If the threads should yield.
 
             public:
-                explicit QueueGenericThreadsNonBlockingImpl(TDev const& dev) : m_dev(dev), m_workerThread(1u)
+                explicit QueueGenericThreadsNonBlockingImpl(TDev dev) : m_dev(std::move(dev)), m_workerThread(1u)
                 {
                 }
                 QueueGenericThreadsNonBlockingImpl(QueueGenericThreadsNonBlockingImpl<TDev> const&) = delete;

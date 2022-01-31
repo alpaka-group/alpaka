@@ -13,6 +13,7 @@
 
 #include <condition_variable>
 #include <mutex>
+#include <utility>
 
 namespace alpaka
 {
@@ -48,8 +49,8 @@ namespace alpaka
                 {
                 public:
                     //! Constructor.
-                    ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(TDev const& dev) noexcept
-                        : m_dev(dev)
+                    ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(TDev dev) noexcept
+                        : m_dev(std::move(dev))
                         , m_mutex()
                         , m_enqueueCount(0u)
                         , m_bIsReady(true)

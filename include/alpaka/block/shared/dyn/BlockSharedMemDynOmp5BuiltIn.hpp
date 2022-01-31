@@ -36,11 +36,11 @@ namespace alpaka
         }
 
         BlockSharedMemDynOmp5BuiltIn(const BlockSharedMemDynOmp5BuiltIn&) = delete;
-        BlockSharedMemDynOmp5BuiltIn& operator=(const BlockSharedMemDynOmp5BuiltIn&) = delete;
+        auto operator=(const BlockSharedMemDynOmp5BuiltIn&) -> BlockSharedMemDynOmp5BuiltIn& = delete;
         BlockSharedMemDynOmp5BuiltIn(BlockSharedMemDynOmp5BuiltIn&&) = delete;
-        BlockSharedMemDynOmp5BuiltIn& operator=(BlockSharedMemDynOmp5BuiltIn&&) = delete;
+        auto operator=(BlockSharedMemDynOmp5BuiltIn&&) -> BlockSharedMemDynOmp5BuiltIn& = delete;
 
-        std::byte* mem() const
+        [[nodiscard]] auto mem() const -> std::byte*
         {
             return m_mem;
         }
@@ -49,7 +49,7 @@ namespace alpaka
         //!         dynamic and static shared memory. This value is actually
         //!         unknown, will just return the statically defined limit for
         //!         BlockSharedMemDynMember.
-        static constexpr std::uint32_t staticAllocBytes()
+        static constexpr auto staticAllocBytes() -> std::uint32_t
         {
             return BlockSharedDynMemberAllocKiB << 10u;
         }

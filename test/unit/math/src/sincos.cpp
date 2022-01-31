@@ -18,11 +18,8 @@
 
 // https://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
 template<typename TAcc, typename FP>
-ALPAKA_FN_ACC std::enable_if_t<!std::numeric_limits<FP>::is_integer, bool> almost_equal(
-    TAcc const& acc,
-    FP x,
-    FP y,
-    int ulp)
+ALPAKA_FN_ACC auto almost_equal(TAcc const& acc, FP x, FP y, int ulp)
+    -> std::enable_if_t<!std::numeric_limits<FP>::is_integer, bool>
 {
     // the machine epsilon has to be scaled to the magnitude of the values used
     // and multiplied by the desired precision in ULPs (units in the last place)

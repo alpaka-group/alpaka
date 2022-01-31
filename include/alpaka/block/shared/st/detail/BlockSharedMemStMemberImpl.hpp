@@ -60,7 +60,7 @@ namespace alpaka
                 // Add meta data chunk in front of the user data
                 m_allocdBytes = varChunkEnd<MetaData>(m_allocdBytes);
                 ALPAKA_ASSERT_OFFLOAD(m_allocdBytes <= m_capacity);
-                MetaData* meta = getLatestVarPtr<MetaData>();
+                auto* meta = getLatestVarPtr<MetaData>();
 
                 // Allocate variable
                 m_allocdBytes = varChunkEnd<T>(m_allocdBytes);
@@ -83,7 +83,7 @@ namespace alpaka
             //! @param id unique id of the variable
             //! @return nullptr if variable with id not exists
             template<typename T>
-            T* getVarPtr(std::uint32_t id) const
+            auto getVarPtr(std::uint32_t id) const -> T*
             {
                 // Offset in bytes to the next unaligned meta data header behind the variable.
                 std::uint32_t off = 0;
@@ -96,7 +96,7 @@ namespace alpaka
                         = varChunkEnd<MetaData>(off) - static_cast<std::uint32_t>(sizeof(MetaData));
                     ALPAKA_ASSERT_OFFLOAD(
                         (alignedMetaDataOffset + static_cast<std::uint32_t>(sizeof(MetaData))) <= m_allocdBytes);
-                    MetaData* metaDataPtr = reinterpret_cast<MetaData*>(m_mem + alignedMetaDataOffset);
+                    auto* metaDataPtr = reinterpret_cast<MetaData*>(m_mem + alignedMetaDataOffset);
                     off = metaDataPtr->offset;
 
                     if(metaDataPtr->id == id)
@@ -109,7 +109,7 @@ namespace alpaka
 
             //! Get last allocated variable.
             template<typename T>
-            T* getLatestVarPtr() const
+            auto getLatestVarPtr() const -> T*
             {
                 return reinterpret_cast<T*>(&m_mem[m_allocdBytes - sizeof(T)]);
             }
@@ -129,9 +129,9 @@ namespace alpaka
             //! \param byteOffset Current byte offset.
             //! \result Byte offset to the end of the data chunk, relative to m_mem..
             template<typename T>
-            std::uint32_t varChunkEnd(std::uint32_t byteOffset) const
+            auto varChunkEnd(std::uint32_t byteOffset) const -> std::uint32_t
             {
-                std::size_t const ptr = reinterpret_cast<std::size_t>(m_mem + byteOffset);
+                auto const ptr = reinterpret_cast<std::size_t>(m_mem + byteOffset);
                 constexpr size_t align = std::max(TMinDataAlignBytes, alignof(T));
                 std::size_t const newPtrAdress = ((ptr + align - 1u) / align) * align + sizeof(T);
                 return static_cast<uint32_t>(newPtrAdress - reinterpret_cast<std::size_t>(m_mem));

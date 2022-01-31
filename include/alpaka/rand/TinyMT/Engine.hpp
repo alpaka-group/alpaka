@@ -27,7 +27,7 @@ namespace alpaka
                 {
                     using result_type = std::uint32_t;
 
-                    static constexpr result_type default_seed()
+                    static constexpr auto default_seed() -> result_type
                     {
                         return 42u;
                     }
@@ -53,17 +53,17 @@ namespace alpaka
                         seed(magicSeed);
                     }
 
-                    result_type operator()()
+                    auto operator()() -> result_type
                     {
                         return tinymt32_generate_uint32(&prng);
                     }
 
-                    static constexpr result_type min()
+                    static constexpr auto min() -> result_type
                     {
                         return 0u;
                     }
 
-                    static constexpr result_type max()
+                    static constexpr auto max() -> result_type
                     {
                         return UINT32_MAX;
                     }

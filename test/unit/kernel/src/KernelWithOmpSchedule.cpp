@@ -76,26 +76,23 @@ struct KernelWithTrait : TBase
 {
 };
 
-namespace alpaka
+namespace alpaka::traits
 {
-    namespace traits
+    // Specialize the trait for kernels of type KernelWithTrait<>
+    template<typename TBase, typename TAcc>
+    struct OmpSchedule<KernelWithTrait<TBase>, TAcc>
     {
-        // Specialize the trait for kernels of type KernelWithTrait<>
-        template<typename TBase, typename TAcc>
-        struct OmpSchedule<KernelWithTrait<TBase>, TAcc>
+        template<typename TDim, typename... TArgs>
+        ALPAKA_FN_HOST static auto getOmpSchedule(
+            KernelWithTrait<TBase> const& /* kernelFnObj */,
+            Vec<TDim, Idx<TAcc>> const& /* blockThreadExtent */,
+            Vec<TDim, Idx<TAcc>> const& /* threadElemExtent */,
+            TArgs const&... /* args */) -> alpaka::omp::Schedule
         {
-            template<typename TDim, typename... TArgs>
-            ALPAKA_FN_HOST static auto getOmpSchedule(
-                KernelWithTrait<TBase> const& /* kernelFnObj */,
-                Vec<TDim, Idx<TAcc>> const& /* blockThreadExtent */,
-                Vec<TDim, Idx<TAcc>> const& /* threadElemExtent */,
-                TArgs const&... /* args */) -> alpaka::omp::Schedule
-            {
-                return alpaka::omp::Schedule{alpaka::omp::Schedule::Static, 4};
-            }
-        };
-    } // namespace traits
-} // namespace alpaka
+            return alpaka::omp::Schedule{alpaka::omp::Schedule::Static, 4};
+        }
+    };
+} // namespace alpaka::traits
 
 // Generic testing routine for the given kernel type
 template<typename TAcc, typename TKernel>

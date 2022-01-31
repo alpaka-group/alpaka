@@ -22,6 +22,8 @@
 #include <alpaka/test/Check.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
+#include <utility>
+
 namespace alpaka
 {
     namespace test
@@ -53,11 +55,11 @@ namespace alpaka
                       alpaka::GridBlockExtentSubDivRestrictions::Unrestricted))
             {
             }
-            KernelExecutionFixture(WorkDiv const& workDiv)
+            KernelExecutionFixture(WorkDiv workDiv)
                 : m_devHost(alpaka::getDevByIdx<PltfCpu>(0u))
                 , m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u))
                 , m_queue(m_devAcc)
-                , m_workDiv(workDiv)
+                , m_workDiv(std::move(workDiv))
             {
             }
             template<typename TKernelFnObj, typename... TArgs>

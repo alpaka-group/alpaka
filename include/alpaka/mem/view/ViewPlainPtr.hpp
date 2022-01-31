@@ -18,6 +18,7 @@
 #include <alpaka/vec/Vec.hpp>
 
 #include <type_traits>
+#include <utility>
 
 namespace alpaka
 {
@@ -31,9 +32,9 @@ namespace alpaka
 
     public:
         template<typename TExtent>
-        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev const& dev, TExtent const& extent = TExtent())
+        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev dev, TExtent const& extent = TExtent())
             : m_pMem(pMem)
-            , m_dev(dev)
+            , m_dev(std::move(dev))
             , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
             , m_pitchBytes(detail::calculatePitchesFromExtents<TElem>(m_extentElements))
         {

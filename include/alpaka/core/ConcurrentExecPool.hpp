@@ -37,11 +37,9 @@ namespace alpaka
             class ThreadSafeQueue : private std::queue<T>
             {
             public:
-                ThreadSafeQueue()
-                {
-                }
+                ThreadSafeQueue() = default;
                 //! \return If the queue is empty.
-                auto empty() const -> bool
+                [[nodiscard]] auto empty() const -> bool
                 {
                     return std::queue<T>::empty();
                 }
@@ -138,7 +136,7 @@ namespace alpaka
 
             private:
                 //! The execution function.
-                virtual auto run() -> void final
+                auto run() -> void final
                 {
                     m_Promise.set_value(this->m_FnObj());
                 }
@@ -147,7 +145,7 @@ namespace alpaka
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 //! Sets an exception.
-                virtual auto setException(std::exception_ptr const& exceptPtr) -> void final
+                auto setException(std::exception_ptr const& exceptPtr) -> void final
                 {
                     m_Promise.set_exception(exceptPtr);
                 }
@@ -174,7 +172,7 @@ namespace alpaka
 
             private:
                 //! The execution function.
-                virtual auto run() -> void final
+                auto run() -> void final
                 {
                     this->m_FnObj();
                     m_Promise.set_value();
@@ -184,7 +182,7 @@ namespace alpaka
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 //! Sets an exception.
-                virtual auto setException(std::exception_ptr const& exceptPtr) -> void final
+                auto setException(std::exception_ptr const& exceptPtr) -> void final
                 {
                     m_Promise.set_exception(exceptPtr);
                 }
@@ -323,7 +321,7 @@ namespace alpaka
                     return std::size(m_vConcurrentExecs);
                 }
                 //! \return If the thread pool is idle.
-                auto isIdle() const -> bool
+                [[nodiscard]] auto isIdle() const -> bool
                 {
                     return m_numActiveTasks == 0u;
                 }
@@ -490,12 +488,12 @@ namespace alpaka
                     return future;
                 }
                 //! \return The number of concurrent executors available.
-                auto getConcurrentExecutionCount() const -> TIdx
+                [[nodiscard]] auto getConcurrentExecutionCount() const -> TIdx
                 {
                     return std::size(m_vConcurrentExecs);
                 }
                 //! \return If the thread pool is idle.
-                auto isIdle() const -> bool
+                [[nodiscard]] auto isIdle() const -> bool
                 {
                     return m_numActiveTasks == 0u;
                 }

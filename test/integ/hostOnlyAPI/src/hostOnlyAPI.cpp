@@ -18,7 +18,7 @@
 
 // fill an trivial type with std::memset
 template<typename T>
-constexpr T memset_value(int c)
+constexpr auto memset_value(int c) -> T
 {
     T t;
     std::memset(&t, c, sizeof(T));

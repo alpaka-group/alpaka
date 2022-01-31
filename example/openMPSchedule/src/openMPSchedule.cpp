@@ -70,30 +70,27 @@ struct OpenMPScheduleTraitKernel : public OpenMPScheduleDefaultKernel
 {
 };
 
-namespace alpaka
+namespace alpaka::traits
 {
-    namespace traits
+    //! Schedule trait specialization for OpenMPScheduleTraitKernel.
+    //! This is the most general way to define a schedule.
+    //! In case neither the trait nor the member are provided, there will be no schedule() clause.
+    template<typename TAcc>
+    struct OmpSchedule<OpenMPScheduleTraitKernel, TAcc>
     {
-        //! Schedule trait specialization for OpenMPScheduleTraitKernel.
-        //! This is the most general way to define a schedule.
-        //! In case neither the trait nor the member are provided, there will be no schedule() clause.
-        template<typename TAcc>
-        struct OmpSchedule<OpenMPScheduleTraitKernel, TAcc>
+        template<typename TDim, typename... TArgs>
+        ALPAKA_FN_HOST static auto getOmpSchedule(
+            OpenMPScheduleTraitKernel const& /* kernelFnObj */,
+            Vec<TDim, Idx<TAcc>> const& /* blockThreadExtent */,
+            Vec<TDim, Idx<TAcc>> const& /* threadElemExtent */,
+            TArgs const&... /* args */) -> alpaka::omp::Schedule
         {
-            template<typename TDim, typename... TArgs>
-            ALPAKA_FN_HOST static auto getOmpSchedule(
-                OpenMPScheduleTraitKernel const& /* kernelFnObj */,
-                Vec<TDim, Idx<TAcc>> const& /* blockThreadExtent */,
-                Vec<TDim, Idx<TAcc>> const& /* threadElemExtent */,
-                TArgs const&... /* args */) -> alpaka::omp::Schedule
-            {
-                // Determine schedule at runtime for the given kernel and run parameters.
-                // For this particular example kernel, TArgs is an empty pack and can be removed.
-                return alpaka::omp::Schedule{alpaka::omp::Schedule::Dynamic, 2};
-            }
-        };
-    } // namespace traits
-} // namespace alpaka
+            // Determine schedule at runtime for the given kernel and run parameters.
+            // For this particular example kernel, TArgs is an empty pack and can be removed.
+            return alpaka::omp::Schedule{alpaka::omp::Schedule::Dynamic, 2};
+        }
+    };
+} // namespace alpaka::traits
 
 auto main() -> int
 {

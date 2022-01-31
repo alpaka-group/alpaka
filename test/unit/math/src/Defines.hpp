@@ -48,7 +48,7 @@ namespace alpaka
 
                     T arg[arity_nr]; // represents arg0, arg1, ...
 
-                    friend std::ostream& operator<<(std::ostream& os, const ArgsItem& argsItem)
+                    friend auto operator<<(std::ostream& os, const ArgsItem& argsItem) -> std::ostream&
                     {
                         os.precision(17);
                         os << "[ ";

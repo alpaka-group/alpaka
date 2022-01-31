@@ -22,7 +22,7 @@
 #include <iostream>
 
 template<size_t width>
-ALPAKA_FN_ACC size_t linIdxToPitchedIdx(size_t const globalIdx, size_t const pitch)
+ALPAKA_FN_ACC auto linIdxToPitchedIdx(size_t const globalIdx, size_t const pitch) -> size_t
 {
     const size_t idx_x = globalIdx % width;
     const size_t idx_y = globalIdx / width;

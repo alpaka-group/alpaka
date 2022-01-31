@@ -229,7 +229,7 @@ static auto testBufferAccessorAdaptor(
     INFO("buffer pitch: " << pitch << " bytes")
     CHECK((index < extent).foldrAll(std::logical_and<bool>()));
 
-    uintptr_t base = reinterpret_cast<uintptr_t>(std::data(buf));
+    auto base = reinterpret_cast<uintptr_t>(std::data(buf));
     uintptr_t expected = base;
     if constexpr(Dim::value > 1)
     {

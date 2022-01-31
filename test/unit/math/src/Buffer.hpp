@@ -99,7 +99,7 @@ namespace alpaka
                     }
 
                     ALPAKA_FN_HOST
-                    friend std::ostream& operator<<(std::ostream& os, const Buffer& buffer)
+                    friend auto operator<<(std::ostream& os, const Buffer& buffer) -> std::ostream&
                     {
                         os << "capacity: " << capacity << "\n";
                         for(size_t i = 0; i < capacity; ++i)

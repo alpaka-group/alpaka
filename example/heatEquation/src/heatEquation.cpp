@@ -66,7 +66,7 @@ struct HeatEquationKernel
 //!
 //! \param x value of x
 //! \param t value of t
-double exactSolution(double const x, double const t)
+auto exactSolution(double const x, double const t) -> double
 {
     constexpr double pi = 3.14159265358979323846;
     return std::exp(-pi * pi * t) * std::sin(pi * x);
