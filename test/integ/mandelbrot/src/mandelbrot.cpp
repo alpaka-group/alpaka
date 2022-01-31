@@ -31,8 +31,7 @@ public:
     {
     }
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_INLINE
-    ALPAKA_FN_HOST_ACC auto absSq() const -> T
+    [[nodiscard]] ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto absSq() const -> T
     {
         return r * r + i * i;
     }
@@ -182,7 +181,8 @@ public:
 #else
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
-    ALPAKA_FN_ACC auto iterationCountToRepeatedColor(std::uint32_t const& iterationCount) const -> std::uint32_t
+    [[nodiscard]] ALPAKA_FN_ACC auto iterationCountToRepeatedColor(std::uint32_t const& iterationCount) const
+        -> std::uint32_t
     {
         return m_colors[iterationCount % 16];
     }

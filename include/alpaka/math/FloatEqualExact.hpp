@@ -37,7 +37,7 @@ namespace alpaka
          * @return a == b
          */
         template<typename T>
-        ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC bool floatEqualExactNoWarning(T a, T b)
+        ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto floatEqualExactNoWarning(T a, T b) -> bool
         {
             static_assert(
                 std::is_floating_point<T>::value,

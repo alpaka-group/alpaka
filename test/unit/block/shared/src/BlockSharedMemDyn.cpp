@@ -35,28 +35,25 @@ public:
     }
 };
 
-namespace alpaka
+namespace alpaka::traits
 {
-    namespace traits
+    //! The trait for getting the size of the block shared dynamic memory for a kernel.
+    template<typename TAcc>
+    struct BlockSharedMemDynSizeBytes<BlockSharedMemDynTestKernel, TAcc>
     {
-        //! The trait for getting the size of the block shared dynamic memory for a kernel.
-        template<typename TAcc>
-        struct BlockSharedMemDynSizeBytes<BlockSharedMemDynTestKernel, TAcc>
+        //! \return The size of the shared memory allocated for a block.
+        template<typename TVec>
+        ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+            BlockSharedMemDynTestKernel const& /* blockSharedMemDyn */,
+            TVec const& blockThreadExtent,
+            TVec const& threadElemExtent,
+            bool* /* success */) -> std::size_t
         {
-            //! \return The size of the shared memory allocated for a block.
-            template<typename TVec>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                BlockSharedMemDynTestKernel const& /* blockSharedMemDyn */,
-                TVec const& blockThreadExtent,
-                TVec const& threadElemExtent,
-                bool* /* success */) -> std::size_t
-            {
-                auto const gridSize = blockThreadExtent.prod() * threadElemExtent.prod();
-                return static_cast<std::size_t>(gridSize) * sizeof(std::uint32_t);
-            }
-        };
-    } // namespace traits
-} // namespace alpaka
+            auto const gridSize = blockThreadExtent.prod() * threadElemExtent.prod();
+            return static_cast<std::size_t>(gridSize) * sizeof(std::uint32_t);
+        }
+    };
+} // namespace alpaka::traits
 
 TEMPLATE_LIST_TEST_CASE("sameNonNullAdress", "[blockSharedMemDyn]", alpaka::test::TestAccs)
 {

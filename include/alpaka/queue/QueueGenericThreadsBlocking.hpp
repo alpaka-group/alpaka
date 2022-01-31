@@ -42,8 +42,8 @@ namespace alpaka
 #endif
             {
             public:
-                explicit QueueGenericThreadsBlockingImpl(TDev const& dev) noexcept
-                    : m_dev(dev)
+                explicit QueueGenericThreadsBlockingImpl(TDev dev) noexcept
+                    : m_dev(std::move(dev))
                     , m_bCurrentlyExecutingTask(false)
                 {
                 }

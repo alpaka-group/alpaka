@@ -47,7 +47,7 @@ namespace alpaka
                 return getPtrNative(*static_cast<TView*>(this));
             }
 
-            ALPAKA_FN_HOST auto data() const -> const_pointer
+            [[nodiscard]] ALPAKA_FN_HOST auto data() const -> const_pointer
             {
                 return getPtrNative(*static_cast<TView const*>(this));
             }
@@ -102,7 +102,7 @@ namespace alpaka
 
         private:
             template<std::size_t TDim, typename TIdx>
-            ALPAKA_FN_HOST auto ptr_at(Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
+            [[nodiscard]] ALPAKA_FN_HOST auto ptr_at(Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
             {
                 using Idx = alpaka::Idx<TView>;
                 static_assert(
@@ -112,7 +112,7 @@ namespace alpaka
                     std::is_convertible_v<TIdx, Idx>,
                     "the index type must be convertible to the index of the Buffer or View");
 
-                uintptr_t ptr = reinterpret_cast<uintptr_t>(data());
+                auto ptr = reinterpret_cast<uintptr_t>(data());
                 if constexpr(TDim > 0)
                 {
                     const auto pitchesInBytes = getPitchBytesVec(*static_cast<TView const*>(this));
@@ -152,7 +152,7 @@ namespace alpaka
             }
 
             template<std::size_t TDim, typename TIdx>
-            ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
+            [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
             {
                 auto extent = extent::getExtentVec(*static_cast<TView const*>(this));
                 if(!(index < extent).foldrAll(std::logical_and<bool>()))

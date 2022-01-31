@@ -31,7 +31,7 @@ namespace alpaka
         template<typename TAtomic, typename TOp, typename T, typename THierarchy, typename TSfinae>
         friend struct traits::AtomicOp;
 
-        static constexpr size_t nextPowerOf2(size_t const value, size_t const bit = 0u)
+        static constexpr auto nextPowerOf2(size_t const value, size_t const bit = 0u) -> size_t
         {
             return value <= (static_cast<size_t>(1u) << bit) ? (static_cast<size_t>(1u) << bit)
                                                              : nextPowerOf2(value, bit + 1u);
@@ -42,9 +42,9 @@ namespace alpaka
         // This is no perfect hash, there will be collisions if the size of pointer type
         // is not a power of two.
         template<typename TPtr>
-        static size_t hash(TPtr const* const ptr)
+        static auto hash(TPtr const* const ptr) -> size_t
         {
-            size_t const ptrAddr = reinterpret_cast<size_t>(ptr);
+            auto const ptrAddr = reinterpret_cast<size_t>(ptr);
             // using power of two for the next division will increase the performance
             constexpr size_t typeSizePowerOf2 = nextPowerOf2(sizeof(TPtr));
             // division removes the stride between indices
@@ -52,7 +52,7 @@ namespace alpaka
         }
 
         template<typename TPtr>
-        std::mutex& getMutex(TPtr const* const ptr) const
+        auto getMutex(TPtr const* const ptr) const -> std::mutex&
         {
             //! get the size of the hash table
             //

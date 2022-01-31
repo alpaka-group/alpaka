@@ -17,6 +17,7 @@
 
 #include <functional>
 #include <memory>
+#include <utility>
 #include <vector>
 
 
@@ -34,8 +35,8 @@ namespace alpaka
             std::function<void()> fnSync,
             std::function<bool()> fnIsMasterThread)
             : detail::BlockSharedMemStMemberImpl<TDataAlignBytes>(mem, capacity)
-            , m_syncFn(fnSync)
-            , m_isMasterThreadFn(fnIsMasterThread)
+            , m_syncFn(std::move(fnSync))
+            , m_isMasterThreadFn(std::move(fnIsMasterThread))
         {
         }
 

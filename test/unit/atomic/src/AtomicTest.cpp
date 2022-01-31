@@ -18,17 +18,17 @@
 #include <type_traits>
 
 template<typename T1, typename T2>
-ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC bool equals(T1 a, T2 b)
+ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(T1 a, T2 b) -> bool
 {
     return a == b;
 }
 
-ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC bool equals(float a, float b)
+ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(float a, float b) -> bool
 {
     return alpaka::math::floatEqualExactNoWarning(a, b);
 }
 
-ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC bool equals(double a, double b)
+ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(double a, double b) -> bool
 {
     return alpaka::math::floatEqualExactNoWarning(a, b);
 }

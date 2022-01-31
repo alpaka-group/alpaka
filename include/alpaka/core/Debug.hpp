@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 
 //! The no debug level.
 #define ALPAKA_DEBUG_DISABLED 0
@@ -36,7 +37,7 @@ namespace alpaka
             class ScopeLogStdOut final
             {
             public:
-                explicit ScopeLogStdOut(std::string const& sScope) : m_sScope(sScope)
+                explicit ScopeLogStdOut(std::string sScope) : m_sScope(std::move(sScope))
                 {
                     std::cout << "[+] " << m_sScope << std::endl;
                 }

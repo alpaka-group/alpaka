@@ -90,7 +90,7 @@ namespace alpaka
             TElem* m_pMem;
 
             BufOmp5Impl(BufOmp5Impl&&) = default;
-            BufOmp5Impl& operator=(BufOmp5Impl&&) = default;
+            auto operator=(BufOmp5Impl&&) -> BufOmp5Impl& = default;
             ~BufOmp5Impl()
             {
                 omp_target_free(m_pMem, m_dev.m_spDevOmp5Impl->iDevice());
@@ -109,16 +109,16 @@ namespace alpaka
         {
         }
 
-        detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*()
+        auto operator*() -> detail::BufOmp5Impl<TElem, TDim, TIdx>&
         {
             return *m_spBufImpl;
         }
-        const detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*() const
+        auto operator*() const -> const detail::BufOmp5Impl<TElem, TDim, TIdx>&
         {
             return *m_spBufImpl;
         }
 
-        inline const Vec<TDim, TIdx>& extentElements() const
+        inline auto extentElements() const -> const Vec<TDim, TIdx>&
         {
             return m_spBufImpl->m_extentElements;
         }

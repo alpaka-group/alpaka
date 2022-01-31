@@ -198,7 +198,7 @@ namespace alpaka
         }
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj, std::size_t... TIndices>
-        ALPAKA_FN_HOST_ACC auto foldrByIndices(
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto foldrByIndices(
             TFnObj const& f,
             std::integer_sequence<std::size_t, TIndices...> const& /* indices */) const
         {
@@ -206,7 +206,7 @@ namespace alpaka
         }
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj, std::size_t... TIndices>
-        ALPAKA_FN_HOST_ACC auto foldrByIndices(
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto foldrByIndices(
             TFnObj const& f,
             std::integer_sequence<std::size_t, TIndices...> const& /* indices */,
             TVal initial) const
@@ -215,13 +215,13 @@ namespace alpaka
         }
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj>
-        ALPAKA_FN_HOST_ACC auto foldrAll(TFnObj const& f) const
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto foldrAll(TFnObj const& f) const
         {
             return foldrByIndices(f, IdxSequence());
         }
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj>
-        ALPAKA_FN_HOST_ACC auto foldrAll(TFnObj const& f, TVal initial) const
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto foldrAll(TFnObj const& f, TVal initial) const
         {
             return foldrByIndices(f, IdxSequence(), initial);
         }
@@ -232,7 +232,7 @@ namespace alpaka
 #endif
         //! \return The product of all values.
         ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC auto prod() const -> TVal
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto prod() const -> TVal
         {
             return foldrAll(std::multiplies<TVal>(), TVal(1));
         }
@@ -241,30 +241,30 @@ namespace alpaka
 #endif
         //! \return The sum of all values.
         ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC auto sum() const -> TVal
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto sum() const -> TVal
         {
             return foldrAll(std::plus<TVal>(), TVal(0));
         }
         //! \return The min of all values.
         ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC auto min() const -> TVal
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto min() const -> TVal
         {
             return foldrAll(meta::min<TVal>());
         }
         //! \return The max of all values.
         ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC auto max() const -> TVal
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto max() const -> TVal
         {
             return foldrAll(meta::max<TVal>());
         }
         //! \return The index of the minimal element.
-        ALPAKA_FN_HOST auto minElem() const -> typename TDim::value_type
+        [[nodiscard]] ALPAKA_FN_HOST auto minElem() const -> typename TDim::value_type
         {
             return static_cast<typename TDim::value_type>(
                 std::distance(std::begin(m_data), std::min_element(std::begin(m_data), std::end(m_data))));
         }
         //! \return The index of the maximal element.
-        ALPAKA_FN_HOST auto maxElem() const -> typename TDim::value_type
+        [[nodiscard]] ALPAKA_FN_HOST auto maxElem() const -> typename TDim::value_type
         {
             return static_cast<typename TDim::value_type>(
                 std::distance(std::begin(m_data), std::max_element(std::begin(m_data), std::end(m_data))));
@@ -277,7 +277,7 @@ namespace alpaka
         }
 
         template<size_t I>
-        ALPAKA_FN_HOST_ACC auto get() const -> TVal
+        [[nodiscard]] ALPAKA_FN_HOST_ACC auto get() const -> TVal
         {
             return (*this)[I];
         }

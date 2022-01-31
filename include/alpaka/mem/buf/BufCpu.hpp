@@ -48,11 +48,11 @@ namespace alpaka
         public:
             template<typename TExtent>
             ALPAKA_FN_HOST BufCpuImpl(
-                DevCpu const& dev,
+                DevCpu dev,
                 TElem* pMem,
                 std::function<void(TElem*)> deleter,
                 TExtent const& extent)
-                : m_dev(dev)
+                : m_dev(std::move(dev))
                 , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
                 , m_pMem(pMem)
                 , m_deleter(std::move(deleter))
@@ -234,7 +234,7 @@ namespace alpaka
                 using Allocator
                     = AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>;
                 static_assert(std::is_empty_v<Allocator>, "AllocCpuAligned is expected to be stateless");
-                TElem* memPtr
+                auto* memPtr
                     = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(extent::getExtentProduct(extent)));
                 auto deleter = [](TElem* ptr) { alpaka::free(Allocator{}, ptr); };
 
@@ -259,7 +259,7 @@ namespace alpaka
                 using Allocator
                     = AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>;
                 static_assert(std::is_empty_v<Allocator>, "AllocCpuAligned is expected to be stateless");
-                TElem* memPtr
+                auto* memPtr
                     = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(extent::getExtentProduct(extent)));
                 auto deleter = [queue = std::move(queue)](TElem* ptr) mutable
                 {

@@ -40,7 +40,7 @@ namespace alpaka
                 }
 
                 template<typename U>
-                ALPAKA_FN_HOST_ACC auto& operator=(U&& value)
+                ALPAKA_FN_HOST_ACC auto operator=(U&& value) -> auto&
                 {
                     loc = std::forward<U>(value);
                     return *this;
@@ -150,7 +150,7 @@ namespace alpaka
 
         private:
             template<std::size_t... TIs>
-            ALPAKA_FN_HOST_ACC auto subscript(Vec<DimInt<TDim>, TBufferIdx> index) const -> ReturnType
+            [[nodiscard]] ALPAKA_FN_HOST_ACC auto subscript(Vec<DimInt<TDim>, TBufferIdx> index) const -> ReturnType
             {
 #if BOOST_COMP_GNUC
 #    pragma GCC diagnostic push
@@ -235,7 +235,7 @@ namespace alpaka
                     std::index_sequence<TExtentIs...>)
                 {
                     using TView = std::decay_t<TViewForwardRef>;
-                    static_assert(IsView<TView>::value, "");
+                    static_assert(IsView<TView>::value);
                     using TBufferIdx = Idx<TView>;
                     constexpr auto dim = Dim<TView>::value;
                     using Elem = Elem<TView>;

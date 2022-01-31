@@ -16,13 +16,13 @@ namespace alpaka
     namespace rand
     {
         /// Get high 32 bits of a 64-bit number
-        ALPAKA_FN_HOST_ACC constexpr static std::uint32_t high32Bits(std::uint64_t const x)
+        ALPAKA_FN_HOST_ACC constexpr static auto high32Bits(std::uint64_t const x) -> std::uint32_t
         {
             return static_cast<std::uint32_t>(x >> 32);
         }
 
         /// Get low 32 bits of a 64-bit number
-        ALPAKA_FN_HOST_ACC constexpr static std::uint32_t low32Bits(std::uint64_t const x)
+        ALPAKA_FN_HOST_ACC constexpr static auto low32Bits(std::uint64_t const x) -> std::uint32_t
         {
             return static_cast<std::uint32_t>(x & 0xffffffff);
         }

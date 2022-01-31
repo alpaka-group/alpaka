@@ -24,7 +24,7 @@ namespace alpaka
     {
         //! Rounds to the next higher power of two (if not already power of two).
         // Adapted from llvm/ADT/SmallPtrSet.h
-        ALPAKA_FN_INLINE ALPAKA_FN_HOST void* alignedAlloc(size_t alignment, size_t size)
+        ALPAKA_FN_INLINE ALPAKA_FN_HOST auto alignedAlloc(size_t alignment, size_t size) -> void*
         {
 #if BOOST_OS_WINDOWS
             return _aligned_malloc(size, alignment);

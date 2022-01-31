@@ -111,7 +111,7 @@ namespace alpaka
             return !((*this) == rhs);
         }
 
-        ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<cpu::ICpuQueue>>
+        [[nodiscard]] ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<cpu::ICpuQueue>>
         {
             return m_spDevCpuImpl->getAllExistingQueues();
         }

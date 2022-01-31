@@ -22,13 +22,13 @@ namespace alpaka
             TType m_data[TSize];
 
             template<typename T_Idx>
-            ALPAKA_FN_HOST_ACC const TType& operator[](const T_Idx idx) const
+            ALPAKA_FN_HOST_ACC auto operator[](const T_Idx idx) const -> const TType&
             {
                 return m_data[idx];
             }
 
             template<typename TIdx>
-            ALPAKA_FN_HOST_ACC TType& operator[](const TIdx idx)
+            ALPAKA_FN_HOST_ACC auto operator[](const TIdx idx) -> TType&
             {
                 return m_data[idx];
             }

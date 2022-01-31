@@ -87,27 +87,24 @@ public:
     }
 };
 
-namespace alpaka
+namespace alpaka::traits
 {
-    namespace traits
+    //! The trait for getting the size of the block shared dynamic memory for a kernel.
+    template<typename TnumUselessWork, typename Val, typename TAcc>
+    struct BlockSharedMemDynSizeBytes<SharedMemKernel<TnumUselessWork, Val>, TAcc>
     {
-        //! The trait for getting the size of the block shared dynamic memory for a kernel.
-        template<typename TnumUselessWork, typename Val, typename TAcc>
-        struct BlockSharedMemDynSizeBytes<SharedMemKernel<TnumUselessWork, Val>, TAcc>
+        //! \return The size of the shared memory allocated for a block.
+        template<typename TVec, typename... TArgs>
+        ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+            SharedMemKernel<TnumUselessWork, Val> const& /* sharedMemKernel */,
+            TVec const& blockThreadExtent,
+            TVec const& threadElemExtent,
+            TArgs&&...) -> std::size_t
         {
-            //! \return The size of the shared memory allocated for a block.
-            template<typename TVec, typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                SharedMemKernel<TnumUselessWork, Val> const& /* sharedMemKernel */,
-                TVec const& blockThreadExtent,
-                TVec const& threadElemExtent,
-                TArgs&&...) -> std::size_t
-            {
-                return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
-            }
-        };
-    } // namespace traits
-} // namespace alpaka
+            return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
+        }
+    };
+} // namespace alpaka::traits
 
 using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::uint32_t>;
 

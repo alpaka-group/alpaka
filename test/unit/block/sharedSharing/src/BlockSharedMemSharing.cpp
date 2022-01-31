@@ -122,27 +122,24 @@ public:
     }
 };
 
-namespace alpaka
+namespace alpaka::traits
 {
-    namespace traits
+    //! The trait for getting the size of the block shared dynamic memory for a kernel.
+    template<typename TAcc>
+    struct BlockSharedMemDynSizeBytes<BlockSharedMemDynSharingTestKernel, TAcc>
     {
-        //! The trait for getting the size of the block shared dynamic memory for a kernel.
-        template<typename TAcc>
-        struct BlockSharedMemDynSizeBytes<BlockSharedMemDynSharingTestKernel, TAcc>
+        //! \return The size of the shared memory allocated for a block.
+        template<typename TVec>
+        ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+            BlockSharedMemDynSharingTestKernel const& /* blockSharedMemDyn */,
+            TVec const& /* blockThreadExtent */,
+            TVec const& /* threadElemExtent */,
+            std::uint32_t* /* sums */) -> std::size_t
         {
-            //! \return The size of the shared memory allocated for a block.
-            template<typename TVec>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                BlockSharedMemDynSharingTestKernel const& /* blockSharedMemDyn */,
-                TVec const& /* blockThreadExtent */,
-                TVec const& /* threadElemExtent */,
-                std::uint32_t* /* sums */) -> std::size_t
-            {
-                return sizeof(std::uint32_t);
-            }
-        };
-    } // namespace traits
-} // namespace alpaka
+            return sizeof(std::uint32_t);
+        }
+    };
+} // namespace alpaka::traits
 
 TEMPLATE_LIST_TEST_CASE("blockSharedMemDyn", "[blockSharedMemSharing]", TestAccs)
 {

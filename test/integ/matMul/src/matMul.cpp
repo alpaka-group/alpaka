@@ -121,39 +121,35 @@ public:
     }
 };
 
-namespace alpaka
+namespace alpaka::traits
 {
-    namespace traits
+    //! The trait for getting the size of the block shared dynamic memory for a kernel.
+    template<typename TAcc>
+    struct BlockSharedMemDynSizeBytes<MatMulKernel, TAcc>
     {
-        //! The trait for getting the size of the block shared dynamic memory for a kernel.
-        template<typename TAcc>
-        struct BlockSharedMemDynSizeBytes<MatMulKernel, TAcc>
+        //! \return The size of the shared memory allocated for a block.
+        template<typename TVec, typename TIndex, typename TElem>
+        ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+            MatMulKernel const& /* matMulKernel */,
+            TVec const& blockThreadExtent,
+            TVec const& threadElemExtent,
+            TIndex const& /* m */,
+            TIndex const& /* n */,
+            TIndex const& /* k */,
+            TElem const& /* alpha */,
+            TElem const* const /* A */,
+            TIndex const& /* lda */,
+            TElem const* const /* B */,
+            TIndex const& /* ldb */,
+            TElem const& /* beta */,
+            TElem* const /* C */,
+            TIndex const& /* ldc */)
         {
-            //! \return The size of the shared memory allocated for a block.
-            template<typename TVec, typename TIndex, typename TElem>
-            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                MatMulKernel const& /* matMulKernel */,
-                TVec const& blockThreadExtent,
-                TVec const& threadElemExtent,
-                TIndex const& /* m */,
-                TIndex const& /* n */,
-                TIndex const& /* k */,
-                TElem const& /* alpha */,
-                TElem const* const /* A */,
-                TIndex const& /* lda */,
-                TElem const* const /* B */,
-                TIndex const& /* ldb */,
-                TElem const& /* beta */,
-                TElem* const /* C */,
-                TIndex const& /* ldc */)
-            {
-                // Reserve the buffer for the two blocks of A and B.
-                return static_cast<std::size_t>(2u * blockThreadExtent.prod() * threadElemExtent.prod())
-                    * sizeof(TElem);
-            }
-        };
-    } // namespace traits
-} // namespace alpaka
+            // Reserve the buffer for the two blocks of A and B.
+            return static_cast<std::size_t>(2u * blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(TElem);
+        }
+    };
+} // namespace alpaka::traits
 
 using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<2u>, std::uint32_t>;
 

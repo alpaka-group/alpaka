@@ -91,7 +91,7 @@ namespace alpaka
                     m_queues.push_back(spQueue);
                 }
 
-                int iDevice() const
+                auto iDevice() const -> int
                 {
                     return m_iDevice;
                 }
@@ -155,7 +155,7 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        int iDevice() const
+        [[nodiscard]] auto iDevice() const -> int
         {
             return m_spDevOmp5Impl->iDevice();
         }
@@ -167,7 +167,8 @@ namespace alpaka
             return m_spDevOmp5Impl->mapStatic(pHost, extent);
         }
 
-        ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
+        [[nodiscard]] ALPAKA_FN_HOST auto getAllQueues() const
+            -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
         {
             return m_spDevOmp5Impl->getAllExistingQueues();
         }
