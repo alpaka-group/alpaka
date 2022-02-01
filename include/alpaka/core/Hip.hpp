@@ -1,4 +1,4 @@
-/* Copyright 2020 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -42,44 +42,40 @@
 namespace alpaka
 {
     //! The HIP specifics.
-    namespace hip
+    namespace hip::traits
     {
-        namespace traits
+        //! The HIP vectors 1D dimension get trait specialization.
+        template<typename T>
+        struct IsHipBuiltInType
+            : std::integral_constant<
+                  bool,
+                  std::is_same<T, char1>::value || std::is_same<T, double1>::value || std::is_same<T, float1>::value
+                      || std::is_same<T, int1>::value || std::is_same<T, long1>::value
+                      || std::is_same<T, longlong1>::value || std::is_same<T, short1>::value
+                      || std::is_same<T, uchar1>::value || std::is_same<T, uint1>::value
+                      || std::is_same<T, ulong1>::value || std::is_same<T, ulonglong1>::value
+                      || std::is_same<T, ushort1>::value || std::is_same<T, char2>::value
+                      || std::is_same<T, double2>::value || std::is_same<T, float2>::value
+                      || std::is_same<T, int2>::value || std::is_same<T, long2>::value
+                      || std::is_same<T, longlong2>::value || std::is_same<T, short2>::value
+                      || std::is_same<T, uchar2>::value || std::is_same<T, uint2>::value
+                      || std::is_same<T, ulong2>::value || std::is_same<T, ulonglong2>::value
+                      || std::is_same<T, ushort2>::value || std::is_same<T, char3>::value
+                      || std::is_same<T, dim3>::value || std::is_same<T, double3>::value
+                      || std::is_same<T, float3>::value || std::is_same<T, int3>::value
+                      || std::is_same<T, long3>::value || std::is_same<T, longlong3>::value
+                      || std::is_same<T, short3>::value || std::is_same<T, uchar3>::value
+                      || std::is_same<T, uint3>::value || std::is_same<T, ulong3>::value
+                      || std::is_same<T, ulonglong3>::value || std::is_same<T, ushort3>::value
+                      || std::is_same<T, char4>::value || std::is_same<T, double4>::value
+                      || std::is_same<T, float4>::value || std::is_same<T, int4>::value
+                      || std::is_same<T, long4>::value || std::is_same<T, longlong4>::value
+                      || std::is_same<T, short4>::value || std::is_same<T, uchar4>::value
+                      || std::is_same<T, uint4>::value || std::is_same<T, ulong4>::value
+                      || std::is_same<T, ulonglong4>::value || std::is_same<T, ushort4>::value>
         {
-            //! The HIP vectors 1D dimension get trait specialization.
-            template<typename T>
-            struct IsHipBuiltInType
-                : std::integral_constant<
-                      bool,
-                      std::is_same<T, char1>::value || std::is_same<T, double1>::value
-                          || std::is_same<T, float1>::value || std::is_same<T, int1>::value
-                          || std::is_same<T, long1>::value || std::is_same<T, longlong1>::value
-                          || std::is_same<T, short1>::value || std::is_same<T, uchar1>::value
-                          || std::is_same<T, uint1>::value || std::is_same<T, ulong1>::value
-                          || std::is_same<T, ulonglong1>::value || std::is_same<T, ushort1>::value
-                          || std::is_same<T, char2>::value || std::is_same<T, double2>::value
-                          || std::is_same<T, float2>::value || std::is_same<T, int2>::value
-                          || std::is_same<T, long2>::value || std::is_same<T, longlong2>::value
-                          || std::is_same<T, short2>::value || std::is_same<T, uchar2>::value
-                          || std::is_same<T, uint2>::value || std::is_same<T, ulong2>::value
-                          || std::is_same<T, ulonglong2>::value || std::is_same<T, ushort2>::value
-                          || std::is_same<T, char3>::value || std::is_same<T, dim3>::value
-                          || std::is_same<T, double3>::value || std::is_same<T, float3>::value
-                          || std::is_same<T, int3>::value || std::is_same<T, long3>::value
-                          || std::is_same<T, longlong3>::value || std::is_same<T, short3>::value
-                          || std::is_same<T, uchar3>::value || std::is_same<T, uint3>::value
-                          || std::is_same<T, ulong3>::value || std::is_same<T, ulonglong3>::value
-                          || std::is_same<T, ushort3>::value || std::is_same<T, char4>::value
-                          || std::is_same<T, double4>::value || std::is_same<T, float4>::value
-                          || std::is_same<T, int4>::value || std::is_same<T, long4>::value
-                          || std::is_same<T, longlong4>::value || std::is_same<T, short4>::value
-                          || std::is_same<T, uchar4>::value || std::is_same<T, uint4>::value
-                          || std::is_same<T, ulong4>::value || std::is_same<T, ulonglong4>::value
-                          || std::is_same<T, ushort4>::value>
-            {
-            };
-        } // namespace traits
-    } // namespace hip
+        };
+    } // namespace hip::traits
     namespace traits
     {
         // If you receive '"alpaka::traits::DimType" has already been defined'
@@ -173,120 +169,117 @@ namespace alpaka
             using type = decltype(std::declval<T>().x);
         };
     } // namespace traits
-    namespace extent
+    namespace extent::traits
     {
-        namespace traits
+        //! The HIP vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 1u>,
+            TExtent,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
         {
-            //! The HIP vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 1u>,
-                TExtent,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.x;
-                }
-            };
-            //! The HIP vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 2u>,
-                TExtent,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+                return extent.x;
+            }
+        };
+        //! The HIP vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 2u>,
+            TExtent,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.y;
-                }
-            };
-            //! The HIP vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 3u>,
-                TExtent,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+                return extent.y;
+            }
+        };
+        //! The HIP vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 3u>,
+            TExtent,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.z;
-                }
-            };
-            //! The HIP vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 4u>,
-                TExtent,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+                return extent.z;
+            }
+        };
+        //! The HIP vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 4u>,
+            TExtent,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.w;
-                }
-            };
-            //! The HIP vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 1u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
+                return extent.w;
+            }
+        };
+        //! The HIP vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 1u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.x = extentVal;
-                }
-            };
-            //! The HIP vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 2u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+                extent.x = extentVal;
+            }
+        };
+        //! The HIP vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 2u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.y = extentVal;
-                }
-            };
-            //! The HIP vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 3u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+                extent.y = extentVal;
+            }
+        };
+        //! The HIP vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 3u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.z = extentVal;
-                }
-            };
-            //! The HIP vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 4u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+                extent.z = extentVal;
+            }
+        };
+        //! The HIP vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 4u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<hip::traits::IsHipBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.w = extentVal;
-                }
-            };
-        } // namespace traits
-    } // namespace extent
+                extent.w = extentVal;
+            }
+        };
+    } // namespace extent::traits
     namespace traits
     {
         //! The HIP vectors offset get trait specialization.

@@ -17,14 +17,12 @@
 
 #    include <cstdint>
 
-namespace alpaka
+namespace alpaka::warp
 {
-    namespace warp
+    //! The GPU CUDA/HIP warp.
+    class WarpUniformCudaHipBuiltIn : public concepts::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
     {
-        //! The GPU CUDA/HIP warp.
-        class WarpUniformCudaHipBuiltIn : public concepts::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
-        {
-        };
+    };
 
 #    if !defined(ALPAKA_HOST_ONLY)
 
@@ -36,129 +34,126 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-        namespace traits
+    namespace traits
+    {
+        template<>
+        struct GetSize<WarpUniformCudaHipBuiltIn>
         {
-            template<>
-            struct GetSize<WarpUniformCudaHipBuiltIn>
+            __device__ static auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
             {
-                __device__ static auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
-                {
-                    return warpSize;
-                }
-            };
+                return warpSize;
+            }
+        };
 
-            template<>
-            struct Activemask<WarpUniformCudaHipBuiltIn>
-            {
-                __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
+        template<>
+        struct Activemask<WarpUniformCudaHipBuiltIn>
+        {
+            __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    -> std::uint32_t
+                -> std::uint32_t
 #        else
-                    -> std::uint64_t
+                -> std::uint64_t
 #        endif
-                {
+            {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    // Workaround for clang + CUDA 9.2 which uses the wrong PTX ISA,
-                    // discussion in https://github.com/alpaka-group/alpaka/pull/1003
-                    // Can't use __activemask(), so emulate with __ballot_sync()
+                // Workaround for clang + CUDA 9.2 which uses the wrong PTX ISA,
+                // discussion in https://github.com/alpaka-group/alpaka/pull/1003
+                // Can't use __activemask(), so emulate with __ballot_sync()
 #            if BOOST_COMP_CLANG_CUDA && BOOST_LANG_CUDA == BOOST_VERSION_NUMBER(9, 2, 0)
-                    return __ballot_sync(0xffffffff, 1);
+                return __ballot_sync(0xffffffff, 1);
 #            else
-                    return __activemask();
+                return __activemask();
 #            endif
 #        else
-                    // No HIP intrinsic for it, emulate via ballot
-                    return __ballot(1);
+                // No HIP intrinsic for it, emulate via ballot
+                return __ballot(1);
 #        endif
-                }
-            };
+            }
+        };
 
-            template<>
-            struct All<WarpUniformCudaHipBuiltIn>
+        template<>
+        struct All<WarpUniformCudaHipBuiltIn>
+        {
+            __device__ static auto all(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                std::int32_t predicate) -> std::int32_t
             {
-                __device__ static auto all(
-                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                    std::int32_t predicate) -> std::int32_t
-                {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return __all_sync(activemask(warp), predicate);
+                return __all_sync(activemask(warp), predicate);
 #        else
-                    return __all(predicate);
+                return __all(predicate);
 #        endif
-                }
-            };
+            }
+        };
 
-            template<>
-            struct Any<WarpUniformCudaHipBuiltIn>
+        template<>
+        struct Any<WarpUniformCudaHipBuiltIn>
+        {
+            __device__ static auto any(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                std::int32_t predicate) -> std::int32_t
             {
-                __device__ static auto any(
-                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                    std::int32_t predicate) -> std::int32_t
-                {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return __any_sync(activemask(warp), predicate);
+                return __any_sync(activemask(warp), predicate);
 #        else
-                    return __any(predicate);
+                return __any(predicate);
 #        endif
-                }
-            };
+            }
+        };
 
-            template<>
-            struct Ballot<WarpUniformCudaHipBuiltIn>
+        template<>
+        struct Ballot<WarpUniformCudaHipBuiltIn>
+        {
+            __device__ static auto ballot(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                std::int32_t predicate)
+            // return type is required by the compiler
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                -> std::uint32_t
+#        else
+                -> std::uint64_t
+#        endif
             {
-                __device__ static auto ballot(
-                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                    std::int32_t predicate)
-                // return type is required by the compiler
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    -> std::uint32_t
+                return __ballot_sync(activemask(warp), predicate);
 #        else
-                    -> std::uint64_t
+                return __ballot(predicate);
 #        endif
-                {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return __ballot_sync(activemask(warp), predicate);
-#        else
-                    return __ballot(predicate);
-#        endif
-                }
-            };
+            }
+        };
 
-            template<>
-            struct Shfl<WarpUniformCudaHipBuiltIn>
+        template<>
+        struct Shfl<WarpUniformCudaHipBuiltIn>
+        {
+            //-------------------------------------------------------------
+            __device__ static auto shfl(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                float val,
+                int srcLane,
+                std::int32_t width) -> float
             {
-                //-------------------------------------------------------------
-                __device__ static auto shfl(
-                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                    float val,
-                    int srcLane,
-                    std::int32_t width) -> float
-                {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return __shfl_sync(activemask(warp), val, srcLane, width);
+                return __shfl_sync(activemask(warp), val, srcLane, width);
 #        else
-                    return __shfl(val, srcLane, width);
+                return __shfl(val, srcLane, width);
 #        endif
-                }
-                //-------------------------------------------------------------
-                __device__ static auto shfl(
-                    [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-                    std::int32_t val,
-                    int srcLane,
-                    std::int32_t width) -> std::int32_t
-                {
+            }
+            //-------------------------------------------------------------
+            __device__ static auto shfl(
+                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+                std::int32_t val,
+                int srcLane,
+                std::int32_t width) -> std::int32_t
+            {
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return __shfl_sync(activemask(warp), val, srcLane, width);
+                return __shfl_sync(activemask(warp), val, srcLane, width);
 #        else
-                    return __shfl(val, srcLane, width);
+                return __shfl(val, srcLane, width);
 #        endif
-                }
-            };
-        } // namespace traits
-
+            }
+        };
+    } // namespace traits
 #    endif
-
-    } // namespace warp
-} // namespace alpaka
+} // namespace alpaka::warp
 
 #endif

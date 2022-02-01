@@ -27,53 +27,49 @@
 
 namespace alpaka
 {
-    namespace generic
+    namespace generic::detail
     {
-        namespace detail
+        //! The CPU device event implementation.
+        template<typename TDev>
+        class EventGenericThreadsImpl final
+            : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
         {
-            //! The CPU device event implementation.
-            template<typename TDev>
-            class EventGenericThreadsImpl final
-                : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
+        public:
+            EventGenericThreadsImpl(TDev dev) noexcept : m_dev(std::move(dev))
             {
-            public:
-                EventGenericThreadsImpl(TDev dev) noexcept : m_dev(std::move(dev))
+            }
+            EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> const&) = delete;
+            auto operator=(EventGenericThreadsImpl<TDev> const&) -> EventGenericThreadsImpl<TDev>& = delete;
+
+            auto isReady() noexcept -> bool
+            {
+                return (m_LastReadyEnqueueCount == m_enqueueCount);
+            }
+
+            auto wait(std::size_t const& enqueueCount, std::unique_lock<std::mutex>& lk) const noexcept -> void
+            {
+                ALPAKA_ASSERT(enqueueCount <= m_enqueueCount);
+
+                while(enqueueCount > m_LastReadyEnqueueCount)
                 {
+                    auto future = m_future;
+                    lk.unlock();
+                    future.get();
+                    lk.lock();
                 }
-                EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> const&) = delete;
-                auto operator=(EventGenericThreadsImpl<TDev> const&) -> EventGenericThreadsImpl<TDev>& = delete;
+            }
 
-                auto isReady() noexcept -> bool
-                {
-                    return (m_LastReadyEnqueueCount == m_enqueueCount);
-                }
+            TDev const m_dev; //!< The device this event is bound to.
 
-                auto wait(std::size_t const& enqueueCount, std::unique_lock<std::mutex>& lk) const noexcept -> void
-                {
-                    ALPAKA_ASSERT(enqueueCount <= m_enqueueCount);
-
-                    while(enqueueCount > m_LastReadyEnqueueCount)
-                    {
-                        auto future = m_future;
-                        lk.unlock();
-                        future.get();
-                        lk.lock();
-                    }
-                }
-
-                TDev const m_dev; //!< The device this event is bound to.
-
-                std::mutex mutable m_mutex; //!< The mutex used to synchronize access to the event.
-                std::shared_future<void> m_future; //!< The future signaling the event completion.
-                std::size_t m_enqueueCount = 0u; //!< The number of times this event has been enqueued.
-                std::size_t m_LastReadyEnqueueCount
-                    = 0u; //!< The time this event has been ready the last time.
-                          //!< Ready means that the event was not waiting within a queue
-                          //!< (not enqueued or already completed). If m_enqueueCount ==
-                          //!< m_LastReadyEnqueueCount, the event is currently not enqueued
-            };
-        } // namespace detail
-    } // namespace generic
+            std::mutex mutable m_mutex; //!< The mutex used to synchronize access to the event.
+            std::shared_future<void> m_future; //!< The future signaling the event completion.
+            std::size_t m_enqueueCount = 0u; //!< The number of times this event has been enqueued.
+            std::size_t m_LastReadyEnqueueCount = 0u; //!< The time this event has been ready the last time.
+                                                      //!< Ready means that the event was not waiting within a queue
+                                                      //!< (not enqueued or already completed). If m_enqueueCount ==
+                                                      //!< m_LastReadyEnqueueCount, the event is currently not enqueued
+        };
+    } // namespace generic::detail
 
     //! The CPU device event.
     template<typename TDev>

@@ -40,101 +40,98 @@ namespace alpaka
     }
     class PltfOmp5;
 
-    namespace omp5
+    namespace omp5::detail
     {
-        namespace detail
+        //! The Omp5 device implementation.
+        class DevOmp5Impl
         {
-            //! The Omp5 device implementation.
-            class DevOmp5Impl
+        public:
+            DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
             {
-            public:
-                DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
-                {
-                }
-                ~DevOmp5Impl()
-                {
-                    for(auto& a : m_staticMemMap)
-                        omp_target_free(a.second.first, iDevice());
-                }
+            }
+            ~DevOmp5Impl()
+            {
+                for(auto& a : m_staticMemMap)
+                    omp_target_free(a.second.first, iDevice());
+            }
 
-                ALPAKA_FN_HOST auto getAllExistingQueues() const
-                    -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
+            ALPAKA_FN_HOST auto getAllExistingQueues() const
+                -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
+            {
+                std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>> vspQueues;
+
+                std::lock_guard<std::mutex> lk(m_Mutex);
+                vspQueues.reserve(std::size(m_queues));
+
+                for(auto it = std::begin(m_queues); it != std::end(m_queues);)
                 {
-                    std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>> vspQueues;
-
-                    std::lock_guard<std::mutex> lk(m_Mutex);
-                    vspQueues.reserve(std::size(m_queues));
-
-                    for(auto it = std::begin(m_queues); it != std::end(m_queues);)
+                    auto spQueue(it->lock());
+                    if(spQueue)
                     {
-                        auto spQueue(it->lock());
-                        if(spQueue)
-                        {
-                            vspQueues.emplace_back(std::move(spQueue));
-                            ++it;
-                        }
-                        else
-                        {
-                            it = m_queues.erase(it);
-                        }
+                        vspQueues.emplace_back(std::move(spQueue));
+                        ++it;
                     }
-                    return vspQueues;
-                }
-
-                //! Registers the given queue on this device.
-                //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOmp5>> spQueue) -> void
-                {
-                    std::lock_guard<std::mutex> lk(m_Mutex);
-
-                    // Register this queue on the device.
-                    m_queues.push_back(spQueue);
-                }
-
-                auto iDevice() const -> int
-                {
-                    return m_iDevice;
-                }
-
-                //! Create and/or return staticlly mapped device pointer of host address.
-                template<typename TElem, typename TExtent>
-                ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) -> TElem*
-                {
-                    const std::size_t sizeB = extent.prod() * sizeof(TElem);
-                    auto m = m_staticMemMap.find(pHost);
-                    if(m != m_staticMemMap.end())
+                    else
                     {
-                        if(sizeB != m->second.second)
-                        {
-                            std::ostringstream os;
-                            os << "Statically mapped size cannot change: Static size is " << m->second.second
-                               << " requested size is " << sizeB << '.';
-                            throw std::runtime_error(os.str());
-                        }
-                        return reinterpret_cast<TElem*>(m->second.first);
+                        it = m_queues.erase(it);
                     }
+                }
+                return vspQueues;
+            }
 
-                    void* pDev = omp_target_alloc(sizeB, iDevice());
-                    if(!pDev)
-                        return nullptr;
+            //! Registers the given queue on this device.
+            //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOmp5>> spQueue) -> void
+            {
+                std::lock_guard<std::mutex> lk(m_Mutex);
 
-                    /*! Associating pointers for good measure. Not actually
-                     * required as long a not `target enter data` is done */
-                    omp_target_associate_ptr(pHost, pDev, sizeB, 0u, iDevice());
+                // Register this queue on the device.
+                m_queues.push_back(spQueue);
+            }
 
-                    m_staticMemMap[pHost] = std::make_pair(pDev, sizeB);
-                    return reinterpret_cast<TElem*>(pDev);
+            auto iDevice() const -> int
+            {
+                return m_iDevice;
+            }
+
+            //! Create and/or return staticlly mapped device pointer of host address.
+            template<typename TElem, typename TExtent>
+            ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) -> TElem*
+            {
+                const std::size_t sizeB = extent.prod() * sizeof(TElem);
+                auto m = m_staticMemMap.find(pHost);
+                if(m != m_staticMemMap.end())
+                {
+                    if(sizeB != m->second.second)
+                    {
+                        std::ostringstream os;
+                        os << "Statically mapped size cannot change: Static size is " << m->second.second
+                           << " requested size is " << sizeB << '.';
+                        throw std::runtime_error(os.str());
+                    }
+                    return reinterpret_cast<TElem*>(m->second.first);
                 }
 
-            private:
-                std::mutex mutable m_Mutex;
-                std::vector<std::weak_ptr<IGenericThreadsQueue<DevOmp5>>> mutable m_queues;
-                const int m_iDevice;
+                void* pDev = omp_target_alloc(sizeB, iDevice());
+                if(!pDev)
+                    return nullptr;
 
-                std::map<void*, std::pair<void*, std::size_t>> m_staticMemMap;
-            };
-        } // namespace detail
-    } // namespace omp5
+                /*! Associating pointers for good measure. Not actually
+                 * required as long a not `target enter data` is done */
+                omp_target_associate_ptr(pHost, pDev, sizeB, 0u, iDevice());
+
+                m_staticMemMap[pHost] = std::make_pair(pDev, sizeB);
+                return reinterpret_cast<TElem*>(pDev);
+            }
+
+        private:
+            std::mutex mutable m_Mutex;
+            std::vector<std::weak_ptr<IGenericThreadsQueue<DevOmp5>>> mutable m_queues;
+            const int m_iDevice;
+
+            std::map<void*, std::pair<void*, std::size_t>> m_staticMemMap;
+        };
+    } // namespace omp5::detail
     //! The Omp5 device handle.
     class DevOmp5
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevOmp5>
