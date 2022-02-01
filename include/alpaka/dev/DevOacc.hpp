@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber, Antonio Di Pilato
  *
  * This file is part of Alpaka.
  *
@@ -180,7 +180,7 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        int getNativeHandle() const
+        int getNativeHandle() const noexcept
         {
             return m_devOaccImpl->getNativeHandle();
         }
