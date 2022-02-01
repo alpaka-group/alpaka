@@ -1,5 +1,5 @@
 /* Copyright 2021 Jeffrey Kelling, Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred
- * Gruber
+ * Gruber, Antonio Di Pilato
  *
  * This file is part of Alpaka.
  *

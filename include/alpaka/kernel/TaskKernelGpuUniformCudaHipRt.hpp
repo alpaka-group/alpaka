@@ -1,5 +1,5 @@
 /* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard
- * Manfred Gruber
+ * Manfred Gruber, Antonio Di Pilato
  *
  * This file is part of alpaka.
  *

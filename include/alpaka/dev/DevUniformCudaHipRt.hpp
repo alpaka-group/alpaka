@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
  *
  * This file is part of alpaka.
  *
@@ -48,10 +48,6 @@ namespace alpaka
         DevUniformCudaHipRt() = default;
 
     public:
-        DevUniformCudaHipRt(int iDevice) : m_iDevice(iDevice)
-        {
-        }
-
         ALPAKA_FN_HOST auto operator==(DevUniformCudaHipRt const& rhs) const -> bool
         {
             return m_iDevice == rhs.m_iDevice;
@@ -66,6 +62,9 @@ namespace alpaka
         }
 
     private:
+        DevUniformCudaHipRt(int iDevice) : m_iDevice(iDevice)
+        {
+        }
         int m_iDevice;
     };
 
