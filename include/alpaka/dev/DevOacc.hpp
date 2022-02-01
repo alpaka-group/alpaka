@@ -37,104 +37,101 @@ namespace alpaka
 {
     class DevOacc;
 
-    namespace oacc
+    namespace oacc::detail
     {
-        namespace detail
+        //! The OpenACC device implementation.
+        class DevOaccImpl
         {
-            //! The OpenACC device implementation.
-            class DevOaccImpl
+        public:
+            DevOaccImpl(int iDevice) noexcept : m_deviceType(::acc_get_device_type()), m_iDevice(iDevice)
             {
-            public:
-                DevOaccImpl(int iDevice) noexcept : m_deviceType(::acc_get_device_type()), m_iDevice(iDevice)
-                {
-                    makeCurrent();
-                    m_gridsLock = reinterpret_cast<std::uint32_t*>(acc_malloc(2 * sizeof(std::uint32_t)));
-                    const auto gridsLock = m_gridsLock;
+                makeCurrent();
+                m_gridsLock = reinterpret_cast<std::uint32_t*>(acc_malloc(2 * sizeof(std::uint32_t)));
+                const auto gridsLock = m_gridsLock;
 #    pragma acc parallel loop vector default(present) deviceptr(gridsLock)
-                    for(std::size_t a = 0; a < 2; ++a)
-                        gridsLock[a] = 0u;
-                }
+                for(std::size_t a = 0; a < 2; ++a)
+                    gridsLock[a] = 0u;
+            }
 
-                ALPAKA_FN_HOST auto getAllExistingQueues() const
-                    -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>>
+            ALPAKA_FN_HOST auto getAllExistingQueues() const
+                -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>>
+            {
+                std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>> vspQueues;
+
+                std::lock_guard<std::mutex> lk(m_Mutex);
+                vspQueues.reserve(std::size(m_queues));
+
+                for(auto it = std::begin(m_queues); it != std::end(m_queues);)
                 {
-                    std::vector<std::shared_ptr<IGenericThreadsQueue<DevOacc>>> vspQueues;
-
-                    std::lock_guard<std::mutex> lk(m_Mutex);
-                    vspQueues.reserve(std::size(m_queues));
-
-                    for(auto it = std::begin(m_queues); it != std::end(m_queues);)
+                    auto spQueue(it->lock());
+                    if(spQueue)
                     {
-                        auto spQueue(it->lock());
-                        if(spQueue)
-                        {
-                            vspQueues.emplace_back(std::move(spQueue));
-                            ++it;
-                        }
-                        else
-                        {
-                            it = m_queues.erase(it);
-                        }
+                        vspQueues.emplace_back(std::move(spQueue));
+                        ++it;
                     }
-                    return vspQueues;
+                    else
+                    {
+                        it = m_queues.erase(it);
+                    }
                 }
+                return vspQueues;
+            }
 
-                //! Registers the given queue on this device.
-                //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOacc>> spQueue) -> void
-                {
-                    std::lock_guard<std::mutex> lk(m_Mutex);
+            //! Registers the given queue on this device.
+            //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOacc>> spQueue) -> void
+            {
+                std::lock_guard<std::mutex> lk(m_Mutex);
 
-                    // Register this queue on the device.
-                    m_queues.push_back(std::move(spQueue));
-                }
+                // Register this queue on the device.
+                m_queues.push_back(std::move(spQueue));
+            }
 
-                int iDevice() const
-                {
-                    return m_iDevice;
-                }
-                acc_device_t deviceType() const
-                {
-                    return m_deviceType;
-                }
+            int iDevice() const
+            {
+                return m_iDevice;
+            }
+            acc_device_t deviceType() const
+            {
+                return m_deviceType;
+            }
 
-                void makeCurrent() const
-                {
+            void makeCurrent() const
+            {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << "acc_set_device_num( " << iDevice() << ", [type] )" << std::endl;
+                std::cout << "acc_set_device_num( " << iDevice() << ", [type] )" << std::endl;
 #    endif
-                    acc_set_device_num(iDevice(), deviceType());
-                }
+                acc_set_device_num(iDevice(), deviceType());
+            }
 
-                std::uint32_t* gridsLock() const
-                {
-                    return m_gridsLock;
-                }
+            std::uint32_t* gridsLock() const
+            {
+                return m_gridsLock;
+            }
 
-                //! Create and/or return staticlly mapped device pointer of host address.
-                template<typename TElem, typename TExtent>
-                ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) -> TElem*
+            //! Create and/or return staticlly mapped device pointer of host address.
+            template<typename TElem, typename TExtent>
+            ALPAKA_FN_HOST auto mapStatic(TElem* pHost, TExtent const& extent) -> TElem*
+            {
+                makeCurrent();
+                void* pDev = acc_deviceptr(pHost);
+                if(!pDev)
                 {
-                    makeCurrent();
-                    void* pDev = acc_deviceptr(pHost);
-                    if(!pDev)
-                    {
 #    pragma acc enter data create(pHost [0:extent.prod()])
-                        pDev = acc_deviceptr(pHost);
-                        assert(pDev != nullptr);
-                    }
-                    return reinterpret_cast<TElem*>(pDev);
+                    pDev = acc_deviceptr(pHost);
+                    assert(pDev != nullptr);
                 }
+                return reinterpret_cast<TElem*>(pDev);
+            }
 
-            private:
-                std::mutex mutable m_Mutex;
-                std::vector<std::weak_ptr<IGenericThreadsQueue<DevOacc>>> mutable m_queues;
-                acc_device_t m_deviceType;
-                int m_iDevice;
-                std::uint32_t* m_gridsLock = nullptr;
-            };
-        } // namespace detail
-    } // namespace oacc
+        private:
+            std::mutex mutable m_Mutex;
+            std::vector<std::weak_ptr<IGenericThreadsQueue<DevOacc>>> mutable m_queues;
+            acc_device_t m_deviceType;
+            int m_iDevice;
+            std::uint32_t* m_gridsLock = nullptr;
+        };
+    } // namespace oacc::detail
 
     //! The OpenACC device handle.
     class DevOacc

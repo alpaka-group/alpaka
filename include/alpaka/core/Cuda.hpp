@@ -48,53 +48,43 @@
 //! prefix a name with `cuda`
 #    define ALPAKA_API_PREFIX(name) ALPAKA_PP_CONCAT_DO(cuda, name)
 
-namespace alpaka
+namespace alpaka::cuda::detail
 {
-    namespace cuda
+    //! CUDA driver API error checking with log and exception, ignoring specific error values
+    ALPAKA_FN_HOST inline auto cudaDrvCheck(CUresult const& error, char const* desc, char const* file, int const& line)
+        -> void
     {
-        namespace detail
-        {
-            //! CUDA driver API error checking with log and exception, ignoring specific error values
-            ALPAKA_FN_HOST inline auto cudaDrvCheck(
-                CUresult const& error,
-                char const* desc,
-                char const* file,
-                int const& line) -> void
-            {
-                if(error == CUDA_SUCCESS)
-                    return;
+        if(error == CUDA_SUCCESS)
+            return;
 
-                char const* cu_err_name = nullptr;
-                char const* cu_err_string = nullptr;
-                CUresult cu_result_name = cuGetErrorName(error, &cu_err_name);
-                CUresult cu_result_string = cuGetErrorString(error, &cu_err_string);
-                std::string sError
-                    = std::string(file) + "(" + std::to_string(line) + ") " + std::string(desc) + " : '";
-                if(cu_result_name == CUDA_SUCCESS && cu_result_string == CUDA_SUCCESS)
-                {
-                    sError += std::string(cu_err_name) + "': '" + std::string(cu_err_string) + "'!";
-                }
-                else
-                {
-                    // cuGetError*() failed, so append corresponding error message
-                    if(cu_result_name == CUDA_ERROR_INVALID_VALUE)
-                    {
-                        sError += " cuGetErrorName: 'Invalid Value'!";
-                    }
-                    if(cu_result_string == CUDA_ERROR_INVALID_VALUE)
-                    {
-                        sError += " cuGetErrorString: 'Invalid Value'!";
-                    }
-                }
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::cerr << sError << std::endl;
-#    endif
-                ALPAKA_DEBUG_BREAK;
-                throw std::runtime_error(sError);
+        char const* cu_err_name = nullptr;
+        char const* cu_err_string = nullptr;
+        CUresult cu_result_name = cuGetErrorName(error, &cu_err_name);
+        CUresult cu_result_string = cuGetErrorString(error, &cu_err_string);
+        std::string sError = std::string(file) + "(" + std::to_string(line) + ") " + std::string(desc) + " : '";
+        if(cu_result_name == CUDA_SUCCESS && cu_result_string == CUDA_SUCCESS)
+        {
+            sError += std::string(cu_err_name) + "': '" + std::string(cu_err_string) + "'!";
+        }
+        else
+        {
+            // cuGetError*() failed, so append corresponding error message
+            if(cu_result_name == CUDA_ERROR_INVALID_VALUE)
+            {
+                sError += " cuGetErrorName: 'Invalid Value'!";
             }
-        } // namespace detail
-    } // namespace cuda
-} // namespace alpaka
+            if(cu_result_string == CUDA_ERROR_INVALID_VALUE)
+            {
+                sError += " cuGetErrorString: 'Invalid Value'!";
+            }
+        }
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+        std::cerr << sError << std::endl;
+#    endif
+        ALPAKA_DEBUG_BREAK;
+        throw std::runtime_error(sError);
+    }
+} // namespace alpaka::cuda::detail
 
 //! CUDA driver error checking with log and exception.
 #    define ALPAKA_CUDA_DRV_CHECK(cmd) ::alpaka::cuda::detail::cudaDrvCheck(cmd, #    cmd, __FILE__, __LINE__)
@@ -104,53 +94,49 @@ namespace alpaka
 namespace alpaka
 {
     //! The CUDA specifics.
-    namespace cuda
+    namespace cuda::traits
     {
-        namespace traits
-        {
-            //! The CUDA vectors 1D dimension get trait specialization.
-            template<typename T>
-            struct IsCudaBuiltInType
-                : std::integral_constant<
-                      bool,
-                      std::is_same<T, char1>::value || std::is_same<T, double1>::value
-                          || std::is_same<T, float1>::value || std::is_same<T, int1>::value
-                          || std::is_same<T, long1>::value || std::is_same<T, longlong1>::value
-                          || std::is_same<T, short1>::value || std::is_same<T, uchar1>::value
-                          || std::is_same<T, uint1>::value || std::is_same<T, ulong1>::value
-                          || std::is_same<T, ulonglong1>::value || std::is_same<T, ushort1>::value
-                          || std::is_same<T, char2>::value || std::is_same<T, double2>::value
-                          || std::is_same<T, float2>::value || std::is_same<T, int2>::value
-                          || std::is_same<T, long2>::value || std::is_same<T, longlong2>::value
-                          || std::is_same<T, short2>::value || std::is_same<T, uchar2>::value
-                          || std::is_same<T, uint2>::value || std::is_same<T, ulong2>::value
-                          || std::is_same<T, ulonglong2>::value || std::is_same<T, ushort2>::value
-                          || std::is_same<T, char3>::value || std::is_same<T, dim3>::value
-                          || std::is_same<T, double3>::value || std::is_same<T, float3>::value
-                          || std::is_same<T, int3>::value || std::is_same<T, long3>::value
-                          || std::is_same<T, longlong3>::value || std::is_same<T, short3>::value
-                          || std::is_same<T, uchar3>::value || std::is_same<T, uint3>::value
-                          || std::is_same<T, ulong3>::value || std::is_same<T, ulonglong3>::value
-                          || std::is_same<T, ushort3>::value || std::is_same<T, char4>::value
-                          || std::is_same<T, double4>::value || std::is_same<T, float4>::value
-                          || std::is_same<T, int4>::value || std::is_same<T, long4>::value
-                          || std::is_same<T, longlong4>::value || std::is_same<T, short4>::value
-                          || std::is_same<T, uchar4>::value || std::is_same<T, uint4>::value
-                          || std::is_same<T, ulong4>::value || std::is_same<T, ulonglong4>::value
-                          || std::is_same<T, ushort4>::value
+        //! The CUDA vectors 1D dimension get trait specialization.
+        template<typename T>
+        struct IsCudaBuiltInType
+            : std::integral_constant<
+                  bool,
+                  std::is_same<T, char1>::value || std::is_same<T, double1>::value || std::is_same<T, float1>::value
+                      || std::is_same<T, int1>::value || std::is_same<T, long1>::value
+                      || std::is_same<T, longlong1>::value || std::is_same<T, short1>::value
+                      || std::is_same<T, uchar1>::value || std::is_same<T, uint1>::value
+                      || std::is_same<T, ulong1>::value || std::is_same<T, ulonglong1>::value
+                      || std::is_same<T, ushort1>::value || std::is_same<T, char2>::value
+                      || std::is_same<T, double2>::value || std::is_same<T, float2>::value
+                      || std::is_same<T, int2>::value || std::is_same<T, long2>::value
+                      || std::is_same<T, longlong2>::value || std::is_same<T, short2>::value
+                      || std::is_same<T, uchar2>::value || std::is_same<T, uint2>::value
+                      || std::is_same<T, ulong2>::value || std::is_same<T, ulonglong2>::value
+                      || std::is_same<T, ushort2>::value || std::is_same<T, char3>::value
+                      || std::is_same<T, dim3>::value || std::is_same<T, double3>::value
+                      || std::is_same<T, float3>::value || std::is_same<T, int3>::value
+                      || std::is_same<T, long3>::value || std::is_same<T, longlong3>::value
+                      || std::is_same<T, short3>::value || std::is_same<T, uchar3>::value
+                      || std::is_same<T, uint3>::value || std::is_same<T, ulong3>::value
+                      || std::is_same<T, ulonglong3>::value || std::is_same<T, ushort3>::value
+                      || std::is_same<T, char4>::value || std::is_same<T, double4>::value
+                      || std::is_same<T, float4>::value || std::is_same<T, int4>::value
+                      || std::is_same<T, long4>::value || std::is_same<T, longlong4>::value
+                      || std::is_same<T, short4>::value || std::is_same<T, uchar4>::value
+                      || std::is_same<T, uint4>::value || std::is_same<T, ulong4>::value
+                      || std::is_same<T, ulonglong4>::value || std::is_same<T, ushort4>::value
 // CUDA built-in variables have special types in clang native CUDA compilation
 // defined in cuda_builtin_vars.h
 #    if BOOST_COMP_CLANG_CUDA
-                          || std::is_same<T, __cuda_builtin_threadIdx_t>::value
-                          || std::is_same<T, __cuda_builtin_blockIdx_t>::value
-                          || std::is_same<T, __cuda_builtin_blockDim_t>::value
-                          || std::is_same<T, __cuda_builtin_gridDim_t>::value
+                      || std::is_same<T, __cuda_builtin_threadIdx_t>::value
+                      || std::is_same<T, __cuda_builtin_blockIdx_t>::value
+                      || std::is_same<T, __cuda_builtin_blockDim_t>::value
+                      || std::is_same<T, __cuda_builtin_gridDim_t>::value
 #    endif
-                      >
-            {
-            };
-        } // namespace traits
-    } // namespace cuda
+                  >
+        {
+        };
+    } // namespace cuda::traits
     namespace traits
     {
         //! The CUDA vectors 1D dimension get trait specialization.
@@ -220,120 +206,117 @@ namespace alpaka
             using type = decltype(std::declval<T>().x);
         };
     } // namespace traits
-    namespace extent
+    namespace extent::traits
     {
-        namespace traits
+        //! The CUDA vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 1u>,
+            TExtent,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
         {
-            //! The CUDA vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 1u>,
-                TExtent,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.x;
-                }
-            };
-            //! The CUDA vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 2u>,
-                TExtent,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+                return extent.x;
+            }
+        };
+        //! The CUDA vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 2u>,
+            TExtent,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.y;
-                }
-            };
-            //! The CUDA vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 3u>,
-                TExtent,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+                return extent.y;
+            }
+        };
+        //! The CUDA vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 3u>,
+            TExtent,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.z;
-                }
-            };
-            //! The CUDA vectors extent get trait specialization.
-            template<typename TExtent>
-            struct GetExtent<
-                DimInt<Dim<TExtent>::value - 4u>,
-                TExtent,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+                return extent.z;
+            }
+        };
+        //! The CUDA vectors extent get trait specialization.
+        template<typename TExtent>
+        struct GetExtent<
+            DimInt<Dim<TExtent>::value - 4u>,
+            TExtent,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-                {
-                    return extent.w;
-                }
-            };
-            //! The CUDA vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 1u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
+                return extent.w;
+            }
+        };
+        //! The CUDA vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 1u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 1)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.x = extentVal;
-                }
-            };
-            //! The CUDA vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 2u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+                extent.x = extentVal;
+            }
+        };
+        //! The CUDA vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 2u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 2)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.y = extentVal;
-                }
-            };
-            //! The CUDA vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 3u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+                extent.y = extentVal;
+            }
+        };
+        //! The CUDA vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 3u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 3)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.z = extentVal;
-                }
-            };
-            //! The CUDA vectors extent set trait specialization.
-            template<typename TExtent, typename TExtentVal>
-            struct SetExtent<
-                DimInt<Dim<TExtent>::value - 4u>,
-                TExtent,
-                TExtentVal,
-                std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+                extent.z = extentVal;
+            }
+        };
+        //! The CUDA vectors extent set trait specialization.
+        template<typename TExtent, typename TExtentVal>
+        struct SetExtent<
+            DimInt<Dim<TExtent>::value - 4u>,
+            TExtent,
+            TExtentVal,
+            std::enable_if_t<cuda::traits::IsCudaBuiltInType<TExtent>::value && (Dim<TExtent>::value >= 4)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent.w = extentVal;
-                }
-            };
-        } // namespace traits
-    } // namespace extent
+                extent.w = extentVal;
+            }
+        };
+    } // namespace extent::traits
     namespace traits
     {
         //! The CUDA vectors offset get trait specialization.

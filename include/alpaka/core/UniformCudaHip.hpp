@@ -27,77 +27,68 @@
 #    include <tuple>
 #    include <type_traits>
 
-namespace alpaka
+namespace alpaka::uniform_cuda_hip::detail
 {
-    namespace uniform_cuda_hip
-    {
-        namespace detail
-        {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-            using Error_t = cudaError;
+    using Error_t = cudaError;
 #    else
-            using Error_t = hipError_t;
+    using Error_t = hipError_t;
 #    endif
-            //! CUDA/HIP runtime API error checking with log and exception, ignoring specific error values
-            ALPAKA_FN_HOST inline auto rtCheck(
-                Error_t const& error,
-                char const* desc,
-                char const* file,
-                int const& line) -> void
-            {
-                if(error != ALPAKA_API_PREFIX(Success))
-                {
-                    std::string const sError(
-                        std::string(file) + "(" + std::to_string(line) + ") " + std::string(desc) + " : '"
-                        + ALPAKA_API_PREFIX(GetErrorName)(error) + "': '"
-                        + std::string(ALPAKA_API_PREFIX(GetErrorString)(error)) + "'!");
+    //! CUDA/HIP runtime API error checking with log and exception, ignoring specific error values
+    ALPAKA_FN_HOST inline auto rtCheck(Error_t const& error, char const* desc, char const* file, int const& line)
+        -> void
+    {
+        if(error != ALPAKA_API_PREFIX(Success))
+        {
+            std::string const sError(
+                std::string(file) + "(" + std::to_string(line) + ") " + std::string(desc) + " : '"
+                + ALPAKA_API_PREFIX(GetErrorName)(error) + "': '"
+                + std::string(ALPAKA_API_PREFIX(GetErrorString)(error)) + "'!");
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    std::cerr << sError << std::endl;
+            std::cerr << sError << std::endl;
 #    endif
-                    ALPAKA_DEBUG_BREAK;
-                    // reset the last error to allow user side error handling. Using std::ignore to discard unneeded
-                    // return values is suggested by the C++ core guidelines.
-                    std::ignore = ALPAKA_API_PREFIX(GetLastError)();
-                    throw std::runtime_error(sError);
-                }
-            }
-            //! CUDA/Hip runtime API error checking with log and exception, ignoring specific error values
-            // NOTE: All ignored errors have to be convertible to Error_t.
-            template<typename... TErrors>
-            ALPAKA_FN_HOST auto rtCheckIgnore(
-                Error_t const& error,
-                char const* cmd,
-                char const* file,
-                int const& line,
-                TErrors&&... ignoredErrorCodes) -> void
-            {
-                if(error != ALPAKA_API_PREFIX(Success))
-                {
-                    std::array<Error_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{ignoredErrorCodes...};
+            ALPAKA_DEBUG_BREAK;
+            // reset the last error to allow user side error handling. Using std::ignore to discard unneeded
+            // return values is suggested by the C++ core guidelines.
+            std::ignore = ALPAKA_API_PREFIX(GetLastError)();
+            throw std::runtime_error(sError);
+        }
+    }
+    //! CUDA/Hip runtime API error checking with log and exception, ignoring specific error values
+    // NOTE: All ignored errors have to be convertible to Error_t.
+    template<typename... TErrors>
+    ALPAKA_FN_HOST auto rtCheckIgnore(
+        Error_t const& error,
+        char const* cmd,
+        char const* file,
+        int const& line,
+        TErrors&&... ignoredErrorCodes) -> void
+    {
+        if(error != ALPAKA_API_PREFIX(Success))
+        {
+            std::array<Error_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{ignoredErrorCodes...};
 
-                    // If the error code is not one of the ignored ones.
-                    if(std::find(std::cbegin(aIgnoredErrorCodes), std::cend(aIgnoredErrorCodes), error)
-                       == std::cend(aIgnoredErrorCodes))
-                    {
-                        rtCheck(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
-                    }
-                    else
-                    {
-                        // reset the last error to avoid propagation to the next CUDA/HIP API call. Using std::ignore
-                        // to discard unneeded return values is recommended by the C++ core guidelines.
-                        std::ignore = ALPAKA_API_PREFIX(GetLastError)();
-                    }
-                }
-            }
-            //! CUDA runtime API last error checking with log and exception.
-            ALPAKA_FN_HOST inline auto rtCheckLastError(char const* desc, char const* file, int const& line) -> void
+            // If the error code is not one of the ignored ones.
+            if(std::find(std::cbegin(aIgnoredErrorCodes), std::cend(aIgnoredErrorCodes), error)
+               == std::cend(aIgnoredErrorCodes))
             {
-                Error_t const error(ALPAKA_API_PREFIX(GetLastError)());
-                rtCheck(error, desc, file, line);
+                rtCheck(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
             }
-        } // namespace detail
-    } // namespace uniform_cuda_hip
-} // namespace alpaka
+            else
+            {
+                // reset the last error to avoid propagation to the next CUDA/HIP API call. Using std::ignore
+                // to discard unneeded return values is recommended by the C++ core guidelines.
+                std::ignore = ALPAKA_API_PREFIX(GetLastError)();
+            }
+        }
+    }
+    //! CUDA runtime API last error checking with log and exception.
+    ALPAKA_FN_HOST inline auto rtCheckLastError(char const* desc, char const* file, int const& line) -> void
+    {
+        Error_t const error(ALPAKA_API_PREFIX(GetLastError)());
+        rtCheck(error, desc, file, line);
+    }
+} // namespace alpaka::uniform_cuda_hip::detail
 
 #    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 //! CUDA runtime error checking with log and exception, ignoring specific error values

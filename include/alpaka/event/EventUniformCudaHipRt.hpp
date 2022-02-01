@@ -33,57 +33,54 @@
 
 namespace alpaka
 {
-    namespace uniform_cuda_hip
+    namespace uniform_cuda_hip::detail
     {
-        namespace detail
+        //! The CUDA/HIP RT device event implementation.
+        class EventUniformCudaHipImpl final
         {
-            //! The CUDA/HIP RT device event implementation.
-            class EventUniformCudaHipImpl final
+        public:
+            ALPAKA_FN_HOST EventUniformCudaHipImpl(DevUniformCudaHipRt const& dev, bool bBusyWait)
+                : m_dev(dev)
+                , m_UniformCudaHipEvent()
             {
-            public:
-                ALPAKA_FN_HOST EventUniformCudaHipImpl(DevUniformCudaHipRt const& dev, bool bBusyWait)
-                    : m_dev(dev)
-                    , m_UniformCudaHipEvent()
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_dev.m_iDevice));
+                // Set the current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_dev.m_iDevice));
 
-                    // Create the event on the current device with the specified flags. Valid flags include:
-                    // - cuda/hip-EventDefault: Default event creation flag.
-                    // - cuda/hip-EventBlockingSync : Specifies that event should use blocking synchronization.
-                    //   A host thread that uses cuda/hip-EventSynchronize() to wait on an event created with this flag
-                    //   will block until the event actually completes.
-                    // - cuda/hip-EventDisableTiming : Specifies that the created event does not need to record timing
-                    // data.
-                    //   Events created with this flag specified and the cuda/hip-EventBlockingSync flag not specified
-                    //   will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventCreateWithFlags)(
-                        &m_UniformCudaHipEvent,
-                        (bBusyWait ? ALPAKA_API_PREFIX(EventDefault) : ALPAKA_API_PREFIX(EventBlockingSync))
-                            | ALPAKA_API_PREFIX(EventDisableTiming)));
-                }
-                EventUniformCudaHipImpl(EventUniformCudaHipImpl const&) = delete;
-                auto operator=(EventUniformCudaHipImpl const&) -> EventUniformCudaHipImpl& = delete;
-                ALPAKA_FN_HOST ~EventUniformCudaHipImpl()
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                // Create the event on the current device with the specified flags. Valid flags include:
+                // - cuda/hip-EventDefault: Default event creation flag.
+                // - cuda/hip-EventBlockingSync : Specifies that event should use blocking synchronization.
+                //   A host thread that uses cuda/hip-EventSynchronize() to wait on an event created with this flag
+                //   will block until the event actually completes.
+                // - cuda/hip-EventDisableTiming : Specifies that the created event does not need to record timing
+                // data.
+                //   Events created with this flag specified and the cuda/hip-EventBlockingSync flag not specified
+                //   will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventCreateWithFlags)(
+                    &m_UniformCudaHipEvent,
+                    (bBusyWait ? ALPAKA_API_PREFIX(EventDefault) : ALPAKA_API_PREFIX(EventBlockingSync))
+                        | ALPAKA_API_PREFIX(EventDisableTiming)));
+            }
+            EventUniformCudaHipImpl(EventUniformCudaHipImpl const&) = delete;
+            auto operator=(EventUniformCudaHipImpl const&) -> EventUniformCudaHipImpl& = delete;
+            ALPAKA_FN_HOST ~EventUniformCudaHipImpl()
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // In case event has been recorded but has not yet been completed when cuda/hip-EventDestroy() is
-                    // called, the function will return immediately and the resources associated with event will be
-                    // released automatically once the device has completed event.
-                    // -> No need to synchronize here.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventDestroy)(m_UniformCudaHipEvent));
-                }
+                // In case event has been recorded but has not yet been completed when cuda/hip-EventDestroy() is
+                // called, the function will return immediately and the resources associated with event will be
+                // released automatically once the device has completed event.
+                // -> No need to synchronize here.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventDestroy)(m_UniformCudaHipEvent));
+            }
 
-            public:
-                DevUniformCudaHipRt const m_dev; //!< The device this event is bound to.
+        public:
+            DevUniformCudaHipRt const m_dev; //!< The device this event is bound to.
 
-                ALPAKA_API_PREFIX(Event_t) m_UniformCudaHipEvent;
-            };
-        } // namespace detail
-    } // namespace uniform_cuda_hip
+            ALPAKA_API_PREFIX(Event_t) m_UniformCudaHipEvent;
+        };
+    } // namespace uniform_cuda_hip::detail
 
     //! The CUDA/HIP RT device event.
     class EventUniformCudaHipRt final

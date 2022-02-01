@@ -41,53 +41,50 @@ namespace alpaka
     class PltfCpu;
 
     //! The CPU device.
-    namespace cpu
+    namespace cpu::detail
     {
-        namespace detail
+        //! The CPU device implementation.
+        class DevCpuImpl
         {
-            //! The CPU device implementation.
-            class DevCpuImpl
+        public:
+            ALPAKA_FN_HOST auto getAllExistingQueues() const -> std::vector<std::shared_ptr<cpu::ICpuQueue>>
             {
-            public:
-                ALPAKA_FN_HOST auto getAllExistingQueues() const -> std::vector<std::shared_ptr<cpu::ICpuQueue>>
+                std::vector<std::shared_ptr<cpu::ICpuQueue>> vspQueues;
+
+                std::lock_guard<std::mutex> lk(m_Mutex);
+                vspQueues.reserve(std::size(m_queues));
+
+                for(auto it = std::begin(m_queues); it != std::end(m_queues);)
                 {
-                    std::vector<std::shared_ptr<cpu::ICpuQueue>> vspQueues;
-
-                    std::lock_guard<std::mutex> lk(m_Mutex);
-                    vspQueues.reserve(std::size(m_queues));
-
-                    for(auto it = std::begin(m_queues); it != std::end(m_queues);)
+                    auto spQueue(it->lock());
+                    if(spQueue)
                     {
-                        auto spQueue(it->lock());
-                        if(spQueue)
-                        {
-                            vspQueues.emplace_back(std::move(spQueue));
-                            ++it;
-                        }
-                        else
-                        {
-                            it = m_queues.erase(it);
-                        }
+                        vspQueues.emplace_back(std::move(spQueue));
+                        ++it;
                     }
-                    return vspQueues;
+                    else
+                    {
+                        it = m_queues.erase(it);
+                    }
                 }
+                return vspQueues;
+            }
 
-                //! Registers the given queue on this device.
-                //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<cpu::ICpuQueue> spQueue) const -> void
-                {
-                    std::lock_guard<std::mutex> lk(m_Mutex);
+            //! Registers the given queue on this device.
+            //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<cpu::ICpuQueue> spQueue) const -> void
+            {
+                std::lock_guard<std::mutex> lk(m_Mutex);
 
-                    // Register this queue on the device.
-                    m_queues.push_back(spQueue);
-                }
+                // Register this queue on the device.
+                m_queues.push_back(spQueue);
+            }
 
-            private:
-                std::mutex mutable m_Mutex;
-                std::vector<std::weak_ptr<cpu::ICpuQueue>> mutable m_queues;
-            };
-        } // namespace detail
-    } // namespace cpu
+        private:
+            std::mutex mutable m_Mutex;
+            std::vector<std::weak_ptr<cpu::ICpuQueue>> mutable m_queues;
+        };
+    } // namespace cpu::detail
 
     //! The CPU device handle.
     class DevCpu
