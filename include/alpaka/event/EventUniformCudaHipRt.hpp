@@ -230,7 +230,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Set the current device.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeDeviceHandle()));
 
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     ALPAKA_API_PREFIX(StreamWaitEvent)(nullptr, event.m_spEventImpl->m_UniformCudaHipEvent, 0));

@@ -262,7 +262,7 @@ namespace alpaka
 
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(SetDevice)(queue.m_spQueueImpl->m_dev.getNativeHandle()));
+                    ALPAKA_API_PREFIX(SetDevice)(queue.m_spQueueImpl->m_dev.getNativeDeviceHandle()));
                 // Enqueue the kernel execution.
                 // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch
                 // language extension expects the arguments by value. This forces the type of a float argument given
@@ -395,7 +395,7 @@ namespace alpaka
 
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(SetDevice)(queue.m_spQueueImpl->m_dev.getNativeHandle()));
+                    ALPAKA_API_PREFIX(SetDevice)(queue.m_spQueueImpl->m_dev.getNativeDeviceHandle()));
 
                 // Enqueue the kernel execution.
                 std::apply(

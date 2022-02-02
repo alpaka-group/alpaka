@@ -91,7 +91,7 @@ namespace alpaka
                     hipDeviceProp_t devProp;
 #        endif
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeHandle()));
+                        ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeDeviceHandle()));
 #    endif
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     printDeviceProperties(devProp);

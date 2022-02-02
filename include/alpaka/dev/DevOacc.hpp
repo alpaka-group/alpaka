@@ -174,15 +174,15 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOacc const& rhs) const -> bool
         {
-            return m_devOaccImpl->getNativeHandle() == rhs.m_devOaccImpl->getNativeHandle();
+            return m_devOaccImpl->getNativeDeviceHandle() == rhs.m_devOaccImpl->getNativeDeviceHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevOacc const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
-        int getNativeHandle() const noexcept
+        auto getNativeDeviceHandle() const noexcept
         {
-            return m_devOaccImpl->getNativeHandle();
+            return m_devOaccImpl->getNativeDeviceHandle();
         }
         acc_device_t deviceType() const
         {
@@ -239,7 +239,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getMemBytes(DevOacc const& dev) -> std::size_t
             {
-                return acc_get_property(dev.getNativeHandle(), dev.deviceType(), acc_property_memory);
+                return acc_get_property(dev.getNativeDeviceHandle(), dev.deviceType(), acc_property_memory);
             }
         };
 
@@ -249,7 +249,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevOacc const& dev) -> std::size_t
             {
-                return acc_get_property(dev.getNativeHandle(), dev.deviceType(), acc_property_free_memory);
+                return acc_get_property(dev.getNativeDeviceHandle(), dev.deviceType(), acc_property_free_memory);
             }
         };
 
@@ -271,6 +271,13 @@ namespace alpaka
             {
                 //! \TODO
             }
+        };
+
+        //! The OpenACC device native handle type trait specialization.
+        template<>
+        struct NativeHandleDeviceType<DevOacc>
+        {
+            using type = int;
         };
     } // namespace traits
 
@@ -354,7 +361,6 @@ namespace alpaka
                 return {static_cast<int>(devIdx)};
             }
         };
-
     } // namespace traits
 } // namespace alpaka
 
