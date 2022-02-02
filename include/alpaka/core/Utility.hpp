@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -18,7 +18,7 @@
 
 namespace alpaka::core
 {
-    //! convert any type to a reverence type
+    //! convert any type to a reference type
     //
     // This function is equivalent to std::declval() but can be used
     // within an alpaka accelerator kernel too.
