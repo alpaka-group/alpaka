@@ -121,7 +121,7 @@ namespace alpaka
             m_spDevCpuImpl->registerQueue(spQueue);
         }
 
-        int getNativeHandle() const noexcept
+        auto getNativeDeviceHandle() const noexcept
         {
             return 0;
         }
@@ -181,6 +181,13 @@ namespace alpaka
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 // The CPU does nothing on reset.
             }
+        };
+
+        //! The CPU device native handle type trait specialization.
+        template<>
+        struct NativeHandleDeviceType<DevCpu>
+        {
+            using type = int;
         };
     } // namespace traits
 

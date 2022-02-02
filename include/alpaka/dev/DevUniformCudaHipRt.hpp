@@ -56,7 +56,7 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        int getNativeHandle() const noexcept
+        auto getNativeDeviceHandle() const noexcept
         {
             return m_iDevice;
         }
@@ -91,7 +91,7 @@ namespace alpaka
                 hipDeviceProp_t devProp;
 #    endif
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeHandle()));
+                    ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeDeviceHandle()));
 
                 return std::string(devProp.name);
             }
@@ -104,7 +104,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getMemBytes(DevUniformCudaHipRt const& dev) -> std::size_t
             {
                 // Set the current device to wait for.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeDeviceHandle()));
 
                 std::size_t freeInternal(0u);
                 std::size_t totalInternal(0u);
@@ -122,7 +122,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getFreeMemBytes(DevUniformCudaHipRt const& dev) -> std::size_t
             {
                 // Set the current device to wait for.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeDeviceHandle()));
 
                 std::size_t freeInternal(0u);
                 std::size_t totalInternal(0u);
@@ -145,7 +145,7 @@ namespace alpaka
                 hipDeviceProp_t devProp;
 #    endif
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeHandle()));
+                    ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeDeviceHandle()));
 
                 return static_cast<std::size_t>(devProp.warpSize);
             }
@@ -160,9 +160,16 @@ namespace alpaka
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 // Set the current device to wait for.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeDeviceHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceReset)());
             }
+        };
+
+        //! The CUDA/HIP RT device native handle type trait specialization.
+        template<>
+        struct NativeHandleDeviceType<DevUniformCudaHipRt>
+        {
+            using type = int;
         };
     } // namespace traits
 
@@ -197,7 +204,7 @@ namespace alpaka
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 // Set the current device to wait for.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeDeviceHandle()));
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceSynchronize)());
             }
         };

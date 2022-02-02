@@ -135,7 +135,7 @@ namespace alpaka
             // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
             auto argsD = m_args;
             auto kernelFnObj = m_kernelFnObj;
-            const auto iDevice = dev.getNativeHandle();
+            const auto iDevice = dev.getNativeDeviceHandle();
 #    pragma omp target device(iDevice)
             {
 #    pragma omp teams distribute num_teams(teamCount) // thread_limit(blockThreadCount)

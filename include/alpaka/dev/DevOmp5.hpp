@@ -146,16 +146,16 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOmp5 const& rhs) const -> bool
         {
-            return m_spDevOmp5Impl->getNativeHandle() == rhs.m_spDevOmp5Impl->getNativeHandle();
+            return m_spDevOmp5Impl->getNativeDeviceHandle() == rhs.m_spDevOmp5Impl->getNativeDeviceHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevOmp5 const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
-        
-        int getNativeHandle() const noexcept
+
+        [[nodiscard]] auto getNativeDeviceHandle() const noexcept
         {
-            return m_spDevOmp5Impl->getNativeHandle();
+            return m_spDevOmp5Impl->getNativeDeviceHandle();
         }
 
         //! Create and/or return staticlly mapped device pointer of host address.
@@ -237,6 +237,13 @@ namespace alpaka
             {
                 //! \TODO
             }
+        };
+
+        //! The OpenMP 5.0 device native handle type trait specialization.
+        template<>
+        struct NativeHandleDeviceType<DevOmp5>
+        {
+            using type = int; // N.B. this can be negative
         };
     } // namespace traits
 
