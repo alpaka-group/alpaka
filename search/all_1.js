@@ -84,7 +84,7 @@ var searchData=
   ['advancestate_87',['advanceState',['../classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a25f4838cb11b59561d87cfe747abd198',1,'alpaka::rand::engine::PhiloxSingle']]],
   ['align_88',['align',['../namespacealpaka_1_1core_1_1align.html',1,'alpaka::core']]],
   ['align_2ehpp_89',['Align.hpp',['../Align_8hpp.html',1,'']]],
-  ['alignedalloc_90',['alignedAlloc',['../namespacealpaka_1_1core.html#a7cc30c54c88b7aa4149799ba0c71be33',1,'alpaka::core']]],
+  ['alignedalloc_90',['alignedAlloc',['../namespacealpaka_1_1core.html#aac97800a3823af1fc97594e29b6677ab',1,'alpaka::core']]],
   ['alignedalloc_2ehpp_91',['AlignedAlloc.hpp',['../AlignedAlloc_8hpp.html',1,'']]],
   ['aligneddelete_92',['AlignedDelete',['../structalpaka_1_1core_1_1AlignedDelete.html',1,'alpaka::core']]],
   ['alignedfree_93',['alignedFree',['../namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc',1,'alpaka::core']]],

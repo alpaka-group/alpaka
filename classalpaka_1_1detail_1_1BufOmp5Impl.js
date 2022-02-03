@@ -3,7 +3,7 @@ var classalpaka_1_1detail_1_1BufOmp5Impl =
     [ "BufOmp5Impl", "classalpaka_1_1detail_1_1BufOmp5Impl.html#ad13c54c76e0c33124a69386c53d15773", null ],
     [ "BufOmp5Impl", "classalpaka_1_1detail_1_1BufOmp5Impl.html#a761cb3e9c8d7b5760b171acd493cb3e2", null ],
     [ "~BufOmp5Impl", "classalpaka_1_1detail_1_1BufOmp5Impl.html#a9685867217e51e38a0ee6aadc462b0f9", null ],
-    [ "operator=", "classalpaka_1_1detail_1_1BufOmp5Impl.html#aec7453377dd78f6b2ccf04c733d9c8a7", null ],
+    [ "operator=", "classalpaka_1_1detail_1_1BufOmp5Impl.html#a529af3ad43d20cc3a0625bfe3b063201", null ],
     [ "m_dev", "classalpaka_1_1detail_1_1BufOmp5Impl.html#ac6bce7edc319e18602efb45cfabf611e", null ],
     [ "m_extentElements", "classalpaka_1_1detail_1_1BufOmp5Impl.html#a66948c296446d91f8ffd571a793d04f8", null ],
     [ "m_pitchBytes", "classalpaka_1_1detail_1_1BufOmp5Impl.html#a99e7a796365c191c08ba22d030849eb7", null ],

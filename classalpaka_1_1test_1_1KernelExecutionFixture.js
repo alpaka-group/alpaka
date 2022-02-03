@@ -8,6 +8,6 @@ var classalpaka_1_1test_1_1KernelExecutionFixture =
     [ "QueueAcc", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a51c9267422b436c6c33130fcbf73a9c0", null ],
     [ "WorkDiv", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a1485c6f42a73c52fec0712d63e987228", null ],
     [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#adb153f13bb0abe25f5c2c8be21ded3ef", null ],
-    [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#aa83674595a89cdf0815fc25781d4a0bf", null ],
+    [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a776e1dce15e8d4528cc89ff04daf2e66", null ],
     [ "operator()", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a67710b8945cdb6a7d71fcdd9fdf9cab4", null ]
 ];

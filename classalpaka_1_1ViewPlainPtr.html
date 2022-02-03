@@ -110,12 +110,12 @@ $(document).ready(function(){initNavTree('classalpaka_1_1ViewPlainPtr.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af368481e0b524bad5c08907ed7221c87"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
-<tr class="memitem:af368481e0b524bad5c08907ed7221c87"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1ViewPlainPtr.html#af368481e0b524bad5c08907ed7221c87">ViewPlainPtr</a> (TElem *pMem, Dev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
-<tr class="separator:af368481e0b524bad5c08907ed7221c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5160c0f407398f5e3e21b1a3ed2ce1e8"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TPitch &gt; </td></tr>
 <tr class="memitem:a5160c0f407398f5e3e21b1a3ed2ce1e8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1ViewPlainPtr.html#a5160c0f407398f5e3e21b1a3ed2ce1e8">ViewPlainPtr</a> (TElem *pMem, Dev const dev, TExtent const &amp;extent, TPitch const &amp;pitchBytes)</td></tr>
 <tr class="separator:a5160c0f407398f5e3e21b1a3ed2ce1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b6b3e7109483fc1ee554230f299b09e"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
+<tr class="memitem:a0b6b3e7109483fc1ee554230f299b09e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1ViewPlainPtr.html#a0b6b3e7109483fc1ee554230f299b09e">ViewPlainPtr</a> (TElem *pMem, Dev dev, TExtent const &amp;extent=TExtent())</td></tr>
+<tr class="separator:a0b6b3e7109483fc1ee554230f299b09e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1eaf448d146968155ee533125c93239"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1ViewPlainPtr.html#af1eaf448d146968155ee533125c93239">ViewPlainPtr</a> (<a class="el" href="classalpaka_1_1ViewPlainPtr.html">ViewPlainPtr</a> &amp;&amp;other) noexcept</td></tr>
 <tr class="separator:af1eaf448d146968155ee533125c93239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea73be548e7c28bbb2eca2c933bbb6f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1ViewPlainPtr.html#a1ea73be548e7c28bbb2eca2c933bbb6f">ViewPlainPtr</a> (<a class="el" href="classalpaka_1_1ViewPlainPtr.html">ViewPlainPtr</a> const &amp;)=default</td></tr>
@@ -169,10 +169,10 @@ class alpaka::ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt;</h3>
 
 <p>The memory view to wrap plain pointers. </p>
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00026">26</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00027">27</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af368481e0b524bad5c08907ed7221c87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af368481e0b524bad5c08907ed7221c87">&#9670;&nbsp;</a></span>ViewPlainPtr() <span class="overload">[1/4]</span></h2>
+<a id="a0b6b3e7109483fc1ee554230f299b09e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b6b3e7109483fc1ee554230f299b09e">&#9670;&nbsp;</a></span>ViewPlainPtr() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +193,7 @@ template&lt;typename TExtent &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Dev const &amp;&#160;</td>
+          <td class="paramtype">Dev&#160;</td>
           <td class="paramname"><em>dev</em>, </td>
         </tr>
         <tr>
@@ -215,7 +215,7 @@ template&lt;typename TExtent &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00034">34</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00035">35</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 
 </div>
 </div>
@@ -269,7 +269,7 @@ template&lt;typename TExtent , typename TPitch &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00043">43</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00044">44</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 
 </div>
 </div>
@@ -327,7 +327,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00053">53</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00054">54</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 
 </div>
 </div>
@@ -403,7 +403,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00067">67</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00068">68</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 
 </div>
 </div>
@@ -421,7 +421,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00068">68</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00069">69</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 
 </div>
 </div>
@@ -439,7 +439,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00069">69</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00070">70</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 
 </div>
 </div>
@@ -457,7 +457,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00066">66</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewPlainPtr_8hpp_source.html#l00067">67</a> of file <a class="el" href="ViewPlainPtr_8hpp_source.html">ViewPlainPtr.hpp</a>.</p>
 
 </div>
 </div>
@@ -470,7 +470,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1ViewPlainPtr.html">ViewPlainPtr</a></li>
-    <li class="footer">Generated on Fri Jan 28 2022 13:02:38 for alpaka by
+    <li class="footer">Generated on Thu Feb 3 2022 10:51:42 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

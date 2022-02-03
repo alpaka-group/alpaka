@@ -7,8 +7,8 @@ var classalpaka_1_1rand_1_1Philox4x32x10Vector =
     [ "ResultVec", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#abdf99c54ac71829a13a734e06d99416f", null ],
     [ "Philox4x32x10Vector", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a3d9b558762e6546607b731a5e203c06a", null ],
     [ "Philox4x32x10Vector", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a501d98f1dc4680580d6f3afe3f51f852", null ],
-    [ "max", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ace0111e20ae06f2260e06ce72eaf1f5f", null ],
-    [ "min", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#aba1719a49cc3f79280c231723d1765ff", null ],
-    [ "operator()", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a97a672574a9272fe171ca2597bcf631c", null ],
+    [ "max", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ac8d20c40667921a60ff320987d777a6e", null ],
+    [ "min", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a8812d155d6769cbc9b9b7c9b9a4c7827", null ],
+    [ "operator()", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a7f3509d61a53cfdc81f0f33cb44cefea", null ],
     [ "engineVariant", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#aa3a520f357502936927622a86b78d60c", null ]
 ];

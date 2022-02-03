@@ -66,7 +66,7 @@ var NAVTREEINDEX =
 "DevCpu_8hpp_source.html",
 "QueueOaccNonBlocking_8hpp.html",
 "acc_2Traits_8hpp.html#a0668b792050a8ae5f1575da61ffe6217",
-"classalpaka_1_1ViewPlainPtr.html#a937ca83df1d176d3b781234e7b291543",
+"classalpaka_1_1ViewPlainPtr.html#a5160c0f407398f5e3e21b1a3ed2ce1e8",
 "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#abdf99c54ac71829a13a734e06d99416f",
 "dir_5fffcb1c5fb55c3017045ea438b1cf47.html",
 "math_2sqrt_2Traits_8hpp.html",

@@ -4,8 +4,8 @@ var classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice =
     [ "RandomDevice", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#a6e701c8045acf4e05c500ebbd3b81412", null ],
     [ "RandomDevice", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#aaeb02f3a24211f6ddb7cb55fe2f1590b", null ],
     [ "RandomDevice", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#abca9e4105cfc326cda28cc182c6fa064", null ],
-    [ "max", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#a193c43bee9a1262382316d502924338d", null ],
-    [ "min", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#a59b32dd54c3281c685f23ade85b1b02f", null ],
-    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#aa7f289e4ed72308fb236f368f302080c", null ],
+    [ "max", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#ab549f421673b0ce26f5def732286198b", null ],
+    [ "min", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#aadf3ac252b810663bdf1dfc2497425ca", null ],
+    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#a9c6b53f8e840afd5d3ff9f9c15a57765", null ],
     [ "state", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#aa8fc112867c35c284d76f61c4aea627a", null ]
 ];

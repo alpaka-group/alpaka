@@ -1,6 +1,6 @@
 var classalpaka_1_1ViewPlainPtr =
 [
-    [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#af368481e0b524bad5c08907ed7221c87", null ],
+    [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#a0b6b3e7109483fc1ee554230f299b09e", null ],
     [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#a5160c0f407398f5e3e21b1a3ed2ce1e8", null ],
     [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#a1ea73be548e7c28bbb2eca2c933bbb6f", null ],
     [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html#af1eaf448d146968155ee533125c93239", null ],
