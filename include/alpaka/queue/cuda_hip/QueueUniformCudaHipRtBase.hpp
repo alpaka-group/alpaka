@@ -44,7 +44,7 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_dev.getNativeDeviceHandle()));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_dev.getNativeHandle()));
 
                     // - [cuda/hip]StreamDefault: Default queue creation flag.
                     // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created queue may run

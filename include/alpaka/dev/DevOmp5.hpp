@@ -24,6 +24,7 @@
 #    include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 #    include <alpaka/queue/Traits.hpp>
 #    include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
+#    include <alpaka/traits/Traits.hpp>
 #    include <alpaka/wait/Traits.hpp>
 
 #    include <map>
@@ -146,16 +147,16 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOmp5 const& rhs) const -> bool
         {
-            return m_spDevOmp5Impl->getNativeDeviceHandle() == rhs.m_spDevOmp5Impl->getNativeDeviceHandle();
+            return m_spDevOmp5Impl->getNativeHandle() == rhs.m_spDevOmp5Impl->getNativeHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevOmp5 const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
 
-        [[nodiscard]] auto getNativeDeviceHandle() const noexcept
+        [[nodiscard]] auto getNativeHandle() const noexcept
         {
-            return m_spDevOmp5Impl->getNativeDeviceHandle();
+            return m_spDevOmp5Impl->getNativeHandle();
         }
 
         //! Create and/or return staticlly mapped device pointer of host address.
@@ -239,11 +240,15 @@ namespace alpaka
             }
         };
 
-        //! The OpenMP 5.0 device native handle type trait specialization.
+        //! The OpenMP 5.0 device native handle trait specialization.
         template<>
-        struct NativeHandleDeviceType<DevOmp5>
+        struct NativeHandle<DevOmp5>
         {
             using type = int; // N.B. this can be negative
+            static auto getNativeHandle(DevOmp5 const& dev)
+            {
+                return dev.getNativeHandle();
+            }
         };
     } // namespace traits
 

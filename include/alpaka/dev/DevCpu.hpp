@@ -19,6 +19,7 @@
 #include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
+#include <alpaka/traits/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
 #include <algorithm>
@@ -121,7 +122,7 @@ namespace alpaka
             m_spDevCpuImpl->registerQueue(spQueue);
         }
 
-        auto getNativeDeviceHandle() const noexcept
+        auto getNativeHandle() const noexcept
         {
             return 0;
         }
@@ -185,9 +186,13 @@ namespace alpaka
 
         //! The CPU device native handle type trait specialization.
         template<>
-        struct NativeHandleDeviceType<DevCpu>
+        struct NativeHandle<DevCpu>
         {
             using type = int;
+            static auto getNativeHandle(DevCpu const& dev)
+            {
+                return dev.getNativeHandle();
+            }
         };
     } // namespace traits
 
