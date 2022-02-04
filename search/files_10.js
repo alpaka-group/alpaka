@@ -1,15 +1,7 @@
 var searchData=
 [
-  ['randdefault_2ehpp_3818',['RandDefault.hpp',['../RandDefault_8hpp.html',1,'']]],
-  ['randphilox_2ehpp_3819',['RandPhilox.hpp',['../RandPhilox_8hpp.html',1,'']]],
-  ['randstdlib_2ehpp_3820',['RandStdLib.hpp',['../RandStdLib_8hpp.html',1,'']]],
-  ['randuniformcudahiprand_2ehpp_3821',['RandUniformCudaHipRand.hpp',['../RandUniformCudaHipRand_8hpp.html',1,'']]],
-  ['readme_2emd_3822',['README.md',['../README_8md.html',1,'']]],
-  ['remainderstdlib_2ehpp_3823',['RemainderStdLib.hpp',['../RemainderStdLib_8hpp.html',1,'']]],
-  ['remainderuniformcudahipbuiltin_2ehpp_3824',['RemainderUniformCudaHipBuiltIn.hpp',['../RemainderUniformCudaHipBuiltIn_8hpp.html',1,'']]],
-  ['removerestrict_2ehpp_3825',['RemoveRestrict.hpp',['../RemoveRestrict_8hpp.html',1,'']]],
-  ['roundstdlib_2ehpp_3826',['RoundStdLib.hpp',['../RoundStdLib_8hpp.html',1,'']]],
-  ['rounduniformcudahipbuiltin_2ehpp_3827',['RoundUniformCudaHipBuiltIn.hpp',['../RoundUniformCudaHipBuiltIn_8hpp.html',1,'']]],
-  ['rsqrtstdlib_2ehpp_3828',['RsqrtStdLib.hpp',['../RsqrtStdLib_8hpp.html',1,'']]],
-  ['rsqrtuniformcudahipbuiltin_2ehpp_3829',['RsqrtUniformCudaHipBuiltIn.hpp',['../RsqrtUniformCudaHipBuiltIn_8hpp.html',1,'']]]
+  ['set_2ehpp_3732',['Set.hpp',['../mem_2buf_2cpu_2Set_8hpp.html',1,'(Global Namespace)'],['../mem_2buf_2oacc_2Set_8hpp.html',1,'(Global Namespace)'],['../mem_2buf_2omp5_2Set_8hpp.html',1,'(Global Namespace)'],['../mem_2buf_2uniformCudaHip_2Set_8hpp.html',1,'(Global Namespace)'],['../meta_2Set_8hpp.html',1,'(Global Namespace)']]],
+  ['setkernel_2ehpp_3733',['SetKernel.hpp',['../SetKernel_8hpp.html',1,'']]],
+  ['stltuple_2ehpp_3734',['STLTuple.hpp',['../STLTuple_8hpp.html',1,'']]],
+  ['sysinfo_2ehpp_3735',['SysInfo.hpp',['../SysInfo_8hpp.html',1,'']]]
 ];
