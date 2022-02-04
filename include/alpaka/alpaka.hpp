@@ -1,5 +1,5 @@
 /* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
- *                Jan Stephan
+ *                Jan Stephan, Antonio Di Pilato
  *
  * This file is part of alpaka.
  *
@@ -187,6 +187,8 @@
 #include <alpaka/queue/Traits.hpp>
 // time
 #include <alpaka/time/Traits.hpp>
+// traits
+#include <alpaka/traits/Traits.hpp>
 // wait
 #include <alpaka/wait/Traits.hpp>
 // workdiv

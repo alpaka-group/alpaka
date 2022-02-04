@@ -44,19 +44,11 @@ namespace alpaka
         //! The device reset trait.
         template<typename T, typename TSfinae = void>
         struct Reset;
-
-        //! The device native handle type trait.
-        template<typename TDev>
-        struct NativeHandleDeviceType;
     } // namespace traits
 
     //! The device type trait alias template to remove the ::type.
     template<typename T>
     using Dev = typename traits::DevType<T>::type;
-
-    //! The device native handle type trait alias template to remove the ::type.
-    template<typename TDev>
-    using NativeHandleDevice = typename traits::NativeHandleDeviceType<TDev>::type;
 
     struct ConceptGetDev;
 
