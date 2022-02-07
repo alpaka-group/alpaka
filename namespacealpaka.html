@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('namespacealpaka.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 
-<p>Suggests vectorization of the directly following loop to the compiler.  
+<p>The alpaka accelerator library.  
 <a href="namespacealpaka.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -107,17 +107,14 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1core"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html">core</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1cpu"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cpu.html">cpu</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1cpu"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cuda.html">cuda</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1cuda"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1experimental"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html">experimental</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1extent"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html">extent</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1extent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1gb"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1gb.html">gb</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,7 +142,6 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacealpaka_1_1property"><td class="mdescLeft">&#160;</td><td class="mdescRight">Properties to define queue behavior. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1rand"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1rand"><td class="mdescLeft">&#160;</td><td class="mdescRight">The random number generation specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1test"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html">test</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1test"><td class="mdescLeft">&#160;</td><td class="mdescRight">The test specifics. <br /></td></tr>
@@ -159,7 +155,6 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacealpaka_1_1unit"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the units available for getting extent and indices of kernel executions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1warp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1warp.html">warp</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1warp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The thread warp specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -993,10 +988,8 @@ Variables</h2></td></tr>
 <tr class="separator:abd223e5dfb4b62614c25046db2a1d1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Suggests vectorization of the directly following loop to the compiler. </p>
-<p>The alpaka library.</p>
-<p>The alpaka accelerator library.</p>
-<p>Usage: <code>ALPAKA_VECTORIZE_HINT for(...){...}</code> </p>
+<div class="textblock"><p>The alpaka accelerator library. </p>
+<p>The alpaka library. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="a0668b792050a8ae5f1575da61ffe6217"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0668b792050a8ae5f1575da61ffe6217">&#9670;&nbsp;</a></span>Acc</h2>
@@ -1351,7 +1344,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00204">204</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00201">201</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1367,7 +1360,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00203">203</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00200">200</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1415,7 +1408,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00265">265</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00262">262</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -1431,7 +1424,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00264">264</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00261">261</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -6237,7 +6230,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Feb 4 2022 09:19:06 for alpaka by
+    <li class="footer">Generated on Mon Feb 7 2022 08:22:14 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

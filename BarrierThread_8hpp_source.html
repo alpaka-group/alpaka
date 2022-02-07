@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('BarrierThread_8hpp_source.html',''); i
 <div class="title">BarrierThread.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="BarrierThread_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2021 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber</span></div>
+<a href="BarrierThread_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -111,181 +111,176 @@ $(document).ready(function(){initNavTree('BarrierThread_8hpp_source.html',''); i
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#    include &lt;thread&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1core.html">alpaka::core</a></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">namespace </span>core</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core_1_1threads.html">   29</a></span>&#160;        <span class="keyword">namespace </span>threads</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {<span class="comment"></span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">            //! A self-resetting barrier.</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html">   33</a></span>&#160;            <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html">BarrierThread</a> final</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#a7150793c9a911121cf77174da40bd9c5">   36</a></span>&#160;                <span class="keyword">explicit</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#a7150793c9a911121cf77174da40bd9c5">BarrierThread</a>(TIdx <span class="keyword">const</span>&amp; threadCount)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                    : m_threadCount(threadCount)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                    , m_curThreadCount(threadCount)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                    , m_generation(0)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">                //! Waits for all the other threads to reach the barrier.</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3">   44</a></span>&#160;<span class="comment"></span>                <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3">wait</a>() -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                    TIdx <span class="keyword">const</span> generationWhenEnteredTheWait = m_generation;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    std::unique_lock&lt;std::mutex&gt; lock(m_mtxBarrier);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    <span class="keywordflow">if</span>(--m_curThreadCount == 0)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                        m_curThreadCount = m_threadCount;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                        ++m_generation;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                        m_cvAllThreadsReachedBarrier.notify_all();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                        m_cvAllThreadsReachedBarrier.wait(</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                            lock,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                            [<span class="keyword">this</span>, generationWhenEnteredTheWait]</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                            { <span class="keywordflow">return</span> generationWhenEnteredTheWait != m_generation; });</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                        <span class="keywordflow">while</span>(generationWhenEnteredTheWait == m_generation)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                            std::this_thread::yield();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                        }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                std::mutex m_mtxBarrier;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                std::condition_variable m_cvAllThreadsReachedBarrier;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keyword">const</span> TIdx m_threadCount;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                TIdx m_curThreadCount;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                TIdx m_generation;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                std::atomic&lt;TIdx&gt; m_curThreadCount;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                std::atomic&lt;TIdx&gt; m_generation;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            };</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core_1_1threads_1_1detail.html">   89</a></span>&#160;            <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp&gt;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">   92</a></span>&#160;                <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html">   94</a></span>&#160;                <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>&lt;<a class="code" href="structalpaka_1_1BlockCount.html">BlockCount</a>&gt;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                {</div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f">   96</a></span>&#160;                    <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f">operator()</a>(std::atomic&lt;int&gt;&amp; result, <span class="keywordtype">bool</span> value)</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        result += <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                };</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html">  102</a></span>&#160;                <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>&lt;<a class="code" href="structalpaka_1_1BlockAnd.html">BlockAnd</a>&gt;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                {</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#a8f4561f5884ab81524a4a94082b7d118">  104</a></span>&#160;                    <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#a8f4561f5884ab81524a4a94082b7d118">operator()</a>(std::atomic&lt;int&gt;&amp; result, <span class="keywordtype">bool</span> value)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        result &amp;= <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                };</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html">  110</a></span>&#160;                <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>&lt;<a class="code" href="structalpaka_1_1BlockOr.html">BlockOr</a>&gt;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                {</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca">  112</a></span>&#160;                    <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca">operator()</a>(std::atomic&lt;int&gt;&amp; result, <span class="keywordtype">bool</span> value)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                    {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                        result |= <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                    }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                };</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            } <span class="comment">// namespace detail</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">            //! A self-resetting barrier with barrier.</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html">  121</a></span>&#160;            <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html">BarrierThreadWithPredicate</a> final</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            {</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226">  124</a></span>&#160;                <span class="keyword">explicit</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226">BarrierThreadWithPredicate</a>(TIdx <span class="keyword">const</span>&amp; threadCount)</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                    : m_threadCount(threadCount)</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                    , m_curThreadCount(threadCount)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                    , m_generation(0)</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">                //! Waits for all the other threads to reach the barrier.</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment"></span>                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp&gt;</div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545">  133</a></span>&#160;                <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545">wait</a>(<span class="keywordtype">int</span> predicate) -&gt; <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                    TIdx <span class="keyword">const</span> generationWhenEnteredTheWait = m_generation;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                    std::unique_lock&lt;std::mutex&gt; lock(m_mtxBarrier);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    <span class="keyword">auto</span> <span class="keyword">const</span> generationMod2 = m_generation % <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(2u);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                    <span class="keywordflow">if</span>(m_curThreadCount == m_threadCount)</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    {</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                        m_result[generationMod2] = TOp::InitialValue;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    }</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core_1_1threads.html">   27</a></span>&#160;    <span class="keyword">namespace </span>threads</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">        //! A self-resetting barrier.</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html">   31</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html">BarrierThread</a> final</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#a7150793c9a911121cf77174da40bd9c5">   34</a></span>&#160;            <span class="keyword">explicit</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#a7150793c9a911121cf77174da40bd9c5">BarrierThread</a>(TIdx <span class="keyword">const</span>&amp; threadCount)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                : m_threadCount(threadCount)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                , m_curThreadCount(threadCount)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                , m_generation(0)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">            //! Waits for all the other threads to reach the barrier.</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3">   42</a></span>&#160;<span class="comment"></span>            <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3">wait</a>() -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                TIdx <span class="keyword">const</span> generationWhenEnteredTheWait = m_generation;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock(m_mtxBarrier);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keywordflow">if</span>(--m_curThreadCount == 0)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    m_curThreadCount = m_threadCount;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    ++m_generation;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    m_cvAllThreadsReachedBarrier.notify_all();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    m_cvAllThreadsReachedBarrier.wait(</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                        lock,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                        [<span class="keyword">this</span>, generationWhenEnteredTheWait] { <span class="keywordflow">return</span> generationWhenEnteredTheWait != m_generation; });</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keywordflow">while</span>(generationWhenEnteredTheWait == m_generation)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                        std::this_thread::yield();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            std::mutex m_mtxBarrier;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            std::condition_variable m_cvAllThreadsReachedBarrier;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">const</span> TIdx m_threadCount;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            TIdx m_curThreadCount;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            TIdx m_generation;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            std::atomic&lt;TIdx&gt; m_curThreadCount;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            std::atomic&lt;TIdx&gt; m_generation;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        };</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core_1_1threads_1_1detail.html">   86</a></span>&#160;        <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">   89</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html">   91</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>&lt;<a class="code" href="structalpaka_1_1BlockCount.html">BlockCount</a>&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            {</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f">   93</a></span>&#160;                <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f">operator()</a>(std::atomic&lt;int&gt;&amp; result, <span class="keywordtype">bool</span> value)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    result += <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            };</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html">   99</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>&lt;<a class="code" href="structalpaka_1_1BlockAnd.html">BlockAnd</a>&gt;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            {</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#a8f4561f5884ab81524a4a94082b7d118">  101</a></span>&#160;                <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#a8f4561f5884ab81524a4a94082b7d118">operator()</a>(std::atomic&lt;int&gt;&amp; result, <span class="keywordtype">bool</span> value)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    result &amp;= <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            };</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html">  107</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">AtomicOp</a>&lt;<a class="code" href="structalpaka_1_1BlockOr.html">BlockOr</a>&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            {</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca">  109</a></span>&#160;                <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca">operator()</a>(std::atomic&lt;int&gt;&amp; result, <span class="keywordtype">bool</span> value)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                    result |= <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(value);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            };</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        } <span class="comment">// namespace detail</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">        //! A self-resetting barrier with barrier.</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html">  118</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html">BarrierThreadWithPredicate</a> final</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226">  121</a></span>&#160;            <span class="keyword">explicit</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226">BarrierThreadWithPredicate</a>(TIdx <span class="keyword">const</span>&amp; threadCount)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                : m_threadCount(threadCount)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                , m_curThreadCount(threadCount)</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                , m_generation(0)</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">            //! Waits for all the other threads to reach the barrier.</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp&gt;</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545">  130</a></span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545">wait</a>(<span class="keywordtype">int</span> predicate) -&gt; <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            {</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                TIdx <span class="keyword">const</span> generationWhenEnteredTheWait = m_generation;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock(m_mtxBarrier);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> generationMod2 = m_generation % <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(2u);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                <span class="keywordflow">if</span>(m_curThreadCount == m_threadCount)</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                {</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    m_result[generationMod2] = TOp::InitialValue;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                std::atomic&lt;int&gt;&amp; result(m_result[generationMod2]);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                <span class="keywordtype">bool</span> <span class="keyword">const</span> predicateBool(predicate != 0);</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                    std::atomic&lt;int&gt;&amp; result(m_result[generationMod2]);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                    <span class="keywordtype">bool</span> <span class="keyword">const</span> predicateBool(predicate != 0);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">detail::AtomicOp&lt;TOp&gt;</a>()(result, predicateBool);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                    <span class="keywordflow">if</span>(--m_curThreadCount == 0)</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                        m_curThreadCount = m_threadCount;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                        ++m_generation;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                        m_cvAllThreadsReachedBarrier.notify_all();</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    }</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                        m_cvAllThreadsReachedBarrier.wait(</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                            lock,</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                            [<span class="keyword">this</span>, generationWhenEnteredTheWait]</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                            { <span class="keywordflow">return</span> generationWhenEnteredTheWait != m_generation; });</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                    }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                    <span class="keywordflow">return</span> m_result[generationMod2];</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                std::mutex m_mtxBarrier;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                std::condition_variable m_cvAllThreadsReachedBarrier;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                <span class="keyword">const</span> TIdx m_threadCount;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                TIdx m_curThreadCount;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                TIdx m_generation;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                std::atomic&lt;int&gt; m_result[2];</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            };</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        } <span class="comment">// namespace threads</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    } <span class="comment">// namespace core</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                <a class="code" href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">detail::AtomicOp&lt;TOp&gt;</a>()(result, predicateBool);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                <span class="keywordflow">if</span>(--m_curThreadCount == 0)</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                {</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                    m_curThreadCount = m_threadCount;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                    ++m_generation;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    m_cvAllThreadsReachedBarrier.notify_all();</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                {</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    m_cvAllThreadsReachedBarrier.wait(</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                        lock,</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                        [<span class="keyword">this</span>, generationWhenEnteredTheWait] { <span class="keywordflow">return</span> generationWhenEnteredTheWait != m_generation; });</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="keywordflow">return</span> m_result[generationMod2];</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            }</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            std::mutex m_mtxBarrier;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            std::condition_variable m_cvAllThreadsReachedBarrier;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keyword">const</span> TIdx m_threadCount;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            TIdx m_curThreadCount;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            TIdx m_generation;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            std::atomic&lt;int&gt; m_result[2];</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        };</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    } <span class="comment">// namespace threads</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructalpaka_1_1BlockOr_html"><div class="ttname"><a href="structalpaka_1_1BlockOr.html">alpaka::BlockOr</a></div><div class="ttdoc">The logical or function object.</div><div class="ttdef"><b>Definition:</b> <a href="block_2sync_2Traits_8hpp_source.html#l00078">Traits.hpp:78</a></div></div>
 <div class="ttc" id="astructalpaka_1_1BlockAnd_html"><div class="ttname"><a href="structalpaka_1_1BlockAnd.html">alpaka::BlockAnd</a></div><div class="ttdoc">The logical and function object.</div><div class="ttdef"><b>Definition:</b> <a href="block_2sync_2Traits_8hpp_source.html#l00063">Traits.hpp:63</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4_html_ad2a3e362e0bbc3532cb92eff1791f1ca"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca">alpaka::core::threads::detail::AtomicOp&lt; BlockOr &gt;::operator()</a></div><div class="ttdeci">void operator()(std::atomic&lt; int &gt; &amp;result, bool value)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00112">BarrierThread.hpp:112</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate_html_af8cb1128e39681c0f9d6b86bb0c2b545"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545">alpaka::core::threads::BarrierThreadWithPredicate::wait</a></div><div class="ttdeci">ALPAKA_FN_HOST auto wait(int predicate) -&gt; int</div><div class="ttdoc">Waits for all the other threads to reach the barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00133">BarrierThread.hpp:133</a></div></div>
+<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4_html_ad2a3e362e0bbc3532cb92eff1791f1ca"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca">alpaka::core::threads::detail::AtomicOp&lt; BlockOr &gt;::operator()</a></div><div class="ttdeci">void operator()(std::atomic&lt; int &gt; &amp;result, bool value)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00109">BarrierThread.hpp:109</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate_html_af8cb1128e39681c0f9d6b86bb0c2b545"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af8cb1128e39681c0f9d6b86bb0c2b545">alpaka::core::threads::BarrierThreadWithPredicate::wait</a></div><div class="ttdeci">ALPAKA_FN_HOST auto wait(int predicate) -&gt; int</div><div class="ttdoc">Waits for all the other threads to reach the barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00130">BarrierThread.hpp:130</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThread_html_af99e060569f1df01ec9c2608494783a3"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3">alpaka::core::threads::BarrierThread::wait</a></div><div class="ttdeci">auto wait() -&gt; void</div><div class="ttdoc">Waits for all the other threads to reach the barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00044">BarrierThread.hpp:44</a></div></div>
-<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4_html_a8f4561f5884ab81524a4a94082b7d118"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#a8f4561f5884ab81524a4a94082b7d118">alpaka::core::threads::detail::AtomicOp&lt; BlockAnd &gt;::operator()</a></div><div class="ttdeci">void operator()(std::atomic&lt; int &gt; &amp;result, bool value)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00104">BarrierThread.hpp:104</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate_html"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html">alpaka::core::threads::BarrierThreadWithPredicate</a></div><div class="ttdoc">A self-resetting barrier with barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00121">BarrierThread.hpp:121</a></div></div>
-<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_html"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">alpaka::core::threads::detail::AtomicOp</a></div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00092">BarrierThread.hpp:92</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThread_html_af99e060569f1df01ec9c2608494783a3"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#af99e060569f1df01ec9c2608494783a3">alpaka::core::threads::BarrierThread::wait</a></div><div class="ttdeci">auto wait() -&gt; void</div><div class="ttdoc">Waits for all the other threads to reach the barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00042">BarrierThread.hpp:42</a></div></div>
+<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4_html_a8f4561f5884ab81524a4a94082b7d118"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#a8f4561f5884ab81524a4a94082b7d118">alpaka::core::threads::detail::AtomicOp&lt; BlockAnd &gt;::operator()</a></div><div class="ttdeci">void operator()(std::atomic&lt; int &gt; &amp;result, bool value)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00101">BarrierThread.hpp:101</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate_html"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html">alpaka::core::threads::BarrierThreadWithPredicate</a></div><div class="ttdoc">A self-resetting barrier with barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00118">BarrierThread.hpp:118</a></div></div>
+<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_html"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html">alpaka::core::threads::detail::AtomicOp</a></div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00089">BarrierThread.hpp:89</a></div></div>
 <div class="ttc" id="astructalpaka_1_1BlockCount_html"><div class="ttname"><a href="structalpaka_1_1BlockCount.html">alpaka::BlockCount</a></div><div class="ttdoc">The counting function object.</div><div class="ttdef"><b>Definition:</b> <a href="block_2sync_2Traits_8hpp_source.html#l00048">Traits.hpp:48</a></div></div>
-<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4_html_a85011be7320707a2418e539e588f332f"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f">alpaka::core::threads::detail::AtomicOp&lt; BlockCount &gt;::operator()</a></div><div class="ttdeci">void operator()(std::atomic&lt; int &gt; &amp;result, bool value)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00096">BarrierThread.hpp:96</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThread_html_a7150793c9a911121cf77174da40bd9c5"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#a7150793c9a911121cf77174da40bd9c5">alpaka::core::threads::BarrierThread::BarrierThread</a></div><div class="ttdeci">BarrierThread(TIdx const &amp;threadCount)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00036">BarrierThread.hpp:36</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate_html_af4fc10fe2499ed74b5c81bb7b5696226"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226">alpaka::core::threads::BarrierThreadWithPredicate::BarrierThreadWithPredicate</a></div><div class="ttdeci">BarrierThreadWithPredicate(TIdx const &amp;threadCount)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00124">BarrierThread.hpp:124</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThread_html"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html">alpaka::core::threads::BarrierThread</a></div><div class="ttdoc">A self-resetting barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00033">BarrierThread.hpp:33</a></div></div>
+<div class="ttc" id="astructalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4_html_a85011be7320707a2418e539e588f332f"><div class="ttname"><a href="structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f">alpaka::core::threads::detail::AtomicOp&lt; BlockCount &gt;::operator()</a></div><div class="ttdeci">void operator()(std::atomic&lt; int &gt; &amp;result, bool value)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00093">BarrierThread.hpp:93</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1core_html"><div class="ttname"><a href="namespacealpaka_1_1core.html">alpaka::core</a></div><div class="ttdef"><b>Definition:</b> <a href="Align_8hpp_source.html#l00017">Align.hpp:17</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThread_html_a7150793c9a911121cf77174da40bd9c5"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#a7150793c9a911121cf77174da40bd9c5">alpaka::core::threads::BarrierThread::BarrierThread</a></div><div class="ttdeci">BarrierThread(TIdx const &amp;threadCount)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00034">BarrierThread.hpp:34</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate_html_af4fc10fe2499ed74b5c81bb7b5696226"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html#af4fc10fe2499ed74b5c81bb7b5696226">alpaka::core::threads::BarrierThreadWithPredicate::BarrierThreadWithPredicate</a></div><div class="ttdeci">BarrierThreadWithPredicate(TIdx const &amp;threadCount)</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00121">BarrierThread.hpp:121</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1threads_1_1BarrierThread_html"><div class="ttname"><a href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html">alpaka::core::threads::BarrierThread</a></div><div class="ttdoc">A self-resetting barrier.</div><div class="ttdef"><b>Definition:</b> <a href="BarrierThread_8hpp_source.html#l00031">BarrierThread.hpp:31</a></div></div>
 <div class="ttc" id="ablock_2sync_2Traits_8hpp_html"><div class="ttname"><a href="block_2sync_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="BarrierThread_8hpp.html">BarrierThread.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 4 2022 09:19:05 for alpaka by
+    <li class="footer">Generated on Mon Feb 7 2022 08:22:13 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

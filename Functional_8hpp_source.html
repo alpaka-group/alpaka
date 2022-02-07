@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('Functional_8hpp_source.html',''); init
 <div class="title">Functional.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="Functional_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2019 Benjamin Worpitz</span></div>
+<a href="Functional_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -100,48 +100,45 @@ $(document).ready(function(){initNavTree('Functional_8hpp_source.html',''); init
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1meta.html">alpaka::meta</a></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">namespace </span>meta</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1min.html">   19</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1min.html">min</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1min.html#a5e8fcd9566ec00f27e2431a23631fc86">   23</a></span>&#160;            constexpr <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1meta_1_1min.html#a5e8fcd9566ec00f27e2431a23631fc86">operator()</a>(<span class="keyword">const</span> T&amp; lhs, <span class="keyword">const</span> T&amp; rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">            </span>{</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                <span class="keywordflow">return</span> (lhs &lt; rhs) ? lhs : rhs;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        };</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1max.html">   30</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1max.html">max</a></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1max.html#a8908dc4a8211ca41222c992af1d87fe0">   34</a></span>&#160;            constexpr <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1meta_1_1max.html#a8908dc4a8211ca41222c992af1d87fe0">operator()</a>(<span class="keyword">const</span> T&amp; lhs, <span class="keyword">const</span> T&amp; rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">            </span>{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <span class="keywordflow">return</span> (lhs &gt; rhs) ? lhs : rhs;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        };</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    } <span class="comment">// namespace meta</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1min.html">   17</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1min.html">min</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1min.html#a5e8fcd9566ec00f27e2431a23631fc86">   21</a></span>&#160;        constexpr <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1meta_1_1min.html#a5e8fcd9566ec00f27e2431a23631fc86">operator()</a>(<span class="keyword">const</span> T&amp; lhs, <span class="keyword">const</span> T&amp; rhs)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <span class="keywordflow">return</span> (lhs &lt; rhs) ? lhs : rhs;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    };</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1max.html">   28</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1max.html">max</a></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1max.html#a8908dc4a8211ca41222c992af1d87fe0">   32</a></span>&#160;        constexpr <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1meta_1_1max.html#a8908dc4a8211ca41222c992af1d87fe0">operator()</a>(<span class="keyword">const</span> T&amp; lhs, <span class="keyword">const</span> T&amp; rhs)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">return</span> (lhs &gt; rhs) ? lhs : rhs;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    };</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;} <span class="comment">// namespace alpaka::meta</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aCommon_8hpp_html_aa8d02f0c4379afabdb7f4ee2e8f7954c"><div class="ttname"><a href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div><div class="ttdeci">#define ALPAKA_NO_HOST_ACC_WARNING</div><div class="ttdoc">Disable nvcc warning: 'calling a host function from host device function.' Usage: ALPAKA_NO_HOST_ACC_...</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00054">Common.hpp:54</a></div></div>
-<div class="ttc" id="astructalpaka_1_1meta_1_1min_html_a5e8fcd9566ec00f27e2431a23631fc86"><div class="ttname"><a href="structalpaka_1_1meta_1_1min.html#a5e8fcd9566ec00f27e2431a23631fc86">alpaka::meta::min::operator()</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_HOST_ACC auto operator()(const T &amp;lhs, const T &amp;rhs) const</div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00023">Functional.hpp:23</a></div></div>
-<div class="ttc" id="astructalpaka_1_1meta_1_1max_html_a8908dc4a8211ca41222c992af1d87fe0"><div class="ttname"><a href="structalpaka_1_1meta_1_1max.html#a8908dc4a8211ca41222c992af1d87fe0">alpaka::meta::max::operator()</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_HOST_ACC auto operator()(const T &amp;lhs, const T &amp;rhs) const</div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00034">Functional.hpp:34</a></div></div>
+<div class="ttc" id="astructalpaka_1_1meta_1_1min_html_a5e8fcd9566ec00f27e2431a23631fc86"><div class="ttname"><a href="structalpaka_1_1meta_1_1min.html#a5e8fcd9566ec00f27e2431a23631fc86">alpaka::meta::min::operator()</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_HOST_ACC auto operator()(const T &amp;lhs, const T &amp;rhs) const</div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00021">Functional.hpp:21</a></div></div>
+<div class="ttc" id="astructalpaka_1_1meta_1_1max_html_a8908dc4a8211ca41222c992af1d87fe0"><div class="ttname"><a href="structalpaka_1_1meta_1_1max.html#a8908dc4a8211ca41222c992af1d87fe0">alpaka::meta::max::operator()</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING constexpr ALPAKA_FN_HOST_ACC auto operator()(const T &amp;lhs, const T &amp;rhs) const</div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00032">Functional.hpp:32</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00036">Common.hpp:36</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
-<div class="ttc" id="astructalpaka_1_1meta_1_1max_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1max.html">alpaka::meta::max</a></div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00030">Functional.hpp:30</a></div></div>
-<div class="ttc" id="astructalpaka_1_1meta_1_1min_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1min.html">alpaka::meta::min</a></div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00019">Functional.hpp:19</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1meta_html"><div class="ttname"><a href="namespacealpaka_1_1meta.html">alpaka::meta</a></div><div class="ttdef"><b>Definition:</b> <a href="Apply_8hpp_source.html#l00012">Apply.hpp:12</a></div></div>
+<div class="ttc" id="astructalpaka_1_1meta_1_1max_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1max.html">alpaka::meta::max</a></div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00028">Functional.hpp:28</a></div></div>
+<div class="ttc" id="astructalpaka_1_1meta_1_1min_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1min.html">alpaka::meta::min</a></div><div class="ttdef"><b>Definition:</b> <a href="Functional_8hpp_source.html#l00017">Functional.hpp:17</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_9b06e2d5421d26ecb89f5fc8cf901459.html">meta</a></li><li class="navelem"><a class="el" href="Functional_8hpp.html">Functional.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 4 2022 09:19:05 for alpaka by
+    <li class="footer">Generated on Mon Feb 7 2022 08:22:13 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
