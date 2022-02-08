@@ -1,4 +1,4 @@
-/* Copyright 2021 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Antonio Di Pilato
  *
  * This file is part of alpaka.
  *
