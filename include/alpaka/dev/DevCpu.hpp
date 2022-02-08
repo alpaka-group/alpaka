@@ -189,7 +189,7 @@ namespace alpaka
         struct NativeHandle<DevCpu>
         {
             using type = int;
-            static auto getNativeHandle(DevCpu const& dev)
+            static auto getNativeHandle(DevCpu const& dev) -> type
             {
                 return dev.getNativeHandle();
             }

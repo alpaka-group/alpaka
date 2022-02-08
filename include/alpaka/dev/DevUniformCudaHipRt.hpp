@@ -171,7 +171,7 @@ namespace alpaka
         struct NativeHandle<DevUniformCudaHipRt>
         {
             using type = int;
-            static auto getNativeHandle(DevUniformCudaHipRt const& dev)
+            static auto getNativeHandle(DevUniformCudaHipRt const& dev) -> type
             {
                 return dev.getNativeHandle();
             }
