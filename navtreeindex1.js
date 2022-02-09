@@ -1,9 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"EventUniformCudaHipRt_8hpp.html":[4,0,0,0,8,4],
-"EventUniformCudaHipRt_8hpp_source.html":[4,0,0,0,8,4],
-"ExampleDefaultAcc_8hpp.html":[4,0,0,0,9,0],
-"ExampleDefaultAcc_8hpp.html#a8aec9660f2a0dd2e01db1edd34e4cafa":[4,0,0,0,9,0,0],
 "ExampleDefaultAcc_8hpp_source.html":[4,0,0,0,9,0],
 "Extent_8hpp.html":[4,0,0,0,22,8],
 "Extent_8hpp_source.html":[4,0,0,0,22,8],
@@ -249,5 +245,9 @@ var NAVTREEINDEX1 =
 "TaskKernelCpuThreads_8hpp.html":[4,0,0,0,13,5],
 "TaskKernelCpuThreads_8hpp_source.html":[4,0,0,0,13,5],
 "TaskKernelGpuUniformCudaHipRt_8hpp.html":[4,0,0,0,13,6],
-"TaskKernelGpuUniformCudaHipRt_8hpp.html#a0b0f5201f3d3aba739fda9ab1c0ecf7b":[4,0,0,0,13,6,10]
+"TaskKernelGpuUniformCudaHipRt_8hpp.html#a0b0f5201f3d3aba739fda9ab1c0ecf7b":[4,0,0,0,13,6,10],
+"TaskKernelGpuUniformCudaHipRt_8hpp.html#a552124cfd6ee8654baa53bc1710c0974":[4,0,0,0,13,6,9],
+"TaskKernelGpuUniformCudaHipRt_8hpp.html#af9741bdf6dda9699e1dd8ca18d81d16a":[4,0,0,0,13,6,8],
+"TaskKernelGpuUniformCudaHipRt_8hpp_source.html":[4,0,0,0,13,6],
+"TaskKernelOacc_8hpp.html":[4,0,0,0,13,7]
 };
