@@ -29,7 +29,7 @@ if [[ ! -z "${GITLAB_CI+x}" || ("${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" && "${A
 then
     cd build/
 
-    if [ "${CMAKE_CXX_COMPILER:-}" = "nvc++" ]
+    if [ "${CMAKE_CXX_COMPILER:-}" = "nvc++" ] || [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
     then
         # show gpu info in gitlab CI
         nvidia-smi || true
