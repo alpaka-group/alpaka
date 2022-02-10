@@ -8,9 +8,8 @@
     ALPAKA_CI_BUILD_JOBS: "$CI_CPUS"
     OMP_NUM_THREADS: "$CI_CPUS"
   script:
-    - source ./script/before_install.sh
-    - source ./script/install.sh
-    - source ./script/run.sh
+    - source ./script/gitlabci/print_env.sh
+    - source ./script/gitlab_ci_run.sh
   interruptible: true
 
 # ------ CUDA gcc ------
@@ -122,11 +121,6 @@
     ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
     # compile for VEGA64 GPU
     GPU_TARGETS: gfx900
-  before_script:
-    - apt-get -y --quiet update || echo "ignore any errors"
-    - apt-get -y --quiet install wget gnupg2
-    # AMD container keys are outdated and must be updated
-    - wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
   extends: .base
 
 .base_hip_compile_only:
