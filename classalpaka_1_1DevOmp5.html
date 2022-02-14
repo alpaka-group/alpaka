@@ -114,8 +114,8 @@ $(document).ready(function(){initNavTree('classalpaka_1_1DevOmp5.html',''); init
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b4e907588e77c0f3c112f495e5f9b5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevOmp5.html#a9b4e907588e77c0f3c112f495e5f9b5e">getAllQueues</a> () const -&gt; std::vector&lt; std::shared_ptr&lt; <a class="el" href="classalpaka_1_1IGenericThreadsQueue.html">IGenericThreadsQueue</a>&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> &gt;&gt;&gt;</td></tr>
 <tr class="separator:a9b4e907588e77c0f3c112f495e5f9b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5940331c04703ffd118d23c305e99735"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevOmp5.html#a5940331c04703ffd118d23c305e99735">iDevice</a> () const -&gt; int</td></tr>
-<tr class="separator:a5940331c04703ffd118d23c305e99735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f0121f2d88e79af25b3779bae466b79"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevOmp5.html#a7f0121f2d88e79af25b3779bae466b79">getNativeHandle</a> () const noexcept</td></tr>
+<tr class="separator:a7f0121f2d88e79af25b3779bae466b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a7ca0a58190066fb04cfc1bbcd8d5d5"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TExtent &gt; </td></tr>
 <tr class="memitem:a8a7ca0a58190066fb04cfc1bbcd8d5d5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevOmp5.html#a8a7ca0a58190066fb04cfc1bbcd8d5d5">mapStatic</a> (TElem *pHost, TExtent const &amp;extent) const -&gt; TElem *</td></tr>
 <tr class="memdesc:a8a7ca0a58190066fb04cfc1bbcd8d5d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create and/or return staticlly mapped device pointer of host address.  <a href="classalpaka_1_1DevOmp5.html#a8a7ca0a58190066fb04cfc1bbcd8d5d5">More...</a><br /></td></tr>
@@ -141,7 +141,7 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The Omp5 device handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00136">136</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00137">137</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9b4e907588e77c0f3c112f495e5f9b5e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b4e907588e77c0f3c112f495e5f9b5e">&#9670;&nbsp;</a></span>getAllQueues()</h2>
@@ -167,12 +167,12 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00167">167</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00169">169</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a5940331c04703ffd118d23c305e99735"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5940331c04703ffd118d23c305e99735">&#9670;&nbsp;</a></span>iDevice()</h2>
+<a id="a7f0121f2d88e79af25b3779bae466b79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f0121f2d88e79af25b3779bae466b79">&#9670;&nbsp;</a></span>getNativeHandle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,21 +181,20 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto alpaka::DevOmp5::iDevice </td>
+          <td class="memname">auto alpaka::DevOmp5::getNativeHandle </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; int
-        </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00155">155</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00157">157</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -238,7 +237,7 @@ template&lt;typename TElem , typename TExtent &gt; </div>
 
 <p>Create and/or return staticlly mapped device pointer of host address. </p>
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00162">162</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00164">164</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -267,7 +266,7 @@ template&lt;typename TElem , typename TExtent &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00151">151</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00152">152</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -296,7 +295,7 @@ template&lt;typename TElem , typename TExtent &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00147">147</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00148">148</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -327,7 +326,7 @@ template&lt;typename TElem , typename TExtent &gt; </div>
 
 <p>Registers the given queue on this device. NOTE: Every queue has to be registered for correct functionality of device wait operations! </p>
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00175">175</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00177">177</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -352,7 +351,7 @@ template&lt;typename TElem , typename TExtent &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00140">140</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00141">141</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -369,7 +368,7 @@ template&lt;typename TElem , typename TExtent &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00181">181</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00183">183</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -382,7 +381,7 @@ template&lt;typename TElem , typename TExtent &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 13:14:22 for alpaka by
+    <li class="footer">Generated on Mon Feb 14 2022 16:48:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

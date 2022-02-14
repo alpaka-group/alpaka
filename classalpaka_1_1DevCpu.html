@@ -115,6 +115,8 @@ $(document).ready(function(){initNavTree('classalpaka_1_1DevCpu.html',''); initR
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab324b087702441f8c017c75282f2c87c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevCpu.html#ab324b087702441f8c017c75282f2c87c">getAllQueues</a> () const -&gt; std::vector&lt; std::shared_ptr&lt; <a class="el" href="namespacealpaka_1_1cpu.html#a63e1bf3207d308d5e6f7f4e012f2d00e">cpu::ICpuQueue</a> &gt;&gt;</td></tr>
 <tr class="separator:ab324b087702441f8c017c75282f2c87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2da988a706d5cad069288fd114016482"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482">getNativeHandle</a> () const noexcept</td></tr>
+<tr class="separator:a2da988a706d5cad069288fd114016482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05a024d2bb357066a6557066c281996e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e">operator!=</a> (<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> const &amp;rhs) const -&gt; bool</td></tr>
 <tr class="separator:a05a024d2bb357066a6557066c281996e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3492d59ae31f40221aae144c0d0a945e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevCpu.html#a3492d59ae31f40221aae144c0d0a945e">operator==</a> (<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> const &amp;) const -&gt; bool</td></tr>
@@ -141,7 +143,7 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The CPU device handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00090">90</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00092">92</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acd010da121738074cde3aab4b726b11d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd010da121738074cde3aab4b726b11d">&#9670;&nbsp;</a></span>DevCpu()</h2>
@@ -166,7 +168,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00097">97</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00099">99</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -195,7 +197,34 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00111">111</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00113">113</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a2da988a706d5cad069288fd114016482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2da988a706d5cad069288fd114016482">&#9670;&nbsp;</a></span>getNativeHandle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto alpaka::DevCpu::getNativeHandle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00125">125</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -224,7 +253,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00106">106</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00108">108</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -253,7 +282,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00102">102</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00104">104</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -284,7 +313,7 @@ Friends</h2></td></tr>
 
 <p>Registers the given queue on this device. NOTE: Every queue has to be registered for correct functionality of device wait operations! </p>
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00118">118</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00120">120</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -309,7 +338,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00094">94</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00096">96</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -326,7 +355,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00124">124</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00131">131</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -339,7 +368,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 13:14:22 for alpaka by
+    <li class="footer">Generated on Mon Feb 14 2022 16:48:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

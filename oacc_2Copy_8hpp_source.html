@@ -88,7 +88,7 @@ $(document).ready(function(){initNavTree('oacc_2Copy_8hpp_source.html',''); init
 </div><!--header-->
 <div class="contents">
 <a href="oacc_2Copy_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Manfred Gruber</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Manfred Gruber, Antonio Di Pilato</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This file is part of Alpaka.</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('oacc_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> printDebug() const -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                    std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; dev: &quot;</span> &lt;&lt; m_dev.iDevice() &lt;&lt; <span class="stringliteral">&quot; ew: &quot;</span> &lt;&lt; m_extent</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                    std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; dev: &quot;</span> &lt;&lt; m_dev.getNativeHandle() &lt;&lt; <span class="stringliteral">&quot; ew: &quot;</span> &lt;&lt; m_extent</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot; dw: &quot;</span> &lt;&lt; m_dstExtent &lt;&lt; <span class="stringliteral">&quot; dptr: &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(m_dstMemNative)</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot; sw: &quot;</span> &lt;&lt; m_srcExtent &lt;&lt; <span class="stringliteral">&quot; sptr: &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(m_srcMemNative)</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                              &lt;&lt; std::endl;</div>
@@ -336,133 +336,135 @@ $(document).ready(function(){initNavTree('oacc_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> printDebug() const -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                {</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                    std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; dev: &quot;</span> &lt;&lt; m_dev.iDevice() &lt;&lt; <span class="stringliteral">&quot; ew: &quot;</span> &lt;&lt; <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>(1u) &lt;&lt; <span class="stringliteral">&quot; dw: &quot;</span> &lt;&lt; <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>(1u)</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot; dptr: &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(m_dstMemNative) &lt;&lt; <span class="stringliteral">&quot; sw: &quot;</span> &lt;&lt; <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>(1u)</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot; sptr: &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(m_srcMemNative) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                }</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> operator()() const -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                {</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                    <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                    printDebug();</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                    m_dev.makeCurrent();</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                    m_copyPred(</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                        <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(this-&gt;m_dstMemNative),</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                        <span class="keyword">const_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> const*<span class="keyword">&gt;</span>(this-&gt;m_srcMemNative)),</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                        <span class="keyword">sizeof</span>(<a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>));</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                }</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                <span class="keyword">const</span> DevOacc m_dev;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                std::uint8_t* <span class="keyword">const</span> m_dstMemNative;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                std::uint8_t <span class="keyword">const</span>* <span class="keyword">const</span> m_srcMemNative;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                TCopyPred m_copyPred;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            };</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        } <span class="comment">// namespace detail</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    } <span class="comment">// namespace oacc</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="comment">// Trait specializations for CreateTaskCopy.</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">        //! The CPU to OpenACC memory copy trait specialization.</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim&gt;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevOacc, DevCpu&gt;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        {</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDst&gt;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">createTaskMemcpy</a>(</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                TViewDst&amp; viewDst,</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                TViewSrc <span class="keyword">const</span>&amp; viewSrc,</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                TExtent <span class="keyword">const</span>&amp; extent)</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                    makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                        viewDst,</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                        viewSrc,</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                        extent,</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                        <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst),</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                        acc_memcpy_to_device);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            }</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        };</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">        //! The OpenACC to CPU memory copy trait specialization.</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim&gt;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevCpu, DevOacc&gt;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        {</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDst&gt;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">createTaskMemcpy</a>(</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                TViewDst&amp; viewDst,</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                TViewSrc <span class="keyword">const</span>&amp; viewSrc,</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                TExtent <span class="keyword">const</span>&amp; extent)</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            {</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                        viewDst,</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                        viewSrc,</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                        extent,</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                        <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc),</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                        acc_memcpy_from_device);</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            }</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        };</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment">        //! The OpenACC to OpenACC memory copy trait specialization.</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim&gt;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevOacc, DevOacc&gt;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        {</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDst&gt;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">createTaskMemcpy</a>(</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                TViewDst&amp; viewDst,</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                TViewSrc <span class="keyword">const</span>&amp; viewSrc,</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                TExtent <span class="keyword">const</span>&amp; extent)</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            {</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="preprocessor">#    if _OPENACC &gt;= 201510 &amp;&amp; (!defined __GNUC__)</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                <span class="comment">// acc_memcpy_device is only available since OpenACC2.5, but we want the tests to compile anyway</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                <span class="keywordflow">if</span>(<a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst).m_spDevOaccImpl-&gt;iDevice() == <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc).m_spDevOaccImpl-&gt;iDevice())</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                {</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                    <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                        makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                            viewDst,</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                            viewSrc,</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                            extent,</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                            <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst),</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                            acc_memcpy_device);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                }</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                {</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                    <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                        makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                            viewDst,</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                            viewSrc,</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                            extent,</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;                            <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst),</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                            [devSrc = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc),</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                             devDst = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst)](<span class="keywordtype">void</span>* dst, <span class="keywordtype">void</span>* src, std::size_t <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>)</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                            {</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                                std::unique_ptr&lt;void, decltype(&amp;<a class="code" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">core::alignedFree</a>)&gt; buf(</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                                    <a class="code" href="namespacealpaka_1_1core.html#aac97800a3823af1fc97594e29b6677ab">core::alignedAlloc</a>(<a class="code" href="namespacealpaka_1_1core_1_1vectorization.html#a2d12f7e6f724f279a7baf91a5d3b40be">core::vectorization::defaultAlignment</a>, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>),</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                                    &amp;<a class="code" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">core::alignedFree</a>);</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                                devSrc.makeCurrent();</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                                acc_memcpy_from_device(buf.get(), src, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                                devDst.makeCurrent();</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                                acc_memcpy_to_device(dst, buf.get(), <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                            });</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                }</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        };</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                    std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; dev: &quot;</span> &lt;&lt; m_dev.getNativeHandle() &lt;&lt; <span class="stringliteral">&quot; ew: &quot;</span> &lt;&lt; <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>(1u)</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot; dw: &quot;</span> &lt;&lt; <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>(1u) &lt;&lt; <span class="stringliteral">&quot; dptr: &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(m_dstMemNative)</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot; sw: &quot;</span> &lt;&lt; <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>(1u) &lt;&lt; <span class="stringliteral">&quot; sptr: &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(m_srcMemNative)</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                }</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> operator()() const -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                {</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                    <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                    printDebug();</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                    m_dev.makeCurrent();</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    m_copyPred(</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                        <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(this-&gt;m_dstMemNative),</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                        <span class="keyword">const_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> const*<span class="keyword">&gt;</span>(this-&gt;m_srcMemNative)),</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                        <span class="keyword">sizeof</span>(<a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>));</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                }</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="keyword">const</span> DevOacc m_dev;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                std::uint8_t* <span class="keyword">const</span> m_dstMemNative;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                std::uint8_t <span class="keyword">const</span>* <span class="keyword">const</span> m_srcMemNative;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                TCopyPred m_copyPred;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            };</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        } <span class="comment">// namespace detail</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    } <span class="comment">// namespace oacc</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="comment">// Trait specializations for CreateTaskCopy.</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">        //! The CPU to OpenACC memory copy trait specialization.</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevOacc, DevCpu&gt;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        {</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDst&gt;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">createTaskMemcpy</a>(</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                TViewDst&amp; viewDst,</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                TViewSrc <span class="keyword">const</span>&amp; viewSrc,</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                TExtent <span class="keyword">const</span>&amp; extent)</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            {</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                    makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                        viewDst,</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                        viewSrc,</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                        extent,</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                        <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst),</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                        acc_memcpy_to_device);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            }</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        };</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">        //! The OpenACC to CPU memory copy trait specialization.</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevCpu, DevOacc&gt;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        {</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDst&gt;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">createTaskMemcpy</a>(</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                TViewDst&amp; viewDst,</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                TViewSrc <span class="keyword">const</span>&amp; viewSrc,</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                TExtent <span class="keyword">const</span>&amp; extent)</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            {</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                        viewDst,</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                        viewSrc,</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                        extent,</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                        <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc),</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                        acc_memcpy_from_device);</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            }</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        };</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">        //! The OpenACC to OpenACC memory copy trait specialization.</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevOacc, DevOacc&gt;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        {</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDst&gt;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a75518a15325404b63696b9261ea9bd34">createTaskMemcpy</a>(</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                TViewDst&amp; viewDst,</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                TViewSrc <span class="keyword">const</span>&amp; viewSrc,</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                TExtent <span class="keyword">const</span>&amp; extent)</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            {</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="preprocessor">#    if _OPENACC &gt;= 201510 &amp;&amp; (!defined __GNUC__)</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                <span class="comment">// acc_memcpy_device is only available since OpenACC2.5, but we want the tests to compile anyway</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                <span class="keywordflow">if</span>(<a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst).m_spDevOaccImpl-&gt;getNativeHandle()</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                   == <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc).m_spDevOaccImpl-&gt;getNativeHandle())</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                {</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                    <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                        makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                            viewDst,</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                            viewSrc,</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                            extent,</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                            <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst),</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                            acc_memcpy_device);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                }</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                {</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                    <span class="keywordflow">return</span> alpaka::oacc::detail::</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                        makeTaskCopyOacc&lt;alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent&gt;(</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                            viewDst,</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;                            viewSrc,</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                            extent,</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                            <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst),</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                            [devSrc = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewSrc),</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                             devDst = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(viewDst)](<span class="keywordtype">void</span>* dst, <span class="keywordtype">void</span>* src, std::size_t <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>)</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                            {</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                                std::unique_ptr&lt;void, decltype(&amp;<a class="code" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">core::alignedFree</a>)&gt; buf(</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                                    <a class="code" href="namespacealpaka_1_1core.html#aac97800a3823af1fc97594e29b6677ab">core::alignedAlloc</a>(<a class="code" href="namespacealpaka_1_1core_1_1vectorization.html#a2d12f7e6f724f279a7baf91a5d3b40be">core::vectorization::defaultAlignment</a>, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>),</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                                    &amp;<a class="code" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">core::alignedFree</a>);</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                                devSrc.makeCurrent();</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                                acc_memcpy_from_device(buf.get(), src, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                                devDst.makeCurrent();</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                                acc_memcpy_to_device(dst, buf.get(), <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                            });</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            }</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        };</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aVectorize_8hpp_html"><div class="ttname"><a href="Vectorize_8hpp.html">Vectorize.hpp</a></div></div>
@@ -500,7 +502,7 @@ $(document).ready(function(){initNavTree('oacc_2Copy_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_6c93a0db3d8099b4c959509b1dc3473b.html">oacc</a></li><li class="navelem"><a class="el" href="oacc_2Copy_8hpp.html">Copy.hpp</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 13:14:22 for alpaka by
+    <li class="footer">Generated on Mon Feb 14 2022 16:48:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

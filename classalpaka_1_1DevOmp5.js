@@ -1,7 +1,7 @@
 var classalpaka_1_1DevOmp5 =
 [
     [ "getAllQueues", "classalpaka_1_1DevOmp5.html#a9b4e907588e77c0f3c112f495e5f9b5e", null ],
-    [ "iDevice", "classalpaka_1_1DevOmp5.html#a5940331c04703ffd118d23c305e99735", null ],
+    [ "getNativeHandle", "classalpaka_1_1DevOmp5.html#a7f0121f2d88e79af25b3779bae466b79", null ],
     [ "mapStatic", "classalpaka_1_1DevOmp5.html#a8a7ca0a58190066fb04cfc1bbcd8d5d5", null ],
     [ "operator!=", "classalpaka_1_1DevOmp5.html#adb4b0ed1d895fd74e00e9a8ee7730f2f", null ],
     [ "operator==", "classalpaka_1_1DevOmp5.html#afd2d970f4784be5ee5a2018fa083bd7f", null ],

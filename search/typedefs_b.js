@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['offloadbuiltinsharedmem_4363',['OffloadBuiltInSharedMem',['../namespacealpaka.html#a9704eeb726b281f9fc3c3c9f0f52dad0',1,'alpaka']]]
+  ['nativehandle_4371',['NativeHandle',['../namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60',1,'alpaka']]]
 ];

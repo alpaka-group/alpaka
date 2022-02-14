@@ -509,6 +509,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a0dc8244519a754f60c4c8186a26a82fc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0dc8244519a754f60c4c8186a26a82fc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a> = typename <a class="el" href="structalpaka_1_1traits_1_1IdxType.html">traits::IdxType</a>&lt; T &gt;::type</td></tr>
 <tr class="separator:a0dc8244519a754f60c4c8186a26a82fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e6b1402f1e49d215eec8772c4e29b60"><td class="memTemplParams" colspan="2">template&lt;typename TImpl &gt; </td></tr>
+<tr class="memitem:a7e6b1402f1e49d215eec8772c4e29b60"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">NativeHandle</a> = decltype(<a class="el" href="namespacealpaka.html#aa56ad4ba3f41bcea4e804b88d05c9ac0">getNativeHandle</a>(std::declval&lt; TImpl &gt;()))</td></tr>
+<tr class="memdesc:a7e6b1402f1e49d215eec8772c4e29b60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to the type of the native handle.  <a href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">More...</a><br /></td></tr>
+<tr class="separator:a7e6b1402f1e49d215eec8772c4e29b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9704eeb726b281f9fc3c3c9f0f52dad0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9704eeb726b281f9fc3c3c9f0f52dad0">OffloadBuiltInSharedMem</a> = <a class="el" href="structalpaka_1_1OffloadBuiltInSharedMemOff.html">OffloadBuiltInSharedMemOff</a></td></tr>
 <tr class="separator:a9704eeb726b281f9fc3c3c9f0f52dad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50d14d58d7efe4814cbbd3dceb67d22c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -753,6 +757,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a2f6580f456ad2faecf55eaadfe145cc6"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a2f6580f456ad2faecf55eaadfe145cc6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2f6580f456ad2faecf55eaadfe145cc6">getName</a> (TDev const &amp;dev) -&gt; std::string</td></tr>
 <tr class="separator:a2f6580f456ad2faecf55eaadfe145cc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56ad4ba3f41bcea4e804b88d05c9ac0"><td class="memTemplParams" colspan="2">template&lt;typename TImpl &gt; </td></tr>
+<tr class="memitem:aa56ad4ba3f41bcea4e804b88d05c9ac0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa56ad4ba3f41bcea4e804b88d05c9ac0">getNativeHandle</a> (TImpl const &amp;impl)</td></tr>
+<tr class="memdesc:aa56ad4ba3f41bcea4e804b88d05c9ac0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the native handle of the alpaka object. It will return the alpaka object handle if there is any, otherwise it generates a compile time error.  <a href="namespacealpaka.html#aa56ad4ba3f41bcea4e804b88d05c9ac0">More...</a><br /></td></tr>
+<tr class="separator:aa56ad4ba3f41bcea4e804b88d05c9ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ab29380ee728427c2c29fcefccfcce4"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TOffsets &gt; </td></tr>
 <tr class="memitem:a4ab29380ee728427c2c29fcefccfcce4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4ab29380ee728427c2c29fcefccfcce4">getOffset</a> (TOffsets const &amp;offsets) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TOffsets &gt;</td></tr>
 <tr class="separator:a4ab29380ee728427c2c29fcefccfcce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1117,7 +1125,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00065">65</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00073">73</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1269,6 +1277,26 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a7e6b1402f1e49d215eec8772c4e29b60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e6b1402f1e49d215eec8772c4e29b60">&#9670;&nbsp;</a></span>NativeHandle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TImpl &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">alpaka::NativeHandle</a> = typedef decltype(<a class="el" href="namespacealpaka.html#aa56ad4ba3f41bcea4e804b88d05c9ac0">getNativeHandle</a>(std::declval&lt;TImpl&gt;()))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Alias to the type of the native handle. </p>
+
+<p class="definition">Definition at line <a class="el" href="traits_2Traits_8hpp_source.html#l00041">41</a> of file <a class="el" href="traits_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a9704eeb726b281f9fc3c3c9f0f52dad0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9704eeb726b281f9fc3c3c9f0f52dad0">&#9670;&nbsp;</a></span>OffloadBuiltInSharedMem</h2>
 
@@ -1344,7 +1372,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00201">201</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00218">218</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1360,7 +1388,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00200">200</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00217">217</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1436,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00262">262</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00274">274</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -1424,7 +1452,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00261">261</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00273">273</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -3830,6 +3858,30 @@ template&lt;typename TDev &gt; </div>
 
 </div>
 </div>
+<a id="aa56ad4ba3f41bcea4e804b88d05c9ac0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56ad4ba3f41bcea4e804b88d05c9ac0">&#9670;&nbsp;</a></span>getNativeHandle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TImpl &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::getNativeHandle </td>
+          <td>(</td>
+          <td class="paramtype">TImpl const &amp;&#160;</td>
+          <td class="paramname"><em>impl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the native handle of the alpaka object. It will return the alpaka object handle if there is any, otherwise it generates a compile time error. </p>
+
+<p class="definition">Definition at line <a class="el" href="traits_2Traits_8hpp_source.html#l00034">34</a> of file <a class="el" href="traits_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a4ab29380ee728427c2c29fcefccfcce4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4ab29380ee728427c2c29fcefccfcce4">&#9670;&nbsp;</a></span>getOffset()</h2>
 
@@ -6230,7 +6282,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 13:14:22 for alpaka by
+    <li class="footer">Generated on Mon Feb 14 2022 16:48:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

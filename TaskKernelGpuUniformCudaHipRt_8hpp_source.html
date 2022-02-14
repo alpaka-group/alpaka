@@ -88,7 +88,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 </div><!--header-->
 <div class="contents">
 <a href="TaskKernelGpuUniformCudaHipRt_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Manfred Gruber</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Manfred Gruber, Antonio Di Pilato</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
@@ -350,184 +350,186 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="preprocessor">#        endif</span></div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="comment">// Set the current device.</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(<a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(SetDevice)(queue.m_spQueueImpl-&gt;m_dev.m_iDevice));</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                <span class="comment">// Enqueue the kernel execution.</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                <span class="comment">// \NOTE: No const reference (const &amp;) is allowed as the parameter type because the kernel launch</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <span class="comment">// language extension expects the arguments by value. This forces the type of a float argument given</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <span class="comment">// with std::forward to this function to be of type float instead of e.g. &quot;float const &amp; __ptr64&quot;</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="comment">// (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                <span class="comment">// value location.</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args)</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                    {</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                        kernelName&lt;&lt;&lt;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                            gridDim,</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                            blockDim,</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue&gt;&gt;&gt;(</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                            threadElemExtent,</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                            task.m_kernelFnObj,</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                            args...);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="preprocessor">#        else</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                        hipLaunchKernelGGL(</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                            HIP_KERNEL_NAME(kernelName),</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                            gridDim,</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                            blockDim,</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue,</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                            threadElemExtent,</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                            task.m_kernelFnObj,</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                            args...);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                    },</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                    task.m_args);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                <span class="comment">// Wait for the kernel execution to finish but do not check error return of this call.</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                <span class="comment">// Do not use the alpaka::wait method because it checks the error itself but we want to give a custom</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                <span class="comment">// error message.</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(StreamSynchronize)(queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                std::string <span class="keyword">const</span> msg(</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                    <span class="stringliteral">&quot;&#39;execution of kernel: &#39;&quot;</span> + std::string(<span class="keyword">typeid</span>(TKernelFnObj).name()) + <span class="stringliteral">&quot;&#39; failed with&quot;</span>);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">::alpaka::uniform_cuda_hip::detail::rtCheckLastError</a>(msg.c_str(), __FILE__, __LINE__);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            }</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        };<span class="comment"></span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">        //! The CUDA/HIP synchronous kernel enqueue trait specialization.</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00310"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html">  310</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1Enqueue.html">Enqueue</a>&lt;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <a class="code" href="classalpaka_1_1QueueUniformCudaHipRtBlocking.html">QueueUniformCudaHipRtBlocking</a>,</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <a class="code" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt;TAcc, TDim, <a class="code" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        {</div>
-<div class="line"><a name="l00314"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html#a0d5774b86a8a78dd53f7c500e947bb74">  314</a></span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html#a0d5774b86a8a78dd53f7c500e947bb74">enqueue</a>(</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                <a class="code" href="classalpaka_1_1QueueUniformCudaHipRtBlocking.html">QueueUniformCudaHipRtBlocking</a>&amp; queue,</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <a class="code" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt&lt;TAcc, TDim, TIdx, TKernelFnObj, TArgs...&gt;</a> <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            {</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                <span class="comment">// TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) &lt; available memory idx</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                <span class="comment">// std::size_t printfFifoSize;</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                <span class="comment">// cudaDeviceGetLimit(&amp;printfFifoSize, cudaLimitPrintfFifoSize);</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                <span class="comment">// std::cout &lt;&lt; __func__ &lt;&lt; &quot;INFO: printfFifoSize: &quot; &lt;&lt; printfFifoSize &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                <span class="comment">// cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                <span class="comment">// cudaDeviceGetLimit(&amp;printfFifoSize, cudaLimitPrintfFifoSize);</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                <span class="comment">// std::cout &lt;&lt; __func__ &lt;&lt; &quot;INFO: printfFifoSize: &quot; &lt;&lt;  printfFifoSize &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> gridBlockExtent = getWorkDiv&lt;Grid, Blocks&gt;(task);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadExtent = getWorkDiv&lt;Block, Threads&gt;(task);</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> threadElemExtent = getWorkDiv&lt;Thread, Elems&gt;(task);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                dim3 <span class="keyword">const</span> gridDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(gridBlockExtent);</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                dim3 <span class="keyword">const</span> blockDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(blockThreadExtent);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="preprocessor">#        else</span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                dim3 gridDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(gridBlockExtent);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                dim3 blockDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(blockThreadExtent);</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#af9741bdf6dda9699e1dd8ca18d81d16a">uniform_cuda_hip::detail::checkVecOnly3Dim</a>(threadElemExtent);</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(SetDevice)(queue.m_spQueueImpl-&gt;m_dev.getNativeHandle()));</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                <span class="comment">// Enqueue the kernel execution.</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <span class="comment">// \NOTE: No const reference (const &amp;) is allowed as the parameter type because the kernel launch</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <span class="comment">// language extension expects the arguments by value. This forces the type of a float argument given</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="comment">// with std::forward to this function to be of type float instead of e.g. &quot;float const &amp; __ptr64&quot;</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                <span class="comment">// (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="comment">// value location.</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args)</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                    {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                        kernelName&lt;&lt;&lt;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                            gridDim,</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                            blockDim,</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue&gt;&gt;&gt;(</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                            threadElemExtent,</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                            task.m_kernelFnObj,</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                            args...);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="preprocessor">#        else</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                        hipLaunchKernelGGL(</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                            HIP_KERNEL_NAME(kernelName),</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                            gridDim,</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                            blockDim,</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue,</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                            threadElemExtent,</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                            task.m_kernelFnObj,</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                            args...);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                    },</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                    task.m_args);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                <span class="comment">// Wait for the kernel execution to finish but do not check error return of this call.</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                <span class="comment">// Do not use the alpaka::wait method because it checks the error itself but we want to give a custom</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                <span class="comment">// error message.</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(StreamSynchronize)(queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                std::string <span class="keyword">const</span> msg(</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                    <span class="stringliteral">&quot;&#39;execution of kernel: &#39;&quot;</span> + std::string(<span class="keyword">typeid</span>(TKernelFnObj).name()) + <span class="stringliteral">&quot;&#39; failed with&quot;</span>);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">::alpaka::uniform_cuda_hip::detail::rtCheckLastError</a>(msg.c_str(), __FILE__, __LINE__);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            }</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        };<span class="comment"></span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">        //! The CUDA/HIP synchronous kernel enqueue trait specialization.</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00311"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html">  311</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1Enqueue.html">Enqueue</a>&lt;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <a class="code" href="classalpaka_1_1QueueUniformCudaHipRtBlocking.html">QueueUniformCudaHipRtBlocking</a>,</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            <a class="code" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt;TAcc, TDim, <a class="code" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        {</div>
+<div class="line"><a name="l00315"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html#a0d5774b86a8a78dd53f7c500e947bb74">  315</a></span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html#a0d5774b86a8a78dd53f7c500e947bb74">enqueue</a>(</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <a class="code" href="classalpaka_1_1QueueUniformCudaHipRtBlocking.html">QueueUniformCudaHipRtBlocking</a>&amp; queue,</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                <a class="code" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt&lt;TAcc, TDim, TIdx, TKernelFnObj, TArgs...&gt;</a> <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            {</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                <span class="comment">// TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) &lt; available memory idx</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                <span class="comment">// std::size_t printfFifoSize;</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                <span class="comment">// cudaDeviceGetLimit(&amp;printfFifoSize, cudaLimitPrintfFifoSize);</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                <span class="comment">// std::cout &lt;&lt; __func__ &lt;&lt; &quot;INFO: printfFifoSize: &quot; &lt;&lt; printfFifoSize &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                <span class="comment">// cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                <span class="comment">// cudaDeviceGetLimit(&amp;printfFifoSize, cudaLimitPrintfFifoSize);</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                <span class="comment">// std::cout &lt;&lt; __func__ &lt;&lt; &quot;INFO: printfFifoSize: &quot; &lt;&lt;  printfFifoSize &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> gridBlockExtent = getWorkDiv&lt;Grid, Blocks&gt;(task);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockThreadExtent = getWorkDiv&lt;Block, Threads&gt;(task);</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> threadElemExtent = getWorkDiv&lt;Thread, Elems&gt;(task);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                dim3 <span class="keyword">const</span> gridDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(gridBlockExtent);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                dim3 <span class="keyword">const</span> blockDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(blockThreadExtent);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="preprocessor">#        else</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                dim3 gridDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(gridBlockExtent);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                dim3 blockDim = <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a>(blockThreadExtent);</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#af9741bdf6dda9699e1dd8ca18d81d16a">uniform_cuda_hip::detail::checkVecOnly3Dim</a>(threadElemExtent);</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot;gridDim: &quot;</span> &lt;&lt; gridDim.z &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; gridDim.y &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; gridDim.x &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot;blockDim: &quot;</span> &lt;&lt; blockDim.z &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; blockDim.y &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; blockDim.x</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                          &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                <span class="comment">// This checks for a valid work division that is also compliant with the maxima of the accelerator.</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                <span class="keywordflow">if</span>(!isValidWorkDiv&lt;TAcc&gt;(<a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(queue), task))</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                {</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                    <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                        <span class="stringliteral">&quot;The given work division is not valid or not supported by the device of type &quot;</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                        + <a class="code" href="namespacealpaka.html#ac49b3c4b09c8a7455e8f88faa51484df">getAccName</a>&lt;<a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt&lt;TDim, TIdx&gt;</a>&gt;() + <span class="stringliteral">&quot;!&quot;</span>);</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                }</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args) {</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                        <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;TAcc&gt;(</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                            task.m_kernelFnObj,</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                            blockThreadExtent,</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                            threadElemExtent,</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                            args...);</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                    },</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                    task.m_args);</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                <span class="comment">// Log the block shared memory idx.</span></div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; BlockSharedMemDynSizeBytes: &quot;</span> &lt;&lt; blockSharedMemDynSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                          &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;                <span class="keyword">auto</span> kernelName = uniform_cuda_hip::detail::</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                    uniformCudaHipKernel&lt;TAcc, TDim, TIdx, TKernelFnObj, remove_restrict_t&lt;std::decay_t&lt;TArgs&gt;&gt;...&gt;;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                <span class="comment">// hipFuncAttributes not ported from HIP to HIP.</span></div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                <span class="comment">// TODO why this is currently not possible</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                <span class="comment">//</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                <span class="comment">// Log the function attributes.</span></div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">#            if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(FuncAttributes) funcAttrs;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;                <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(FuncGetAttributes)(&amp;funcAttrs, kernelName);</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; binaryVersion: &quot;</span> &lt;&lt; funcAttrs.binaryVersion</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; constSizeBytes: &quot;</span> &lt;&lt; funcAttrs.constSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; localSizeBytes: &quot;</span> &lt;&lt; funcAttrs.localSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; maxThreadsPerBlock: &quot;</span> &lt;&lt; funcAttrs.maxThreadsPerBlock</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; numRegs: &quot;</span> &lt;&lt; funcAttrs.numRegs &lt;&lt; <span class="stringliteral">&quot; ptxVersion: &quot;</span> &lt;&lt; funcAttrs.ptxVersion</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; sharedSizeBytes: &quot;</span> &lt;&lt; funcAttrs.sharedSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="preprocessor">#            endif</span></div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                <span class="comment">// Set the current device.</span></div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(<a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(SetDevice)(queue.m_spQueueImpl-&gt;m_dev.m_iDevice));</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                <span class="comment">// Enqueue the kernel execution.</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args)</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                    {</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;                        kernelName&lt;&lt;&lt;</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                            gridDim,</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                            blockDim,</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue&gt;&gt;&gt;(</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                            threadElemExtent,</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                            task.m_kernelFnObj,</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                            args...);</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="preprocessor">#        else</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                        hipLaunchKernelGGL(</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                            HIP_KERNEL_NAME(kernelName),</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                            gridDim,</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                            blockDim,</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue,</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                            threadElemExtent,</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                            task.m_kernelFnObj,</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                            args...);</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                    },</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;                    task.m_args);</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                <span class="comment">// Wait for the kernel execution to finish but do not check error return of this call.</span></div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                <span class="comment">// Do not use the alpaka::wait method because it checks the error itself but we want to give a custom</span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                <span class="comment">// error message.</span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                std::ignore = <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(StreamSynchronize)(queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue);</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                std::string <span class="keyword">const</span> msg(</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                    <span class="stringliteral">&quot;&#39;execution of kernel: &#39;&quot;</span> + std::string(<span class="keyword">typeid</span>(TKernelFnObj).name()) + <span class="stringliteral">&quot;&#39; failed with&quot;</span>);</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;                <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">::alpaka::uniform_cuda_hip::detail::rtCheckLastError</a>(msg.c_str(), __FILE__, __LINE__);</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;            }</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        };</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; </div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot;gridDim: &quot;</span> &lt;&lt; gridDim.z &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; gridDim.y &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; gridDim.x &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot;blockDim: &quot;</span> &lt;&lt; blockDim.z &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; blockDim.y &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; blockDim.x</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                          &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                <span class="comment">// This checks for a valid work division that is also compliant with the maxima of the accelerator.</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                <span class="keywordflow">if</span>(!isValidWorkDiv&lt;TAcc&gt;(<a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(queue), task))</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;                {</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                        <span class="stringliteral">&quot;The given work division is not valid or not supported by the device of type &quot;</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                        + <a class="code" href="namespacealpaka.html#ac49b3c4b09c8a7455e8f88faa51484df">getAccName</a>&lt;<a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt&lt;TDim, TIdx&gt;</a>&gt;() + <span class="stringliteral">&quot;!&quot;</span>);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args) {</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                        <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;TAcc&gt;(</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                            task.m_kernelFnObj,</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                            blockThreadExtent,</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                            threadElemExtent,</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                            args...);</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                    },</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                    task.m_args);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; </div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                <span class="comment">// Log the block shared memory idx.</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; BlockSharedMemDynSizeBytes: &quot;</span> &lt;&lt; blockSharedMemDynSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;                          &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; </div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                <span class="keyword">auto</span> kernelName = uniform_cuda_hip::detail::</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                    uniformCudaHipKernel&lt;TAcc, TDim, TIdx, TKernelFnObj, remove_restrict_t&lt;std::decay_t&lt;TArgs&gt;&gt;...&gt;;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                <span class="comment">// hipFuncAttributes not ported from HIP to HIP.</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                <span class="comment">// TODO why this is currently not possible</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                <span class="comment">//</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                <span class="comment">// Log the function attributes.</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="preprocessor">#            if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;                <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(FuncAttributes) funcAttrs;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(FuncGetAttributes)(&amp;funcAttrs, kernelName);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; binaryVersion: &quot;</span> &lt;&lt; funcAttrs.binaryVersion</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; constSizeBytes: &quot;</span> &lt;&lt; funcAttrs.constSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; localSizeBytes: &quot;</span> &lt;&lt; funcAttrs.localSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; maxThreadsPerBlock: &quot;</span> &lt;&lt; funcAttrs.maxThreadsPerBlock</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; numRegs: &quot;</span> &lt;&lt; funcAttrs.numRegs &lt;&lt; <span class="stringliteral">&quot; ptxVersion: &quot;</span> &lt;&lt; funcAttrs.ptxVersion</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; sharedSizeBytes: &quot;</span> &lt;&lt; funcAttrs.sharedSizeBytes &lt;&lt; <span class="stringliteral">&quot; B&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="preprocessor">#            endif</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;                <span class="comment">// Set the current device.</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                    <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(SetDevice)(queue.m_spQueueImpl-&gt;m_dev.getNativeHandle()));</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160; </div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                <span class="comment">// Enqueue the kernel execution.</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args)</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;                    {</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                        kernelName&lt;&lt;&lt;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                            gridDim,</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;                            blockDim,</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue&gt;&gt;&gt;(</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                            threadElemExtent,</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;                            task.m_kernelFnObj,</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                            args...);</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="preprocessor">#        else</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                        hipLaunchKernelGGL(</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;                            HIP_KERNEL_NAME(kernelName),</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;                            gridDim,</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                            blockDim,</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                            <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(blockSharedMemDynSizeBytes),</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                            queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue,</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                            threadElemExtent,</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;                            task.m_kernelFnObj,</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;                            args...);</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;                    },</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;                    task.m_args);</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160; </div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                <span class="comment">// Wait for the kernel execution to finish but do not check error return of this call.</span></div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                <span class="comment">// Do not use the alpaka::wait method because it checks the error itself but we want to give a custom</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                <span class="comment">// error message.</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                std::ignore = <a class="code" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(StreamSynchronize)(queue.m_spQueueImpl-&gt;m_UniformCudaHipQueue);</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="preprocessor">#        if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;                std::string <span class="keyword">const</span> msg(</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;                    <span class="stringliteral">&quot;&#39;execution of kernel: &#39;&quot;</span> + std::string(<span class="keyword">typeid</span>(TKernelFnObj).name()) + <span class="stringliteral">&quot;&#39; failed with&quot;</span>);</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;                <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">::alpaka::uniform_cuda_hip::detail::rtCheckLastError</a>(msg.c_str(), __FILE__, __LINE__);</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;            }</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;        };</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160; </div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; </div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespacealpaka_html_aba87713ec0232bbf70beb24e063e32ea"><div class="ttname"><a href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">alpaka::Dim</a></div><div class="ttdeci">typename traits::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
@@ -547,7 +549,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1traits_1_1IdxType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1IdxType.html">alpaka::traits::IdxType</a></div><div class="ttdoc">The idx type trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00029">Traits.hpp:29</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1TaskKernelGpuUniformCudaHipRt_html_a4c6f582f454228cc59454a83ba05572c"><div class="ttname"><a href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a4c6f582f454228cc59454a83ba05572c">alpaka::TaskKernelGpuUniformCudaHipRt::m_kernelFnObj</a></div><div class="ttdeci">TKernelFnObj m_kernelFnObj</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00144">TaskKernelGpuUniformCudaHipRt.hpp:144</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe_html_a0d5774b86a8a78dd53f7c500e947bb74"><div class="ttname"><a href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html#a0d5774b86a8a78dd53f7c500e947bb74">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtBlocking, TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;::enqueue</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto enqueue(QueueUniformCudaHipRtBlocking &amp;queue, TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; const &amp;task) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00314">TaskKernelGpuUniformCudaHipRt.hpp:314</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe_html_a0d5774b86a8a78dd53f7c500e947bb74"><div class="ttname"><a href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TaskKernelGpuUniformCud7a43fc761a162656cc7b6ad4bd5007fe.html#a0d5774b86a8a78dd53f7c500e947bb74">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtBlocking, TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;::enqueue</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto enqueue(QueueUniformCudaHipRtBlocking &amp;queue, TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; const &amp;task) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00315">TaskKernelGpuUniformCudaHipRt.hpp:315</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1uniform__cuda__hip_1_1detail_html_a9d839d8290f20b3b3ad31cf9340f3fe7"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">alpaka::uniform_cuda_hip::detail::rtCheckLastError</a></div><div class="ttdeci">ALPAKA_FN_HOST auto rtCheckLastError(char const *desc, char const *file, int const &amp;line) -&gt; void</div><div class="ttdoc">CUDA runtime API last error checking with log and exception.</div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00086">UniformCudaHip.hpp:86</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1QueueUniformCudaHipRtBlocking_html"><div class="ttname"><a href="classalpaka_1_1QueueUniformCudaHipRtBlocking.html">alpaka::QueueUniformCudaHipRtBlocking</a></div><div class="ttdoc">The CUDA/HIP RT blocking queue.</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRtBlocking_8hpp_source.html#l00041">QueueUniformCudaHipRtBlocking.hpp:41</a></div></div>
 <div class="ttc" id="aWorkDivHelpers_8hpp_html"><div class="ttname"><a href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></div></div>
@@ -579,7 +581,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="ttc" id="aclassalpaka_1_1TaskKernelGpuUniformCudaHipRt_html_a0c3d4f4f71694b90fd3b7722535d3141"><div class="ttname"><a href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a0c3d4f4f71694b90fd3b7722535d3141">alpaka::TaskKernelGpuUniformCudaHipRt::TaskKernelGpuUniformCudaHipRt</a></div><div class="ttdeci">ALPAKA_FN_HOST TaskKernelGpuUniformCudaHipRt(TWorkDiv &amp;&amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00131">TaskKernelGpuUniformCudaHipRt.hpp:131</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1WorkDivMembers_html"><div class="ttname"><a href="classalpaka_1_1WorkDivMembers.html">alpaka::WorkDivMembers</a></div><div class="ttdoc">A basic class holding the work division as grid block extent, block thread and thread element extent.</div><div class="ttdef"><b>Definition:</b> <a href="WorkDivMembers_8hpp_source.html#l00023">WorkDivMembers.hpp:23</a></div></div>
 <div class="ttc" id="aacc_2Traits_8hpp_html"><div class="ttname"><a href="acc_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1DevUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevUniformCudaHipRt_8hpp_source.html#l00041">DevUniformCudaHipRt.hpp:41</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1DevUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevUniformCudaHipRt_8hpp_source.html#l00042">DevUniformCudaHipRt.hpp:42</a></div></div>
 <div class="ttc" id="aidx_2Traits_8hpp_html"><div class="ttname"><a href="idx_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1TaskKernelGpuUniformCudaHipRt_html_afb87ebbc43129443f3c8d7c184780a3c"><div class="ttname"><a href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#afb87ebbc43129443f3c8d7c184780a3c">alpaka::TaskKernelGpuUniformCudaHipRt::m_args</a></div><div class="ttdeci">std::tuple&lt; remove_restrict_t&lt; std::decay_t&lt; TArgs &gt; &gt;... &gt; m_args</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00145">TaskKernelGpuUniformCudaHipRt.hpp:145</a></div></div>
 <div class="ttc" id="aqueue_2Traits_8hpp_html"><div class="ttname"><a href="queue_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -589,7 +591,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp.html">TaskKernelGpuUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 13:14:22 for alpaka by
+    <li class="footer">Generated on Mon Feb 14 2022 16:48:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01alpaka_1_1detail_1_1Tasebc92d28e3e8a6e6fd9d710521714901.html#a4938aa423e65b32f4c7820cba4807883":[3,0,0,19,260,0],
+"structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01alpaka_1_1detail_1_1Tasf7eee750ca47060b4e512e9ef83477ab.html":[3,0,0,19,267],
 "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01alpaka_1_1detail_1_1Tasf7eee750ca47060b4e512e9ef83477ab.html#a4a269be43dc40499f41ede0edae3d1a7":[3,0,0,19,267,0],
 "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01test_1_1EventHostManualTriggerCuda_01_4.html":[3,0,0,19,270],
 "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01test_1_1EventHostManualTriggerCuda_01_4.html#a0acca6ad85db08e1584c4da82c06b4f0":[3,0,0,19,270,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1traits_1_1GetPitchBytes_3_01DimInt_3_010u_01_4_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html":[3,0,0,19,392],
 "structalpaka_1_1traits_1_1GetPitchBytes_3_01DimInt_3_010u_01_4_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#ad88155399a4538ce2df103993e32ac2f":[3,0,0,19,392,0],
 "structalpaka_1_1traits_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufCpu_3c1968ecf81648e8d89b71776136ea73d.html":[3,0,0,19,393],
-"structalpaka_1_1traits_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufCpu_3c1968ecf81648e8d89b71776136ea73d.html#afa0ecea6f39fb089f6329501e53224dc":[3,0,0,19,393,0],
-"structalpaka_1_1traits_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUnifo0c8ade82f45582d4907b957b8f72fa7f.html":[3,0,0,19,394],
-"structalpaka_1_1traits_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUnifo0c8ade82f45582d4907b957b8f72fa7f.html#afee2bbb997676ca3c37c17c0997ab091":[3,0,0,19,394,0]
+"structalpaka_1_1traits_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufCpu_3c1968ecf81648e8d89b71776136ea73d.html#afa0ecea6f39fb089f6329501e53224dc":[3,0,0,19,393,0]
 };

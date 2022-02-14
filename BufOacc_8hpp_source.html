@@ -87,8 +87,8 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div class="title">BufOacc.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="BufOacc_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2021 Jeffrey Kelling, Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Gruber</span></div>
+<a href="BufOacc_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jeffrey Kelling, Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Gruber, Antonio Di Pilato</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This file is part of Alpaka.</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
@@ -344,7 +344,7 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot; ew: &quot;</span> &lt;&lt; width &lt;&lt; <span class="stringliteral">&quot; ewb: &quot;</span> &lt;&lt; widthBytes &lt;&lt; <span class="stringliteral">&quot; ptr: &quot;</span> &lt;&lt; memPtr</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; device: &quot;</span> &lt;&lt; dev.iDevice() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; device: &quot;</span> &lt;&lt; dev.getNativeHandle() &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <span class="keywordflow">return</span> BufOacc&lt;TElem, DimInt&lt;1u&gt;, TIdx&gt;(dev, <span class="keyword">reinterpret_cast&lt;</span>TElem*<span class="keyword">&gt;</span>(memPtr), extent);</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            }</div>
@@ -366,7 +366,7 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                <span class="keywordtype">void</span>* memPtr = acc_malloc(<a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                std::cout &lt;&lt; __func__ &lt;&lt; <span class="stringliteral">&quot;alloc&#39;d &quot;</span> &lt;&lt; TDim::value &lt;&lt; <span class="stringliteral">&quot;D device ptr: &quot;</span> &lt;&lt; memPtr &lt;&lt; <span class="stringliteral">&quot; on device &quot;</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                          &lt;&lt; dev.iDevice() &lt;&lt; <span class="stringliteral">&quot; size: &quot;</span> &lt;&lt; <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                          &lt;&lt; dev.getNativeHandle() &lt;&lt; <span class="stringliteral">&quot; size: &quot;</span> &lt;&lt; <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                <span class="keywordflow">return</span> BufOacc&lt;TElem, TDim, TIdx&gt;(dev, <span class="keyword">reinterpret_cast&lt;</span>TElem*<span class="keyword">&gt;</span>(memPtr), extent);</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            }</div>
@@ -562,7 +562,7 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufOacc_8hpp.html">BufOacc.hpp</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 13:14:22 for alpaka by
+    <li class="footer">Generated on Mon Feb 14 2022 16:48:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

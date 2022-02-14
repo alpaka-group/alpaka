@@ -88,7 +88,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <a href="alpaka_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *                Jan Stephan</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *                Jan Stephan, Antonio Di Pilato</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
@@ -276,15 +276,17 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html',''); initResi
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="queue_2Traits_8hpp.html">alpaka/queue/Traits.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">// time</span></div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="time_2Traits_8hpp.html">alpaka/time/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">// wait</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="wait_2Traits_8hpp.html">alpaka/wait/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">// workdiv</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="workdiv_2Traits_8hpp.html">alpaka/workdiv/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/workdiv/WorkDivHelpers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivMembers_8hpp.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">// vec</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="vec_2Traits_8hpp.html">alpaka/vec/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/vec/Vec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">// traits</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Traits_8hpp.html">alpaka/traits/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">// wait</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="wait_2Traits_8hpp.html">alpaka/wait/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">// workdiv</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="workdiv_2Traits_8hpp.html">alpaka/workdiv/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/workdiv/WorkDivHelpers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivMembers_8hpp.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">// vec</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="vec_2Traits_8hpp.html">alpaka/vec/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/vec/Vec.hpp</a>&gt;</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="atime_2Traits_8hpp_html"><div class="ttname"><a href="time_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -407,6 +409,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html',''); initResi
 <div class="ttc" id="aAccessor_8hpp_html"><div class="ttname"><a href="Accessor_8hpp.html">Accessor.hpp</a></div></div>
 <div class="ttc" id="arand_2Traits_8hpp_html"><div class="ttname"><a href="rand_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aProperties_8hpp_html"><div class="ttname"><a href="Properties_8hpp.html">Properties.hpp</a></div></div>
+<div class="ttc" id="atraits_2Traits_8hpp_html"><div class="ttname"><a href="traits_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="ablock_2shared_2dyn_2Traits_8hpp_html"><div class="ttname"><a href="block_2shared_2dyn_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aCuda_8hpp_html"><div class="ttname"><a href="Cuda_8hpp.html">Cuda.hpp</a></div></div>
 <div class="ttc" id="aoffset_2Traits_8hpp_html"><div class="ttname"><a href="offset_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -447,7 +450,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="alpaka_8hpp.html">alpaka.hpp</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 13:14:21 for alpaka by
+    <li class="footer">Generated on Mon Feb 14 2022 16:48:03 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -9,6 +9,7 @@ var DevCpu_8hpp =
     [ "GetMemBytes< DevCpu >", "structalpaka_1_1traits_1_1GetMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1GetMemBytes_3_01DevCpu_01_4" ],
     [ "GetName< DevCpu >", "structalpaka_1_1traits_1_1GetName_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1GetName_3_01DevCpu_01_4" ],
     [ "GetWarpSize< DevCpu >", "structalpaka_1_1traits_1_1GetWarpSize_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1GetWarpSize_3_01DevCpu_01_4" ],
+    [ "NativeHandle< DevCpu >", "structalpaka_1_1traits_1_1NativeHandle_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1NativeHandle_3_01DevCpu_01_4" ],
     [ "PltfType< DevCpu >", "structalpaka_1_1traits_1_1PltfType_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1PltfType_3_01DevCpu_01_4" ],
     [ "QueueType< DevCpu, Blocking >", "structalpaka_1_1traits_1_1QueueType_3_01DevCpu_00_01Blocking_01_4.html", "structalpaka_1_1traits_1_1QueueType_3_01DevCpu_00_01Blocking_01_4" ],
     [ "QueueType< DevCpu, NonBlocking >", "structalpaka_1_1traits_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4.html", "structalpaka_1_1traits_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4" ],

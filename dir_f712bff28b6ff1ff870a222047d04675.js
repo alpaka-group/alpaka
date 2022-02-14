@@ -24,6 +24,7 @@ var dir_f712bff28b6ff1ff870a222047d04675 =
     [ "standalone", "dir_9c737d14007cafba76b1e7c7800c2a61.html", "dir_9c737d14007cafba76b1e7c7800c2a61" ],
     [ "test", "dir_2fd35556c93caeee8f10f5719f6806ac.html", "dir_2fd35556c93caeee8f10f5719f6806ac" ],
     [ "time", "dir_a7ea804b58dbe69fc7c600cb292cbe23.html", "dir_a7ea804b58dbe69fc7c600cb292cbe23" ],
+    [ "traits", "dir_704b24238599043534bfd555c7616f8b.html", "dir_704b24238599043534bfd555c7616f8b" ],
     [ "vec", "dir_7056b9f7cd8b764aedbfcd44587c0438.html", "dir_7056b9f7cd8b764aedbfcd44587c0438" ],
     [ "wait", "dir_e5cf12aa6bf98e3330032dc34c918fca.html", "dir_e5cf12aa6bf98e3330032dc34c918fca" ],
     [ "warp", "dir_7d123124934e174b4626b90ed7337338.html", "dir_7d123124934e174b4626b90ed7337338" ],

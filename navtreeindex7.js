@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"namespacemembers.html":[2,1,0,0],
+"namespacemembers_b.html":[2,1,0,1],
 "namespacemembers_c.html":[2,1,0,2],
 "namespacemembers_d.html":[2,1,0,3],
 "namespacemembers_e.html":[2,1,0,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html":[3,0,0,5,30],
 "structalpaka_1_1detail_1_1ParallelForDynamicImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html#a1317db0bc667e05589f18db8700be717":[3,0,0,5,30,0],
 "structalpaka_1_1detail_1_1ParallelForGuidedImpl.html":[3,0,0,5,31],
-"structalpaka_1_1detail_1_1ParallelForGuidedImpl.html#ae6145880db21bccd3eea2ee2f953bec4":[3,0,0,5,31,0],
-"structalpaka_1_1detail_1_1ParallelForGuidedImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html":[3,0,0,5,32],
-"structalpaka_1_1detail_1_1ParallelForGuidedImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html#ab8c3864855246ec8c5665e877a869a0e":[3,0,0,5,32,0]
+"structalpaka_1_1detail_1_1ParallelForGuidedImpl.html#ae6145880db21bccd3eea2ee2f953bec4":[3,0,0,5,31,0]
 };
