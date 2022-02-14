@@ -35,4 +35,8 @@ namespace alpaka
     {
         return traits::NativeHandle<TImpl>::getNativeHandle(impl);
     }
+
+    //! Alias to the type of the native handle.
+    template<typename TImpl>
+    using NativeHandle = decltype(getNativeHandle(std::declval<TImpl>()));
 } // namespace alpaka
