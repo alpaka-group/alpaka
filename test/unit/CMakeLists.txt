@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2021 Benjamin Worpitz, Jan Stephan
+# Copyright 2015-2022 Benjamin Worpitz, Jan Stephan, Antonio Di Pilato
 #
 # This file is part of alpaka.
 #
@@ -39,6 +39,7 @@ add_subdirectory("meta/")
 add_subdirectory("queue/")
 add_subdirectory("rand/")
 add_subdirectory("time/")
+add_subdirectory("traits/")
 add_subdirectory("vec/")
 add_subdirectory("warp/")
 add_subdirectory("workDiv/")

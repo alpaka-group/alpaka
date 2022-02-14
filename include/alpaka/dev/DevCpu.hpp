@@ -188,8 +188,7 @@ namespace alpaka
         template<>
         struct NativeHandle<DevCpu>
         {
-            using type = int;
-            static auto getNativeHandle(DevCpu const& dev) -> type
+            static auto getNativeHandle(DevCpu const& dev)
             {
                 return dev.getNativeHandle();
             }

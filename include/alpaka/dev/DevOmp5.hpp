@@ -244,8 +244,7 @@ namespace alpaka
         template<>
         struct NativeHandle<DevOmp5>
         {
-            using type = int; // N.B. this can be negative
-            static auto getNativeHandle(DevOmp5 const& dev) -> type
+            static auto getNativeHandle(DevOmp5 const& dev)
             {
                 return dev.getNativeHandle();
             }
