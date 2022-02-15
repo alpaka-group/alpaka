@@ -121,12 +121,7 @@ namespace alpaka::rand
 
                 NormalReal(const NormalReal& o) = delete;
 
-                //! The move ctor clears `m_cache` of source.
-                //! \todo This is to be deleted when moving to C++17
-                NormalReal(NormalReal&& o) : m_acc(o.m_acc), m_cache(o.m_cache)
-                {
-                    o.m_cache = std::numeric_limits<T>::quiet_NaN();
-                }
+                NormalReal(NormalReal&& o) = delete;
 
                 template<typename TEngine>
                 ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
