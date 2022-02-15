@@ -112,17 +112,26 @@ namespace alpaka::rand
         public:
             /*! \warning Retains a reference to \p acc, thus must not outlive it.
              */
-            NormalReal(const Acc& acc) : m_acc(acc)
+            ALPAKA_FN_HOST_ACC constexpr NormalReal(const Acc& acc) : m_acc(&acc)
             {
             }
 
-            NormalReal(const NormalReal& o) = delete;
+            // All copy operations (and thus also move since we don't declare those and they fall back to copy) do NOT
+            // copy m_cache. This way we can ensure that the following holds:
+            // NormalReal<Acc> a(acc), b(acc);
+            // Engine<Acc> e(acc);
+            // assert(a(e) != b(e)); // because of two engine invocations
+            // b = a;
+            // assert(a(e) != b(e)); // because of two engine invocations
 
-            //! The move ctor clears `m_cache` of source.
-            //! \todo This is to be deleted when moving to C++17
-            NormalReal(NormalReal&& o) : m_acc(o.m_acc), m_cache(o.m_cache)
+            ALPAKA_FN_HOST_ACC constexpr NormalReal(const NormalReal& other) : m_acc(other.m_acc)
             {
-                o.m_cache = std::numeric_limits<T>::quiet_NaN();
+            }
+
+            ALPAKA_FN_HOST_ACC constexpr auto operator=(const NormalReal& other) -> NormalReal&
+            {
+                m_acc = other.m_acc;
+                return *this;
             }
 
             template<typename TEngine>
