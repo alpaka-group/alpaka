@@ -13,7 +13,6 @@
 
 #include <cstdint>
 
-
 namespace alpaka::rand::engine::cpu
 {
     //! Implementation of std::UniformRandomBitGenerator for TinyMT32
@@ -43,8 +42,7 @@ namespace alpaka::rand::engine::cpu
 
         TinyMTengine()
         {
-            std::uint32_t const magicSeed = 42u;
-            seed(magicSeed);
+            seed(default_seed());
         }
 
         auto operator()() -> result_type

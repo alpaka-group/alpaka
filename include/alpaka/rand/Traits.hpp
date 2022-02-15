@@ -44,7 +44,7 @@ namespace alpaka::rand
         template<typename T, typename TRand>
         ALPAKA_FN_HOST_ACC auto createNormalReal(TRand const& rand)
         {
-            static_assert(std::is_floating_point<T>::value, "The value type T has to be a floating point type!");
+            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
             using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
             return traits::CreateNormalReal<ImplementationBase, T>::createNormalReal(rand);
@@ -54,7 +54,7 @@ namespace alpaka::rand
         template<typename T, typename TRand>
         ALPAKA_FN_HOST_ACC auto createUniformReal(TRand const& rand)
         {
-            static_assert(std::is_floating_point<T>::value, "The value type T has to be a floating point type!");
+            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
             using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
             return traits::CreateUniformReal<ImplementationBase, T>::createUniformReal(rand);
@@ -65,7 +65,7 @@ namespace alpaka::rand
         ALPAKA_FN_HOST_ACC auto createUniformUint(TRand const& rand)
         {
             static_assert(
-                std::is_integral<T>::value && std::is_unsigned<T>::value,
+                std::is_integral_v<T> && std::is_unsigned_v<T>,
                 "The value type T has to be a unsigned integral type!");
 
             using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;

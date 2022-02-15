@@ -63,9 +63,8 @@ namespace alpaka::rand::engine
             = meta::CudaVectorArrayWrapper<unsigned, 4>; ///< Counter type = array-like interface to CUDA uint4
         using Key = meta::CudaVectorArrayWrapper<unsigned, 2>; ///< Key type = array-like interface to CUDA uint2
         template<typename TDistributionResultScalar>
-        using ResultContainer =
-            typename traits::PhiloxResultContainer<TDistributionResultScalar>; ///< Vector template for
-                                                                               ///< distribution results
+        using ResultContainer = traits::PhiloxResultContainer<TDistributionResultScalar>; ///< Vector template for
+                                                                                          ///< distribution results
     };
 } // namespace alpaka::rand::engine
 
