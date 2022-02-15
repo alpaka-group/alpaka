@@ -60,8 +60,6 @@ namespace alpaka::rand
         {
         }
 
-        EngineVariant engineVariant;
-
         // STL UniformRandomBitGenerator concept
         // https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator
         using result_type = std::uint32_t;
@@ -77,6 +75,9 @@ namespace alpaka::rand
         {
             return engineVariant();
         }
+
+    private:
+        EngineVariant engineVariant;
     };
 
     /** Most common Philox engine variant, outputs a 4-vector of floats
@@ -117,12 +118,11 @@ namespace alpaka::rand
         {
         }
 
-        EngineVariant engineVariant;
         template<typename TScalar>
         using ResultContainer = typename EngineVariant::template ResultContainer<TScalar>;
 
         using ResultInt = std::uint32_t;
-        using ResultVec = decltype(engineVariant());
+        using ResultVec = decltype(std::declval<EngineVariant>()());
         ALPAKA_FN_HOST_ACC constexpr auto min() -> ResultInt
         {
             return 0;
@@ -135,8 +135,10 @@ namespace alpaka::rand
         {
             return engineVariant();
         }
-    };
 
+    private:
+        EngineVariant engineVariant;
+    };
 
     // The following exists because you "cannot call __device__ function from a __host__ __device__ function"
     // directly, but wrapping that call in a struct is just fine.

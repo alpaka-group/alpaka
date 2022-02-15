@@ -46,7 +46,7 @@ namespace alpaka::rand::engine
     {
     public:
         /// Specialization for different TAcc backends
-        using Traits = typename traits::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>;
+        using Traits = traits::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>;
 
         using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
         using Key = typename Traits::Key; ///< Backend-dependent Key type
