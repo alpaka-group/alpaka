@@ -57,9 +57,9 @@ namespace alpaka
                     "The element type of the view has to be equal to the specified one.");
             }
 
-            // alpaka::extent::traits::GetExtent
+            // alpaka::traits::GetExtent
             {
-                REQUIRE(extent == alpaka::extent::getExtentVec(view));
+                REQUIRE(extent == alpaka::getExtentVec(view));
             }
 
             // alpaka::traits::GetPitchBytes
@@ -93,7 +93,7 @@ namespace alpaka
                     std::is_const<std::remove_pointer_t<NativePtr>>::value,
                     "The value returned by getPtrNative has to be const when the view is const.");
 
-                if(alpaka::extent::getExtentProduct(view) != static_cast<TIdx>(0u))
+                if(alpaka::getExtentProduct(view) != static_cast<TIdx>(0u))
                 {
                     // The pointer is only required to be non-null when the extent is > 0.
                     TElem const* const invalidPtr(nullptr);
@@ -221,7 +221,7 @@ namespace alpaka
 
             DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0);
 
-            auto const extent = alpaka::extent::getExtentVec(view);
+            auto const extent = alpaka::getExtentVec(view);
 
             // Init buf with increasing values
             std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
@@ -263,7 +263,7 @@ namespace alpaka
                 using Idx = alpaka::Idx<TView>;
 
                 auto const devAcc = alpaka::getDev(view);
-                auto const extent = alpaka::extent::getExtentVec(view);
+                auto const extent = alpaka::getExtentVec(view);
 
                 // alpaka::copy into given view
                 {

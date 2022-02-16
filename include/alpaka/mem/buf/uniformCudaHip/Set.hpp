@@ -86,7 +86,7 @@ namespace alpaka
 
                 auto& view = this->m_view;
 #    if !defined(NDEBUG)
-                auto const dstWidth = extent::getWidth(view);
+                auto const dstWidth = getWidth(view);
 #    endif
                 auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
                 ALPAKA_ASSERT(1u <= dstWidth);
@@ -124,7 +124,7 @@ namespace alpaka
                 auto& view = this->m_view;
                 auto const& extent = this->m_extent;
 
-                auto const extentWidth = extent::getWidth(extent);
+                auto const extentWidth = getWidth(extent);
 
                 if(extentWidth == 0)
                 {
@@ -133,7 +133,7 @@ namespace alpaka
 
                 auto const extentWidthBytes = extentWidth * static_cast<Idx>(sizeof(Elem<TView>));
 #    if !defined(NDEBUG)
-                auto const dstWidth = extent::getWidth(view);
+                auto const dstWidth = getWidth(view);
 #    endif
                 auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
                 ALPAKA_ASSERT(extentWidth <= dstWidth);
@@ -171,8 +171,8 @@ namespace alpaka
                 auto& view = this->m_view;
                 auto const& extent = this->m_extent;
 
-                auto const extentWidth = extent::getWidth(extent);
-                auto const extentHeight = extent::getHeight(extent);
+                auto const extentWidth = getWidth(extent);
+                auto const extentHeight = getHeight(extent);
 
                 if(extentWidth == 0 || extentHeight == 0)
                 {
@@ -182,8 +182,8 @@ namespace alpaka
                 auto const extentWidthBytes = extentWidth * static_cast<Idx>(sizeof(Elem<TView>));
 
 #    if !defined(NDEBUG)
-                auto const dstWidth = extent::getWidth(view);
-                auto const dstHeight = extent::getHeight(view);
+                auto const dstWidth = getWidth(view);
+                auto const dstHeight = getHeight(view);
 #    endif
                 auto const dstPitchBytesX = getPitchBytes<Dim<TView>::value - 1u>(view);
                 auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
@@ -226,9 +226,9 @@ namespace alpaka
                 auto& view = this->m_view;
                 auto const& extent = this->m_extent;
 
-                auto const extentWidth = extent::getWidth(extent);
-                auto const extentHeight = extent::getHeight(extent);
-                auto const extentDepth = extent::getDepth(extent);
+                auto const extentWidth = getWidth(extent);
+                auto const extentHeight = getHeight(extent);
+                auto const extentDepth = getDepth(extent);
 
                 // This is not only an optimization but also prevents a division by zero.
                 if(extentWidth == 0 || extentHeight == 0 || extentDepth == 0)
@@ -236,10 +236,10 @@ namespace alpaka
                     return;
                 }
 
-                auto const dstWidth = extent::getWidth(view);
+                auto const dstWidth = getWidth(view);
 #    if !defined(NDEBUG)
-                auto const dstHeight = extent::getHeight(view);
-                auto const dstDepth = extent::getDepth(view);
+                auto const dstHeight = getHeight(view);
+                auto const dstDepth = getDepth(view);
 #    endif
                 auto const dstPitchBytesX = getPitchBytes<Dim<TView>::value - 1u>(view);
                 auto const dstPitchBytesY = getPitchBytes<Dim<TView>::value - (2u % Dim<TView>::value)>(view);

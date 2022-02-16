@@ -364,8 +364,8 @@ namespace alpaka
             "The idx type of TAcc and the idx type of TThreadElemExtent have to be identical!");
 
         return subDivideGridElems(
-            extent::getExtentVec(gridElemExtent),
-            extent::getExtentVec(threadElemExtents),
+            getExtentVec(gridElemExtent),
+            getExtentVec(threadElemExtents),
             getAccDevProps<TAcc>(dev),
             requireBlockThreadExtentToDivideGridThreadExtent,
             gridBlockExtentSubDivRestrictions);

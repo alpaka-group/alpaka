@@ -127,7 +127,7 @@ namespace alpaka::internal
         template<std::size_t TDim, typename TIdx>
         ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) -> reference
         {
-            auto extent = extent::getExtentVec(*static_cast<TView*>(this));
+            auto extent = getExtentVec(*static_cast<TView*>(this));
             if(!(index < extent).foldrAll(std::logical_and<bool>()))
             {
                 std::stringstream msg;
@@ -140,7 +140,7 @@ namespace alpaka::internal
         template<std::size_t TDim, typename TIdx>
         [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
         {
-            auto extent = extent::getExtentVec(*static_cast<TView const*>(this));
+            auto extent = getExtentVec(*static_cast<TView const*>(this));
             if(!(index < extent).foldrAll(std::logical_and<bool>()))
             {
                 std::stringstream msg;

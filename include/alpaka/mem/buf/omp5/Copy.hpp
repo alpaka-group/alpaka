@@ -64,15 +64,15 @@ namespace alpaka
                 int const& iSrcDevice)
                 : m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
-                , m_extent(castVec<size_t>(extent::getExtentVec(extent)))
+                , m_extent(castVec<size_t>(getExtentVec(extent)))
                 , m_dstPitchBytes(castVec<size_t>(getPitchBytesVec(viewDst)))
                 , m_srcPitchBytes(castVec<size_t>(getPitchBytesVec(viewSrc)))
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                const auto dstExtent(castVec<size_t>(extent::getExtentVec(viewDst)));
-                const auto srcExtent(castVec<size_t>(extent::getExtentVec(viewSrc)));
+                const auto dstExtent(castVec<size_t>(getExtentVec(viewDst)));
+                const auto srcExtent(castVec<size_t>(getExtentVec(viewSrc)));
                 for(auto i = static_cast<decltype(TDim::value)>(0u); i < TDim::value; ++i)
                 {
                     ALPAKA_ASSERT(m_extent[i] <= dstExtent[i]);
@@ -234,11 +234,11 @@ namespace alpaka
                 : m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                , m_extentWidth(extent::getWidth(extent))
-                , m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst)))
-                , m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc)))
+                , m_extentWidth(getWidth(extent))
+                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
+                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
 #    endif
-                , m_extentWidthBytes(extent::getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
+                , m_extentWidthBytes(getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {

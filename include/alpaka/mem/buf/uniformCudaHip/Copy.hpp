@@ -68,8 +68,8 @@ namespace alpaka
                 , m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                , m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst)))
-                , m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc)))
+                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
+                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
 #    endif
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
@@ -150,11 +150,11 @@ namespace alpaka
                 , m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                , m_extentWidth(extent::getWidth(extent))
-                , m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst)))
-                , m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc)))
+                , m_extentWidth(getWidth(extent))
+                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
+                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
 #    endif
-                , m_extentWidthBytes(extent::getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
+                , m_extentWidthBytes(getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {
@@ -241,15 +241,15 @@ namespace alpaka
                 , m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                , m_extentWidth(extent::getWidth(extent))
+                , m_extentWidth(getWidth(extent))
 #    endif
-                , m_extentWidthBytes(extent::getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
-                , m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst)))
-                , m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc)))
-                , m_extentHeight(extent::getHeight(extent))
+                , m_extentWidthBytes(getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
+                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
+                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
+                , m_extentHeight(getHeight(extent))
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                , m_dstHeight(static_cast<Idx>(extent::getHeight(viewDst)))
-                , m_srcHeight(static_cast<Idx>(extent::getHeight(viewSrc)))
+                , m_dstHeight(static_cast<Idx>(getHeight(viewDst)))
+                , m_srcHeight(static_cast<Idx>(getHeight(viewSrc)))
 #    endif
                 , m_dstpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst)))
                 , m_srcpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc)))
@@ -362,17 +362,17 @@ namespace alpaka
                 : m_uniformMemCpyKind(uniformMemcpyKind)
                 , m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
-                , m_extentWidth(extent::getWidth(extent))
+                , m_extentWidth(getWidth(extent))
                 , m_extentWidthBytes(m_extentWidth * static_cast<Idx>(sizeof(Elem<TViewDst>)))
-                , m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst)))
-                , m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc)))
-                , m_extentHeight(extent::getHeight(extent))
-                , m_extentDepth(extent::getDepth(extent))
+                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
+                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
+                , m_extentHeight(getHeight(extent))
+                , m_extentDepth(getDepth(extent))
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                , m_dstHeight(static_cast<Idx>(extent::getHeight(viewDst)))
-                , m_srcHeight(static_cast<Idx>(extent::getHeight(viewSrc)))
-                , m_dstDepth(static_cast<Idx>(extent::getDepth(viewDst)))
-                , m_srcDepth(static_cast<Idx>(extent::getDepth(viewSrc)))
+                , m_dstHeight(static_cast<Idx>(getHeight(viewDst)))
+                , m_srcHeight(static_cast<Idx>(getHeight(viewSrc)))
+                , m_dstDepth(static_cast<Idx>(getDepth(viewDst)))
+                , m_srcDepth(static_cast<Idx>(getDepth(viewSrc)))
 #    endif
                 , m_dstpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst)))
                 , m_srcpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc)))

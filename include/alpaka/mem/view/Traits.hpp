@@ -65,7 +65,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST static auto getPitchBytesDefault(TView const& view) -> Idx<TView>
                 {
-                    return extent::getExtent<TIdx::value>(view)
+                    return getExtent<TIdx::value>(view)
                         * GetPitchBytes<DimInt<TIdx::value + 1>, TView>::getPitchBytes(view);
                 }
             };
@@ -74,7 +74,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST static auto getPitchBytesDefault(TView const& view) -> Idx<TView>
                 {
-                    return extent::getExtent<Dim<TView>::value - 1u>(view) * sizeof(Elem<TView>);
+                    return getExtent<Dim<TView>::value - 1u>(view) * sizeof(Elem<TView>);
                 }
             };
             template<typename TView>
@@ -198,7 +198,7 @@ namespace alpaka
     template<typename TView, typename TQueue>
     ALPAKA_FN_HOST auto memset(TQueue& queue, TView& view, std::uint8_t const& byte) -> void
     {
-        enqueue(queue, createTaskMemset(view, byte, extent::getExtentVec(view)));
+        enqueue(queue, createTaskMemset(view, byte, getExtentVec(view)));
     }
 
     //! Creates a memory copy task.
@@ -246,7 +246,7 @@ namespace alpaka
     template<typename TViewSrc, typename TViewDst, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(TQueue& queue, TViewDst& viewDst, TViewSrc const& viewSrc) -> void
     {
-        enqueue(queue, createTaskMemcpy(viewDst, viewSrc, extent::getExtentVec(viewSrc)));
+        enqueue(queue, createTaskMemcpy(viewDst, viewSrc, getExtentVec(viewSrc)));
     }
 
     namespace detail
@@ -337,7 +337,7 @@ namespace alpaka
         detail::Print<DimInt<0u>, TView>::print(
             view,
             getPtrNative(view),
-            extent::getExtentVec(view),
+            getExtentVec(view),
             os,
             elementSeparator,
             rowSeparator,
@@ -440,7 +440,7 @@ namespace alpaka
     template<typename TDev, typename TContainer>
     auto createView(TDev const& dev, TContainer& con)
     {
-        return createView(dev, std::data(con), extent::getExtent(con));
+        return createView(dev, std::data(con), getExtent(con));
     }
 
     //! Creates a view to a contiguous container of device-accessible memory.

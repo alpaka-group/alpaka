@@ -47,10 +47,10 @@ namespace alpaka
 
             TaskSetCpuBase(TView& view, std::uint8_t const& byte, TExtent const& extent)
                 : m_byte(byte)
-                , m_extent(extent::getExtentVec(extent))
+                , m_extent(getExtentVec(extent))
                 , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
 #if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                , m_dstExtent(extent::getExtentVec(view))
+                , m_dstExtent(getExtentVec(view))
 #endif
                 , m_dstPitchBytes(getPitchBytesVec(view))
                 , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
@@ -169,8 +169,8 @@ namespace alpaka
                 , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
             {
                 // all zero-sized extents are equivalent
-                ALPAKA_ASSERT(extent::getExtentVec(extent).prod() == 1u);
-                ALPAKA_ASSERT(extent::getExtentVec(view).prod() == 1u);
+                ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
+                ALPAKA_ASSERT(getExtentVec(view).prod() == 1u);
             }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

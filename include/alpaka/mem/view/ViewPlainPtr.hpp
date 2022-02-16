@@ -35,7 +35,7 @@ namespace alpaka
         ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev dev, TExtent const& extent = TExtent())
             : m_pMem(pMem)
             , m_dev(std::move(dev))
-            , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
+            , m_extentElements(getExtentVecEnd<TDim>(extent))
             , m_pitchBytes(detail::calculatePitchesFromExtents<TElem>(m_extentElements))
         {
         }
@@ -44,7 +44,7 @@ namespace alpaka
         ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev const dev, TExtent const& extent, TPitch const& pitchBytes)
             : m_pMem(pMem)
             , m_dev(dev)
-            , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
+            , m_extentElements(getExtentVecEnd<TDim>(extent))
             , m_pitchBytes(subVecEnd<TDim>(static_cast<Vec<TDim, TIdx>>(pitchBytes)))
         {
         }
@@ -104,7 +104,7 @@ namespace alpaka
             using type = TElem;
         };
     } // namespace traits
-    namespace extent::traits
+    namespace traits
     {
         //! The ViewPlainPtr width get trait specialization.
         template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
@@ -120,7 +120,7 @@ namespace alpaka
                 return extent.m_extentElements[TIdxIntegralConst::value];
             }
         };
-    } // namespace extent::traits
+    } // namespace traits
 
     namespace traits
     {

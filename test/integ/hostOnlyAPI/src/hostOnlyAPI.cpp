@@ -65,13 +65,13 @@ TEMPLATE_LIST_TEST_CASE("hostOnlyAPI", "[hostOnlyAPI]", TestAccs)
     auto h_buffer1 = alpaka::allocBuf<int, Idx>(host, Vec1D{Idx{42}});
     INFO(
         "host buffer allocated at " << alpaka::getPtrNative(h_buffer1) << " with "
-                                    << alpaka::extent::getExtentProduct(h_buffer1) << " element(s)")
+                                    << alpaka::getExtentProduct(h_buffer1) << " element(s)")
 
     // async host buffer
     auto h_buffer2 = allocAsyncBufIfSupported<int>(hostQueue, Vec1D{Idx{42}});
     INFO(
         "second host buffer allocated at " << alpaka::getPtrNative(h_buffer2) << " with "
-                                           << alpaka::extent::getExtentProduct(h_buffer2) << " element(s)")
+                                           << alpaka::getExtentProduct(h_buffer2) << " element(s)")
 
     // host-side memset
     const int value1 = 42;
@@ -107,13 +107,13 @@ TEMPLATE_LIST_TEST_CASE("hostOnlyAPI", "[hostOnlyAPI]", TestAccs)
     auto d_buffer1 = alpaka::allocBuf<int, Idx>(device, Vec1D{Idx{42}});
     INFO(
         "device buffer allocated at " << alpaka::getPtrNative(d_buffer1) << " with "
-                                      << alpaka::extent::getExtentProduct(d_buffer1) << " element(s)")
+                                      << alpaka::getExtentProduct(d_buffer1) << " element(s)")
 
     // async or second sync device buffer
     auto d_buffer2 = allocAsyncBufIfSupported<int>(deviceQueue, Vec1D{Idx{42}});
     INFO(
         "second device buffer allocated at " << alpaka::getPtrNative(d_buffer2) << " with "
-                                             << alpaka::extent::getExtentProduct(d_buffer2) << " element(s)")
+                                             << alpaka::getExtentProduct(d_buffer2) << " element(s)")
 
     // host-device copies
     INFO("host-device copies")

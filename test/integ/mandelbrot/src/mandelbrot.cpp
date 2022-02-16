@@ -199,14 +199,14 @@ auto writeTgaColorImage(std::string const& fileName, TBuf const& bufRgba) -> voi
     static_assert(std::is_integral<alpaka::Elem<TBuf>>::value, "The buffer element type has to be integral!");
 
     // The width of the input buffer is in input elements.
-    auto const bufWidthElems = alpaka::extent::getWidth(bufRgba);
+    auto const bufWidthElems = alpaka::getWidth(bufRgba);
     auto const bufWidthBytes = bufWidthElems * sizeof(alpaka::Elem<TBuf>);
     // The row width in bytes has to be dividable by 4 Bytes (RGBA).
     ALPAKA_ASSERT(bufWidthBytes % sizeof(std::uint32_t) == 0);
     // The number of colors in a row.
     auto const bufWidthColors = bufWidthBytes / sizeof(std::uint32_t);
     ALPAKA_ASSERT(bufWidthColors >= 1);
-    auto const bufHeightColors = alpaka::extent::getHeight(bufRgba);
+    auto const bufHeightColors = alpaka::getHeight(bufRgba);
     ALPAKA_ASSERT(bufHeightColors >= 1);
     auto const bufPitchBytes = alpaka::getPitchBytes<alpaka::Dim<TBuf>::value - 1u>(bufRgba);
     ALPAKA_ASSERT(bufPitchBytes >= bufWidthBytes);

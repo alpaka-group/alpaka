@@ -77,14 +77,14 @@ TEMPLATE_LIST_TEST_CASE("zeroDimBuffer", "[zeroDimBuffer]", TestAccs)
     // host buffer
     auto h_buffer1 = alpaka::allocBuf<int, Idx>(host, Scalar{});
     INFO(
-        "host buffer allocated at " << std::data(h_buffer1) << " with " << alpaka::extent::getExtentProduct(h_buffer1)
+        "host buffer allocated at " << std::data(h_buffer1) << " with " << alpaka::getExtentProduct(h_buffer1)
                                     << " element(s)")
 
     // async host buffer
     auto h_buffer2 = allocAsyncBufIfSupported<HostAcc, int, Idx>(hostQueue, Scalar{});
     INFO(
-        "second host buffer allocated at " << std::data(h_buffer2) << " with "
-                                           << alpaka::extent::getExtentProduct(h_buffer2) << " element(s)")
+        "second host buffer allocated at " << std::data(h_buffer2) << " with " << alpaka::getExtentProduct(h_buffer2)
+                                           << " element(s)")
 
     // host-side buffer memset
     const int value1 = 42;
@@ -119,14 +119,14 @@ TEMPLATE_LIST_TEST_CASE("zeroDimBuffer", "[zeroDimBuffer]", TestAccs)
     // device buffer
     auto d_buffer1 = alpaka::allocBuf<int, Idx>(device, Scalar{});
     INFO(
-        "device buffer allocated at " << std::data(d_buffer1) << " with "
-                                      << alpaka::extent::getExtentProduct(d_buffer1) << " element(s)")
+        "device buffer allocated at " << std::data(d_buffer1) << " with " << alpaka::getExtentProduct(d_buffer1)
+                                      << " element(s)")
 
     // async or second sync device buffer
     auto d_buffer2 = allocAsyncBufIfSupported<DeviceAcc, int, Idx>(deviceQueue, Scalar{});
     INFO(
-        "second device buffer allocated at " << std::data(d_buffer2) << " with "
-                                             << alpaka::extent::getExtentProduct(d_buffer2) << " element(s)")
+        "second device buffer allocated at " << std::data(d_buffer2) << " with " << alpaka::getExtentProduct(d_buffer2)
+                                             << " element(s)")
 
     // host-device copies
     INFO("host-device copies")

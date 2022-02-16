@@ -46,7 +46,7 @@ namespace alpaka
             {
                 using Idx = typename alpaka::traits::IdxType<TExtent>::type;
                 auto pitch = getPitchBytesVec(view);
-                auto byteExtent = extent::getExtentVec(extent);
+                auto byteExtent = getExtentVec(extent);
                 constexpr auto lastDim = TDim::value - 1;
                 byteExtent[lastDim] *= static_cast<Idx>(sizeof(Elem<TView>));
 

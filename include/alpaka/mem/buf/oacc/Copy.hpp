@@ -98,14 +98,14 @@ namespace alpaka
                     DevOacc const& dev,
                     TCopyPred copyPred)
                     : m_dev(dev)
-                    , m_extent(extent::getExtentVec(extent))
+                    , m_extent(getExtentVec(extent))
                     , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
                     , m_dstPitchBytes(getPitchBytesVec(viewDst))
                     , m_srcPitchBytes(getPitchBytesVec(viewSrc))
                     ,
 #    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    m_dstExtent(extent::getExtentVec(viewDst))
-                    , m_srcExtent(extent::getExtentVec(viewSrc))
+                    m_dstExtent(getExtentVec(viewDst))
+                    , m_srcExtent(getExtentVec(viewSrc))
                     ,
 #    endif
                     m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
