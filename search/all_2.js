@@ -74,7 +74,7 @@ var searchData=
   ['bufcpu_380',['BufCpu',['../classalpaka_1_1BufCpu.html',1,'alpaka::BufCpu&lt; TElem, TDim, TIdx &gt;'],['../classalpaka_1_1BufCpu.html#ab2a0db5aa0ccead63b575f647c9603b7',1,'alpaka::BufCpu::BufCpu()']]],
   ['bufcpu_2ehpp_381',['BufCpu.hpp',['../BufCpu_8hpp.html',1,'']]],
   ['bufcpuimpl_382',['BufCpuImpl',['../classalpaka_1_1detail_1_1BufCpuImpl.html',1,'alpaka::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt;'],['../classalpaka_1_1detail_1_1BufCpuImpl.html#aeffeb4a110ddaf606b642533488a7d78',1,'alpaka::detail::BufCpuImpl::BufCpuImpl(DevCpu dev, TElem *pMem, std::function&lt; void(TElem *)&gt; deleter, TExtent const &amp;extent)'],['../classalpaka_1_1detail_1_1BufCpuImpl.html#a4c85781b07ca079106ac56a520dfcb82',1,'alpaka::detail::BufCpuImpl::BufCpuImpl(BufCpuImpl &amp;&amp;)=default']]],
-  ['bufferaccessor_383',['BufferAccessor',['../namespacealpaka_1_1experimental.html#a4716008dea153aef6976bea163dae245',1,'alpaka::experimental']]],
+  ['bufferaccessor_383',['BufferAccessor',['../namespacealpaka_1_1experimental.html#a240177523f37bc7351981bf2161ac253',1,'alpaka::experimental']]],
   ['bufoacc_2ehpp_384',['BufOacc.hpp',['../BufOacc_8hpp.html',1,'']]],
   ['bufomp5_385',['BufOmp5',['../classalpaka_1_1BufOmp5.html',1,'alpaka::BufOmp5&lt; TElem, TDim, TIdx &gt;'],['../classalpaka_1_1BufOmp5.html#a284ff79d4b1335635a3aa10b761377db',1,'alpaka::BufOmp5::BufOmp5()']]],
   ['bufomp5_2ehpp_386',['BufOmp5.hpp',['../BufOmp5_8hpp.html',1,'']]],
