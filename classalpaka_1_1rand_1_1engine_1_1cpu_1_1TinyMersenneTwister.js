@@ -5,6 +5,5 @@ var classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister =
     [ "TinyMersenneTwister", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ae9c390e0adc0fee34e962ae7e05698f4", null ],
     [ "max", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#aed5b89610cfcebbd8d2ebbdc88da874e", null ],
     [ "min", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#a402d8fa4612b2319538353c60b454580", null ],
-    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ab84eccaa9fea527493962dc2c7eacf21", null ],
-    [ "state", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#a658bcdde15432a3750aa16187ba21f83", null ]
+    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ab84eccaa9fea527493962dc2c7eacf21", null ]
 ];

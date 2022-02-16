@@ -1,12 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,19,518],
-"structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#aa868ed1589e33282ac91f702592a5409":[3,0,0,19,518,0],
-"structalpaka_1_1traits_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdfd923213c49744a75c9f1ef4acceaeec.html":[3,0,0,19,519],
-"structalpaka_1_1traits_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdfd923213c49744a75c9f1ef4acceaeec.html#ae3a20dd63d777a11162d7c522944a5f2":[3,0,0,19,519,0],
-"structalpaka_1_1traits_1_1PltfType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,19,520],
-"structalpaka_1_1traits_1_1PltfType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#ac3827ab63fb5662d5aec7a1b365f19e9":[3,0,0,19,520,0],
-"structalpaka_1_1traits_1_1Popcount.html":[3,0,0,19,522],
 "structalpaka_1_1traits_1_1Popcount_3_01IntrinsicCpu_01_4.html":[3,0,0,19,523],
 "structalpaka_1_1traits_1_1Popcount_3_01IntrinsicCpu_01_4.html#a2cfeda0bd6003df05b97049157931b47":[3,0,0,19,523,1],
 "structalpaka_1_1traits_1_1Popcount_3_01IntrinsicCpu_01_4.html#a5493159fc521ed5c6c7c7f3a500f5383":[3,0,0,19,523,0],
@@ -249,5 +242,12 @@ var NAVTREEINDEX15 =
 "todo.html":[1],
 "traits_2Traits_8hpp.html":[4,0,0,0,24,0],
 "traits_2Traits_8hpp.html#a7e6b1402f1e49d215eec8772c4e29b60":[4,0,0,0,24,0,1],
-"traits_2Traits_8hpp.html#aa56ad4ba3f41bcea4e804b88d05c9ac0":[4,0,0,0,24,0,2]
+"traits_2Traits_8hpp.html#aa56ad4ba3f41bcea4e804b88d05c9ac0":[4,0,0,0,24,0,2],
+"traits_2Traits_8hpp_source.html":[4,0,0,0,24,0],
+"uniformCudaHip_2Copy_8hpp.html":[4,0,0,0,15,1,3,0],
+"uniformCudaHip_2Copy_8hpp_source.html":[4,0,0,0,15,1,3,0],
+"vec_2Traits_8hpp.html":[4,0,0,0,25,0],
+"vec_2Traits_8hpp.html#a1fb281be5e276c272c312ac4466d9274":[4,0,0,0,25,0,7],
+"vec_2Traits_8hpp.html#a9691cd72d5c39a51b8422078edeeacaf":[4,0,0,0,25,0,9],
+"vec_2Traits_8hpp.html#acd854aaa4e945ebc99016210406b9b99":[4,0,0,0,25,0,4]
 };

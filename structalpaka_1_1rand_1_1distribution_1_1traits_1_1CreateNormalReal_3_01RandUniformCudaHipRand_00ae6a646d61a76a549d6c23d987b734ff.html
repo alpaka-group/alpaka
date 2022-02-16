@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::rand::distribution::traits::CreateUniformReal&lt; RandDefault, T, std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value &gt; &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::rand::distribution::traits::CreateNormalReal&lt; RandUniformCudaHipRand, T, std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt; &gt; &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandDefault_00_01T_00_01157562d7fb1250d8c96bd1647cc75e6c.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandUniformCudaHipRand_00ae6a646d61a76a549d6c23d987b734ff.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,32 +85,32 @@ $(document).ready(function(){initNavTree('structalpaka_1_1rand_1_1distribution_1
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandDefault_00_01T_00_014760c6a806c5e73db49effbae89943fe.html">List of all members</a>  </div>
+<a href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandUniformCudaHipRand_0072f9211ba3e08a0bd87cc02519f3ffdd.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::rand::distribution::traits::CreateUniformReal&lt; RandDefault, T, std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value &gt; &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::rand::distribution::traits::CreateNormalReal&lt; RandUniformCudaHipRand, T, std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt; &gt; &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The GPU device random number float uniform distribution get trait specialization.  
- <a href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandDefault_00_01T_00_01157562d7fb1250d8c96bd1647cc75e6c.html#details">More...</a></p>
+<p>The CUDA/HIP random number float normal distribution get trait specialization.  
+ <a href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandUniformCudaHipRand_00ae6a646d61a76a549d6c23d987b734ff.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="RandDefault_8hpp_source.html">RandDefault.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9efda061beecc258c358eef40aa7e799"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandDefault_00_01T_00_01157562d7fb1250d8c96bd1647cc75e6c.html#a9efda061beecc258c358eef40aa7e799">createUniformReal</a> (<a class="el" href="classalpaka_1_1rand_1_1RandDefault.html">RandDefault</a> const &amp;)</td></tr>
-<tr class="separator:a9efda061beecc258c358eef40aa7e799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4ee108e57a843aba110f016e05b8868"><td class="memItemLeft" align="right" valign="top">static __device__ auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandUniformCudaHipRand_00ae6a646d61a76a549d6c23d987b734ff.html#ad4ee108e57a843aba110f016e05b8868">createNormalReal</a> (<a class="el" href="classalpaka_1_1rand_1_1RandUniformCudaHipRand.html">RandUniformCudaHipRand</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal.html">uniform_cuda_hip::NormalReal</a>&lt; T &gt;</td></tr>
+<tr class="separator:ad4ee108e57a843aba110f016e05b8868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
-struct alpaka::rand::distribution::traits::CreateUniformReal&lt; RandDefault, T, std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value &gt; &gt;</h3>
+struct alpaka::rand::distribution::traits::CreateNormalReal&lt; RandUniformCudaHipRand, T, std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt; &gt; &gt;</h3>
 
-<p>The GPU device random number float uniform distribution get trait specialization. </p>
+<p>The CUDA/HIP random number float normal distribution get trait specialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="RandDefault_8hpp_source.html#l00181">181</a> of file <a class="el" href="RandDefault_8hpp_source.html">RandDefault.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00236">236</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9efda061beecc258c358eef40aa7e799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9efda061beecc258c358eef40aa7e799">&#9670;&nbsp;</a></span>createUniformReal()</h2>
+<a id="ad4ee108e57a843aba110f016e05b8868"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4ee108e57a843aba110f016e05b8868">&#9670;&nbsp;</a></span>createNormalReal()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,11 +121,12 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal.html">alpaka::rand::distribution::traits::CreateUniformReal</a>&lt; <a class="el" href="classalpaka_1_1rand_1_1RandDefault.html">RandDefault</a>, T, std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value &gt; &gt;::createUniformReal </td>
+          <td class="memname">static __device__ auto <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html">alpaka::rand::distribution::traits::CreateNormalReal</a>&lt; <a class="el" href="classalpaka_1_1rand_1_1RandUniformCudaHipRand.html">RandUniformCudaHipRand</a>, T, std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt; &gt; &gt;::createNormalReal </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1rand_1_1RandDefault.html">RandDefault</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1rand_1_1RandUniformCudaHipRand.html">RandUniformCudaHipRand</a> const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; <a class="el" href="classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal.html">uniform_cuda_hip::NormalReal</a>&lt;T&gt;
+            </td>
         </tr>
       </table>
   </td>
@@ -135,20 +136,20 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandDefault_8hpp_source.html#l00183">183</a> of file <a class="el" href="RandDefault_8hpp_source.html">RandDefault.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00238">238</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/runner/work/alpaka/alpaka/include/alpaka/rand/<a class="el" href="RandDefault_8hpp_source.html">RandDefault.hpp</a></li>
+<li>/home/runner/work/alpaka/alpaka/include/alpaka/rand/<a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html">distribution</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1distribution_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandDefault_00_01T_00_01157562d7fb1250d8c96bd1647cc75e6c.html">CreateUniformReal&lt; RandDefault, T, std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value &gt; &gt;</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 16:48:05 for alpaka by
+    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html">distribution</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1distribution_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandUniformCudaHipRand_00ae6a646d61a76a549d6c23d987b734ff.html">CreateNormalReal&lt; RandUniformCudaHipRand, T, std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt; &gt; &gt;</a></li>
+    <li class="footer">Generated on Wed Feb 16 2022 08:03:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

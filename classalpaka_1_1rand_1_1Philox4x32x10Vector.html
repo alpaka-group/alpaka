@@ -86,7 +86,6 @@ $(document).ready(function(){initNavTree('classalpaka_1_1rand_1_1Philox4x32x10Ve
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classalpaka_1_1rand_1_1Philox4x32x10Vector-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::rand::Philox4x32x10Vector&lt; TAcc &gt; Class Template Reference</div>  </div>
@@ -117,8 +116,8 @@ Public Types</h2></td></tr>
 <tr class="separator:a8a71c20821289af377e03333901a5179"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55658ce02f27391754093dfad9d41309"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a55658ce02f27391754093dfad9d41309">ResultInt</a> = std::uint32_t</td></tr>
 <tr class="separator:a55658ce02f27391754093dfad9d41309"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdf99c54ac71829a13a734e06d99416f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#abdf99c54ac71829a13a734e06d99416f">ResultVec</a> = decltype(<a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#aa3a520f357502936927622a86b78d60c">engineVariant</a>())</td></tr>
-<tr class="separator:abdf99c54ac71829a13a734e06d99416f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23ed864c356d8bd607557825bff522c8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a23ed864c356d8bd607557825bff522c8">ResultVec</a> = decltype(std::declval&lt; <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ac858584e5976e466b1fcbf1a6beee3b4">EngineVariant</a> &gt;()())</td></tr>
+<tr class="separator:a23ed864c356d8bd607557825bff522c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -130,13 +129,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac8d20c40667921a60ff320987d777a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8812d155d6769cbc9b9b7c9b9a4c7827"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a8812d155d6769cbc9b9b7c9b9a4c7827">min</a> () -&gt; <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a55658ce02f27391754093dfad9d41309">ResultInt</a></td></tr>
 <tr class="separator:a8812d155d6769cbc9b9b7c9b9a4c7827"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f3509d61a53cfdc81f0f33cb44cefea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a7f3509d61a53cfdc81f0f33cb44cefea">operator()</a> () -&gt; <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#abdf99c54ac71829a13a734e06d99416f">ResultVec</a></td></tr>
+<tr class="memitem:a7f3509d61a53cfdc81f0f33cb44cefea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a7f3509d61a53cfdc81f0f33cb44cefea">operator()</a> () -&gt; <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a23ed864c356d8bd607557825bff522c8">ResultVec</a></td></tr>
 <tr class="separator:a7f3509d61a53cfdc81f0f33cb44cefea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:aa3a520f357502936927622a86b78d60c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ac858584e5976e466b1fcbf1a6beee3b4">EngineVariant</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#aa3a520f357502936927622a86b78d60c">engineVariant</a></td></tr>
-<tr class="separator:aa3a520f357502936927622a86b78d60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TAcc&gt;<br />
@@ -152,7 +146,7 @@ class alpaka::rand::Philox4x32x10Vector&lt; TAcc &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00096">96</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00097">97</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a7a0faae46effc35406a723d13bc13647"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a0faae46effc35406a723d13bc13647">&#9670;&nbsp;</a></span>EngineParams</h2>
@@ -168,7 +162,7 @@ template&lt;typename TAcc &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00099">99</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00100">100</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,7 +180,7 @@ template&lt;typename TAcc &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00100">100</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00101">101</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
 
 </div>
 </div>
@@ -228,8 +222,8 @@ template&lt;typename TAcc &gt; </div>
 
 </div>
 </div>
-<a id="abdf99c54ac71829a13a734e06d99416f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdf99c54ac71829a13a734e06d99416f">&#9670;&nbsp;</a></span>ResultVec</h2>
+<a id="a23ed864c356d8bd607557825bff522c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ed864c356d8bd607557825bff522c8">&#9670;&nbsp;</a></span>ResultVec</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,7 +231,7 @@ template&lt;typename TAcc &gt; </div>
 template&lt;typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html">alpaka::rand::Philox4x32x10Vector</a>&lt; TAcc &gt;::<a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#abdf99c54ac71829a13a734e06d99416f">ResultVec</a> =  decltype(<a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#aa3a520f357502936927622a86b78d60c">engineVariant</a>())</td>
+          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html">alpaka::rand::Philox4x32x10Vector</a>&lt; TAcc &gt;::<a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a23ed864c356d8bd607557825bff522c8">ResultVec</a> =  decltype(std::declval&lt;<a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ac858584e5976e466b1fcbf1a6beee3b4">EngineVariant</a>&gt;()())</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -298,7 +292,7 @@ template&lt;typename TAcc &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00108">108</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00109">109</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
 
 </div>
 </div>
@@ -328,7 +322,7 @@ template&lt;typename TAcc &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00116">116</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00117">117</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
 
 </div>
 </div>
@@ -408,7 +402,7 @@ template&lt;typename TAcc &gt; </div>
           <td class="memname"><a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html">alpaka::rand::Philox4x32x10Vector</a>&lt; TAcc &gt;::operator() </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#abdf99c54ac71829a13a734e06d99416f">ResultVec</a>
+          <td> -&gt; <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a23ed864c356d8bd607557825bff522c8">ResultVec</a>
         </td>
         </tr>
       </table>
@@ -423,25 +417,6 @@ template&lt;typename TAcc &gt; </div>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa3a520f357502936927622a86b78d60c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3a520f357502936927622a86b78d60c">&#9670;&nbsp;</a></span>engineVariant</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TAcc &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ac858584e5976e466b1fcbf1a6beee3b4">EngineVariant</a> <a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html">alpaka::rand::Philox4x32x10Vector</a>&lt; TAcc &gt;::engineVariant</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="RandPhilox_8hpp_source.html#l00120">120</a> of file <a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a>.</p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/alpaka/alpaka/include/alpaka/rand/<a class="el" href="RandPhilox_8hpp_source.html">RandPhilox.hpp</a></li>
 </ul>
@@ -451,7 +426,7 @@ template&lt;typename TAcc &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html">Philox4x32x10Vector</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 16:48:05 for alpaka by
+    <li class="footer">Generated on Wed Feb 16 2022 08:03:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

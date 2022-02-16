@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['backend_309',['Backend',['../structalpaka_1_1rand_1_1engine_1_1traits_1_1PhiloxBaseTraits.html#a0cd3acdf02ba699958c9bbc133210691',1,'alpaka::rand::engine::traits::PhiloxBaseTraits']]],
+  ['backend_309',['Backend',['../structalpaka_1_1rand_1_1engine_1_1traits_1_1PhiloxBaseTraits.html#ae169916417d9e906bb3b93cb399518a7',1,'alpaka::rand::engine::traits::PhiloxBaseTraits']]],
   ['ballot_310',['Ballot',['../structalpaka_1_1warp_1_1traits_1_1Ballot.html',1,'alpaka::warp::traits::Ballot&lt; TWarp, TSfinae &gt;'],['../structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpSingleThread_01_4.html#aa31e6f4574385b1528f895db5271a80c',1,'alpaka::warp::traits::Ballot&lt; WarpSingleThread &gt;::ballot()'],['../structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html#a262da2e6390570387f16c873bdfa6fb2',1,'alpaka::warp::traits::Ballot&lt; WarpUniformCudaHipBuiltIn &gt;::ballot()'],['../namespacealpaka_1_1warp.html#a0d88e1c2faaf38a4e14ea0d763402d32',1,'alpaka::warp::ballot()']]],
   ['ballot_3c_20warpsinglethread_20_3e_311',['Ballot&lt; WarpSingleThread &gt;',['../structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpSingleThread_01_4.html',1,'alpaka::warp::traits']]],
   ['ballot_3c_20warpuniformcudahipbuiltin_20_3e_312',['Ballot&lt; WarpUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html',1,'alpaka::warp::traits']]],

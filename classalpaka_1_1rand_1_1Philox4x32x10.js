@@ -7,6 +7,5 @@ var classalpaka_1_1rand_1_1Philox4x32x10 =
     [ "Philox4x32x10", "classalpaka_1_1rand_1_1Philox4x32x10.html#a407d1242938ccdb10ce526db9f96263c", null ],
     [ "max", "classalpaka_1_1rand_1_1Philox4x32x10.html#a53b7637cd1ac5fa9c96e8171ff2305cc", null ],
     [ "min", "classalpaka_1_1rand_1_1Philox4x32x10.html#aa2d1779a5728525e2c912509c836e58b", null ],
-    [ "operator()", "classalpaka_1_1rand_1_1Philox4x32x10.html#af3138b0ae2d470b0ef7f4c06738804e7", null ],
-    [ "engineVariant", "classalpaka_1_1rand_1_1Philox4x32x10.html#a1c7bb740a597d9bfec31b1ac1f623b14", null ]
+    [ "operator()", "classalpaka_1_1rand_1_1Philox4x32x10.html#af3138b0ae2d470b0ef7f4c06738804e7", null ]
 ];

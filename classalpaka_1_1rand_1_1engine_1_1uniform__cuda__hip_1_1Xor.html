@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1rand_1_1engine_1_1unifo
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::rand::engine::uniform_cuda_hip::Xor Class Reference</div>  </div>
@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1rand_1_1engine_1_1unifo
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a5d5468384e7bff25c14ed39f7c3e4c40"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a5d5468384e7bff25c14ed39f7c3e4c40">result_type</a> = decltype(curand(&amp;<a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a3cacb6d62c5532967f6fff0a57484cd5">state</a>))</td></tr>
+<tr class="memitem:a5d5468384e7bff25c14ed39f7c3e4c40"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a5d5468384e7bff25c14ed39f7c3e4c40">result_type</a> = decltype(curand(&amp;state))</td></tr>
 <tr class="separator:a5d5468384e7bff25c14ed39f7c3e4c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -120,15 +120,22 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a93b9d75a323bbd68220a638ad19cb87d"><td class="memItemLeft" align="right" valign="top">constexpr static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a5d5468384e7bff25c14ed39f7c3e4c40">result_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a93b9d75a323bbd68220a638ad19cb87d">min</a> ()</td></tr>
 <tr class="separator:a93b9d75a323bbd68220a638ad19cb87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a3cacb6d62c5532967f6fff0a57484cd5"><td class="memItemLeft" align="right" valign="top">curandStateXORWOW_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a3cacb6d62c5532967f6fff0a57484cd5">state</a></td></tr>
-<tr class="separator:a3cacb6d62c5532967f6fff0a57484cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a186f46695d592edcc0f24b17cb2ba099"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a186f46695d592edcc0f24b17cb2ba099"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a186f46695d592edcc0f24b17cb2ba099">distribution::uniform_cuda_hip::NormalReal</a></td></tr>
+<tr class="separator:a186f46695d592edcc0f24b17cb2ba099"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97cc0ece36d054043eb1ca987e0e76b7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a97cc0ece36d054043eb1ca987e0e76b7"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a97cc0ece36d054043eb1ca987e0e76b7">distribution::uniform_cuda_hip::UniformReal</a></td></tr>
+<tr class="separator:a97cc0ece36d054043eb1ca987e0e76b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fad332308cb5c60e7874e6fc4d851dd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7fad332308cb5c60e7874e6fc4d851dd"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a7fad332308cb5c60e7874e6fc4d851dd">distribution::uniform_cuda_hip::UniformUint</a></td></tr>
+<tr class="separator:a7fad332308cb5c60e7874e6fc4d851dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The CUDA/HIP <a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html" title="The CUDA/HIP Xor random number generator engine.">Xor</a> random number generator engine. </p>
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00060">60</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00073">73</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a5d5468384e7bff25c14ed39f7c3e4c40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d5468384e7bff25c14ed39f7c3e4c40">&#9670;&nbsp;</a></span>result_type</h2>
@@ -137,12 +144,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a5d5468384e7bff25c14ed39f7c3e4c40">alpaka::rand::engine::uniform_cuda_hip::Xor::result_type</a> =  decltype(curand(&amp;<a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a3cacb6d62c5532967f6fff0a57484cd5">state</a>))</td>
+          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a5d5468384e7bff25c14ed39f7c3e4c40">alpaka::rand::engine::uniform_cuda_hip::Xor::result_type</a> =  decltype(curand(&amp;state))</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00097">97</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00118">118</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
@@ -170,7 +177,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00066">66</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00079">79</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
@@ -214,7 +221,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00073">73</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00086">86</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
@@ -242,7 +249,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00105">105</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00126">126</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
@@ -269,7 +276,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00101">101</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00122">122</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
@@ -296,24 +303,86 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00109">109</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00130">130</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a3cacb6d62c5532967f6fff0a57484cd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cacb6d62c5532967f6fff0a57484cd5">&#9670;&nbsp;</a></span>state</h2>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a186f46695d592edcc0f24b17cb2ba099"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a186f46695d592edcc0f24b17cb2ba099">&#9670;&nbsp;</a></span>distribution::uniform_cuda_hip::NormalReal</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">curandStateXORWOW_t alpaka::rand::engine::uniform_cuda_hip::Xor::state</td>
+          <td class="memname">friend class <a class="el" href="classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal.html">distribution::uniform_cuda_hip::NormalReal</a></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00087">87</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00100">100</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a97cc0ece36d054043eb1ca987e0e76b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97cc0ece36d054043eb1ca987e0e76b7">&#9670;&nbsp;</a></span>distribution::uniform_cuda_hip::UniformReal</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal.html">distribution::uniform_cuda_hip::UniformReal</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00102">102</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a7fad332308cb5c60e7874e6fc4d851dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fad332308cb5c60e7874e6fc4d851dd">&#9670;&nbsp;</a></span>distribution::uniform_cuda_hip::UniformUint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformUint.html">distribution::uniform_cuda_hip::UniformUint</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="RandUniformCudaHipRand_8hpp_source.html#l00104">104</a> of file <a class="el" href="RandUniformCudaHipRand_8hpp_source.html">RandUniformCudaHipRand.hpp</a>.</p>
 
 </div>
 </div>
@@ -326,7 +395,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1engine.html">engine</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html">Xor</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 16:48:05 for alpaka by
+    <li class="footer">Generated on Wed Feb 16 2022 08:03:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('rand_2Traits_8hpp_source.html',''); in
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TRand&gt;</div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1rand_1_1distribution.html#a3d2a8e74bda83320942609c09c227f46">   45</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1rand_1_1distribution.html#a3d2a8e74bda83320942609c09c227f46">createNormalReal</a>(TRand <span class="keyword">const</span>&amp; rand)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            static_assert(std::is_floating_point&lt;T&gt;::value, <span class="stringliteral">&quot;The value type T has to be a floating point type!&quot;</span>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            static_assert(std::is_floating_point_v&lt;T&gt;, <span class="stringliteral">&quot;The value type T has to be a floating point type!&quot;</span>);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;ConceptRand, TRand&gt;</a>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1rand_1_1distribution.html#a3d2a8e74bda83320942609c09c227f46">traits::CreateNormalReal&lt;ImplementationBase, T&gt;::createNormalReal</a>(rand);</div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('rand_2Traits_8hpp_source.html',''); in
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TRand&gt;</div>
 <div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1rand_1_1distribution.html#af6fb809c7467ff1d92f3983e7f621991">   55</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1rand_1_1distribution.html#af6fb809c7467ff1d92f3983e7f621991">createUniformReal</a>(TRand <span class="keyword">const</span>&amp; rand)</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            static_assert(std::is_floating_point&lt;T&gt;::value, <span class="stringliteral">&quot;The value type T has to be a floating point type!&quot;</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            static_assert(std::is_floating_point_v&lt;T&gt;, <span class="stringliteral">&quot;The value type T has to be a floating point type!&quot;</span>);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;ConceptRand, TRand&gt;</a>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1rand_1_1distribution.html#af6fb809c7467ff1d92f3983e7f621991">traits::CreateUniformReal&lt;ImplementationBase, T&gt;::createUniformReal</a>(rand);</div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('rand_2Traits_8hpp_source.html',''); in
 <div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1rand_1_1distribution.html#a8cef848378b79fc7f8f522531198723f">   65</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1rand_1_1distribution.html#a8cef848378b79fc7f8f522531198723f">createUniformUint</a>(TRand <span class="keyword">const</span>&amp; rand)</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                std::is_integral&lt;T&gt;::value &amp;&amp; std::is_unsigned&lt;T&gt;::value,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                std::is_integral_v&lt;T&gt; &amp;&amp; std::is_unsigned_v&lt;T&gt;,</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="stringliteral">&quot;The value type T has to be a unsigned integral type!&quot;</span>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;ConceptRand, TRand&gt;</a>;</div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('rand_2Traits_8hpp_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="rand_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Mon Feb 14 2022 16:48:03 for alpaka by
+    <li class="footer">Generated on Wed Feb 16 2022 08:03:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
