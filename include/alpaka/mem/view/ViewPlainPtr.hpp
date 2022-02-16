@@ -104,26 +104,23 @@ namespace alpaka
             using type = TElem;
         };
     } // namespace traits
-    namespace extent
+    namespace extent::traits
     {
-        namespace traits
+        //! The ViewPlainPtr width get trait specialization.
+        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
+        struct GetExtent<
+            TIdxIntegralConst,
+            ViewPlainPtr<TDev, TElem, TDim, TIdx>,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
         {
-            //! The ViewPlainPtr width get trait specialization.
-            template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-            struct GetExtent<
-                TIdxIntegralConst,
-                ViewPlainPtr<TDev, TElem, TDim, TIdx>,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC
+            static auto getExtent(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& extent) -> TIdx
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC
-                static auto getExtent(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& extent) -> TIdx
-                {
-                    return extent.m_extentElements[TIdxIntegralConst::value];
-                }
-            };
-        } // namespace traits
-    } // namespace extent
+                return extent.m_extentElements[TIdxIntegralConst::value];
+            }
+        };
+    } // namespace extent::traits
 
     namespace traits
     {
