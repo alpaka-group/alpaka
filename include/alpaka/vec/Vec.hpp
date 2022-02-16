@@ -105,7 +105,7 @@ namespace alpaka
             typename... TArgs,
             typename = std::enable_if_t<
                 // There have to be dim arguments.
-                (sizeof...(TArgs) + 1 == TDim::value) && (std::is_same<TVal, std::decay_t<TArg0>>::value)>>
+                (sizeof...(TArgs) + 1 == TDim::value) && (std::is_same_v<TVal, std::decay_t<TArg0>>)>>
         ALPAKA_FN_HOST_ACC Vec(TArg0&& arg0, TArgs&&... args)
             : m_data{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
         {
@@ -149,7 +149,7 @@ namespace alpaka
         //! Value reference accessor at the given non-unsigned integer index.
         //! \return A reference to the value at the given index.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<typename TIdx, typename = std::enable_if_t<std::is_integral<TIdx>::value>>
+        template<typename TIdx, typename = std::enable_if_t<std::is_integral_v<TIdx>>>
         ALPAKA_FN_HOST_ACC auto operator[](TIdx const iIdx) -> TVal&
         {
             core::assertValueUnsigned(iIdx);
@@ -161,7 +161,7 @@ namespace alpaka
         //! Value accessor at the given non-unsigned integer index.
         //! \return The value at the given index.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<typename TIdx, typename = std::enable_if_t<std::is_integral<TIdx>::value>>
+        template<typename TIdx, typename = std::enable_if_t<std::is_integral_v<TIdx>>>
         ALPAKA_FN_HOST_ACC auto operator[](TIdx const iIdx) const -> TVal
         {
             core::assertValueUnsigned(iIdx);

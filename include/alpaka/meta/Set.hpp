@@ -37,7 +37,7 @@ namespace alpaka::meta
         {
             using Base = IsParameterPackSetImpl<Ts...>;
 
-            static constexpr bool value = Base::value && !std::is_base_of<Empty<T>, Base>::value;
+            static constexpr bool value = Base::value && !std::is_base_of_v<Empty<T>, Base>;
         };
     } // namespace detail
     //! Trait that tells if the parameter pack contains only unique (no equal) types.

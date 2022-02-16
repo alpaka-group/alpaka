@@ -216,7 +216,7 @@ namespace alpaka
             Dim<TViewDst>::value == Dim<TExtent>::value,
             "The destination view and the extent are required to have the same dimensionality!");
         static_assert(
-            std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
+            std::is_same_v<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>,
             "The source and the destination view are required to have the same element type!");
 
         return traits::CreateTaskMemcpy<Dim<TViewDst>, Dev<TViewDst>, Dev<TViewSrc>>::createTaskMemcpy(

@@ -47,7 +47,7 @@ namespace alpaka::rand
         template<typename T>
         class UniformUint
         {
-            static_assert(std::is_integral<T>::value, "Return type of UniformUint must be integral.");
+            static_assert(std::is_integral_v<T>, "Return type of UniformUint must be integral.");
 
         public:
             UniformUint() = default;
@@ -72,7 +72,7 @@ namespace alpaka::rand
         template<typename T>
         class UniformReal
         {
-            static_assert(std::is_floating_point<T>::value, "Return type of UniformReal must be floating point.");
+            static_assert(std::is_floating_point_v<T>, "Return type of UniformReal must be floating point.");
 
             using BitsT = typename detail::BitsType<T>::type;
 

@@ -200,7 +200,7 @@ namespace alpaka::rand
     {
         //! The CPU device random number float normal distribution get trait specialization.
         template<typename T>
-        struct CreateNormalReal<RandStdLib, T, std::enable_if_t<std::is_floating_point<T>::value>>
+        struct CreateNormalReal<RandStdLib, T, std::enable_if_t<std::is_floating_point_v<T>>>
         {
             ALPAKA_FN_HOST static auto createNormalReal(RandStdLib const& /* rand */) -> cpu::NormalReal<T>
             {
@@ -209,7 +209,7 @@ namespace alpaka::rand
         };
         //! The CPU device random number float uniform distribution get trait specialization.
         template<typename T>
-        struct CreateUniformReal<RandStdLib, T, std::enable_if_t<std::is_floating_point<T>::value>>
+        struct CreateUniformReal<RandStdLib, T, std::enable_if_t<std::is_floating_point_v<T>>>
         {
             ALPAKA_FN_HOST static auto createUniformReal(RandStdLib const& /* rand */) -> cpu::UniformReal<T>
             {
@@ -218,7 +218,7 @@ namespace alpaka::rand
         };
         //! The CPU device random number integer uniform distribution get trait specialization.
         template<typename T>
-        struct CreateUniformUint<RandStdLib, T, std::enable_if_t<std::is_integral<T>::value>>
+        struct CreateUniformUint<RandStdLib, T, std::enable_if_t<std::is_integral_v<T>>>
         {
             ALPAKA_FN_HOST static auto createUniformUint(RandStdLib const& /* rand */) -> cpu::UniformUint<T>
             {

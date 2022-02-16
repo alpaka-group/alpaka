@@ -26,7 +26,7 @@ namespace alpaka
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
     class ViewPlainPtr final : public internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
     {
-        static_assert(!std::is_const<TIdx>::value, "The idx type of the view can not be const!");
+        static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 
         using Dev = alpaka::Dev<TDev>;
 

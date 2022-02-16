@@ -139,7 +139,7 @@ namespace alpaka
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && (BOOST_LANG_HIP || defined(ALPAKA_HOST_ONLY))
             template<typename TDim, typename TIdx>
             using AccGpuHipRtIfAvailableElseInt = typename std::conditional<
-                std::is_same<TDim, alpaka::DimInt<3u>>::value == false,
+                std::is_same_v<TDim, alpaka::DimInt<3u>> == false,
                 alpaka::AccGpuHipRt<TDim, TIdx>,
                 int>::type;
 #else

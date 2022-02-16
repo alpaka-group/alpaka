@@ -24,7 +24,7 @@ namespace alpaka
             // \tparam TSource Type to mimic the constness of.
             template<typename T, typename TSource>
             using MimicConst
-                = std::conditional_t<std::is_const<TSource>::value, std::add_const_t<T>, std::remove_const_t<T>>;
+                = std::conditional_t<std::is_const_v<TSource>, std::add_const_t<T>, std::remove_const_t<T>>;
 
 #if BOOST_COMP_GNUC
 #    pragma GCC diagnostic push

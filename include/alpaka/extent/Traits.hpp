@@ -125,7 +125,7 @@ namespace alpaka
     {
         //! The unsigned integral width get trait specialization.
         template<typename TExtent>
-        struct GetExtent<DimInt<0u>, TExtent, std::enable_if_t<std::is_integral<TExtent>::value>>
+        struct GetExtent<DimInt<0u>, TExtent, std::enable_if_t<std::is_integral_v<TExtent>>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent) -> Idx<TExtent>
@@ -135,7 +135,7 @@ namespace alpaka
         };
         //! The unsigned integral width set trait specialization.
         template<typename TExtent, typename TExtentVal>
-        struct SetExtent<DimInt<0u>, TExtent, TExtentVal, std::enable_if_t<std::is_integral<TExtent>::value>>
+        struct SetExtent<DimInt<0u>, TExtent, TExtentVal, std::enable_if_t<std::is_integral_v<TExtent>>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void

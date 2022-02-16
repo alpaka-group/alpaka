@@ -61,7 +61,7 @@ namespace alpaka::concepts
             using type = decltype(implementer(std::declval<TDerived&>()));
 
             static_assert(
-                std::is_base_of<type, TDerived>::value,
+                std::is_base_of_v<type, TDerived>,
                 "The type implementing the concept has to be a publicly accessible base class!");
         };
     } // namespace detail

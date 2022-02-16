@@ -32,6 +32,6 @@ TEST_CASE("cartesianProduct", "[meta]")
         std::tuple<alpaka::DimInt<3u>, std::int64_t>>;
 
     static_assert(
-        std::is_same<CartesianProductReference, CartesianProductResult>::value,
+        std::is_same_v<CartesianProductReference, CartesianProductResult>,
         "alpaka::meta::CartesianProduct failed!");
 }

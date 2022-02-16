@@ -239,11 +239,12 @@ namespace alpaka::experimental
                 using Elem = Elem<TView>;
                 auto p = getPtrNative(view);
                 static_assert(
-                    std::is_same<decltype(p), const Elem*>::value || std::is_same<decltype(p), Elem*>::value,
+                    std::is_same_v<decltype(p), const Elem*> || std::is_same_v<decltype(p), Elem*>,
                     "We assume that getPtrNative() returns a raw pointer to the view's elements");
                 static_assert(
-                    !std::is_same<decltype(p), const Elem*>::value
-                        || std::is_same<std::tuple<TAccessModes...>, std::tuple<ReadAccess>>::value,
+                    !std::is_same_v<
+                        decltype(p),
+                        const Elem*> || std::is_same_v<std::tuple<TAccessModes...>, std::tuple<ReadAccess>>,
                     "When getPtrNative() returns a const raw pointer, the access mode must be ReadAccess");
                 using AccessModeList = typename BuildAccessModeList<TAccessModes...>::type;
                 return Accessor<Elem*, Elem, TBufferIdx, dim, AccessModeList>{

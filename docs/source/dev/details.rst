@@ -220,7 +220,7 @@ An example in the context of the ``Enqueue`` template type is shown in the follo
        TQueue
        TTask,
        std::enable_if_t<
-         std::is_base_of<UserQueue, TQueue>::value
+         std::is_base_of_v_<UserQueue, TQueue>
          && (TTask::TaskId == 1u)
        >>
      {

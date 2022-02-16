@@ -46,7 +46,7 @@ namespace alpaka
                 , m_extent(extent)
                 , m_iDevice(getDev(view).getNativeHandle())
             {
-                static_assert(!std::is_const<TView>::value, "The destination view can not be const!");
+                static_assert(!std::is_const_v<TView>, "The destination view can not be const!");
 
                 static_assert(
                     Dim<TView>::value == Dim<TExtent>::value,

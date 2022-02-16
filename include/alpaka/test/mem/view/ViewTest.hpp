@@ -34,7 +34,7 @@ namespace alpaka
             // alpaka::traits::DevType
             {
                 static_assert(
-                    std::is_same<alpaka::Dev<TView>, TDev>::value,
+                    std::is_same_v<alpaka::Dev<TView>, TDev>,
                     "The device type of the view has to be equal to the specified one.");
             }
 
@@ -53,7 +53,7 @@ namespace alpaka
             // alpaka::traits::ElemType
             {
                 static_assert(
-                    std::is_same<alpaka::Elem<TView>, TElem>::value,
+                    std::is_same_v<alpaka::Elem<TView>, TElem>,
                     "The element type of the view has to be equal to the specified one.");
             }
 
@@ -86,11 +86,9 @@ namespace alpaka
             {
                 // The view is a const& so the pointer has to point to a const value.
                 using NativePtr = decltype(alpaka::getPtrNative(view));
+                static_assert(std::is_pointer_v<NativePtr>, "The value returned by getPtrNative has to be a pointer.");
                 static_assert(
-                    std::is_pointer<NativePtr>::value,
-                    "The value returned by getPtrNative has to be a pointer.");
-                static_assert(
-                    std::is_const<std::remove_pointer_t<NativePtr>>::value,
+                    std::is_const_v<std::remove_pointer_t<NativePtr>>,
                     "The value returned by getPtrNative has to be const when the view is const.");
 
                 if(alpaka::getExtentProduct(view) != static_cast<TIdx>(0u))
@@ -114,7 +112,7 @@ namespace alpaka
             // alpaka::traits::IdxType
             {
                 static_assert(
-                    std::is_same<alpaka::Idx<TView>, TIdx>::value,
+                    std::is_same_v<alpaka::Idx<TView>, TIdx>,
                     "The idx type of the view has to be equal to the specified one.");
             }
         }
@@ -197,7 +195,7 @@ namespace alpaka
             static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
             using IdxA = alpaka::Idx<TViewA>;
             using IdxB = alpaka::Idx<TViewB>;
-            static_assert(std::is_same<IdxA, IdxB>::value, "viewA and viewB are required to have identical Idx");
+            static_assert(std::is_same_v<IdxA, IdxB>, "viewA and viewB are required to have identical Idx");
 
             alpaka::test::KernelExecutionFixture<TAcc> fixture(alpaka::Vec<DimA, IdxA>::ones());
 
@@ -241,11 +239,9 @@ namespace alpaka
             {
                 // The view is a non-const so the pointer has to point to a non-const value.
                 using NativePtr = decltype(alpaka::getPtrNative(view));
+                static_assert(std::is_pointer_v<NativePtr>, "The value returned by getPtrNative has to be a pointer.");
                 static_assert(
-                    std::is_pointer<NativePtr>::value,
-                    "The value returned by getPtrNative has to be a pointer.");
-                static_assert(
-                    !std::is_const<std::remove_pointer_t<NativePtr>>::value,
+                    !std::is_const_v<std::remove_pointer_t<NativePtr>>,
                     "The value returned by getPtrNative has to be non-const when the view is non-const.");
             }
 

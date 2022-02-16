@@ -316,7 +316,7 @@ public:
 };
 
 template<typename TAcc, typename T>
-class AtomicTestKernel<TAcc, T, std::enable_if_t<std::is_floating_point<T>::value>>
+class AtomicTestKernel<TAcc, T, std::enable_if_t<std::is_floating_point_v<T>>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
@@ -344,10 +344,7 @@ public:
 // Skip all atomic tests for the unified CUDA/HIP backend.
 // CUDA and HIP atomics will be tested separate.
 template<typename T, typename TDim, typename TIdx>
-class AtomicTestKernel<
-    alpaka::AccGpuUniformCudaHipRt<TDim, TIdx>,
-    T,
-    std::enable_if_t<!std::is_floating_point<T>::value>>
+class AtomicTestKernel<alpaka::AccGpuUniformCudaHipRt<TDim, TIdx>, T, std::enable_if_t<!std::is_floating_point_v<T>>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
@@ -362,10 +359,7 @@ public:
 // We need this partial specialization because of partial ordering of the
 // template specializations
 template<typename T, typename TDim, typename TIdx>
-class AtomicTestKernel<
-    alpaka::AccGpuUniformCudaHipRt<TDim, TIdx>,
-    T,
-    std::enable_if_t<std::is_floating_point<T>::value>>
+class AtomicTestKernel<alpaka::AccGpuUniformCudaHipRt<TDim, TIdx>, T, std::enable_if_t<std::is_floating_point_v<T>>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
@@ -581,9 +575,9 @@ class AtomicTestKernel<
     alpaka::AccGpuCudaRt<TDim, TIdx>,
     T,
     std::enable_if_t<
-        !std::is_same<int, T>::value && !std::is_same<unsigned int, T>::value
-        && !std::is_same<unsigned long int, T>::value && !std::is_same<unsigned long long int, T>::value
-        && !std::is_same<float, T>::value && !std::is_same<double, T>::value>>
+        !std::is_same_v<
+            int,
+            T> && !std::is_same_v<unsigned int, T> && !std::is_same_v<unsigned long int, T> && !std::is_same_v<unsigned long long int, T> && !std::is_same_v<float, T> && !std::is_same_v<double, T>>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
@@ -801,9 +795,9 @@ class AtomicTestKernel<
     alpaka::AccGpuHipRt<TDim, TIdx>,
     T,
     std::enable_if_t<
-        !std::is_same<int, T>::value && !std::is_same<unsigned int, T>::value
-        && !std::is_same<unsigned long int, T>::value && !std::is_same<unsigned long long int, T>::value
-        && !std::is_same<float, T>::value && !std::is_same<double, T>::value>>
+        !std::is_same_v<
+            int,
+            T> && !std::is_same_v<unsigned int, T> && !std::is_same_v<unsigned long int, T> && !std::is_same_v<unsigned long long int, T> && !std::is_same_v<float, T> && !std::is_same_v<double, T>>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
