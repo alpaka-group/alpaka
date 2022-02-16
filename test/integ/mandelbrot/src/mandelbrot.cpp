@@ -196,7 +196,7 @@ template<typename TBuf>
 auto writeTgaColorImage(std::string const& fileName, TBuf const& bufRgba) -> void
 {
     static_assert(alpaka::Dim<TBuf>::value == 2, "The buffer has to be 2 dimensional!");
-    static_assert(std::is_integral<alpaka::Elem<TBuf>>::value, "The buffer element type has to be integral!");
+    static_assert(std::is_integral_v<alpaka::Elem<TBuf>>, "The buffer element type has to be integral!");
 
     // The width of the input buffer is in input elements.
     auto const bufWidthElems = alpaka::getWidth(bufRgba);

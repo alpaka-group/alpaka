@@ -17,7 +17,7 @@ namespace alpaka::traits
 {
     //! The arithmetic type dimension getter trait specialization.
     template<typename T>
-    struct DimType<T, std::enable_if_t<std::is_arithmetic<T>::value>>
+    struct DimType<T, std::enable_if_t<std::is_arithmetic_v<T>>>
     {
         using type = DimInt<1u>;
     };

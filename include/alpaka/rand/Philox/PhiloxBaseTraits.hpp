@@ -20,8 +20,7 @@ namespace alpaka::rand::engine::traits
 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
     template<typename TAcc>
-    constexpr auto isGPU
-        = std::is_same<typename alpaka::traits::DevType<TAcc>::type, alpaka::DevUniformCudaHipRt>::value;
+    constexpr auto isGPU = std::is_same_v<typename alpaka::traits::DevType<TAcc>::type, alpaka::DevUniformCudaHipRt>;
 #else
     template<typename TAcc>
     constexpr bool isGPU = false;

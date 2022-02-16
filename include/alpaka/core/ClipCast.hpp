@@ -21,7 +21,7 @@ namespace alpaka::core
     auto clipCast(V const& val) -> T
     {
         static_assert(
-            std::is_integral<T>::value && std::is_integral<V>::value,
+            std::is_integral_v<T> && std::is_integral_v<V>,
             "clipCast can not be called with non-integral types!");
 
         auto constexpr max = static_cast<V>(std::numeric_limits<alpaka::meta::LowerMax<T, V>>::max());

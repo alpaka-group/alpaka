@@ -40,10 +40,10 @@ namespace alpaka
         class BufCpuImpl final
         {
             static_assert(
-                !std::is_const<TElem>::value,
+                !std::is_const_v<TElem>,
                 "The elem type of the buffer can not be const because the C++ Standard forbids containers of const "
                 "elements!");
-            static_assert(!std::is_const<TIdx>::value, "The idx type of the buffer can not be const!");
+            static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
 
         public:
             template<typename TExtent>
@@ -68,7 +68,7 @@ namespace alpaka
                     "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be "
                     "identical!");
                 static_assert(
-                    std::is_same<TIdx, Idx<TExtent>>::value,
+                    std::is_same_v<TIdx, Idx<TExtent>>,
                     "The idx type of TExtent and the TIdx template parameter have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -243,7 +243,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 static_assert(
-                    std::is_same<Dev<TQueue>, DevCpu>::value,
+                    std::is_same_v<Dev<TQueue>, DevCpu>,
                     "The BufCpu buffer can only be used with a queue on a DevCpu device!");
                 DevCpu const& dev = getDev(queue);
 

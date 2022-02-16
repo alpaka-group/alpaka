@@ -105,7 +105,7 @@ namespace alpaka
     {
         //! Get device type
         template<typename TDev>
-        struct DevType<TDev, typename std::enable_if<concepts::ImplementsConcept<ConceptDev, TDev>::value>::type>
+        struct DevType<TDev, std::enable_if_t<concepts::ImplementsConcept<ConceptDev, TDev>::value>>
         {
             using type = typename concepts::ImplementationBase<ConceptDev, TDev>;
         };

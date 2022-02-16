@@ -101,7 +101,7 @@ namespace alpaka
     {
         //! The unsigned integral x offset get trait specialization.
         template<typename TOffsets>
-        struct GetOffset<DimInt<0u>, TOffsets, std::enable_if_t<std::is_integral<TOffsets>::value>>
+        struct GetOffset<DimInt<0u>, TOffsets, std::enable_if_t<std::is_integral_v<TOffsets>>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const& offset) -> Idx<TOffsets>
@@ -111,7 +111,7 @@ namespace alpaka
         };
         //! The unsigned integral x offset set trait specialization.
         template<typename TOffsets, typename TOffset>
-        struct SetOffset<DimInt<0u>, TOffsets, TOffset, std::enable_if_t<std::is_integral<TOffsets>::value>>
+        struct SetOffset<DimInt<0u>, TOffsets, TOffset, std::enable_if_t<std::is_integral_v<TOffsets>>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void

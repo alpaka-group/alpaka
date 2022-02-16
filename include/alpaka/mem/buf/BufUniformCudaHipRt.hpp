@@ -44,10 +44,10 @@ namespace alpaka
     class BufUniformCudaHipRt : public internal::ViewAccessOps<BufUniformCudaHipRt<TElem, TDim, TIdx>>
     {
         static_assert(
-            !std::is_const<TElem>::value,
+            !std::is_const_v<TElem>,
             "The elem type of the buffer can not be const because the C++ Standard forbids containers of const "
             "elements!");
-        static_assert(!std::is_const<TIdx>::value, "The idx type of the buffer can not be const!");
+        static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
 
     private:
         using Elem = TElem;
@@ -74,7 +74,7 @@ namespace alpaka
                 "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be "
                 "identical!");
             static_assert(
-                std::is_same<TIdx, Idx<TExtent>>::value,
+                std::is_same_v<TIdx, Idx<TExtent>>,
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
         }
 

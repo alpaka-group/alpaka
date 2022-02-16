@@ -39,7 +39,7 @@ namespace alpaka
             using SrcSize = Idx<TViewSrc>;
             using Elem = alpaka::Elem<TViewSrc>;
 
-            static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
+            static_assert(!std::is_const_v<TViewDst>, "The destination view can not be const!");
 
             static_assert(
                 Dim<TViewDst>::value == Dim<TViewSrc>::value,
@@ -59,7 +59,7 @@ namespace alpaka
                 "The source view and the extent are required to have compatible idx type!");
 
             static_assert(
-                std::is_same<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>::value,
+                std::is_same_v<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>,
                 "The source and the destination view are required to have the same element type!");
 
             TaskCopyCpuBase(TViewDst& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -189,7 +189,7 @@ namespace alpaka
             using SrcSize = Idx<TViewSrc>;
             using Elem = alpaka::Elem<TViewSrc>;
 
-            static_assert(!std::is_const<TViewDst>::value, "The destination view can not be const!");
+            static_assert(!std::is_const_v<TViewDst>, "The destination view can not be const!");
 
             static_assert(
                 Dim<TViewDst>::value == Dim<TViewSrc>::value,
@@ -209,7 +209,7 @@ namespace alpaka
                 "The source view and the extent are required to have compatible idx type!");
 
             static_assert(
-                std::is_same<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>::value,
+                std::is_same_v<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>,
                 "The source and the destination view are required to have the same element type!");
 
             TaskCopyCpu(TViewDst& viewDst, TViewSrc const& viewSrc, [[maybe_unused]] TExtent const& extent)

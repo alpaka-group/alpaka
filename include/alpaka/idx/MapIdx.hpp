@@ -147,7 +147,7 @@ namespace alpaka
         };
         //! Maps a 1 dimensional index to a N dimensional index assuming a buffer wihtout padding.
         template<std::size_t TidxDimOut>
-        struct MapIdxPitchBytes<TidxDimOut, 1u, typename std::enable_if<TidxDimOut != 1u>::type>
+        struct MapIdxPitchBytes<TidxDimOut, 1u, std::enable_if_t<TidxDimOut != 1u>>
         {
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
@@ -176,7 +176,7 @@ namespace alpaka
         };
         //! Maps a N dimensional index to a 1 dimensional index assuming a buffer wihtout padding.
         template<std::size_t TidxDimIn>
-        struct MapIdxPitchBytes<1u, TidxDimIn, typename std::enable_if<TidxDimIn != 1u>::type>
+        struct MapIdxPitchBytes<1u, TidxDimIn, std::enable_if_t<TidxDimIn != 1u>>
         {
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.

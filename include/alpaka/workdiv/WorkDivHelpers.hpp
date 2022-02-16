@@ -41,7 +41,7 @@ namespace alpaka
         //! \return The biggest number that satisfies the following conditions:
         //!     1) dividend/ret==0
         //!     2) ret<=maxDivisor
-        template<typename T, typename = std::enable_if_t<std::is_integral<T>::value>>
+        template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
         ALPAKA_FN_HOST auto nextDivisorLowerOrEqual(T const& maxDivisor, T const& dividend) -> T
         {
             T divisor(maxDivisor);
@@ -60,7 +60,7 @@ namespace alpaka
         //! \param val The value to find divisors of.
         //! \param maxDivisor The maximum.
         //! \return A list of all divisors less then or equal to the given maximum.
-        template<typename T, typename = std::enable_if_t<std::is_integral<T>::value>>
+        template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
         ALPAKA_FN_HOST auto allDivisorsLessOrEqual(T const& val, T const& maxDivisor) -> std::set<T>
         {
             std::set<T> divisorSet;
@@ -357,10 +357,10 @@ namespace alpaka
             Dim<TThreadElemExtent>::value == Dim<TAcc>::value,
             "The dimension of TAcc and the dimension of TThreadElemExtent have to be identical!");
         static_assert(
-            std::is_same<Idx<TGridElemExtent>, Idx<TAcc>>::value,
+            std::is_same_v<Idx<TGridElemExtent>, Idx<TAcc>>,
             "The idx type of TAcc and the idx type of TGridElemExtent have to be identical!");
         static_assert(
-            std::is_same<Idx<TThreadElemExtent>, Idx<TAcc>>::value,
+            std::is_same_v<Idx<TThreadElemExtent>, Idx<TAcc>>,
             "The idx type of TAcc and the idx type of TThreadElemExtent have to be identical!");
 
         return subDivideGridElems(

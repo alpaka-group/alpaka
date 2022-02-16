@@ -87,7 +87,7 @@ namespace alpaka
 // with clang it is not possible to query std::result_of for a pure device lambda created on the host side
 #        if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
                 static_assert(
-                    std::is_same<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>::value,
+                    std::is_same_v<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>,
                     "The TKernelFnObj is required to return void!");
 #        endif
                 kernelFnObj(const_cast<TAcc const&>(acc), args...);

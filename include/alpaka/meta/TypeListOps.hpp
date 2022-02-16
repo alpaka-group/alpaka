@@ -38,6 +38,6 @@ namespace alpaka::meta
     template<template<typename...> class List, typename Head, typename... Tail, typename Value>
     struct Contains<List<Head, Tail...>, Value>
     {
-        static constexpr bool value = std::is_same<Head, Value>::value || Contains<List<Tail...>, Value>::value;
+        static constexpr bool value = std::is_same_v<Head, Value> || Contains<List<Tail...>, Value>::value;
     };
 } // namespace alpaka::meta

@@ -47,32 +47,7 @@ namespace alpaka
         //! The HIP vectors 1D dimension get trait specialization.
         template<typename T>
         struct IsHipBuiltInType
-            : std::integral_constant<
-                  bool,
-                  std::is_same<T, char1>::value || std::is_same<T, double1>::value || std::is_same<T, float1>::value
-                      || std::is_same<T, int1>::value || std::is_same<T, long1>::value
-                      || std::is_same<T, longlong1>::value || std::is_same<T, short1>::value
-                      || std::is_same<T, uchar1>::value || std::is_same<T, uint1>::value
-                      || std::is_same<T, ulong1>::value || std::is_same<T, ulonglong1>::value
-                      || std::is_same<T, ushort1>::value || std::is_same<T, char2>::value
-                      || std::is_same<T, double2>::value || std::is_same<T, float2>::value
-                      || std::is_same<T, int2>::value || std::is_same<T, long2>::value
-                      || std::is_same<T, longlong2>::value || std::is_same<T, short2>::value
-                      || std::is_same<T, uchar2>::value || std::is_same<T, uint2>::value
-                      || std::is_same<T, ulong2>::value || std::is_same<T, ulonglong2>::value
-                      || std::is_same<T, ushort2>::value || std::is_same<T, char3>::value
-                      || std::is_same<T, dim3>::value || std::is_same<T, double3>::value
-                      || std::is_same<T, float3>::value || std::is_same<T, int3>::value
-                      || std::is_same<T, long3>::value || std::is_same<T, longlong3>::value
-                      || std::is_same<T, short3>::value || std::is_same<T, uchar3>::value
-                      || std::is_same<T, uint3>::value || std::is_same<T, ulong3>::value
-                      || std::is_same<T, ulonglong3>::value || std::is_same<T, ushort3>::value
-                      || std::is_same<T, char4>::value || std::is_same<T, double4>::value
-                      || std::is_same<T, float4>::value || std::is_same<T, int4>::value
-                      || std::is_same<T, long4>::value || std::is_same<T, longlong4>::value
-                      || std::is_same<T, short4>::value || std::is_same<T, uchar4>::value
-                      || std::is_same<T, uint4>::value || std::is_same<T, ulong4>::value
-                      || std::is_same<T, ulonglong4>::value || std::is_same<T, ushort4>::value>
+            : std::integral_constant<bool, std::is_same_v<T, char1> || std::is_same_v<T, double1> || std::is_same_v<T, float1> || std::is_same_v<T, int1> || std::is_same_v<T, long1> || std::is_same_v<T, longlong1> || std::is_same_v<T, short1> || std::is_same_v<T, uchar1> || std::is_same_v<T, uint1> || std::is_same_v<T, ulong1> || std::is_same_v<T, ulonglong1> || std::is_same_v<T, ushort1> || std::is_same_v<T, char2> || std::is_same_v<T, double2> || std::is_same_v<T, float2> || std::is_same_v<T, int2> || std::is_same_v<T, long2> || std::is_same_v<T, longlong2> || std::is_same_v<T, short2> || std::is_same_v<T, uchar2> || std::is_same_v<T, uint2> || std::is_same_v<T, ulong2> || std::is_same_v<T, ulonglong2> || std::is_same_v<T, ushort2> || std::is_same_v<T, char3> || std::is_same_v<T, dim3> || std::is_same_v<T, double3> || std::is_same_v<T, float3> || std::is_same_v<T, int3> || std::is_same_v<T, long3> || std::is_same_v<T, longlong3> || std::is_same_v<T, short3> || std::is_same_v<T, uchar3> || std::is_same_v<T, uint3> || std::is_same_v<T, ulong3> || std::is_same_v<T, ulonglong3> || std::is_same_v<T, ushort3> || std::is_same_v<T, char4> || std::is_same_v<T, double4> || std::is_same_v<T, float4> || std::is_same_v<T, int4> || std::is_same_v<T, long4> || std::is_same_v<T, longlong4> || std::is_same_v<T, short4> || std::is_same_v<T, uchar4> || std::is_same_v<T, uint4> || std::is_same_v<T, ulong4> || std::is_same_v<T, ulonglong4> || std::is_same_v<T, ushort4>>
         {
         };
     } // namespace hip::traits
@@ -86,9 +61,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, char1>::value || std::is_same<T, double1>::value || std::is_same<T, float1>::value
-                || std::is_same<T, int1>::value || std::is_same<T, long1>::value || std::is_same<T, longlong1>::value
-                || std::is_same<T, short1>::value>>
+                std::is_same_v<
+                    T,
+                    char1> || std::is_same_v<T, double1> || std::is_same_v<T, float1> || std::is_same_v<T, int1> || std::is_same_v<T, long1> || std::is_same_v<T, longlong1> || std::is_same_v<T, short1>>>
         {
             using type = DimInt<1u>;
         };
@@ -96,8 +71,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, uchar1>::value || std::is_same<T, uint1>::value || std::is_same<T, ulong1>::value
-                || std::is_same<T, ulonglong1>::value || std::is_same<T, ushort1>::value>>
+                std::is_same_v<
+                    T,
+                    uchar1> || std::is_same_v<T, uint1> || std::is_same_v<T, ulong1> || std::is_same_v<T, ulonglong1> || std::is_same_v<T, ushort1>>>
         {
             using type = DimInt<1u>;
         };
@@ -106,9 +82,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, char2>::value || std::is_same<T, double2>::value || std::is_same<T, float2>::value
-                || std::is_same<T, int2>::value || std::is_same<T, long2>::value || std::is_same<T, longlong2>::value
-                || std::is_same<T, short2>::value>>
+                std::is_same_v<
+                    T,
+                    char2> || std::is_same_v<T, double2> || std::is_same_v<T, float2> || std::is_same_v<T, int2> || std::is_same_v<T, long2> || std::is_same_v<T, longlong2> || std::is_same_v<T, short2>>>
         {
             using type = DimInt<2u>;
         };
@@ -116,8 +92,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, uchar2>::value || std::is_same<T, uint2>::value || std::is_same<T, ulong2>::value
-                || std::is_same<T, ulonglong2>::value || std::is_same<T, ushort2>::value>>
+                std::is_same_v<
+                    T,
+                    uchar2> || std::is_same_v<T, uint2> || std::is_same_v<T, ulong2> || std::is_same_v<T, ulonglong2> || std::is_same_v<T, ushort2>>>
         {
             using type = DimInt<2u>;
         };
@@ -126,9 +103,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, char3>::value || std::is_same<T, dim3>::value || std::is_same<T, double3>::value
-                || std::is_same<T, float3>::value || std::is_same<T, int3>::value || std::is_same<T, long3>::value
-                || std::is_same<T, longlong3>::value || std::is_same<T, short3>::value>>
+                std::is_same_v<
+                    T,
+                    char3> || std::is_same_v<T, dim3> || std::is_same_v<T, double3> || std::is_same_v<T, float3> || std::is_same_v<T, int3> || std::is_same_v<T, long3> || std::is_same_v<T, longlong3> || std::is_same_v<T, short3>>>
         {
             using type = DimInt<3u>;
         };
@@ -136,8 +113,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, uchar3>::value || std::is_same<T, uint3>::value || std::is_same<T, ulong3>::value
-                || std::is_same<T, ulonglong3>::value || std::is_same<T, ushort3>::value>>
+                std::is_same_v<
+                    T,
+                    uchar3> || std::is_same_v<T, uint3> || std::is_same_v<T, ulong3> || std::is_same_v<T, ulonglong3> || std::is_same_v<T, ushort3>>>
         {
             using type = DimInt<3u>;
         };
@@ -146,9 +124,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, char4>::value || std::is_same<T, double4>::value || std::is_same<T, float4>::value
-                || std::is_same<T, int4>::value || std::is_same<T, long4>::value || std::is_same<T, longlong4>::value
-                || std::is_same<T, short4>::value>>
+                std::is_same_v<
+                    T,
+                    char4> || std::is_same_v<T, double4> || std::is_same_v<T, float4> || std::is_same_v<T, int4> || std::is_same_v<T, long4> || std::is_same_v<T, longlong4> || std::is_same_v<T, short4>>>
         {
             using type = DimInt<4u>;
         };
@@ -156,8 +134,9 @@ namespace alpaka
         struct DimType<
             T,
             std::enable_if_t<
-                std::is_same<T, uchar4>::value || std::is_same<T, uint4>::value || std::is_same<T, ulong4>::value
-                || std::is_same<T, ulonglong4>::value || std::is_same<T, ushort4>::value>>
+                std::is_same_v<
+                    T,
+                    uchar4> || std::is_same_v<T, uint4> || std::is_same_v<T, ulong4> || std::is_same_v<T, ulonglong4> || std::is_same_v<T, ushort4>>>
         {
             using type = DimInt<4u>;
         };

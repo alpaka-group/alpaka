@@ -126,8 +126,7 @@ struct RunTimestepKernelVector
             using DistributionResult =
                 typename RandomEngineVector<TAcc>::template ResultContainer<float>; // Container type which will store
                                                                                     // the distribution results
-            unsigned constexpr resultVectorSize
-                = std::tuple_size<DistributionResult>::value; // Size of the result vector
+            unsigned constexpr resultVectorSize = std::tuple_size_v<DistributionResult>; // Size of the result vector
             alpaka::rand::UniformReal<DistributionResult> dist; // Vector-aware distribution function
 
 

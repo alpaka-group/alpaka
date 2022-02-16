@@ -202,7 +202,7 @@ namespace alpaka
             void operator()(TKernelFnObj const&, TArgs const&...)
             {
                 using Result = std::invoke_result_t<TKernelFnObj, TAcc const&, TArgs const&...>;
-                static_assert(std::is_same<Result, void>::value, "The TKernelFnObj is required to return void!");
+                static_assert(std::is_same_v<Result, void>, "The TKernelFnObj is required to return void!");
             }
         };
     } // namespace detail
@@ -226,7 +226,7 @@ namespace alpaka
             Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
             "The dimensions of TAcc and TWorkDiv have to be identical!");
         static_assert(
-            std::is_same<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>::value,
+            std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
             "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

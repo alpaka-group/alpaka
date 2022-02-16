@@ -36,7 +36,7 @@ namespace alpaka
     {
         //! The arithmetic idx type trait specialization.
         template<typename T>
-        struct IdxType<T, std::enable_if_t<std::is_arithmetic<T>::value>>
+        struct IdxType<T, std::enable_if_t<std::is_arithmetic_v<T>>>
         {
             using type = std::decay_t<T>;
         };

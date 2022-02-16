@@ -32,7 +32,7 @@ namespace alpaka
             using DstSize = Idx<TView>;
             using Elem = alpaka::Elem<TView>;
 
-            static_assert(!std::is_const<TView>::value, "The destination view can not be const!");
+            static_assert(!std::is_const_v<TView>, "The destination view can not be const!");
 
             static_assert(
                 Dim<TView>::value == Dim<TExtent>::value,
@@ -151,7 +151,7 @@ namespace alpaka
             using DstSize = Idx<TView>;
             using Elem = alpaka::Elem<TView>;
 
-            static_assert(!std::is_const<TView>::value, "The destination view can not be const!");
+            static_assert(!std::is_const_v<TView>, "The destination view can not be const!");
 
             static_assert(
                 Dim<TView>::value == Dim<TExtent>::value,

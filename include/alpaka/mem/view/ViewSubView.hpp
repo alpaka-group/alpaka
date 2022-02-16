@@ -30,7 +30,7 @@ namespace alpaka
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
     class ViewSubView : public internal::ViewAccessOps<ViewSubView<TDev, TElem, TDim, TIdx>>
     {
-        static_assert(!std::is_const<TIdx>::value, "The idx type of the view can not be const!");
+        static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 
         using Dev = alpaka::Dev<TDev>;
 
@@ -51,27 +51,27 @@ namespace alpaka
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
             static_assert(
-                std::is_same<Dev, alpaka::Dev<TView>>::value,
+                std::is_same_v<Dev, alpaka::Dev<TView>>,
                 "The dev type of TView and the Dev template parameter have to be identical!");
 
             static_assert(
-                std::is_same<TIdx, Idx<TView>>::value,
+                std::is_same_v<TIdx, Idx<TView>>,
                 "The idx type of TView and the TIdx template parameter have to be identical!");
             static_assert(
-                std::is_same<TIdx, Idx<TExtent>>::value,
+                std::is_same_v<TIdx, Idx<TExtent>>,
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
             static_assert(
-                std::is_same<TIdx, Idx<TOffsets>>::value,
+                std::is_same_v<TIdx, Idx<TOffsets>>,
                 "The idx type of TOffsets and the TIdx template parameter have to be identical!");
 
             static_assert(
-                std::is_same<TDim, Dim<TView>>::value,
+                std::is_same_v<TDim, Dim<TView>>,
                 "The dim type of TView and the TDim template parameter have to be identical!");
             static_assert(
-                std::is_same<TDim, Dim<TExtent>>::value,
+                std::is_same_v<TDim, Dim<TExtent>>,
                 "The dim type of TExtent and the TDim template parameter have to be identical!");
             static_assert(
-                std::is_same<TDim, Dim<TOffsets>>::value,
+                std::is_same_v<TDim, Dim<TOffsets>>,
                 "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
             ALPAKA_ASSERT(
@@ -90,27 +90,27 @@ namespace alpaka
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
             static_assert(
-                std::is_same<Dev, alpaka::Dev<TView>>::value,
+                std::is_same_v<Dev, alpaka::Dev<TView>>,
                 "The dev type of TView and the Dev template parameter have to be identical!");
 
             static_assert(
-                std::is_same<TIdx, Idx<TView>>::value,
+                std::is_same_v<TIdx, Idx<TView>>,
                 "The idx type of TView and the TIdx template parameter have to be identical!");
             static_assert(
-                std::is_same<TIdx, Idx<TExtent>>::value,
+                std::is_same_v<TIdx, Idx<TExtent>>,
                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
             static_assert(
-                std::is_same<TIdx, Idx<TOffsets>>::value,
+                std::is_same_v<TIdx, Idx<TOffsets>>,
                 "The idx type of TOffsets and the TIdx template parameter have to be identical!");
 
             static_assert(
-                std::is_same<TDim, Dim<TView>>::value,
+                std::is_same_v<TDim, Dim<TView>>,
                 "The dim type of TView and the TDim template parameter have to be identical!");
             static_assert(
-                std::is_same<TDim, Dim<TExtent>>::value,
+                std::is_same_v<TDim, Dim<TExtent>>,
                 "The dim type of TExtent and the TDim template parameter have to be identical!");
             static_assert(
-                std::is_same<TDim, Dim<TOffsets>>::value,
+                std::is_same_v<TDim, Dim<TOffsets>>,
                 "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
             ALPAKA_ASSERT(

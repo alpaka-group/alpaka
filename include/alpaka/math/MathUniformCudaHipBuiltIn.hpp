@@ -426,7 +426,7 @@ namespace alpaka::math
 
         //! The CUDA isfinite trait specialization.
         template<typename TArg>
-        struct Isfinite<IsfiniteUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Isfinite<IsfiniteUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(IsfiniteUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
             {
@@ -436,7 +436,7 @@ namespace alpaka::math
 
         //! The CUDA isinf trait specialization.
         template<typename TArg>
-        struct Isinf<IsinfUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Isinf<IsinfUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(IsinfUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
             {
@@ -446,7 +446,7 @@ namespace alpaka::math
 
         //! The CUDA isnan trait specialization.
         template<typename TArg>
-        struct Isnan<IsnanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Isnan<IsnanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(IsnanUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
             {
@@ -565,7 +565,7 @@ namespace alpaka::math
             RemainderUniformCudaHipBuiltIn,
             Tx,
             Ty,
-            std::enable_if_t<std::is_floating_point<Tx>::value && std::is_floating_point<Ty>::value>>
+            std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
         {
             __device__ auto operator()(
                 RemainderUniformCudaHipBuiltIn const& /* remainder_ctx */,
@@ -588,7 +588,7 @@ namespace alpaka::math
 
         //! The CUDA round trait specialization.
         template<typename TArg>
-        struct Round<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Round<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* round_ctx */, TArg const& arg)
             {
@@ -605,7 +605,7 @@ namespace alpaka::math
 
         //! The CUDA lround trait specialization.
         template<typename TArg>
-        struct Lround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Lround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* lround_ctx */, TArg const& arg)
             {
@@ -622,7 +622,7 @@ namespace alpaka::math
 
         //! The CUDA llround trait specialization.
         template<typename TArg>
-        struct Llround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Llround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* llround_ctx */, TArg const& arg)
             {
@@ -658,7 +658,7 @@ namespace alpaka::math
 
         //! The CUDA sin trait specialization.
         template<typename TArg>
-        struct Sin<SinUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Sin<SinUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(SinUniformCudaHipBuiltIn const& /* sin_ctx */, TArg const& arg)
             {
@@ -728,7 +728,7 @@ namespace alpaka::math
 
         //! The CUDA trunc trait specialization.
         template<typename TArg>
-        struct Trunc<TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
+        struct Trunc<TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
             __device__ auto operator()(TruncUniformCudaHipBuiltIn const& /* trunc_ctx */, TArg const& arg)
             {

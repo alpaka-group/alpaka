@@ -30,7 +30,7 @@ namespace alpaka
     {
         //! The fundamental type elem type trait specialization.
         template<typename T>
-        struct ElemType<T, std::enable_if_t<std::is_fundamental<T>::value>>
+        struct ElemType<T, std::enable_if_t<std::is_fundamental_v<T>>>
         {
             using type = T;
         };
