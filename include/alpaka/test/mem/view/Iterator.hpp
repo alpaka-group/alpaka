@@ -43,7 +43,7 @@ namespace alpaka
                 ALPAKA_FN_HOST IteratorView(TView& view, Idx const idx)
                     : m_nativePtr(alpaka::getPtrNative(view))
                     , m_currentIdx(idx)
-                    , m_extents(alpaka::extent::getExtentVec(view))
+                    , m_extents(alpaka::getExtentVec(view))
                     , m_pitchBytes(alpaka::getPitchBytesVec(view))
                 {
                 }
@@ -149,7 +149,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST static auto end(TView& view) -> IteratorView<TView>
                 {
-                    auto extents = alpaka::extent::getExtentVec(view);
+                    auto extents = alpaka::getExtentVec(view);
                     return IteratorView<TView>(view, extents.prod());
                 }
             };

@@ -71,7 +71,7 @@ namespace alpaka
                 template<typename TExtent>
                 ALPAKA_FN_HOST BufOaccImpl(DevOacc const& dev, TElem* const pMem, TExtent const& extent)
                     : m_dev(dev)
-                    , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
+                    , m_extentElements(getExtentVecEnd<TDim>(extent))
                     , m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
                     , m_pMem(pMem)
                 {
@@ -163,29 +163,20 @@ namespace alpaka
         {
             using type = TElem;
         };
-    } // namespace traits
 
-    namespace extent
-    {
-        namespace traits
+        //! The BufOacc extent get trait specialization.
+        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
+        struct GetExtent<
+            TIdxIntegralConst,
+            BufOacc<TElem, TDim, TIdx>,
+            typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
         {
-            //! The BufOacc extent get trait specialization.
-            template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-            struct GetExtent<
-                TIdxIntegralConst,
-                BufOacc<TElem, TDim, TIdx>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+            ALPAKA_FN_HOST static auto getExtent(BufOacc<TElem, TDim, TIdx> const& extent) -> TIdx
             {
-                ALPAKA_FN_HOST static auto getExtent(BufOacc<TElem, TDim, TIdx> const& extent) -> TIdx
-                {
-                    return extent.extentElements()[TIdxIntegralConst::value];
-                }
-            };
-        } // namespace traits
-    } // namespace extent
+                return extent.extentElements()[TIdxIntegralConst::value];
+            }
+        };
 
-    namespace traits
-    {
         //! The BufOacc native pointer get trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct GetPtrNative<BufOacc<TElem, TDim, TIdx>>
@@ -247,7 +238,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const width(extent::getWidth(extent));
+                auto const width(getWidth(extent));
                 auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
 
                 dev.makeCurrent();
@@ -271,7 +262,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                const std::size_t size = static_cast<std::size_t>(extent::getExtentVec(extent).prod()) * sizeof(TElem);
+                const std::size_t size = static_cast<std::size_t>(getExtentVec(extent).prod()) * sizeof(TElem);
 
                 dev.makeCurrent();
                 void* memPtr = acc_malloc(size);

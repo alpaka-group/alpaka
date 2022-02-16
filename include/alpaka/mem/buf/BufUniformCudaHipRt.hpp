@@ -63,7 +63,7 @@ namespace alpaka
             TIdx const& pitchBytes,
             TExtent const& extent)
             : m_dev(dev)
-            , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
+            , m_extentElements(getExtentVecEnd<TDim>(extent))
             , m_spMem(pMem, std::move(deleter))
             , m_pitchBytes(pitchBytes)
         {
@@ -116,27 +116,20 @@ namespace alpaka
         {
             using type = TElem;
         };
-    } // namespace traits
-    namespace extent
-    {
-        namespace traits
+
+        //! The BufUniformCudaHipRt extent get trait specialization.
+        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
+        struct GetExtent<
+            TIdxIntegralConst,
+            BufUniformCudaHipRt<TElem, TDim, TIdx>,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
         {
-            //! The BufUniformCudaHipRt extent get trait specialization.
-            template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-            struct GetExtent<
-                TIdxIntegralConst,
-                BufUniformCudaHipRt<TElem, TDim, TIdx>,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+            ALPAKA_FN_HOST static auto getExtent(BufUniformCudaHipRt<TElem, TDim, TIdx> const& extent) -> TIdx
             {
-                ALPAKA_FN_HOST static auto getExtent(BufUniformCudaHipRt<TElem, TDim, TIdx> const& extent) -> TIdx
-                {
-                    return extent.m_extentElements[TIdxIntegralConst::value];
-                }
-            };
-        } // namespace traits
-    } // namespace extent
-    namespace traits
-    {
+                return extent.m_extentElements[TIdxIntegralConst::value];
+            }
+        };
+
         //! The BufUniformCudaHipRt native pointer get trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct GetPtrNative<BufUniformCudaHipRt<TElem, TDim, TIdx>>
@@ -236,7 +229,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const width = extent::getWidth(extent);
+                auto const width = getWidth(extent);
                 auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 
                 // Set the current device.
@@ -272,9 +265,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const width = extent::getWidth(extent);
+                auto const width = getWidth(extent);
                 auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
-                auto const height = extent::getHeight(extent);
+                auto const height = getHeight(extent);
 
                 void* memPtr = nullptr;
                 std::size_t pitchBytes = 0u;
@@ -323,9 +316,9 @@ namespace alpaka
 
                 ALPAKA_API_PREFIX(Extent)
                 const extentVal = ALPAKA_PP_CONCAT(make_, ALPAKA_API_PREFIX(Extent))(
-                    static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))),
-                    static_cast<std::size_t>(extent::getHeight(extent)),
-                    static_cast<std::size_t>(extent::getDepth(extent)));
+                    static_cast<std::size_t>(getWidth(extent) * static_cast<TIdx>(sizeof(TElem))),
+                    static_cast<std::size_t>(getHeight(extent)),
+                    static_cast<std::size_t>(getDepth(extent)));
 
                 ALPAKA_API_PREFIX(PitchedPtr) pitchedPtrVal;
                 pitchedPtrVal.ptr = nullptr;
@@ -347,7 +340,7 @@ namespace alpaka
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Free)(reinterpret_cast<void*>(ptr)));
                 };
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << __func__ << " ew: " << extent::getWidth(extent) << " eh: " << extentVal.height
+                std::cout << __func__ << " ew: " << getWidth(extent) << " eh: " << extentVal.height
                           << " ed: " << extentVal.depth << " ewb: " << extentVal.width << " ptr: " << pitchedPtrVal.ptr
                           << " pitch: " << pitchedPtrVal.pitch << " wb: " << pitchedPtrVal.xsize
                           << " h: " << pitchedPtrVal.ysize << std::endl;
@@ -431,7 +424,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const width = extent::getWidth(extent);
+                auto const width = getWidth(extent);
                 auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 
                 // Set the current device.
@@ -598,7 +591,7 @@ namespace alpaka
                     //   compute capability greater than or equal to 1.1.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(HostRegister)(
                         const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
-                        extent::getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
+                        getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
                         ALPAKA_API_PREFIX(HostRegisterMapped)));
                 }
             }

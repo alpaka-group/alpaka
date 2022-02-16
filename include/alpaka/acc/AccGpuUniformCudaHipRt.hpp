@@ -150,14 +150,14 @@ namespace alpaka
                 return {// m_multiProcessorCount
                         alpaka::core::clipCast<TIdx>(multiProcessorCount),
                         // m_gridBlockExtentMax
-                        extent::getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
+                        getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(maxGridSize[2u]),
                             alpaka::core::clipCast<TIdx>(maxGridSize[1u]),
                             alpaka::core::clipCast<TIdx>(maxGridSize[0u]))),
                         // m_gridBlockCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
-                        extent::getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
+                        getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(maxBlockDim[2u]),
                             alpaka::core::clipCast<TIdx>(maxBlockDim[1u]),
                             alpaka::core::clipCast<TIdx>(maxBlockDim[0u]))),
@@ -177,14 +177,14 @@ namespace alpaka
                 return {// m_multiProcessorCount
                         alpaka::core::clipCast<TIdx>(hipDevProp.multiProcessorCount),
                         // m_gridBlockExtentMax
-                        extent::getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
+                        getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[2u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[1u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[0u]))),
                         // m_gridBlockCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
-                        extent::getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
+                        getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[2u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[1u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[0u]))),

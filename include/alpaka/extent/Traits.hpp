@@ -18,7 +18,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace alpaka::extent
+namespace alpaka
 {
     //! The extent traits.
     namespace traits
@@ -144,4 +144,4 @@ namespace alpaka::extent
             }
         };
     } // namespace traits
-} // namespace alpaka::extent
+} // namespace alpaka

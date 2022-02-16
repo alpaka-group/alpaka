@@ -53,10 +53,10 @@ namespace alpaka
                 std::function<void(TElem*)> deleter,
                 TExtent const& extent)
                 : m_dev(std::move(dev))
-                , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
+                , m_extentElements(getExtentVecEnd<TDim>(extent))
                 , m_pMem(pMem)
                 , m_deleter(std::move(deleter))
-                , m_pitchBytes(static_cast<TIdx>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
+                , m_pitchBytes(static_cast<TIdx>(getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 , m_bPinned(false)
 #endif
@@ -149,27 +149,20 @@ namespace alpaka
         {
             using type = TElem;
         };
-    } // namespace traits
-    namespace extent
-    {
-        namespace traits
+
+        //! The BufCpu width get trait specialization.
+        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
+        struct GetExtent<
+            TIdxIntegralConst,
+            BufCpu<TElem, TDim, TIdx>,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
         {
-            //! The BufCpu width get trait specialization.
-            template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-            struct GetExtent<
-                TIdxIntegralConst,
-                BufCpu<TElem, TDim, TIdx>,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+            ALPAKA_FN_HOST static auto getExtent(BufCpu<TElem, TDim, TIdx> const& extent) -> TIdx
             {
-                ALPAKA_FN_HOST static auto getExtent(BufCpu<TElem, TDim, TIdx> const& extent) -> TIdx
-                {
-                    return extent.m_spBufCpuImpl->m_extentElements[TIdxIntegralConst::value];
-                }
-            };
-        } // namespace traits
-    } // namespace extent
-    namespace traits
-    {
+                return extent.m_spBufCpuImpl->m_extentElements[TIdxIntegralConst::value];
+            }
+        };
+
         //! The BufCpu native pointer get trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct GetPtrNative<BufCpu<TElem, TDim, TIdx>>
@@ -234,8 +227,7 @@ namespace alpaka
                 using Allocator
                     = AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>;
                 static_assert(std::is_empty_v<Allocator>, "AllocCpuAligned is expected to be stateless");
-                auto* memPtr
-                    = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(extent::getExtentProduct(extent)));
+                auto* memPtr = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(getExtentProduct(extent)));
                 auto deleter = [](TElem* ptr) { alpaka::free(Allocator{}, ptr); };
 
                 return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
@@ -259,8 +251,7 @@ namespace alpaka
                 using Allocator
                     = AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>;
                 static_assert(std::is_empty_v<Allocator>, "AllocCpuAligned is expected to be stateless");
-                auto* memPtr
-                    = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(extent::getExtentProduct(extent)));
+                auto* memPtr = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(getExtentProduct(extent)));
                 auto deleter = [queue = std::move(queue)](TElem* ptr) mutable
                 {
                     alpaka::enqueue(
@@ -334,7 +325,7 @@ namespace alpaka
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
                             ALPAKA_API_PREFIX(HostRegister)(
                                 const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
-                                extent::getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
+                                getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
                                 ALPAKA_API_PREFIX(HostRegisterDefault)),
                             ALPAKA_API_PREFIX(ErrorHostMemoryAlreadyRegistered));
 

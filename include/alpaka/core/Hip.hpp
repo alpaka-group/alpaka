@@ -168,9 +168,7 @@ namespace alpaka
         {
             using type = decltype(std::declval<T>().x);
         };
-    } // namespace traits
-    namespace extent::traits
-    {
+
         //! The HIP vectors extent get trait specialization.
         template<typename TExtent>
         struct GetExtent<
@@ -279,9 +277,7 @@ namespace alpaka
                 extent.w = extentVal;
             }
         };
-    } // namespace extent::traits
-    namespace traits
-    {
+
         //! The HIP vectors offset get trait specialization.
         template<typename TOffsets>
         struct GetOffset<

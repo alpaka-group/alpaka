@@ -78,9 +78,9 @@ namespace alpaka
                 -> Vec<TDim, TIdx>
             {
 #        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                return castVec<TIdx>(extent::getExtentVecEnd<TDim>(gridDim));
+                return castVec<TIdx>(getExtentVecEnd<TDim>(gridDim));
 #        else
-                return extent::getExtentVecEnd<TDim>(Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
+                return getExtentVecEnd<TDim>(Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
                     static_cast<TIdx>(hipGridDim_z),
                     static_cast<TIdx>(hipGridDim_y),
                     static_cast<TIdx>(hipGridDim_x)));
@@ -97,9 +97,9 @@ namespace alpaka
                 -> Vec<TDim, TIdx>
             {
 #        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                return castVec<TIdx>(extent::getExtentVecEnd<TDim>(blockDim));
+                return castVec<TIdx>(getExtentVecEnd<TDim>(blockDim));
 #        else
-                return extent::getExtentVecEnd<TDim>(Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
+                return getExtentVecEnd<TDim>(Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
                     static_cast<TIdx>(hipBlockDim_z),
                     static_cast<TIdx>(hipBlockDim_y),
                     static_cast<TIdx>(hipBlockDim_x)));

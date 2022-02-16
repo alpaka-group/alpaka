@@ -63,11 +63,11 @@ namespace alpaka
                 "The source and the destination view are required to have the same element type!");
 
             TaskCopyCpuBase(TViewDst& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
-                : m_extent(extent::getExtentVec(extent))
+                : m_extent(getExtentVec(extent))
                 , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
 #if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                , m_dstExtent(extent::getExtentVec(viewDst))
-                , m_srcExtent(extent::getExtentVec(viewSrc))
+                , m_dstExtent(getExtentVec(viewDst))
+                , m_srcExtent(getExtentVec(viewSrc))
 #endif
                 , m_dstPitchBytes(getPitchBytesVec(viewDst))
                 , m_srcPitchBytes(getPitchBytesVec(viewSrc))
@@ -217,9 +217,9 @@ namespace alpaka
                 , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
             {
                 // all zero-sized extents are equivalent
-                ALPAKA_ASSERT(extent::getExtentVec(extent).prod() == 1u);
-                ALPAKA_ASSERT(extent::getExtentVec(viewDst).prod() == 1u);
-                ALPAKA_ASSERT(extent::getExtentVec(viewSrc).prod() == 1u);
+                ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
+                ALPAKA_ASSERT(getExtentVec(viewDst).prod() == 1u);
+                ALPAKA_ASSERT(getExtentVec(viewSrc).prod() == 1u);
             }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

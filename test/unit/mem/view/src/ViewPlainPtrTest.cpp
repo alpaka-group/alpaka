@@ -73,7 +73,7 @@ namespace alpaka::test
         View view(
             alpaka::getPtrNative(buf),
             alpaka::getDev(buf),
-            alpaka::extent::getExtentVec(buf),
+            alpaka::getExtentVec(buf),
             alpaka::getPitchBytesVec(buf));
 
         alpaka::test::testViewPlainPtrMutable<TAcc>(view, dev, extentView, offsetView);
@@ -100,7 +100,7 @@ namespace alpaka::test
         View const view(
             alpaka::getPtrNative(buf),
             alpaka::getDev(buf),
-            alpaka::extent::getExtentVec(buf),
+            alpaka::getExtentVec(buf),
             alpaka::getPitchBytesVec(buf));
 
         alpaka::test::testViewPlainPtrImmutable<TAcc>(view, dev, extentView, offsetView);
@@ -125,7 +125,7 @@ namespace alpaka::test
         View view(
             alpaka::getPtrNative(buf),
             alpaka::getDev(buf),
-            alpaka::extent::getExtentVec(buf),
+            alpaka::getExtentVec(buf),
             alpaka::getPitchBytesVec(buf));
 
         // copy-constructor

@@ -44,8 +44,8 @@ namespace alpaka
             TView const& view,
             TExtent const& extentElements,
             TOffsets const& relativeOffsetsElements = TOffsets())
-            : m_viewParentView(getPtrNative(view), getDev(view), extent::getExtentVec(view), getPitchBytesVec(view))
-            , m_extentElements(extent::getExtentVec(extentElements))
+            : m_viewParentView(getPtrNative(view), getDev(view), getExtentVec(view), getPitchBytesVec(view))
+            , m_extentElements(getExtentVec(extentElements))
             , m_offsetsElements(getOffsetVec(relativeOffsetsElements))
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -74,8 +74,8 @@ namespace alpaka
                 std::is_same<TDim, Dim<TOffsets>>::value,
                 "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-            ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view))
-                              .foldrAll(std::logical_and<bool>()));
+            ALPAKA_ASSERT(
+                ((m_offsetsElements + m_extentElements) <= getExtentVec(view)).foldrAll(std::logical_and<bool>()));
         }
         //! Constructor.
         //! \param view The view this view is a sub-view of.
@@ -83,8 +83,8 @@ namespace alpaka
         //! \param relativeOffsetsElements The offsets in elements.
         template<typename TView, typename TOffsets, typename TExtent>
         ViewSubView(TView& view, TExtent const& extentElements, TOffsets const& relativeOffsetsElements = TOffsets())
-            : m_viewParentView(getPtrNative(view), getDev(view), extent::getExtentVec(view), getPitchBytesVec(view))
-            , m_extentElements(extent::getExtentVec(extentElements))
+            : m_viewParentView(getPtrNative(view), getDev(view), getExtentVec(view), getPitchBytesVec(view))
+            , m_extentElements(getExtentVec(extentElements))
             , m_offsetsElements(getOffsetVec(relativeOffsetsElements))
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -113,8 +113,8 @@ namespace alpaka
                 std::is_same<TDim, Dim<TOffsets>>::value,
                 "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-            ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view))
-                              .foldrAll(std::logical_and<bool>()));
+            ALPAKA_ASSERT(
+                ((m_offsetsElements + m_extentElements) <= getExtentVec(view)).foldrAll(std::logical_and<bool>()));
         }
 
         //! \param view The view this view is a sub-view of.
@@ -170,27 +170,20 @@ namespace alpaka
         {
             using type = TElem;
         };
-    } // namespace traits
-    namespace extent
-    {
-        namespace traits
+
+        //! The ViewSubView width get trait specialization.
+        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TDev, typename TIdx>
+        struct GetExtent<
+            TIdxIntegralConst,
+            ViewSubView<TDev, TElem, TDim, TIdx>,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
         {
-            //! The ViewSubView width get trait specialization.
-            template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TDev, typename TIdx>
-            struct GetExtent<
-                TIdxIntegralConst,
-                ViewSubView<TDev, TElem, TDim, TIdx>,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+            ALPAKA_FN_HOST static auto getExtent(ViewSubView<TDev, TElem, TDim, TIdx> const& extent) -> TIdx
             {
-                ALPAKA_FN_HOST static auto getExtent(ViewSubView<TDev, TElem, TDim, TIdx> const& extent) -> TIdx
-                {
-                    return extent.m_extentElements[TIdxIntegralConst::value];
-                }
-            };
-        } // namespace traits
-    } // namespace extent
-    namespace traits
-    {
+                return extent.m_extentElements[TIdxIntegralConst::value];
+            }
+        };
+
 #if BOOST_COMP_GNUC
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored                                                                                    \

@@ -202,7 +202,7 @@ namespace alpaka::experimental
                     Dim<TView>,
                     decltype(getPtrNative(std::declval<TView>())),
                     decltype(getPitchBytes<0>(std::declval<TView>())),
-                    decltype(extent::getExtent<0>(std::declval<TView>()))>> : std::true_type
+                    decltype(getExtent<0>(std::declval<TView>()))>> : std::true_type
             {
             };
 
@@ -249,7 +249,7 @@ namespace alpaka::experimental
                 return Accessor<Elem*, Elem, TBufferIdx, dim, AccessModeList>{
                     const_cast<Elem*>(p), // strip constness, this is handled the the access modes
                     {getPitchBytes<TPitchIs + 1>(view)...},
-                    {extent::getExtent<TExtentIs>(view)...}};
+                    {getExtent<TExtentIs>(view)...}};
             }
         } // namespace internal
 

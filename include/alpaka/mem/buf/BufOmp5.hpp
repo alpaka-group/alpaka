@@ -69,7 +69,7 @@ namespace alpaka
             template<typename TExtent>
             ALPAKA_FN_HOST BufOmp5Impl(DevOmp5 const& dev, TElem* const pMem, TExtent const& extent)
                 : m_dev(dev)
-                , m_extentElements(extent::getExtentVecEnd<TDim>(extent))
+                , m_extentElements(getExtentVecEnd<TDim>(extent))
                 , m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
                 , m_pMem(pMem)
             {
@@ -159,27 +159,20 @@ namespace alpaka
         {
             using type = TElem;
         };
-    } // namespace traits
-    namespace extent
-    {
-        namespace traits
+
+        //! The BufOmp5 extent get trait specialization.
+        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
+        struct GetExtent<
+            TIdxIntegralConst,
+            BufOmp5<TElem, TDim, TIdx>,
+            typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
         {
-            //! The BufOmp5 extent get trait specialization.
-            template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-            struct GetExtent<
-                TIdxIntegralConst,
-                BufOmp5<TElem, TDim, TIdx>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+            ALPAKA_FN_HOST static auto getExtent(BufOmp5<TElem, TDim, TIdx> const& extent) -> TIdx
             {
-                ALPAKA_FN_HOST static auto getExtent(BufOmp5<TElem, TDim, TIdx> const& extent) -> TIdx
-                {
-                    return extent.extentElements()[TIdxIntegralConst::value];
-                }
-            };
-        } // namespace traits
-    } // namespace extent
-    namespace traits
-    {
+                return extent.extentElements()[TIdxIntegralConst::value];
+            }
+        };
+
         //! The BufOmp5 native pointer get trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct GetPtrNative<BufOmp5<TElem, TDim, TIdx>>
@@ -241,7 +234,7 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const width(extent::getWidth(extent));
+                auto const width(getWidth(extent));
                 auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
 
                 void* memPtr
@@ -265,11 +258,11 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                const std::size_t size = static_cast<std::size_t>(extent::getExtentVec(extent).prod()) * sizeof(TElem);
+                const std::size_t size = static_cast<std::size_t>(getExtentVec(extent).prod()) * sizeof(TElem);
 
                 void* memPtr = omp_target_alloc(size, dev.m_spDevOmp5Impl->getNativeHandle());
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << __func__ << " dim: " << TDim::value << " extent: " << extent::getExtentVec(extent)
+                std::cout << __func__ << " dim: " << TDim::value << " extent: " << getExtentVec(extent)
                           << " ewb: " << size << " ptr: " << memPtr
                           << " device: " << dev.m_spDevOmp5Impl->getNativeHandle() << std::endl;
 #    endif

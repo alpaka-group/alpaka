@@ -487,6 +487,7 @@ namespace alpaka
             }
         };
     } // namespace detail
+
     namespace traits
     {
         //! CastVec specialization for Vec.
@@ -526,6 +527,7 @@ namespace alpaka
             }
         };
     } // namespace detail
+
     namespace traits
     {
         //! ReverseVec specialization for Vec.
@@ -565,6 +567,7 @@ namespace alpaka
             }
         };
     } // namespace detail
+
     namespace traits
     {
         //! Concatenation specialization for Vec.
@@ -582,42 +585,41 @@ namespace alpaka
         };
     } // namespace traits
 
-    namespace extent
+    namespace detail
     {
-        namespace detail
+        //! A function object that returns the extent for each index.
+        template<std::size_t Tidx>
+        struct CreateExtent
         {
-            //! A function object that returns the extent for each index.
-            template<std::size_t Tidx>
-            struct CreateExtent
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<typename TExtent>
+            ALPAKA_FN_HOST_ACC static auto create(TExtent const& extent) -> Idx<TExtent>
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<typename TExtent>
-                ALPAKA_FN_HOST_ACC static auto create(TExtent const& extent) -> Idx<TExtent>
-                {
-                    return extent::getExtent<Tidx>(extent);
-                }
-            };
-        } // namespace detail
-        //! \tparam TExtent has to specialize extent::GetExtent.
-        //! \return The extent vector.
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<typename TExtent>
-        ALPAKA_FN_HOST_ACC auto getExtentVec(TExtent const& extent = TExtent()) -> Vec<Dim<TExtent>, Idx<TExtent>>
-        {
-            return createVecFromIndexedFn<Dim<TExtent>, detail::CreateExtent>(extent);
-        }
-        //! \tparam TExtent has to specialize extent::GetExtent.
-        //! \return The extent but only the last N elements.
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<typename TDim, typename TExtent>
-        ALPAKA_FN_HOST_ACC auto getExtentVecEnd(TExtent const& extent = TExtent()) -> Vec<TDim, Idx<TExtent>>
-        {
-            using IdxOffset = std::integral_constant<
-                std::intmax_t,
-                static_cast<std::intmax_t>(Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
-            return createVecFromIndexedFnOffset<TDim, detail::CreateExtent, IdxOffset>(extent);
-        }
-    } // namespace extent
+                return getExtent<Tidx>(extent);
+            }
+        };
+    } // namespace detail
+
+    //! \tparam TExtent has to specialize GetExtent.
+    //! \return The extent vector.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TExtent>
+    ALPAKA_FN_HOST_ACC auto getExtentVec(TExtent const& extent = TExtent()) -> Vec<Dim<TExtent>, Idx<TExtent>>
+    {
+        return createVecFromIndexedFn<Dim<TExtent>, detail::CreateExtent>(extent);
+    }
+
+    //! \tparam TExtent has to specialize GetExtent.
+    //! \return The extent but only the last N elements.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TDim, typename TExtent>
+    ALPAKA_FN_HOST_ACC auto getExtentVecEnd(TExtent const& extent = TExtent()) -> Vec<TDim, Idx<TExtent>>
+    {
+        using IdxOffset = std::integral_constant<
+            std::intmax_t,
+            static_cast<std::intmax_t>(Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
+        return createVecFromIndexedFnOffset<TDim, detail::CreateExtent, IdxOffset>(extent);
+    }
 
     namespace detail
     {
@@ -633,6 +635,7 @@ namespace alpaka
             }
         };
     } // namespace detail
+
     //! \tparam TOffsets has to specialize GetOffset.
     //! \return The offset vector.
     ALPAKA_NO_HOST_ACC_WARNING
@@ -641,6 +644,7 @@ namespace alpaka
     {
         return createVecFromIndexedFn<Dim<TOffsets>, detail::CreateOffset>(offsets);
     }
+
     //! \tparam TOffsets has to specialize GetOffset.
     //! \return The offset vector but only the last N elements.
     ALPAKA_NO_HOST_ACC_WARNING
@@ -653,41 +657,37 @@ namespace alpaka
                 static_cast<std::intmax_t>(Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
         return createVecFromIndexedFnOffset<TDim, detail::CreateOffset, IdxOffset>(offsets);
     }
-    namespace extent
-    {
-        namespace traits
-        {
-            //! The Vec extent get trait specialization.
-            template<typename TIdxIntegralConst, typename TDim, typename TVal>
-            struct GetExtent<
-                TIdxIntegralConst,
-                Vec<TDim, TVal>,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-            {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getExtent(Vec<TDim, TVal> const& extent) -> TVal
-                {
-                    return extent[TIdxIntegralConst::value];
-                }
-            };
-            //! The Vec extent set trait specialization.
-            template<typename TIdxIntegralConst, typename TDim, typename TVal, typename TExtentVal>
-            struct SetExtent<
-                TIdxIntegralConst,
-                Vec<TDim, TVal>,
-                TExtentVal,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-            {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setExtent(Vec<TDim, TVal>& extent, TExtentVal const& extentVal) -> void
-                {
-                    extent[TIdxIntegralConst::value] = extentVal;
-                }
-            };
-        } // namespace traits
-    } // namespace extent
+
     namespace traits
     {
+        //! The Vec extent get trait specialization.
+        template<typename TIdxIntegralConst, typename TDim, typename TVal>
+        struct GetExtent<
+            TIdxIntegralConst,
+            Vec<TDim, TVal>,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getExtent(Vec<TDim, TVal> const& extent) -> TVal
+            {
+                return extent[TIdxIntegralConst::value];
+            }
+        };
+        //! The Vec extent set trait specialization.
+        template<typename TIdxIntegralConst, typename TDim, typename TVal, typename TExtentVal>
+        struct SetExtent<
+            TIdxIntegralConst,
+            Vec<TDim, TVal>,
+            TExtentVal,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setExtent(Vec<TDim, TVal>& extent, TExtentVal const& extentVal) -> void
+            {
+                extent[TIdxIntegralConst::value] = extentVal;
+            }
+        };
+
         //! The Vec offset get trait specialization.
         template<typename TIdxIntegralConst, typename TDim, typename TVal>
         struct GetOffset<
