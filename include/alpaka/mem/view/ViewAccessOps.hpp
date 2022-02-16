@@ -22,148 +22,132 @@
 #include <sstream>
 #include <type_traits>
 
-namespace alpaka
+namespace alpaka::internal
 {
-    namespace internal
+    template<typename TView>
+    struct ViewAccessOps
     {
-        template<typename TView>
-        struct ViewAccessOps
+    private:
+        using value_type = Elem<TView>;
+        using pointer = value_type*;
+        using const_pointer = value_type const*;
+        using reference = value_type&;
+        using const_reference = value_type const&;
+
+    public:
+        ViewAccessOps()
         {
-        private:
-            using value_type = Elem<TView>;
-            using pointer = value_type*;
-            using const_pointer = value_type const*;
-            using reference = value_type&;
-            using const_reference = value_type const&;
+            static_assert(experimental::traits::internal::IsView<TView>::value);
+        }
 
-        public:
-            ViewAccessOps()
+        ALPAKA_FN_HOST auto data() -> pointer
+        {
+            return getPtrNative(*static_cast<TView*>(this));
+        }
+
+        [[nodiscard]] ALPAKA_FN_HOST auto data() const -> const_pointer
+        {
+            return getPtrNative(*static_cast<TView const*>(this));
+        }
+
+        ALPAKA_FN_HOST auto operator*() -> reference
+        {
+            static_assert(Dim<TView>::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
+            return *data();
+        }
+
+        ALPAKA_FN_HOST auto operator*() const -> const_reference
+        {
+            static_assert(Dim<TView>::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
+            return *data();
+        }
+
+        ALPAKA_FN_HOST auto operator->() -> pointer
+        {
+            static_assert(Dim<TView>::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
+            return data();
+        }
+
+        ALPAKA_FN_HOST auto operator->() const -> const_pointer
+        {
+            static_assert(Dim<TView>::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
+            return data();
+        }
+
+        ALPAKA_FN_HOST auto operator[](std::size_t i) -> reference
+        {
+            static_assert(Dim<TView>::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
+            return data()[i];
+        }
+
+        ALPAKA_FN_HOST auto operator[](std::size_t i) const -> const_reference
+        {
+            static_assert(Dim<TView>::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
+            return data()[i];
+        }
+
+    private:
+        template<std::size_t TDim, typename TIdx>
+        [[nodiscard]] ALPAKA_FN_HOST auto ptr_at(Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
+        {
+            using Idx = alpaka::Idx<TView>;
+            static_assert(
+                Dim<TView>::value == TDim,
+                "the index type must have the same dimensionality as the Buffer or View");
+            static_assert(
+                std::is_convertible_v<TIdx, Idx>,
+                "the index type must be convertible to the index of the Buffer or View");
+
+            auto ptr = reinterpret_cast<uintptr_t>(data());
+            if constexpr(TDim > 0)
             {
-                static_assert(experimental::traits::internal::IsView<TView>::value);
-            }
-
-            ALPAKA_FN_HOST auto data() -> pointer
-            {
-                return getPtrNative(*static_cast<TView*>(this));
-            }
-
-            [[nodiscard]] ALPAKA_FN_HOST auto data() const -> const_pointer
-            {
-                return getPtrNative(*static_cast<TView const*>(this));
-            }
-
-            ALPAKA_FN_HOST auto operator*() -> reference
-            {
-                static_assert(
-                    alpaka::Dim<TView>::value == 0,
-                    "operator* is only valid for Buffers and Views of dimension 0");
-                return *data();
-            }
-
-            ALPAKA_FN_HOST auto operator*() const -> const_reference
-            {
-                static_assert(
-                    alpaka::Dim<TView>::value == 0,
-                    "operator* is only valid for Buffers and Views of dimension 0");
-                return *data();
-            }
-
-            ALPAKA_FN_HOST auto operator->() -> pointer
-            {
-                static_assert(
-                    alpaka::Dim<TView>::value == 0,
-                    "operator-> is only valid for Buffers and Views of dimension 0");
-                return data();
-            }
-
-            ALPAKA_FN_HOST auto operator->() const -> const_pointer
-            {
-                static_assert(
-                    alpaka::Dim<TView>::value == 0,
-                    "operator-> is only valid for Buffers and Views of dimension 0");
-                return data();
-            }
-
-            ALPAKA_FN_HOST auto operator[](std::size_t i) -> reference
-            {
-                static_assert(
-                    alpaka::Dim<TView>::value == 1,
-                    "operator[i] is only valid for Buffers and Views of dimension 1");
-                return data()[i];
-            }
-
-            ALPAKA_FN_HOST auto operator[](std::size_t i) const -> const_reference
-            {
-                static_assert(
-                    alpaka::Dim<TView>::value == 1,
-                    "operator[i] is only valid for Buffers and Views of dimension 1");
-                return data()[i];
-            }
-
-        private:
-            template<std::size_t TDim, typename TIdx>
-            [[nodiscard]] ALPAKA_FN_HOST auto ptr_at(Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
-            {
-                using Idx = alpaka::Idx<TView>;
-                static_assert(
-                    alpaka::Dim<TView>::value == TDim,
-                    "the index type must have the same dimensionality as the Buffer or View");
-                static_assert(
-                    std::is_convertible_v<TIdx, Idx>,
-                    "the index type must be convertible to the index of the Buffer or View");
-
-                auto ptr = reinterpret_cast<uintptr_t>(data());
-                if constexpr(TDim > 0)
+                const auto pitchesInBytes = getPitchBytesVec(*static_cast<TView const*>(this));
+                for(std::size_t i = 0u; i < TDim; i++)
                 {
-                    const auto pitchesInBytes = getPitchBytesVec(*static_cast<TView const*>(this));
-                    for(std::size_t i = 0u; i < TDim; i++)
-                    {
-                        const Idx pitch = i + 1 < TDim ? pitchesInBytes[i + 1] : static_cast<Idx>(sizeof(value_type));
-                        ptr += static_cast<uintptr_t>(index[i] * pitch);
-                    }
+                    const Idx pitch = i + 1 < TDim ? pitchesInBytes[i + 1] : static_cast<Idx>(sizeof(value_type));
+                    ptr += static_cast<uintptr_t>(index[i] * pitch);
                 }
-                return reinterpret_cast<const_pointer>(ptr);
             }
+            return reinterpret_cast<const_pointer>(ptr);
+        }
 
-        public:
-            template<std::size_t TDim, typename TIdx>
-            ALPAKA_FN_HOST auto operator[](Vec<DimInt<TDim>, TIdx> index) -> reference
+    public:
+        template<std::size_t TDim, typename TIdx>
+        ALPAKA_FN_HOST auto operator[](Vec<DimInt<TDim>, TIdx> index) -> reference
+        {
+            return *const_cast<pointer>(ptr_at(index));
+        }
+
+        template<std::size_t TDim, typename TIdx>
+        ALPAKA_FN_HOST auto operator[](Vec<DimInt<TDim>, TIdx> index) const -> const_reference
+        {
+            return *ptr_at(index);
+        }
+
+        template<std::size_t TDim, typename TIdx>
+        ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) -> reference
+        {
+            auto extent = extent::getExtentVec(*static_cast<TView*>(this));
+            if(!(index < extent).foldrAll(std::logical_and<bool>()))
             {
-                return *const_cast<pointer>(ptr_at(index));
+                std::stringstream msg;
+                msg << "index " << index << " is outside of the Buffer or View extent " << extent;
+                throw std::out_of_range(msg.str());
             }
+            return *const_cast<pointer>(ptr_at(index));
+        }
 
-            template<std::size_t TDim, typename TIdx>
-            ALPAKA_FN_HOST auto operator[](Vec<DimInt<TDim>, TIdx> index) const -> const_reference
+        template<std::size_t TDim, typename TIdx>
+        [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
+        {
+            auto extent = extent::getExtentVec(*static_cast<TView const*>(this));
+            if(!(index < extent).foldrAll(std::logical_and<bool>()))
             {
-                return *ptr_at(index);
+                std::stringstream msg;
+                msg << "index " << index << " is outside of the Buffer or View extent " << extent;
+                throw std::out_of_range(msg.str());
             }
-
-            template<std::size_t TDim, typename TIdx>
-            ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) -> reference
-            {
-                auto extent = extent::getExtentVec(*static_cast<TView*>(this));
-                if(!(index < extent).foldrAll(std::logical_and<bool>()))
-                {
-                    std::stringstream msg;
-                    msg << "index " << index << " is outside of the Buffer or View extent " << extent;
-                    throw std::out_of_range(msg.str());
-                }
-                return *const_cast<pointer>(ptr_at(index));
-            }
-
-            template<std::size_t TDim, typename TIdx>
-            [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
-            {
-                auto extent = extent::getExtentVec(*static_cast<TView const*>(this));
-                if(!(index < extent).foldrAll(std::logical_and<bool>()))
-                {
-                    std::stringstream msg;
-                    msg << "index " << index << " is outside of the Buffer or View extent " << extent;
-                    throw std::out_of_range(msg.str());
-                }
-                return *ptr_at(index);
-            }
-        };
-
-    } // namespace internal
-} // namespace alpaka
+            return *ptr_at(index);
+        }
+    };
+} // namespace alpaka::internal
