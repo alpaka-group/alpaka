@@ -574,10 +574,9 @@ template<typename TDim, typename TIdx, typename T>
 class AtomicTestKernel<
     alpaka::AccGpuCudaRt<TDim, TIdx>,
     T,
-    std::enable_if_t<
-        !std::is_same_v<
-            int,
-            T> && !std::is_same_v<unsigned int, T> && !std::is_same_v<unsigned long int, T> && !std::is_same_v<unsigned long long int, T> && !std::is_same_v<float, T> && !std::is_same_v<double, T>>>
+    std::enable_if_t<!alpaka::meta::Contains<
+        std::tuple<int, unsigned, unsigned long, unsigned long long, float, double>,
+        T>::value>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
@@ -794,10 +793,9 @@ template<typename TDim, typename TIdx, typename T>
 class AtomicTestKernel<
     alpaka::AccGpuHipRt<TDim, TIdx>,
     T,
-    std::enable_if_t<
-        !std::is_same_v<
-            int,
-            T> && !std::is_same_v<unsigned int, T> && !std::is_same_v<unsigned long int, T> && !std::is_same_v<unsigned long long int, T> && !std::is_same_v<float, T> && !std::is_same_v<double, T>>>
+    std::enable_if_t<!alpaka::meta::Contains<
+        std::tuple<int, unsigned, unsigned long, unsigned long long, float, double>,
+        T>::value>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
