@@ -130,6 +130,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateConcat.html">CreateConcat</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the value at the index from the back of the vector.  <a href="structalpaka_1_1detail_1_1CreateConcat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateExtent.html">CreateExtent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the extent for each index.  <a href="structalpaka_1_1detail_1_1CreateExtent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateOffset.html">CreateOffset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the offsets for each index.  <a href="structalpaka_1_1detail_1_1CreateOffset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -343,6 +346,9 @@ Functions</h2></td></tr>
 <tr class="memitem:adceeaf4e5d3925a71381d74cd1e78bad"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#adceeaf4e5d3925a71381d74cd1e78bad">ffsFallback</a> (TValue value) -&gt; std::int32_t</td></tr>
 <tr class="memdesc:adceeaf4e5d3925a71381d74cd1e78bad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback implementaion of ffs.  <a href="namespacealpaka_1_1detail.html#adceeaf4e5d3925a71381d74cd1e78bad">More...</a><br /></td></tr>
 <tr class="separator:adceeaf4e5d3925a71381d74cd1e78bad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae85e8a50d46548afd324d84cf92b9ec3"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , size_t... TIndices&gt; </td></tr>
+<tr class="memitem:ae85e8a50d46548afd324d84cf92b9ec3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#ae85e8a50d46548afd324d84cf92b9ec3">getExtentProductInternal</a> (TExtent const &amp;extent, std::index_sequence&lt; TIndices... &gt; const &amp;) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TExtent &gt;</td></tr>
+<tr class="separator:ae85e8a50d46548afd324d84cf92b9ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50fc53e415bd36a86f7ec64a284618d7"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral&lt;T&gt;::value&gt;&gt; </td></tr>
 <tr class="memitem:a50fc53e415bd36a86f7ec64a284618d7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a50fc53e415bd36a86f7ec64a284618d7">nextDivisorLowerOrEqual</a> (T const &amp;maxDivisor, T const &amp;dividend) -&gt; T</td></tr>
 <tr class="separator:a50fc53e415bd36a86f7ec64a284618d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -670,6 +676,39 @@ template&lt;typename TValue &gt; </div>
 
 </div>
 </div>
+<a id="ae85e8a50d46548afd324d84cf92b9ec3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae85e8a50d46548afd324d84cf92b9ec3">&#9670;&nbsp;</a></span>getExtentProductInternal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TExtent , size_t... TIndices&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::detail::getExtentProductInternal </td>
+          <td>(</td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::index_sequence&lt; TIndices... &gt; const &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt;TExtent&gt;
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="extent_2Traits_8hpp_source.html#l00077">77</a> of file <a class="el" href="extent_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a50fc53e415bd36a86f7ec64a284618d7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50fc53e415bd36a86f7ec64a284618d7">&#9670;&nbsp;</a></span>nextDivisorLowerOrEqual()</h2>
 
@@ -814,7 +853,7 @@ template&lt;typename TValue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Wed Feb 16 2022 15:30:52 for alpaka by
+    <li class="footer">Generated on Thu Feb 17 2022 13:45:51 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

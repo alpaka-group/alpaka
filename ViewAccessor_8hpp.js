@@ -13,7 +13,7 @@ var ViewAccessor_8hpp =
     [ "BuildAccessModeList< TAccessMode >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1BuildAccessModeList_3_01TAccessMode_01_4.html", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1BuildAccessModeList_3_01TAccessMode_01_4" ],
     [ "BuildAccessModeList< TAccessMode1, TAccessMode2, TAccessModes... >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1BuildAccessModeList_3_01TAccessMode1_00_01c4ec504354fdc494afcff13f5ee655a4.html", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1BuildAccessModeList_3_01TAccessMode1_00_01c4ec504354fdc494afcff13f5ee655a4" ],
     [ "IsView", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1IsView.html", null ],
-    [ "IsView< TView, std::void_t< Idx< TView >, Dim< TView >, decltype(getPtrNative(std::declval< TView >())), decltype(getPitchBytes< 0 >(std::declval< TView >())), decltype(extent::getExtent< 0 >(std::declval< TView >()))> >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1IsView_3_01TView_00_01std_1_1void__t_3_01Icf3e64abba7130daf1e22eb2ea6e49b1.html", null ],
+    [ "IsView< TView, std::void_t< Idx< TView >, Dim< TView >, decltype(getPtrNative(std::declval< TView >())), decltype(getPitchBytes< 0 >(std::declval< TView >())), decltype(getExtent< 0 >(std::declval< TView >()))> >", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1IsView_3_01TView_00_01std_1_1void__t_3_01I180d3283298cfbb4d84ef7d38d6b3171.html", null ],
     [ "AccessReturnType", "ViewAccessor_8hpp.html#a53efa02be0ad8740272f27d01eb14f71", null ],
     [ "asBytePtr", "ViewAccessor_8hpp.html#a2c4f53b4ce6a0eff4909b0543b4186fe", null ],
     [ "buildViewAccessor", "ViewAccessor_8hpp.html#a26e7b28a72a4e9746ae48eb5a21df741", null ]

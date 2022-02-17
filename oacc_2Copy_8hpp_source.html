@@ -187,14 +187,14 @@ $(document).ready(function(){initNavTree('oacc_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    DevOacc <span class="keyword">const</span>&amp; dev,</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    TCopyPred copyPred)</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    : m_dev(dev)</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    , m_extent(extent::<a class="code" href="namespacealpaka_1_1extent.html#a0d7c73d18bce646baebbd36790d3c1a9">getExtentVec</a>(extent))</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    , m_extent(<a class="code" href="namespacealpaka.html#aa1c0be58f68ab9fb93dc2164726c022c">getExtentVec</a>(extent))</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast&lt;ExtentSize&gt;(sizeof(<a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>)))</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    , m_dstPitchBytes(<a class="code" href="namespacealpaka.html#a629297b80753ae06be95148cff7bd807">getPitchBytesVec</a>(viewDst))</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    , m_srcPitchBytes(<a class="code" href="namespacealpaka.html#a629297b80753ae06be95148cff7bd807">getPitchBytesVec</a>(viewSrc))</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    ,</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;#    if(!defined(NDEBUG)) || (<a class="code" href="Debug_8hpp.html#a7f84384a17e301a636770e17c2951383">ALPAKA_DEBUG</a> &gt;= <a class="code" href="Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806">ALPAKA_DEBUG_FULL</a>)</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    m_dstExtent(extent::<a class="code" href="namespacealpaka_1_1extent.html#a0d7c73d18bce646baebbd36790d3c1a9">getExtentVec</a>(viewDst))</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    , m_srcExtent(extent::<a class="code" href="namespacealpaka_1_1extent.html#a0d7c73d18bce646baebbd36790d3c1a9">getExtentVec</a>(viewSrc))</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    m_dstExtent(<a class="code" href="namespacealpaka.html#aa1c0be58f68ab9fb93dc2164726c022c">getExtentVec</a>(viewDst))</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    , m_srcExtent(<a class="code" href="namespacealpaka.html#aa1c0be58f68ab9fb93dc2164726c022c">getExtentVec</a>(viewSrc))</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                    ,</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;#    endif</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                    m_dstMemNative(reinterpret_cast&lt;std::uint8_t*&gt;(<a class="code" href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">getPtrNative</a>(viewDst)))</div>
@@ -475,8 +475,8 @@ $(document).ready(function(){initNavTree('oacc_2Copy_8hpp_source.html',''); init
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
 <div class="ttc" id="aDevOacc_8hpp_html"><div class="ttname"><a href="DevOacc_8hpp.html">DevOacc.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_aa4fe5980725182b3306caf3167053a75"><div class="ttname"><a href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">alpaka::getDev</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getDev(T const &amp;t)</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00059">Traits.hpp:59</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1extent_html_a0d7c73d18bce646baebbd36790d3c1a9"><div class="ttname"><a href="namespacealpaka_1_1extent.html#a0d7c73d18bce646baebbd36790d3c1a9">alpaka::extent::getExtentVec</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto getExtentVec(TExtent const &amp;extent=TExtent()) -&gt; Vec&lt; Dim&lt; TExtent &gt;, Idx&lt; TExtent &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00605">Vec.hpp:605</a></div></div>
 <div class="ttc" id="aextent_2Traits_8hpp_html"><div class="ttname"><a href="extent_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_aa1c0be58f68ab9fb93dc2164726c022c"><div class="ttname"><a href="namespacealpaka.html#aa1c0be58f68ab9fb93dc2164726c022c">alpaka::getExtentVec</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto getExtentVec(TExtent const &amp;extent=TExtent()) -&gt; Vec&lt; Dim&lt; TExtent &gt;, Idx&lt; TExtent &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00607">Vec.hpp:607</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="aAlignedAlloc_8hpp_html"><div class="ttname"><a href="AlignedAlloc_8hpp.html">AlignedAlloc.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_a7f84384a17e301a636770e17c2951383"><div class="ttname"><a href="Debug_8hpp.html#a7f84384a17e301a636770e17c2951383">ALPAKA_DEBUG</a></div><div class="ttdeci">#define ALPAKA_DEBUG</div><div class="ttdoc">Set the minimum log level if it is not defined.</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00027">Debug.hpp:27</a></div></div>
@@ -502,7 +502,7 @@ $(document).ready(function(){initNavTree('oacc_2Copy_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_6c93a0db3d8099b4c959509b1dc3473b.html">oacc</a></li><li class="navelem"><a class="el" href="oacc_2Copy_8hpp.html">Copy.hpp</a></li>
-    <li class="footer">Generated on Wed Feb 16 2022 15:30:51 for alpaka by
+    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

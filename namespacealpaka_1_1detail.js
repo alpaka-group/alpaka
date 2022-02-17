@@ -14,6 +14,7 @@ var namespacealpaka_1_1detail =
     [ "CheckFnReturnType< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conce350336f6fc499ffdfde102bd2daf9525.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conce350336f6fc499ffdfde102bd2daf9525" ],
     [ "CreateCast", "structalpaka_1_1detail_1_1CreateCast.html", "structalpaka_1_1detail_1_1CreateCast" ],
     [ "CreateConcat", "structalpaka_1_1detail_1_1CreateConcat.html", "structalpaka_1_1detail_1_1CreateConcat" ],
+    [ "CreateExtent", "structalpaka_1_1detail_1_1CreateExtent.html", "structalpaka_1_1detail_1_1CreateExtent" ],
     [ "CreateOffset", "structalpaka_1_1detail_1_1CreateOffset.html", "structalpaka_1_1detail_1_1CreateOffset" ],
     [ "CreatePitchBytes", "structalpaka_1_1detail_1_1CreatePitchBytes.html", "structalpaka_1_1detail_1_1CreatePitchBytes" ],
     [ "CreateReverse", "structalpaka_1_1detail_1_1CreateReverse.html", "structalpaka_1_1detail_1_1CreateReverse" ],
