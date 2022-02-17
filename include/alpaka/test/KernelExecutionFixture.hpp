@@ -39,24 +39,22 @@ namespace alpaka::test
         using QueueAcc = test::DefaultQueue<DevAcc>;
         using WorkDiv = WorkDivMembers<Dim, Idx>;
 
-        template<typename TExtent>
-        KernelExecutionFixture(TExtent const& extent)
-            : m_devHost(getDevByIdx<PltfCpu>(0u))
-            , m_devAcc(getDevByIdx<PltfAcc>(0u))
-            , m_queue(m_devAcc)
-            , m_workDiv(getValidWorkDiv<Acc>(
-                  m_devAcc,
-                  extent,
-                  Vec<Dim, Idx>::ones(),
-                  false,
-                  GridBlockExtentSubDivRestrictions::Unrestricted))
-        {
-        }
         KernelExecutionFixture(WorkDiv workDiv)
             : m_devHost(getDevByIdx<PltfCpu>(0u))
             , m_devAcc(getDevByIdx<PltfAcc>(0u))
             , m_queue(m_devAcc)
             , m_workDiv(std::move(workDiv))
+        {
+        }
+
+        template<typename TExtent>
+        KernelExecutionFixture(TExtent const& extent)
+            : KernelExecutionFixture(getValidWorkDiv<Acc>(
+                getDevByIdx<PltfAcc>(0u),
+                extent,
+                Vec<Dim, Idx>::ones(),
+                false,
+                GridBlockExtentSubDivRestrictions::Unrestricted))
         {
         }
 
