@@ -1,6 +1,7 @@
 var dir_7d123124934e174b4626b90ed7337338 =
 [
     [ "Traits.hpp", "warp_2Traits_8hpp.html", "warp_2Traits_8hpp" ],
+    [ "WarpGenericSycl.hpp", "WarpGenericSycl_8hpp.html", null ],
     [ "WarpSingleThread.hpp", "WarpSingleThread_8hpp.html", [
       [ "Activemask< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1Activemask_3_01WarpSingleThread_01_4.html", "structalpaka_1_1warp_1_1traits_1_1Activemask_3_01WarpSingleThread_01_4" ],
       [ "All< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1All_3_01WarpSingleThread_01_4.html", "structalpaka_1_1warp_1_1traits_1_1All_3_01WarpSingleThread_01_4" ],

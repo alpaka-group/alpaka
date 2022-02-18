@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TWorkDiv&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> TaskKernelOacc(TWorkDiv&amp;&amp; workDiv, TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj, TArgs&amp;&amp;... args)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> TaskKernelOacc(TWorkDiv&amp;&amp; workDiv, TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj, TArgs&amp;&amp;... args)</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            : WorkDivMembers&lt;TDim, TIdx&gt;(std::forward&lt;TWorkDiv&gt;(workDiv))</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            , m_kernelFnObj(kernelFnObj)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            , m_args(std::forward&lt;TArgs&gt;(args)...)</div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">        //! Executes the kernel function object.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span>        <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> operator()(<span class="keyword">const</span> DevOacc&amp; dev) <span class="keyword">const</span> -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> operator()(<span class="keyword">const</span> DevOacc&amp; dev) <span class="keyword">const</span> -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
@@ -294,7 +294,7 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keyword">struct </span>Enqueue&lt;QueueOaccBlocking, TaskKernelOacc&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt;&gt;</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                QueueOaccBlocking&amp; queue,</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                TaskKernelOacc&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt; <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            {</div>
@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keyword">struct </span>Enqueue&lt;QueueOaccNonBlocking, TaskKernelOacc&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt;&gt;</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                QueueOaccNonBlocking&amp; queue,</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                TaskKernelOacc&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt; <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            {</div>
@@ -335,11 +335,11 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div class="ttc" id="anamespacealpaka_1_1core_html_a3bc48ef7c999409550fcbe1a948d6f31"><div class="ttname"><a href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">alpaka::core::apply</a></div><div class="ttdeci">constexpr auto apply(TFunc &amp;&amp;f, Tuple&lt; TArgs... &gt; t)</div><div class="ttdef"><b>Definition:</b> <a href="Tuple_8hpp_source.html#l00031">Tuple.hpp:31</a></div></div>
 <div class="ttc" id="adim_2Traits_8hpp_html"><div class="ttname"><a href="dim_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aDevOacc_8hpp_html"><div class="ttname"><a href="DevOacc_8hpp.html">DevOacc.hpp</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html_afba6dfdddd358c0ee5a1c6406afd2c11"><div class="ttname"><a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a></div><div class="ttdeci">#define ALPAKA_DECAY_T(Type)</div><div class="ttdoc">Wrapper around std::decay_t for parameter pack expansion expressions.</div><div class="ttdef"><b>Definition:</b> <a href="Decay_8hpp_source.html#l00030">Decay.hpp:30</a></div></div>
 <div class="ttc" id="aMapIdx_8hpp_html"><div class="ttname"><a href="MapIdx_8hpp.html">MapIdx.hpp</a></div></div>
 <div class="ttc" id="aTuple_8hpp_html"><div class="ttname"><a href="Tuple_8hpp.html">Tuple.hpp</a></div></div>
 <div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <div class="ttc" id="aacc_2Traits_8hpp_html"><div class="ttname"><a href="acc_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_af573b85c5c94948f067a60c24d76065e"><div class="ttname"><a href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">alpaka::freeSharedVars</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_ACC auto freeSharedVars(TBlockSharedMemSt &amp;blockSharedMemSt) -&gt; void</div><div class="ttdoc">Frees all memory used by block shared variables.</div><div class="ttdef"><b>Definition:</b> <a href="block_2shared_2st_2Traits_8hpp_source.html#l00059">Traits.hpp:59</a></div></div>
@@ -350,7 +350,7 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelOacc_8hpp.html">TaskKernelOacc.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 14:14:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

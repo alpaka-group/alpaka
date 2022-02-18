@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('Omp5_8hpp_source.html',''); initResiza
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#    include &lt;omp.h&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('Omp5_8hpp_source.html',''); initResiza
 <div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp5_1_1detail.html">   30</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1omp5_1_1detail.html">alpaka::omp5::detail</a></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">    //! OMP5 runtime API error checking with log and exception, ignoring specific error values</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">   33</a></span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">omp5Check</a>(<span class="keywordtype">int</span> <span class="keyword">const</span>&amp; error, <span class="keywordtype">char</span> <span class="keyword">const</span>* desc, <span class="keywordtype">char</span> <span class="keyword">const</span>* file, <span class="keywordtype">int</span> <span class="keyword">const</span>&amp; line) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">   33</a></span>&#160;<span class="comment"></span>    <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">omp5Check</a>(<span class="keywordtype">int</span> <span class="keyword">const</span>&amp; error, <span class="keywordtype">char</span> <span class="keyword">const</span>* desc, <span class="keywordtype">char</span> <span class="keyword">const</span>* file, <span class="keywordtype">int</span> <span class="keyword">const</span>&amp; line) -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">if</span>(error != 0)</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
@@ -144,15 +144,15 @@ $(document).ready(function(){initNavTree('Omp5_8hpp_source.html',''); initResiza
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aDebug_8hpp_html_ac3248b76e967a40d459bf83b17de9b03"><div class="ttname"><a href="Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03">ALPAKA_DEBUG_BREAK</a></div><div class="ttdeci">#define ALPAKA_DEBUG_BREAK</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00081">Debug.hpp:81</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1omp5_1_1detail_html_a7754e0883294e7b9940ce6987d2a729d"><div class="ttname"><a href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a></div><div class="ttdeci">ALPAKA_FN_HOST auto omp5Check(int const &amp;error, char const *desc, char const *file, int const &amp;line) -&gt; void</div><div class="ttdoc">OMP5 runtime API error checking with log and exception, ignoring specific error values.</div><div class="ttdef"><b>Definition:</b> <a href="Omp5_8hpp_source.html#l00033">Omp5.hpp:33</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1omp5_1_1detail_html"><div class="ttname"><a href="namespacealpaka_1_1omp5_1_1detail.html">alpaka::omp5::detail</a></div><div class="ttdef"><b>Definition:</b> <a href="Omp5_8hpp_source.html#l00030">Omp5.hpp:30</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Omp5_8hpp.html">Omp5.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 14:14:47 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,6 +1,7 @@
 var dir_e50c5330781fe39f2449e5fa74719543 =
 [
     [ "FloatEqualExact.hpp", "FloatEqualExact_8hpp.html", "FloatEqualExact_8hpp" ],
+    [ "MathGenericSycl.hpp", "MathGenericSycl_8hpp.html", null ],
     [ "MathStdLib.hpp", "MathStdLib_8hpp.html", [
       [ "AbsStdLib", "classalpaka_1_1math_1_1AbsStdLib.html", null ],
       [ "AcosStdLib", "classalpaka_1_1math_1_1AcosStdLib.html", null ],

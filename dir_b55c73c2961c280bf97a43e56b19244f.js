@@ -1,6 +1,6 @@
 var dir_b55c73c2961c280bf97a43e56b19244f =
 [
-    [ "Accessor.hpp", "Accessor_8hpp.html", "Accessor_8hpp" ],
+    [ "Accessor.hpp", "view_2Accessor_8hpp.html", "view_2Accessor_8hpp" ],
     [ "Traits.hpp", "mem_2view_2Traits_8hpp.html", "mem_2view_2Traits_8hpp" ],
     [ "ViewAccessOps.hpp", "ViewAccessOps_8hpp.html", [
       [ "ViewAccessOps", "structalpaka_1_1internal_1_1ViewAccessOps.html", "structalpaka_1_1internal_1_1ViewAccessOps" ]

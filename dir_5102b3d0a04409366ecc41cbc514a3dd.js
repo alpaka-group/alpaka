@@ -48,6 +48,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "IdxType< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1traits_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "PltfType< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1traits_1_1PltfType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1PltfType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
+    [ "AccCpuSyclIntel.hpp", "AccCpuSyclIntel_8hpp.html", null ],
     [ "AccCpuTbbBlocks.hpp", "AccCpuTbbBlocks_8hpp.html", null ],
     [ "AccCpuThreads.hpp", "AccCpuThreads_8hpp.html", [
       [ "AccCpuThreads", "classalpaka_1_1AccCpuThreads.html", "classalpaka_1_1AccCpuThreads" ],
@@ -64,6 +65,9 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
     [ "AccDevProps.hpp", "AccDevProps_8hpp.html", [
       [ "AccDevProps", "structalpaka_1_1AccDevProps.html", "structalpaka_1_1AccDevProps" ]
     ] ],
+    [ "AccFpgaSyclIntel.hpp", "AccFpgaSyclIntel_8hpp.html", null ],
+    [ "AccFpgaSyclXilinx.hpp", "AccFpgaSyclXilinx_8hpp.html", null ],
+    [ "AccGenericSycl.hpp", "AccGenericSycl_8hpp.html", null ],
     [ "AccGpuCudaRt.hpp", "AccGpuCudaRt_8hpp.html", [
       [ "AccGpuCudaRt", "classalpaka_1_1AccGpuCudaRt.html", "classalpaka_1_1AccGpuCudaRt" ],
       [ "TaskKernelGpuUniformCudaHipRt", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt" ],
@@ -72,6 +76,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "GetAccName< AccGpuCudaRt< TDim, TIdx > >", "structalpaka_1_1traits_1_1GetAccName_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1GetAccName_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "AccGpuHipRt.hpp", "AccGpuHipRt_8hpp.html", null ],
+    [ "AccGpuSyclIntel.hpp", "AccGpuSyclIntel_8hpp.html", null ],
     [ "AccGpuUniformCudaHipRt.hpp", "AccGpuUniformCudaHipRt_8hpp.html", [
       [ "AccGpuUniformCudaHipRt", "classalpaka_1_1AccGpuUniformCudaHipRt.html", "classalpaka_1_1AccGpuUniformCudaHipRt" ],
       [ "CheckFnReturnType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],

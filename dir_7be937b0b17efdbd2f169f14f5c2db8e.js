@@ -1,6 +1,7 @@
 var dir_7be937b0b17efdbd2f169f14f5c2db8e =
 [
     [ "detail", "dir_545d22f27db2615a487beca7f9179f9d.html", "dir_545d22f27db2615a487beca7f9179f9d" ],
+    [ "BlockSharedMemStGenericSycl.hpp", "BlockSharedMemStGenericSycl_8hpp.html", null ],
     [ "BlockSharedMemStMember.hpp", "BlockSharedMemStMember_8hpp.html", [
       [ "BlockSharedMemStMember", "classalpaka_1_1BlockSharedMemStMember.html", null ],
       [ "DeclareSharedVar< T, TuniqueId, BlockSharedMemStMember< TDataAlignBytes > >", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4" ],

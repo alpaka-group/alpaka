@@ -1,6 +1,7 @@
 var dir_60be6ec9b9f6430d01be52510748f004 =
 [
     [ "BlockSharedDynMemberAllocKiB.hpp", "BlockSharedDynMemberAllocKiB_8hpp.html", "BlockSharedDynMemberAllocKiB_8hpp" ],
+    [ "BlockSharedMemDynGenericSycl.hpp", "BlockSharedMemDynGenericSycl_8hpp.html", null ],
     [ "BlockSharedMemDynMember.hpp", "BlockSharedMemDynMember_8hpp.html", [
       [ "BlockSharedMemDynMember", "classalpaka_1_1BlockSharedMemDynMember.html", "classalpaka_1_1BlockSharedMemDynMember" ],
       [ "BlockSharedMemDynMemberStatic", "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html", "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic" ],

@@ -2,6 +2,7 @@ var dir_1143562e5ac1f1cac7683540118ef5cd =
 [
     [ "AtomicAtomicRef.hpp", "AtomicAtomicRef_8hpp.html", "AtomicAtomicRef_8hpp" ],
     [ "AtomicCpu.hpp", "AtomicCpu_8hpp.html", "AtomicCpu_8hpp" ],
+    [ "AtomicGenericSycl.hpp", "AtomicGenericSycl_8hpp.html", null ],
     [ "AtomicHierarchy.hpp", "AtomicHierarchy_8hpp.html", "AtomicHierarchy_8hpp" ],
     [ "AtomicNoOp.hpp", "AtomicNoOp_8hpp.html", [
       [ "AtomicNoOp", "classalpaka_1_1AtomicNoOp.html", null ],

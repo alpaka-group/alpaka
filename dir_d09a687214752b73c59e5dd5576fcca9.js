@@ -1,5 +1,6 @@
 var dir_d09a687214752b73c59e5dd5576fcca9 =
 [
+    [ "IdxBtGenericSycl.hpp", "IdxBtGenericSycl_8hpp.html", null ],
     [ "IdxBtLinear.hpp", "IdxBtLinear_8hpp.html", [
       [ "IdxBtLinear", "classalpaka_1_1bt_1_1IdxBtLinear.html", "classalpaka_1_1bt_1_1IdxBtLinear" ],
       [ "DimType< bt::IdxBtLinear< TDim, TIdx > >", "structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4" ],

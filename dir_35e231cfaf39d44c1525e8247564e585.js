@@ -2,9 +2,18 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
 [
     [ "cpu", "dir_16bba3a4b121cf64f0e5026f87f5174d.html", "dir_16bba3a4b121cf64f0e5026f87f5174d" ],
     [ "cuda_hip", "dir_2176bdc4abbfee27816f3bddb372b87e.html", "dir_2176bdc4abbfee27816f3bddb372b87e" ],
+    [ "sycl", "dir_ec54f3aadbd242b6a6d8fbc8a48a4315.html", "dir_ec54f3aadbd242b6a6d8fbc8a48a4315" ],
     [ "Properties.hpp", "Properties_8hpp.html", null ],
     [ "QueueCpuBlocking.hpp", "QueueCpuBlocking_8hpp.html", null ],
     [ "QueueCpuNonBlocking.hpp", "QueueCpuNonBlocking_8hpp.html", null ],
+    [ "QueueCpuSyclIntelBlocking.hpp", "QueueCpuSyclIntelBlocking_8hpp.html", null ],
+    [ "QueueCpuSyclIntelNonBlocking.hpp", "QueueCpuSyclIntelNonBlocking_8hpp.html", null ],
+    [ "QueueFpgaSyclIntelBlocking.hpp", "QueueFpgaSyclIntelBlocking_8hpp.html", null ],
+    [ "QueueFpgaSyclIntelNonBlocking.hpp", "QueueFpgaSyclIntelNonBlocking_8hpp.html", null ],
+    [ "QueueFpgaSyclXilinxBlocking.hpp", "QueueFpgaSyclXilinxBlocking_8hpp.html", null ],
+    [ "QueueFpgaSyclXilinxNonBlocking.hpp", "QueueFpgaSyclXilinxNonBlocking_8hpp.html", null ],
+    [ "QueueGenericSyclBlocking.hpp", "QueueGenericSyclBlocking_8hpp.html", null ],
+    [ "QueueGenericSyclNonBlocking.hpp", "QueueGenericSyclNonBlocking_8hpp.html", null ],
     [ "QueueGenericThreadsBlocking.hpp", "QueueGenericThreadsBlocking_8hpp.html", [
       [ "EventGenericThreads", "classalpaka_1_1EventGenericThreads.html", "classalpaka_1_1EventGenericThreads" ],
       [ "QueueGenericThreadsBlockingImpl", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl" ],
@@ -26,6 +35,8 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
       [ "EventType< QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1traits_1_1EventType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1EventType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4" ],
       [ "GetDev< QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4" ]
     ] ],
+    [ "QueueGpuSyclIntelBlocking.hpp", "QueueGpuSyclIntelBlocking_8hpp.html", null ],
+    [ "QueueGpuSyclIntelNonBlocking.hpp", "QueueGpuSyclIntelNonBlocking_8hpp.html", null ],
     [ "QueueOaccBlocking.hpp", "QueueOaccBlocking_8hpp.html", null ],
     [ "QueueOaccNonBlocking.hpp", "QueueOaccNonBlocking_8hpp.html", null ],
     [ "QueueOmp5Blocking.hpp", "QueueOmp5Blocking_8hpp.html", null ],

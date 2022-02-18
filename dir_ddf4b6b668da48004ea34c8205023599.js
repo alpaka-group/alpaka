@@ -25,6 +25,7 @@ var dir_ddf4b6b668da48004ea34c8205023599 =
       [ "IdxType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
       [ "PltfType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ]
     ] ],
+    [ "TaskKernelCpuSyclIntel.hpp", "TaskKernelCpuSyclIntel_8hpp.html", null ],
     [ "TaskKernelCpuTbbBlocks.hpp", "TaskKernelCpuTbbBlocks_8hpp.html", null ],
     [ "TaskKernelCpuThreads.hpp", "TaskKernelCpuThreads_8hpp.html", [
       [ "TaskKernelCpuThreads", "classalpaka_1_1TaskKernelCpuThreads.html", "classalpaka_1_1TaskKernelCpuThreads" ],
@@ -34,6 +35,10 @@ var dir_ddf4b6b668da48004ea34c8205023599 =
       [ "IdxType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
       [ "PltfType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ]
     ] ],
+    [ "TaskKernelFpgaSyclIntel.hpp", "TaskKernelFpgaSyclIntel_8hpp.html", null ],
+    [ "TaskKernelFpgaSyclXilinx.hpp", "TaskKernelFpgaSyclXilinx_8hpp.html", null ],
+    [ "TaskKernelGenericSycl.hpp", "TaskKernelGenericSycl_8hpp.html", null ],
+    [ "TaskKernelGpuSyclIntel.hpp", "TaskKernelGpuSyclIntel_8hpp.html", null ],
     [ "TaskKernelGpuUniformCudaHipRt.hpp", "TaskKernelGpuUniformCudaHipRt_8hpp.html", "TaskKernelGpuUniformCudaHipRt_8hpp" ],
     [ "TaskKernelOacc.hpp", "TaskKernelOacc_8hpp.html", null ],
     [ "TaskKernelOmp5.hpp", "TaskKernelOmp5_8hpp.html", [

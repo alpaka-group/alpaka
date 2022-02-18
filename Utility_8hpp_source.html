@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('Utility_8hpp_source.html',''); initRes
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#if BOOST_LANG_CUDA &amp;&amp; BOOST_COMP_CLANG_CUDA || BOOST_COMP_HIP</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    include &lt;type_traits&gt;</span></div>
@@ -114,21 +114,21 @@ $(document).ready(function(){initNavTree('Utility_8hpp_source.html',''); initRes
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// This function can be used only within std::decltype().</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#if BOOST_LANG_CUDA &amp;&amp; BOOST_COMP_CLANG_CUDA || BOOST_COMP_HIP</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> std::add_rvalue_reference_t&lt;T&gt; declval();</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> std::add_rvalue_reference_t&lt;T&gt; declval();</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">using</span> std::declval;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00036">Common.hpp:36</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1core_html"><div class="ttname"><a href="namespacealpaka_1_1core.html">alpaka::core</a></div><div class="ttdef"><b>Definition:</b> <a href="Align_8hpp_source.html#l00017">Align.hpp:17</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00036">Common.hpp:36</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Utility_8hpp.html">Utility.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 14:14:47 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

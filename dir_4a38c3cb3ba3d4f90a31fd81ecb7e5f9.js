@@ -20,6 +20,7 @@ var dir_4a38c3cb3ba3d4f90a31fd81ecb7e5f9 =
       [ "SyncBlockThreads< BlockSyncBarrierThread< TIdx > >", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4" ],
       [ "SyncBlockThreadsPredicate< TOp, BlockSyncBarrierThread< TIdx > >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4" ]
     ] ],
+    [ "BlockSyncGenericSycl.hpp", "BlockSyncGenericSycl_8hpp.html", null ],
     [ "BlockSyncNoOp.hpp", "BlockSyncNoOp_8hpp.html", [
       [ "BlockSyncNoOp", "classalpaka_1_1BlockSyncNoOp.html", null ],
       [ "SyncBlockThreads< BlockSyncNoOp >", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4" ],

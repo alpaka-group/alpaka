@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('Common_8hpp.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('core_2Common_8hpp.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -92,31 +92,34 @@ $(document).ready(function(){initNavTree('Common_8hpp.html',''); initResizable()
 <div class="textblock"><code>#include &lt;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Debug_8hpp_source.html">alpaka/core/Debug.hpp</a>&gt;</code><br />
 </div>
-<p><a href="Common_8hpp_source.html">Go to the source code of this file.</a></p>
+<p><a href="core_2Common_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aed43b384334a6dcf0f0132e8a55339f6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6">ALPAKA_DEVICE_VOLATILE</a></td></tr>
-<tr class="memdesc:aed43b384334a6dcf0f0132e8a55339f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro disables memory optimizations for annotated device memory.  <a href="Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6">More...</a><br /></td></tr>
+<tr class="memitem:aed43b384334a6dcf0f0132e8a55339f6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6">ALPAKA_DEVICE_VOLATILE</a></td></tr>
+<tr class="memdesc:aed43b384334a6dcf0f0132e8a55339f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro disables memory optimizations for annotated device memory.  <a href="core_2Common_8hpp.html#aed43b384334a6dcf0f0132e8a55339f6">More...</a><br /></td></tr>
 <tr class="separator:aed43b384334a6dcf0f0132e8a55339f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bfb3a7f88316271e795e20d2810755a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a></td></tr>
-<tr class="memdesc:a1bfb3a7f88316271e795e20d2810755a"><td class="mdescLeft">&#160;</td><td class="mdescRight">All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC.  <a href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">More...</a><br /></td></tr>
+<tr class="memitem:a1bfb3a7f88316271e795e20d2810755a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a></td></tr>
+<tr class="memdesc:a1bfb3a7f88316271e795e20d2810755a"><td class="mdescLeft">&#160;</td><td class="mdescRight">All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC.  <a href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">More...</a><br /></td></tr>
 <tr class="separator:a1bfb3a7f88316271e795e20d2810755a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30cf38ce8c63908b355f69eb893da575"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></td></tr>
+<tr class="memitem:abff118d1e26a571defc17f70d045e775"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#abff118d1e26a571defc17f70d045e775">ALPAKA_FN_EXTERN</a></td></tr>
+<tr class="memdesc:abff118d1e26a571defc17f70d045e775"><td class="mdescLeft">&#160;</td><td class="mdescRight">All functions marked with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC that are exported to / imported from different translation units have to be attributed with ALPAKA_FN_EXTERN. Note that this needs to be applied to both the declaration and the definition.  <a href="core_2Common_8hpp.html#abff118d1e26a571defc17f70d045e775">More...</a><br /></td></tr>
+<tr class="separator:abff118d1e26a571defc17f70d045e775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30cf38ce8c63908b355f69eb893da575"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></td></tr>
 <tr class="separator:a30cf38ce8c63908b355f69eb893da575"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a195bd41eac945cee512865b6ef73f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></td></tr>
+<tr class="memitem:a4a195bd41eac945cee512865b6ef73f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></td></tr>
 <tr class="separator:a4a195bd41eac945cee512865b6ef73f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abecbcba04c4231d227406ebb0020330b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a>&#160;&#160;&#160;inline</td></tr>
-<tr class="memdesc:abecbcba04c4231d227406ebb0020330b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro defining the inline function attribute.  <a href="Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">More...</a><br /></td></tr>
+<tr class="memitem:abecbcba04c4231d227406ebb0020330b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a>&#160;&#160;&#160;inline</td></tr>
+<tr class="memdesc:abecbcba04c4231d227406ebb0020330b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro defining the inline function attribute.  <a href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">More...</a><br /></td></tr>
 <tr class="separator:abecbcba04c4231d227406ebb0020330b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8d02f0c4379afabdb7f4ee2e8f7954c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></td></tr>
-<tr class="memdesc:aa8d02f0c4379afabdb7f4ee2e8f7954c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable nvcc warning: 'calling a <b>host</b> function from <b>host</b> <b>device</b> function.' Usage: ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC function_declaration() WARNING: Only use this method if there is no other way. Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA.  <a href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">More...</a><br /></td></tr>
+<tr class="memitem:aa8d02f0c4379afabdb7f4ee2e8f7954c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></td></tr>
+<tr class="memdesc:aa8d02f0c4379afabdb7f4ee2e8f7954c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable nvcc warning: 'calling a <b>host</b> function from <b>host</b> <b>device</b> function.' Usage: ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC function_declaration() WARNING: Only use this method if there is no other way. Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA.  <a href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">More...</a><br /></td></tr>
 <tr class="separator:aa8d02f0c4379afabdb7f4ee2e8f7954c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d25bd4d9704008351191d42e112af2a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a></td></tr>
-<tr class="memdesc:a9d25bd4d9704008351191d42e112af2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro defines a variable lying in constant accelerator device memory.  <a href="Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">More...</a><br /></td></tr>
+<tr class="memitem:a9d25bd4d9704008351191d42e112af2a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a></td></tr>
+<tr class="memdesc:a9d25bd4d9704008351191d42e112af2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro defines a variable lying in constant accelerator device memory.  <a href="core_2Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">More...</a><br /></td></tr>
 <tr class="separator:a9d25bd4d9704008351191d42e112af2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95bebbbf9aab1a18a278359a85a41125"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a></td></tr>
-<tr class="memdesc:a95bebbbf9aab1a18a278359a85a41125"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro defines a variable lying in global accelerator device memory.  <a href="Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">More...</a><br /></td></tr>
+<tr class="memitem:a95bebbbf9aab1a18a278359a85a41125"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a></td></tr>
+<tr class="memdesc:a95bebbbf9aab1a18a278359a85a41125"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro defines a variable lying in global accelerator device memory.  <a href="core_2Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">More...</a><br /></td></tr>
 <tr class="separator:a95bebbbf9aab1a18a278359a85a41125"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -136,7 +139,7 @@ Macros</h2></td></tr>
 <p>Example: ALPAKA_DEVICE_VOLATILE float* ptr;</p>
 <p>This is useful for pointers, (shared) variables and shared memory which are used in combination with the <a class="el" href="namespacealpaka.html#a8a1c027320c9d7a10df1ae7bc87fcb46" title="Issues memory fence instructions.">alpaka::mem_fence()</a> function. It ensures that memory annotated with this macro will always be written directly to memory (and not to a register or cache because of compiler optimizations). </p>
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00148">148</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00172">172</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -155,7 +158,27 @@ Macros</h2></td></tr>
 <p>All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC. </p>
 <p>Usage: ALPAKA_FN_ACC auto add(std::int32_t a, std::int32_t b) -&gt; std::int32_t; </p>
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00035">35</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00035">35</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+
+</div>
+</div>
+<a id="abff118d1e26a571defc17f70d045e775"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abff118d1e26a571defc17f70d045e775">&#9670;&nbsp;</a></span>ALPAKA_FN_EXTERN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ALPAKA_FN_EXTERN</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>All functions marked with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC that are exported to / imported from different translation units have to be attributed with ALPAKA_FN_EXTERN. Note that this needs to be applied to both the declaration and the definition. </p>
+<p>Usage: ALPAKA_FN_ACC ALPAKA_FN_EXTERN auto add(std::int32_t a, std::int32_t b) -&gt; std::int32_t;</p>
+<p>Warning: If this is used together with the SYCL back-end make sure that your SYCL runtime supports generic address spaces. Otherwise it is forbidden to use pointers as parameter or return type for functions marked with ALPAKA_FN_EXTERN. </p>
+
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00061">61</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -171,7 +194,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00037">37</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00037">37</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -187,7 +210,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00036">36</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00036">36</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -205,7 +228,7 @@ Macros</h2></td></tr>
 
 <p>Macro defining the inline function attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00061">61</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00085">85</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -223,7 +246,7 @@ Macros</h2></td></tr>
 
 <p>Disable nvcc warning: 'calling a <b>host</b> function from <b>host</b> <b>device</b> function.' Usage: ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC function_declaration() WARNING: Only use this method if there is no other way. Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA. </p>
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00054">54</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00078">78</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -243,7 +266,7 @@ Macros</h2></td></tr>
 <p>Example: ALPAKA_STATIC_ACC_MEM_CONSTANT int i;</p>
 <p>Those variables behave like ordinary variables when used in file-scope. They have external linkage (are accessible from other compilation units). If you want to access it from a different compilation unit, you have to declare it as extern: extern ALPAKA_STATIC_ACC_MEM_CONSTANT int i; Like ordinary variables, only one definition is allowed (ODR) Failure to do so might lead to linker errors.</p>
 <p>In contrast to ordinary variables, you can not define such variables as static compilation unit local variables with internal linkage because this is forbidden by CUDA.</p>
-<dl class="section attention"><dt>Attention</dt><dd>It is not allowed to initialize the variable together with the declaration. To initialize the variable <a class="el" href="namespacealpaka.html#adedb8c0a11a3096bccbd7d37481798b0">alpaka::createStaticDevMemView</a> and <a class="el" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace" title="Copies memory possibly between different memory spaces.">alpaka::memcpy</a> must be used. <div class="fragment"><div class="line"><a class="code" href="Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a> <span class="keywordtype">int</span> foo;</div>
+<dl class="section attention"><dt>Attention</dt><dd>It is not allowed to initialize the variable together with the declaration. To initialize the variable <a class="el" href="namespacealpaka.html#adedb8c0a11a3096bccbd7d37481798b0">alpaka::createStaticDevMemView</a> and <a class="el" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace" title="Copies memory possibly between different memory spaces.">alpaka::memcpy</a> must be used. <div class="fragment"><div class="line"><a class="code" href="core_2Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a> <span class="keywordtype">int</span> foo;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> initFoo() {</div>
 <div class="line">    <span class="keyword">auto</span> extent = <a class="code" href="classalpaka_1_1Vec.html">alpaka::Vec&lt;alpaka::DimInt&lt;1u&gt;</a>, <span class="keywordtype">size_t</span>&gt;{1};</div>
@@ -254,7 +277,7 @@ Macros</h2></td></tr>
 <div class="line">}</div>
 </div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00133">133</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00157">157</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -274,7 +297,7 @@ Macros</h2></td></tr>
 <p>Example: ALPAKA_STATIC_ACC_MEM_GLOBAL int i;</p>
 <p>Those variables behave like ordinary variables when used in file-scope. They have external linkage (are accessible from other compilation units). If you want to access it from a different compilation unit, you have to declare it as extern: extern ALPAKA_STATIC_ACC_MEM_GLOBAL int i; Like ordinary variables, only one definition is allowed (ODR) Failure to do so might lead to linker errors.</p>
 <p>In contrast to ordinary variables, you can not define such variables as static compilation unit local variables with internal linkage because this is forbidden by CUDA.</p>
-<dl class="section attention"><dt>Attention</dt><dd>It is not allowed to initialize the variable together with the declaration. To initialize the variable <a class="el" href="namespacealpaka.html#adedb8c0a11a3096bccbd7d37481798b0">alpaka::createStaticDevMemView</a> and <a class="el" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace" title="Copies memory possibly between different memory spaces.">alpaka::memcpy</a> must be used. <div class="fragment"><div class="line"><a class="code" href="Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a> <span class="keywordtype">int</span> foo;</div>
+<dl class="section attention"><dt>Attention</dt><dd>It is not allowed to initialize the variable together with the declaration. To initialize the variable <a class="el" href="namespacealpaka.html#adedb8c0a11a3096bccbd7d37481798b0">alpaka::createStaticDevMemView</a> and <a class="el" href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace" title="Copies memory possibly between different memory spaces.">alpaka::memcpy</a> must be used. <div class="fragment"><div class="line"><a class="code" href="core_2Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a> <span class="keywordtype">int</span> foo;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> initFoo() {</div>
 <div class="line">    <span class="keyword">auto</span> extent = <a class="code" href="classalpaka_1_1Vec.html">alpaka::Vec&lt;alpaka::DimInt&lt;1u&gt;</a>, <span class="keywordtype">size_t</span>&gt;{1};</div>
@@ -285,7 +308,7 @@ Macros</h2></td></tr>
 <div class="line">}</div>
 </div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Common_8hpp_source.html#l00097">97</a> of file <a class="el" href="Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00121">121</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -294,14 +317,14 @@ Macros</h2></td></tr>
 <div class="ttc" id="anamespacealpaka_html_a6f69abad399915756f7b28d19f221ace"><div class="ttname"><a href="namespacealpaka.html#a6f69abad399915756f7b28d19f221ace">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDst &amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory possibly between different memory spaces.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00235">Traits.hpp:235</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_adedb8c0a11a3096bccbd7d37481798b0"><div class="ttname"><a href="namespacealpaka.html#adedb8c0a11a3096bccbd7d37481798b0">alpaka::createStaticDevMemView</a></div><div class="ttdeci">auto createStaticDevMemView(TElem *pMem, TDev const &amp;dev, TExtent const &amp;extent)</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00393">Traits.hpp:393</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec</a></div><div class="ttdoc">A n-dimensional vector.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00038">Vec.hpp:38</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a9d25bd4d9704008351191d42e112af2a"><div class="ttname"><a href="Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_CONSTANT</div><div class="ttdoc">This macro defines a variable lying in constant accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00133">Common.hpp:133</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html_a9d25bd4d9704008351191d42e112af2a"><div class="ttname"><a href="core_2Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_CONSTANT</div><div class="ttdoc">This macro defines a variable lying in constant accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00157">Common.hpp:157</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1ViewPlainPtr_html"><div class="ttname"><a href="classalpaka_1_1ViewPlainPtr.html">alpaka::ViewPlainPtr</a></div><div class="ttdoc">The memory view to wrap plain pointers.</div><div class="ttdef"><b>Definition:</b> <a href="ViewPlainPtr_8hpp_source.html#l00027">ViewPlainPtr.hpp:27</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a95bebbbf9aab1a18a278359a85a41125"><div class="ttname"><a href="Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_GLOBAL</div><div class="ttdoc">This macro defines a variable lying in global accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00097">Common.hpp:97</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html_a95bebbbf9aab1a18a278359a85a41125"><div class="ttname"><a href="core_2Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_GLOBAL</div><div class="ttdoc">This macro defines a variable lying in global accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00121">Common.hpp:121</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="core_2Common_8hpp.html">Common.hpp</a></li>
+    <li class="footer">Generated on Fri Feb 18 2022 14:14:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('kernel_2Traits_8hpp.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Debug_8hpp_source.html">alpaka/core/Debug.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="OmpSchedule_8hpp_source.html">alpaka/core/OmpSchedule.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&gt;</code><br />
@@ -133,18 +133,18 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a64392e68c8cc7a290aec236751415cf3"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TWorkDiv , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a64392e68c8cc7a290aec236751415cf3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a> (TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</td></tr>
+<tr class="memitem:a64392e68c8cc7a290aec236751415cf3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a> (TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a64392e68c8cc7a290aec236751415cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a kernel execution task.  <a href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">More...</a><br /></td></tr>
 <tr class="separator:a64392e68c8cc7a290aec236751415cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TQueue , typename TWorkDiv , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aba309bace6bd6e1cf4c564bbe396a9ba">alpaka::exec</a> (TQueue &amp;queue, TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args) -&gt; void</td></tr>
+<tr class="memitem:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aba309bace6bd6e1cf4c564bbe396a9ba">alpaka::exec</a> (TQueue &amp;queue, TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args) -&gt; void</td></tr>
 <tr class="memdesc:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given kernel in the given queue.  <a href="namespacealpaka.html#aba309bace6bd6e1cf4c564bbe396a9ba">More...</a><br /></td></tr>
 <tr class="separator:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a320a89eae40575cf2114d933faa11e5d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a320a89eae40575cf2114d933faa11e5d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a320a89eae40575cf2114d933faa11e5d">alpaka::getBlockSharedMemDynSizeBytes</a> (TKernelFnObj const &amp;kernelFnObj, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; std::size_t</td></tr>
+<tr class="memitem:a320a89eae40575cf2114d933faa11e5d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a320a89eae40575cf2114d933faa11e5d">alpaka::getBlockSharedMemDynSizeBytes</a> (TKernelFnObj const &amp;kernelFnObj, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; std::size_t</td></tr>
 <tr class="separator:a320a89eae40575cf2114d933faa11e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e721375d8252b7512840abaca2a8739"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a0e721375d8252b7512840abaca2a8739"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0e721375d8252b7512840abaca2a8739">alpaka::getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args)</td></tr>
+<tr class="memitem:a0e721375d8252b7512840abaca2a8739"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0e721375d8252b7512840abaca2a8739">alpaka::getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args)</td></tr>
 <tr class="separator:a0e721375d8252b7512840abaca2a8739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -153,7 +153,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="kernel_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 14:14:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
