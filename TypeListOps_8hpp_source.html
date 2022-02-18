@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('TypeListOps_8hpp_source.html',''); ini
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>...&gt; <span class="keyword">class </span>List, <span class="keyword">typename</span> Head, <span class="keyword">typename</span>... Tail, <span class="keyword">typename</span> Value&gt;</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html">   39</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1Contains.html">Contains</a>&lt;List&lt;Head, Tail...&gt;, Value&gt;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    {</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html#acf79b9efc38d0c09275291563e5fd99f">   41</a></span>&#160;        <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = std::is_same&lt;Head, Value&gt;::value || <a class="code" href="structalpaka_1_1meta_1_1Contains.html">Contains</a>&lt;List&lt;Tail...&gt;, Value&gt;::value;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html#acf79b9efc38d0c09275291563e5fd99f">   41</a></span>&#160;        <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = std::is_same_v&lt;Head, Value&gt; || <a class="code" href="structalpaka_1_1meta_1_1Contains.html">Contains</a>&lt;List&lt;Tail...&gt;, Value&gt;::value;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;} <span class="comment">// namespace alpaka::meta</span></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('TypeListOps_8hpp_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_9b06e2d5421d26ecb89f5fc8cf901459.html">meta</a></li><li class="navelem"><a class="el" href="TypeListOps_8hpp.html">TypeListOps.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

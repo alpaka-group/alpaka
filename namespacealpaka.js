@@ -4,7 +4,7 @@ var namespacealpaka =
     [ "concepts", "namespacealpaka_1_1concepts.html", "namespacealpaka_1_1concepts" ],
     [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cpu", "namespacealpaka_1_1cpu.html", "namespacealpaka_1_1cpu" ],
-    [ "cuda", "namespacealpaka_1_1cuda.html", "namespacealpaka_1_1cuda" ],
+    [ "cuda", "namespacealpaka_1_1cuda.html", null ],
     [ "detail", "namespacealpaka_1_1detail.html", "namespacealpaka_1_1detail" ],
     [ "experimental", "namespacealpaka_1_1experimental.html", "namespacealpaka_1_1experimental" ],
     [ "gb", "namespacealpaka_1_1gb.html", "namespacealpaka_1_1gb" ],

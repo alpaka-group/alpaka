@@ -104,19 +104,18 @@ $(document).ready(function(){initNavTree('IsStrictBase_8hpp_source.html',''); in
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">    //! The trait is true if TDerived is derived from TBase but is not TBase itself.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TBase, <span class="keyword">typename</span> TDerived&gt;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1meta.html#a12ee018b5a56427ce8552b7442006d34">IsStrictBase</a> = std::integral_constant&lt;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        bool,</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1meta.html#a12ee018b5a56427ce8552b7442006d34">   20</a></span>&#160;        std::is_base_of&lt;TBase, TDerived&gt;::value &amp;&amp; !std::is_same&lt;TBase, std::decay_t&lt;TDerived&gt;&gt;::value&gt;;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;} <span class="comment">// namespace alpaka::meta</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1meta.html#ac4f48e52fec52f6bf6e10fec0da240aa">IsStrictBase</a> = std::</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1meta.html#ac4f48e52fec52f6bf6e10fec0da240aa">   19</a></span>&#160;        integral_constant&lt;bool, std::is_base_of_v&lt;TBase, TDerived&gt; &amp;&amp; !std::is_same_v&lt;TBase, std::decay_t&lt;TDerived&gt;&gt;&gt;;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;} <span class="comment">// namespace alpaka::meta</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="anamespacealpaka_1_1meta_html_a12ee018b5a56427ce8552b7442006d34"><div class="ttname"><a href="namespacealpaka_1_1meta.html#a12ee018b5a56427ce8552b7442006d34">alpaka::meta::IsStrictBase</a></div><div class="ttdeci">std::integral_constant&lt; bool, std::is_base_of&lt; TBase, TDerived &gt;::value &amp;&amp;!std::is_same&lt; TBase, std::decay_t&lt; TDerived &gt; &gt;::value &gt; IsStrictBase</div><div class="ttdoc">The trait is true if TDerived is derived from TBase but is not TBase itself.</div><div class="ttdef"><b>Definition:</b> <a href="IsStrictBase_8hpp_source.html#l00020">IsStrictBase.hpp:20</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1meta_html_ac4f48e52fec52f6bf6e10fec0da240aa"><div class="ttname"><a href="namespacealpaka_1_1meta.html#ac4f48e52fec52f6bf6e10fec0da240aa">alpaka::meta::IsStrictBase</a></div><div class="ttdeci">std::integral_constant&lt; bool, std::is_base_of_v&lt; TBase, TDerived &gt; &amp;&amp;!std::is_same_v&lt; TBase, std::decay_t&lt; TDerived &gt; &gt;&gt; IsStrictBase</div><div class="ttdoc">The trait is true if TDerived is derived from TBase but is not TBase itself.</div><div class="ttdef"><b>Definition:</b> <a href="IsStrictBase_8hpp_source.html#l00019">IsStrictBase.hpp:19</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1meta_html"><div class="ttname"><a href="namespacealpaka_1_1meta.html">alpaka::meta</a></div><div class="ttdef"><b>Definition:</b> <a href="Apply_8hpp_source.html#l00012">Apply.hpp:12</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_9b06e2d5421d26ecb89f5fc8cf901459.html">meta</a></li><li class="navelem"><a class="el" href="IsStrictBase_8hpp.html">IsStrictBase.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

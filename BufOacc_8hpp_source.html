@@ -134,10 +134,10 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keyword">class </span>BufOaccImpl</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                static_assert(</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    !std::is_const&lt;TElem&gt;::value,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    !std::is_const_v&lt;TElem&gt;,</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    <span class="stringliteral">&quot;The elem type of the buffer can not be const because the C++ Standard forbids containers of &quot;</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    <span class="stringliteral">&quot;const elements!&quot;</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                static_assert(!std::is_const&lt;TIdx&gt;::value, <span class="stringliteral">&quot;The idx type of the buffer can not be const!&quot;</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                static_assert(!std::is_const_v&lt;TIdx&gt;, <span class="stringliteral">&quot;The idx type of the buffer can not be const!&quot;</span>);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a> = TElem;</div>
@@ -553,7 +553,7 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufOacc_8hpp.html">BufOacc.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

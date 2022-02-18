@@ -111,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae1c47bb79805305c7851bcfca96d3d8e"><td class="memTemplParams" colspan="2">template&lt;bool B = (TDim::value == 0u), typename  = std::enable_if_t&lt;B&gt;&gt; </td></tr>
 <tr class="memitem:ae1c47bb79805305c7851bcfca96d3d8e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#ae1c47bb79805305c7851bcfca96d3d8e">Vec</a> ()</td></tr>
 <tr class="separator:ae1c47bb79805305c7851bcfca96d3d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f79476c89f5a5efeb771acbc06a905b"><td class="memTemplParams" colspan="2">template&lt;typename TArg0 , typename... TArgs, typename  = std::enable_if_t&lt;                                (sizeof...(TArgs) + 1 == TDim::value) &amp;&amp; (std::is_same&lt;TVal, std::decay_t&lt;TArg0&gt;&gt;::value)&gt;&gt; </td></tr>
+<tr class="memitem:a1f79476c89f5a5efeb771acbc06a905b"><td class="memTemplParams" colspan="2">template&lt;typename TArg0 , typename... TArgs, typename  = std::enable_if_t&lt;                                (sizeof...(TArgs) + 1 == TDim::value) &amp;&amp; (std::is_same_v&lt;TVal, std::decay_t&lt;TArg0&gt;&gt;)&gt;&gt; </td></tr>
 <tr class="memitem:a1f79476c89f5a5efeb771acbc06a905b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a1f79476c89f5a5efeb771acbc06a905b">Vec</a> (TArg0 &amp;&amp;arg0, TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a1f79476c89f5a5efeb771acbc06a905b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value constructor. This constructor is only available if the number of parameters matches the vector idx.  <a href="classalpaka_1_1Vec.html#a1f79476c89f5a5efeb771acbc06a905b">More...</a><br /></td></tr>
 <tr class="separator:a1f79476c89f5a5efeb771acbc06a905b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,11 +145,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac5bbbec274d197eacf99ca23e591eba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eeeb636d56c785f5969748e0009d668"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a4eeeb636d56c785f5969748e0009d668">operator==</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a> const &amp;rhs) const -&gt; bool</td></tr>
 <tr class="separator:a4eeeb636d56c785f5969748e0009d668"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a030db9e1fffebfd1ac1c0c771f55fa03"><td class="memTemplParams" colspan="2">template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral&lt;TIdx&gt;::value&gt;&gt; </td></tr>
+<tr class="memitem:a030db9e1fffebfd1ac1c0c771f55fa03"><td class="memTemplParams" colspan="2">template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral_v&lt;TIdx&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a030db9e1fffebfd1ac1c0c771f55fa03"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03">operator[]</a> (TIdx const iIdx) -&gt; TVal &amp;</td></tr>
 <tr class="memdesc:a030db9e1fffebfd1ac1c0c771f55fa03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value reference accessor at the given non-unsigned integer index.  <a href="classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03">More...</a><br /></td></tr>
 <tr class="separator:a030db9e1fffebfd1ac1c0c771f55fa03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b9b0a77603eab65b1365e13f33152cc"><td class="memTemplParams" colspan="2">template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral&lt;TIdx&gt;::value&gt;&gt; </td></tr>
+<tr class="memitem:a1b9b0a77603eab65b1365e13f33152cc"><td class="memTemplParams" colspan="2">template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral_v&lt;TIdx&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a1b9b0a77603eab65b1365e13f33152cc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc">operator[]</a> (TIdx const iIdx) const -&gt; TVal</td></tr>
 <tr class="memdesc:a1b9b0a77603eab65b1365e13f33152cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value accessor at the given non-unsigned integer index.  <a href="classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc">More...</a><br /></td></tr>
 <tr class="separator:a1b9b0a77603eab65b1365e13f33152cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,7 +254,7 @@ template&lt;bool B = (TDim::value == 0u), typename  = std::enable_if_t&lt;B&gt;&
 <div class="memtemplate">
 template&lt;typename TDim , typename TVal &gt; </div>
 <div class="memtemplate">
-template&lt;typename TArg0 , typename... TArgs, typename  = std::enable_if_t&lt;                                (sizeof...(TArgs) + 1 == TDim::value) &amp;&amp; (std::is_same&lt;TVal, std::decay_t&lt;TArg0&gt;&gt;::value)&gt;&gt; </div>
+template&lt;typename TArg0 , typename... TArgs, typename  = std::enable_if_t&lt;                                (sizeof...(TArgs) + 1 == TDim::value) &amp;&amp; (std::is_same_v&lt;TVal, std::decay_t&lt;TArg0&gt;&gt;)&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -784,7 +784,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div class="memtemplate">
 template&lt;typename TDim , typename TVal &gt; </div>
 <div class="memtemplate">
-template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral&lt;TIdx&gt;::value&gt;&gt; </div>
+template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral_v&lt;TIdx&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -820,7 +820,7 @@ template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral&lt;
 <div class="memtemplate">
 template&lt;typename TDim , typename TVal &gt; </div>
 <div class="memtemplate">
-template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral&lt;TIdx&gt;::value&gt;&gt; </div>
+template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral_v&lt;TIdx&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -951,7 +951,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1Vec.html">Vec</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:51 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:07 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

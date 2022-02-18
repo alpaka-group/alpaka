@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic_3_01T_01_4_1_1value_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic_3_01T_01_4_1_1value_01_4_01_4.html#a96b2ca9ac5968cee0ee356ea8724239e", null ]
-];

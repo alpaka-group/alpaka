@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['llround_3145',['Llround',['../structalpaka_1_1math_1_1traits_1_1Llround.html',1,'alpaka::math::traits']]],
-  ['llround_3c_20rounduniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_3c_20targ_20_3e_3a_3avalue_20_3e_20_3e_3146',['Llround&lt; RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point&lt; TArg &gt;::value &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1e574a51f56f64fcd8b52af964ab4bd706.html',1,'alpaka::math::traits']]],
-  ['log_3147',['Log',['../structalpaka_1_1math_1_1traits_1_1Log.html',1,'alpaka::math::traits']]],
-  ['log_3c_20loguniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_5fv_3c_20targ_20_3e_20_3e_20_3e_3148',['Log&lt; LogUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_c6aafda7b45ce74338757ef81905f136.html',1,'alpaka::math::traits']]],
-  ['logstdlib_3149',['LogStdLib',['../classalpaka_1_1math_1_1LogStdLib.html',1,'alpaka::math']]],
-  ['loguniformcudahipbuiltin_3150',['LogUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1LogUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
-  ['lround_3151',['Lround',['../structalpaka_1_1math_1_1traits_1_1Lround.html',1,'alpaka::math::traits']]],
-  ['lround_3c_20rounduniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_3c_20targ_20_3e_3a_3avalue_20_3e_20_3e_3152',['Lround&lt; RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point&lt; TArg &gt;::value &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1end0a577ce2ca111a4d68c346d25d7721a.html',1,'alpaka::math::traits']]]
+  ['llround_3151',['Llround',['../structalpaka_1_1math_1_1traits_1_1Llround.html',1,'alpaka::math::traits']]],
+  ['llround_3c_20rounduniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_5fv_3c_20targ_20_3e_20_3e_20_3e_3152',['Llround&lt; RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1e96a55887f9fcc2f265f32d3745a832a2.html',1,'alpaka::math::traits']]],
+  ['log_3153',['Log',['../structalpaka_1_1math_1_1traits_1_1Log.html',1,'alpaka::math::traits']]],
+  ['log_3c_20loguniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_5fv_3c_20targ_20_3e_20_3e_20_3e_3154',['Log&lt; LogUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_c6aafda7b45ce74338757ef81905f136.html',1,'alpaka::math::traits']]],
+  ['logstdlib_3155',['LogStdLib',['../classalpaka_1_1math_1_1LogStdLib.html',1,'alpaka::math']]],
+  ['loguniformcudahipbuiltin_3156',['LogUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1LogUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
+  ['lround_3157',['Lround',['../structalpaka_1_1math_1_1traits_1_1Lround.html',1,'alpaka::math::traits']]],
+  ['lround_3c_20rounduniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_5fv_3c_20targ_20_3e_20_3e_20_3e_3158',['Lround&lt; RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1en25d8399631dd3d9e5219e2aca57b5317.html',1,'alpaka::math::traits']]]
 ];

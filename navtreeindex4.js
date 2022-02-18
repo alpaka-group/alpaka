@@ -1,5 +1,14 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a9eb79971edb65d5541293e4681f2a314":[3,0,0,3,0,1,6],
+"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#aba02667e4d22ba9f50ca408c7a6c1e42":[3,0,0,3,0,1,2],
+"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#ae2c2a2112d81e30356a459e49ac78b62":[3,0,0,3,0,1,3],
+"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html":[3,0,0,5,6],
+"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a97c8f604d04702b11e13f1c9efb601b4":[3,0,0,5,6,1],
+"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ab0b0a1794b3e5b2a14dbfb480dd95c7d":[3,0,0,5,6,3],
+"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8":[3,0,0,5,6,0],
+"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#af14ad17349beb10f28f5a8d0bb10ffc1":[3,0,0,5,6,2],
+"classalpaka_1_1detail_1_1BufCpuImpl.html":[3,0,0,5,7],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#a07280be9faa28ab05113e69f1c8591d5":[3,0,0,5,7,4],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#a1061e7be36373082174f0dd46dcfffe1":[3,0,0,5,7,7],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#a27276e96baf56da955fb8d06412d227f":[3,0,0,5,7,3],
@@ -240,14 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ab84eccaa9fea527493962dc2c7eacf21":[3,0,0,16,1,0,2,5],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#acffca46ce72913377f019cd7837096f6":[3,0,0,16,1,0,2,1],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ae9c390e0adc0fee34e962ae7e05698f4":[3,0,0,16,1,0,2,2],
-"classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#aed5b89610cfcebbd8d2ebbdc88da874e":[3,0,0,16,1,0,2,3],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html":[3,0,0,16,1,2,0],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a186f46695d592edcc0f24b17cb2ba099":[3,0,0,16,1,2,0,6],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a5d5468384e7bff25c14ed39f7c3e4c40":[3,0,0,16,1,2,0,0],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a643623c4547b6ee1bd99a242c7ebe29d":[3,0,0,16,1,2,0,5],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a72c23054bb154c10369076a129e4a374":[3,0,0,16,1,2,0,3],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a7fad332308cb5c60e7874e6fc4d851dd":[3,0,0,16,1,2,0,8],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a93b9d75a323bbd68220a638ad19cb87d":[3,0,0,16,1,2,0,4],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a97cc0ece36d054043eb1ca987e0e76b7":[3,0,0,16,1,2,0,7],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#ab1b076723a7b14099d1020b462aad25f":[3,0,0,16,1,2,0,1]
+"classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#aed5b89610cfcebbd8d2ebbdc88da874e":[3,0,0,16,1,0,2,3]
 };

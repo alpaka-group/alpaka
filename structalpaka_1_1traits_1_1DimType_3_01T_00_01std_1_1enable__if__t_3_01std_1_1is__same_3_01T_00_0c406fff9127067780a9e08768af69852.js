@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__same_3_01T_00_0c406fff9127067780a9e08768af69852 =
-[
-    [ "type", "structalpaka_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__same_3_01T_00_0c406fff9127067780a9e08768af69852.html#aafb655cae5ee74922d52eaa74ebf0a24", null ]
-];

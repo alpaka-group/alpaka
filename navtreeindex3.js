@@ -1,5 +1,14 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html":[3,0,0,63],
+"classalpaka_1_1BufCpu.html":[3,0,0,64],
+"classalpaka_1_1BufCpu.html#ab2a0db5aa0ccead63b575f647c9603b7":[3,0,0,64,0],
+"classalpaka_1_1BufCpu.html#af307213573545dfdbaaaf25e817ee63e":[3,0,0,64,1],
+"classalpaka_1_1BufOmp5.html":[3,0,0,65],
+"classalpaka_1_1BufOmp5.html#a01d04e791f899baf3770fe03e4101054":[3,0,0,65,1],
+"classalpaka_1_1BufOmp5.html#a284ff79d4b1335635a3aa10b761377db":[3,0,0,65,0],
+"classalpaka_1_1BufOmp5.html#a837b459de284775b03130ce3e219a92c":[3,0,0,65,2],
+"classalpaka_1_1BufOmp5.html#aa99329196cddda9b03bde8dfe9e7ccc2":[3,0,0,65,3],
 "classalpaka_1_1BufUniformCudaHipRt.html":[3,0,0,66],
 "classalpaka_1_1BufUniformCudaHipRt.html#a1c72f4c26b8b7d220425e20c63381461":[3,0,0,66,1],
 "classalpaka_1_1BufUniformCudaHipRt.html#a2e2f5207cf2c61a9cd2efe3d460dbd38":[3,0,0,66,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a57f27bcb6421e9817cd93fe78b5d2669":[3,0,0,3,0,1,0],
 "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a8c4331ecb5fe5a71e2960fe367046fdb":[3,0,0,3,0,1,5],
 "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a99e6564b5c8fde1526ef7b683055f15b":[3,0,0,3,0,1,7],
-"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a9d7f0089584c444befe88d0508643224":[3,0,0,3,0,1,1],
-"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a9eb79971edb65d5541293e4681f2a314":[3,0,0,3,0,1,6],
-"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#aba02667e4d22ba9f50ca408c7a6c1e42":[3,0,0,3,0,1,2],
-"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#ae2c2a2112d81e30356a459e49ac78b62":[3,0,0,3,0,1,3],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html":[3,0,0,5,6],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a97c8f604d04702b11e13f1c9efb601b4":[3,0,0,5,6,1],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ab0b0a1794b3e5b2a14dbfb480dd95c7d":[3,0,0,5,6,3],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8":[3,0,0,5,6,0],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#af14ad17349beb10f28f5a8d0bb10ffc1":[3,0,0,5,6,2],
-"classalpaka_1_1detail_1_1BufCpuImpl.html":[3,0,0,5,7]
+"classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a9d7f0089584c444befe88d0508643224":[3,0,0,3,0,1,1]
 };

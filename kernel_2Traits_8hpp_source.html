@@ -291,7 +291,7 @@ $(document).ready(function(){initNavTree('kernel_2Traits_8hpp_source.html',''); 
 <div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1CheckFnReturnType.html#a3b12bd01f5d05073814dc4f6a76c6365">  202</a></span>&#160;            <span class="keywordtype">void</span> <a class="code" href="structalpaka_1_1detail_1_1CheckFnReturnType.html#a3b12bd01f5d05073814dc4f6a76c6365">operator()</a>(TKernelFnObj <span class="keyword">const</span>&amp;, TArgs <span class="keyword">const</span>&amp;...)</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            {</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                <span class="keyword">using</span> Result = std::invoke_result_t&lt;TKernelFnObj, TAcc <span class="keyword">const</span>&amp;, TArgs <span class="keyword">const</span>&amp;...&gt;;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                static_assert(std::is_same&lt;Result, void&gt;::value, <span class="stringliteral">&quot;The TKernelFnObj is required to return void!&quot;</span>);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                static_assert(std::is_same_v&lt;Result, void&gt;, <span class="stringliteral">&quot;The TKernelFnObj is required to return void!&quot;</span>);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            }</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        };</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    } <span class="comment">// namespace detail</span><span class="comment"></span></div>
@@ -315,7 +315,7 @@ $(document).ready(function(){initNavTree('kernel_2Traits_8hpp_source.html',''); 
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt;std::decay_t&lt;TWorkDiv&gt;&gt;::value == <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim&lt;TAcc&gt;::value</a>,</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="stringliteral">&quot;The dimensions of TAcc and TWorkDiv have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        static_assert(</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            std::is_same&lt;<a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt;std::decay_t&lt;TWorkDiv&gt;&gt;, <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TAcc&gt;</a>&gt;::value,</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            std::is_same_v&lt;<a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt;std::decay_t&lt;TWorkDiv&gt;&gt;, <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TAcc&gt;</a>&gt;,</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <span class="stringliteral">&quot;The idx type of TAcc and the idx type of TWorkDiv have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
@@ -384,7 +384,7 @@ $(document).ready(function(){initNavTree('kernel_2Traits_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="kernel_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

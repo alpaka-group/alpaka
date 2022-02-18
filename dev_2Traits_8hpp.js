@@ -1,7 +1,7 @@
 var dev_2Traits_8hpp =
 [
     [ "DevType", "structalpaka_1_1traits_1_1DevType.html", null ],
-    [ "DevType< TDev, typename std::enable_if< concepts::ImplementsConcept< ConceptDev, TDev >::value >::type >", "structalpaka_1_1traits_1_1DevType_3_01TDev_00_01typename_01std_1_1enable__if_3_01concepts_1_1Imp0c6b7dccfd8ed64b419ae05d2cb4cc6d.html", "structalpaka_1_1traits_1_1DevType_3_01TDev_00_01typename_01std_1_1enable__if_3_01concepts_1_1Imp0c6b7dccfd8ed64b419ae05d2cb4cc6d" ],
+    [ "DevType< TDev, std::enable_if_t< concepts::ImplementsConcept< ConceptDev, TDev >::value > >", "structalpaka_1_1traits_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCa8e06ac305102150cd7442cc13bbe62f.html", "structalpaka_1_1traits_1_1DevType_3_01TDev_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCa8e06ac305102150cd7442cc13bbe62f" ],
     [ "GetDev", "structalpaka_1_1traits_1_1GetDev.html", null ],
     [ "GetFreeMemBytes", "structalpaka_1_1traits_1_1GetFreeMemBytes.html", null ],
     [ "GetMemBytes", "structalpaka_1_1traits_1_1GetMemBytes.html", null ],

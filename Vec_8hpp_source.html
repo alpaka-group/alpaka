@@ -194,7 +194,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">typename</span>... TArgs,</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keyword">typename</span> = std::enable_if_t&lt;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                <span class="comment">// There have to be dim arguments.</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                (<span class="keyword">sizeof</span>...(TArgs) + 1 == TDim::value) &amp;&amp; (std::is_same&lt;TVal, std::decay_t&lt;TArg0&gt;&gt;::value)&gt;&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                (<span class="keyword">sizeof</span>...(TArgs) + 1 == TDim::value) &amp;&amp; (std::is_same_v&lt;TVal, std::decay_t&lt;TArg0&gt;&gt;)&gt;&gt;</div>
 <div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a1f79476c89f5a5efeb771acbc06a905b">  109</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="code" href="classalpaka_1_1Vec.html#a1f79476c89f5a5efeb771acbc06a905b">Vec</a>(TArg0&amp;&amp; arg0, TArgs&amp;&amp;... args)</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            : m_data{std::forward&lt;TArg0&gt;(arg0), std::forward&lt;TArgs&gt;(args)...}</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        {</div>
@@ -238,7 +238,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">        //! Value reference accessor at the given non-unsigned integer index.</span></div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">        //! \return A reference to the value at the given index.</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment"></span>        <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        template&lt;typename TIdx, typename = std::enable_if_t&lt;std::is_integral&lt;TIdx&gt;::value&gt;&gt;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;TIdx&gt;&gt;&gt;</div>
 <div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03">  153</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03">operator[]</a>(TIdx <span class="keyword">const</span> iIdx) -&gt; TVal&amp;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        {</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <a class="code" href="namespacealpaka_1_1core.html#a841600e3344adc10ea85eac5834e35a2">core::assertValueUnsigned</a>(iIdx);</div>
@@ -250,7 +250,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">        //! Value accessor at the given non-unsigned integer index.</span></div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">        //! \return The value at the given index.</span></div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment"></span>        <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        template&lt;typename TIdx, typename = std::enable_if_t&lt;std::is_integral&lt;TIdx&gt;::value&gt;&gt;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;TIdx&gt;&gt;&gt;</div>
 <div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc">  165</a></span>&#160;        <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc">operator[]</a>(TIdx <span class="keyword">const</span> iIdx) <span class="keyword">const</span> -&gt; TVal</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        {</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            <a class="code" href="namespacealpaka_1_1core.html#a841600e3344adc10ea85eac5834e35a2">core::assertValueUnsigned</a>(iIdx);</div>
@@ -939,7 +939,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7056b9f7cd8b764aedbfcd44587c0438.html">vec</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

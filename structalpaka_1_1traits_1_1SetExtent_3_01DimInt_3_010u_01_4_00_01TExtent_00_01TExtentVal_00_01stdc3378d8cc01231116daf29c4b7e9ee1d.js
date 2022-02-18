@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1SetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01TExtentVal_00_01stdc3378d8cc01231116daf29c4b7e9ee1d =
-[
-    [ "setExtent", "structalpaka_1_1traits_1_1SetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01TExtentVal_00_01stdc3378d8cc01231116daf29c4b7e9ee1d.html#ab41cb7f7cc467481a8cfc9a87c2a1f1c", null ]
-];

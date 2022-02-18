@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('Concepts_8hpp_source.html',''); initRe
 <div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html#a45345ca3b1f0416e30745f367d064790">   61</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html#a45345ca3b1f0416e30745f367d064790">type</a> = decltype(implementer(std::declval&lt;TDerived&amp;&gt;()));</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                std::is_base_of&lt;type, TDerived&gt;::value,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                std::is_base_of_v&lt;type, TDerived&gt;,</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="stringliteral">&quot;The type implementing the concept has to be a publicly accessible base class!&quot;</span>);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        };</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    } <span class="comment">// namespace detail</span></div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('Concepts_8hpp_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Concepts_8hpp.html">Concepts.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

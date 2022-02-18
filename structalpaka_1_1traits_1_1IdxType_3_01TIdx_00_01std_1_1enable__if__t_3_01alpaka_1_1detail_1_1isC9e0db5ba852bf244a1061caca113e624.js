@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1IdxType_3_01TIdx_00_01std_1_1enable__if__t_3_01alpaka_1_1detail_1_1isC9e0db5ba852bf244a1061caca113e624 =
+[
+    [ "type", "structalpaka_1_1traits_1_1IdxType_3_01TIdx_00_01std_1_1enable__if__t_3_01alpaka_1_1detail_1_1isC9e0db5ba852bf244a1061caca113e624.html#a76e074b01d1309db0cd00d1ac289958a", null ]
+];

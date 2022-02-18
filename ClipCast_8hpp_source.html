@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('ClipCast_8hpp_source.html',''); initRe
 <div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core.html#aba50ad750855be306239699abe49ba28">   21</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1core.html#aba50ad750855be306239699abe49ba28">clipCast</a>(V <span class="keyword">const</span>&amp; val) -&gt; T</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        static_assert(</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            std::is_integral&lt;T&gt;::value &amp;&amp; std::is_integral&lt;V&gt;::value,</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            std::is_integral_v&lt;T&gt; &amp;&amp; std::is_integral_v&lt;V&gt;,</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="stringliteral">&quot;clipCast can not be called with non-integral types!&quot;</span>);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">auto</span> constexpr <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">max</a> = <span class="keyword">static_cast&lt;</span>V<span class="keyword">&gt;</span>(std::numeric_limits&lt;alpaka::meta::LowerMax&lt;T, V&gt;&gt;<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">::max</a>());</div>
@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('ClipCast_8hpp_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="ClipCast_8hpp.html">ClipCast.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">        //! \return The biggest number that satisfies the following conditions:</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">        //!     1) dividend/ret==0</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">        //!     2) ret&lt;=maxDivisor</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment"></span>        template&lt;typename T, typename = std::enable_if_t&lt;std::is_integral&lt;T&gt;::value&gt;&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;T&gt;&gt;&gt;</div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1detail.html#a50fc53e415bd36a86f7ec64a284618d7">   45</a></span>&#160;        <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1detail.html#a50fc53e415bd36a86f7ec64a284618d7">nextDivisorLowerOrEqual</a>(T <span class="keyword">const</span>&amp; maxDivisor, T <span class="keyword">const</span>&amp; dividend) -&gt; T</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            T divisor(maxDivisor);</div>
@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">        //! \param val The value to find divisors of.</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">        //! \param maxDivisor The maximum.</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">        //! \return A list of all divisors less then or equal to the given maximum.</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment"></span>        template&lt;typename T, typename = std::enable_if_t&lt;std::is_integral&lt;T&gt;::value&gt;&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;T&gt;&gt;&gt;</div>
 <div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1detail.html#ab1d31914161c1f5c4cf6f71e7d1bfe50">   64</a></span>&#160;        <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1detail.html#ab1d31914161c1f5c4cf6f71e7d1bfe50">allDivisorsLessOrEqual</a>(T <span class="keyword">const</span>&amp; val, T <span class="keyword">const</span>&amp; maxDivisor) -&gt; std::set&lt;T&gt;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        {</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            std::set&lt;T&gt; divisorSet;</div>
@@ -446,10 +446,10 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim&lt;TThreadElemExtent&gt;::value</a> == <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim&lt;TAcc&gt;::value</a>,</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            <span class="stringliteral">&quot;The dimension of TAcc and the dimension of TThreadElemExtent have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        static_assert(</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            std::is_same&lt;<a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TGridElemExtent&gt;</a>, <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TAcc&gt;</a>&gt;::value,</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            std::is_same_v&lt;<a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TGridElemExtent&gt;</a>, <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TAcc&gt;</a>&gt;,</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            <span class="stringliteral">&quot;The idx type of TAcc and the idx type of TGridElemExtent have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        static_assert(</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            std::is_same&lt;<a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TThreadElemExtent&gt;</a>, <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TAcc&gt;</a>&gt;::value,</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            std::is_same_v&lt;<a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TThreadElemExtent&gt;</a>, <a class="code" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx&lt;TAcc&gt;</a>&gt;,</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;            <span class="stringliteral">&quot;The idx type of TAcc and the idx type of TThreadElemExtent have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#affc77d4ef026e07e11d1fe82ec83b819">subDivideGridElems</a>(</div>
@@ -556,7 +556,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_43271bcfd261ba185a35bd5280ac7ea9.html">workdiv</a></li><li class="navelem"><a class="el" href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></li>
-    <li class="footer">Generated on Thu Feb 17 2022 13:45:50 for alpaka by
+    <li class="footer">Generated on Fri Feb 18 2022 08:34:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
