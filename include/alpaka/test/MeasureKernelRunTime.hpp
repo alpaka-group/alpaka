@@ -16,6 +16,17 @@
 
 namespace alpaka::test::integ
 {
+    //! Measures and returns the runtime in ms of the passed callable.
+    //! \param callable An object with operator().
+    template<typename TCallable>
+    auto measureRunTimeMs(TCallable&& callable) -> std::chrono::milliseconds::rep
+    {
+        auto const start = std::chrono::high_resolution_clock::now();
+        std::forward<TCallable>(callable)();
+        auto const end = std::chrono::high_resolution_clock::now();
+        return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    }
+
     //! \return The run time of the given kernel.
     template<typename TQueue, typename TTask>
     auto measureTaskRunTimeMs(TQueue& queue, TTask&& task) -> std::chrono::milliseconds::rep
@@ -25,24 +36,16 @@ namespace alpaka::test::integ
                   << " queue: " << typeid(TQueue).name() << " task: " << typeid(std::decay_t<TTask>).name() << ")"
                   << std::endl;
 #endif
-        // Wait for the queue to finish all tasks enqueued prior to the giventask.
+        // Wait for the queue to finish all tasks enqueued prior to the given task.
         alpaka::wait(queue);
 
-        // Take the time prior to the execution.
-        auto const tpStart(std::chrono::high_resolution_clock::now());
+        return measureRunTimeMs(
+            [&]
+            {
+                alpaka::enqueue(queue, std::forward<TTask>(task));
 
-        // Enqueue the task.
-        alpaka::enqueue(queue, std::forward<TTask>(task));
-
-        // Wait for the queue to finish the task execution to measure its run time.
-        alpaka::wait(queue);
-
-        // Take the time after the execution.
-        auto const tpEnd(std::chrono::high_resolution_clock::now());
-
-        auto const durElapsed(tpEnd - tpStart);
-
-        // Return the duration.
-        return std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count();
+                // Wait for the queue to finish the task execution to measure its run time.
+                alpaka::wait(queue);
+            });
     }
 } // namespace alpaka::test::integ
