@@ -227,10 +227,21 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     auto bufBAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentB);
     auto bufCAcc = alpaka::allocBuf<Val, Idx>(devAcc, extentC);
 
-    // Copy Host -> Acc.
-    alpaka::memcpy(queueAcc, bufAAcc, bufAHost);
-    alpaka::memcpy(queueAcc, bufBAcc, bufBHost);
-    alpaka::wait(queueHost);
+    // Copy inputs Host -> Acc.
+    std::cout << "Input1 copy time: "
+              << alpaka::test::integ::measureRunTimeMs(
+                     [&]
+                     {
+                         alpaka::memcpy(queueAcc, bufAAcc, bufAHost);
+                         alpaka::memcpy(queueAcc, bufBAcc, bufBHost);
+                         alpaka::wait(queueAcc);
+                     })
+              << " ms" << std::endl;
+    alpaka::wait(queueHost); // Make sure memset finished
+    std::cout << "Input2 copy time: "
+              << alpaka::test::integ::measureRunTimeMs([&] { alpaka::memcpy(queueAcc, bufCAcc, bufCHost); }) << " ms"
+              << std::endl;
+
     alpaka::memcpy(queueAcc, bufCAcc, bufCHost);
 
     auto const pitchA = alpaka::getPitchBytes<1u>(bufAAcc);
@@ -259,14 +270,18 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
         static_cast<Idx>(pitchC / sizeof(Val)));
 
     // Profile the kernel execution.
-    std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"
+    std::cout << "Execution time:   " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"
               << std::endl;
 
     // Copy back the result.
-    alpaka::memcpy(queueAcc, bufCHost, bufCAcc);
-
-    // Wait for the queue to finish the memory operation.
-    alpaka::wait(queueAcc);
+    std::cout << "Output copy time: "
+              << alpaka::test::integ::measureRunTimeMs(
+                     [&]
+                     {
+                         alpaka::memcpy(queueAcc, bufCHost, bufCAcc);
+                         alpaka::wait(queueAcc);
+                     })
+              << " ms" << std::endl;
 
     // Assert that the results are correct.
     // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.
