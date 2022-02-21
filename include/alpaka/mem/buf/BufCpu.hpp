@@ -56,7 +56,6 @@ namespace alpaka
                 , m_extentElements(getExtentVecEnd<TDim>(extent))
                 , m_pMem(pMem)
                 , m_deleter(std::move(deleter))
-                , m_pitchBytes(static_cast<TIdx>(getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 , m_bPinned(false)
 #endif
@@ -73,7 +72,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " e: " << m_extentElements << " ptr: " << static_cast<void*>(m_pMem)
-                          << " pitch: " << m_pitchBytes << std::endl;
+                          << std::endl;
 #endif
             }
             BufCpuImpl(BufCpuImpl&&) = default;
@@ -95,7 +94,6 @@ namespace alpaka
             Vec<TDim, TIdx> const m_extentElements;
             TElem* const m_pMem;
             std::function<void(TElem*)> m_deleter;
-            TIdx const m_pitchBytes;
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             bool m_bPinned;
 #endif
@@ -210,7 +208,8 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getPitchBytes(BufCpu<TElem, TDim, TIdx> const& pitch) -> TIdx
             {
-                return pitch.m_spBufCpuImpl->m_pitchBytes;
+                return static_cast<TIdx>(getWidth(pitch.m_spBufCpuImpl->m_extentElements))
+                    * static_cast<TIdx>(sizeof(TElem));
             }
         };
 
