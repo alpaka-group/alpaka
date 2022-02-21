@@ -2,7 +2,7 @@ var searchData=
 [
   ['queue_1774',['Queue',['../structalpaka_1_1test_1_1QueueTestFixture.html#ab985951be3fd8592432a205192614ff5',1,'alpaka::test::QueueTestFixture::Queue()'],['../namespacealpaka.html#aff6c69ef2f19b01caf21fdde471e9424',1,'alpaka::Queue()']]],
   ['queue_2ehpp_1775',['Queue.hpp',['../Queue_8hpp.html',1,'']]],
-  ['queueacc_1776',['QueueAcc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a51c9267422b436c6c33130fcbf73a9c0',1,'alpaka::test::KernelExecutionFixture']]],
+  ['queueacc_1776',['QueueAcc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#ae56da1b3a5effb5f77efbce4d8a4ba9f',1,'alpaka::test::KernelExecutionFixture']]],
   ['queuecpublocking_1777',['QueueCpuBlocking',['../namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42',1,'alpaka']]],
   ['queuecpublocking_2ehpp_1778',['QueueCpuBlocking.hpp',['../QueueCpuBlocking_8hpp.html',1,'']]],
   ['queuecpunonblocking_1779',['QueueCpuNonBlocking',['../namespacealpaka.html#a8a11334697bff8a6fb14559535908633',1,'alpaka']]],

@@ -59,7 +59,7 @@ var searchData=
   ['pin_3c_20bufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e_1714',['Pin&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1Pin_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['pitchesinbytes_1715',['pitchesInBytes',['../structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#a177c478fcfaa9816573f43eb5e7b2637',1,'alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, TDim, TAccessModes &gt;']]],
   ['pltf_1716',['Pltf',['../structalpaka_1_1test_1_1QueueTestFixture.html#a31498dfa654e0b1798e8c371c1ff3f31',1,'alpaka::test::QueueTestFixture::Pltf()'],['../namespacealpaka.html#a50d14d58d7efe4814cbbd3dceb67d22c',1,'alpaka::Pltf()']]],
-  ['pltfacc_1717',['PltfAcc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a31a600d23f1ba5f04e1b2c6e81b1ee6b',1,'alpaka::test::KernelExecutionFixture']]],
+  ['pltfacc_1717',['PltfAcc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a9c757d80118c1c78819ecd255eb65df4',1,'alpaka::test::KernelExecutionFixture']]],
   ['pltfcpu_1718',['PltfCpu',['../classalpaka_1_1PltfCpu.html',1,'alpaka::PltfCpu'],['../classalpaka_1_1PltfCpu.html#ae09bf7e685fb48b9c26a09c020df9cdf',1,'alpaka::PltfCpu::PltfCpu()']]],
   ['pltfcpu_2ehpp_1719',['PltfCpu.hpp',['../PltfCpu_8hpp.html',1,'']]],
   ['pltfcpusyclintel_2ehpp_1720',['PltfCpuSyclIntel.hpp',['../PltfCpuSyclIntel_8hpp.html',1,'']]],

@@ -1,4 +1,0 @@
-var structalpaka_1_1test_1_1traits_1_1EventHostManualTriggerType_3_01alpaka_1_1DevUniformCudaHipRt_01_4 =
-[
-    [ "type", "structalpaka_1_1test_1_1traits_1_1EventHostManualTriggerType_3_01alpaka_1_1DevUniformCudaHipRt_01_4.html#ae16d5281cfda33f7cd05c0b9626a1089", null ]
-];
