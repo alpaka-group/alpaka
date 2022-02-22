@@ -264,3 +264,49 @@ TEMPLATE_LIST_TEST_CASE("memBufAccessorAdaptorTest", "[memBuf]", alpaka::test::T
 
     testBufferAccessorAdaptor<Acc>(extent, index);
 }
+
+TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Idx = alpaka::Idx<Acc>;
+    using Pltf = alpaka::Pltf<alpaka::Dev<Acc>>;
+    using Elem = std::size_t;
+
+    auto const devHost = alpaka::getDevByIdx<alpaka::PltfCpu>(0u);
+    auto const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto queue = alpaka::Queue<Acc, alpaka::Blocking>{dev};
+    auto const extent = alpaka::Vec<alpaka::DimInt<0>, Idx>{};
+
+    auto write = [&](auto& buf, Elem value)
+    {
+        auto v = alpaka::createView(devHost, &value, extent);
+        alpaka::memcpy(queue, buf, v);
+    };
+    auto read = [&](const auto& buf)
+    {
+        Elem value{};
+        auto v = alpaka::createView(devHost, &value, extent);
+        alpaka::memcpy(queue, v, buf);
+        return value;
+    };
+
+    // move constructor
+    {
+        auto buf1 = alpaka::allocBuf<Elem, Idx>(dev, extent);
+        write(buf1, 1);
+        auto buf2{std::move(buf1)};
+        CHECK(read(buf2) == 1);
+    } // both buffers destruct fine here
+
+    // move assignment (via swap)
+    {
+        auto buf1 = alpaka::allocBuf<Elem, Idx>(dev, extent);
+        auto buf2 = alpaka::allocBuf<Elem, Idx>(dev, extent);
+        write(buf1, 1);
+        write(buf2, 2);
+        using std::swap;
+        swap(buf1, buf2);
+        CHECK(read(buf1) == 2);
+        CHECK(read(buf2) == 1);
+    } // both buffers destruct fine here
+}
