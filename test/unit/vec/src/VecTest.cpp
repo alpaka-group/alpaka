@@ -346,3 +346,18 @@ TEST_CASE("structuredBindings", "[vec]")
     CHECK(vec[0] == 2);
     CHECK(vec[1] == 3);
 }
+
+TEST_CASE("deductionGuide", "[vec]")
+{
+    [[maybe_unused]] auto v1 = alpaka::Vec{1};
+    STATIC_REQUIRE(std::is_same_v<decltype(v1), alpaka::Vec<alpaka::DimInt<1>, int>>);
+
+    [[maybe_unused]] auto v2 = alpaka::Vec{1, 2};
+    STATIC_REQUIRE(std::is_same_v<decltype(v2), alpaka::Vec<alpaka::DimInt<2>, int>>);
+
+    [[maybe_unused]] auto v3 = alpaka::Vec{1, 2, 3};
+    STATIC_REQUIRE(std::is_same_v<decltype(v3), alpaka::Vec<alpaka::DimInt<3>, int>>);
+
+    [[maybe_unused]] auto v3l = alpaka::Vec{1L, 2L, 3L};
+    STATIC_REQUIRE(std::is_same_v<decltype(v3l), alpaka::Vec<alpaka::DimInt<3>, long>>);
+}

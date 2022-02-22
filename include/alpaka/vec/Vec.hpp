@@ -436,6 +436,9 @@ namespace alpaka
         TVal m_data[TDim::value == 0u ? 1u : TDim::value];
     };
 
+    template<typename TFirstIndex, typename... TRestIndices>
+    Vec(TFirstIndex&&, TRestIndices&&...) -> Vec<DimInt<1 + sizeof...(TRestIndices)>, std::decay_t<TFirstIndex>>;
+
     namespace trait
     {
         //! The Vec dimension get trait specialization.
