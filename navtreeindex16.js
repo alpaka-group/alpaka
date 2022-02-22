@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"structalpaka_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNoc1bd4e4ffec4aec31e10ebe149e23246.html":[3,0,0,18,603],
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNoc1bd4e4ffec4aec31e10ebe149e23246.html#a5477e47aa083b9a79633e04221cc52e5":[3,0,0,18,603,0],
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl_00_01EventCpu_01_4.html":[3,0,0,18,604],
 "structalpaka_1_1traits_1_1WaiterWaitFor_3_01cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl_00_01EventCpu_01_4.html#aba8ec13013d67dd43f05a00dbb5c710e":[3,0,0,18,604,0],

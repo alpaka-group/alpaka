@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"namespacealpaka_1_1bt.html":[2,0,0,0],
 "namespacealpaka_1_1bt.html":[3,0,0,0],
 "namespacealpaka_1_1concepts.html":[2,0,0,1],
 "namespacealpaka_1_1concepts.html":[3,0,0,1],
@@ -21,8 +22,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1cpu.html":[3,0,0,3],
 "namespacealpaka_1_1cpu_1_1detail.html":[2,0,0,3,0],
 "namespacealpaka_1_1cpu_1_1detail.html":[3,0,0,3,0],
-"namespacealpaka_1_1cuda.html":[3,0,0,4],
 "namespacealpaka_1_1cuda.html":[2,0,0,4],
+"namespacealpaka_1_1cuda.html":[3,0,0,4],
 "namespacealpaka_1_1cuda_1_1detail.html":[2,0,0,4,0],
 "namespacealpaka_1_1cuda_1_1traits.html":[2,0,0,4,1],
 "namespacealpaka_1_1detail.html":[3,0,0,5],
@@ -74,8 +75,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1rand_1_1distribution_1_1gpu.html":[3,0,0,16,0,1],
 "namespacealpaka_1_1rand_1_1distribution_1_1gpu_1_1detail.html":[2,0,0,18,0,1,0],
 "namespacealpaka_1_1rand_1_1distribution_1_1gpu_1_1detail.html":[3,0,0,16,0,1,0],
-"namespacealpaka_1_1rand_1_1distribution_1_1traits.html":[2,0,0,18,0,2],
 "namespacealpaka_1_1rand_1_1distribution_1_1traits.html":[3,0,0,16,0,2],
+"namespacealpaka_1_1rand_1_1distribution_1_1traits.html":[2,0,0,18,0,2],
 "namespacealpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip.html":[3,0,0,16,0,3],
 "namespacealpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip.html":[2,0,0,18,0,3],
 "namespacealpaka_1_1rand_1_1engine.html":[3,0,0,16,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1ConceptAtomicBlocks.html":[3,0,0,68],
 "structalpaka_1_1ConceptAtomicGrids.html":[3,0,0,69],
 "structalpaka_1_1ConceptAtomicThreads.html":[3,0,0,70],
-"structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,71],
-"structalpaka_1_1ConceptBlockSharedSt.html":[3,0,0,72]
+"structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,71]
 };

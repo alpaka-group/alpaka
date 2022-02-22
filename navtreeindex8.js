@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"structalpaka_1_1ConceptBlockSharedSt.html":[3,0,0,72],
 "structalpaka_1_1ConceptBlockSync.html":[3,0,0,73],
 "structalpaka_1_1ConceptCurrentThreadWaitFor.html":[3,0,0,74],
 "structalpaka_1_1ConceptIdxBt.html":[3,0,0,75],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a8ae056dc9ae68d6a61f022e5ea9cf2d0":[3,0,0,5,63,9],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a950042e48b666cd16d6565fe1e47480d":[3,0,0,5,63,0],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#af3077f62b288305b8c9d4a6227b279f5":[3,0,0,5,63,1],
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,5,61],
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a33e26e119c6a42a5eaeabf204c5352f9":[3,0,0,5,61,3]
+"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,5,61]
 };

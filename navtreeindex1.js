@@ -155,7 +155,8 @@ var NAVTREEINDEX1 =
 "MathUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,14,3],
 "MathUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,14,3],
 "MeasureKernelRunTime_8hpp.html":[4,0,0,0,22,10],
-"MeasureKernelRunTime_8hpp.html#a24c0442b96d42ab2d51a659e65b0b37d":[4,0,0,0,22,10,0],
+"MeasureKernelRunTime_8hpp.html#a24c0442b96d42ab2d51a659e65b0b37d":[4,0,0,0,22,10,1],
+"MeasureKernelRunTime_8hpp.html#a90e2cdaa9c297e7e3e3b9270083454e9":[4,0,0,0,22,10,0],
 "MeasureKernelRunTime_8hpp_source.html":[4,0,0,0,22,10],
 "MemFenceCpuSerial_8hpp.html":[4,0,0,0,15,2,1],
 "MemFenceCpuSerial_8hpp_source.html":[4,0,0,0,15,2,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "QueueFpgaSyclIntelNonBlocking_8hpp.html":[4,0,0,0,19,9],
 "QueueFpgaSyclIntelNonBlocking_8hpp_source.html":[4,0,0,0,19,9],
 "QueueFpgaSyclXilinxBlocking_8hpp.html":[4,0,0,0,19,10],
-"QueueFpgaSyclXilinxBlocking_8hpp_source.html":[4,0,0,0,19,10],
-"QueueFpgaSyclXilinxNonBlocking_8hpp.html":[4,0,0,0,19,11]
+"QueueFpgaSyclXilinxBlocking_8hpp_source.html":[4,0,0,0,19,10]
 };

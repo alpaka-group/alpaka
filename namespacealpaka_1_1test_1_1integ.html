@@ -92,11 +92,46 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1test_1_1integ.html'
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a90e2cdaa9c297e7e3e3b9270083454e9"><td class="memTemplParams" colspan="2">template&lt;typename TCallable &gt; </td></tr>
+<tr class="memitem:a90e2cdaa9c297e7e3e3b9270083454e9"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1integ.html#a90e2cdaa9c297e7e3e3b9270083454e9">measureRunTimeMs</a> (TCallable &amp;&amp;callable) -&gt; std::chrono::milliseconds::rep</td></tr>
+<tr class="memdesc:a90e2cdaa9c297e7e3e3b9270083454e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures and returns the runtime in ms of the passed callable.  <a href="namespacealpaka_1_1test_1_1integ.html#a90e2cdaa9c297e7e3e3b9270083454e9">More...</a><br /></td></tr>
+<tr class="separator:a90e2cdaa9c297e7e3e3b9270083454e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24c0442b96d42ab2d51a659e65b0b37d"><td class="memTemplParams" colspan="2">template&lt;typename TQueue , typename TTask &gt; </td></tr>
 <tr class="memitem:a24c0442b96d42ab2d51a659e65b0b37d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1integ.html#a24c0442b96d42ab2d51a659e65b0b37d">measureTaskRunTimeMs</a> (TQueue &amp;queue, TTask &amp;&amp;task) -&gt; std::chrono::milliseconds::rep</td></tr>
 <tr class="separator:a24c0442b96d42ab2d51a659e65b0b37d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a90e2cdaa9c297e7e3e3b9270083454e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90e2cdaa9c297e7e3e3b9270083454e9">&#9670;&nbsp;</a></span>measureRunTimeMs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TCallable &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto alpaka::test::integ::measureRunTimeMs </td>
+          <td>(</td>
+          <td class="paramtype">TCallable &amp;&amp;&#160;</td>
+          <td class="paramname"><em>callable</em></td><td>)</td>
+          <td> -&gt; std::chrono::milliseconds::rep
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures and returns the runtime in ms of the passed callable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callable</td><td>An object with operator(). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="MeasureKernelRunTime_8hpp_source.html#l00022">22</a> of file <a class="el" href="MeasureKernelRunTime_8hpp_source.html">MeasureKernelRunTime.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a24c0442b96d42ab2d51a659e65b0b37d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a24c0442b96d42ab2d51a659e65b0b37d">&#9670;&nbsp;</a></span>measureTaskRunTimeMs()</h2>
 
@@ -127,7 +162,7 @@ template&lt;typename TQueue , typename TTask &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The run time of the given kernel. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="MeasureKernelRunTime_8hpp_source.html#l00021">21</a> of file <a class="el" href="MeasureKernelRunTime_8hpp_source.html">MeasureKernelRunTime.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MeasureKernelRunTime_8hpp_source.html#l00032">32</a> of file <a class="el" href="MeasureKernelRunTime_8hpp_source.html">MeasureKernelRunTime.hpp</a>.</p>
 
 </div>
 </div>
@@ -137,7 +172,7 @@ template&lt;typename TQueue , typename TTask &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test.html">test</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test_1_1integ.html">integ</a></li>
-    <li class="footer">Generated on Mon Feb 21 2022 15:12:50 for alpaka by
+    <li class="footer">Generated on Tue Feb 22 2022 10:13:18 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

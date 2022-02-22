@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"dir_7056b9f7cd8b764aedbfcd44587c0438.html":[4,0,0,0,25],
 "dir_7be937b0b17efdbd2f169f14f5c2db8e.html":[4,0,0,0,2,0,1],
 "dir_7d123124934e174b4626b90ed7337338.html":[4,0,0,0,27],
 "dir_7f059d0868492c7d09d9464b52bc41e5.html":[4,0,0,0,15,1,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "meta_2Set_8hpp.html#a7007c16b361a3bbc1184a79223d884dc":[4,0,0,0,16,15,6],
 "meta_2Set_8hpp_source.html":[4,0,0,0,16,15],
 "namespacealpaka.html":[2,0,0],
-"namespacealpaka.html":[3,0,0],
-"namespacealpaka_1_1bt.html":[2,0,0,0]
+"namespacealpaka.html":[3,0,0]
 };
