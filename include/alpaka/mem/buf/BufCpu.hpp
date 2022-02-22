@@ -56,9 +56,7 @@ namespace alpaka
                 , m_extentElements(getExtentVecEnd<TDim>(extent))
                 , m_pMem(pMem)
                 , m_deleter(std::move(deleter))
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 , m_bPinned(false)
-#endif
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -94,9 +92,7 @@ namespace alpaka
             Vec<TDim, TIdx> const m_extentElements;
             TElem* const m_pMem;
             std::function<void(TElem*)> m_deleter;
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             bool m_bPinned;
-#endif
         };
     } // namespace detail
 
@@ -389,12 +385,7 @@ namespace alpaka
                 [[maybe_unused]] alpaka::detail::BufCpuImpl<TElem, TDim, TIdx> const& bufImpl) -> bool
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 return bufImpl.m_bPinned;
-#else
-                return false;
-#endif
             }
         };
         //! The BufCpu memory prepareForAsyncCopy trait specialization.
