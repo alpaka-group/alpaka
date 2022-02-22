@@ -8,6 +8,5 @@ var classalpaka_1_1detail_1_1BufCpuImpl =
     [ "m_deleter", "classalpaka_1_1detail_1_1BufCpuImpl.html#a738e54991d1f8386f2282aad91940f49", null ],
     [ "m_dev", "classalpaka_1_1detail_1_1BufCpuImpl.html#adcb9a9ab2eab1a15c9595cca16e7410f", null ],
     [ "m_extentElements", "classalpaka_1_1detail_1_1BufCpuImpl.html#a1061e7be36373082174f0dd46dcfffe1", null ],
-    [ "m_pitchBytes", "classalpaka_1_1detail_1_1BufCpuImpl.html#a43345d2864b18cf8e8b6cc4a68f77ebb", null ],
     [ "m_pMem", "classalpaka_1_1detail_1_1BufCpuImpl.html#a8497e75a9c7003ac6ef614ceaefc8f45", null ]
 ];

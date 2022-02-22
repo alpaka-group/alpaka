@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['hasasyncbufsupport_4325',['hasAsyncBufSupport',['../namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce',1,'alpaka']]],
-  ['head_4326',['head',['../structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html#a188f6eb67eafad3ac61ba2f1e555dc72',1,'utility::tuple::Tuple&lt; T, Ts... &gt;']]]
+  ['extents_4317',['extents',['../structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_011_00_01TAccessModes_01_4.html#a5b750f67654d58e892811bdbc127b2ee',1,'alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, 1, TAccessModes &gt;::extents()'],['../structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#a94811669a8795355491875d55df7cb6f',1,'alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, TDim, TAccessModes &gt;::extents()']]]
 ];

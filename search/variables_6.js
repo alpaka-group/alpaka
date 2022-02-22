@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['key_4331',['key',['../structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#aaed7d38d17a6dd55a8b25a869d93f5a4',1,'alpaka::rand::engine::PhiloxStateSingle::key()'],['../structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a9e0c1f598cdeb0079e49144809716e75',1,'alpaka::rand::engine::PhiloxStateVector::key()']]],
-  ['kind_4332',['kind',['../structalpaka_1_1omp_1_1Schedule.html#a9804c454062feeb123b51e3319f6e132',1,'alpaka::omp::Schedule']]]
+  ['is_5fdecayed_5fv_4320',['is_decayed_v',['../namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de',1,'alpaka']]],
+  ['iscudabuiltintype_4321',['isCudaBuiltInType',['../namespacealpaka_1_1cuda_1_1traits.html#a4b090787864e0f3b3e292c500fa635c2',1,'alpaka::cuda::traits']]],
+  ['iscudahipbuiltintype_4322',['isCudaHipBuiltInType',['../namespacealpaka_1_1detail.html#a53d974be85b2025188d0033093f92cd4',1,'alpaka::detail']]],
+  ['isgpu_4323',['isGPU',['../namespacealpaka_1_1rand_1_1engine_1_1traits.html#ac59a1ba3c5d36f4487c76a74fb5fe50d',1,'alpaka::rand::engine::traits']]]
 ];

@@ -145,7 +145,8 @@ var menudata={children:[
 {text:"z",url:"functions_func_z.html#index_z"},
 {text:"~",url:"functions_func_~.html#index__7E"}]},
 {text:"Variables",url:"functions_vars.html",children:[
-{text:"c",url:"functions_vars.html#index_c"},
+{text:"a",url:"functions_vars.html#index_a"},
+{text:"c",url:"functions_vars_c.html#index_c"},
 {text:"e",url:"functions_vars_e.html#index_e"},
 {text:"h",url:"functions_vars_h.html#index_h"},
 {text:"k",url:"functions_vars_k.html#index_k"},
