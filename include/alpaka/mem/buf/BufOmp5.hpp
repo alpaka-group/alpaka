@@ -72,8 +72,8 @@ namespace alpaka
             Vec<TDim, TIdx> m_extentElements;
             TElem* m_pMem;
 
-            BufOmp5Impl(BufOmp5Impl&&) = default;
-            auto operator=(BufOmp5Impl&&) -> BufOmp5Impl& = default;
+            BufOmp5Impl(BufOmp5Impl&&) = delete;
+            auto operator=(BufOmp5Impl&&) -> BufOmp5Impl& = delete;
             ~BufOmp5Impl()
             {
                 omp_target_free(m_pMem, m_dev.m_spDevOmp5Impl->getNativeHandle());
