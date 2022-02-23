@@ -73,8 +73,8 @@ namespace alpaka
                           << std::endl;
 #endif
             }
-            BufCpuImpl(BufCpuImpl&&) = default;
-            auto operator=(BufCpuImpl&&) -> BufCpuImpl& = default;
+            BufCpuImpl(BufCpuImpl&&) = delete;
+            auto operator=(BufCpuImpl&&) -> BufCpuImpl& = delete;
             ALPAKA_FN_HOST ~BufCpuImpl()
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

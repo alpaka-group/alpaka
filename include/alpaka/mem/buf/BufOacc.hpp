@@ -72,8 +72,8 @@ namespace alpaka
             Vec<TDim, TIdx> m_extentElements;
             TElem* m_pMem;
 
-            BufOaccImpl(BufOaccImpl&&) = default;
-            BufOaccImpl& operator=(BufOaccImpl&&) = default;
+            BufOaccImpl(BufOaccImpl&&) = delete;
+            BufOaccImpl& operator=(BufOaccImpl&&) = delete;
             ~BufOaccImpl()
             {
                 m_dev.makeCurrent();
