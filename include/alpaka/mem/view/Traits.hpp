@@ -37,12 +37,6 @@ namespace alpaka
         template<typename TView, typename TDev, typename TSfinae = void>
         struct GetPtrDev;
 
-        namespace detail
-        {
-            template<typename TIdx, typename TView, typename TSfinae = void>
-            struct GetPitchBytesDefault;
-        } // namespace detail
-
         //! The pitch in bytes.
         //! This is the distance in bytes in the linear memory between two consecutive elements in the next higher
         //! dimension (TIdx-1).
@@ -51,41 +45,26 @@ namespace alpaka
         template<typename TIdx, typename TView, typename TSfinae = void>
         struct GetPitchBytes
         {
-            ALPAKA_FN_HOST static auto getPitchBytes(TView const& view) -> Idx<TView>
+            using ViewIdx = Idx<TView>;
+
+            ALPAKA_FN_HOST static auto getPitchBytes(TView const& view) -> ViewIdx
             {
-                return detail::GetPitchBytesDefault<TIdx, TView>::getPitchBytesDefault(view);
+                return getPitchBytesDefault(view);
+            }
+
+        private:
+            static auto getPitchBytesDefault(TView const& view) -> ViewIdx
+            {
+                constexpr auto idx = TIdx::value;
+                constexpr auto viewDim = Dim<TView>::value;
+                if constexpr(idx < viewDim - 1)
+                    return getExtent<idx>(view) * GetPitchBytes<DimInt<idx + 1>, TView>::getPitchBytes(view);
+                else if constexpr(idx == viewDim - 1)
+                    return getExtent<viewDim - 1>(view) * static_cast<ViewIdx>(sizeof(Elem<TView>));
+                else
+                    return static_cast<ViewIdx>(sizeof(Elem<TView>));
             }
         };
-
-        namespace detail
-        {
-            template<typename TIdx, typename TView>
-                struct GetPitchBytesDefault < TIdx,
-                TView, std::enable_if_t<TIdx::value<Dim<TView>::value - 1>>
-            {
-                ALPAKA_FN_HOST static auto getPitchBytesDefault(TView const& view) -> Idx<TView>
-                {
-                    return getExtent<TIdx::value>(view)
-                        * GetPitchBytes<DimInt<TIdx::value + 1>, TView>::getPitchBytes(view);
-                }
-            };
-            template<typename TView>
-            struct GetPitchBytesDefault<DimInt<Dim<TView>::value - 1u>, TView>
-            {
-                ALPAKA_FN_HOST static auto getPitchBytesDefault(TView const& view) -> Idx<TView>
-                {
-                    return getExtent<Dim<TView>::value - 1u>(view) * static_cast<Idx<TView>>(sizeof(Elem<TView>));
-                }
-            };
-            template<typename TView>
-            struct GetPitchBytesDefault<DimInt<Dim<TView>::value>, TView>
-            {
-                ALPAKA_FN_HOST static auto getPitchBytesDefault(TView const&) -> Idx<TView>
-                {
-                    return sizeof(Elem<TView>);
-                }
-            };
-        } // namespace detail
 
         //! The memory set task trait.
         //!
