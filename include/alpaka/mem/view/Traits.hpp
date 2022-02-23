@@ -61,7 +61,7 @@ namespace alpaka
         {
             template<typename TIdx, typename TView>
                 struct GetPitchBytesDefault < TIdx,
-                TView, std::enable_if_t<TIdx::value<(Dim<TView>::value - 1)>>
+                TView, std::enable_if_t<TIdx::value<Dim<TView>::value - 1>>
             {
                 ALPAKA_FN_HOST static auto getPitchBytesDefault(TView const& view) -> Idx<TView>
                 {
@@ -74,7 +74,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST static auto getPitchBytesDefault(TView const& view) -> Idx<TView>
                 {
-                    return getExtent<Dim<TView>::value - 1u>(view) * sizeof(Elem<TView>);
+                    return getExtent<Dim<TView>::value - 1u>(view) * static_cast<Idx<TView>>(sizeof(Elem<TView>));
                 }
             };
             template<typename TView>

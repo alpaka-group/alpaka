@@ -176,7 +176,9 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getPitchBytes(BufUniformCudaHipRt<TElem, TDim, TIdx> const& buf) -> TIdx
             {
-                return buf.m_pitchBytes;
+                return buf.m_pitchBytes; // TODO(bgruber): is this even correct? This reports the pitch for the TDim -
+                                         // 1 dimension, but CUDA's pitch is always the row pitch, independently of the
+                                         // buffer's dimensions.
             }
         };
 
