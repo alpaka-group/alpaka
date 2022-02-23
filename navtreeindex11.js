@@ -1,6 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1rand_1_1engine_1_1traits_1_1PhiloxResultContainerTraits_3_01float_01_4.html":[3,0,0,16,1,1,9],
 "structalpaka_1_1rand_1_1engine_1_1traits_1_1PhiloxResultContainerTraits_3_01float_01_4.html#a871e29fc787a3d6eff85fb05b09fb4f9":[3,0,0,16,1,1,9,0],
 "structalpaka_1_1rand_1_1engine_1_1traits_1_1PhiloxResultContainerTraits_3_01int_01_4.html":[3,0,0,16,1,1,10],
 "structalpaka_1_1rand_1_1engine_1_1traits_1_1PhiloxResultContainerTraits_3_01int_01_4.html#a066c1d0419c92317caf17b1cf4143290":[3,0,0,16,1,1,10,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevOmp5_01_4.html":[3,0,0,18,89],
 "structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevOmp5_01_4.html#a94ad230a093641f795e068b049330e8a":[3,0,0,18,89,0],
 "structalpaka_1_1traits_1_1BufType.html":[3,0,0,18,90],
-"structalpaka_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html":[3,0,0,18,91]
+"structalpaka_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html":[3,0,0,18,91],
+"structalpaka_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html#a2146da84e6a7bb26811e51793bf65fe9":[3,0,0,18,91,0]
 };

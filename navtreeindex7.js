@@ -1,7 +1,6 @@
 var NAVTREEINDEX7 =
 {
 "namespacealpaka_1_1bt.html":[3,0,0,0],
-"namespacealpaka_1_1bt.html":[2,0,0,0],
 "namespacealpaka_1_1concepts.html":[2,0,0,1],
 "namespacealpaka_1_1concepts.html":[3,0,0,1],
 "namespacealpaka_1_1concepts_1_1detail.html":[2,0,0,1,0],
@@ -22,8 +21,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1cpu.html":[3,0,0,3],
 "namespacealpaka_1_1cpu_1_1detail.html":[2,0,0,3,0],
 "namespacealpaka_1_1cpu_1_1detail.html":[3,0,0,3,0],
-"namespacealpaka_1_1cuda.html":[3,0,0,4],
 "namespacealpaka_1_1cuda.html":[2,0,0,4],
+"namespacealpaka_1_1cuda.html":[3,0,0,4],
 "namespacealpaka_1_1cuda_1_1detail.html":[2,0,0,4,0],
 "namespacealpaka_1_1cuda_1_1traits.html":[2,0,0,4,1],
 "namespacealpaka_1_1detail.html":[3,0,0,5],
@@ -87,8 +86,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1rand_1_1engine_1_1traits.html":[2,0,0,18,1,1],
 "namespacealpaka_1_1rand_1_1engine_1_1uniform__cuda__hip.html":[3,0,0,16,1,2],
 "namespacealpaka_1_1rand_1_1engine_1_1uniform__cuda__hip.html":[2,0,0,18,1,2],
-"namespacealpaka_1_1test.html":[3,0,0,17],
 "namespacealpaka_1_1test.html":[2,0,0,19],
+"namespacealpaka_1_1test.html":[3,0,0,17],
 "namespacealpaka_1_1test_1_1cpu.html":[3,0,0,17,0],
 "namespacealpaka_1_1test_1_1cpu.html":[2,0,0,19,0],
 "namespacealpaka_1_1test_1_1cpu_1_1detail.html":[3,0,0,17,0,0],
@@ -107,8 +106,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1traits_1_1detail.html":[3,0,0,18,0],
 "namespacealpaka_1_1traits_1_1detail.html":[2,0,0,20,0],
 "namespacealpaka_1_1traits_1_1generic.html":[2,0,0,20,1],
-"namespacealpaka_1_1uniform__cuda__hip.html":[3,0,0,19],
 "namespacealpaka_1_1uniform__cuda__hip.html":[2,0,0,21],
+"namespacealpaka_1_1uniform__cuda__hip.html":[3,0,0,19],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,21,0],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[3,0,0,19,0],
 "namespacealpaka_1_1unit.html":[2,0,0,22],
@@ -249,5 +248,6 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1ConceptAtomicBlocks.html":[3,0,0,68],
 "structalpaka_1_1ConceptAtomicGrids.html":[3,0,0,69],
 "structalpaka_1_1ConceptAtomicThreads.html":[3,0,0,70],
-"structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,71]
+"structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,71],
+"structalpaka_1_1ConceptBlockSharedSt.html":[3,0,0,72]
 };

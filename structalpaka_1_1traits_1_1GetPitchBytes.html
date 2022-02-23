@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1GetPitchByte
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structalpaka_1_1traits_1_1GetPitchBytes-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -96,10 +97,15 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1GetPitchByte
 
 <p><code>#include &lt;<a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a568f2fa5ad69361f6c32e7f4484a5799"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html#a568f2fa5ad69361f6c32e7f4484a5799">ViewIdx</a> = <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TView &gt;</td></tr>
+<tr class="separator:a568f2fa5ad69361f6c32e7f4484a5799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac0c5779bd0cd38a2ce506c03e4bae46a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html#ac0c5779bd0cd38a2ce506c03e4bae46a">getPitchBytes</a> (TView const &amp;view) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TView &gt;</td></tr>
-<tr class="separator:ac0c5779bd0cd38a2ce506c03e4bae46a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fdf7e17af35b3f2acbf0c6291c56233"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html#a8fdf7e17af35b3f2acbf0c6291c56233">getPitchBytes</a> (TView const &amp;view) -&gt; <a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html#a568f2fa5ad69361f6c32e7f4484a5799">ViewIdx</a></td></tr>
+<tr class="separator:a8fdf7e17af35b3f2acbf0c6291c56233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TIdx, typename TView, typename TSfinae = void&gt;<br />
@@ -108,10 +114,29 @@ struct alpaka::traits::GetPitchBytes&lt; TIdx, TView, TSfinae &gt;</h3>
 <p>The pitch in bytes. This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx-1). </p>
 <p>The default implementation uses the extent to calculate the pitch. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00052">52</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac0c5779bd0cd38a2ce506c03e4bae46a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c5779bd0cd38a2ce506c03e4bae46a">&#9670;&nbsp;</a></span>getPitchBytes()</h2>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00046">46</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a568f2fa5ad69361f6c32e7f4484a5799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a568f2fa5ad69361f6c32e7f4484a5799">&#9670;&nbsp;</a></span>ViewIdx</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIdx , typename TView , typename TSfinae  = void&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html">alpaka::traits::GetPitchBytes</a>&lt; <a class="el" href="structalpaka_1_1traits_1_1TIdx.html">TIdx</a>, TView, TSfinae &gt;::<a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html#a568f2fa5ad69361f6c32e7f4484a5799">ViewIdx</a> =  <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt;TView&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00048">48</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8fdf7e17af35b3f2acbf0c6291c56233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fdf7e17af35b3f2acbf0c6291c56233">&#9670;&nbsp;</a></span>getPitchBytes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -126,7 +151,7 @@ template&lt;typename TIdx , typename TView , typename TSfinae  = void&gt; </div>
           <td>(</td>
           <td class="paramtype">TView const &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt;TView&gt;
+          <td> -&gt; <a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html#a568f2fa5ad69361f6c32e7f4484a5799">ViewIdx</a>
             </td>
         </tr>
       </table>
@@ -137,7 +162,7 @@ template&lt;typename TIdx , typename TView , typename TSfinae  = void&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00054">54</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00050">50</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -150,7 +175,7 @@ template&lt;typename TIdx , typename TView , typename TSfinae  = void&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1GetPitchBytes.html">GetPitchBytes</a></li>
-    <li class="footer">Generated on Wed Feb 23 2022 13:59:37 for alpaka by
+    <li class="footer">Generated on Wed Feb 23 2022 14:42:30 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
