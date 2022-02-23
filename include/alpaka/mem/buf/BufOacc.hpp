@@ -48,29 +48,12 @@ namespace alpaka
                 "const elements!");
             static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
 
-        private:
-            using Elem = TElem;
-            using Dim = TDim;
-            //! Calculate the pitches purely from the extents.
-            template<typename TExtent>
-            ALPAKA_FN_HOST static auto calculatePitchesFromExtents(TExtent const& extent) -> Vec<TDim, TIdx>
-            {
-                Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
-                pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
-                for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
-                {
-                    pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
-                }
-                return pitchBytes;
-            }
-
         public:
             //! Constructor
             template<typename TExtent>
             ALPAKA_FN_HOST BufOaccImpl(DevOacc const& dev, TElem* const pMem, TExtent const& extent)
                 : m_dev(dev)
                 , m_extentElements(getExtentVecEnd<TDim>(extent))
-                , m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
                 , m_pMem(pMem)
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -87,7 +70,6 @@ namespace alpaka
         public:
             DevOacc m_dev;
             Vec<TDim, TIdx> m_extentElements;
-            Vec<TDim, TIdx> m_pitchBytes;
             TElem* m_pMem;
 
             BufOaccImpl(BufOaccImpl&&) = default;
@@ -213,15 +195,6 @@ namespace alpaka
                 {
                     throw std::runtime_error("The buffer is not accessible from the given device!");
                 }
-            }
-        };
-        //! The BufOacc pitch get trait specialization.
-        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-        struct GetPitchBytes<TIdxIntegralConst, BufOacc<TElem, TDim, TIdx>>
-        {
-            ALPAKA_FN_HOST static auto getPitchBytes(BufOacc<TElem, TDim, TIdx> const& pitch) -> TIdx
-            {
-                return (*pitch).m_pitchBytes[TIdxIntegralConst::value];
             }
         };
 

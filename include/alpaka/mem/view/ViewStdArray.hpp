@@ -77,17 +77,6 @@ namespace alpaka::traits
         }
     };
 
-    //! The std::array pitch get trait specialization.
-    template<typename TElem, std::size_t Tsize>
-    struct GetPitchBytes<DimInt<0u>, std::array<TElem, Tsize>>
-    {
-        ALPAKA_FN_HOST static auto getPitchBytes(std::array<TElem, Tsize> const& pitch)
-            -> Idx<std::array<TElem, Tsize>>
-        {
-            return sizeof(TElem) * std::size(pitch);
-        }
-    };
-
     //! The std::array offset get trait specialization.
     template<typename TIdx, typename TElem, std::size_t Tsize>
     struct GetOffset<TIdx, std::array<TElem, Tsize>>

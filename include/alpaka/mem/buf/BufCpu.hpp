@@ -198,16 +198,6 @@ namespace alpaka
                 }
             }
         };
-        //! The BufCpu pitch get trait specialization.
-        template<typename TElem, typename TDim, typename TIdx>
-        struct GetPitchBytes<DimInt<TDim::value - 1u>, BufCpu<TElem, TDim, TIdx>>
-        {
-            ALPAKA_FN_HOST static auto getPitchBytes(BufCpu<TElem, TDim, TIdx> const& pitch) -> TIdx
-            {
-                return static_cast<TIdx>(getWidth(pitch.m_spBufCpuImpl->m_extentElements))
-                    * static_cast<TIdx>(sizeof(TElem));
-            }
-        };
 
         //! The BufCpu memory allocation trait specialization.
         template<typename TElem, typename TDim, typename TIdx>

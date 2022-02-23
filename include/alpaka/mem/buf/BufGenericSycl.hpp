@@ -49,7 +49,6 @@ namespace alpaka::experimental
             : m_dev{dev}
             , m_extentElements{getExtentVecEnd<TDim>(extent)}
             , m_buffer{buffer}
-            , m_pitchBytes{pitchBytes}
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -66,7 +65,6 @@ namespace alpaka::experimental
         TDev m_dev;
         Vec<TDim, TIdx> m_extentElements;
         sycl::buffer<TElem, TDim::value> m_buffer;
-        TIdx m_pitchBytes; // SYCL does not support pitched allocations. This will simply contain the bytes per row.
     };
 } // namespace alpaka::experimental
 
@@ -154,16 +152,6 @@ namespace alpaka::traits
         }
     };
 
-    //! The BufGenericSycl pitch get trait specialization.
-    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-    struct GetPitchBytes<DimInt<TDim::value - 1u>, experimental::BufGenericSycl<TElem, TDim, TIdx, TDev>>
-    {
-        static auto getPitchBytes(experimental::BufGenericSycl<TElem, TDim, TIdx, TDev> const& buf) -> TIdx
-        {
-            return buf.m_pitchBytes;
-        }
-    };
-
     //! The SYCL memory allocation trait specialization.
     template<typename TElem, typename TDim, typename TIdx, typename TPltf>
     struct BufAlloc<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>
@@ -175,12 +163,10 @@ namespace alpaka::traits
 
             if constexpr(TDim::value == 0 || TDim::value == 1)
             {
-                auto const width = (TDim::value == 0) ? Idx<TExtent>{1} : getWidth(ext);
-                ALPAKA_ASSERT(width == extent::getWidth(ext));
-
-                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+                auto const width = getWidth(ext);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
                 std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << '\n';
 #    endif
 
@@ -188,7 +174,6 @@ namespace alpaka::traits
                 return experimental::BufGenericSycl<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>{
                     dev,
                     sycl::buffer<TElem, 1>{range},
-                    widthBytes,
                     ((TDim::value == 0) ? Vec<alpaka::DimInt<0u>, TIdx>{} : ext)};
             }
             else if constexpr(TDim::value == 2)
@@ -196,9 +181,8 @@ namespace alpaka::traits
                 auto const width = getWidth(ext);
                 auto const height = getHeight(ext);
 
-                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
-
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
                 std::cout << __func__ << " ew: " << width << " eh: " << height << " ewb: " << widthBytes
                           << " pitch: " << widthBytes << '\n';
 #    endif
@@ -207,7 +191,6 @@ namespace alpaka::traits
                 return experimental::BufGenericSycl<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>{
                     dev,
                     sycl::buffer<TElem, 2>{range},
-                    widthBytes,
                     ext};
             }
             else if constexpr(TDim::value == 3)
@@ -216,9 +199,8 @@ namespace alpaka::traits
                 auto const height = getHeight(ext);
                 auto const depth = getDepth(ext);
 
-                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
-
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
                 std::cout << __func__ << " ew: " << width << " eh: " << height << " ed: " << depth
                           << " ewb: " << widthBytes << " pitch: " << widthBytes << '\n';
 #    endif
@@ -227,7 +209,6 @@ namespace alpaka::traits
                 return experimental::BufGenericSycl<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>{
                     dev,
                     sycl::buffer<TElem, 3>{range},
-                    widthBytes,
                     ext};
             }
         }
