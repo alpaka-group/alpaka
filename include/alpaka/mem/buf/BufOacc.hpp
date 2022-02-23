@@ -36,72 +36,69 @@ namespace alpaka
     template<typename TElem, typename TDim, typename TIdx>
     class BufCpu;
 
-    namespace oacc
+    namespace oacc::detail
     {
-        namespace detail
+        //! The OpenACC memory buffer detail.
+        template<typename TElem, typename TDim, typename TIdx>
+        class BufOaccImpl
         {
-            //! The OpenACC memory buffer detail.
-            template<typename TElem, typename TDim, typename TIdx>
-            class BufOaccImpl
+            static_assert(
+                !std::is_const_v<TElem>,
+                "The elem type of the buffer can not be const because the C++ Standard forbids containers of "
+                "const elements!");
+            static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
+
+        private:
+            using Elem = TElem;
+            using Dim = TDim;
+            //! Calculate the pitches purely from the extents.
+            template<typename TExtent>
+            ALPAKA_FN_HOST static auto calculatePitchesFromExtents(TExtent const& extent) -> Vec<TDim, TIdx>
             {
+                Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
+                pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
+                for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
+                {
+                    pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
+                }
+                return pitchBytes;
+            }
+
+        public:
+            //! Constructor
+            template<typename TExtent>
+            ALPAKA_FN_HOST BufOaccImpl(DevOacc const& dev, TElem* const pMem, TExtent const& extent)
+                : m_dev(dev)
+                , m_extentElements(getExtentVecEnd<TDim>(extent))
+                , m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
+                , m_pMem(pMem)
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                 static_assert(
-                    !std::is_const_v<TElem>,
-                    "The elem type of the buffer can not be const because the C++ Standard forbids containers of "
-                    "const elements!");
-                static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
+                    TDim::value == alpaka::Dim<TExtent>::value,
+                    "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to "
+                    "be identical!");
+                static_assert(
+                    std::is_same<TIdx, Idx<TExtent>>::value,
+                    "The idx type of TExtent and the TIdx template parameter have to be identical!");
+            }
 
-            private:
-                using Elem = TElem;
-                using Dim = TDim;
-                //! Calculate the pitches purely from the extents.
-                template<typename TExtent>
-                ALPAKA_FN_HOST static auto calculatePitchesFromExtents(TExtent const& extent) -> Vec<TDim, TIdx>
-                {
-                    Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
-                    pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
-                    for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
-                    {
-                        pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
-                    }
-                    return pitchBytes;
-                }
+        public:
+            DevOacc m_dev;
+            Vec<TDim, TIdx> m_extentElements;
+            Vec<TDim, TIdx> m_pitchBytes;
+            TElem* m_pMem;
 
-            public:
-                //! Constructor
-                template<typename TExtent>
-                ALPAKA_FN_HOST BufOaccImpl(DevOacc const& dev, TElem* const pMem, TExtent const& extent)
-                    : m_dev(dev)
-                    , m_extentElements(getExtentVecEnd<TDim>(extent))
-                    , m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
-                    , m_pMem(pMem)
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    static_assert(
-                        TDim::value == alpaka::Dim<TExtent>::value,
-                        "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to "
-                        "be identical!");
-                    static_assert(
-                        std::is_same<TIdx, Idx<TExtent>>::value,
-                        "The idx type of TExtent and the TIdx template parameter have to be identical!");
-                }
-
-            public:
-                DevOacc m_dev;
-                Vec<TDim, TIdx> m_extentElements;
-                Vec<TDim, TIdx> m_pitchBytes;
-                TElem* m_pMem;
-
-                BufOaccImpl(BufOaccImpl&&) = default;
-                BufOaccImpl& operator=(BufOaccImpl&&) = default;
-                ~BufOaccImpl()
-                {
-                    m_dev.makeCurrent();
-                    acc_free(m_pMem);
-                }
-            };
-        } // namespace detail
-    } // namespace oacc
+            BufOaccImpl(BufOaccImpl&&) = default;
+            BufOaccImpl& operator=(BufOaccImpl&&) = default;
+            ~BufOaccImpl()
+            {
+                m_dev.makeCurrent();
+                acc_free(m_pMem);
+            }
+        };
+    } // namespace oacc::detail
 
     template<typename TElem, typename TDim, typename TIdx>
     class BufOacc : public internal::ViewAccessOps<BufOacc<TElem, TDim, TIdx>>
