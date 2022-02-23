@@ -343,10 +343,13 @@ namespace alpaka
         ALPAKA_FN_HOST inline auto calculatePitchesFromExtents(Vec<TDim, TIdx> const& extent)
         {
             Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
-            pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
-            for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
+            if constexpr(TDim::value > 0)
             {
-                pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
+                pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
+                for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
+                {
+                    pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
+                }
             }
             return pitchBytes;
         }
