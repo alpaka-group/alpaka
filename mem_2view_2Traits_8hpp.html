@@ -192,12 +192,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TView &gt; </td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad6365b89c5be8dd8917954798cc7fc21">alpaka::getPitchBytes</a> (TView const &amp;view) -&gt; Idx&lt; TView &gt;</td></tr>
 <tr class="separator:ad6365b89c5be8dd8917954798cc7fc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a629297b80753ae06be95148cff7bd807"><td class="memTemplParams" colspan="2">template&lt;typename TPitch &gt; </td></tr>
-<tr class="memitem:a629297b80753ae06be95148cff7bd807"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a629297b80753ae06be95148cff7bd807">alpaka::getPitchBytesVec</a> (TPitch const &amp;pitch=TPitch()) -&gt; Vec&lt; Dim&lt; TPitch &gt;, Idx&lt; TPitch &gt;&gt;</td></tr>
-<tr class="separator:a629297b80753ae06be95148cff7bd807"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a077ab1ce794c066edb479ba04db6af60"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TPitch &gt; </td></tr>
-<tr class="memitem:a077ab1ce794c066edb479ba04db6af60"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a077ab1ce794c066edb479ba04db6af60">alpaka::getPitchBytesVecEnd</a> (TPitch const &amp;pitch=TPitch()) -&gt; Vec&lt; TDim, Idx&lt; TPitch &gt;&gt;</td></tr>
-<tr class="separator:a077ab1ce794c066edb479ba04db6af60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6f776157c5223186419fd80a87d45c5"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:af6f776157c5223186419fd80a87d45c5"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af6f776157c5223186419fd80a87d45c5">alpaka::getPitchBytesVec</a> (TView const &amp;view=TView()) -&gt; Vec&lt; Dim&lt; TView &gt;, Idx&lt; TView &gt;&gt;</td></tr>
+<tr class="separator:af6f776157c5223186419fd80a87d45c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f9c92013b75ef4c056051ce4fb100da"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TView &gt; </td></tr>
+<tr class="memitem:a5f9c92013b75ef4c056051ce4fb100da"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5f9c92013b75ef4c056051ce4fb100da">alpaka::getPitchBytesVecEnd</a> (TView const &amp;view=TView()) -&gt; Vec&lt; TDim, Idx&lt; TView &gt;&gt;</td></tr>
+<tr class="separator:a5f9c92013b75ef4c056051ce4fb100da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a420138ddf5280874ce5578b2ba294547"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TDev &gt; </td></tr>
 <tr class="memitem:a420138ddf5280874ce5578b2ba294547"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a420138ddf5280874ce5578b2ba294547">alpaka::getPtrDev</a> (TView &amp;view, TDev const &amp;dev) -&gt; Elem&lt; TView &gt; *</td></tr>
 <tr class="memdesc:a420138ddf5280874ce5578b2ba294547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the view on the given device.  <a href="namespacealpaka.html#a420138ddf5280874ce5578b2ba294547">More...</a><br /></td></tr>
@@ -241,7 +241,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed Feb 23 2022 16:47:02 for alpaka by
+    <li class="footer">Generated on Thu Feb 24 2022 12:54:45 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

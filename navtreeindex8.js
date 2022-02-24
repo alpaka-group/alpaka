@@ -90,7 +90,7 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1detail_1_1CreateOffset.html":[3,0,0,5,15],
 "structalpaka_1_1detail_1_1CreateOffset.html#ae10a27daccc323e17831d0d4fa76db26":[3,0,0,5,15,0],
 "structalpaka_1_1detail_1_1CreatePitchBytes.html":[3,0,0,5,16],
-"structalpaka_1_1detail_1_1CreatePitchBytes.html#a31bad2feee98f0cd7c5b8a41a4977e70":[3,0,0,5,16,0],
+"structalpaka_1_1detail_1_1CreatePitchBytes.html#a7bda0e200eb2a93acc6c4018c08e94e6":[3,0,0,5,16,0],
 "structalpaka_1_1detail_1_1CreateReverse.html":[3,0,0,5,17],
 "structalpaka_1_1detail_1_1CreateReverse.html#a4983c07e59f2566971ad060cdc6e3d68":[3,0,0,5,17,0],
 "structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html":[3,0,0,5,18],
