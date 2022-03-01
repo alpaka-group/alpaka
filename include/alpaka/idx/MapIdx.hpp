@@ -40,7 +40,7 @@ namespace alpaka
         };
         //! Maps a 1 dimensional index to a N dimensional index.
         template<std::size_t TidxDimOut>
-        struct MapIdx<TidxDimOut, 1u, std::enable_if_t<TidxDimOut != 1u>>
+        struct MapIdx<TidxDimOut, 1u, std::enable_if_t<(TidxDimOut > 1u)>>
         {
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
@@ -82,9 +82,9 @@ namespace alpaka
                 return idxNd;
             }
         };
-        //! Maps a N dimensional index to a 1 dimensional index.
+        //! Maps a 1 dimensional index to a N dimensional index.
         template<std::size_t TidxDimIn>
-        struct MapIdx<1u, TidxDimIn, std::enable_if_t<TidxDimIn != 1u>>
+        struct MapIdx<1u, TidxDimIn, std::enable_if_t<(TidxDimIn > 1u)>>
         {
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
@@ -104,6 +104,30 @@ namespace alpaka
                 return {idx1d};
             }
         };
+
+        template<std::size_t TidxDimOut>
+        struct MapIdx<TidxDimOut, 0u>
+        {
+            template<typename TElem, std::size_t TidxDimExtents>
+            ALPAKA_FN_HOST_ACC static auto mapIdx(
+                Vec<DimInt<0u>, TElem> const&,
+                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<TidxDimOut>, TElem>
+            {
+                return Vec<DimInt<TidxDimOut>, TElem>::zeros();
+            }
+        };
+
+        template<std::size_t TidxDimIn>
+        struct MapIdx<0u, TidxDimIn>
+        {
+            template<typename TElem, std::size_t TidxDimExtents>
+            ALPAKA_FN_HOST_ACC static auto mapIdx(
+                Vec<DimInt<TidxDimIn>, TElem> const&,
+                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<0u>, TElem>
+            {
+                return {};
+            }
+        };
     } // namespace detail
 
     //! Maps a N dimensional index to a N dimensional position.
@@ -111,15 +135,15 @@ namespace alpaka
     //! \tparam TidxDimOut Dimension of the index vector to map to.
     //! \tparam TidxDimIn Dimension of the index vector to map from.
     //! \tparam TElem Type of the elements of the index vector to map from.
-    ALPAKA_NO_HOST_ACC_WARNING template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem>
+    ALPAKA_NO_HOST_ACC_WARNING template<
+        std::size_t TidxDimOut,
+        std::size_t TidxDimIn,
+        std::size_t TidxDimExtents,
+        typename TElem>
     ALPAKA_FN_HOST_ACC auto mapIdx(
         Vec<DimInt<TidxDimIn>, TElem> const& idx,
-        Vec<DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const& extent)
-        -> Vec<DimInt<TidxDimOut>, TElem>
+        Vec<DimInt<TidxDimExtents>, TElem> const& extent) -> Vec<DimInt<TidxDimOut>, TElem>
     {
-        static_assert(TidxDimOut > 0u, "The dimension of the output vector has to be greater than zero!");
-        static_assert(TidxDimIn > 0u, "The dimension of the input vector has to be greater than zero!");
-
         return detail::MapIdx<TidxDimOut, TidxDimIn>::mapIdx(idx, extent);
     }
 
@@ -147,7 +171,7 @@ namespace alpaka
         };
         //! Maps a 1 dimensional index to a N dimensional index assuming a buffer wihtout padding.
         template<std::size_t TidxDimOut>
-        struct MapIdxPitchBytes<TidxDimOut, 1u, std::enable_if_t<TidxDimOut != 1u>>
+        struct MapIdxPitchBytes<TidxDimOut, 1u, std::enable_if_t<(TidxDimOut > 1u)>>
         {
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
@@ -174,9 +198,9 @@ namespace alpaka
                 return idxNd;
             }
         };
-        //! Maps a N dimensional index to a 1 dimensional index assuming a buffer wihtout padding.
+        //! Maps a N dimensional index to a 1 dimensional index assuming a buffer without padding.
         template<std::size_t TidxDimIn>
-        struct MapIdxPitchBytes<1u, TidxDimIn, std::enable_if_t<TidxDimIn != 1u>>
+        struct MapIdxPitchBytes<1u, TidxDimIn, std::enable_if_t<(TidxDimIn > 1u)>>
         {
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
@@ -197,6 +221,30 @@ namespace alpaka
                 return {idx1d};
             }
         };
+
+        template<std::size_t TidxDimOut>
+        struct MapIdxPitchBytes<TidxDimOut, 0u>
+        {
+            template<typename TElem, std::size_t TidxDimExtents>
+            ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
+                Vec<DimInt<0u>, TElem> const&,
+                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<TidxDimOut>, TElem>
+            {
+                return Vec<DimInt<TidxDimOut>, TElem>::zeros();
+            }
+        };
+
+        template<std::size_t TidxDimIn>
+        struct MapIdxPitchBytes<0u, TidxDimIn>
+        {
+            template<typename TElem, std::size_t TidxDimExtents>
+            ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
+                Vec<DimInt<TidxDimIn>, TElem> const&,
+                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<0u>, TElem>
+            {
+                return {};
+            }
+        };
     } // namespace detail
 
     //! Maps a N dimensional index to a N dimensional position based on
@@ -206,15 +254,11 @@ namespace alpaka
     //! \tparam TidxDimIn Dimension of the index vector to map from.
     //! \tparam TElem Type of the elements of the index vector to map from.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem>
+    template<std::size_t TidxDimOut, std::size_t TidxDimIn, std::size_t TidxDimPitch, typename TElem>
     ALPAKA_FN_HOST_ACC auto mapIdxPitchBytes(
         Vec<DimInt<TidxDimIn>, TElem> const& idx,
-        Vec<DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const& pitch)
-        -> Vec<DimInt<TidxDimOut>, TElem>
+        Vec<DimInt<TidxDimPitch>, TElem> const& pitch) -> Vec<DimInt<TidxDimOut>, TElem>
     {
-        static_assert(TidxDimOut > 0u, "The dimension of the output vector has to be greater than zero!");
-        static_assert(TidxDimIn > 0u, "The dimension of the input vector has to be greater than zero!");
-
         return detail::MapIdxPitchBytes<TidxDimOut, TidxDimIn>::mapIdxPitchBytes(idx, pitch);
     }
 } // namespace alpaka

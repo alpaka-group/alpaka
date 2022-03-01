@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <limits>
 #include <ostream>
 #include <tuple>
 #include <type_traits>
@@ -180,19 +181,19 @@ namespace alpaka
         template<typename TFnObj, std::size_t... TIndices>
         [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto foldrByIndices(
             TFnObj const& f,
-            std::integer_sequence<std::size_t, TIndices...> const& /* indices */) const
+            std::integer_sequence<std::size_t, TIndices...>) const
         {
-            return meta::foldr(f, ((*this)[TIndices])...);
+            return meta::foldr(f, (*this)[TIndices]...);
         }
 
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TFnObj, std::size_t... TIndices>
         [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto foldrByIndices(
             TFnObj const& f,
-            std::integer_sequence<std::size_t, TIndices...> const& /* indices */,
+            std::integer_sequence<std::size_t, TIndices...>,
             TVal initial) const
         {
-            return meta::foldr(f, ((*this)[TIndices])..., initial);
+            return meta::foldr(f, (*this)[TIndices]..., initial);
         }
 
         ALPAKA_NO_HOST_ACC_WARNING
@@ -234,14 +235,14 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto min() const -> TVal
         {
-            return foldrAll(meta::min<TVal>());
+            return foldrAll(meta::min<TVal>(), std::numeric_limits<TVal>::max());
         }
 
         //! \return The max of all values.
         ALPAKA_NO_HOST_ACC_WARNING
         [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto max() const -> TVal
         {
-            return foldrAll(meta::max<TVal>());
+            return foldrAll(meta::max<TVal>(), std::numeric_limits<TVal>::min());
         }
 
         //! \return The index of the minimal element.
@@ -275,8 +276,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator+(Vec const& p, Vec const& q) -> Vec
         {
             Vec r;
-            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                r[i] = p[i] + q[i];
+            if constexpr(TDim::value > 0)
+            {
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                    r[i] = p[i] + q[i];
+            }
             return r;
         }
 
@@ -285,8 +289,21 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator-(Vec const& p, Vec const& q) -> Vec
         {
             Vec r;
-            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                r[i] = p[i] - q[i];
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+            if(TDim::value > 0)
+#else
+            if constexpr(TDim::value > 0)
+#endif
+            {
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#    pragma diag_suppress = unsigned_compare_with_zero
+#endif
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#    pragma diag_default = unsigned_compare_with_zero
+#endif
+                    r[i] = p[i] - q[i];
+            }
             return r;
         }
 
@@ -295,8 +312,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator*(Vec const& p, Vec const& q) -> Vec
         {
             Vec r;
-            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                r[i] = p[i] * q[i];
+            if constexpr(TDim::value > 0)
+            {
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                    r[i] = p[i] * q[i];
+            }
             return r;
         }
 
@@ -304,19 +324,24 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator==(Vec const& a, Vec const& b) -> bool
         {
 #if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
-            if(TDim::value == 0)
+            if(TDim::value > 0)
 #else
-            if constexpr(TDim::value == 0)
+            if constexpr(TDim::value > 0)
 #endif
-                return true; // all zero-dimensional vectors are equivalent
-            else
             {
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#    pragma diag_suppress = unsigned_compare_with_zero
+#endif
                 for(typename TDim::value_type i(0); i < TDim::value; ++i)
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#    pragma diag_default = unsigned_compare_with_zero
+#endif
+                {
                     if(a[i] != b[i])
                         return false;
-                return true;
+                }
             }
-            ALPAKA_UNREACHABLE({});
+            return true;
         }
 
         ALPAKA_NO_HOST_ACC_WARNING
@@ -330,8 +355,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator<(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                r[i] = p[i] < q[i];
+            if constexpr(TDim::value > 0)
+            {
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                    r[i] = p[i] < q[i];
+            }
             return r;
         }
 
@@ -340,8 +368,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator<=(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                r[i] = p[i] <= q[i];
+            if constexpr(TDim::value > 0)
+            {
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                    r[i] = p[i] <= q[i];
+            }
             return r;
         }
 
@@ -350,8 +381,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator>(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                r[i] = p[i] > q[i];
+            if constexpr(TDim::value > 0)
+            {
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                    r[i] = p[i] > q[i];
+            }
             return r;
         }
 
@@ -360,8 +394,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator>=(Vec const& p, Vec const& q) -> Vec<TDim, bool>
         {
             Vec<TDim, bool> r;
-            for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                r[i] = p[i] >= q[i];
+            if constexpr(TDim::value > 0)
+            {
+                for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                    r[i] = p[i] >= q[i];
+            }
             return r;
         }
 
@@ -374,13 +411,17 @@ namespace alpaka
             if constexpr(TDim::value > 0)
 #endif
             {
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#    pragma diag_suppress = unsigned_compare_with_zero
+#endif
                 for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 3, 0)
+#    pragma diag_default = unsigned_compare_with_zero
+#endif
                 {
                     os << v[i];
                     if(i != TDim::value - 1)
-                    {
                         os << ", ";
-                    }
                 }
             }
             else
@@ -447,8 +488,11 @@ namespace alpaka
                 else
                 {
                     Vec<TDim, TValNew> r;
-                    for(typename TDim::value_type i = 0; i < TDim::value; ++i)
-                        r[i] = static_cast<TValNew>(vec[i]);
+                    if constexpr(TDim::value > 0)
+                    {
+                        for(typename TDim::value_type i = 0; i < TDim::value; ++i)
+                            r[i] = static_cast<TValNew>(vec[i]);
+                    }
                     return r;
                 }
                 ALPAKA_UNREACHABLE({});
@@ -490,25 +534,16 @@ namespace alpaka
                 Vec<TDimR, TVal> const& vecR) -> Vec<DimInt<TDimL::value + TDimR::value>, TVal>
             {
                 Vec<DimInt<TDimL::value + TDimR::value>, TVal> r;
-#if BOOST_COMP_NVCC
-#    ifdef __NVCC_DIAG_PRAGMA_SUPPORT__
-#        pragma nv_diagnostic push
-#        pragma nv_diag_suppress = unsigned_compare_with_zero
-#    else
-#        pragma diag_suppress = unsigned_compare_with_zero
-#    endif
-#endif
-                for(typename TDimL::value_type i = 0; i < TDimL::value; ++i)
-                    r[i] = vecL[i];
-                for(typename TDimR::value_type i = 0; i < TDimR::value; ++i)
-                    r[TDimL::value + i] = vecR[i];
-#if BOOST_COMP_NVCC
-#    ifdef __NVCC_DIAG_PRAGMA_SUPPORT__
-#        pragma nv_diagnostic pop
-#    else
-#        pragma diag_default = unsigned_compare_with_zero
-#    endif
-#endif
+                if constexpr(TDimL::value > 0)
+                {
+                    for(typename TDimL::value_type i = 0; i < TDimL::value; ++i)
+                        r[i] = vecL[i];
+                }
+                if constexpr(TDimR::value > 0)
+                {
+                    for(typename TDimR::value_type i = 0; i < TDimR::value; ++i)
+                        r[TDimL::value + i] = vecR[i];
+                }
                 return r;
             }
         };

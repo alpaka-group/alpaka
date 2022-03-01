@@ -88,25 +88,29 @@ namespace alpaka::test
 
             ALPAKA_FN_HOST_ACC auto operator*() const -> Elem&
             {
-                using Dim1 = DimInt<1>;
-                using DimMin1 = DimInt<Dim::value - 1u>;
+                if constexpr(Dim::value == 0)
+                    return *m_nativePtr;
+                else
+                {
+                    using Dim1 = DimInt<1>;
+                    using DimMin1 = DimInt<Dim::value - 1u>;
 
-                Vec<Dim1, Idx> const currentIdxDim1{m_currentIdx};
-                Vec<Dim, Idx> const currentIdxDimx(mapIdx<Dim::value>(currentIdxDim1, m_extents));
+                    Vec<Dim1, Idx> const currentIdxDim1{m_currentIdx};
+                    Vec<Dim, Idx> const currentIdxDimx(mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
-                // [pz, py, px] -> [py, px]
-                auto const pitchWithoutOutermost = subVecEnd<DimMin1>(m_pitchBytes);
-                // [ElemSize]
-                Vec<Dim1, Idx> const elementSizeVec = static_cast<Idx>(sizeof(Elem));
-                // [py, px] ++ [ElemSize] -> [py, px, ElemSize]
-                Vec<Dim, Idx> const dstPitchBytes = concatVec(pitchWithoutOutermost, elementSizeVec);
-                // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
-                auto const dimensionalOffsetsInByte = currentIdxDimx * dstPitchBytes;
-                // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
-                auto const offsetInByte = dimensionalOffsetsInByte.foldrAll(std::plus<Idx>());
+                    // [pz, py, px] -> [py, px]
+                    auto const pitchWithoutOutermost = subVecEnd<DimMin1>(m_pitchBytes);
+                    // [ElemSize]
+                    Vec<Dim1, Idx> const elementSizeVec = static_cast<Idx>(sizeof(Elem));
+                    // [py, px] ++ [ElemSize] -> [py, px, ElemSize]
+                    Vec<Dim, Idx> const dstPitchBytes = concatVec(pitchWithoutOutermost, elementSizeVec);
+                    // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
+                    auto const dimensionalOffsetsInByte = currentIdxDimx * dstPitchBytes;
+                    // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
+                    auto const offsetInByte = dimensionalOffsetsInByte.foldrAll(std::plus<Idx>());
 
-                using Byte = MimicConst<std::uint8_t, Elem>;
-                Byte* ptr(reinterpret_cast<Byte*>(m_nativePtr) + offsetInByte);
+                    using Byte = MimicConst<std::uint8_t, Elem>;
+                    Byte* ptr(reinterpret_cast<Byte*>(m_nativePtr) + offsetInByte);
 
 #if 0
                     std::cout
@@ -118,7 +122,9 @@ namespace alpaka::test
                         << " v: " << *reinterpret_cast<Elem *>(ptr)
                         << std::endl;
 #endif
-                return *reinterpret_cast<Elem*>(ptr);
+                    return *reinterpret_cast<Elem*>(ptr);
+                }
+                ALPAKA_UNREACHABLE(*m_nativePtr);
             }
 
         private:

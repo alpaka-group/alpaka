@@ -88,7 +88,7 @@ namespace alpaka::internal
 
     private:
         template<std::size_t TDim, typename TIdx>
-        [[nodiscard]] ALPAKA_FN_HOST auto ptr_at(Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
+        [[nodiscard]] ALPAKA_FN_HOST auto ptr_at([[maybe_unused]] Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
         {
             using Idx = alpaka::Idx<TView>;
             static_assert(
@@ -128,7 +128,7 @@ namespace alpaka::internal
         ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) -> reference
         {
             auto extent = getExtentVec(*static_cast<TView*>(this));
-            if(!(index < extent).foldrAll(std::logical_and<bool>()))
+            if(!(index < extent).foldrAll(std::logical_and<bool>(), true))
             {
                 std::stringstream msg;
                 msg << "index " << index << " is outside of the Buffer or View extent " << extent;
@@ -141,7 +141,7 @@ namespace alpaka::internal
         [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
         {
             auto extent = getExtentVec(*static_cast<TView const*>(this));
-            if(!(index < extent).foldrAll(std::logical_and<bool>()))
+            if(!(index < extent).foldrAll(std::logical_and<bool>(), true))
             {
                 std::stringstream msg;
                 msg << "index " << index << " is outside of the Buffer or View extent " << extent;

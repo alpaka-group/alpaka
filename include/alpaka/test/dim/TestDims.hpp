@@ -18,6 +18,7 @@ namespace alpaka::test
 {
     //! A std::tuple holding dimensions.
     using TestDims = std::tuple<
+        DimInt<0u>,
         DimInt<1u>,
         DimInt<2u>,
         DimInt<3u>
