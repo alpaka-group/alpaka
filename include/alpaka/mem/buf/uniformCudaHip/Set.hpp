@@ -84,16 +84,8 @@ namespace alpaka
                     Dim<TView>::value == Dim<TExtent>::value,
                     "The destination buffer and the extent are required to have the same dimensionality!");
 
-                auto& view = this->m_view;
-#    if !defined(NDEBUG)
-                auto const dstWidth = getWidth(view);
-#    endif
-                auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
-                ALPAKA_ASSERT(1u <= dstWidth);
-
-                // Initiate the memory set.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MemsetAsync)(
-                    dstNativePtr,
+                    getPtrNative(this->m_view),
                     static_cast<int>(this->m_byte),
                     sizeof(Elem<TView>),
                     queue.getNativeHandle()));
@@ -262,7 +254,6 @@ namespace alpaka
                     static_cast<size_t>(extentHeight),
                     static_cast<size_t>(extentDepth));
 
-                // Initiate the memory set.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
                     Memset3DAsync)(pitchedPtrVal, static_cast<int>(this->m_byte), extentVal, queue.getNativeHandle()));
             }

@@ -227,7 +227,7 @@ static auto testBufferAccessorAdaptor(
     auto const& pitch = alpaka::getPitchBytesVec(buf);
     INFO("buffer extent: " << extent << " elements")
     INFO("buffer pitch: " << pitch << " bytes")
-    CHECK((index < extent).foldrAll(std::logical_and<bool>()));
+    CHECK((index < extent).foldrAll(std::logical_and<bool>(), true));
 
     auto base = reinterpret_cast<uintptr_t>(std::data(buf));
     uintptr_t expected = base;
@@ -243,14 +243,16 @@ static auto testBufferAccessorAdaptor(
     {
         expected += static_cast<uintptr_t>(pitch[3] * index[2]);
     }
-    expected += sizeof(Elem) * static_cast<uintptr_t>(index[Dim::value - 1]);
+    if constexpr(Dim::value > 0)
+        expected += sizeof(Elem) * static_cast<std::size_t>(index[Dim::value - 1]);
 
     INFO("element " << index << " expected at offset " << expected - base)
     INFO("element " << index << " returned at offset " << reinterpret_cast<uintptr_t>(&buf[index]) - base)
     CHECK(reinterpret_cast<Elem*>(expected) == &buf[index]);
 
     // check that an out-of-bound access is detected
-    CHECK_THROWS_AS((void) buf.at(extent), std::out_of_range);
+    if constexpr(Dim::value > 0)
+        CHECK_THROWS_AS((void) buf.at(extent), std::out_of_range);
 }
 
 TEMPLATE_LIST_TEST_CASE("memBufAccessorAdaptorTest", "[memBuf]", alpaka::test::TestAccs)

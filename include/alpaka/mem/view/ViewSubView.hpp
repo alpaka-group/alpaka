@@ -74,8 +74,8 @@ namespace alpaka
                 std::is_same_v<TDim, Dim<TOffsets>>,
                 "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-            ALPAKA_ASSERT(
-                ((m_offsetsElements + m_extentElements) <= getExtentVec(view)).foldrAll(std::logical_and<bool>()));
+            ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= getExtentVec(view))
+                              .foldrAll(std::logical_and<bool>(), true));
         }
         //! Constructor.
         //! \param view The view this view is a sub-view of.
@@ -113,8 +113,8 @@ namespace alpaka
                 std::is_same_v<TDim, Dim<TOffsets>>,
                 "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-            ALPAKA_ASSERT(
-                ((m_offsetsElements + m_extentElements) <= getExtentVec(view)).foldrAll(std::logical_and<bool>()));
+            ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= getExtentVec(view))
+                              .foldrAll(std::logical_and<bool>(), true));
         }
 
         //! \param view The view this view is a sub-view of.
@@ -223,7 +223,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto pitchedOffsetBytes(TView const& view, std::index_sequence<TIndices...> const&)
                 -> TIdx
             {
-                return meta::foldr(std::plus<TIdx>(), pitchedOffsetBytesDim<TIndices>(view)...);
+                return meta::foldr(std::plus<TIdx>(), pitchedOffsetBytesDim<TIndices>(view)..., TIdx{0});
             }
             template<std::size_t Tidx, typename TView>
             ALPAKA_FN_HOST static auto pitchedOffsetBytesDim(TView const& view) -> TIdx

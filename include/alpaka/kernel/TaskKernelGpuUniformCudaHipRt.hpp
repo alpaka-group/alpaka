@@ -96,12 +96,16 @@ namespace alpaka
             template<typename TDim, typename TIdx>
             ALPAKA_FN_HOST auto checkVecOnly3Dim(Vec<TDim, TIdx> const& vec) -> void
             {
-                for(auto i = std::min(static_cast<typename TDim::value_type>(3), TDim::value); i < TDim::value; ++i)
+                if constexpr(TDim::value > 0)
                 {
-                    if(vec[TDim::value - 1u - i] != 1)
+                    for(auto i = std::min(typename TDim::value_type{3}, TDim::value); i < TDim::value; ++i)
                     {
-                        throw std::runtime_error("The CUDA/HIP accelerator supports a maximum of 3 dimensions. All "
-                                                 "work division extents of the dimensions higher 3 have to be 1!");
+                        if(vec[TDim::value - 1u - i] != 1)
+                        {
+                            throw std::runtime_error(
+                                "The CUDA/HIP accelerator supports a maximum of 3 dimensions. All "
+                                "work division extents of the dimensions higher 3 have to be 1!");
+                        }
                     }
                 }
             }
@@ -110,12 +114,12 @@ namespace alpaka
             ALPAKA_FN_HOST auto convertVecToUniformCudaHipDim(Vec<TDim, TIdx> const& vec) -> dim3
             {
                 dim3 dim(1, 1, 1);
-                for(auto i = static_cast<typename TDim::value_type>(0);
-                    i < std::min(static_cast<typename TDim::value_type>(3), TDim::value);
-                    ++i)
-                {
-                    reinterpret_cast<unsigned int*>(&dim)[i] = static_cast<unsigned int>(vec[TDim::value - 1u - i]);
-                }
+                if constexpr(TDim::value >= 1)
+                    dim.x = static_cast<unsigned>(vec[TDim::value - 1u]);
+                if constexpr(TDim::value >= 2)
+                    dim.y = static_cast<unsigned>(vec[TDim::value - 2u]);
+                if constexpr(TDim::value >= 3)
+                    dim.z = static_cast<unsigned>(vec[TDim::value - 3u]);
                 checkVecOnly3Dim(vec);
                 return dim;
             }

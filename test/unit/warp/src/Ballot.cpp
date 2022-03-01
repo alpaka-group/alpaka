@@ -17,24 +17,21 @@
 #include <climits>
 #include <cstdint>
 
-class BallotSingleThreadWarpTestKernel
+struct BallotSingleThreadWarpTestKernel
 {
-public:
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
-        std::int32_t const warpExtent = alpaka::warp::getSize(acc);
-        ALPAKA_CHECK(*success, warpExtent == 1);
-
+        if constexpr(alpaka::Dim<TAcc>::value > 0)
+            ALPAKA_CHECK(*success, alpaka::warp::getSize(acc) == 1);
         ALPAKA_CHECK(*success, alpaka::warp::ballot(acc, 42) == 1u);
         ALPAKA_CHECK(*success, alpaka::warp::ballot(acc, 0) == 0u);
     }
 };
 
-class BallotMultipleThreadWarpTestKernel
+struct BallotMultipleThreadWarpTestKernel
 {
-public:
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
@@ -84,12 +81,11 @@ TEMPLATE_LIST_TEST_CASE("ballot", "[warp]", alpaka::test::TestAccs)
     auto const warpExtents = alpaka::getWarpSizes(dev);
     for(auto const warpExtent : warpExtents)
     {
-        if(warpExtent == 1)
+        const auto scalar = Dim::value == 0 || warpExtent == 1;
+        if(scalar)
         {
-            Idx const gridThreadExtentPerDim = 4;
-            alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
-            BallotSingleThreadWarpTestKernel kernel;
-            REQUIRE(fixture(kernel));
+            alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(4));
+            REQUIRE(fixture(BallotSingleThreadWarpTestKernel{}));
         }
         else
         {

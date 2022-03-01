@@ -145,7 +145,7 @@ namespace alpaka::test
         using Dim = Dim<TView>;
         using Idx = Idx<TView>;
 
-        test::KernelExecutionFixture<TAcc> fixture(Vec<Dim, Idx>::ones());
+        KernelExecutionFixture<TAcc> fixture(Vec<Dim, Idx>::ones());
 
         VerifyBytesSetKernel verifyBytesSet;
 

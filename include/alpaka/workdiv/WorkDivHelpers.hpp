@@ -342,11 +342,11 @@ namespace alpaka
     //! \return The work division.
     template<typename TAcc, typename TGridElemExtent, typename TThreadElemExtent, typename TDev>
     ALPAKA_FN_HOST auto getValidWorkDiv(
-        TDev const& dev,
-        TGridElemExtent const& gridElemExtent = TGridElemExtent(),
-        TThreadElemExtent const& threadElemExtents = TThreadElemExtent(),
-        bool requireBlockThreadExtentToDivideGridThreadExtent = true,
-        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
+        [[maybe_unused]] TDev const& dev,
+        [[maybe_unused]] TGridElemExtent const& gridElemExtent = TGridElemExtent(),
+        [[maybe_unused]] TThreadElemExtent const& threadElemExtents = TThreadElemExtent(),
+        [[maybe_unused]] bool requireBlockThreadExtentToDivideGridThreadExtent = true,
+        [[maybe_unused]] GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
         = GridBlockExtentSubDivRestrictions::Unrestricted)
         -> WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>
     {
@@ -363,12 +363,22 @@ namespace alpaka
             std::is_same_v<Idx<TThreadElemExtent>, Idx<TAcc>>,
             "The idx type of TAcc and the idx type of TThreadElemExtent have to be identical!");
 
-        return subDivideGridElems(
-            getExtentVec(gridElemExtent),
-            getExtentVec(threadElemExtents),
-            getAccDevProps<TAcc>(dev),
-            requireBlockThreadExtentToDivideGridThreadExtent,
-            gridBlockExtentSubDivRestrictions);
+        if constexpr(Dim<TGridElemExtent>::value == 0)
+        {
+            const auto zero = Vec<DimInt<0>, Idx<TAcc>>{};
+            ALPAKA_ASSERT(gridElemExtent == zero);
+            ALPAKA_ASSERT(threadElemExtents == zero);
+            return WorkDivMembers<DimInt<0>, Idx<TAcc>>{zero, zero, zero};
+        }
+        else
+            return subDivideGridElems(
+                getExtentVec(gridElemExtent),
+                getExtentVec(threadElemExtents),
+                getAccDevProps<TAcc>(dev),
+                requireBlockThreadExtentToDivideGridThreadExtent,
+                gridBlockExtentSubDivRestrictions);
+        using V [[maybe_unused]] = Vec<Dim<TGridElemExtent>, Idx<TGridElemExtent>>;
+        ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
     }
 
     //! \tparam TDim The dimensionality of the accelerator device properties.
@@ -380,11 +390,6 @@ namespace alpaka
     template<typename TDim, typename TIdx, typename TWorkDiv>
     ALPAKA_FN_HOST auto isValidWorkDiv(AccDevProps<TDim, TIdx> const& accDevProps, TWorkDiv const& workDiv) -> bool
     {
-        // Store the maxima allowed for extents of grid, blocks and threads.
-        auto const gridBlockExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax);
-        auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
-        auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
-
         // Get the extents of grid, blocks and threads of the work division to check.
         auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
         auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
@@ -405,14 +410,22 @@ namespace alpaka
         }
 
         // Check that the extents for all dimensions are correct.
-        for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
+        if constexpr(Dim<TWorkDiv>::value > 0)
         {
-            // No extent is allowed to be zero or greater then the allowed maximum.
-            if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
-               || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
-               || (threadElemExtentMax[i] < threadElemExtent[i]))
+            // Store the maxima allowed for extents of grid, blocks and threads.
+            auto const gridBlockExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax);
+            auto const blockThreadExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax);
+            auto const threadElemExtentMax = subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax);
+
+            for(typename Dim<TWorkDiv>::value_type i(0); i < Dim<TWorkDiv>::value; ++i)
             {
-                return false;
+                // No extent is allowed to be zero or greater then the allowed maximum.
+                if((gridBlockExtent[i] < 1) || (blockThreadExtent[i] < 1) || (threadElemExtent[i] < 1)
+                   || (gridBlockExtentMax[i] < gridBlockExtent[i]) || (blockThreadExtentMax[i] < blockThreadExtent[i])
+                   || (threadElemExtentMax[i] < threadElemExtent[i]))
+                {
+                    return false;
+                }
             }
         }
 

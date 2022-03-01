@@ -34,85 +34,86 @@
 namespace alpaka
 {
     class DevOmp5;
+}
 
-    namespace trait
+namespace alpaka::trait
+{
+    //! The OMP5 device memory set trait specialization.
+    template<typename TDim>
+    struct CreateTaskMemset<TDim, DevOmp5>
     {
-        //! The OMP5 device memory set trait specialization.
-        template<typename TDim>
-        struct CreateTaskMemset<TDim, DevOmp5>
+        template<typename TExtent, typename TView>
+        ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
         {
-            template<typename TExtent, typename TView>
-            ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
-            {
-                using Idx = typename alpaka::trait::IdxType<TExtent>::type;
-                auto pitch = getPitchBytesVec(view);
-                auto byteExtent = getExtentVec(extent);
-                constexpr auto lastDim = TDim::value - 1;
-                byteExtent[lastDim] *= static_cast<Idx>(sizeof(Elem<TView>));
+            using Idx = typename alpaka::trait::IdxType<TExtent>::type;
+            auto pitch = getPitchBytesVec(view);
+            auto byteExtent = getExtentVec(extent);
+            constexpr auto lastDim = TDim::value - 1;
+            byteExtent[lastDim] *= static_cast<Idx>(sizeof(Elem<TView>));
 
-                if(pitch[0] == 0)
-                {
-                    return createTaskKernel<AccOmp5<TDim, Idx>>(
-                        WorkDivMembers<TDim, Idx>(
-                            Vec<TDim, Idx>::zeros(),
-                            Vec<TDim, Idx>::zeros(),
-                            Vec<TDim, Idx>::zeros()),
-                        MemSetKernel(),
-                        byte,
-                        reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)),
-                        byteExtent,
-                        pitch); // NOP if size is zero
-                }
+            if(pitch[0] == 0)
+            {
+                return createTaskKernel<AccOmp5<TDim, Idx>>(
+                    WorkDivMembers<TDim, Idx>(
+                        Vec<TDim, Idx>::zeros(),
+                        Vec<TDim, Idx>::zeros(),
+                        Vec<TDim, Idx>::zeros()),
+                    MemSetKernel(),
+                    byte,
+                    reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)),
+                    byteExtent,
+                    pitch); // NOP if size is zero
+            }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent
-                          << std::endl;
+            std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
 #    endif
-                auto elementsPerThread = Vec<TDim, Idx>::all(static_cast<Idx>(1u));
-                elementsPerThread[lastDim] = 4;
-                // Let alpaka calculate good block and grid sizes given our full problem extent
-                WorkDivMembers<TDim, Idx> const workDiv(getValidWorkDiv<AccOmp5<TDim, Idx>>(
-                    getDev(view),
-                    byteExtent,
-                    elementsPerThread,
-                    false,
-                    alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
-                return createTaskKernel<AccOmp5<TDim, Idx>>(
-                    workDiv,
-                    MemSetKernel(),
-                    byte,
-                    reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)),
-                    byteExtent,
-                    pitch);
-            }
-        };
-        //! The OMP5 device scalar memory set trait specialization.
-        template<>
-        struct CreateTaskMemset<DimInt<0u>, DevOmp5>
+            auto elementsPerThread = Vec<TDim, Idx>::all(static_cast<Idx>(1u));
+            elementsPerThread[lastDim] = 4;
+            // Let alpaka calculate good block and grid sizes given our full problem extent
+            WorkDivMembers<TDim, Idx> const workDiv(getValidWorkDiv<AccOmp5<TDim, Idx>>(
+                getDev(view),
+                byteExtent,
+                elementsPerThread,
+                false,
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+            return createTaskKernel<AccOmp5<TDim, Idx>>(
+                workDiv,
+                MemSetKernel(),
+                byte,
+                reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)),
+                byteExtent,
+                pitch);
+        }
+    };
+
+    //! The OMP5 device scalar memory set trait specialization.
+    template<>
+    struct CreateTaskMemset<DimInt<0u>, DevOmp5>
+    {
+        template<typename TExtent, typename TView>
+        ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& /* extent */)
         {
-            template<typename TExtent, typename TView>
-            ALPAKA_FN_HOST static auto createTaskMemset(
-                TView& view,
-                std::uint8_t const& byte,
-                TExtent const& /* extent */)
+            static_assert(Dim<TView>::value == 0u, "The view is required to have dimensionality 0!");
+            static_assert(Dim<TExtent>::value == 0u, "The extent is required to have dimensionality 0!");
+
+            using ExtIdx = Idx<TExtent>;
+            using Dim0 = DimInt<0u>;
+            using Acc = AccOmp5<Dim0, ExtIdx>;
+            auto kernel = [] ALPAKA_FN_ACC(const Acc&, std::uint8_t b, std::uint8_t* mem)
             {
-                using Idx = typename alpaka::trait::IdxType<TExtent>::type;
-                using Dim1D = DimInt<1u>;
-                using Vec1D = Vec<Dim1D, Idx>;
-
-                static_assert(Dim<TView>::value == 0u, "The view is required to have dimensionality 0!");
-                static_assert(Dim<TExtent>::value == 0u, "The extent is required to have dimensionality 0!");
-
-                return createTaskKernel<AccOmp5<Dim1D, Idx>>(
-                    WorkDivMembers<Dim1D, Idx>(Vec1D::zeros(), Vec1D::zeros(), Vec1D::zeros()),
-                    MemSetKernel(),
-                    byte,
-                    reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)),
-                    Vec1D(sizeof(Elem<TView>)),
-                    Vec1D::zeros());
-            }
-        };
-    } // namespace trait
-} // namespace alpaka
+                // for zero dimensional views, we just set the bytes of a single element
+                for(auto i = 0u; i < sizeof(Elem<TView>); i++)
+                    mem[i] = b;
+            };
+            using Vec0D = Vec<Dim0, ExtIdx>;
+            return createTaskKernel<Acc>(
+                WorkDivMembers<Dim0, ExtIdx>{Vec0D{}, Vec0D{}, Vec0D{}},
+                kernel,
+                byte,
+                reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)));
+        }
+    };
+} // namespace alpaka::trait
 
 #endif

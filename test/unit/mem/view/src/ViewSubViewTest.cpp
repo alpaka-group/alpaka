@@ -53,12 +53,15 @@ namespace alpaka::test
         // The native pointer has to be exactly the value we calculate here.
         {
             auto viewPtrNative = reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(buf));
-            auto const pitchBuf = alpaka::getPitchBytesVec(buf);
-            for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
+            if constexpr(TDim::value > 0)
             {
-                auto const pitch
-                    = (i < static_cast<TIdx>(TDim::value)) ? pitchBuf[i] : static_cast<TIdx>(sizeof(TElem));
-                viewPtrNative += offsetView[i - static_cast<TIdx>(1u)] * pitch;
+                auto const pitchBuf = alpaka::getPitchBytesVec(buf);
+                for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
+                {
+                    auto const pitch
+                        = (i < static_cast<TIdx>(TDim::value)) ? pitchBuf[i] : static_cast<TIdx>(sizeof(TElem));
+                    viewPtrNative += offsetView[i - static_cast<TIdx>(1u)] * pitch;
+                }
             }
             REQUIRE(reinterpret_cast<TElem*>(viewPtrNative) == alpaka::getPtrNative(view));
         }
