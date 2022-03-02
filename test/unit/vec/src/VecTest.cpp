@@ -40,8 +40,27 @@ TEST_CASE("basicVecTraits", "[vec]")
     using Idx = std::size_t;
     using Vec = alpaka::Vec<Dim, Idx>;
 
+    // constructor from Idx
     static constexpr Vec vec(static_cast<Idx>(0u), static_cast<Idx>(8u), static_cast<Idx>(15u));
 
+    // constructor from convertible integral
+    {
+        [[maybe_unused]] constexpr Vec v(0, 0, 0);
+    }
+
+    // constructor from convertible type
+    {
+        constexpr struct S
+        {
+            constexpr operator Idx() const
+            {
+                return 5;
+            }
+        } s;
+        STATIC_REQUIRE(std::is_convertible_v<S, Idx>);
+
+        [[maybe_unused]] constexpr Vec v(s, s, s);
+    }
 
     // alpaka::Vec<0> default ctor
     {
