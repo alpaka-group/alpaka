@@ -532,18 +532,19 @@ namespace alpaka
     //! \return The extent vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TExtent>
-    ALPAKA_FN_HOST_ACC auto constexpr getExtentVec(TExtent const& extent = TExtent())
-        -> Vec<Dim<TExtent>, Idx<TExtent>>
+    ALPAKA_FN_HOST_ACC auto constexpr getExtentVec(TExtent const& extent = {}) -> Vec<Dim<TExtent>, Idx<TExtent>>
     {
         return createVecFromIndexedFn<Dim<TExtent>, detail::CreateExtent>(extent);
     }
 
     //! \tparam TExtent has to specialize GetExtent.
-    //! \return The extent but only the last N elements.
+    //! \return The extent but only the last TDim elements.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TDim, typename TExtent>
-    ALPAKA_FN_HOST_ACC auto constexpr getExtentVecEnd(TExtent const& extent = TExtent()) -> Vec<TDim, Idx<TExtent>>
+    ALPAKA_FN_HOST_ACC auto constexpr getExtentVecEnd(TExtent const& extent = {}) -> Vec<TDim, Idx<TExtent>>
     {
+        static_assert(TDim::value <= Dim<TExtent>::value, "Cannot get more items than the extent holds");
+
         using IdxOffset = std::integral_constant<
             std::intmax_t,
             static_cast<std::intmax_t>(Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
@@ -569,18 +570,19 @@ namespace alpaka
     //! \return The offset vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TOffsets>
-    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVec(TOffsets const& offsets = TOffsets())
-        -> Vec<Dim<TOffsets>, Idx<TOffsets>>
+    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVec(TOffsets const& offsets = {}) -> Vec<Dim<TOffsets>, Idx<TOffsets>>
     {
         return createVecFromIndexedFn<Dim<TOffsets>, detail::CreateOffset>(offsets);
     }
 
     //! \tparam TOffsets has to specialize GetOffset.
-    //! \return The offset vector but only the last N elements.
+    //! \return The offset vector but only the last TDim elements.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TDim, typename TOffsets>
-    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVecEnd(TOffsets const& offsets = TOffsets()) -> Vec<TDim, Idx<TOffsets>>
+    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVecEnd(TOffsets const& offsets = {}) -> Vec<TDim, Idx<TOffsets>>
     {
+        static_assert(TDim::value <= Dim<TOffsets>::value, "Cannot get more items than the offsets hold");
+
         using IdxOffset = std::integral_constant<
             std::size_t,
             static_cast<std::size_t>(
