@@ -15,13 +15,13 @@ namespace alpaka::meta
 {
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TFnObj, typename T>
-    ALPAKA_FN_HOST_ACC auto foldr(TFnObj const& /* f */, T const& t) -> T
+    ALPAKA_FN_HOST_ACC constexpr auto foldr(TFnObj const& /* f */, T const& t) -> T
     {
         return t;
     }
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TFnObj, typename T0, typename T1, typename... Ts>
-    ALPAKA_FN_HOST_ACC auto foldr(TFnObj const& f, T0 const& t0, T1 const& t1, Ts const&... ts)
+    ALPAKA_FN_HOST_ACC constexpr auto foldr(TFnObj const& f, T0 const& t0, T1 const& t1, Ts const&... ts)
     {
         return f(t0, foldr(f, t1, ts...));
     }

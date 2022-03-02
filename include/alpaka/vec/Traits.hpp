@@ -45,7 +45,7 @@ namespace alpaka
     //! \return The sub-vector consisting of the elements specified by the indices.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TIndexSequence, typename TVec>
-    ALPAKA_FN_HOST_ACC auto subVecFromIndices(TVec const& vec)
+    ALPAKA_FN_HOST_ACC constexpr auto subVecFromIndices(TVec const& vec)
     {
         return traits::SubVecFromIndices<TVec, TIndexSequence>::subVecFromIndices(vec);
     }
@@ -53,7 +53,7 @@ namespace alpaka
     //! \return The sub-vector consisting of the first N elements of the source vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TSubDim, typename TVec>
-    ALPAKA_FN_HOST_ACC auto subVecBegin(TVec const& vec)
+    ALPAKA_FN_HOST_ACC constexpr auto subVecBegin(TVec const& vec)
     {
         static_assert(
             TSubDim::value <= Dim<TVec>::value,
@@ -67,7 +67,7 @@ namespace alpaka
     //! \return The sub-vector consisting of the last N elements of the source vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TSubDim, typename TVec>
-    ALPAKA_FN_HOST_ACC auto subVecEnd(TVec const& vec)
+    ALPAKA_FN_HOST_ACC constexpr auto subVecEnd(TVec const& vec)
     {
         static_assert(
             TSubDim::value <= Dim<TVec>::value,
@@ -83,7 +83,7 @@ namespace alpaka
     //! \return The casted vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TVal, typename TVec>
-    ALPAKA_FN_HOST_ACC auto castVec(TVec const& vec)
+    ALPAKA_FN_HOST_ACC constexpr auto castVec(TVec const& vec)
     {
         return traits::CastVec<TVal, TVec>::castVec(vec);
     }
@@ -91,7 +91,7 @@ namespace alpaka
     //! \return The reverseVec vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TVec>
-    ALPAKA_FN_HOST_ACC auto reverseVec(TVec const& vec)
+    ALPAKA_FN_HOST_ACC constexpr auto reverseVec(TVec const& vec)
     {
         return traits::ReverseVec<TVec>::reverseVec(vec);
     }
@@ -99,7 +99,7 @@ namespace alpaka
     //! \return The concatenated vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TVecL, typename TVecR>
-    ALPAKA_FN_HOST_ACC auto concatVec(TVecL const& vecL, TVecR const& vecR)
+    ALPAKA_FN_HOST_ACC constexpr auto concatVec(TVecL const& vecL, TVecR const& vecR)
     {
         return traits::ConcatVec<TVecL, TVecR>::concatVec(vecL, vecR);
     }

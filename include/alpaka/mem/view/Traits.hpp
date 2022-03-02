@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unreachable.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/elem/Traits.hpp>
@@ -63,6 +64,7 @@ namespace alpaka
                     return getExtent<viewDim - 1>(view) * static_cast<ViewIdx>(sizeof(Elem<TView>));
                 else
                     return static_cast<ViewIdx>(sizeof(Elem<TView>));
+                ALPAKA_UNREACHABLE({});
             }
         };
 
