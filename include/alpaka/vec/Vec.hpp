@@ -98,13 +98,10 @@ namespace alpaka
         //! This constructor is only available if the number of parameters matches the vector idx.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TArg0,
             typename... TArgs,
             typename = std::enable_if_t<
-                // There have to be dim arguments.
-                (sizeof...(TArgs) + 1 == TDim::value) && (std::is_same_v<TVal, std::decay_t<TArg0>>)>>
-        ALPAKA_FN_HOST_ACC constexpr Vec(TArg0&& arg0, TArgs&&... args)
-            : m_data{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
+                sizeof...(TArgs) == TDim::value && (std::is_convertible_v<std::decay_t<TArgs>, TVal> && ...)>>
+        ALPAKA_FN_HOST_ACC constexpr Vec(TArgs&&... args) : m_data{static_cast<TVal>(std::forward<TArgs>(args))...}
         {
         }
 
