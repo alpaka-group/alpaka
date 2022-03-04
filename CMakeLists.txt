@@ -39,11 +39,11 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Options and Variants
 
-option(alpaka_BUILD_EXAMPLES "Build the examples" OFF)
+option(ALPAKA_BUILD_EXAMPLES "Build the examples" OFF)
 
 option(BUILD_TESTING "Build the testing tree." OFF)
 
-option(alpaka_INSTALL_TEST_HEADER "Install headers of the namespace alpaka::test. Attention, headers are not designed for production code, see documentation." OFF)
+option(ALPAKA_INSTALL_TEST_HEADER "Install headers of the namespace alpaka::test. Attention, headers are not designed for production code, see documentation." OFF)
 include(CTest)
 
 include(CMakeDependentOption)
@@ -77,7 +77,7 @@ set(_ALPAKA_INCLUDE_DIRECTORY "${_ALPAKA_ROOT_DIR}/include")
 set(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
 
 # the sequential accelerator is required for the tests and examples
-if(NOT DEFINED ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE AND (alpaka_BUILD_EXAMPLES OR BUILD_TESTING))
+if(NOT DEFINED ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE AND (ALPAKA_BUILD_EXAMPLES OR BUILD_TESTING))
   option(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "enable alpaka serial accelerator" ON)
 endif()
 
@@ -87,8 +87,8 @@ include(${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake)
 append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" _ALPAKA_FILES_HEADER)
 append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "h" _ALPAKA_FILES_HEADER)
 
-# remove headers of the folder alpaka/test, if alpaka_INSTALL_TEST_HEADER is disabled
-if(NOT alpaka_INSTALL_TEST_HEADER)
+# remove headers of the folder alpaka/test, if ALPAKA_INSTALL_TEST_HEADER is disabled
+if(NOT ALPAKA_INSTALL_TEST_HEADER)
   list(FILTER _ALPAKA_FILES_HEADER EXCLUDE REGEX "(.*)/alpaka/test/(.*)")
 endif()
 
@@ -132,7 +132,7 @@ endif()
 ################################################################################
 # Add subdirectories
 
-if(alpaka_BUILD_EXAMPLES)
+if(ALPAKA_BUILD_EXAMPLES)
     add_subdirectory("example/")
 endif()
 if(BUILD_TESTING)
@@ -168,7 +168,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
                   "${PROJECT_BINARY_DIR}/alpakaConfigVersion.cmake"
             DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
 
-    if(alpaka_INSTALL_TEST_HEADER)
+    if(ALPAKA_INSTALL_TEST_HEADER)
         install(DIRECTORY "${_ALPAKA_SUFFIXED_INCLUDE_DIR}"
 	        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
     else()

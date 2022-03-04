@@ -27,7 +27,7 @@ ALPAKA_CXX_STANDARD
 
      Set the C++ standard version.
 
-alpaka_BUILD_EXAMPLES
+ALPAKA_BUILD_EXAMPLES
   .. code-block::
 
      Build the examples.
@@ -37,7 +37,7 @@ BUILD_TESTING
 
      Build the testing tree.
 
-alpaka_INSTALL_TEST_HEADER
+ALPAKA_INSTALL_TEST_HEADER
   .. code-block::
 
      Install headers of the namespace alpaka::test.
