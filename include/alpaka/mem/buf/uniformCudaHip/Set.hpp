@@ -96,7 +96,7 @@ namespace alpaka
                     dstNativePtr,
                     static_cast<int>(this->m_byte),
                     sizeof(Elem<TView>),
-                    queue.m_spQueueImpl->getNativeHandle()));
+                    queue.getNativeHandle()));
             }
         };
         //! The 1D CUDA/HIP memory set task.
@@ -143,7 +143,7 @@ namespace alpaka
                     dstNativePtr,
                     static_cast<int>(this->m_byte),
                     static_cast<size_t>(extentWidthBytes),
-                    queue.m_spQueueImpl->getNativeHandle()));
+                    queue.getNativeHandle()));
             }
         };
         //! The 2D CUDA/HIP memory set task.
@@ -197,7 +197,7 @@ namespace alpaka
                     static_cast<int>(this->m_byte),
                     static_cast<size_t>(extentWidthBytes),
                     static_cast<size_t>(extentHeight),
-                    queue.m_spQueueImpl->getNativeHandle()));
+                    queue.getNativeHandle()));
             }
         };
         //! The 3D CUDA/HIP memory set task.
@@ -263,11 +263,8 @@ namespace alpaka
                     static_cast<size_t>(extentDepth));
 
                 // Initiate the memory set.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(Memset3DAsync)(
-                    pitchedPtrVal,
-                    static_cast<int>(this->m_byte),
-                    extentVal,
-                    queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
+                    Memset3DAsync)(pitchedPtrVal, static_cast<int>(this->m_byte), extentVal, queue.getNativeHandle()));
             }
         };
     } // namespace detail

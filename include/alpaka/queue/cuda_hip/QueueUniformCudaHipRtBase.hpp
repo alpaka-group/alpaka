@@ -134,7 +134,7 @@ namespace alpaka
                 // Query is allowed even for queues on non current device.
                 ALPAKA_API_PREFIX(Error_t) ret = ALPAKA_API_PREFIX(Success);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
-                    ret = ALPAKA_API_PREFIX(StreamQuery)(queue.m_spQueueImpl->getNativeHandle()),
+                    ret = ALPAKA_API_PREFIX(StreamQuery)(queue.getNativeHandle()),
                     ALPAKA_API_PREFIX(ErrorNotReady));
                 return (ret == ALPAKA_API_PREFIX(Success));
             }
@@ -153,8 +153,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Sync is allowed even for queues on non current device.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle()));
             }
         };
     } // namespace traits

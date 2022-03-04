@@ -74,9 +74,15 @@ namespace alpaka
                 // -> No need to synchronize here.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventDestroy)(m_UniformCudaHipEvent));
             }
+            auto getNativeHandle() const noexcept
+            {
+                return m_UniformCudaHipEvent;
+            }
 
         public:
             DevUniformCudaHipRt const m_dev; //!< The device this event is bound to.
+
+        private:
             ALPAKA_API_PREFIX(Event_t) m_UniformCudaHipEvent;
         };
     } // namespace uniform_cuda_hip::detail
@@ -99,6 +105,10 @@ namespace alpaka
         ALPAKA_FN_HOST auto operator!=(EventUniformCudaHipRt const& rhs) const -> bool
         {
             return !((*this) == rhs);
+        }
+        auto getNativeHandle() const noexcept
+        {
+            return m_spEventImpl->getNativeHandle();
         }
 
     public:
@@ -133,7 +143,7 @@ namespace alpaka
                 // Query is allowed even for events on non current device.
                 ALPAKA_API_PREFIX(Error_t) ret = ALPAKA_API_PREFIX(Success);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
-                    ret = ALPAKA_API_PREFIX(EventQuery)(event.m_spEventImpl->m_UniformCudaHipEvent),
+                    ret = ALPAKA_API_PREFIX(EventQuery)(event.getNativeHandle()),
                     ALPAKA_API_PREFIX(ErrorNotReady));
                 return (ret == ALPAKA_API_PREFIX(Success));
             }
@@ -148,8 +158,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
-                    EventRecord)(event.m_spEventImpl->m_UniformCudaHipEvent, queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(EventRecord)(event.getNativeHandle(), queue.getNativeHandle()));
             }
         };
         //! The CUDA/HIP RT queue enqueue trait specialization.
@@ -161,8 +171,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
-                    EventRecord)(event.m_spEventImpl->m_UniformCudaHipEvent, queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(EventRecord)(event.getNativeHandle(), queue.getNativeHandle()));
             }
         };
 
@@ -178,8 +188,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Sync is allowed even for events on non current device.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(EventSynchronize)(event.m_spEventImpl->m_UniformCudaHipEvent));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventSynchronize)(event.getNativeHandle()));
             }
         };
         //! The CUDA/HIP RT queue event wait trait specialization.
@@ -192,10 +201,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
-                    queue.m_spQueueImpl->getNativeHandle(),
-                    event.m_spEventImpl->m_UniformCudaHipEvent,
-                    0));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(StreamWaitEvent)(queue.getNativeHandle(), event.getNativeHandle(), 0));
             }
         };
         //! The CUDA/HIP RT queue event wait trait specialization.
@@ -208,10 +215,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
-                    queue.m_spQueueImpl->getNativeHandle(),
-                    event.m_spEventImpl->m_UniformCudaHipEvent,
-                    0));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(StreamWaitEvent)(queue.getNativeHandle(), event.getNativeHandle(), 0));
             }
         };
         //! The CUDA/HIP RT device event wait trait specialization.
@@ -230,9 +235,19 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.getNativeHandle()));
 
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(StreamWaitEvent)(nullptr, event.m_spEventImpl->m_UniformCudaHipEvent, 0));
+                    ALPAKA_API_PREFIX(StreamWaitEvent)(nullptr, event.getNativeHandle(), 0));
             }
         };
+        //! The CUDA/HIP RT event native handle trait specialization.
+        template<>
+        struct NativeHandle<EventUniformCudaHipRt>
+        {
+            static auto getNativeHandle(EventUniformCudaHipRt const& event)
+            {
+                return event.getNativeHandle();
+            }
+        };
+
     } // namespace traits
 } // namespace alpaka
 

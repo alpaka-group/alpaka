@@ -147,14 +147,14 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOmp5 const& rhs) const -> bool
         {
-            return m_spDevOmp5Impl->getNativeHandle() == rhs.m_spDevOmp5Impl->getNativeHandle();
+            return getNativeHandle() == rhs.getNativeHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevOmp5 const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
 
-        [[nodiscard]] auto getNativeHandle() const noexcept
+        [[nodiscard]] auto getNativeHandle() const noexcept -> int
         {
             return m_spDevOmp5Impl->getNativeHandle();
         }
