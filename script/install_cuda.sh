@@ -50,8 +50,8 @@ then
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "10.1" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-10-1-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"-10.1.168-418.67_1.0-1_amd64.deb
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"-10.1.243-418.87.00_1.0-1_amd64.deb
+        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "10.2" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-10-2-local
@@ -80,13 +80,13 @@ then
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.4" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu2004-11-4-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.4.3-470.82.01-1_amd64.deb
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.4.3/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.4.4-470.82.01-1_amd64.deb
+        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.4.4/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.5" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu2004-11-5-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.5.1-495.29.05-1_amd64.deb
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.5.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.5.2-495.29.05-1_amd64.deb
+        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.5.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.6" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu2004-11-6-local
@@ -165,12 +165,12 @@ then
         ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.3.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.4" ]
     then
-        ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.4.1_471.41_win10.exe
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.4.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+        ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.4.4_472.50_windows.exe
+        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.4.4/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.5" ]
     then
-        ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.5.1_496.13_windows.exe
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.5.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+        ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.5.2_496.13_windows.exe
+        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.5.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.6" ]
     then
         ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.6.1_511.65_windows.exe
