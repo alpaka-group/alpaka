@@ -69,9 +69,14 @@ namespace alpaka
                     // -> No need to synchronize here.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamDestroy)(m_UniformCudaHipQueue));
                 }
+                auto getNativeHandle() const noexcept
+                {
+                    return m_UniformCudaHipQueue;
+                }
 
             public:
                 DevUniformCudaHipRt const m_dev; //!< The device this queue is bound to.
+            private:
                 ALPAKA_API_PREFIX(Stream_t) m_UniformCudaHipQueue;
             };
 
@@ -93,6 +98,10 @@ namespace alpaka
                 ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRtBase const& rhs) const -> bool
                 {
                     return !((*this) == rhs);
+                }
+                auto getNativeHandle() const noexcept
+                {
+                    return m_spQueueImpl->getNativeHandle();
                 }
 
             public:
@@ -125,7 +134,7 @@ namespace alpaka
                 // Query is allowed even for queues on non current device.
                 ALPAKA_API_PREFIX(Error_t) ret = ALPAKA_API_PREFIX(Success);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
-                    ret = ALPAKA_API_PREFIX(StreamQuery)(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                    ret = ALPAKA_API_PREFIX(StreamQuery)(queue.m_spQueueImpl->getNativeHandle()),
                     ALPAKA_API_PREFIX(ErrorNotReady));
                 return (ret == ALPAKA_API_PREFIX(Success));
             }
@@ -145,7 +154,7 @@ namespace alpaka
 
                 // Sync is allowed even for queues on non current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle()));
             }
         };
     } // namespace traits

@@ -439,7 +439,7 @@ namespace alpaka::traits
             //   the device build upon value-based CUDA queue synchronization APIs such as
             //   cuStreamWaitValue32() and cuStreamWriteValue32().
             ALPAKA_CUDA_DRV_CHECK(cuStreamWaitValue32(
-                static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                static_cast<CUstream>(queue.m_spQueueImpl->getNativeHandle()),
                 reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                 0x01010101u,
                 CU_STREAM_WAIT_VALUE_GEQ));
@@ -473,7 +473,7 @@ namespace alpaka::traits
             //   the device build upon value-based CUDA queue synchronization APIs such as
             //   cuStreamWaitValue32() and cuStreamWriteValue32().
             ALPAKA_CUDA_DRV_CHECK(cuStreamWaitValue32(
-                static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                static_cast<CUstream>(queue.m_spQueueImpl->getNativeHandle()),
                 reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                 0x01010101u,
                 CU_STREAM_WAIT_VALUE_GEQ));
@@ -656,8 +656,8 @@ namespace alpaka::traits
                     &hostMem,
                     reinterpret_cast<hipDeviceptr_t>(event.m_spEventImpl->m_devMem),
                     sizeof(int32_t),
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->getNativeHandle()));
             }
         }
     };
@@ -690,7 +690,7 @@ namespace alpaka::traits
             //   cuStreamWaitValue32() and cuStreamWriteValue32().
 #    if BOOST_COMP_NVCC
             ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipCUResultTohipError(cuStreamWaitValue32(
-                static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                static_cast<CUstream>(queue.m_spQueueImpl->getNativeHandle()),
                 reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                 0x01010101u,
                 CU_STREAM_WAIT_VALUE_GEQ)));
