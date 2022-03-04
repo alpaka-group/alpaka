@@ -277,7 +277,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(MallocAsync)(
                     &memPtr,
                     static_cast<std::size_t>(width) * sizeof(TElem),
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    queue.getNativeHandle()));
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " ew: " << width << " ptr: " << memPtr << std::endl;
@@ -287,7 +287,7 @@ namespace alpaka
                     reinterpret_cast<TElem*>(memPtr),
                     [queue = std::move(queue)](TElem* ptr) {
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                            ALPAKA_API_PREFIX(FreeAsync)(ptr, queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                            ALPAKA_API_PREFIX(FreeAsync)(ptr, queue.getNativeHandle()));
                     },
                     width * static_cast<TIdx>(sizeof(TElem)),
                     extent);

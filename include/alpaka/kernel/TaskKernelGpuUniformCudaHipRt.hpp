@@ -277,17 +277,14 @@ namespace alpaka
                             gridDim,
                             blockDim,
                             static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue>>>(
-                            threadElemExtent,
-                            task.m_kernelFnObj,
-                            args...);
+                            queue.m_spQueueImpl->getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
 #        else
                         hipLaunchKernelGGL(
                             HIP_KERNEL_NAME(kernelName),
                             gridDim,
                             blockDim,
                             static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                            queue.m_spQueueImpl->getNativeHandle(),
                             threadElemExtent,
                             task.m_kernelFnObj,
                             args...);
@@ -299,7 +296,7 @@ namespace alpaka
                 // Wait for the kernel execution to finish but do not check error return of this call.
                 // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom
                 // error message.
-                ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue);
+                ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle());
                 std::string const msg(
                     "'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
                 ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
@@ -406,17 +403,14 @@ namespace alpaka
                             gridDim,
                             blockDim,
                             static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue>>>(
-                            threadElemExtent,
-                            task.m_kernelFnObj,
-                            args...);
+                            queue.m_spQueueImpl->getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
 #        else
                         hipLaunchKernelGGL(
                             HIP_KERNEL_NAME(kernelName),
                             gridDim,
                             blockDim,
                             static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                            queue.m_spQueueImpl->getNativeHandle(),
                             threadElemExtent,
                             task.m_kernelFnObj,
                             args...);
@@ -427,7 +421,7 @@ namespace alpaka
                 // Wait for the kernel execution to finish but do not check error return of this call.
                 // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom
                 // error message.
-                std::ignore = ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->m_UniformCudaHipQueue);
+                std::ignore = ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle());
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 std::string const msg(
                     "'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");

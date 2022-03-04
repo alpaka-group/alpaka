@@ -96,7 +96,7 @@ namespace alpaka
                     dstNativePtr,
                     static_cast<int>(this->m_byte),
                     sizeof(Elem<TView>),
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    queue.m_spQueueImpl->getNativeHandle()));
             }
         };
         //! The 1D CUDA/HIP memory set task.
@@ -143,7 +143,7 @@ namespace alpaka
                     dstNativePtr,
                     static_cast<int>(this->m_byte),
                     static_cast<size_t>(extentWidthBytes),
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    queue.m_spQueueImpl->getNativeHandle()));
             }
         };
         //! The 2D CUDA/HIP memory set task.
@@ -197,7 +197,7 @@ namespace alpaka
                     static_cast<int>(this->m_byte),
                     static_cast<size_t>(extentWidthBytes),
                     static_cast<size_t>(extentHeight),
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    queue.m_spQueueImpl->getNativeHandle()));
             }
         };
         //! The 3D CUDA/HIP memory set task.
@@ -267,7 +267,7 @@ namespace alpaka
                     pitchedPtrVal,
                     static_cast<int>(this->m_byte),
                     extentVal,
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    queue.m_spQueueImpl->getNativeHandle()));
             }
         };
     } // namespace detail

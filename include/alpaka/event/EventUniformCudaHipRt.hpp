@@ -77,7 +77,6 @@ namespace alpaka
 
         public:
             DevUniformCudaHipRt const m_dev; //!< The device this event is bound to.
-
             ALPAKA_API_PREFIX(Event_t) m_UniformCudaHipEvent;
         };
     } // namespace uniform_cuda_hip::detail
@@ -149,9 +148,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
-                    event.m_spEventImpl->m_UniformCudaHipEvent,
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
+                    EventRecord)(event.m_spEventImpl->m_UniformCudaHipEvent, queue.m_spQueueImpl->getNativeHandle()));
             }
         };
         //! The CUDA/HIP RT queue enqueue trait specialization.
@@ -163,9 +161,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
-                    event.m_spEventImpl->m_UniformCudaHipEvent,
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
+                    EventRecord)(event.m_spEventImpl->m_UniformCudaHipEvent, queue.m_spQueueImpl->getNativeHandle()));
             }
         };
 
@@ -196,7 +193,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                    queue.m_spQueueImpl->getNativeHandle(),
                     event.m_spEventImpl->m_UniformCudaHipEvent,
                     0));
             }
@@ -212,7 +209,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                    queue.m_spQueueImpl->getNativeHandle(),
                     event.m_spEventImpl->m_UniformCudaHipEvent,
                     0));
             }

@@ -132,7 +132,7 @@ namespace alpaka
             {
                 auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
-                    queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                    queue.m_spQueueImpl->getNativeHandle(),
                     uniformCudaHipRtCallback,
                     pCallbackSynchronizationData.get(),
                     0u));
@@ -165,6 +165,15 @@ namespace alpaka
                     });
 
                 t.detach();
+            }
+        };
+        //! The CUDA/HIP RT blocking queue native handle trait specialization.
+        template<>
+        struct NativeHandle<QueueUniformCudaHipRtNonBlocking>
+        {
+            static auto getNativeHandle(QueueUniformCudaHipRtNonBlocking const& queue)
+            {
+                return queue.m_spQueueImpl->getNativeHandle();
             }
         };
     } // namespace traits
