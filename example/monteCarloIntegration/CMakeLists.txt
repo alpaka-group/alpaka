@@ -39,7 +39,7 @@ if(NOT TARGET alpaka::alpaka)
 
     if(USE_ALPAKA_SOURCE_TREE)
         # Don't build the examples recursively
-        set(alpaka_BUILD_EXAMPLES OFF)
+        set(ALPAKA_BUILD_EXAMPLES OFF)
         add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/../.." "${CMAKE_BINARY_DIR}/alpaka")
     else()
         find_package(alpaka REQUIRED)
