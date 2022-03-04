@@ -338,7 +338,7 @@ namespace alpaka
                     viewDst,
                     viewSrc,
                     extent,
-                    getDev(viewDst).m_spDevOmp5Impl->getNativeHandle(),
+                    getDev(viewDst).getNativeHandle(),
                     omp_get_initial_device());
             }
         };
@@ -360,7 +360,7 @@ namespace alpaka
                     viewSrc,
                     extent,
                     omp_get_initial_device(),
-                    getDev(viewSrc).m_spDevOmp5Impl->getNativeHandle());
+                    getDev(viewSrc).getNativeHandle());
             }
         };
 
@@ -380,8 +380,8 @@ namespace alpaka
                     viewDst,
                     viewSrc,
                     extent,
-                    getDev(viewDst).m_spDevOmp5Impl->getNativeHandle(),
-                    getDev(viewSrc).m_spDevOmp5Impl->getNativeHandle());
+                    getDev(viewDst).getNativeHandle(),
+                    getDev(viewSrc).getNativeHandle());
             }
         };
     } // namespace traits

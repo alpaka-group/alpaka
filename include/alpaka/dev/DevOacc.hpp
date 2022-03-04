@@ -175,13 +175,13 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevOacc const& rhs) const -> bool
         {
-            return m_devOaccImpl->getNativeHandle() == rhs.m_devOaccImpl->getNativeHandle();
+            return getNativeHandle() == rhs.getNativeHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevOacc const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
-        auto getNativeHandle() const noexcept
+        auto getNativeHandle() const noexcept -> int
         {
             return m_devOaccImpl->getNativeHandle();
         }

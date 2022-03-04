@@ -76,7 +76,7 @@ namespace alpaka
             auto operator=(BufOmp5Impl&&) -> BufOmp5Impl& = delete;
             ~BufOmp5Impl()
             {
-                omp_target_free(m_pMem, m_dev.m_spDevOmp5Impl->getNativeHandle());
+                omp_target_free(m_pMem, m_dev.getNativeHandle());
             }
         };
     } // namespace detail
@@ -210,12 +210,11 @@ namespace alpaka
                 auto const width(getWidth(extent));
                 auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
 
-                void* memPtr
-                    = omp_target_alloc(static_cast<std::size_t>(widthBytes), dev.m_spDevOmp5Impl->getNativeHandle());
+                void* memPtr = omp_target_alloc(static_cast<std::size_t>(widthBytes), dev.getNativeHandle());
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << " ptr: " << memPtr
-                          << " device: " << dev.m_spDevOmp5Impl->getNativeHandle() << std::endl;
+                          << " device: " << dev.getNativeHandle() << std::endl;
 #    endif
                 return BufOmp5<TElem, DimInt<1u>, TIdx>(dev, reinterpret_cast<TElem*>(memPtr), extent);
             }
@@ -233,11 +232,11 @@ namespace alpaka
 
                 const std::size_t size = static_cast<std::size_t>(getExtentVec(extent).prod()) * sizeof(TElem);
 
-                void* memPtr = omp_target_alloc(size, dev.m_spDevOmp5Impl->getNativeHandle());
+                void* memPtr = omp_target_alloc(size, dev.getNativeHandle());
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << " dim: " << TDim::value << " extent: " << getExtentVec(extent)
-                          << " ewb: " << size << " ptr: " << memPtr
-                          << " device: " << dev.m_spDevOmp5Impl->getNativeHandle() << std::endl;
+                          << " ewb: " << size << " ptr: " << memPtr << " device: " << dev.getNativeHandle()
+                          << std::endl;
 #    endif
                 return BufOmp5<TElem, TDim, TIdx>(dev, reinterpret_cast<TElem*>(memPtr), extent);
             }

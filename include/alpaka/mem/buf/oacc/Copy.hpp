@@ -338,8 +338,7 @@ namespace alpaka
 
 #    if _OPENACC >= 201510 && (!defined __GNUC__)
                 // acc_memcpy_device is only available since OpenACC2.5, but we want the tests to compile anyway
-                if(getDev(viewDst).m_spDevOaccImpl->getNativeHandle()
-                   == getDev(viewSrc).m_spDevOaccImpl->getNativeHandle())
+                if(getDev(viewDst).getNativeHandle() == getDev(viewSrc).getNativeHandle())
                 {
                     return alpaka::oacc::detail::
                         makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(

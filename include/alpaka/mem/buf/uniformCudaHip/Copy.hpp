@@ -96,7 +96,7 @@ namespace alpaka
                     m_srcMemNative,
                     sizeof(Elem<TViewDst>),
                     m_uniformMemCpyKind,
-                    queue.m_spQueueImpl->getNativeHandle()));
+                    queue.getNativeHandle()));
             }
 
         private:
@@ -185,7 +185,7 @@ namespace alpaka
                     m_srcMemNative,
                     static_cast<std::size_t>(m_extentWidthBytes),
                     m_uniformMemCpyKind,
-                    queue.m_spQueueImpl->getNativeHandle()));
+                    queue.getNativeHandle()));
             }
 
         private:
@@ -295,7 +295,7 @@ namespace alpaka
                     static_cast<std::size_t>(m_extentWidthBytes),
                     static_cast<std::size_t>(m_extentHeight),
                     m_uniformMemCpyKind,
-                    queue.m_spQueueImpl->getNativeHandle()));
+                    queue.getNativeHandle()));
             }
 
         private:
@@ -416,8 +416,8 @@ namespace alpaka
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(m_iDstDevice));
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(
-                    Memcpy3DAsync)(&uniformCudaHipMemCpy3DParms, queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(Memcpy3DAsync)(&uniformCudaHipMemCpy3DParms, queue.getNativeHandle()));
             }
 
         private:
@@ -597,8 +597,7 @@ namespace alpaka
 
                 task.enqueue(queue);
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle()));
             }
         };
 
@@ -632,8 +631,7 @@ namespace alpaka
 
                 task.enqueue(queue);
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle()));
             }
         };
 
@@ -667,8 +665,7 @@ namespace alpaka
 
                 task.enqueue(queue);
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle()));
             }
         };
 
@@ -702,8 +699,7 @@ namespace alpaka
 
                 task.enqueue(queue);
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(StreamSynchronize)(queue.m_spQueueImpl->getNativeHandle()));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle()));
             }
         };
     } // namespace traits
