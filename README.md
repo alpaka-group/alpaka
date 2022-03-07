@@ -123,11 +123,13 @@ Introduction
 ------------
 
 For a quick introduction, feel free to playback the recording of our presentation at
-[GTC 2016](http://mygtc.gputechconf.com/quicklink/858sI36):
+[GTC 2016](https://www.nvidia.com/gtc/):
 
  - E. Zenker, R. Widera, G. Juckeland et al.,
    *Porting the Plasma Simulation PIConGPU to Heterogeneous Architectures with Alpaka*,
-   [video link (39 min)](http://on-demand.gputechconf.com/gtc/2016/video/S6298.html)
+   [video link (39 min)](http://on-demand.gputechconf.com/gtc/2016/video/S6298.html),
+   [slides (PDF)](https://on-demand.gputechconf.com/gtc/2016/presentation/s6298-erik-zenker-porting-the-plasma.pdf),
+   [DOI:10.5281/zenodo.6336086](https://doi.org/10.5281/zenodo.6336086)
 
 
 Citing alpaka
