@@ -42,6 +42,7 @@ linux_nvcc-11.3_clang-8_release:
     ALPAKA_CI_CLANG_VER: 8
     ALPAKA_BOOST_VERSION: 1.74.0
     ALPAKA_CI_CMAKE_VER: 3.20.0
+    ALPAKA_CI_STDLIB: libc++
     CMAKE_CUDA_COMPILER: nvcc
   stage: stageCompile0
 
