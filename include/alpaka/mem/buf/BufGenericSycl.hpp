@@ -41,11 +41,7 @@ namespace alpaka::experimental
     public:
         //! Constructor
         template<typename TExtent>
-        BufGenericSycl(
-            TDev const& dev,
-            sycl::buffer<TElem, TDim::value> buffer,
-            TIdx const& pitchBytes,
-            TExtent const& extent)
+        BufGenericSycl(TDev const& dev, sycl::buffer<TElem, TDim::value> buffer, TExtent const& extent)
             : m_dev{dev}
             , m_extentElements{getExtentVecEnd<TDim>(extent)}
             , m_buffer{buffer}
@@ -158,6 +154,7 @@ namespace alpaka::traits
     {
         template<typename TExtent>
         static auto allocBuf(experimental::DevGenericSycl<TPltf> const& dev, TExtent const& ext)
+            -> experimental::BufGenericSycl<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -171,10 +168,7 @@ namespace alpaka::traits
 #    endif
 
                 auto const range = sycl::range<1>{width};
-                return experimental::BufGenericSycl<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>{
-                    dev,
-                    sycl::buffer<TElem, 1>{range},
-                    ((TDim::value == 0) ? Vec<alpaka::DimInt<0u>, TIdx>{} : ext)};
+                return {dev, sycl::buffer<TElem, 1>{range}, ext};
             }
             else if constexpr(TDim::value == 2)
             {
@@ -188,10 +182,7 @@ namespace alpaka::traits
 #    endif
 
                 auto const range = sycl::range<2>{width, height};
-                return experimental::BufGenericSycl<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>{
-                    dev,
-                    sycl::buffer<TElem, 2>{range},
-                    ext};
+                return {dev, sycl::buffer<TElem, 2>{range}, ext};
             }
             else if constexpr(TDim::value == 3)
             {
@@ -206,10 +197,7 @@ namespace alpaka::traits
 #    endif
 
                 auto const range = sycl::range<3>{width, height, depth};
-                return experimental::BufGenericSycl<TElem, TDim, TIdx, experimental::DevGenericSycl<TPltf>>{
-                    dev,
-                    sycl::buffer<TElem, 3>{range},
-                    ext};
+                return {dev, sycl::buffer<TElem, 3>{range}, ext};
             }
         }
     };
