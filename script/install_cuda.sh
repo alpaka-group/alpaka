@@ -104,14 +104,22 @@ then
 
     travis_retry sudo apt-get -y --quiet update
 
+
+    # nvcc has problems with clang as host compiler and libstdc++ 9.4, so use 9.3 instead
+    LIBSTDCXX=
+    if [ "${CMAKE_CUDA_COMPILER}" == "nvcc"  ] && [[ "${CXX}" == "clang"* ]] && [[ "$(cat /etc/os-release)" == *"20.04"* ]]
+    then
+        LIBSTDCXX="g++-9=9.3.0-10ubuntu2"
+    fi
+
     # Install CUDA
     # Currently we do not install CUDA fully: sudo apt-get --quiet -y install cuda
     # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
     if (( "${ALPAKA_CUDA_VER_MAJOR}" >= 11 ))
     then
-      sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" libcurand-"${ALPAKA_CI_CUDA_VERSION}" libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}"
+      sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install $LIBSTDCXX cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" libcurand-"${ALPAKA_CI_CUDA_VERSION}" libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}"
     else
-      sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-core-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-dev-"${ALPAKA_CI_CUDA_VERSION}"
+      sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install $LIBSTDCXX cuda-core-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-dev-"${ALPAKA_CI_CUDA_VERSION}"
     fi
     sudo ln -s /usr/local/cuda-"${ALPAKA_CI_CUDA_VERSION}" /usr/local/cuda
     export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
