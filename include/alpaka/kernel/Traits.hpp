@@ -223,6 +223,9 @@ namespace alpaka
         detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
 
         static_assert(
+            (std::is_trivially_copyable_v<std::decay_t<TArgs>> && ...),
+            "Kernel arguments must be trivially copyable!");
+        static_assert(
             Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
             "The dimensions of TAcc and TWorkDiv have to be identical!");
         static_assert(
