@@ -74,7 +74,8 @@ namespace alpaka
                 // -> No need to synchronize here.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventDestroy)(m_UniformCudaHipEvent));
             }
-            auto getNativeHandle() const noexcept
+
+            [[nodiscard]] auto getNativeHandle() const noexcept
             {
                 return m_UniformCudaHipEvent;
             }
@@ -106,7 +107,8 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        auto getNativeHandle() const noexcept
+
+        [[nodiscard]] auto getNativeHandle() const noexcept
         {
             return m_spEventImpl->getNativeHandle();
         }
@@ -242,12 +244,11 @@ namespace alpaka
         template<>
         struct NativeHandle<EventUniformCudaHipRt>
         {
-            static auto getNativeHandle(EventUniformCudaHipRt const& event)
+            [[nodiscard]] static auto getNativeHandle(EventUniformCudaHipRt const& event)
             {
                 return event.getNativeHandle();
             }
         };
-
     } // namespace traits
 } // namespace alpaka
 

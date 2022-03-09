@@ -57,7 +57,8 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-        auto getNativeHandle() const noexcept
+
+        [[nodiscard]] auto getNativeHandle() const noexcept -> int
         {
             return m_iDevice;
         }
@@ -170,7 +171,7 @@ namespace alpaka
         template<>
         struct NativeHandle<DevUniformCudaHipRt>
         {
-            static auto getNativeHandle(DevUniformCudaHipRt const& dev)
+            [[nodiscard]] static auto getNativeHandle(DevUniformCudaHipRt const& dev)
             {
                 return dev.getNativeHandle();
             }

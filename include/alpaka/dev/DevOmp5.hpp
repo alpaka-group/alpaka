@@ -90,7 +90,7 @@ namespace alpaka
                 m_queues.push_back(spQueue);
             }
 
-            auto getNativeHandle() const noexcept -> int
+            [[nodiscard]] auto getNativeHandle() const noexcept -> int
             {
                 return m_iDevice;
             }
@@ -244,7 +244,7 @@ namespace alpaka
         template<>
         struct NativeHandle<DevOmp5>
         {
-            static auto getNativeHandle(DevOmp5 const& dev)
+            [[nodiscard]] static auto getNativeHandle(DevOmp5 const& dev)
             {
                 return dev.getNativeHandle();
             }

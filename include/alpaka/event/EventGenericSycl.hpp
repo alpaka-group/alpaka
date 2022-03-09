@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2022 Jan Stephan, Antonio Di Pilato
  *
  * This file is part of Alpaka.
  *
@@ -45,7 +45,19 @@ namespace alpaka::experimental
             return !(lhs == rhs);
         }
 
+        [[nodiscard]] auto getNativeHandle() const
+        {
+            return m_event;
+        }
+
+        void setEvent(sycl::event const& event)
+        {
+            m_event = event;
+        }
+
         TDev m_dev;
+
+    private:
         sycl::event m_event{};
     };
 } // namespace alpaka::experimental
@@ -68,7 +80,8 @@ namespace alpaka::traits
     {
         static auto isComplete(experimental::EventGenericSycl<TDev> const& event)
         {
-            const auto status = event.m_event.template get_info<sycl::info::event::command_execution_status>();
+            const auto status
+                = event.getNativeHandle().template get_info<sycl::info::event::command_execution_status>();
             return (status == sycl::info::event_command_status::complete);
         }
     };
@@ -81,7 +94,7 @@ namespace alpaka::traits
             experimental::QueueGenericSyclNonBlocking<TDev>& queue,
             experimental::EventGenericSycl<TDev>& event)
         {
-            event.m_event = queue.m_impl->get_last_event();
+            event.setEvent(queue.m_impl->get_last_event());
         }
     };
 
@@ -93,7 +106,7 @@ namespace alpaka::traits
             experimental::QueueGenericSyclBlocking<TDev>& queue,
             experimental::EventGenericSycl<TDev>& event)
         {
-            event.m_event = queue.m_impl->get_last_event();
+            event.setEvent(queue.m_impl->get_last_event());
         }
     };
 
@@ -106,7 +119,7 @@ namespace alpaka::traits
     {
         static auto currentThreadWaitFor(experimental::EventGenericSycl<TDev> const& event)
         {
-            event.m_event.wait_and_throw();
+            event.getNativeHandle().wait_and_throw();
         }
     };
 
@@ -118,7 +131,7 @@ namespace alpaka::traits
             experimental::QueueGenericSyclNonBlocking<TDev>& queue,
             experimental::EventGenericSycl<TDev> const& event)
         {
-            queue.m_impl->register_dependency(event.m_event);
+            queue.m_impl->register_dependency(event.getNativeHandle());
         }
     };
 
@@ -130,7 +143,7 @@ namespace alpaka::traits
             experimental::QueueGenericSyclBlocking<TDev>& queue,
             experimental::EventGenericSycl<TDev> const& event)
         {
-            queue.m_impl->register_dependency(event.m_event);
+            queue.m_impl->register_dependency(event.getNativeHandle());
         }
     };
 
@@ -143,7 +156,17 @@ namespace alpaka::traits
     {
         static auto waiterWaitFor(TDev& dev, experimental::EventGenericSycl<TDev> const& event)
         {
-            dev.m_impl->register_dependency(event.m_event);
+            dev.m_impl->register_dependency(event.getNativeHandle());
+        }
+    };
+
+    //! The SYCL device event native handle trait specialization.
+    template<TDev>
+    struct NativeHandle<experimental::EventGenericSycl<TDev>>
+    {
+        [[nodiscard]] static auto getNativeHandle(experimental::EventGenericSycl<TDev> const& event)
+        {
+            return event.getNativeHandle();
         }
     };
 } // namespace alpaka::traits

@@ -1,4 +1,5 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+ * Antonio Di Pilato
  *
  * This file is part of alpaka.
  *
@@ -167,11 +168,12 @@ namespace alpaka
                 t.detach();
             }
         };
-        //! The CUDA/HIP RT blocking queue native handle trait specialization.
+
+        //! The CUDA/HIP RT non-blocking queue native handle trait specialization.
         template<>
         struct NativeHandle<QueueUniformCudaHipRtNonBlocking>
         {
-            static auto getNativeHandle(QueueUniformCudaHipRtNonBlocking const& queue)
+            [[nodiscard]] static auto getNativeHandle(QueueUniformCudaHipRtNonBlocking const& queue)
             {
                 return queue.getNativeHandle();
             }

@@ -122,7 +122,7 @@ namespace alpaka
             m_spDevCpuImpl->registerQueue(spQueue);
         }
 
-        auto getNativeHandle() const noexcept
+        [[nodiscard]] auto getNativeHandle() const noexcept
         {
             return 0;
         }
@@ -188,7 +188,7 @@ namespace alpaka
         template<>
         struct NativeHandle<DevCpu>
         {
-            static auto getNativeHandle(DevCpu const& dev)
+            [[nodiscard]] static auto getNativeHandle(DevCpu const& dev)
             {
                 return dev.getNativeHandle();
             }
