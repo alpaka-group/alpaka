@@ -36,7 +36,7 @@ namespace alpaka
         /* ranges is not a constexpr, so that it's accessible via for loop*/                                          \
         static constexpr Arity arity = ARITY;                                                                         \
         static constexpr size_t arity_nr = static_cast<size_t>(ARITY);                                                \
-        const Range ranges[arity_nr] = {__VA_ARGS__};                                                                 \
+        Range ranges[arity_nr] = {__VA_ARGS__};                                                                       \
                                                                                                                       \
         ALPAKA_NO_HOST_ACC_WARNING                                                                                    \
         template<                                                                                                     \

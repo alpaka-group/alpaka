@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -122,10 +122,10 @@ namespace alpaka::test
             }
 
         private:
-            Elem* const m_nativePtr;
+            Elem* m_nativePtr;
             Idx m_currentIdx;
-            Vec<Dim, Idx> const m_extents;
-            Vec<Dim, Idx> const m_pitchBytes;
+            Vec<Dim, Idx> m_extents;
+            Vec<Dim, Idx> m_pitchBytes;
         };
 #if BOOST_COMP_GNUC
 #    pragma GCC diagnostic pop
