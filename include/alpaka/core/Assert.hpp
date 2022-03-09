@@ -14,7 +14,7 @@
 #include <cassert>
 #include <type_traits>
 
-#define ALPAKA_ASSERT(EXPRESSION) assert(EXPRESSION)
+#define ALPAKA_ASSERT(...) assert(__VA_ARGS__)
 
 #if defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) || defined(SYCL_EXT_ONEAPI_ASSERT)
 #    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION) ALPAKA_ASSERT(EXPRESSION)
