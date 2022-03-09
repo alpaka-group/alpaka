@@ -125,12 +125,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1Idb1d013e6e562d20ba2fa163c625e24a.html">CheckFnReturnType&lt; TAcc, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptUniformCudaHip, TAcc &gt;::value &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateCast.html">CreateCast</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the given value for each index.  <a href="structalpaka_1_1detail_1_1CreateCast.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateConcat.html">CreateConcat</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the value at the index from the back of the vector.  <a href="structalpaka_1_1detail_1_1CreateConcat.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateExtent.html">CreateExtent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the extent for each index.  <a href="structalpaka_1_1detail_1_1CreateExtent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,12 +133,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreatePitchBytes.html">CreatePitchBytes</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class with a create method that returns the pitch for each index.  <a href="structalpaka_1_1detail_1_1CreatePitchBytes.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateReverse.html">CreateReverse</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the value at the index from the back of the vector.  <a href="structalpaka_1_1detail_1_1CreateReverse.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to create a <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> by applying a binary operation onto the corresponding elements of two input vectors.  <a href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1MapIdx.html">MapIdx</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a linear index to a N dimensional index.  <a href="structalpaka_1_1detail_1_1MapIdx.html#details">More...</a><br /></td></tr>
@@ -300,27 +288,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a8d6ec05ae3944637016495c02a9accfd"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
-<tr class="memitem:a8d6ec05ae3944637016495c02a9accfd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a8d6ec05ae3944637016495c02a9accfd">CreateVecFromTwoIndexedVecsGreater</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::greater, Tidx &gt;</td></tr>
-<tr class="separator:a8d6ec05ae3944637016495c02a9accfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a757e78323048841b8ae45c2b57853a9f"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
-<tr class="memitem:a757e78323048841b8ae45c2b57853a9f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a757e78323048841b8ae45c2b57853a9f">CreateVecFromTwoIndexedVecsGreaterEqual</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::greater_equal, Tidx &gt;</td></tr>
-<tr class="separator:a757e78323048841b8ae45c2b57853a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5da8c2bc9876268abc9532881f2e7e0a"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
-<tr class="memitem:a5da8c2bc9876268abc9532881f2e7e0a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a5da8c2bc9876268abc9532881f2e7e0a">CreateVecFromTwoIndexedVecsLess</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::less, Tidx &gt;</td></tr>
-<tr class="separator:a5da8c2bc9876268abc9532881f2e7e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bd37856b63169669529a729d31c2ad5"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
-<tr class="memitem:a8bd37856b63169669529a729d31c2ad5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a8bd37856b63169669529a729d31c2ad5">CreateVecFromTwoIndexedVecsLessEqual</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::less_equal, Tidx &gt;</td></tr>
-<tr class="separator:a8bd37856b63169669529a729d31c2ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb74ae69096485ab6f6ab08f2dee51b5"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
-<tr class="memitem:abb74ae69096485ab6f6ab08f2dee51b5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#abb74ae69096485ab6f6ab08f2dee51b5">CreateVecFromTwoIndexedVecsMinus</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::minus, Tidx &gt;</td></tr>
-<tr class="separator:abb74ae69096485ab6f6ab08f2dee51b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64055bd293fd423893e282e95c5f8e3d"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
-<tr class="memitem:a64055bd293fd423893e282e95c5f8e3d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a64055bd293fd423893e282e95c5f8e3d">CreateVecFromTwoIndexedVecsMul</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::multiplies, Tidx &gt;</td></tr>
-<tr class="separator:a64055bd293fd423893e282e95c5f8e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11444be4e8469bafb6493553b09ab17c"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx&gt; </td></tr>
-<tr class="memitem:a11444be4e8469bafb6493553b09ab17c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a11444be4e8469bafb6493553b09ab17c">CreateVecFromTwoIndexedVecsPlus</a> = <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; std::plus, Tidx &gt;</td></tr>
-<tr class="separator:a11444be4e8469bafb6493553b09ab17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8889b3386f7d3a4beaa306743c0672f6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a8889b3386f7d3a4beaa306743c0672f6">CudaHipBuiltinTypes</a> = <a class="el" href="namespacealpaka_1_1meta.html#a8ec9f76ad5048e654936626c56845f2c">meta::Concatenate</a>&lt; <a class="el" href="namespacealpaka_1_1detail.html#a867e1d281e084bbeb3a56bba70306a21">CudaHipBuiltinTypes1</a>, <a class="el" href="namespacealpaka_1_1detail.html#a5fbc42e51c833856a03a2a7f3956b23f">CudaHipBuiltinTypes2</a>, <a class="el" href="namespacealpaka_1_1detail.html#a0f14f07efa484fa7877ced1a4e30ea04">CudaHipBuiltinTypes3</a>, <a class="el" href="namespacealpaka_1_1detail.html#af86733067e98303a45b14e22a172a7f0">CudaHipBuiltinTypes4</a> &gt;</td></tr>
 <tr class="separator:a8889b3386f7d3a4beaa306743c0672f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a867e1d281e084bbeb3a56bba70306a21"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a867e1d281e084bbeb3a56bba70306a21">CudaHipBuiltinTypes1</a> = std::tuple&lt; char1, double1, float1, int1, long1, longlong1, short1, uchar1, uint1, ulong1, ulonglong1, ushort1 &gt;</td></tr>
@@ -379,132 +346,6 @@ Variables</h2></td></tr>
 <tr class="separator:a53d974be85b2025188d0033093f92cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a8d6ec05ae3944637016495c02a9accfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d6ec05ae3944637016495c02a9accfd">&#9670;&nbsp;</a></span>CreateVecFromTwoIndexedVecsGreater</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a8d6ec05ae3944637016495c02a9accfd">alpaka::detail::CreateVecFromTwoIndexedVecsGreater</a> = typedef <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt;std::greater, Tidx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00395">395</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a757e78323048841b8ae45c2b57853a9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a757e78323048841b8ae45c2b57853a9f">&#9670;&nbsp;</a></span>CreateVecFromTwoIndexedVecsGreaterEqual</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a757e78323048841b8ae45c2b57853a9f">alpaka::detail::CreateVecFromTwoIndexedVecsGreaterEqual</a> = typedef <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt;std::greater_equal, Tidx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00381">381</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a5da8c2bc9876268abc9532881f2e7e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da8c2bc9876268abc9532881f2e7e0a">&#9670;&nbsp;</a></span>CreateVecFromTwoIndexedVecsLess</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a5da8c2bc9876268abc9532881f2e7e0a">alpaka::detail::CreateVecFromTwoIndexedVecsLess</a> = typedef <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt;std::less, Tidx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00351">351</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a8bd37856b63169669529a729d31c2ad5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bd37856b63169669529a729d31c2ad5">&#9670;&nbsp;</a></span>CreateVecFromTwoIndexedVecsLessEqual</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a8bd37856b63169669529a729d31c2ad5">alpaka::detail::CreateVecFromTwoIndexedVecsLessEqual</a> = typedef <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt;std::less_equal, Tidx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00366">366</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
-
-</div>
-</div>
-<a id="abb74ae69096485ab6f6ab08f2dee51b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb74ae69096485ab6f6ab08f2dee51b5">&#9670;&nbsp;</a></span>CreateVecFromTwoIndexedVecsMinus</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#abb74ae69096485ab6f6ab08f2dee51b5">alpaka::detail::CreateVecFromTwoIndexedVecsMinus</a> = typedef <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt;std::minus, Tidx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00323">323</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a64055bd293fd423893e282e95c5f8e3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64055bd293fd423893e282e95c5f8e3d">&#9670;&nbsp;</a></span>CreateVecFromTwoIndexedVecsMul</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a64055bd293fd423893e282e95c5f8e3d">alpaka::detail::CreateVecFromTwoIndexedVecsMul</a> = typedef <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt;std::multiplies, Tidx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00337">337</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a11444be4e8469bafb6493553b09ab17c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11444be4e8469bafb6493553b09ab17c">&#9670;&nbsp;</a></span>CreateVecFromTwoIndexedVecsPlus</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1detail.html#a11444be4e8469bafb6493553b09ab17c">alpaka::detail::CreateVecFromTwoIndexedVecsPlus</a> = typedef <a class="el" href="structalpaka_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt;std::plus, Tidx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00309">309</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a8889b3386f7d3a4beaa306743c0672f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8889b3386f7d3a4beaa306743c0672f6">&#9670;&nbsp;</a></span>CudaHipBuiltinTypes</h2>
 
@@ -736,7 +577,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
 
 <p>Calculate the pitches purely from the extents. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00343">343</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00345">345</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -977,7 +818,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Mar 8 2022 19:51:11 for alpaka by
+    <li class="footer">Generated on Wed Mar 9 2022 09:03:09 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -208,15 +208,15 @@ $(document).ready(function(){initNavTree('AccOacc_8hpp_source.html',''); initRes
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                <span class="keywordflow">return</span> {<span class="comment">// m_multiProcessorCount</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(gridBlockCountMax),</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                        <span class="comment">// m_gridBlockExtentMax</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                        <a class="code" href="classalpaka_1_1Vec.html#ae34b38c137f62df4df21d58a0bac8ad2">Vec&lt;TDim, TIdx&gt;::all</a>(<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>()),</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                        <a class="code" href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">Vec&lt;TDim, TIdx&gt;::all</a>(<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>()),</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                        <span class="comment">// m_gridBlockCountMax</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                        <span class="comment">// m_blockThreadExtentMax</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                        <a class="code" href="classalpaka_1_1Vec.html#ae34b38c137f62df4df21d58a0bac8ad2">Vec&lt;TDim, TIdx&gt;::all</a>(blockThreadCountMax),</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                        <a class="code" href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">Vec&lt;TDim, TIdx&gt;::all</a>(blockThreadCountMax),</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                        <span class="comment">// m_blockThreadCountMax</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                        blockThreadCountMax,</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                        <span class="comment">// m_threadElemExtentMax</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                        <a class="code" href="classalpaka_1_1Vec.html#ae34b38c137f62df4df21d58a0bac8ad2">Vec&lt;TDim, TIdx&gt;::all</a>(<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>()),</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                        <a class="code" href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">Vec&lt;TDim, TIdx&gt;::all</a>(<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>()),</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                        <span class="comment">// m_threadElemCountMax</span></div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                        <span class="comment">// m_sharedMemSizeBytes</span></div>
@@ -440,6 +440,7 @@ $(document).ready(function(){initNavTree('AccOacc_8hpp_source.html',''); initRes
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="akernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1Vec_html_a63e2be5b9e7ed693e6185ebdfccec584"><div class="ttname"><a href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">alpaka::Vec&lt; TDim, TIdx &gt;::all</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING static constexpr ALPAKA_FN_HOST_ACC auto all(TIdx const &amp;val) -&gt; Vec&lt; TDim, TIdx &gt;</div><div class="ttdoc">Single value constructor.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00113">Vec.hpp:113</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aIntrinsicFallback_8hpp_html"><div class="ttname"><a href="IntrinsicFallback_8hpp.html">IntrinsicFallback.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_ac486a72c51166125fb227c7af1884209"><div class="ttname"><a href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt</a></div><div class="ttdeci">std::integral_constant&lt; std::size_t, N &gt; DimInt</div><div class="ttdef"><b>Definition:</b> <a href="DimIntegralConst_8hpp_source.html#l00020">DimIntegralConst.hpp:20</a></div></div>
@@ -454,7 +455,6 @@ $(document).ready(function(){initNavTree('AccOacc_8hpp_source.html',''); initRes
 <div class="ttc" id="aDevOacc_8hpp_html"><div class="ttname"><a href="DevOacc_8hpp.html">DevOacc.hpp</a></div></div>
 <div class="ttc" id="aTimeStdLib_8hpp_html"><div class="ttname"><a href="TimeStdLib_8hpp.html">TimeStdLib.hpp</a></div></div>
 <div class="ttc" id="aRandDefault_8hpp_html"><div class="ttname"><a href="RandDefault_8hpp.html">RandDefault.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1Vec_html_ae34b38c137f62df4df21d58a0bac8ad2"><div class="ttname"><a href="classalpaka_1_1Vec.html#ae34b38c137f62df4df21d58a0bac8ad2">alpaka::Vec&lt; TDim, TIdx &gt;::all</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING static ALPAKA_FN_HOST_ACC auto all(TIdx const &amp;val) -&gt; Vec&lt; TDim, TIdx &gt;</div><div class="ttdoc">Single value constructor.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00132">Vec.hpp:132</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_ae467143f5deed4ecdeb5de6ad22a0121"><div class="ttname"><a href="namespacealpaka.html#ae467143f5deed4ecdeb5de6ad22a0121">alpaka::getIdx</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto getIdx(TIdx const &amp;idx, TWorkDiv const &amp;workDiv) -&gt; Vec&lt; Dim&lt; TWorkDiv &gt;, Idx&lt; TIdx &gt;&gt;</div><div class="ttdoc">Get the indices requested.</div><div class="ttdef"><b>Definition:</b> <a href="Accessors_8hpp_source.html#l00028">Accessors.hpp:28</a></div></div>
 <div class="ttc" id="aMemFenceOacc_8hpp_html"><div class="ttname"><a href="MemFenceOacc_8hpp.html">MemFenceOacc.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a64392e68c8cc7a290aec236751415cf3"><div class="ttname"><a href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdoc">Creates a kernel execution task.</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2Traits_8hpp_source.html#l00220">Traits.hpp:220</a></div></div>
@@ -476,7 +476,7 @@ $(document).ready(function(){initNavTree('AccOacc_8hpp_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccOacc_8hpp.html">AccOacc.hpp</a></li>
-    <li class="footer">Generated on Tue Mar 8 2022 19:51:09 for alpaka by
+    <li class="footer">Generated on Wed Mar 9 2022 09:03:07 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
