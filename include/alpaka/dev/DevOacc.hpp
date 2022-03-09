@@ -88,7 +88,7 @@ namespace alpaka
                 m_queues.push_back(std::move(spQueue));
             }
 
-            int getNativeHandle() const noexcept
+            [[nodiscard]] auto getNativeHandle() const noexcept -> int
             {
                 return m_iDevice;
             }
@@ -177,11 +177,13 @@ namespace alpaka
         {
             return getNativeHandle() == rhs.getNativeHandle();
         }
+
         ALPAKA_FN_HOST auto operator!=(DevOacc const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
-        auto getNativeHandle() const noexcept -> int
+
+        [[nodiscard]] auto getNativeHandle() const noexcept -> int
         {
             return m_devOaccImpl->getNativeHandle();
         }
@@ -278,7 +280,7 @@ namespace alpaka
         template<>
         struct NativeHandle<DevOacc>
         {
-            static auto getNativeHandle(DevOacc const& dev)
+            [[nodiscard]] static auto getNativeHandle(DevOacc const& dev)
             {
                 return dev.getNativeHandle();
             }

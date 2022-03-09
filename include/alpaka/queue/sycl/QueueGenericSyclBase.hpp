@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2022 Jan Stephan, Antonio Di Pilato
  *
  * This file is part of Alpaka.
  *
@@ -151,11 +151,18 @@ namespace alpaka::experimental::detail
                 wait();
         }
 
-        sycl::queue m_queue;
+        [[nodiscard]] auto getNativeHandle() const noexcept
+        {
+            return m_queue;
+        }
+
         std::vector<sycl::event> m_dependencies;
         sycl::event m_last_event;
         sycl::buffer<int, 1> m_fence_dummy{sycl::range<1>{1}};
         std::shared_mutex mutable m_mutex;
+
+    private:
+        sycl::queue m_queue;
     };
 
     template<typename TDev, bool TBlocking>
@@ -164,20 +171,26 @@ namespace alpaka::experimental::detail
     public:
         QueueGenericSyclBase(TDev const& dev)
             : m_dev{dev}
-            , m_impl{
-                  std::make_shared<detail::QueueGenericSyclImpl>(dev.m_impl->get_context(), dev.m_impl->get_device())}
+            , m_impl{std::make_shared<detail::QueueGenericSyclImpl>(
+                  dev.getNativeHandle().second,
+                  dev.getNativeHandle().first)}
         {
             m_dev.m_impl->register_queue(m_impl);
         }
 
         friend auto operator==(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
         {
-            return (lhs.m_dev == rhs.m_dev) && (lhs.m_event == rhs.m_event);
+            return (lhs.m_dev == rhs.m_dev) && (lhs.m_impl == rhs.m_impl);
         }
 
         friend auto operator!=(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
         {
             return !(lhs == rhs);
+        }
+
+        [[nodiscard]] auto getNativeHandle() const noexcept
+        {
+            return m_impl->getNativeHandle();
         }
 
         TDev m_dev;
@@ -253,6 +266,17 @@ namespace alpaka::traits
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
             queue.m_impl->wait();
+        }
+    };
+
+    //! The SYCL queue native handle trait specialization.
+    template<typename TDev, bool TBlocking>
+    struct NativeHandle<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>>
+    {
+        [[nodiscard]] static auto getNativeHandle(
+            experimental::detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
+        {
+            return queue.getNativeHandle();
         }
     };
 } // namespace alpaka::traits

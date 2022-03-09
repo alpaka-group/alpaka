@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2022 Jan Stephan, Antonio Di Pilato
  *
  * This file is part of Alpaka.
  *
@@ -134,7 +134,7 @@ namespace alpaka::traits
     {
         static auto getAccDevProps(typename DevType<TAcc<TDim, TIdx>>::type const& dev) -> AccDevProps<TDim, TIdx>
         {
-            auto const device = dev.m_impl->get_device();
+            auto const device = dev.getNativeHandle().first;
             auto max_threads_dim = device.template get_info<sycl::info::device::max_work_item_sizes>();
             return {// m_multiProcessorCount
                     alpaka::core::clipCast<TIdx>(device.template get_info<sycl::info::device::max_compute_units>()),

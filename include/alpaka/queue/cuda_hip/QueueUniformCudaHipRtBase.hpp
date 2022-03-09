@@ -69,7 +69,8 @@ namespace alpaka
                     // -> No need to synchronize here.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamDestroy)(m_UniformCudaHipQueue));
                 }
-                auto getNativeHandle() const noexcept
+
+                [[nodiscard]] auto getNativeHandle() const noexcept
                 {
                     return m_UniformCudaHipQueue;
                 }
@@ -99,7 +100,8 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
-                auto getNativeHandle() const noexcept
+
+                [[nodiscard]] auto getNativeHandle() const noexcept
                 {
                     return m_spQueueImpl->getNativeHandle();
                 }

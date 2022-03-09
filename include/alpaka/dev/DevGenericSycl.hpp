@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2022 Jan Stephan, Antonio Di Pilato
  *
  * This file is part of Alpaka.
  *
@@ -98,6 +98,7 @@ namespace alpaka::experimental
                 return m_context;
             }
 
+        private:
             sycl::device m_device;
             sycl::context m_context;
             std::vector<std::weak_ptr<QueueGenericSyclImpl>> m_queues;
@@ -119,12 +120,17 @@ namespace alpaka::experimental
 
         friend auto operator==(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
         {
-            return (lhs.m_impl->m_device == rhs.m_impl->m_device) && (lhs.m_impl->m_context == rhs.m_impl->m_context);
+            return (lhs.m_impl == rhs.m_impl);
         }
 
         friend auto operator!=(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
         {
             return !(lhs == rhs);
+        }
+
+        [[nodiscard]] auto getNativeHandle() const -> std::pair<sycl::device, sycl::context>
+        {
+            return std::make_pair(m_impl->get_device(), m_impl->get_context());
         }
 
         std::shared_ptr<detail::DevGenericSyclImpl> m_impl;
@@ -139,7 +145,7 @@ namespace alpaka::traits
     {
         static auto getName(experimental::DevGenericSycl<TPltf> const& dev) -> std::string
         {
-            auto const device = dev.m_impl->get_device();
+            auto const device = dev.getNativeHandle().first;
             return device.template get_info<sycl::info::device::name>();
         }
     };
@@ -150,7 +156,7 @@ namespace alpaka::traits
     {
         static auto getMemBytes(experimental::DevGenericSycl<TPltf> const& dev) -> std::size_t
         {
-            auto const device = dev.m_impl->get_device();
+            auto const device = dev.getNativeHandle().first;
             return device.template get_info<sycl::info::device::global_mem_size>();
         }
     };
@@ -174,7 +180,7 @@ namespace alpaka::traits
         {
             // TODO: This trait should return a vector instead. Not everything is a NVIDIA GPU. For now we report
             // the smallest possible size.
-            const auto device = dev.m_impl->get_device();
+            const auto device = dev.getNativeHandle().first;
             const auto sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
             return *(std::min_element(std::begin(sizes), std::end(sizes)));
         }
@@ -194,9 +200,9 @@ namespace alpaka::traits
     template<typename TPltf>
     struct NativeHandle<experimental::DevGenericSycl<TPltf>>
     {
-        static auto getNativeHandle(experimental::DevGenericSycl<TPltf> const& dev)
+        [[nodiscard]] static auto getNativeHandle(experimental::DevGenericSycl<TPltf> const& dev)
         {
-            return dev.m_impl->get_device();
+            return dev.getNativeHandle();
         }
     };
 
