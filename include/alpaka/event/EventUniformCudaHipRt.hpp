@@ -72,7 +72,7 @@ namespace alpaka
                 // called, the function will return immediately and the resources associated with event will be
                 // released automatically once the device has completed event.
                 // -> No need to synchronize here.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventDestroy)(m_UniformCudaHipEvent));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ALPAKA_API_PREFIX(EventDestroy)(m_UniformCudaHipEvent));
             }
 
             [[nodiscard]] auto getNativeHandle() const noexcept

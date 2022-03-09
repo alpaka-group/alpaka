@@ -67,7 +67,7 @@ namespace alpaka
                     // function will return immediately and the resources associated with queue will be released
                     // automatically once the device has completed all work in queue.
                     // -> No need to synchronize here.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamDestroy)(m_UniformCudaHipQueue));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(ALPAKA_API_PREFIX(StreamDestroy)(m_UniformCudaHipQueue));
                 }
 
                 [[nodiscard]] auto getNativeHandle() const noexcept

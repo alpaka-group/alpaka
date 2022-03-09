@@ -292,15 +292,16 @@ namespace alpaka
                     },
                     task.m_args);
 
-#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                // Wait for the kernel execution to finish but do not check error return of this call.
-                // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom
-                // error message.
-                ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle());
-                std::string const msg(
-                    "'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
-                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-#        endif
+                if constexpr(ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL)
+                {
+                    // Wait for the kernel execution to finish but do not check error return of this call.
+                    // Do not use the alpaka::wait method because it checks the error itself but we want to give a
+                    // custom error message.
+                    std::ignore = ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle());
+                    auto const msg = std::string{
+                        "'execution of kernel: '" + std::string{typeid(TKernelFnObj).name()} + "' failed with"};
+                    ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<true>(msg.c_str(), __FILE__, __LINE__);
+                }
             }
         };
         //! The CUDA/HIP synchronous kernel enqueue trait specialization.
@@ -422,11 +423,12 @@ namespace alpaka
                 // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom
                 // error message.
                 std::ignore = ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle());
-#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                std::string const msg(
-                    "'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
-                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-#        endif
+                if constexpr(ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL)
+                {
+                    auto const msg = std::string{
+                        "'execution of kernel: '" + std::string{typeid(TKernelFnObj).name()} + "' failed with"};
+                    ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<true>(msg.c_str(), __FILE__, __LINE__);
+                }
             }
         };
     } // namespace traits

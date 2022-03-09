@@ -313,7 +313,7 @@ namespace alpaka::test
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Free the buffer.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaFree(m_devMem));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(cudaFree(m_devMem));
             }
 
             void trigger()
@@ -519,7 +519,7 @@ namespace alpaka::test
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 // Free the buffer.
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipFree(m_devMem));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(hipFree(m_devMem));
             }
 
             void trigger()

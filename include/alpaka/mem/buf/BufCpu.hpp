@@ -81,7 +81,18 @@ namespace alpaka
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 // Unpin this memory if it is currently pinned.
-                unpin(*this);
+                if(m_bPinned)
+                {
+                    try
+                    {
+                        unpin(*this); // May throw std::runtime_error
+                    }
+                    catch(std::runtime_error const& err)
+                    {
+                        std::cerr << "Caught runtime error while unpinning in ~BufCpuImpl(): " << err.what()
+                                  << std::endl;
+                    }
+                }
 #endif
                 // NOTE: m_pMem is allowed to be a nullptr here.
                 m_deleter(m_pMem);
