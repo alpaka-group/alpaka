@@ -316,6 +316,7 @@ namespace alpaka
                         return false;
                 return true;
             }
+            ALPAKA_UNREACHABLE({});
         }
 
         ALPAKA_NO_HOST_ACC_WARNING
