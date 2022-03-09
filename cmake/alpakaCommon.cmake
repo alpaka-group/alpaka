@@ -505,9 +505,14 @@ endif()
 # Find HIP.
 if(ALPAKA_ACC_GPU_HIP_ENABLE)
 
-    # minimal supported HIP version
+    # supported HIP version range
     set(_ALPAKA_HIP_MIN_VER 4.0)
-    find_package(hip "${_ALPAKA_HIP_MIN_VER}")
+    set(_ALPAKA_HIP_MAX_VER 5.0)
+    find_package(hip "${_ALPAKA_HIP_MAX_VER}")
+    if(NOT TARGET hip)
+        message(STATUS "Could not find HIP v${_ALPAKA_HIP_MAX_VER}. Now searching for HIP v${_ALPAKA_HIP_MIN_VER}")
+        find_package(hip "${_ALPAKA_HIP_MIN_VER}")
+    endif()
 
     if(NOT TARGET hip)
         message(FATAL_ERROR "Optional alpaka dependency HIP could not be found!")

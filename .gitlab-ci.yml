@@ -62,3 +62,4 @@ include:
   - local: '/script/gitlabci/job_hip4.2.yml'
   - local: '/script/gitlabci/job_hip4.3.yml'
   - local: '/script/gitlabci/job_hip4.5.yml'
+  - local: '/script/gitlabci/job_hip5.0.yml'
