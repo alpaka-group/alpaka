@@ -1,5 +1,13 @@
 var NAVTREEINDEX16 =
 {
+"structalpaka_1_1warp_1_1traits_1_1All_3_01WarpUniformCudaHipBuiltIn_01_4.html#adaca0a1776b58ca99f33d4f16ca9ae9f":[3,0,0,20,0,5,0],
+"structalpaka_1_1warp_1_1traits_1_1Any.html":[3,0,0,20,0,6],
+"structalpaka_1_1warp_1_1traits_1_1Any_3_01WarpSingleThread_01_4.html":[3,0,0,20,0,7],
+"structalpaka_1_1warp_1_1traits_1_1Any_3_01WarpSingleThread_01_4.html#a57cfe419d2602b964714869da13005d2":[3,0,0,20,0,7,0],
+"structalpaka_1_1warp_1_1traits_1_1Any_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,20,0,8],
+"structalpaka_1_1warp_1_1traits_1_1Any_3_01WarpUniformCudaHipBuiltIn_01_4.html#a2a08f0a1a65d69db6204c09de3f3106f":[3,0,0,20,0,8,0],
+"structalpaka_1_1warp_1_1traits_1_1Ballot.html":[3,0,0,20,0,9],
+"structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpSingleThread_01_4.html":[3,0,0,20,0,10],
 "structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpSingleThread_01_4.html#aa31e6f4574385b1528f895db5271a80c":[3,0,0,20,0,10,0],
 "structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,20,0,11],
 "structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html#a262da2e6390570387f16c873bdfa6fb2":[3,0,0,20,0,11,0],

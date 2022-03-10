@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"namespacealpaka_1_1concepts.html":[2,0,0,1],
+"namespacealpaka_1_1concepts.html":[3,0,0,1],
 "namespacealpaka_1_1concepts_1_1detail.html":[2,0,0,1,0],
 "namespacealpaka_1_1concepts_1_1detail.html":[3,0,0,1,0],
 "namespacealpaka_1_1core.html":[3,0,0,2],
@@ -22,8 +24,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1cuda.html":[2,0,0,4],
 "namespacealpaka_1_1cuda_1_1detail.html":[2,0,0,4,0],
 "namespacealpaka_1_1cuda_1_1traits.html":[2,0,0,4,1],
-"namespacealpaka_1_1detail.html":[2,0,0,5],
 "namespacealpaka_1_1detail.html":[3,0,0,5],
+"namespacealpaka_1_1detail.html":[2,0,0,5],
 "namespacealpaka_1_1experimental.html":[2,0,0,6],
 "namespacealpaka_1_1experimental.html":[3,0,0,6],
 "namespacealpaka_1_1experimental_1_1internal.html":[2,0,0,6,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1ConceptAtomicThreads.html":[3,0,0,70],
 "structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,71],
 "structalpaka_1_1ConceptBlockSharedSt.html":[3,0,0,72],
-"structalpaka_1_1ConceptBlockSync.html":[3,0,0,73],
-"structalpaka_1_1ConceptCurrentThreadWaitFor.html":[3,0,0,74],
-"structalpaka_1_1ConceptIdxBt.html":[3,0,0,75]
+"structalpaka_1_1ConceptBlockSync.html":[3,0,0,73]
 };

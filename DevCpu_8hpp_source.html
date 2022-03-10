@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('DevCpu_8hpp_source.html',''); initResi
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <a class="code" href="classalpaka_1_1DevCpu.html#ae269f36d7423c77cce925903d9ddd702">m_spDevCpuImpl</a>-&gt;registerQueue(spQueue);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482">  125</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482">getNativeHandle</a>() const noexcept</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482">  125</a></span>&#160;        [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482">getNativeHandle</a>() const noexcept</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        {</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
@@ -277,7 +277,7 @@ $(document).ready(function(){initNavTree('DevCpu_8hpp_source.html',''); initResi
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
 <div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1NativeHandle_3_01DevCpu_01_4.html">  189</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1NativeHandle.html">NativeHandle</a>&lt;<a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a>&gt;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        {</div>
-<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1NativeHandle_3_01DevCpu_01_4.html#aaa5be245780ffb18ad710c385983908f">  191</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1NativeHandle_3_01DevCpu_01_4.html#aaa5be245780ffb18ad710c385983908f">getNativeHandle</a>(<a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a> <span class="keyword">const</span>&amp; dev)</div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1NativeHandle_3_01DevCpu_01_4.html#aaa5be245780ffb18ad710c385983908f">  191</a></span>&#160;            [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1NativeHandle_3_01DevCpu_01_4.html#aaa5be245780ffb18ad710c385983908f">getNativeHandle</a>(<a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a> <span class="keyword">const</span>&amp; dev)</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            {</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                <span class="keywordflow">return</span> dev.<a class="code" href="classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482">getNativeHandle</a>();</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            }</div>
@@ -384,7 +384,7 @@ $(document).ready(function(){initNavTree('DevCpu_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="DevCpu_8hpp.html">DevCpu.hpp</a></li>
-    <li class="footer">Generated on Thu Mar 10 2022 08:56:32 for alpaka by
+    <li class="footer">Generated on Thu Mar 10 2022 09:25:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

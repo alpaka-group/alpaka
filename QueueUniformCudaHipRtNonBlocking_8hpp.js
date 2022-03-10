@@ -5,5 +5,6 @@ var QueueUniformCudaHipRtNonBlocking_8hpp =
     [ "Enqueue< QueueUniformCudaHipRtNonBlocking, TTask >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4" ],
     [ "CallbackSynchronizationData", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData" ],
     [ "EventType< QueueUniformCudaHipRtNonBlocking >", "structalpaka_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtNonBlocking_01_4.html", "structalpaka_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtNonBlocking_01_4" ],
+    [ "NativeHandle< QueueUniformCudaHipRtNonBlocking >", "structalpaka_1_1traits_1_1NativeHandle_3_01QueueUniformCudaHipRtNonBlocking_01_4.html", "structalpaka_1_1traits_1_1NativeHandle_3_01QueueUniformCudaHipRtNonBlocking_01_4" ],
     [ "QueueCudaRtNonBlocking", "QueueUniformCudaHipRtNonBlocking_8hpp.html#aebad4c35c3d61402485ed3c4524298db", null ]
 ];
