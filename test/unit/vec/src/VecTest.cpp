@@ -40,6 +40,8 @@ TEST_CASE("basicVecTraits", "[vec]")
     using Idx = std::size_t;
     using Vec = alpaka::Vec<Dim, Idx>;
 
+    STATIC_REQUIRE(std::is_trivially_copyable_v<Vec>);
+
     // constructor from Idx
     static constexpr Vec vec(static_cast<Idx>(0u), static_cast<Idx>(8u), static_cast<Idx>(15u));
 
