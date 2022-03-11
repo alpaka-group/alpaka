@@ -1,4 +1,4 @@
-/* Copyright 2021 Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -33,6 +33,15 @@ namespace alpaka
             static auto mem_fence(MemFenceOmp2Blocks const&, memory_scope::Block const&)
             {
                 // Only one thread per block allowed -> no memory fence required on block level
+            }
+        };
+
+        template<>
+        struct MemFence<MemFenceOmp2Blocks, memory_scope::Grid>
+        {
+            static auto mem_fence(MemFenceOmp2Blocks const&, memory_scope::Grid const&)
+            {
+#    pragma omp flush
             }
         };
 

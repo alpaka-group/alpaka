@@ -1,4 +1,4 @@
-/* Copyright 2021 Jan Stephan
+/* Copyright 2022 Jan Stephan, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -22,6 +22,11 @@ namespace alpaka
     {
         //! Memory fences are observed by all threads in the same block.
         struct Block
+        {
+        };
+
+        //! Memory fences are observed by all threads in the same grid.
+        struct Grid
         {
         };
 

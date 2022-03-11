@@ -44,6 +44,16 @@ namespace alpaka
         };
 
         template<>
+        struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Grid>
+        {
+            __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Grid const&)
+            {
+                // CUDA and HIP do not have a per-grid memory fence, so a device-level fence is used
+                __threadfence();
+            }
+        };
+
+        template<>
         struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Device>
         {
             __device__ static auto mem_fence(MemFenceUniformCudaHipBuiltIn const&, memory_scope::Device const&)
