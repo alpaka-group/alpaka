@@ -260,7 +260,8 @@ void runStrategy(Box& box)
         initRandomKernel,
         box.extentRand,
         ptrBufAccRand,
-        box.extentResult[0] / box.extentRand[0]); // == NUM_ROLLS; amount of work to be performed by each thread
+        static_cast<unsigned>(
+            box.extentResult[0] / box.extentRand[0])); // == NUM_ROLLS; amount of work to be performed by each thread
 
     alpaka::wait(box.queue);
 
