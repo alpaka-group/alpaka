@@ -14,7 +14,7 @@
 
 #include <catch2/catch.hpp>
 
-class DeviceFenceTestKernel
+class GridFenceTestKernel
 {
 public:
     template<typename TAcc>
@@ -26,12 +26,12 @@ public:
         if(idx == 0)
         {
             vars[0] = 10;
-            alpaka::mem_fence(acc, alpaka::memory_scope::Device{});
+            alpaka::mem_fence(acc, alpaka::memory_scope::Grid{});
             vars[1] = 20;
         }
 
         auto const b = vars[1];
-        alpaka::mem_fence(acc, alpaka::memory_scope::Device{});
+        alpaka::mem_fence(acc, alpaka::memory_scope::Grid{});
         auto const a = vars[0];
 
         // If the fence is working correctly, the following case can never happen
@@ -113,17 +113,15 @@ TEMPLATE_LIST_TEST_CASE("FenceTest", "[fence]", TestAccs)
     auto const numElements = Idx{2ul};
     auto const extent = alpaka::Vec<Dim, Idx>{numElements};
     auto vars_host = alpaka::allocBuf<int, Idx>(host, extent);
+    vars_host[0] = 1;
+    vars_host[1] = 2;
+
     auto vars_dev = alpaka::allocBuf<int, Idx>(dev, extent);
-
-    auto const pVarsHost = alpaka::getPtrNative(vars_host);
-    pVarsHost[0] = 1;
-    pVarsHost[1] = 2;
-
     alpaka::memcpy(queue, vars_dev, vars_host);
     alpaka::wait(queue);
 
-    DeviceFenceTestKernel deviceKernel;
-    REQUIRE(fixture(deviceKernel, alpaka::getPtrNative(vars_dev)));
+    GridFenceTestKernel gridKernel;
+    REQUIRE(fixture(gridKernel, vars_dev.data()));
 
     BlockFenceTestKernel blockKernel;
     REQUIRE(fixture(blockKernel));
