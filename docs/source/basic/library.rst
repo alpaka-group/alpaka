@@ -161,9 +161,10 @@ guarantees the following **for the local thread**  and regardless of global or s
 **Note**: ``alpaka::mem_fence`` does not guarantee that there will be no *LoadStore* reordering. Depending on the
 back-end, loads occurring before the fence may still be reordered with stores occurring after the fence.
 
-Memory fences can be issued on the block level (``alpaka::memory_scope::Block``) and the device level
-(``alpaka::memory_scope::Device``). Depending on the memory scope, the *StoreStore* order will be visible to other
-threads in the same block or the whole device.
+Memory fences can be issued on the block level (``alpaka::memory_scope::Block``), grid level
+(``alpaka::memory_scope::Grid``) and the device level (``alpaka::memory_scope::Device``).
+Depending on the memory scope, the *StoreStore* order will be visible to other threads in the same block, in the same grid
+(_i.e._ within the same kernel launch), or on the whole device (_i.e._ across concurrent kernel launches).
 
 Some accelerators (like GPUs) follow weaker cache coherency rules than x86 CPUs. In order to avoid storing to (or loading
 from) a cache or register it is necessary to prefix all observed buffers with `ALPAKA_DEVICE_VOLATILE`. This enforces
