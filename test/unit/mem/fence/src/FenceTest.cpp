@@ -14,6 +14,45 @@
 
 #include <catch2/catch.hpp>
 
+class DeviceFenceTestKernelWriter
+{
+public:
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, ALPAKA_DEVICE_VOLATILE int* vars) const -> void
+    {
+        auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
+
+        // Use a single writer thread
+        if(idx == 0)
+        {
+            vars[0] = 10;
+            alpaka::mem_fence(acc, alpaka::memory_scope::Device{});
+            vars[1] = 20;
+        }
+    }
+};
+
+class DeviceFenceTestKernelReader
+{
+public:
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, ALPAKA_DEVICE_VOLATILE int* vars) const -> void
+    {
+        auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
+
+        // Use a single reader thread
+        if(idx == 0)
+        {
+            auto const b = vars[1];
+            alpaka::mem_fence(acc, alpaka::memory_scope::Device{});
+            auto const a = vars[0];
+
+            // If the fence is working correctly, the following case can never happen
+            ALPAKA_CHECK(*success, (a != 1 && b == 20));
+        }
+    }
+};
+
 class GridFenceTestKernel
 {
 public:
@@ -113,16 +152,31 @@ TEMPLATE_LIST_TEST_CASE("FenceTest", "[fence]", TestAccs)
     auto const numElements = Idx{2ul};
     auto const extent = alpaka::Vec<Dim, Idx>{numElements};
     auto vars_host = alpaka::allocBuf<int, Idx>(host, extent);
+    auto vars_dev = alpaka::allocBuf<int, Idx>(dev, extent);
     vars_host[0] = 1;
     vars_host[1] = 2;
 
-    auto vars_dev = alpaka::allocBuf<int, Idx>(dev, extent);
+    // Run two kernels in parallel, in two different queues on the same device
+    // testing a memory fence in global memory across threads in different grids
     alpaka::memcpy(queue, vars_dev, vars_host);
     alpaka::wait(queue);
+    DeviceFenceTestKernelWriter deviceKernelWriter;
+    DeviceFenceTestKernelReader deviceKernelReader;
+    alpaka::WorkDivMembers<Dim, Idx> workDiv(
+        alpaka::Vec<Dim, Idx>::ones(),
+        alpaka::Vec<Dim, Idx>::ones(),
+        alpaka::Vec<Dim, Idx>::ones());
+    alpaka::exec<Acc>(queue, workDiv, deviceKernelWriter, vars_dev.data());
+    REQUIRE(fixture(deviceKernelReader, vars_dev.data()));
+    alpaka::wait(queue);
 
+    // Run a single kernel, testing a memory fence in global memory across threads in different blocks
+    alpaka::memcpy(queue, vars_dev, vars_host);
+    alpaka::wait(queue);
     GridFenceTestKernel gridKernel;
     REQUIRE(fixture(gridKernel, vars_dev.data()));
 
+    // Run a single kernel, testing a memory fence in shared memory across threads in the same blocks
     BlockFenceTestKernel blockKernel;
     REQUIRE(fixture(blockKernel));
 }
