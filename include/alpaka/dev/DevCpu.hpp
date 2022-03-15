@@ -23,9 +23,11 @@
 #include <alpaka/wait/Traits.hpp>
 
 #include <algorithm>
+#include <cstddef>
 #include <map>
 #include <memory>
 #include <mutex>
+#include <string>
 #include <vector>
 
 namespace alpaka
@@ -127,7 +129,7 @@ namespace alpaka
             return 0;
         }
 
-    public:
+    private:
         std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
     };
 
@@ -165,11 +167,11 @@ namespace alpaka
 
         //! The CPU device warp size get trait specialization.
         template<>
-        struct GetWarpSize<DevCpu>
+        struct GetWarpSizes<DevCpu>
         {
-            ALPAKA_FN_HOST static auto getWarpSize(DevCpu const& /* dev */) -> std::size_t
+            ALPAKA_FN_HOST static auto getWarpSizes(DevCpu const& /* dev */) -> std::vector<std::size_t>
             {
-                return 1u;
+                return {1u};
             }
         };
 

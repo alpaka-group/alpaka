@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -11,6 +11,10 @@
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
+
+#include <cstddef>
+#include <string>
+#include <vector>
 
 namespace alpaka
 {
@@ -39,7 +43,7 @@ namespace alpaka
 
         //! The device warp size get trait.
         template<typename T, typename TSfinae = void>
-        struct GetWarpSize;
+        struct GetWarpSizes;
 
         //! The device reset trait.
         template<typename T, typename TSfinae = void>
@@ -86,11 +90,11 @@ namespace alpaka
         return traits::GetFreeMemBytes<TDev>::getFreeMemBytes(dev);
     }
 
-    //! \return The warp size on the device in number of threads.
+    //! \return The supported warp sizes on the device in number of threads.
     template<typename TDev>
-    ALPAKA_FN_HOST auto getWarpSize(TDev const& dev) -> std::size_t
+    ALPAKA_FN_HOST auto getWarpSizes(TDev const& dev) -> std::vector<std::size_t>
     {
-        return traits::GetWarpSize<TDev>::getWarpSize(dev);
+        return traits::GetWarpSizes<TDev>::getWarpSizes(dev);
     }
 
     //! Resets the device.

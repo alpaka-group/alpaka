@@ -27,9 +27,12 @@
 #    include <alpaka/traits/Traits.hpp>
 #    include <alpaka/wait/Traits.hpp>
 
+#    include <cstddef>
 #    include <map>
 #    include <sstream>
 #    include <stdexcept>
+#    include <string>
+#    include <vector>
 
 namespace alpaka
 {
@@ -222,11 +225,11 @@ namespace alpaka
 
         //! The OpenMP 5.0 device warp size get trait specialization.
         template<>
-        struct GetWarpSize<DevOmp5>
+        struct GetWarpSizes<DevOmp5>
         {
-            ALPAKA_FN_HOST static auto getWarpSize(DevOmp5 const& /* dev */) -> std::size_t
+            ALPAKA_FN_HOST static auto getWarpSizes(DevOmp5 const& /* dev */) -> std::vector<std::size_t>
             {
-                return 1u;
+                return {1u};
             }
         };
 

@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov, Bernhard Manfred Gruber
+/* Copyright 2022 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -37,9 +37,17 @@ TEMPLATE_LIST_TEST_CASE("getSize", "[warp]", alpaka::test::TestAccs)
     using Idx = alpaka::Idx<Acc>;
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
-    auto const expectedWarpSize = static_cast<int>(alpaka::getWarpSize(dev));
+    auto const warpSizes = alpaka::getWarpSizes(dev);
     Idx const gridThreadExtentPerDim = 8;
     alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
     GetSizeTestKernel kernel;
-    REQUIRE(fixture(kernel, expectedWarpSize));
+    auto success = false;
+    for(auto const expectedWarpSize : warpSizes)
+    {
+        // ensure that at least one of the supported warp sizes is used in the kernel
+        success = success || fixture(kernel, static_cast<std::int32_t>(expectedWarpSize));
+        if(success)
+            break; // don't do more work than necessary
+    }
+    REQUIRE(success);
 }
