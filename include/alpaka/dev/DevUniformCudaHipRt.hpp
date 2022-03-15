@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -26,6 +26,10 @@
 #    else
 #        include <alpaka/core/Hip.hpp>
 #    endif
+
+#    include <cstddef>
+#    include <string>
+#    include <vector>
 
 namespace alpaka
 {
@@ -137,9 +141,9 @@ namespace alpaka
 
         //! The CUDA/HIP RT device warp size get trait specialization.
         template<>
-        struct GetWarpSize<DevUniformCudaHipRt>
+        struct GetWarpSizes<DevUniformCudaHipRt>
         {
-            ALPAKA_FN_HOST static auto getWarpSize(DevUniformCudaHipRt const& dev) -> std::size_t
+            ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt const& dev) -> std::vector<std::size_t>
             {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 cudaDeviceProp devProp;
@@ -149,7 +153,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.getNativeHandle()));
 
-                return static_cast<std::size_t>(devProp.warpSize);
+                return {static_cast<std::size_t>(devProp.warpSize)};
             }
         };
 

@@ -26,9 +26,11 @@
 #    include <CL/sycl.hpp>
 
 #    include <algorithm>
+#    include <cstddef>
 #    include <memory>
 #    include <mutex>
 #    include <shared_mutex>
+#    include <string>
 #    include <utility>
 #    include <vector>
 
@@ -174,15 +176,12 @@ namespace alpaka::traits
 
     //! The SYCL device warp size get trait specialization.
     template<typename TPltf>
-    struct GetWarpSize<experimental::DevGenericSycl<TPltf>>
+    struct GetWarpSizes<experimental::DevGenericSycl<TPltf>>
     {
-        static auto getWarpSize(experimental::DevGenericSycl<TPltf> const& dev) -> std::size_t
+        static auto getWarpSizes(experimental::DevGenericSycl<TPltf> const& dev) -> std::vector<std::size_t>
         {
-            // TODO: This trait should return a vector instead. Not everything is a NVIDIA GPU. For now we report
-            // the smallest possible size.
             const auto device = dev.getNativeHandle().first;
-            const auto sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
-            return *(std::min_element(std::begin(sizes), std::end(sizes)));
+            return device.template get_info<sycl::info::device::sub_group_sizes>();
         }
     };
 

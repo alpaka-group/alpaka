@@ -29,9 +29,11 @@
 
 #    include <openacc.h>
 
+#    include <cstddef>
 #    include <memory>
 #    include <mutex>
 #    include <sstream>
+#    include <string>
 #    include <vector>
 
 namespace alpaka
@@ -258,11 +260,11 @@ namespace alpaka
 
         //! The OpenACC device warp size get trait specialization.
         template<>
-        struct GetWarpSize<DevOacc>
+        struct GetWarpSizes<DevOacc>
         {
-            ALPAKA_FN_HOST static auto getWarpSize(DevOacc const& /* dev */) -> std::size_t
+            ALPAKA_FN_HOST static auto getWarpSizes(DevOacc const& /* dev */) -> std::vector<std::size_t>
             {
-                return 1u;
+                return {1u};
             }
         };
 

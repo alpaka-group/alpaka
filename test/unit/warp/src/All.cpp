@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov, Bernhard Manfred Gruber
+/* Copyright 2022 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -73,30 +73,33 @@ TEMPLATE_LIST_TEST_CASE("all", "[warp]", alpaka::test::TestAccs)
     using Idx = alpaka::Idx<Acc>;
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
-    auto const warpExtent = alpaka::getWarpSize(dev);
-    if(warpExtent == 1)
+    auto const warpExtents = alpaka::getWarpSizes(dev);
+    for(auto const warpExtent : warpExtents)
     {
-        Idx const gridThreadExtentPerDim = 4;
-        alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
-        AllSingleThreadWarpTestKernel kernel;
-        REQUIRE(fixture(kernel));
-    }
-    else
-    {
-        // Work around gcc 7.5 trying and failing to offload for OpenMP 4.0
+        if(warpExtent == 1)
+        {
+            Idx const gridThreadExtentPerDim = 4;
+            alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
+            AllSingleThreadWarpTestKernel kernel;
+            REQUIRE(fixture(kernel));
+        }
+        else
+        {
+            // Work around gcc 7.5 trying and failing to offload for OpenMP 4.0
 #if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 5, 0)) && defined ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        return;
+            return;
 #else
-        using ExecutionFixture = alpaka::test::KernelExecutionFixture<Acc>;
-        auto const gridBlockExtent = alpaka::Vec<Dim, Idx>::all(2);
-        // Enforce one warp per thread block
-        auto blockThreadExtent = alpaka::Vec<Dim, Idx>::ones();
-        blockThreadExtent[0] = static_cast<Idx>(warpExtent);
-        auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
-        auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
-        auto fixture = ExecutionFixture{workDiv};
-        AllMultipleThreadWarpTestKernel kernel;
-        REQUIRE(fixture(kernel));
+            using ExecutionFixture = alpaka::test::KernelExecutionFixture<Acc>;
+            auto const gridBlockExtent = alpaka::Vec<Dim, Idx>::all(2);
+            // Enforce one warp per thread block
+            auto blockThreadExtent = alpaka::Vec<Dim, Idx>::ones();
+            blockThreadExtent[0] = static_cast<Idx>(warpExtent);
+            auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
+            auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
+            auto fixture = ExecutionFixture{workDiv};
+            AllMultipleThreadWarpTestKernel kernel;
+            REQUIRE(fixture(kernel));
 #endif
+        }
     }
 }
