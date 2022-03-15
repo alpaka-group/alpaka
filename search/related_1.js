@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['normalreal_4533',['NormalReal',['../classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a186f46695d592edcc0f24b17cb2ba099',1,'alpaka::rand::engine::uniform_cuda_hip::Xor']]],
-  ['uniformreal_4534',['UniformReal',['../classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a97cc0ece36d054043eb1ca987e0e76b7',1,'alpaka::rand::engine::uniform_cuda_hip::Xor']]],
-  ['uniformuint_4535',['UniformUint',['../classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a7fad332308cb5c60e7874e6fc4d851dd',1,'alpaka::rand::engine::uniform_cuda_hip::Xor']]]
+  ['normalreal_4541',['NormalReal',['../classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a186f46695d592edcc0f24b17cb2ba099',1,'alpaka::rand::engine::uniform_cuda_hip::Xor']]],
+  ['uniformreal_4542',['UniformReal',['../classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a97cc0ece36d054043eb1ca987e0e76b7',1,'alpaka::rand::engine::uniform_cuda_hip::Xor']]],
+  ['uniformuint_4543',['UniformUint',['../classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a7fad332308cb5c60e7874e6fc4d851dd',1,'alpaka::rand::engine::uniform_cuda_hip::Xor']]]
 ];

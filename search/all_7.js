@@ -167,7 +167,8 @@ var searchData=
   ['gpucudart_2ehpp_1101',['GpuCudaRt.hpp',['../GpuCudaRt_8hpp.html',1,'']]],
   ['gpuhiprt_2ehpp_1102',['GpuHipRt.hpp',['../GpuHipRt_8hpp.html',1,'']]],
   ['gpusyclintel_2ehpp_1103',['GpuSyclIntel.hpp',['../GpuSyclIntel_8hpp.html',1,'']]],
-  ['gridblockextentsubdivrestrictions_1104',['GridBlockExtentSubDivRestrictions',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27',1,'alpaka']]],
-  ['grids_1105',['Grids',['../structalpaka_1_1hierarchy_1_1Grids.html',1,'alpaka::hierarchy']]],
-  ['guided_1106',['Guided',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aad0bd9bc4f06fcaea08af1eae99853f75',1,'alpaka::omp::Schedule']]]
+  ['grid_1104',['Grid',['../structalpaka_1_1memory__scope_1_1Grid.html',1,'alpaka::memory_scope']]],
+  ['gridblockextentsubdivrestrictions_1105',['GridBlockExtentSubDivRestrictions',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27',1,'alpaka']]],
+  ['grids_1106',['Grids',['../structalpaka_1_1hierarchy_1_1Grids.html',1,'alpaka::hierarchy']]],
+  ['guided_1107',['Guided',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aad0bd9bc4f06fcaea08af1eae99853f75',1,'alpaka::omp::Schedule']]]
 ];
