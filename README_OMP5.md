@@ -7,7 +7,7 @@ determine it automatically for some compilers.
 cmake -DOpenMP_CXX_VERSION=5 \
   -DALPAKA_ACC_ANY_BT_OMP5_ENABLE=on \
   -DBUILD_TESTING=on \
-  -Dalpaka_BUILD_EXAMPLES=on \
+  -DALPAKA_BUILD_EXAMPLES=on \
 ```
 All other backends are disable for faster compilation/testing and reduced
 environment requirements. Add flags to set the required compiler and linker flags, e.g:
