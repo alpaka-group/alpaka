@@ -20,7 +20,7 @@ Tests and Examples
 .. code-block::
 
   # ..
-  cmake -Dalpaka_BUILD_EXAMPLES=ON ..
+  cmake -DALPAKA_BUILD_EXAMPLES=ON ..
   cmake --build . -t vectorAdd
   ./example/vectorAdd/vectorAdd # execution
 
