@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -18,7 +18,7 @@
 namespace alpaka
 {
     //! The offset traits.
-    namespace traits
+    namespace trait
     {
         //! The x offset get trait.
         //!
@@ -36,14 +36,14 @@ namespace alpaka
         //! The x offset set trait.
         template<typename TIdx, typename TOffsets, typename TOffset, typename TSfinae = void>
         struct SetOffset;
-    } // namespace traits
+    } // namespace trait
 
     //! \return The offset in the given dimension.
     ALPAKA_NO_HOST_ACC_WARNING
     template<std::size_t Tidx, typename TOffsets>
     ALPAKA_FN_HOST_ACC auto getOffset(TOffsets const& offsets) -> Idx<TOffsets>
     {
-        return traits::GetOffset<DimInt<Tidx>, TOffsets>::getOffset(offsets);
+        return trait::GetOffset<DimInt<Tidx>, TOffsets>::getOffset(offsets);
     }
     //! \return The offset in x dimension.
     ALPAKA_NO_HOST_ACC_WARNING
@@ -72,7 +72,7 @@ namespace alpaka
     template<std::size_t Tidx, typename TOffsets, typename TOffset>
     ALPAKA_FN_HOST_ACC auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
     {
-        traits::SetOffset<DimInt<Tidx>, TOffsets, TOffset>::setOffset(offsets, offset);
+        trait::SetOffset<DimInt<Tidx>, TOffsets, TOffset>::setOffset(offsets, offset);
     }
     //! Sets the offset in x dimension.
     ALPAKA_NO_HOST_ACC_WARNING
@@ -97,7 +97,7 @@ namespace alpaka
     }
 
     // Trait specializations for unsigned integral types.
-    namespace traits
+    namespace trait
     {
         //! The unsigned integral x offset get trait specialization.
         template<typename TOffsets>
@@ -119,5 +119,5 @@ namespace alpaka
                 offsets = offset;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -21,7 +21,7 @@
 namespace alpaka
 {
     //! The vec traits.
-    namespace traits
+    namespace trait
     {
         //! Trait for selecting a sub-vector.
         template<typename TVec, typename TIndexSequence, typename TSfinae = void>
@@ -38,7 +38,7 @@ namespace alpaka
         //! Trait for concatenating two vectors.
         template<typename TVecL, typename TVecR, typename TSfinae = void>
         struct ConcatVec;
-    } // namespace traits
+    } // namespace trait
 
     //! Builds a new vector by selecting the elements of the source vector in the given order.
     //! Repeating and swizzling elements is allowed.
@@ -47,7 +47,7 @@ namespace alpaka
     template<typename TIndexSequence, typename TVec>
     ALPAKA_FN_HOST_ACC constexpr auto subVecFromIndices(TVec const& vec)
     {
-        return traits::SubVecFromIndices<TVec, TIndexSequence>::subVecFromIndices(vec);
+        return trait::SubVecFromIndices<TVec, TIndexSequence>::subVecFromIndices(vec);
     }
     //! \tparam TVec has to specialize SubVecFromIndices.
     //! \return The sub-vector consisting of the first N elements of the source vector.
@@ -85,7 +85,7 @@ namespace alpaka
     template<typename TVal, typename TVec>
     ALPAKA_FN_HOST_ACC constexpr auto castVec(TVec const& vec)
     {
-        return traits::CastVec<TVal, TVec>::castVec(vec);
+        return trait::CastVec<TVal, TVec>::castVec(vec);
     }
 
     //! \return The reverseVec vector.
@@ -93,7 +93,7 @@ namespace alpaka
     template<typename TVec>
     ALPAKA_FN_HOST_ACC constexpr auto reverseVec(TVec const& vec)
     {
-        return traits::ReverseVec<TVec>::reverseVec(vec);
+        return trait::ReverseVec<TVec>::reverseVec(vec);
     }
 
     //! \return The concatenated vector.
@@ -101,6 +101,6 @@ namespace alpaka
     template<typename TVecL, typename TVecR>
     ALPAKA_FN_HOST_ACC constexpr auto concatVec(TVecL const& vecL, TVecR const& vecR)
     {
-        return traits::ConcatVec<TVecL, TVecR>::concatVec(vecL, vecR);
+        return trait::ConcatVec<TVecL, TVecR>::concatVec(vecL, vecR);
     }
 } // namespace alpaka

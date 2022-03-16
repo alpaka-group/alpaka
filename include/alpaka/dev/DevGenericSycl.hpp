@@ -139,7 +139,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL device name get trait specialization.
     template<typename TPltf>
@@ -242,6 +242,6 @@ namespace alpaka::traits
     {
         using type = experimental::detail::QueueGenericSyclBase<experimental::DevGenericSycl<TPltf>, false>;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

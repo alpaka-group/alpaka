@@ -1,4 +1,4 @@
-/* Copyright 2021 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -29,7 +29,7 @@ namespace alpaka
     {
     public:
         template<typename TAtomic, typename TOp, typename T, typename THierarchy, typename TSfinae>
-        friend struct traits::AtomicOp;
+        friend struct trait::AtomicOp;
 
         static constexpr auto nextPowerOf2(size_t const value, size_t const bit = 0u) -> size_t
         {
@@ -75,7 +75,7 @@ namespace alpaka
         }
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU threads accelerator atomic operation.
         template<typename TOp, typename T, typename THierarchy, size_t THashTableSize>
@@ -99,5 +99,5 @@ namespace alpaka
                 return TOp()(addr, compare, value);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

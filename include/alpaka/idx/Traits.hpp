@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -21,18 +21,18 @@ namespace alpaka
     {
     };
 
-    //! The idx traits.
-    namespace traits
+    //! The idx trait.
+    namespace trait
     {
         //! The idx type trait.
         template<typename T, typename TSfinae = void>
         struct IdxType;
-    } // namespace traits
+    } // namespace trait
 
     template<typename T>
-    using Idx = typename traits::IdxType<T>::type;
+    using Idx = typename trait::IdxType<T>::type;
 
-    namespace traits
+    namespace trait
     {
         //! The arithmetic idx type trait specialization.
         template<typename T>
@@ -44,5 +44,5 @@ namespace alpaka
         //! The index get trait.
         template<typename TIdx, typename TOrigin, typename TUnit, typename TSfinae = void>
         struct GetIdx;
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

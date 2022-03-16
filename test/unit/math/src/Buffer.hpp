@@ -37,8 +37,8 @@ namespace alpaka
                 {
                     using value_type = TData;
                     static constexpr size_t capacity = Tcapacity;
-                    using Dim = typename alpaka::traits::DimType<TAcc>::type;
-                    using Idx = typename alpaka::traits::IdxType<TAcc>::type;
+                    using Dim = typename alpaka::trait::DimType<TAcc>::type;
+                    using Idx = typename alpaka::trait::IdxType<TAcc>::type;
 
                     // Defines using's for alpaka-buffer.
                     using DevAcc = alpaka::Dev<TAcc>;

@@ -92,7 +92,7 @@ namespace alpaka
 #    pragma warning(pop)
 #endif
 
-    namespace traits
+    namespace trait
     {
         template<typename T, std::size_t TStaticAllocKiB>
         struct GetDynSharedMem<T, BlockSharedMemDynMember<TStaticAllocKiB>>
@@ -114,5 +114,5 @@ namespace alpaka
 #    pragma GCC diagnostic pop
 #endif
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

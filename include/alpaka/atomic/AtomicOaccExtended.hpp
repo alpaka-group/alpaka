@@ -1,4 +1,4 @@
-/* Copyright 2021 Jeffrey Kelling, Bernhard Manfred Gruber
+/* Copyright 2022 Jeffrey Kelling, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *
@@ -37,7 +37,7 @@ namespace alpaka
         mutable std::uint32_t mutex[2] = {0u, 0u};
     };
 
-    namespace traits
+    namespace trait
     {
         namespace detail
         {
@@ -213,7 +213,7 @@ namespace alpaka
             }
         };
 
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

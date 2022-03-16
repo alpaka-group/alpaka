@@ -95,7 +95,7 @@ namespace alpaka
     public:
         std::shared_ptr<generic::detail::EventGenericThreadsImpl<TDev>> m_spEventImpl;
     };
-    namespace traits
+    namespace trait
     {
         //! The CPU device event device type trait specialization.
         template<typename TDev>
@@ -228,8 +228,8 @@ namespace alpaka
                 alpaka::enqueue(*queue.m_spQueueImpl, event);
             }
         };
-    } // namespace traits
-    namespace traits
+    } // namespace trait
+    namespace trait
     {
         namespace generic
         {
@@ -395,5 +395,5 @@ namespace alpaka
                 wait(event);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

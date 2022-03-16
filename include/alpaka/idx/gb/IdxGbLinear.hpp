@@ -33,7 +33,7 @@ namespace alpaka
         };
     } // namespace gb
 
-    namespace traits
+    namespace trait
     {
         //! The IdxGbLinear index dimension get trait specialization.
         template<typename TDim, typename TIdx>
@@ -74,5 +74,5 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

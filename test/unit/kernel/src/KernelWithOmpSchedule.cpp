@@ -76,7 +76,7 @@ struct KernelWithTrait : TBase
 {
 };
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     // Specialize the trait for kernels of type KernelWithTrait<>
     template<typename TBase, typename TAcc>
@@ -92,7 +92,7 @@ namespace alpaka::traits
             return alpaka::omp::Schedule{alpaka::omp::Schedule::Static, 4};
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 // Generic testing routine for the given kernel type
 template<typename TAcc, typename TKernel>

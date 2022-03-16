@@ -32,7 +32,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     template<typename TDim>
     struct SyncBlockThreads<experimental::BlockSyncGenericSycl<TDim>>
@@ -82,6 +82,6 @@ namespace alpaka::traits
             return static_cast<int>(sycl::any_of_group(group, static_cast<bool>(predicate)));
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

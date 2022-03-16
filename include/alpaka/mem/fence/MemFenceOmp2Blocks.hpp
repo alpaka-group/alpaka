@@ -25,7 +25,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct MemFence<MemFenceOmp2Blocks, memory_scope::Block>
@@ -53,7 +53,7 @@ namespace alpaka
 #    pragma omp flush
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

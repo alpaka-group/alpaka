@@ -45,11 +45,11 @@ namespace alpaka::rand::engine
      * @tparam TParams Basic parameters for the Philox algorithm
      */
     template<typename TAcc, typename TParams>
-    class PhiloxSingle : public traits::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>::Base
+    class PhiloxSingle : public trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>::Base
     {
     public:
         /// Specialization for different TAcc backends
-        using Traits = typename traits::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>;
+        using Traits = typename trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>;
 
         using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
         using Key = typename Traits::Key; ///< Backend-dependent Key type

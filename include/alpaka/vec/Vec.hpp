@@ -395,7 +395,7 @@ namespace alpaka
         TVal m_data[TDim::value == 0u ? 1u : TDim::value];
     };
 
-    namespace traits
+    namespace trait
     {
         //! The Vec dimension get trait specialization.
         template<typename TDim, typename TVal>
@@ -454,9 +454,9 @@ namespace alpaka
                 ALPAKA_UNREACHABLE({});
             }
         };
-    } // namespace traits
+    } // namespace trait
 
-    namespace traits
+    namespace trait
     {
         //! ReverseVec specialization for Vec.
         template<typename TDim, typename TVal>
@@ -512,7 +512,7 @@ namespace alpaka
                 return r;
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     namespace detail
     {
@@ -591,7 +591,7 @@ namespace alpaka
         return createVecFromIndexedFnOffset<TDim, detail::CreateOffset, IdxOffset>(offsets);
     }
 
-    namespace traits
+    namespace trait
     {
         //! The Vec extent get trait specialization.
         template<typename TIdxIntegralConst, typename TDim, typename TVal>
@@ -649,7 +649,7 @@ namespace alpaka
                 offsets[TIdxIntegralConst::value] = offset;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #if defined(__clang__)

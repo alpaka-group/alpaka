@@ -19,7 +19,7 @@
 
 #include <array>
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The std::array device type trait specialization.
     template<typename TElem, std::size_t Tsize>
@@ -93,4 +93,4 @@ namespace alpaka::traits
     {
         using type = std::size_t;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait

@@ -189,7 +189,7 @@ namespace alpaka::experimental::math
     };
 } // namespace alpaka::experimental::math
 
-namespace alpaka::math::traits
+namespace alpaka::math::trait
 {
     //! The SYCL abs trait specialization.
     template<typename TArg>
@@ -544,6 +544,6 @@ namespace alpaka::math::traits
             return sycl::trunc(arg);
         }
     };
-} // namespace alpaka::math::traits
+} // namespace alpaka::math::trait
 
 #endif

@@ -122,7 +122,7 @@ namespace alpaka
         std::thread::id mutable m_idMasterThread; //!< The id of the master thread.
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU threads accelerator accelerator type trait specialization.
         template<typename TDim, typename TIdx>
@@ -217,7 +217,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

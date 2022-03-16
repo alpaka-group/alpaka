@@ -250,7 +250,7 @@ namespace alpaka
         };
     } // namespace detail
 
-    namespace traits
+    namespace trait
     {
         //! The CPU device memory copy trait specialization.
         //!
@@ -267,5 +267,5 @@ namespace alpaka
                 return alpaka::detail::TaskCopyCpu<TDim, TViewDst, TViewSrc, TExtent>(viewDst, viewSrc, extent);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

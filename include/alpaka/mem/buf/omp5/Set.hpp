@@ -35,7 +35,7 @@ namespace alpaka
 {
     class DevOmp5;
 
-    namespace traits
+    namespace trait
     {
         //! The OMP5 device memory set trait specialization.
         template<typename TDim>
@@ -44,7 +44,7 @@ namespace alpaka
             template<typename TExtent, typename TView>
             ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
             {
-                using Idx = typename alpaka::traits::IdxType<TExtent>::type;
+                using Idx = typename alpaka::trait::IdxType<TExtent>::type;
                 auto pitch = getPitchBytesVec(view);
                 auto byteExtent = getExtentVec(extent);
                 constexpr auto lastDim = TDim::value - 1;
@@ -96,7 +96,7 @@ namespace alpaka
                 std::uint8_t const& byte,
                 TExtent const& /* extent */)
             {
-                using Idx = typename alpaka::traits::IdxType<TExtent>::type;
+                using Idx = typename alpaka::trait::IdxType<TExtent>::type;
                 using Dim1D = DimInt<1u>;
                 using Vec1D = Vec<Dim1D, Idx>;
 
@@ -112,7 +112,7 @@ namespace alpaka
                     Vec1D::zeros());
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

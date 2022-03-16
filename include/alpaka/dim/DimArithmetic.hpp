@@ -13,7 +13,7 @@
 
 #include <type_traits>
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The arithmetic type dimension getter trait specialization.
     template<typename T>
@@ -21,4 +21,4 @@ namespace alpaka::traits
     {
         using type = DimInt<1u>;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait

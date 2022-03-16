@@ -19,7 +19,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU new allocator memory allocation trait specialization.
         template<typename T>
@@ -40,5 +40,5 @@ namespace alpaka
                 return delete[] ptr;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

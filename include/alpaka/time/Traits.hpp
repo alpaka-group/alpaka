@@ -20,13 +20,13 @@ namespace alpaka
     {
     };
 
-    //! The time traits.
-    namespace traits
+    //! The time trait.
+    namespace trait
     {
         //! The clock trait.
         template<typename TTime, typename TSfinae = void>
         struct Clock;
-    } // namespace traits
+    } // namespace trait
 
     //! \return A counter that is increasing every clock cycle.
     //!
@@ -37,6 +37,6 @@ namespace alpaka
         TTime const& time) -> std::uint64_t
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptTime, TTime>;
-        return traits::Clock<ImplementationBase>::clock(time);
+        return trait::Clock<ImplementationBase>::clock(time);
     }
 } // namespace alpaka

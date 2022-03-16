@@ -98,7 +98,7 @@ namespace alpaka
 #        pragma warning(pop)
 #    endif
 
-    namespace traits
+    namespace trait
     {
         template<typename T>
         struct GetDynSharedMem<T, BlockSharedMemDynOmp5BuiltIn>
@@ -112,7 +112,7 @@ namespace alpaka
                 return reinterpret_cast<T*>(dyn.mem());
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

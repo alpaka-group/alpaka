@@ -1,4 +1,5 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Antonio Di
+ * Pilato
  *
  * This file is part of alpaka.
  *
@@ -28,38 +29,38 @@ namespace alpaka::test
         Vec<TDim, TIdx> const& extent,
         Vec<TDim, TIdx> const& offset) -> void
     {
-        // traits::DevType
+        // trait::DevType
         {
             static_assert(
                 std::is_same_v<Dev<TView>, TDev>,
                 "The device type of the view has to be equal to the specified one.");
         }
 
-        // traits::GetDev
+        // trait::GetDev
         {
             REQUIRE(dev == getDev(view));
         }
 
-        // traits::DimType
+        // trait::DimType
         {
             static_assert(
                 Dim<TView>::value == TDim::value,
                 "The dimensionality of the view has to be equal to the specified one.");
         }
 
-        // traits::ElemType
+        // trait::ElemType
         {
             static_assert(
                 std::is_same_v<Elem<TView>, TElem>,
                 "The element type of the view has to be equal to the specified one.");
         }
 
-        // traits::GetExtent
+        // trait::GetExtent
         {
             REQUIRE(extent == getExtentVec(view));
         }
 
-        // traits::GetPitchBytes
+        // trait::GetPitchBytes
         {
             // The pitches have to be at least as large as the values we calculate here.
             auto pitchMinimum = Vec<DimInt<TDim::value + 1u>, TIdx>::ones();
@@ -79,7 +80,7 @@ namespace alpaka::test
             }
         }
 
-        // traits::GetPtrNative
+        // trait::GetPtrNative
         {
             // The view is a const& so the pointer has to point to a const value.
             using NativePtr = decltype(getPtrNative(view));
@@ -101,12 +102,12 @@ namespace alpaka::test
             }
         }
 
-        // traits::GetOffset
+        // trait::GetOffset
         {
             REQUIRE(offset == getOffsetVec(view));
         }
 
-        // traits::IdxType
+        // trait::IdxType
         {
             static_assert(
                 std::is_same_v<Idx<TView>, TIdx>,
@@ -228,7 +229,7 @@ namespace alpaka::test
     template<typename TAcc, typename TView, typename TQueue>
     ALPAKA_FN_HOST auto testViewMutable(TQueue& queue, TView& view) -> void
     {
-        // traits::GetPtrNative
+        // trait::GetPtrNative
         {
             // The view is a non-const so the pointer has to point to a non-const value.
             using NativePtr = decltype(getPtrNative(view));

@@ -23,7 +23,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         //! The OpenMP accelerator clock operation.
         template<>
@@ -38,7 +38,7 @@ namespace alpaka
                 return static_cast<std::uint64_t>(omp_get_wtime() / omp_get_wtick());
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

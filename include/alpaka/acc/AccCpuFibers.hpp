@@ -124,7 +124,7 @@ namespace alpaka
         boost::fibers::fiber::id mutable m_masterFiberId; //!< The id of the master fiber.
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU fibers accelerator accelerator type trait specialization.
         template<typename TDim, typename TIdx>
@@ -218,7 +218,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

@@ -1,4 +1,4 @@
-/* Copyright 2021 Bernhard Manfred Gruber
+/* Copyright 2022 Bernhard Manfred Gruber
 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -184,7 +184,7 @@ namespace alpaka::experimental
         Vec<DimInt<TDim>, TBufferIdx> extents;
     };
 
-    namespace traits
+    namespace trait
     {
         namespace internal
         {
@@ -268,5 +268,5 @@ namespace alpaka::experimental
                     std::make_index_sequence<Dim::value>{});
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka::experimental

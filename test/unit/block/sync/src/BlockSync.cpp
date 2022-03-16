@@ -47,7 +47,7 @@ public:
     }
 };
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TAcc>
@@ -65,7 +65,7 @@ namespace alpaka::traits
             return static_cast<std::size_t>(blockThreadExtent.prod()) * sizeof(Idx);
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 TEMPLATE_LIST_TEST_CASE("synchronize", "[blockSync]", alpaka::test::TestAccs)
 {

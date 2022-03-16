@@ -165,7 +165,7 @@ namespace alpaka::rand
         };
     } // namespace distribution::gpu
 
-    namespace distribution::traits
+    namespace distribution::trait
     {
         //! The GPU device random number float normal distribution get trait specialization.
         template<typename T>
@@ -195,9 +195,9 @@ namespace alpaka::rand
                 return {};
             }
         };
-    } // namespace distribution::traits
+    } // namespace distribution::trait
 
-    namespace engine::traits
+    namespace engine::trait
     {
         //! The GPU device random number default generator get trait specialization.
         template<>
@@ -213,5 +213,5 @@ namespace alpaka::rand
                 return {seed, subsequence, offset};
             }
         };
-    } // namespace engine::traits
+    } // namespace engine::trait
 } // namespace alpaka::rand

@@ -19,7 +19,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct SyncBlockThreads<BlockSyncNoOp>
@@ -41,5 +41,5 @@ namespace alpaka
                 return predicate;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

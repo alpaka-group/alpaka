@@ -278,7 +278,7 @@ namespace alpaka
     } // namespace oacc
 
     // Trait specializations for CreateTaskCopy.
-    namespace traits
+    namespace trait
     {
         //! The CPU to OpenACC memory copy trait specialization.
         template<typename TDim>
@@ -371,7 +371,7 @@ namespace alpaka
                 }
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

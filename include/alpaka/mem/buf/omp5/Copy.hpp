@@ -294,7 +294,7 @@ namespace alpaka
     } // namespace detail
 
     // Trait specializations for CreateTaskMemcpy.
-    namespace traits
+    namespace trait
     {
         namespace detail
         {
@@ -384,7 +384,7 @@ namespace alpaka
                     getDev(viewSrc).getNativeHandle());
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

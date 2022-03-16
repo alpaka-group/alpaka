@@ -21,7 +21,7 @@
 namespace alpaka
 {
     //! The extent traits.
-    namespace traits
+    namespace trait
     {
         //! The extent get trait.
         //!
@@ -39,14 +39,14 @@ namespace alpaka
         //! The extent set trait.
         template<typename TIdxIntegralConst, typename TExtent, typename TExtentVal, typename TSfinae = void>
         struct SetExtent;
-    } // namespace traits
+    } // namespace trait
 
     //! \return The extent in the given dimension.
     ALPAKA_NO_HOST_ACC_WARNING
     template<std::size_t Tidx, typename TExtent>
     ALPAKA_FN_HOST_ACC auto getExtent(TExtent const& extent = TExtent()) -> Idx<TExtent>
     {
-        return traits::GetExtent<DimInt<Tidx>, TExtent>::getExtent(extent);
+        return trait::GetExtent<DimInt<Tidx>, TExtent>::getExtent(extent);
     }
     //! \return The width.
     ALPAKA_NO_HOST_ACC_WARNING
@@ -96,7 +96,7 @@ namespace alpaka
     template<std::size_t Tidx, typename TExtent, typename TExtentVal>
     ALPAKA_FN_HOST_ACC auto setExtent(TExtent& extent, TExtentVal const& extentVal) -> void
     {
-        traits::SetExtent<DimInt<Tidx>, TExtent, TExtentVal>::setExtent(extent, extentVal);
+        trait::SetExtent<DimInt<Tidx>, TExtent, TExtentVal>::setExtent(extent, extentVal);
     }
     //! Sets the width.
     ALPAKA_NO_HOST_ACC_WARNING
@@ -121,7 +121,7 @@ namespace alpaka
     }
 
     // Trait specializations for unsigned integral types.
-    namespace traits
+    namespace trait
     {
         //! The unsigned integral width get trait specialization.
         template<typename TExtent>
@@ -143,5 +143,5 @@ namespace alpaka
                 extent = extentVal;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

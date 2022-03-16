@@ -54,7 +54,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
@@ -62,6 +62,6 @@ namespace alpaka::traits
     {
         using type = experimental::DevGenericSycl<experimental::PltfFpgaSyclXilinx>; // = DevFpgaSyclXilinx
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

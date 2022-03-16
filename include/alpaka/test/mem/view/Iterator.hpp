@@ -15,7 +15,7 @@
 
 namespace alpaka::test
 {
-    namespace traits
+    namespace trait
     {
         // \tparam T Type to conditionally make const.
         // \tparam TSource Type to mimic the constness of.
@@ -149,20 +149,20 @@ namespace alpaka::test
                 return IteratorView<TView>(view, extents.prod());
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     template<typename TView>
-    using Iterator = traits::IteratorView<TView>;
+    using Iterator = trait::IteratorView<TView>;
 
     template<typename TView>
     ALPAKA_FN_HOST auto begin(TView& view) -> Iterator<TView>
     {
-        return traits::Begin<TView>::begin(view);
+        return trait::Begin<TView>::begin(view);
     }
 
     template<typename TView>
     ALPAKA_FN_HOST auto end(TView& view) -> Iterator<TView>
     {
-        return traits::End<TView>::end(view);
+        return trait::End<TView>::end(view);
     }
 } // namespace alpaka::test

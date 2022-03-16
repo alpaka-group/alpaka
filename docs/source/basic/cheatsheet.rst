@@ -263,7 +263,7 @@ Allocate static shared memory variable
 Get dynamic shared memory pool, requires the kernel to specialize
   .. code-block:: c++
 
-     traits::BlockSharedMemDynSizeBytes
+     trait::BlockSharedMemDynSizeBytes
        Type * dynamicSharedMemoryPool = getDynSharedMem<Type>(acc);
 
 Synchronize threads of the same block

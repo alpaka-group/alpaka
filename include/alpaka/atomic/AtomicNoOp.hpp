@@ -18,7 +18,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU fibers accelerator atomic operation.
         template<typename TOp, typename T, typename THierarchy>
@@ -38,5 +38,5 @@ namespace alpaka
                 return TOp()(addr, compare, value);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

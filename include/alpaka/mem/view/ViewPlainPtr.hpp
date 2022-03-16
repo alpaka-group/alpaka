@@ -1,4 +1,4 @@
-/* Copyright 2021 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -71,7 +71,7 @@ namespace alpaka
     };
 
     // Trait specializations for ViewPlainPtr.
-    namespace traits
+    namespace trait
     {
         //! The ViewPlainPtr device type trait specialization.
         template<typename TDev, typename TElem, typename TDim, typename TIdx>
@@ -103,8 +103,8 @@ namespace alpaka
         {
             using type = TElem;
         };
-    } // namespace traits
-    namespace traits
+    } // namespace trait
+    namespace trait
     {
         //! The ViewPlainPtr width get trait specialization.
         template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
@@ -120,9 +120,9 @@ namespace alpaka
                 return extent.m_extentElements[TIdxIntegralConst::value];
             }
         };
-    } // namespace traits
+    } // namespace trait
 
-    namespace traits
+    namespace trait
     {
         //! The ViewPlainPtr native pointer get trait specialization.
         template<typename TDev, typename TElem, typename TDim, typename TIdx>
@@ -304,5 +304,5 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

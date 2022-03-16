@@ -69,7 +69,7 @@ namespace alpaka::experimental::detail
 } // namespace alpaka::experimental::detail
 
 // Trait specializations for CreateTaskMemcpy.
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL host-to-device memory copy trait specialization.
     template<typename TDim, typename TPltf>
@@ -186,6 +186,6 @@ namespace alpaka::traits
                 DstType{viewDst.m_buffer, range, offset_dst}};
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

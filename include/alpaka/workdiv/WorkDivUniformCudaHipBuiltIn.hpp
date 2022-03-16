@@ -53,7 +53,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         //! The GPU CUDA/HIP accelerator work division dimension get trait specialization.
         template<typename TDim, typename TIdx>
@@ -118,7 +118,7 @@ namespace alpaka
                 return workDiv.m_threadElemExtent;
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

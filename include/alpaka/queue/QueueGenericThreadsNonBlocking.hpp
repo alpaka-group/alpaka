@@ -110,7 +110,7 @@ namespace alpaka
         std::shared_ptr<generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>> m_spQueueImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU non-blocking device queue device type trait specialization.
         template<typename TDev>
@@ -160,7 +160,7 @@ namespace alpaka
                 return queue.m_spQueueImpl->m_workerThread.isIdle();
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #include <alpaka/event/EventGenericThreads.hpp>

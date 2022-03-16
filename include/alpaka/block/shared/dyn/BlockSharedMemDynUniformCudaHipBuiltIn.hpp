@@ -35,7 +35,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         template<typename T>
         struct GetDynSharedMem<T, BlockSharedMemDynUniformCudaHipBuiltIn>
@@ -50,7 +50,7 @@ namespace alpaka
                 return reinterpret_cast<T*>(shMem);
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

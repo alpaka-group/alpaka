@@ -107,7 +107,7 @@ namespace alpaka
         Vec<TDim, TIdx> mutable m_gridBlockIdx; //!< The index of the currently executed block.
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU TBB block accelerator type trait specialization.
         template<typename TDim, typename TIdx>
@@ -192,7 +192,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

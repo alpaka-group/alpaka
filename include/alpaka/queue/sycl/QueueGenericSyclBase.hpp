@@ -204,7 +204,7 @@ namespace alpaka::experimental
     class EventGenericSycl;
 }
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL blocking queue device type trait specialization.
     template<typename TDev, bool TBlocking>
@@ -279,6 +279,6 @@ namespace alpaka::traits
             return queue.getNativeHandle();
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

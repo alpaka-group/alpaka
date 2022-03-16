@@ -37,7 +37,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     template<typename T>
     struct GetDynSharedMem<T, experimental::BlockSharedMemDynGenericSycl>
@@ -49,6 +49,6 @@ namespace alpaka::traits
             return t_ptr.get();
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

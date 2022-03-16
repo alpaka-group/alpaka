@@ -33,7 +33,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL platform device count get trait specialization.
     template<typename TPltf>
@@ -682,6 +682,6 @@ namespace alpaka::traits
         }
 #    endif
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

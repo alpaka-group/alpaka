@@ -26,7 +26,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     template<>
     struct Popcount<experimental::IntrinsicGenericSycl>
@@ -57,6 +57,6 @@ namespace alpaka::traits
             return (value == 0l) ? 0 : static_cast<std::int32_t>(sycl::popcount(value ^ ~(-value)));
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

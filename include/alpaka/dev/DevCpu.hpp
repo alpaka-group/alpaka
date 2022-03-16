@@ -37,7 +37,7 @@ namespace alpaka
     {
         using ICpuQueue = IGenericThreadsQueue<DevCpu>;
     }
-    namespace traits
+    namespace trait
     {
         template<typename TPltf, typename TSfinae>
         struct GetDevByIdx;
@@ -95,7 +95,7 @@ namespace alpaka
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevCpu>
         , public concepts::Implements<ConceptDev, DevCpu>
     {
-        friend struct traits::GetDevByIdx<PltfCpu>;
+        friend struct trait::GetDevByIdx<PltfCpu>;
 
     protected:
         DevCpu() : m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
@@ -133,7 +133,7 @@ namespace alpaka
         std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU device name get trait specialization.
         template<>
@@ -195,12 +195,12 @@ namespace alpaka
                 return dev.getNativeHandle();
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     template<typename TElem, typename TDim, typename TIdx>
     class BufCpu;
 
-    namespace traits
+    namespace trait
     {
         //! The CPU device memory buffer type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -215,11 +215,11 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    } // namespace traits
+    } // namespace trait
     using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;
     using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct QueueType<DevCpu, Blocking>
@@ -232,5 +232,5 @@ namespace alpaka
         {
             using type = QueueCpuNonBlocking;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

@@ -116,7 +116,7 @@ namespace alpaka::experimental
         VecType extents;
     };
 
-    namespace traits
+    namespace trait
     {
         namespace internal
         {
@@ -138,7 +138,7 @@ namespace alpaka::experimental
                     buffer.m_extentElements};
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka::experimental
 
 #endif

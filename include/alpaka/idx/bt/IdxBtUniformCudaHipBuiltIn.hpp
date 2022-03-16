@@ -47,7 +47,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         //! The GPU CUDA/HIP accelerator index dimension get trait specialization.
         template<typename TDim, typename TIdx>
@@ -82,7 +82,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

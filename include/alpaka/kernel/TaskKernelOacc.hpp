@@ -1,4 +1,4 @@
-/* Copyright 2021 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *
@@ -165,7 +165,7 @@ namespace alpaka
         core::Tuple<std::decay_t<TArgs>...> m_args;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The OpenACC execution task accelerator type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
@@ -230,7 +230,7 @@ namespace alpaka
                                                                 { task(queue.m_spQueueImpl->m_dev); });
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

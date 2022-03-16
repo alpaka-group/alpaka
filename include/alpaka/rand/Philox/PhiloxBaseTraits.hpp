@@ -16,11 +16,11 @@
 #    include <alpaka/rand/Philox/PhiloxBaseCudaArray.hpp>
 #endif
 
-namespace alpaka::rand::engine::traits
+namespace alpaka::rand::engine::trait
 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
     template<typename TAcc>
-    constexpr auto isGPU = std::is_same_v<typename alpaka::traits::DevType<TAcc>::type, alpaka::DevUniformCudaHipRt>;
+    constexpr auto isGPU = std::is_same_v<typename alpaka::trait::DevType<TAcc>::type, alpaka::DevUniformCudaHipRt>;
 #else
     template<typename TAcc>
     constexpr bool isGPU = false;
@@ -54,4 +54,4 @@ namespace alpaka::rand::engine::traits
 
         using Base = PhiloxBaseCommon<Backend, TParams, TImpl>; ///< Base type to be inherited from
     };
-} // namespace alpaka::rand::engine::traits
+} // namespace alpaka::rand::engine::trait

@@ -136,7 +136,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! SYCL's types get trait specialization.
     template<typename T>
@@ -151,9 +151,9 @@ namespace alpaka::traits
     {
         using type = std::conditional_t<std::is_scalar_v<T>, T, typename T::element_type>;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL vectors' extent get trait specialization.
     template<typename TExtent>
@@ -243,6 +243,6 @@ namespace alpaka::traits
     {
         using type = std::size_t;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

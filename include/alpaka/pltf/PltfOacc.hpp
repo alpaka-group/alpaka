@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *
@@ -31,7 +31,7 @@ namespace alpaka
         ALPAKA_FN_HOST PltfOacc() = delete;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The OpenACC platform device count get trait specialization.
         template<>
@@ -44,7 +44,7 @@ namespace alpaka
                 return static_cast<std::size_t>(::acc_get_num_devices(::acc_get_device_type()));
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

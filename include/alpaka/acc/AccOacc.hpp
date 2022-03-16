@@ -99,7 +99,7 @@ namespace alpaka
         CtxBlockOacc<TDim, TIdx>& m_blockShared;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The OpenACC accelerator accelerator type trait specialization.
         template<typename TDim, typename TIdx>
@@ -344,7 +344,7 @@ namespace alpaka
                     workDiv.m_blockShared);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

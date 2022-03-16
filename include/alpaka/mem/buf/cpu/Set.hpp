@@ -197,7 +197,7 @@ namespace alpaka
         };
     } // namespace detail
 
-    namespace traits
+    namespace trait
     {
         //! The CPU device memory set trait specialization.
         template<typename TDim>
@@ -210,5 +210,5 @@ namespace alpaka
                 return alpaka::detail::TaskSetCpu<TDim, TView, TExtent>(view, byte, extent);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

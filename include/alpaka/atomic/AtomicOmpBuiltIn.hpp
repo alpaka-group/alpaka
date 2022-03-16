@@ -1,4 +1,4 @@
-/* Copyright 2021 René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -25,7 +25,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
 // check for OpenMP 3.1+
 // "omp atomic capture" is not supported before OpenMP 3.1
@@ -325,7 +325,7 @@ namespace alpaka
 
 #    endif // _OPENMP >= 202011
 
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

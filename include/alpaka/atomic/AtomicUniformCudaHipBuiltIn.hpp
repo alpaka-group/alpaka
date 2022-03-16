@@ -38,7 +38,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         //! The specializations to execute the requested atomic ops of the CUDA/HIP accelerator.
         // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions how to implement everything with
@@ -800,7 +800,7 @@ namespace alpaka
                 return T();
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

@@ -49,7 +49,7 @@ namespace alpaka
         }
     };
 
-    namespace traits
+    namespace trait
     {
         //! The GPU CUDA accelerator accelerator type trait specialization.
         template<typename TDim, typename TIdx>
@@ -83,7 +83,7 @@ namespace alpaka
                     std::forward<TArgs>(args)...);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

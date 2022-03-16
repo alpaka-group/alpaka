@@ -1,4 +1,4 @@
-/* Copyright 2021 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -78,7 +78,7 @@ namespace alpaka
                << workDiv.m_blockThreadExtent << ", threadElemExtent: " << workDiv.m_threadElemExtent << "}");
     }
 
-    namespace traits
+    namespace trait
     {
         //! The WorkDivMembers dimension get trait specialization.
         template<typename TDim, typename TIdx>
@@ -129,5 +129,5 @@ namespace alpaka
                 return workDiv.m_threadElemExtent;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

@@ -22,7 +22,7 @@ namespace alpaka::warp
     };
 
     //! The warp traits.
-    namespace traits
+    namespace trait
     {
         //! The warp size trait.
         template<typename TWarp, typename TSfinae = void>
@@ -47,7 +47,7 @@ namespace alpaka::warp
         //! The active mask trait.
         template<typename TWarp, typename TSfinae = void>
         struct Activemask;
-    } // namespace traits
+    } // namespace trait
 
     //! Returns warp size.
     //!
@@ -58,7 +58,7 @@ namespace alpaka::warp
     ALPAKA_FN_ACC auto getSize(TWarp const& warp) -> std::int32_t
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-        return traits::GetSize<ImplementationBase>::getSize(warp);
+        return trait::GetSize<ImplementationBase>::getSize(warp);
     }
 
     //! Returns a 32- or 64-bit unsigned integer (depending on the
@@ -81,10 +81,10 @@ namespace alpaka::warp
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TWarp>
     ALPAKA_FN_ACC auto activemask(TWarp const& warp)
-        -> decltype(traits::Activemask<concepts::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
+        -> decltype(trait::Activemask<concepts::ImplementationBase<ConceptWarp, TWarp>>::activemask(warp))
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-        return traits::Activemask<ImplementationBase>::activemask(warp);
+        return trait::Activemask<ImplementationBase>::activemask(warp);
     }
 
     //! Evaluates predicate for all active threads of the warp and returns
@@ -107,7 +107,7 @@ namespace alpaka::warp
     ALPAKA_FN_ACC auto all(TWarp const& warp, std::int32_t predicate) -> std::int32_t
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-        return traits::All<ImplementationBase>::all(warp, predicate);
+        return trait::All<ImplementationBase>::all(warp, predicate);
     }
 
     //! Evaluates predicate for all active threads of the warp and returns
@@ -130,7 +130,7 @@ namespace alpaka::warp
     ALPAKA_FN_ACC auto any(TWarp const& warp, std::int32_t predicate) -> std::int32_t
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-        return traits::Any<ImplementationBase>::any(warp, predicate);
+        return trait::Any<ImplementationBase>::any(warp, predicate);
     }
 
     //! Evaluates predicate for all non-exited threads in a warp and returns
@@ -157,7 +157,7 @@ namespace alpaka::warp
     ALPAKA_FN_ACC auto ballot(TWarp const& warp, std::int32_t predicate)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-        return traits::Ballot<ImplementationBase>::ballot(warp, predicate);
+        return trait::Ballot<ImplementationBase>::ballot(warp, predicate);
     }
 
     //! Exchange data between threads within a warp.
@@ -191,7 +191,7 @@ namespace alpaka::warp
     ALPAKA_FN_ACC auto shfl(TWarp const& warp, std::int32_t value, std::int32_t srcLane, std::int32_t width = 0)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-        return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
+        return trait::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
     }
 
     //! shfl for float vals
@@ -200,6 +200,6 @@ namespace alpaka::warp
     ALPAKA_FN_ACC auto shfl(TWarp const& warp, float value, std::int32_t srcLane, std::int32_t width = 0)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-        return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
+        return trait::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
     }
 } // namespace alpaka::warp

@@ -41,7 +41,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     template<typename T, std::size_t TUniqueId>
     struct DeclareSharedVar<T, TUniqueId, experimental::BlockSharedMemStGenericSycl>
@@ -68,6 +68,6 @@ namespace alpaka::traits
             // shared memory block data will be reused
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif
