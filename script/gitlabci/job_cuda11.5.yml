@@ -7,7 +7,7 @@ linux_nvcc-11.5_gcc-7_debug:
     ALPAKA_CI_GCC_VER: 7
     CMAKE_BUILD_TYPE: Debug
     ALPAKA_BOOST_VERSION: 1.75.0
-    ALPAKA_CI_CMAKE_VER: 3.20.0
+    ALPAKA_CI_CMAKE_VER: 3.20.6
     CMAKE_CUDA_ARCHITECTURES: "61;86"
   stage: stageRun0
 
@@ -29,7 +29,7 @@ linux_nvcc-11.5_gcc-9_release:
     CMAKE_CUDA_ARCHITECTURES: "35;61"
     ALPAKA_CI_GCC_VER: 9
     ALPAKA_BOOST_VERSION: 1.76.0
-    ALPAKA_CI_CMAKE_VER: 3.19.7
+    ALPAKA_CI_CMAKE_VER: 3.19.8
   stage: stageRun0
 
 linux_nvcc-11.5_gcc-10_debug:
@@ -40,7 +40,7 @@ linux_nvcc-11.5_gcc-10_debug:
     ALPAKA_CI_GCC_VER: 10
     CMAKE_BUILD_TYPE: Debug
     ALPAKA_BOOST_VERSION: 1.76.0
-    ALPAKA_CI_CMAKE_VER: 3.19.7
+    ALPAKA_CI_CMAKE_VER: 3.19.8
   stage: stageRun1
 
 # clang not included because of an CUDA 11.5 bug: https://github.com/alpaka-group/alpaka/issues/1625
@@ -54,7 +54,7 @@ linux_nvhpc-21.11_cuda-11.5_oacc:
     ALPAKA_CI_NVHPC_VER: "21.11"
     CMAKE_BUILD_TYPE: ""
     ALPAKA_BOOST_VERSION: 1.74.0
-    ALPAKA_CI_CMAKE_VER: 3.19.7
+    ALPAKA_CI_CMAKE_VER: 3.19.8
     ALPAKA_CHECK_HEADERS: "ON"
   stage: stageRun0
   
