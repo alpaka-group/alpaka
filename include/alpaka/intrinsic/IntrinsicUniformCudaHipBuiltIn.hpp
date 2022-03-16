@@ -33,7 +33,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct Popcount<IntrinsicUniformCudaHipBuiltIn>
@@ -74,7 +74,7 @@ namespace alpaka
                 return static_cast<std::int32_t>(__ffsll(static_cast<long long>(value)));
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

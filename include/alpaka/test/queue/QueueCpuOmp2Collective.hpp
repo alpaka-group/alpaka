@@ -105,7 +105,7 @@ namespace alpaka
         std::shared_ptr<QueueCpuBlocking> m_spBlockingQueue;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU blocking device queue device type trait specialization.
         template<>
@@ -296,9 +296,9 @@ namespace alpaka
                     wait(*queue.m_spBlockingQueue, event);
             }
         };
-    } // namespace traits
+    } // namespace trait
     //! The test specifics.
-    namespace test::traits
+    namespace test::trait
     {
         //! The blocking queue trait specialization for a OpenMP2 collective CPU queue.
         template<>
@@ -306,7 +306,7 @@ namespace alpaka
         {
             static constexpr bool value = true;
         };
-    } // namespace test::traits
+    } // namespace test::trait
 } // namespace alpaka
 
 #    include <alpaka/event/EventCpu.hpp>

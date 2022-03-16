@@ -125,7 +125,7 @@ namespace alpaka::math
     };
 
     //! The math traits.
-    namespace traits
+    namespace trait
     {
         //! The abs trait.
         template<typename T, typename TArg, typename TSfinae = void>
@@ -528,7 +528,7 @@ namespace alpaka::math
                 return trunc(arg);
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     //! Computes the absolute value.
     //!
@@ -541,7 +541,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto abs(T const& abs_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathAbs, T>;
-        return traits::Abs<ImplementationBase, TArg>{}(abs_ctx, arg);
+        return trait::Abs<ImplementationBase, TArg>{}(abs_ctx, arg);
     }
 
     //! Computes the principal value of the arc cosine.
@@ -558,7 +558,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto acos(T const& acos_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathAcos, T>;
-        return traits::Acos<ImplementationBase, TArg>{}(acos_ctx, arg);
+        return trait::Acos<ImplementationBase, TArg>{}(acos_ctx, arg);
     }
 
     //! Computes the principal value of the arc sine.
@@ -575,7 +575,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto asin(T const& asin_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathAsin, T>;
-        return traits::Asin<ImplementationBase, TArg>{}(asin_ctx, arg);
+        return trait::Asin<ImplementationBase, TArg>{}(asin_ctx, arg);
     }
 
     //! Computes the principal value of the arc tangent.
@@ -588,7 +588,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto atan(T const& atan_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathAtan, T>;
-        return traits::Atan<ImplementationBase, TArg>{}(atan_ctx, arg);
+        return trait::Atan<ImplementationBase, TArg>{}(atan_ctx, arg);
     }
 
     //! Computes the arc tangent of y/x using the signs of arguments to determine the correct quadrant.
@@ -604,7 +604,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto atan2(T const& atan2_ctx, Ty const& y, Tx const& x)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathAtan2, T>;
-        return traits::Atan2<ImplementationBase, Ty, Tx>{}(atan2_ctx, y, x);
+        return trait::Atan2<ImplementationBase, Ty, Tx>{}(atan2_ctx, y, x);
     }
 
     //! Computes the cbrt.
@@ -618,7 +618,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto cbrt(T const& cbrt_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathCbrt, T>;
-        return traits::Cbrt<ImplementationBase, TArg>{}(cbrt_ctx, arg);
+        return trait::Cbrt<ImplementationBase, TArg>{}(cbrt_ctx, arg);
     }
 
     //! Computes the smallest integer value not less than arg.
@@ -632,7 +632,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto ceil(T const& ceil_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathCeil, T>;
-        return traits::Ceil<ImplementationBase, TArg>{}(ceil_ctx, arg);
+        return trait::Ceil<ImplementationBase, TArg>{}(ceil_ctx, arg);
     }
 
     //! Computes the cosine (measured in radians).
@@ -646,7 +646,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto cos(T const& cos_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathCos, T>;
-        return traits::Cos<ImplementationBase, TArg>{}(cos_ctx, arg);
+        return trait::Cos<ImplementationBase, TArg>{}(cos_ctx, arg);
     }
 
     //! Computes the error function of arg.
@@ -660,7 +660,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto erf(T const& erf_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathErf, T>;
-        return traits::Erf<ImplementationBase, TArg>{}(erf_ctx, arg);
+        return trait::Erf<ImplementationBase, TArg>{}(erf_ctx, arg);
     }
 
     //! Computes the e (Euler's number, 2.7182818) raised to the given power arg.
@@ -674,7 +674,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto exp(T const& exp_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathExp, T>;
-        return traits::Exp<ImplementationBase, TArg>{}(exp_ctx, arg);
+        return trait::Exp<ImplementationBase, TArg>{}(exp_ctx, arg);
     }
 
     //! Computes the largest integer value not greater than arg.
@@ -688,7 +688,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto floor(T const& floor_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathFloor, T>;
-        return traits::Floor<ImplementationBase, TArg>{}(floor_ctx, arg);
+        return trait::Floor<ImplementationBase, TArg>{}(floor_ctx, arg);
     }
 
     //! Computes the floating-point remainder of the division operation x/y.
@@ -704,7 +704,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto fmod(T const& fmod_ctx, Tx const& x, Ty const& y)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathFmod, T>;
-        return traits::Fmod<ImplementationBase, Tx, Ty>{}(fmod_ctx, x, y);
+        return trait::Fmod<ImplementationBase, Tx, Ty>{}(fmod_ctx, x, y);
     }
 
     //! Checks if given value is finite.
@@ -718,7 +718,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto isfinite(T const& ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathIsfinite, T>;
-        return traits::Isfinite<ImplementationBase, TArg>{}(ctx, arg);
+        return trait::Isfinite<ImplementationBase, TArg>{}(ctx, arg);
     }
 
     //! Checks if given value is inf.
@@ -732,7 +732,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto isinf(T const& ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathIsinf, T>;
-        return traits::Isinf<ImplementationBase, TArg>{}(ctx, arg);
+        return trait::Isinf<ImplementationBase, TArg>{}(ctx, arg);
     }
 
     //! Checks if given value is NaN.
@@ -746,7 +746,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto isnan(T const& ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathIsnan, T>;
-        return traits::Isnan<ImplementationBase, TArg>{}(ctx, arg);
+        return trait::Isnan<ImplementationBase, TArg>{}(ctx, arg);
     }
 
     //! Computes the the natural (base e) logarithm of arg.
@@ -764,7 +764,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto log(T const& log_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathLog, T>;
-        return traits::Log<ImplementationBase, TArg>{}(log_ctx, arg);
+        return trait::Log<ImplementationBase, TArg>{}(log_ctx, arg);
     }
 
     //! Returns the larger of two arguments.
@@ -781,7 +781,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto max(T const& max_ctx, Tx const& x, Ty const& y)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathMax, T>;
-        return traits::Max<ImplementationBase, Tx, Ty>{}(max_ctx, x, y);
+        return trait::Max<ImplementationBase, Tx, Ty>{}(max_ctx, x, y);
     }
 
     //! Returns the smaller of two arguments.
@@ -798,7 +798,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto min(T const& min_ctx, Tx const& x, Ty const& y)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathMin, T>;
-        return traits::Min<ImplementationBase, Tx, Ty>{}(min_ctx, x, y);
+        return trait::Min<ImplementationBase, Tx, Ty>{}(min_ctx, x, y);
     }
 
     //! Computes the value of base raised to the power exp.
@@ -818,7 +818,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto pow(T const& pow_ctx, TBase const& base, TExp const& exp)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathPow, T>;
-        return traits::Pow<ImplementationBase, TBase, TExp>{}(pow_ctx, base, exp);
+        return trait::Pow<ImplementationBase, TBase, TExp>{}(pow_ctx, base, exp);
     }
 
     //! Computes the IEEE remainder of the floating point division operation x/y.
@@ -834,7 +834,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto remainder(T const& remainder_ctx, Tx const& x, Ty const& y)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathRemainder, T>;
-        return traits::Remainder<ImplementationBase, Tx, Ty>{}(remainder_ctx, x, y);
+        return trait::Remainder<ImplementationBase, Tx, Ty>{}(remainder_ctx, x, y);
     }
 
     //! Computes the nearest integer value to arg (in floating-point format), rounding halfway cases away from
@@ -849,7 +849,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto round(T const& round_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
-        return traits::Round<ImplementationBase, TArg>{}(round_ctx, arg);
+        return trait::Round<ImplementationBase, TArg>{}(round_ctx, arg);
     }
     //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
     //! regardless of the current rounding mode.
@@ -863,7 +863,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto lround(T const& lround_ctx, TArg const& arg) -> long int
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
-        return traits::Lround<ImplementationBase, TArg>{}(lround_ctx, arg);
+        return trait::Lround<ImplementationBase, TArg>{}(lround_ctx, arg);
     }
     //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
     //! regardless of the current rounding mode.
@@ -877,7 +877,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto llround(T const& llround_ctx, TArg const& arg) -> long long int
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
-        return traits::Llround<ImplementationBase, TArg>{}(llround_ctx, arg);
+        return trait::Llround<ImplementationBase, TArg>{}(llround_ctx, arg);
     }
 
     //! Computes the rsqrt.
@@ -895,7 +895,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto rsqrt(T const& rsqrt_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathRsqrt, T>;
-        return traits::Rsqrt<ImplementationBase, TArg>{}(rsqrt_ctx, arg);
+        return trait::Rsqrt<ImplementationBase, TArg>{}(rsqrt_ctx, arg);
     }
 
     //! Computes the sine (measured in radians).
@@ -909,7 +909,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto sin(T const& sin_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathSin, T>;
-        return traits::Sin<ImplementationBase, TArg>{}(sin_ctx, arg);
+        return trait::Sin<ImplementationBase, TArg>{}(sin_ctx, arg);
     }
 
     //! Computes the sine and cosine (measured in radians).
@@ -925,7 +925,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto sincos(T const& sincos_ctx, TArg const& arg, TArg& result_sin, TArg& result_cos) -> void
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathSinCos, T>;
-        traits::SinCos<ImplementationBase, TArg>{}(sincos_ctx, arg, result_sin, result_cos);
+        trait::SinCos<ImplementationBase, TArg>{}(sincos_ctx, arg, result_sin, result_cos);
     }
 
 
@@ -944,7 +944,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto sqrt(T const& sqrt_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathSqrt, T>;
-        return traits::Sqrt<ImplementationBase, TArg>{}(sqrt_ctx, arg);
+        return trait::Sqrt<ImplementationBase, TArg>{}(sqrt_ctx, arg);
     }
 
     //! Computes the tangent (measured in radians).
@@ -958,7 +958,7 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto tan(T const& tan_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathTan, T>;
-        return traits::Tan<ImplementationBase, TArg>{}(tan_ctx, arg);
+        return trait::Tan<ImplementationBase, TArg>{}(tan_ctx, arg);
     }
 
     //! Computes the nearest integer not greater in magnitude than arg.
@@ -972,6 +972,6 @@ namespace alpaka::math
     ALPAKA_FN_HOST_ACC auto trunc(T const& trunc_ctx, TArg const& arg)
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathTrunc, T>;
-        return traits::Trunc<ImplementationBase, TArg>{}(trunc_ctx, arg);
+        return trait::Trunc<ImplementationBase, TArg>{}(trunc_ctx, arg);
     }
 } // namespace alpaka::math

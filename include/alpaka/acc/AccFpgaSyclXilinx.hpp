@@ -42,7 +42,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The Xilinx FPGA SYCL accelerator name trait specialization.
     template<typename TDim, typename TIdx>
@@ -80,6 +80,6 @@ namespace alpaka::traits
     {
         using type = experimental::PltfFpgaSyclXilinx;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

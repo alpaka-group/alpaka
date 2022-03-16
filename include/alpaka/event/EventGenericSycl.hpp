@@ -62,7 +62,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL device event device get trait specialization.
     template<typename TDev>
@@ -169,6 +169,6 @@ namespace alpaka::traits
             return event.getNativeHandle();
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

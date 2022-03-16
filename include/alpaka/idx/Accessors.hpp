@@ -27,17 +27,17 @@ namespace alpaka
     template<typename TOrigin, typename TUnit, typename TIdx, typename TWorkDiv>
     ALPAKA_FN_HOST_ACC auto getIdx(TIdx const& idx, TWorkDiv const& workDiv) -> Vec<Dim<TWorkDiv>, Idx<TIdx>>
     {
-        return traits::GetIdx<TIdx, TOrigin, TUnit>::getIdx(idx, workDiv);
+        return trait::GetIdx<TIdx, TOrigin, TUnit>::getIdx(idx, workDiv);
     }
     //! Get the indices requested.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TOrigin, typename TUnit, typename TIdxWorkDiv>
     ALPAKA_FN_HOST_ACC auto getIdx(TIdxWorkDiv const& idxWorkDiv) -> Vec<Dim<TIdxWorkDiv>, Idx<TIdxWorkDiv>>
     {
-        return traits::GetIdx<TIdxWorkDiv, TOrigin, TUnit>::getIdx(idxWorkDiv, idxWorkDiv);
+        return trait::GetIdx<TIdxWorkDiv, TOrigin, TUnit>::getIdx(idxWorkDiv, idxWorkDiv);
     }
 
-    namespace traits
+    namespace trait
     {
         //! The grid block index get trait specialization for classes with IdxGbBase member type.
         template<typename TIdxGb>
@@ -50,7 +50,7 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC static auto getIdx(TIdxGb const& idx, TWorkDiv const& workDiv)
                 -> Vec<Dim<ImplementationBase>, Idx<ImplementationBase>>
             {
-                return traits::GetIdx<ImplementationBase, origin::Grid, unit::Blocks>::getIdx(idx, workDiv);
+                return trait::GetIdx<ImplementationBase, origin::Grid, unit::Blocks>::getIdx(idx, workDiv);
             }
         };
 
@@ -65,7 +65,7 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC static auto getIdx(TIdxBt const& idx, TWorkDiv const& workDiv)
                 -> Vec<Dim<ImplementationBase>, Idx<ImplementationBase>>
             {
-                return traits::GetIdx<ImplementationBase, origin::Block, unit::Threads>::getIdx(idx, workDiv);
+                return trait::GetIdx<ImplementationBase, origin::Block, unit::Threads>::getIdx(idx, workDiv);
             }
         };
 
@@ -83,7 +83,7 @@ namespace alpaka
                     + alpaka::getIdx<origin::Block, unit::Threads>(idx, workDiv);
             }
         };
-    } // namespace traits
+    } // namespace trait
     //! Get the index of the first element this thread computes.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TIdxWorkDiv, typename TGridThreadIdx, typename TThreadElemExtent>

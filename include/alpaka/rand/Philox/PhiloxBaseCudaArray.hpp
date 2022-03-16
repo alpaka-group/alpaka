@@ -15,7 +15,7 @@
 
 namespace alpaka::rand::engine
 {
-    namespace traits
+    namespace trait
     {
         template<typename TScalar>
         struct PhiloxResultContainerTraits;
@@ -46,7 +46,7 @@ namespace alpaka::rand::engine
 
         template<typename TScalar>
         using PhiloxResultContainer = typename PhiloxResultContainerTraits<TScalar>::type;
-    } // namespace traits
+    } // namespace trait
 
     /** Philox backend using array-like interface to CUDA uintN types for the storage of Key and Counter
      *
@@ -63,8 +63,8 @@ namespace alpaka::rand::engine
             = meta::CudaVectorArrayWrapper<unsigned, 4>; ///< Counter type = array-like interface to CUDA uint4
         using Key = meta::CudaVectorArrayWrapper<unsigned, 2>; ///< Key type = array-like interface to CUDA uint2
         template<typename TDistributionResultScalar>
-        using ResultContainer = traits::PhiloxResultContainer<TDistributionResultScalar>; ///< Vector template for
-                                                                                          ///< distribution results
+        using ResultContainer = trait::PhiloxResultContainer<TDistributionResultScalar>; ///< Vector template for
+                                                                                         ///< distribution results
     };
 } // namespace alpaka::rand::engine
 

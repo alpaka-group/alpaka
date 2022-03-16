@@ -116,7 +116,7 @@ namespace alpaka
     public:
         std::shared_ptr<uniform_cuda_hip::detail::EventUniformCudaHipImpl> m_spEventImpl;
     };
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP RT device event device type trait specialization.
         template<>
@@ -249,7 +249,7 @@ namespace alpaka
                 return event.getNativeHandle();
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

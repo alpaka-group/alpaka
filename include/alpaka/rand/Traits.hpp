@@ -23,8 +23,8 @@ namespace alpaka::rand
     //! The random number generator distribution specifics.
     namespace distribution
     {
-        //! The random number generator distribution traits.
-        namespace traits
+        //! The random number generator distribution trait.
+        namespace trait
         {
             //! The random number float normal distribution get trait.
             template<typename TRand, typename T, typename TSfinae = void>
@@ -37,7 +37,7 @@ namespace alpaka::rand
             //! The random number integer uniform distribution get trait.
             template<typename TRand, typename T, typename TSfinae = void>
             struct CreateUniformUint;
-        } // namespace traits
+        } // namespace trait
 
         //! \return A normal float distribution with mean 0.0f and standard deviation 1.0f.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -47,7 +47,7 @@ namespace alpaka::rand
             static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
             using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-            return traits::CreateNormalReal<ImplementationBase, T>::createNormalReal(rand);
+            return trait::CreateNormalReal<ImplementationBase, T>::createNormalReal(rand);
         }
         //! \return A uniform floating point distribution [0.0, 1.0).
         ALPAKA_NO_HOST_ACC_WARNING
@@ -57,7 +57,7 @@ namespace alpaka::rand
             static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
 
             using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-            return traits::CreateUniformReal<ImplementationBase, T>::createUniformReal(rand);
+            return trait::CreateUniformReal<ImplementationBase, T>::createUniformReal(rand);
         }
         //! \return A uniform integer distribution [0, UINT_MAX].
         ALPAKA_NO_HOST_ACC_WARNING
@@ -69,20 +69,20 @@ namespace alpaka::rand
                 "The value type T has to be a unsigned integral type!");
 
             using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-            return traits::CreateUniformUint<ImplementationBase, T>::createUniformUint(rand);
+            return trait::CreateUniformUint<ImplementationBase, T>::createUniformUint(rand);
         }
     } // namespace distribution
 
     //! The random number generator engine specifics.
     namespace engine
     {
-        //! The random number generator engine traits.
-        namespace traits
+        //! The random number generator engine trait.
+        namespace trait
         {
             //! The random number default generator engine get trait.
             template<typename TRand, typename TSfinae = void>
             struct CreateDefault;
-        } // namespace traits
+        } // namespace trait
         //! \return A default random number generator engine.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TRand>
@@ -93,7 +93,7 @@ namespace alpaka::rand
             std::uint32_t const& offset = 0)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-            return traits::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
+            return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
         }
     } // namespace engine
 } // namespace alpaka::rand

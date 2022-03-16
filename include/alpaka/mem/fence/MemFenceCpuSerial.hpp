@@ -21,7 +21,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct MemFence<MemFenceCpuSerial, memory_scope::Block>
@@ -57,5 +57,5 @@ namespace alpaka
                 dummy.store(x, std::memory_order_relaxed);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

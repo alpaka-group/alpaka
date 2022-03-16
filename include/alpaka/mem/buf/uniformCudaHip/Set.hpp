@@ -269,7 +269,7 @@ namespace alpaka
         };
     } // namespace detail
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA device memory set trait specialization.
         template<typename TDim>
@@ -411,7 +411,7 @@ namespace alpaka
                 wait(queue);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

@@ -70,7 +70,7 @@ struct OpenMPScheduleTraitKernel : public OpenMPScheduleDefaultKernel
 {
 };
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! Schedule trait specialization for OpenMPScheduleTraitKernel.
     //! This is the most general way to define a schedule.
@@ -90,7 +90,7 @@ namespace alpaka::traits
             return alpaka::omp::Schedule{alpaka::omp::Schedule::Dynamic, 2};
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 auto main() -> int
 {

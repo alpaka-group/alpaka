@@ -1,5 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber,
- * Antonio Di Pilato
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -18,23 +17,23 @@
 
 namespace alpaka::test
 {
-    namespace traits
+    namespace trait
     {
         template<typename TDev>
         struct EventHostManualTriggerType;
 
         template<typename TDev>
         struct IsEventHostManualTriggerSupported;
-    } // namespace traits
+    } // namespace trait
 
     //! The event host manual trigger type trait alias template to remove the ::type.
     template<typename TDev>
-    using EventHostManualTrigger = typename traits::EventHostManualTriggerType<TDev>::type;
+    using EventHostManualTrigger = typename trait::EventHostManualTriggerType<TDev>::type;
 
     template<typename TDev>
     ALPAKA_FN_HOST auto isEventHostManualTriggerSupported(TDev const& dev) -> bool
     {
-        return traits::IsEventHostManualTriggerSupported<TDev>::isSupported(dev);
+        return trait::IsEventHostManualTriggerSupported<TDev>::isSupported(dev);
     }
 
     namespace cpu::detail
@@ -107,7 +106,7 @@ namespace alpaka::test
         std::shared_ptr<cpu::detail::EventHostManualTriggerCpuImpl<TDev>> m_spEventImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct EventHostManualTriggerType<DevCpu>
@@ -157,10 +156,10 @@ namespace alpaka::test
             }
         };
 #endif
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka::test
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The CPU device event device get trait specialization.
     template<typename TDev>
@@ -269,7 +268,7 @@ namespace alpaka::traits
                 { return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady; });
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
@@ -365,7 +364,7 @@ namespace alpaka::test
         std::shared_ptr<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl> m_spEventImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct EventHostManualTriggerType<DevUniformCudaHipRt>
@@ -383,10 +382,10 @@ namespace alpaka::test
                 return result != 0;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka::test
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The CPU device event device get trait specialization.
     template<>
@@ -479,7 +478,7 @@ namespace alpaka::traits
                 CU_STREAM_WAIT_VALUE_GEQ));
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 #endif
 
 
@@ -571,7 +570,7 @@ namespace alpaka::test
         std::shared_ptr<hip::detail::EventHostManualTriggerHipImpl> m_spEventImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct EventHostManualTriggerType<DevHipRt>
@@ -591,10 +590,10 @@ namespace alpaka::test
                 return false;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka::test
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The CPU device event device get trait specialization.
     template<>
@@ -707,7 +706,7 @@ namespace alpaka::traits
 #    endif
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 #endif
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
@@ -728,7 +727,7 @@ namespace alpaka
             }
         };
 
-        namespace traits
+        namespace trait
         {
             template<typename TPltf>
             struct EventHostManualTriggerType<experimental::DevGenericSycl<TPltf>>
@@ -744,10 +743,10 @@ namespace alpaka
                     return false;
                 }
             };
-        } // namespace traits
+        } // namespace trait
     } // namespace test
 
-    namespace traits
+    namespace trait
     {
         template<typename TPltf>
         struct Enqueue<
@@ -781,6 +780,6 @@ namespace alpaka
                 return true;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 #endif

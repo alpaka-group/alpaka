@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -33,7 +33,7 @@ namespace alpaka
     {
     };
     //! The accelerator traits.
-    namespace traits
+    namespace trait
     {
         //! The accelerator type trait.
         template<typename T, typename TSfinae = void>
@@ -59,25 +59,25 @@ namespace alpaka
         template<typename TAcc>
         struct GetAccDevProps<TAcc, std::enable_if_t<concepts::ImplementsConcept<ConceptUniformCudaHip, TAcc>::value>>
         {
-            ALPAKA_FN_HOST static auto getAccDevProps(typename alpaka::traits::DevType<TAcc>::type const& dev)
-                -> AccDevProps<typename traits::DimType<TAcc>::type, typename traits::IdxType<TAcc>::type>
+            ALPAKA_FN_HOST static auto getAccDevProps(typename alpaka::trait::DevType<TAcc>::type const& dev)
+                -> AccDevProps<typename trait::DimType<TAcc>::type, typename trait::IdxType<TAcc>::type>
             {
                 using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
                 return GetAccDevProps<ImplementationBase>::getAccDevProps(dev);
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     //! The accelerator type trait alias template to remove the ::type.
     template<typename T>
-    using Acc = typename traits::AccType<T>::type;
+    using Acc = typename trait::AccType<T>::type;
 
     //! \return The acceleration properties on the given device.
     template<typename TAcc, typename TDev>
     ALPAKA_FN_HOST auto getAccDevProps(TDev const& dev) -> AccDevProps<Dim<TAcc>, Idx<TAcc>>
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptAcc, TAcc>;
-        return traits::GetAccDevProps<ImplementationBase>::getAccDevProps(dev);
+        return trait::GetAccDevProps<ImplementationBase>::getAccDevProps(dev);
     }
 
     //! \return The accelerator name
@@ -86,7 +86,7 @@ namespace alpaka
     template<typename TAcc>
     ALPAKA_FN_HOST auto getAccName() -> std::string
     {
-        return traits::GetAccName<TAcc>::getAccName();
+        return trait::GetAccName<TAcc>::getAccName();
     }
 
     namespace detail
@@ -105,7 +105,7 @@ namespace alpaka
         };
     } // namespace detail
 
-    namespace traits
+    namespace trait
     {
         //! The GPU HIP accelerator device type trait specialization.
         template<typename TAcc>
@@ -142,7 +142,7 @@ namespace alpaka
         template<typename TAcc, typename TProperty>
         struct QueueType<TAcc, TProperty, std::enable_if_t<concepts::ImplementsConcept<ConceptAcc, TAcc>::value>>
         {
-            using type = typename QueueType<typename alpaka::traits::PltfType<TAcc>::type, TProperty>::type;
+            using type = typename QueueType<typename alpaka::trait::PltfType<TAcc>::type, TProperty>::type;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

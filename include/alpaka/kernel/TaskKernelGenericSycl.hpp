@@ -214,7 +214,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL execution task accelerator type trait specialization.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
@@ -250,6 +250,6 @@ namespace alpaka::traits
     {
         using type = TIdx;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

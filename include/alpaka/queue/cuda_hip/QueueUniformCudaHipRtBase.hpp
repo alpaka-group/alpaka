@@ -112,7 +112,7 @@ namespace alpaka
         } // namespace detail
     } // namespace uniform_cuda_hip
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP RT non-blocking queue device get trait specialization.
         template<>
@@ -158,7 +158,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle()));
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

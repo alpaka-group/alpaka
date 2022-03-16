@@ -43,7 +43,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The Intel CPU SYCL accelerator name trait specialization.
     template<typename TDim, typename TIdx>
@@ -81,6 +81,6 @@ namespace alpaka::traits
     {
         using type = experimental::PltfCpuSyclIntel;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

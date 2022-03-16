@@ -98,7 +98,7 @@ namespace alpaka
         }
     };
 
-    namespace traits
+    namespace trait
     {
         //! The GPU CUDA accelerator accelerator type trait specialization.
         template<typename TDim, typename TIdx>
@@ -222,7 +222,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    } // namespace traits
+    } // namespace trait
     namespace detail
     {
         //! specialization of the TKernelFnObj return type evaluation
@@ -239,7 +239,7 @@ namespace alpaka
             }
         };
     } // namespace detail
-    namespace traits
+    namespace trait
     {
         //! The GPU CUDA accelerator execution task type trait specialization.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
@@ -272,7 +272,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

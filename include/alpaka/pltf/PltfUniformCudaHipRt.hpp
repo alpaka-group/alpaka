@@ -36,7 +36,7 @@ namespace alpaka
         ALPAKA_FN_HOST PltfUniformCudaHipRt() = delete;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP RT platform device type trait specialization.
         template<>
@@ -268,7 +268,7 @@ namespace alpaka
             }
 #    endif
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

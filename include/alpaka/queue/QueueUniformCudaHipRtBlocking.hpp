@@ -61,7 +61,7 @@ namespace alpaka
     using QueueHipRtBlocking = QueueUniformCudaHipRtBlocking;
 #    endif
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP RT blocking queue device type trait specialization.
         template<>
@@ -178,7 +178,7 @@ namespace alpaka
                 return queue.getNativeHandle();
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

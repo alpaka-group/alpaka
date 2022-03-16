@@ -111,7 +111,7 @@ namespace alpaka
         std::shared_ptr<oacc::detail::BufOaccImpl<TElem, TDim, TIdx>> m_spBufImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The BufOacc device type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -385,7 +385,7 @@ namespace alpaka
                 throw std::runtime_error("Mapping host memory to OpenACC device not implemented!");
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #    include <alpaka/mem/buf/oacc/Copy.hpp>

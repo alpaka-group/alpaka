@@ -32,7 +32,7 @@ namespace alpaka::experimental::warp
     };
 } // namespace alpaka::experimental::warp
 
-namespace alpaka::warp::traits
+namespace alpaka::warp::trait
 {
     template<typename TDim>
     struct GetSize<experimental::warp::WarpGenericSycl<TDim>>
@@ -117,6 +117,6 @@ namespace alpaka::warp::traits
             return sycl::select_from_group(actual_group, value, src);
         }
     };
-} // namespace alpaka::warp::traits
+} // namespace alpaka::warp::trait
 
 #endif

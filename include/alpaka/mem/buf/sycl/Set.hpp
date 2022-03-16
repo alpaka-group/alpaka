@@ -59,7 +59,7 @@ namespace alpaka
         } // namespace detail
     } // namespace experimental
 
-    namespace traits
+    namespace trait
     {
         //! The SYCL device memory set trait specialization.
         template<typename TDim, typename TPltf>
@@ -82,7 +82,7 @@ namespace alpaka
                 return experimental::detail::TaskSetSycl<DstType>{DstType{buf, range}, byte_val};
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

@@ -495,7 +495,7 @@ namespace alpaka
     } // namespace detail
 
     // Trait specializations for CreateTaskMemcpy.
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP to CPU memory copy trait specialization.
         template<typename TDim>
@@ -702,7 +702,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamSynchronize)(queue.getNativeHandle()));
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

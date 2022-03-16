@@ -1,4 +1,4 @@
-/* Copyright 2021 Felice Pantaleo, Andrea Bocci
+/* Copyright 2022 Felice Pantaleo, Andrea Bocci
  *
  * This file is part of alpaka.
  *
@@ -37,7 +37,7 @@ namespace alpaka
             "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
     }
 
-    namespace traits
+    namespace trait
     {
         //! The CPU accelerators AtomicAdd.
         template<typename T, typename THierarchy>
@@ -214,5 +214,5 @@ namespace alpaka
                 return old;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

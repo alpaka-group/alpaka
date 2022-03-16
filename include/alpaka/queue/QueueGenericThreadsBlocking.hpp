@@ -97,7 +97,7 @@ namespace alpaka
         std::shared_ptr<generic::detail::QueueGenericThreadsBlockingImpl<TDev>> m_spQueueImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU blocking device queue device type trait specialization.
         template<typename TDev>
@@ -160,7 +160,7 @@ namespace alpaka
                 std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #include <alpaka/event/EventGenericThreads.hpp>

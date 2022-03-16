@@ -81,7 +81,7 @@ namespace alpaka
         TIdx m_pitchBytes;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The BufUniformCudaHipRt device type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -465,7 +465,7 @@ namespace alpaka
                 return pDev;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #    include <alpaka/mem/buf/uniformCudaHip/Copy.hpp>

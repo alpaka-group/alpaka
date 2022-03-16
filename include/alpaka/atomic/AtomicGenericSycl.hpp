@@ -101,7 +101,7 @@ namespace alpaka::experimental
     } // namespace detail
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     // Add.
     //! The SYCL accelerator atomic operation.
@@ -318,6 +318,6 @@ namespace alpaka::traits
             }
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

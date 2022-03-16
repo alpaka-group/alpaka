@@ -37,7 +37,7 @@ namespace alpaka::internal
     public:
         ViewAccessOps()
         {
-            static_assert(experimental::traits::internal::IsView<TView>::value);
+            static_assert(experimental::trait::internal::IsView<TView>::value);
         }
 
         ALPAKA_FN_HOST auto data() -> pointer

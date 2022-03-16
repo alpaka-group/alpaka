@@ -21,7 +21,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU fibers accelerator clock operation.
         template<>
@@ -35,5 +35,5 @@ namespace alpaka
                     std::chrono::high_resolution_clock::now().time_since_epoch().count());
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

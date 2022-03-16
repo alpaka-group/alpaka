@@ -1,5 +1,4 @@
-/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber, Antonio
- * Di Pilato
+/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *
@@ -110,7 +109,7 @@ namespace alpaka
         std::shared_ptr<detail::BufOmp5Impl<TElem, TDim, TIdx>> m_spBufImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The BufOmp5 device type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -383,7 +382,7 @@ namespace alpaka
                 throw std::runtime_error("Mapping host memory to OMP5 device not implemented!");
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #    include <alpaka/mem/buf/omp5/Copy.hpp>

@@ -32,7 +32,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA built-in clock operation.
         template<>
@@ -46,7 +46,7 @@ namespace alpaka
                 return static_cast<std::uint64_t>(clock64());
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

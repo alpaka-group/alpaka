@@ -26,7 +26,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         //! The CPU boost aligned allocator memory allocation trait specialization.
         template<typename T, typename TAlignment>
@@ -64,5 +64,5 @@ namespace alpaka
                 core::alignedFree(const_cast<void*>(reinterpret_cast<void const*>(ptr)));
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

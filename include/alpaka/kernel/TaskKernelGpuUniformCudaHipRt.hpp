@@ -145,7 +145,7 @@ namespace alpaka
         std::tuple<remove_restrict_t<std::decay_t<TArgs>>...> m_args;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The GPU CUDA/HIP execution task accelerator type trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
@@ -431,7 +431,7 @@ namespace alpaka
                 }
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #    endif

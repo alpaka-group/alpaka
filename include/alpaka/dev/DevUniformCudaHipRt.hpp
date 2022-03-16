@@ -33,7 +33,7 @@
 
 namespace alpaka
 {
-    namespace traits
+    namespace trait
     {
         template<typename TPltf, typename TSfinae>
         struct GetDevByIdx;
@@ -47,7 +47,7 @@ namespace alpaka
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt>
         , public concepts::Implements<ConceptDev, DevUniformCudaHipRt>
     {
-        friend struct traits::GetDevByIdx<PltfUniformCudaHipRt>;
+        friend struct trait::GetDevByIdx<PltfUniformCudaHipRt>;
 
     protected:
         DevUniformCudaHipRt() = default;
@@ -81,7 +81,7 @@ namespace alpaka
 #    endif
 
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP RT device name get trait specialization.
         template<>
@@ -180,12 +180,12 @@ namespace alpaka
                 return dev.getNativeHandle();
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     template<typename TElem, typename TDim, typename TIdx>
     class BufUniformCudaHipRt;
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP RT device memory buffer type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -229,7 +229,7 @@ namespace alpaka
         {
             using type = QueueUniformCudaHipRtNonBlocking;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

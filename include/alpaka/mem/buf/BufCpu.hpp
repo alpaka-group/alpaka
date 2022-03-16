@@ -123,7 +123,7 @@ namespace alpaka
         std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The BufCpu device type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -420,7 +420,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #include <alpaka/mem/buf/cpu/Copy.hpp>

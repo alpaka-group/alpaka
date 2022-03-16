@@ -1,4 +1,4 @@
-/* Copyright 2021 Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -25,7 +25,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         template<typename TMemScope>
         struct MemFence<MemFenceOmp5, TMemScope>
@@ -36,7 +36,7 @@ namespace alpaka
 #    pragma omp flush acq_rel
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

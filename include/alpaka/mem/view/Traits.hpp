@@ -28,7 +28,7 @@
 namespace alpaka
 {
     //! The view traits.
-    namespace traits
+    namespace trait
     {
         //! The native pointer get trait.
         template<typename TView, typename TSfinae = void>
@@ -91,7 +91,7 @@ namespace alpaka
         //! The sub view creation trait.
         template<typename TDev, typename TSfinae = void>
         struct CreateSubView;
-    } // namespace traits
+    } // namespace trait
 
     //! Gets the native pointer of the memory view.
     //!
@@ -100,7 +100,7 @@ namespace alpaka
     template<typename TView>
     ALPAKA_FN_HOST auto getPtrNative(TView const& view) -> Elem<TView> const*
     {
-        return traits::GetPtrNative<TView>::getPtrNative(view);
+        return trait::GetPtrNative<TView>::getPtrNative(view);
     }
 
     //! Gets the native pointer of the memory view.
@@ -110,7 +110,7 @@ namespace alpaka
     template<typename TView>
     ALPAKA_FN_HOST auto getPtrNative(TView& view) -> Elem<TView>*
     {
-        return traits::GetPtrNative<TView>::getPtrNative(view);
+        return trait::GetPtrNative<TView>::getPtrNative(view);
     }
 
     //! Gets the pointer to the view on the given device.
@@ -121,7 +121,7 @@ namespace alpaka
     template<typename TView, typename TDev>
     ALPAKA_FN_HOST auto getPtrDev(TView const& view, TDev const& dev) -> Elem<TView> const*
     {
-        return traits::GetPtrDev<TView, TDev>::getPtrDev(view, dev);
+        return trait::GetPtrDev<TView, TDev>::getPtrDev(view, dev);
     }
 
     //! Gets the pointer to the view on the given device.
@@ -132,7 +132,7 @@ namespace alpaka
     template<typename TView, typename TDev>
     ALPAKA_FN_HOST auto getPtrDev(TView& view, TDev const& dev) -> Elem<TView>*
     {
-        return traits::GetPtrDev<TView, TDev>::getPtrDev(view, dev);
+        return trait::GetPtrDev<TView, TDev>::getPtrDev(view, dev);
     }
 
     //! \return The pitch in bytes. This is the distance in bytes between two consecutive elements in the given
@@ -141,7 +141,7 @@ namespace alpaka
     template<std::size_t Tidx, typename TView>
     ALPAKA_FN_HOST_ACC auto getPitchBytes(TView const& view) -> Idx<TView>
     {
-        return traits::GetPitchBytes<DimInt<Tidx>, TView>::getPitchBytes(view);
+        return trait::GetPitchBytes<DimInt<Tidx>, TView>::getPitchBytes(view);
     }
 
     //! Create a memory set task.
@@ -156,7 +156,7 @@ namespace alpaka
             Dim<TView>::value == Dim<TExtent>::value,
             "The view and the extent are required to have the same dimensionality!");
 
-        return traits::CreateTaskMemset<Dim<TView>, Dev<TView>>::createTaskMemset(view, byte, extent);
+        return trait::CreateTaskMemset<Dim<TView>, Dev<TView>>::createTaskMemset(view, byte, extent);
     }
 
     //! Sets the memory to the given value.
@@ -200,7 +200,7 @@ namespace alpaka
             std::is_same_v<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>,
             "The source and the destination view are required to have the same element type!");
 
-        return traits::CreateTaskMemcpy<Dim<TViewDst>, Dev<TViewDst>, Dev<TViewSrc>>::createTaskMemcpy(
+        return trait::CreateTaskMemcpy<Dim<TViewDst>, Dev<TViewDst>, Dev<TViewSrc>>::createTaskMemcpy(
             viewDst,
             viewSrc,
             extent);
@@ -377,7 +377,7 @@ namespace alpaka
     template<typename TElem, typename TDev, typename TExtent>
     auto createStaticDevMemView(TElem* pMem, TDev const& dev, TExtent const& extent)
     {
-        return traits::CreateStaticDevMemView<TDev>::createStaticDevMemView(pMem, dev, extent);
+        return trait::CreateStaticDevMemView<TDev>::createStaticDevMemView(pMem, dev, extent);
     }
 
     //! Creates a view to a device pointer
@@ -394,7 +394,7 @@ namespace alpaka
         using Dim = alpaka::Dim<TExtent>;
         using Idx = alpaka::Idx<TExtent>;
         auto const extentVec = Vec<Dim, Idx>(extent);
-        return traits::CreateViewPlainPtr<TDev>::createViewPlainPtr(
+        return trait::CreateViewPlainPtr<TDev>::createViewPlainPtr(
             dev,
             pMem,
             extentVec,
@@ -413,7 +413,7 @@ namespace alpaka
     template<typename TDev, typename TElem, typename TExtent, typename TPitch>
     auto createView(TDev const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
     {
-        return traits::CreateViewPlainPtr<TDev>::createViewPlainPtr(dev, pMem, extent, pitch);
+        return trait::CreateViewPlainPtr<TDev>::createViewPlainPtr(dev, pMem, extent, pitch);
     }
 
     //! Creates a view to a contiguous container of device-accessible memory.
@@ -451,7 +451,7 @@ namespace alpaka
     template<typename TView, typename TExtent, typename TOffsets>
     auto createSubView(TView& view, TExtent const& extent, TOffsets const& offset = TExtent())
     {
-        return traits::CreateSubView<typename traits::DevType<TView>::type>::createSubView(view, extent, offset);
+        return trait::CreateSubView<typename trait::DevType<TView>::type>::createSubView(view, extent, offset);
     }
 
 } // namespace alpaka

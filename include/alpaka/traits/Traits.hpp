@@ -13,8 +13,8 @@
 
 namespace alpaka
 {
-    //! The common traits.
-    namespace traits
+    //! The common trait.
+    namespace trait
     {
         //! The native handle trait.
         template<typename TImpl, typename TSfinae = void>
@@ -26,14 +26,14 @@ namespace alpaka
                 return 0;
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     //! Get the native handle of the alpaka object.
     //! It will return the alpaka object handle if there is any, otherwise it generates a compile time error.
     template<typename TImpl>
     ALPAKA_FN_HOST auto getNativeHandle(TImpl const& impl)
     {
-        return traits::NativeHandle<TImpl>::getNativeHandle(impl);
+        return trait::NativeHandle<TImpl>::getNativeHandle(impl);
     }
 
     //! Alias to the type of the native handle.

@@ -20,7 +20,7 @@ namespace alpaka::warp
     {
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct GetSize<WarpSingleThread>
@@ -88,5 +88,5 @@ namespace alpaka::warp
                 return val;
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka::warp

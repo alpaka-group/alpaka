@@ -36,7 +36,7 @@ namespace alpaka::experimental::gb
     };
 } // namespace alpaka::experimental::gb
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL accelerator index dimension get trait specialization.
     template<typename TDim, typename TIdx>
@@ -77,6 +77,6 @@ namespace alpaka::traits
     {
         using type = TIdx;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

@@ -23,7 +23,7 @@ namespace alpaka
     {
     };
 
-    namespace traits
+    namespace trait
     {
         template<typename T, std::size_t TuniqueId>
         struct DeclareSharedVar<T, TuniqueId, BlockSharedMemStOmp5BuiltIn>
@@ -43,7 +43,7 @@ namespace alpaka
                 // Nothing to do. OpenMP runtime frees block shared memory at the end of the parallel region.
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

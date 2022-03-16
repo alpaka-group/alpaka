@@ -1,4 +1,4 @@
-/* Copyright 2020 Axel Huebl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -37,7 +37,7 @@ namespace alpaka::test
     {
         alpaka::test::testViewImmutable<TElem>(view, dev, extentView, offsetView);
 
-        // alpaka::traits::GetPitchBytes
+        // alpaka::trait::GetPitchBytes
         // The pitch of the view has to be identical to the pitch of the underlying buffer in all dimensions.
         {
             auto const pitchBuf = alpaka::getPitchBytesVec(buf);
@@ -49,7 +49,7 @@ namespace alpaka::test
             }
         }
 
-        // alpaka::traits::GetPtrNative
+        // alpaka::trait::GetPtrNative
         // The native pointer has to be exactly the value we calculate here.
         {
             auto viewPtrNative = reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(buf));

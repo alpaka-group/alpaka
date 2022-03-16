@@ -87,7 +87,7 @@ public:
     }
 };
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TnumUselessWork, typename Val, typename TAcc>
@@ -104,7 +104,7 @@ namespace alpaka::traits
             return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::uint32_t>;
 

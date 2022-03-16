@@ -202,7 +202,7 @@ namespace alpaka::math
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA built in abs trait specialization.
         template<typename TArg>
@@ -742,7 +742,7 @@ namespace alpaka::math
                 ALPAKA_UNREACHABLE(TArg{});
             }
         };
-    } // namespace traits
+    } // namespace trait
 #    endif
 } // namespace alpaka::math
 

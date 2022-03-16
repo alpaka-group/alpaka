@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -13,20 +13,20 @@
 
 namespace alpaka
 {
-    //! The element traits.
-    namespace traits
+    //! The element trait.
+    namespace trait
     {
         //! The element type trait.
         template<typename TView, typename TSfinae = void>
         struct ElemType;
-    } // namespace traits
+    } // namespace trait
 
     //! The element type trait alias template to remove the ::type.
     template<typename TView>
-    using Elem = std::remove_volatile_t<typename traits::ElemType<TView>::type>;
+    using Elem = std::remove_volatile_t<typename trait::ElemType<TView>::type>;
 
     // Trait specializations for unsigned integral types.
-    namespace traits
+    namespace trait
     {
         //! The fundamental type elem type trait specialization.
         template<typename T>
@@ -34,5 +34,5 @@ namespace alpaka
         {
             using type = T;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

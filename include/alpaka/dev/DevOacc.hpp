@@ -141,7 +141,7 @@ namespace alpaka
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevOacc>
         , public concepts::Implements<ConceptDev, DevOacc>
     {
-        friend struct traits::GetDevByIdx<PltfOacc>;
+        friend struct trait::GetDevByIdx<PltfOacc>;
 
         template<typename T>
         class OnceInitialized
@@ -226,7 +226,7 @@ namespace alpaka
         oacc::detail::DevOaccImpl* m_devOaccImpl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The OpenACC device name get trait specialization.
         template<>
@@ -287,12 +287,12 @@ namespace alpaka
                 return dev.getNativeHandle();
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     template<typename TElem, typename TDim, typename TIdx>
     class BufOacc;
 
-    namespace traits
+    namespace trait
     {
         //! The OpenACC device memory buffer type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -307,12 +307,12 @@ namespace alpaka
         {
             using type = PltfOacc;
         };
-    } // namespace traits
+    } // namespace trait
 
     using QueueOaccNonBlocking = QueueGenericThreadsNonBlocking<DevOacc>;
     using QueueOaccBlocking = QueueGenericThreadsBlocking<DevOacc>;
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct QueueType<DevOacc, Blocking>
@@ -369,7 +369,7 @@ namespace alpaka
                 return {static_cast<int>(devIdx)};
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

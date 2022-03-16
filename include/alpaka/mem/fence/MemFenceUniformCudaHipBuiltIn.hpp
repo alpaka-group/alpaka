@@ -32,7 +32,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct MemFence<MemFenceUniformCudaHipBuiltIn, memory_scope::Block>
@@ -61,7 +61,7 @@ namespace alpaka
                 __threadfence();
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

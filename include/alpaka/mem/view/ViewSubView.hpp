@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -138,7 +138,7 @@ namespace alpaka
     };
 
     // Trait specializations for ViewSubView.
-    namespace traits
+    namespace trait
     {
         //! The ViewSubView device type trait specialization.
         template<typename TElem, typename TDim, typename TDev, typename TIdx>
@@ -277,9 +277,9 @@ namespace alpaka
             {
                 using Dim = alpaka::Dim<TExtent>;
                 using Idx = alpaka::Idx<TExtent>;
-                using Elem = typename traits::ElemType<TView>::type;
+                using Elem = typename trait::ElemType<TView>::type;
                 return ViewSubView<TDev, Elem, Dim, Idx>(view, extentElements, relativeOffsetsElements);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

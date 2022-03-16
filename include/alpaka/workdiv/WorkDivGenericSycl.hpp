@@ -37,7 +37,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The SYCL accelerator work division dimension get trait specialization.
     template<typename TDim, typename TIdx>
@@ -113,6 +113,6 @@ namespace alpaka::traits
             return workDiv.m_threadElemExtent;
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

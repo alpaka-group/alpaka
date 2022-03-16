@@ -36,7 +36,7 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
-    namespace traits
+    namespace trait
     {
         template<typename T, std::size_t TuniqueId>
         struct DeclareSharedVar<T, TuniqueId, BlockSharedMemStUniformCudaHipBuiltIn>
@@ -55,7 +55,7 @@ namespace alpaka
                 // Nothing to do. CUDA/HIP block shared memory is automatically freed when all threads left the block.
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #    endif
 

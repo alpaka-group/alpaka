@@ -80,22 +80,22 @@ namespace alpaka
     } // namespace detail
 
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-    namespace cuda::traits
+    namespace cuda::trait
     {
         template<typename T>
         inline constexpr auto isCudaBuiltInType = alpaka::detail::isCudaHipBuiltInType<T>;
-    } // namespace cuda::traits
+    } // namespace cuda::trait
 #    endif
 
 #    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-    namespace hip::traits
+    namespace hip::trait
     {
         template<typename T>
         inline constexpr auto isHipBuiltInType = alpaka::detail::isCudaHipBuiltInType<T>;
-    } // namespace hip::traits
+    } // namespace hip::trait
 #    endif
 
-    namespace traits
+    namespace trait
     {
         //! The CUDA/HIP vectors 1D dimension get trait specialization.
         template<typename T>
@@ -353,7 +353,7 @@ namespace alpaka
         {
             using type = std::size_t;
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

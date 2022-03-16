@@ -24,7 +24,7 @@ namespace alpaka
         int mutable m_result[2];
     };
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct SyncBlockThreads<BlockSyncBarrierOmp>
@@ -102,7 +102,7 @@ namespace alpaka
                 return blockSync.m_result[generationMod2];
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

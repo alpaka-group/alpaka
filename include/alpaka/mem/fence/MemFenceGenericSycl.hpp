@@ -56,7 +56,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     template<typename TMemScope>
     struct MemFence<experimental::MemFenceGenericSycl, TMemScope>
@@ -77,6 +77,6 @@ namespace alpaka::traits
             dummy.store(dummy_val);
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #endif

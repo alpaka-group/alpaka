@@ -1,4 +1,4 @@
-/* Copyright 2021 Bernhard Manfred Gruber
+/* Copyright 2022 Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -20,7 +20,7 @@ namespace alpakaex = alpaka::experimental;
 
 TEST_CASE("IsView", "[accessor]")
 {
-    using alpakaex::traits::internal::IsView;
+    using alpakaex::trait::internal::IsView;
 
     using Dim = alpaka::DimInt<1>;
     using Size = std::size_t;

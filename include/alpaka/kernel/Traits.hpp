@@ -27,7 +27,7 @@
 namespace alpaka
 {
     //! The kernel traits.
-    namespace traits
+    namespace trait
     {
         //! The kernel execution task creation trait.
         template<
@@ -125,7 +125,7 @@ namespace alpaka
                 return TraitNotSpecialized{};
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic push
@@ -150,7 +150,7 @@ namespace alpaka
         Vec<TDim, Idx<TAcc>> const& threadElemExtent,
         TArgs const&... args) -> std::size_t
     {
-        return traits::BlockSharedMemDynSizeBytes<TKernelFnObj, TAcc>::getBlockSharedMemDynSizeBytes(
+        return trait::BlockSharedMemDynSizeBytes<TKernelFnObj, TAcc>::getBlockSharedMemDynSizeBytes(
             kernelFnObj,
             blockThreadExtent,
             threadElemExtent,
@@ -179,7 +179,7 @@ namespace alpaka
         Vec<TDim, Idx<TAcc>> const& threadElemExtent,
         TArgs const&... args)
     {
-        return traits::OmpSchedule<TKernelFnObj, TAcc>::getOmpSchedule(
+        return trait::OmpSchedule<TKernelFnObj, TAcc>::getOmpSchedule(
             kernelFnObj,
             blockThreadExtent,
             threadElemExtent,
@@ -244,7 +244,7 @@ namespace alpaka
         std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << typeid(kernelFnObj).name()
                   << std::endl;
 #endif
-        return traits::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
+        return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
             workDiv,
             kernelFnObj,
             std::forward<TArgs>(args)...);

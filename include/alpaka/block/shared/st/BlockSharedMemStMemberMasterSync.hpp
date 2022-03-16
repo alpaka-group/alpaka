@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera
  *
  * This file is part of alpaka.
  *
@@ -44,7 +44,7 @@ namespace alpaka
         std::function<bool()> m_isMasterThreadFn;
     };
 
-    namespace traits
+    namespace trait
     {
 #if BOOST_COMP_GNUC
 #    pragma GCC diagnostic push
@@ -88,5 +88,5 @@ namespace alpaka
                 // shared memory block data will be reused
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka

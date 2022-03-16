@@ -37,7 +37,7 @@
 namespace alpaka
 {
     class DevOmp5;
-    namespace traits
+    namespace trait
     {
         template<typename TPltf, typename TSfinae>
         struct GetDevByIdx;
@@ -141,7 +141,7 @@ namespace alpaka
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevOmp5>
         , public concepts::Implements<ConceptDev, DevOmp5>
     {
-        friend struct traits::GetDevByIdx<PltfOmp5>;
+        friend struct trait::GetDevByIdx<PltfOmp5>;
 
         DevOmp5(int iDevice) : m_spDevOmp5Impl(std::make_shared<omp5::detail::DevOmp5Impl>(iDevice))
         {
@@ -186,7 +186,7 @@ namespace alpaka
         std::shared_ptr<omp5::detail::DevOmp5Impl> m_spDevOmp5Impl;
     };
 
-    namespace traits
+    namespace trait
     {
         //! The OpenMP 5.0 device name get trait specialization.
         template<>
@@ -252,12 +252,12 @@ namespace alpaka
                 return dev.getNativeHandle();
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     template<typename TElem, typename TDim, typename TIdx>
     class BufOmp5;
 
-    namespace traits
+    namespace trait
     {
         //! The OpenMP 5.0 device memory buffer type trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
@@ -272,11 +272,11 @@ namespace alpaka
         {
             using type = PltfOmp5;
         };
-    } // namespace traits
+    } // namespace trait
     using QueueOmp5NonBlocking = QueueGenericThreadsNonBlocking<DevOmp5>;
     using QueueOmp5Blocking = QueueGenericThreadsBlocking<DevOmp5>;
 
-    namespace traits
+    namespace trait
     {
         template<>
         struct QueueType<DevOmp5, Blocking>
@@ -304,7 +304,7 @@ namespace alpaka
                 generic::currentThreadWaitForDevice(dev);
             }
         };
-    } // namespace traits
+    } // namespace trait
 } // namespace alpaka
 
 #endif

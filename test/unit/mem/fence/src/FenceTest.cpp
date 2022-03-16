@@ -1,4 +1,4 @@
-/* Copyright 2021 Jan Stephan
+/* Copyright 2022 Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -152,7 +152,7 @@ public:
     }
 };
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TAcc>
@@ -169,7 +169,7 @@ namespace alpaka::traits
             return 2 * sizeof(int);
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 

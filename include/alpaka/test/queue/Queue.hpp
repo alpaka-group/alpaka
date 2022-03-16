@@ -13,7 +13,7 @@
 
 namespace alpaka::test
 {
-    namespace traits
+    namespace trait
     {
         //! The default queue type trait for devices.
         template<typename TDev, typename TSfinae = void>
@@ -43,12 +43,12 @@ namespace alpaka::test
 #    endif
         };
 #endif
-    } // namespace traits
+    } // namespace trait
     //! The queue type that should be used for the given accelerator.
     template<typename TAcc>
-    using DefaultQueue = typename traits::DefaultQueueType<TAcc>::type;
+    using DefaultQueue = typename trait::DefaultQueueType<TAcc>::type;
 
-    namespace traits
+    namespace trait
     {
         //! The blocking queue trait.
         template<typename TQueue, typename TSfinae = void>
@@ -207,10 +207,10 @@ namespace alpaka::test
         };
 #    endif
 #endif
-    } // namespace traits
+    } // namespace trait
     //! The queue type that should be used for the given accelerator.
     template<typename TQueue>
-    using IsBlockingQueue = traits::IsBlockingQueue<TQueue>;
+    using IsBlockingQueue = trait::IsBlockingQueue<TQueue>;
 
     //! A std::tuple holding tuples of devices and corresponding queue types.
     using TestQueues = std::tuple<

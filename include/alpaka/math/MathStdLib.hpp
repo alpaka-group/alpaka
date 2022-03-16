@@ -182,7 +182,7 @@ namespace alpaka::math
     {
     };
 
-    namespace traits
+    namespace trait
     {
         //! The standard library max trait specialization.
         template<typename Tx, typename Ty>
@@ -229,6 +229,6 @@ namespace alpaka::math
                 ALPAKA_UNREACHABLE(std::common_type_t<Tx, Ty>{});
             }
         };
-    } // namespace traits
+    } // namespace trait
 
 } // namespace alpaka::math

@@ -64,7 +64,7 @@ namespace alpaka::experimental
     };
 } // namespace alpaka::experimental
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The BufGenericSycl device type trait specialization.
     template<typename TElem, typename TDim, typename TIdx, typename TDev>
@@ -333,7 +333,7 @@ namespace alpaka::traits
             return nullptr;
         }
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait
 
 #    include <alpaka/mem/buf/sycl/Accessor.hpp>
 #    include <alpaka/mem/buf/sycl/Copy.hpp>

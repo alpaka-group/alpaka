@@ -19,7 +19,7 @@
 
 #include <vector>
 
-namespace alpaka::traits
+namespace alpaka::trait
 {
     //! The std::vector device type trait specialization.
     template<typename TElem, typename TAllocator>
@@ -94,4 +94,4 @@ namespace alpaka::traits
     {
         using type = std::size_t;
     };
-} // namespace alpaka::traits
+} // namespace alpaka::trait

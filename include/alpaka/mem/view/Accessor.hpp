@@ -1,4 +1,4 @@
-/* Copyright 2021 Bernhard Manfred Gruber
+/* Copyright 2022 Bernhard Manfred Gruber
 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -51,7 +51,7 @@ namespace alpaka::experimental
     template<typename TMemoryHandle, typename TElem, typename TBufferIdx, std::size_t TDim, typename TAccessModes>
     struct Accessor;
 
-    namespace traits
+    namespace trait
     {
         //! The customization point for how to build an accessor for a given memory object.
         template<typename TMemoryObject, typename SFINAE = void>
@@ -65,7 +65,7 @@ namespace alpaka::experimental
                     "BuildAccessor<TMemoryObject> is not specialized for your TMemoryObject.");
             }
         };
-    } // namespace traits
+    } // namespace trait
 
     namespace internal
     {
@@ -106,7 +106,7 @@ namespace alpaka::experimental
         typename = std::enable_if_t<!internal::IsAccessor<std::decay_t<TMemoryObject>>::value>>
     ALPAKA_FN_HOST_ACC auto accessWith(TMemoryObject&& memoryObject)
     {
-        return traits::BuildAccessor<std::decay_t<TMemoryObject>>::template buildAccessor<TAccessModes...>(
+        return trait::BuildAccessor<std::decay_t<TMemoryObject>>::template buildAccessor<TAccessModes...>(
             memoryObject);
     }
 

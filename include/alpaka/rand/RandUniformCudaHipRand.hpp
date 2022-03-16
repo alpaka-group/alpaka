@@ -229,7 +229,7 @@ namespace alpaka::rand
         };
     } // namespace distribution::uniform_cuda_hip
 
-    namespace distribution::traits
+    namespace distribution::trait
     {
         //! The CUDA/HIP random number float normal distribution get trait specialization.
         template<typename T>
@@ -263,9 +263,9 @@ namespace alpaka::rand
                 return {};
             }
         };
-    } // namespace distribution::traits
+    } // namespace distribution::trait
 
-    namespace engine::traits
+    namespace engine::trait
     {
         //! The CUDA/HIP random number default generator get trait specialization.
         template<>
@@ -280,7 +280,7 @@ namespace alpaka::rand
                 return {seed, subsequence, offset};
             }
         };
-    } // namespace engine::traits
+    } // namespace engine::trait
 #    endif
 } // namespace alpaka::rand
 
