@@ -7,7 +7,7 @@ linux_hip4.5_clang_debug_hip_only:
     ALPAKA_CI_STDLIB: libstdc++
     CMAKE_BUILD_TYPE: Debug
     ALPAKA_BOOST_VERSION: 1.77.0
-    ALPAKA_CI_CMAKE_VER: 3.19.7
+    ALPAKA_CI_CMAKE_VER: 3.19.8
   stage: stageRun0
 
 linux_hip4.5_clang_release_hip_only:
@@ -18,5 +18,5 @@ linux_hip4.5_clang_release_hip_only:
     ALPAKA_CI_STDLIB: libstdc++
     CMAKE_BUILD_TYPE: Release
     ALPAKA_BOOST_VERSION: 1.78.0
-    ALPAKA_CI_CMAKE_VER: 3.20.0
+    ALPAKA_CI_CMAKE_VER: 3.20.6
   stage: stageCompile0
