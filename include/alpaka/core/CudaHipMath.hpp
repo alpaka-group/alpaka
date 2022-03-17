@@ -15,6 +15,6 @@
 #    include <cuda_runtime.h>
 #endif
 
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && defined(__HIP_EVICE_COMPILE__)
 #    include <hip/math_functions.h>
 #endif
