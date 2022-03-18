@@ -8,9 +8,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-option(ALPAKA_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON)
+option(alpaka_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON)
 
-if(ALPAKA_USE_INTERNAL_CATCH2)
+if(alpaka_USE_INTERNAL_CATCH2)
     message(STATUS "Catch2: Using INTERNAL version 2.13.8")
 else()
     find_package(Catch2 2.13.8 CONFIG REQUIRED)
@@ -38,7 +38,7 @@ if(MSVC)
     target_compile_options(CatchMain PUBLIC $<$<COMPILE_LANGUAGE:CXX>:/bigobj> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/bigobj>)
 endif()
 
-if(ALPAKA_USE_INTERNAL_CATCH2)
+if(alpaka_USE_INTERNAL_CATCH2)
     target_include_directories(CatchMain SYSTEM PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/../../thirdParty/catch2/include)
 else()

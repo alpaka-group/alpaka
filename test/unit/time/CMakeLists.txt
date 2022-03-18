@@ -28,4 +28,4 @@ target_compile_options(${_TARGET_NAME} PRIVATE $<$<AND:$<COMPILE_LANGUAGE:CUDA>,
                                                $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/wd4996>
                                                $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:PGI>>:--diag_suppress 1361>)
 
-add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_ALPAKA_TEST_OPTIONS})
+add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_alpaka_TEST_OPTIONS})

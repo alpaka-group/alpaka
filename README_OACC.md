@@ -17,9 +17,9 @@ enable only the OpenACC backend.
 
 ```bash
 cmake .. \
-  -DALPAKA_ACC_ANY_BT_OACC_ENABLE=on \
+  -Dalpaka_ACC_ANY_BT_OACC_ENABLE=on \
   -DBUILD_TESTING=on \
-  -DALPAKA_BUILD_EXAMPLES=on \
+  -Dalpaka_BUILD_EXAMPLES=on \
 ```
 All other backends are disabled for faster compilation/testing and reduced
 environment requirements. The cmake package OpenACC is used to detect the

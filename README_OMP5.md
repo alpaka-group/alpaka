@@ -5,9 +5,9 @@ explicitly about the OpenMP version supported by the compiler. CMake does not
 determine it automatically for some compilers.
 ```
 cmake -DOpenMP_CXX_VERSION=5 \
-  -DALPAKA_ACC_ANY_BT_OMP5_ENABLE=on \
+  -Dalpaka_ACC_ANY_BT_OMP5_ENABLE=on \
   -DBUILD_TESTING=on \
-  -DALPAKA_BUILD_EXAMPLES=on \
+  -Dalpaka_BUILD_EXAMPLES=on \
 ```
 All other backends are disable for faster compilation/testing and reduced
 environment requirements. Add flags to set the required compiler and linker flags, e.g:
@@ -59,13 +59,13 @@ OpenMP 5 offers the directive `omp allocate allocator(omp_pteam_mem_alloc)`
 (used by `BlockSharedMemStOmp5BuiltIn`) which can in theory be used for *static*
 shared memory variables. There is no useful built-in support for dynamic
 block-shared memory to go with that. Usage of the built-in can be configured
-using the `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM` flag:
-* `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=OFF`: Do not use `omp allocate` (default,
+using the `alpaka_OFFLOAD_USE_BUILTIN_SHARED_MEM` flag:
+* `alpaka_OFFLOAD_USE_BUILTIN_SHARED_MEM=OFF`: Do not use `omp allocate` (default,
   only available behavior with OpenMP < 5).
-* `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=DYN_FIXED`: Use `omp allocate`, use a
+* `alpaka_OFFLOAD_USE_BUILTIN_SHARED_MEM=DYN_FIXED`: Use `omp allocate`, use a
   fixed size team-shared array for dynamic shared mem (fixed size is
-  `ALPAKA_BLOCK_SHARED_DYN_MEMBER_KIB`).
-* `ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM=DYN_ALLOC`: Use `omp allocate`, use a
+  `alpaka_BLOCK_SHARED_DYN_MEMBER_KIB`).
+* `alpaka_OFFLOAD_USE_BUILTIN_SHARED_MEM=DYN_ALLOC`: Use `omp allocate`, use a
   `omp_alloc()` API call in the target region to allocate dynamic shared memory. The
   standard appears to allow this, but is not useful for some reasons:
   * In the best case, this would lead to an on-device `malloc` on GPU, which has

@@ -40,12 +40,12 @@ echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 export ALPAKA_CI_INSTALL_ATOMIC="OFF"
 # If the variable is not set, the backend will most probably be used by default so we install Boost.Atomic
-if [ "${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE-ON}" == "ON" ] ||
-    [ "${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE-ON}" == "ON" ] ||
-    [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE-ON}" == "ON" ] ||
-    [ "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE-ON}" == "ON" ] ||
-    [ "${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE-ON}" == "ON" ] ||
-    [ "${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE-ON}" == "ON" ]
+if [ "${alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE-ON}" == "ON" ] ||
+    [ "${alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE-ON}" == "ON" ] ||
+    [ "${alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE-ON}" == "ON" ] ||
+    [ "${alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE-ON}" == "ON" ] ||
+    [ "${alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE-ON}" == "ON" ] ||
+    [ "${alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE-ON}" == "ON" ]
 then
   export ALPAKA_CI_INSTALL_ATOMIC="ON"
 fi
@@ -53,7 +53,7 @@ fi
 #-------------------------------------------------------------------------------
 # CUDA
 export ALPAKA_CI_INSTALL_CUDA="OFF"
-if [[ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]]
+if [[ "${alpaka_ACC_GPU_CUDA_ENABLE}" == "ON" ]]
 then
     export ALPAKA_CI_INSTALL_CUDA="ON"
 fi
@@ -61,7 +61,7 @@ fi
 #-------------------------------------------------------------------------------
 # HIP
 export ALPAKA_CI_INSTALL_HIP="OFF"
-if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ]
+if [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ]
 then
     export ALPAKA_CI_INSTALL_HIP="ON"
 fi
@@ -69,9 +69,9 @@ fi
 #-------------------------------------------------------------------------------
 # TBB
 export ALPAKA_CI_INSTALL_TBB="OFF"
-if [ ! -z "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE+x}" ]
+if [ ! -z "${alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE+x}" ]
 then
-    if [ "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}" = "ON" ]
+    if [ "${alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE}" = "ON" ]
     then
         export ALPAKA_CI_INSTALL_TBB="ON"
     fi
@@ -91,9 +91,9 @@ fi
 #-------------------------------------------------------------------------------
 # Fibers
 export ALPAKA_CI_INSTALL_FIBERS="OFF"
-if [ ! -z "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE+x}" ]
+if [ ! -z "${alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE+x}" ]
 then
-    if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" = "ON" ]
+    if [ "${alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" = "ON" ]
     then
         export ALPAKA_CI_INSTALL_FIBERS="ON"
     fi
@@ -147,9 +147,9 @@ if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
     then
-        if [ ! -z "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE+x}" ]
+        if [ ! -z "${alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE+x}" ]
         then
-            if [ "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}" = "ON" ]
+            if [ "${alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE}" = "ON" ]
             then
                  echo "libc++ is not compatible with TBB."
                  exit 1

@@ -111,5 +111,5 @@ linux_nvcc-11.6_clang-13_release:
     ALPAKA_BOOST_VERSION: 1.75.0
     ALPAKA_CI_CMAKE_VER: 3.19.8
     CMAKE_CUDA_COMPILER: nvcc
-    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF" # bug, see: https://github.com/NVIDIA/cuda-samples/issues/102
+    alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF" # bug, see: https://github.com/NVIDIA/cuda-samples/issues/102
   stage: stageRun1

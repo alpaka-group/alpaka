@@ -55,6 +55,6 @@ linux_nvhpc-21.11_cuda-11.5_oacc:
     CMAKE_BUILD_TYPE: ""
     ALPAKA_BOOST_VERSION: 1.74.0
     ALPAKA_CI_CMAKE_VER: 3.19.8
-    ALPAKA_CHECK_HEADERS: "ON"
+    alpaka_CHECK_HEADERS: "ON"
   stage: stageRun0
   

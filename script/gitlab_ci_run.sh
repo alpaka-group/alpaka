@@ -12,7 +12,7 @@
 
 source ./script/set.sh
 
-if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ];
+if [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ];
 then
     apt-get -y --quiet update || echo "ignore any errors"
     apt-get -y --quiet install wget gnupg2
