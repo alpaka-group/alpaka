@@ -1,6 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"structalpaka_1_1warp_1_1traits_1_1Activemask.html":[3,0,0,20,0,0],
 "structalpaka_1_1warp_1_1traits_1_1Activemask_3_01WarpSingleThread_01_4.html":[3,0,0,20,0,1],
 "structalpaka_1_1warp_1_1traits_1_1Activemask_3_01WarpSingleThread_01_4.html#a45c86dc5afc802086df61cce8c330167":[3,0,0,20,0,1,0],
 "structalpaka_1_1warp_1_1traits_1_1Activemask_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,20,0,2],

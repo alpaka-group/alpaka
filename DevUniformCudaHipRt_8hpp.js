@@ -8,7 +8,7 @@ var DevUniformCudaHipRt_8hpp =
     [ "GetFreeMemBytes< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1GetFreeMemBytes_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1GetFreeMemBytes_3_01DevUniformCudaHipRt_01_4" ],
     [ "GetMemBytes< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1GetMemBytes_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1GetMemBytes_3_01DevUniformCudaHipRt_01_4" ],
     [ "GetName< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1GetName_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1GetName_3_01DevUniformCudaHipRt_01_4" ],
-    [ "GetWarpSize< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1GetWarpSize_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1GetWarpSize_3_01DevUniformCudaHipRt_01_4" ],
+    [ "GetWarpSizes< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1GetWarpSizes_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1GetWarpSizes_3_01DevUniformCudaHipRt_01_4" ],
     [ "NativeHandle< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1NativeHandle_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1NativeHandle_3_01DevUniformCudaHipRt_01_4" ],
     [ "PltfType< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1PltfType_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1PltfType_3_01DevUniformCudaHipRt_01_4" ],
     [ "QueueType< DevUniformCudaHipRt, Blocking >", "structalpaka_1_1traits_1_1QueueType_3_01DevUniformCudaHipRt_00_01Blocking_01_4.html", "structalpaka_1_1traits_1_1QueueType_3_01DevUniformCudaHipRt_00_01Blocking_01_4" ],

@@ -1,6 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"namespacealpaka_1_1bt.html":[3,0,0,0],
 "namespacealpaka_1_1bt.html":[2,0,0,0],
 "namespacealpaka_1_1concepts.html":[2,0,0,1],
 "namespacealpaka_1_1concepts.html":[3,0,0,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1ConceptAtomicBlocks.html":[3,0,0,68],
 "structalpaka_1_1ConceptAtomicGrids.html":[3,0,0,69],
 "structalpaka_1_1ConceptAtomicThreads.html":[3,0,0,70],
-"structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,71]
+"structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,71],
+"structalpaka_1_1ConceptBlockSharedSt.html":[3,0,0,72]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a501d98f1dc4680580d6f3afe3f51f852":[3,0,0,16,6,6],
 "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a55658ce02f27391754093dfad9d41309":[3,0,0,16,6,3],
 "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a7a0faae46effc35406a723d13bc13647":[3,0,0,16,6,0],
 "classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a7f3509d61a53cfdc81f0f33cb44cefea":[3,0,0,16,6,9],
@@ -209,8 +208,8 @@ var NAVTREEINDEX5 =
 "cpu_2Copy_8hpp_source.html":[4,0,0,0,15,1,0,0],
 "dev_2Traits_8hpp.html":[4,0,0,0,5,10],
 "dev_2Traits_8hpp.html#a1cdab91c7cbe490254da4f3562d56e71":[4,0,0,0,5,10,8],
-"dev_2Traits_8hpp.html#a259c97b673e9a8ca3ec58c50abe05591":[4,0,0,0,5,10,13],
 "dev_2Traits_8hpp.html#a2f6580f456ad2faecf55eaadfe145cc6":[4,0,0,0,5,10,12],
+"dev_2Traits_8hpp.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5":[4,0,0,0,5,10,13],
 "dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943":[4,0,0,0,5,10,14],
 "dev_2Traits_8hpp.html#a6049156c92d1112a3e7cfb96f09b153e":[4,0,0,0,5,10,10],
 "dev_2Traits_8hpp.html#a69d68a30000dc80ea5a1c09139f2b789":[4,0,0,0,5,10,11],
@@ -249,5 +248,6 @@ var NAVTREEINDEX5 =
 "dir_67d3bf5303aed2f3419e836e3bc6322c.html":[4,0,0,0,12],
 "dir_6c93a0db3d8099b4c959509b1dc3473b.html":[4,0,0,0,15,1,1],
 "dir_704b24238599043534bfd555c7616f8b.html":[4,0,0,0,24],
-"dir_7056b9f7cd8b764aedbfcd44587c0438.html":[4,0,0,0,25]
+"dir_7056b9f7cd8b764aedbfcd44587c0438.html":[4,0,0,0,25],
+"dir_7be937b0b17efdbd2f169f14f5c2db8e.html":[4,0,0,0,2,0,1]
 };
