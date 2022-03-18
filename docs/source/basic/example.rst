@@ -45,7 +45,7 @@ In the CMake configuration phase of the project, you must activate the accelerat
     cd <path/to/the/project/root>
     mkdir build && cd build
     # enable the CUDA accelerator
-    cmake .. -DALPAKA_ACC_GPU_CUDA_ENABLE=ON
+    cmake .. -Dalpaka_ACC_GPU_CUDA_ENABLE=ON
     # compile and link
     cmake --build .
     # execute application

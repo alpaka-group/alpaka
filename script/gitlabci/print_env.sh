@@ -15,7 +15,7 @@ echo -e "\033[0;33mSteps to setup containter locally"
 
 # display the correct docker run command
 first_step_prefix="1. Run docker image via:"
-if [ "${CMAKE_CXX_COMPILER}" == "nvc++" ] || [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ];
+if [ "${CMAKE_CXX_COMPILER}" == "nvc++" ] || [ "${alpaka_ACC_GPU_CUDA_ENABLE}" == "ON" ];
 then
     if [ "${ALPAKA_CI_RUN_TESTS}" == "ON" ];
     then
@@ -23,7 +23,7 @@ then
     else
 	    echo "${first_step_prefix} docker run -it ${CI_JOB_IMAGE} bash"
     fi
-elif [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ];
+elif [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ];
 then
     if [ "${ALPAKA_CI_RUN_TESTS}" == "ON" ];
     then
@@ -38,7 +38,7 @@ fi
 echo -e "2. Run the following export commands in the container to setup enviroment\n"
 
 # take all env variables, filter it and display it with a `export` prefix
-printenv | grep -E 'ALPAKA_*|CMAKE_*|BOOST_|CC|CXX|CUDA_' | while read -r line ; do
+printenv | grep -E 'alpaka_*|ALPAKA_*|CMAKE_*|BOOST_|CC|CXX|CUDA_' | while read -r line ; do
     echo "export $line \\"
 done
 

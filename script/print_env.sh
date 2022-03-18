@@ -15,7 +15,7 @@ source ./script/travis_retry.sh
 source ./script/set.sh
 
 #-------------------------------------------------------------------------------
-if [ "$ALPAKA_CI" = "GITHUB" ]
+if [ "$alpaka_CI" = "GITHUB" ]
 then
     echo GITHUB_WORKSPACE: "${GITHUB_WORKSPACE}"
 fi

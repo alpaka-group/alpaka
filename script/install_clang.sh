@@ -53,7 +53,7 @@ then
     fi
 fi
 
-if [ "${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" = "ON" ] || [ "${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" = "ON" ] || [ "${ALPAKA_ACC_ANY_BT_OMP5_ENABLE}" = "ON" ]
+if [ "${alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" = "ON" ] || [ "${alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" = "ON" ] || [ "${alpaka_ACC_ANY_BT_OMP5_ENABLE}" = "ON" ]
 then
     if [[ "${ALPAKA_CI_CLANG_VER}" =~ ^[0-9]+$ ]] && [ "${ALPAKA_CI_CLANG_VER}" -ge 8 ]
     then
@@ -62,7 +62,7 @@ then
         LIBOMP_PACKAGE=libomp-dev
     fi
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install "${LIBOMP_PACKAGE}"
-    if [ "${ALPAKA_ACC_ANY_BT_OMP5_ENABLE}" = "ON" ]
+    if [ "${alpaka_ACC_ANY_BT_OMP5_ENABLE}" = "ON" ]
     then
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install \
             clang-tools-${ALPAKA_CI_CLANG_VER} llvm-${ALPAKA_CI_CLANG_VER}

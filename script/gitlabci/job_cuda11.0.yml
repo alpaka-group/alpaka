@@ -20,8 +20,8 @@ linux_nvcc-11.0_gcc-7_release_extended_lambda_off:
     CMAKE_BUILD_TYPE: Release
     ALPAKA_BOOST_VERSION: 1.77.0
     ALPAKA_CI_CMAKE_VER: 3.20.6
-    ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
-    ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"
+    alpaka_ACC_GPU_CUDA_ENABLE: "ON"
+    alpaka_CUDA_EXPT_EXTENDED_LAMBDA: "OFF"
   stage: stageCompile1
 
 linux_nvcc-11.0_gcc-7_debug:
@@ -90,7 +90,7 @@ linux_clang-12_cuda-11.0_release:
     ALPAKA_CI_CLANG_VER: 12
     ALPAKA_BOOST_VERSION: 1.74.0
     ALPAKA_CI_CMAKE_VER: 3.19.8
-    ALPAKA_ACC_GPU_CUDA_ENABLE: "ON"
+    alpaka_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
-    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+    alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
   stage: stageRun0
