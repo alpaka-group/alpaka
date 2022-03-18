@@ -73,17 +73,10 @@ struct TestTemplateCapture
 
         alpaka::test::KernelExecutionFixture<TAcc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
-        std::uint32_t const arg = 42u;
+        std::uint32_t arg = 42u;
 
-#    if BOOST_COMP_CLANG >= BOOST_VERSION_NUMBER(5, 0, 0)
-#        pragma clang diagnostic push
-#        pragma clang diagnostic ignored "-Wunused-lambda-capture"
-#    endif
         auto kernel = [arg] ALPAKA_FN_ACC(TAcc const& /* acc */, bool* success) -> void
         { ALPAKA_CHECK(*success, 42u == arg); };
-#    if BOOST_COMP_CLANG >= BOOST_VERSION_NUMBER(5, 0, 0)
-#        pragma clang diagnostic pop
-#    endif
 
         REQUIRE(fixture(kernel));
     }

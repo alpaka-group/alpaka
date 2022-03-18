@@ -79,9 +79,6 @@ namespace alpaka::experimental
     {
     public:
         static_assert(TDim::value > 0 && TDim::value <= 3, "Invalid kernel dimensionality");
-        static_assert(
-            !std::is_same_v<TKernelFnObj, std::function<void(TAcc const&, std::decay_t<TArgs>...)>>,
-            "std::function is not allowed for SYCL kernels!");
 
         template<typename TWorkDiv>
         TaskKernelGenericSycl(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
@@ -89,9 +86,6 @@ namespace alpaka::experimental
             , m_kernelFnObj{kernelFnObj}
             , m_args{std::forward<TArgs>(args)...}
         {
-            static_assert(
-                Dim<typename std::decay_t<TWorkDiv>>::value == TDim::value,
-                "The work division and the execution task have to be of the same dimensionality!");
         }
 
         auto operator()(sycl::handler& cgh, sycl::buffer<int, 1>& global_fence_buf) const -> void

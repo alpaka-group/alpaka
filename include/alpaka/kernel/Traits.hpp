@@ -222,6 +222,14 @@ namespace alpaka
         // check for void return type
         detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
 
+#if BOOST_COMP_NVCC
+        static_assert(
+            std::is_trivially_copyable_v<TKernelFnObj> || __nv_is_extended_device_lambda_closure_type(TKernelFnObj)
+                || __nv_is_extended_host_device_lambda_closure_type(TKernelFnObj),
+            "Kernels must be trivially copyable or an extended CUDA lambda expression!");
+#else
+        static_assert(std::is_trivially_copyable_v<TKernelFnObj>, "Kernels must be trivially copyable!");
+#endif
         static_assert(
             (std::is_trivially_copyable_v<std::decay_t<TArgs>> && ...),
             "Kernel arguments must be trivially copyable!");
