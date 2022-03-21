@@ -1,6 +1,6 @@
 var namespacealpaka_1_1math =
 [
-    [ "traits", "namespacealpaka_1_1math_1_1traits.html", "namespacealpaka_1_1math_1_1traits" ],
+    [ "trait", "namespacealpaka_1_1math_1_1trait.html", "namespacealpaka_1_1math_1_1trait" ],
     [ "AbsStdLib", "classalpaka_1_1math_1_1AbsStdLib.html", null ],
     [ "AbsUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1AbsUniformCudaHipBuiltIn.html", null ],
     [ "AcosStdLib", "classalpaka_1_1math_1_1AcosStdLib.html", null ],

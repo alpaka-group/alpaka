@@ -1,9 +1,9 @@
 var vec_2Traits_8hpp =
 [
-    [ "CastVec", "structalpaka_1_1traits_1_1CastVec.html", null ],
-    [ "ConcatVec", "structalpaka_1_1traits_1_1ConcatVec.html", null ],
-    [ "ReverseVec", "structalpaka_1_1traits_1_1ReverseVec.html", null ],
-    [ "SubVecFromIndices", "structalpaka_1_1traits_1_1SubVecFromIndices.html", null ],
+    [ "CastVec", "structalpaka_1_1trait_1_1CastVec.html", null ],
+    [ "ConcatVec", "structalpaka_1_1trait_1_1ConcatVec.html", null ],
+    [ "ReverseVec", "structalpaka_1_1trait_1_1ReverseVec.html", null ],
+    [ "SubVecFromIndices", "structalpaka_1_1trait_1_1SubVecFromIndices.html", null ],
     [ "castVec", "vec_2Traits_8hpp.html#a56eac7d84a35e1a83a56dcfc6e73a78f", null ],
     [ "concatVec", "vec_2Traits_8hpp.html#a649f4c73ac22bcc093bb705aa6c65efb", null ],
     [ "reverseVec", "vec_2Traits_8hpp.html#a734094d00febe551f0e85310a3faf1ec", null ],

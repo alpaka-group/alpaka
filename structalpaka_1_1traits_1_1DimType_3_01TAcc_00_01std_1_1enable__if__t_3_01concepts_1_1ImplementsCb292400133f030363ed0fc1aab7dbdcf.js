@@ -1,5 +1,0 @@
-var structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCb292400133f030363ed0fc1aab7dbdcf =
-[
-    [ "ImplementationBase", "structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCb292400133f030363ed0fc1aab7dbdcf.html#add61b4ca9caa675752bcb648a8f5eb45", null ],
-    [ "type", "structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1ImplementsCb292400133f030363ed0fc1aab7dbdcf.html#a6b92dfcc554381b8c2e09b4edd1f3266", null ]
-];

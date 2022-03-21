@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_00_01TWorkDib4782672d185e3f892e8af18df8d89c4 =
+[
+    [ "createTaskKernel", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_00_01TWorkDib4782672d185e3f892e8af18df8d89c4.html#aab89cd95e23571088b8706ab63ad94b6", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1ElemType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__fundamental__v_3_01T_01_4_01_4_01_4 =
+[
+    [ "type", "structalpaka_1_1trait_1_1ElemType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__fundamental__v_3_01T_01_4_01_4_01_4.html#af928033d1672ed78a69c13623d9d86b4", null ]
+];

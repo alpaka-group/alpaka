@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4 =
+[
+    [ "freeVars", "structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html#a94753187cb30edbd1a16b32a118d290f", null ]
+];

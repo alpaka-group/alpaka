@@ -1,4 +1,0 @@
-var structalpaka_1_1experimental_1_1traits_1_1internal_1_1BuildAccessModeList_3_01TAccessMode1_00_01c4ec504354fdc494afcff13f5ee655a4 =
-[
-    [ "type", "structalpaka_1_1experimental_1_1traits_1_1internal_1_1BuildAccessModeList_3_01TAccessMode1_00_01c4ec504354fdc494afcff13f5ee655a4.html#a37b80fd98554f6d7aa42be1fddc0b248", null ]
-];

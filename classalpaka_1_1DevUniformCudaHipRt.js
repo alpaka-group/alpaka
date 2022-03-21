@@ -4,5 +4,5 @@ var classalpaka_1_1DevUniformCudaHipRt =
     [ "getNativeHandle", "classalpaka_1_1DevUniformCudaHipRt.html#ae14a4236b7b0494f836416690fb5fd7e", null ],
     [ "operator!=", "classalpaka_1_1DevUniformCudaHipRt.html#a9c84c933a1147f66582441fbb11df05a", null ],
     [ "operator==", "classalpaka_1_1DevUniformCudaHipRt.html#a64a7df8e821cf6eff8401e43d1974ba9", null ],
-    [ "traits::GetDevByIdx< PltfUniformCudaHipRt >", "classalpaka_1_1DevUniformCudaHipRt.html#aca7a2eb6b8d9f4735f6ba5fcb297ecc7", null ]
+    [ "trait::GetDevByIdx< PltfUniformCudaHipRt >", "classalpaka_1_1DevUniformCudaHipRt.html#af12c56df226eec1be4ad0171d03100ad", null ]
 ];

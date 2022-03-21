@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace alpaka::experimental::detail</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Trait specializations for CreateTaskMemcpy.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1traits.html">alpaka::traits</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">    //! The SYCL host-to-device memory copy trait specialization.</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TPltf&gt;</div>
@@ -177,7 +177,7 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            static_assert(!std::is_const_v&lt;TViewDst&gt;, <span class="stringliteral">&quot;The destination view cannot be const!&quot;</span>);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                Dim&lt;TViewDst&gt;::value == <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt;std::remove_const_t&lt;TViewSrc&gt;&gt;::value,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                Dim&lt;TViewDst&gt;::value == <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;std::remove_const_t&lt;TViewSrc&gt;&gt;::value,</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="stringliteral">&quot;The source and the destination view are required to have the same dimensionality!&quot;</span>);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            static_assert(</div>
@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            static_assert(!std::is_const_v&lt;TViewDst&gt;, <span class="stringliteral">&quot;The destination view cannot be const!&quot;</span>);</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                Dim&lt;TViewDst&gt;::value == <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt;std::remove_const_t&lt;TViewSrc&gt;&gt;::value,</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                Dim&lt;TViewDst&gt;::value == <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;std::remove_const_t&lt;TViewSrc&gt;&gt;::value,</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                <span class="stringliteral">&quot;The source and the destination view are required to have the same dimensionality!&quot;</span>);</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            static_assert(</div>
@@ -253,7 +253,7 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            static_assert(!std::is_const_v&lt;TViewDst&gt;, <span class="stringliteral">&quot;The destination view cannot be const!&quot;</span>);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                Dim&lt;TViewDst&gt;::value == <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt;std::remove_const_t&lt;TViewSrc&gt;&gt;::value,</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                Dim&lt;TViewDst&gt;::value == <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;std::remove_const_t&lt;TViewSrc&gt;&gt;::value,</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                <span class="stringliteral">&quot;The source and the destination view are required to have the same dimensionality!&quot;</span>);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            static_assert(</div>
@@ -275,17 +275,17 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                DstType{viewDst.m_buffer, range, offset_dst}};</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        }</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    };</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;} <span class="comment">// namespace alpaka::traits</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="anamespacealpaka_html_aba87713ec0232bbf70beb24e063e32ea"><div class="ttname"><a href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">alpaka::Dim</a></div><div class="ttdeci">typename traits::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00127">AccCpuFibers.hpp:127</a></div></div>
 <div class="ttc" id="aDevGenericSycl_8hpp_html"><div class="ttname"><a href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac65b6c44ec8afefe76a919847dd5ccec"><div class="ttname"><a href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_FULL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00065">Debug.hpp:65</a></div></div>
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1traits_html"><div class="ttname"><a href="namespacealpaka_1_1traits.html">alpaka::traits</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00127">AccCpuFibers.hpp:127</a></div></div>
 <div class="ttc" id="aextent_2Traits_8hpp_html"><div class="ttname"><a href="extent_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_aee3fb80b82e8f3e9601195afb0b8c34c"><div class="ttname"><a href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim</a></div><div class="ttdeci">typename trait::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
 <div class="ttc" id="aSycl_8hpp_html"><div class="ttname"><a href="Sycl_8hpp.html">Sycl.hpp</a></div></div>
 <div class="ttc" id="amem_2buf_2sycl_2Common_8hpp_html"><div class="ttname"><a href="mem_2buf_2sycl_2Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="amem_2view_2Traits_8hpp_html"><div class="ttname"><a href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -298,7 +298,7 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="sycl_2Copy_8hpp.html">Copy.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 21 2022 09:32:49 for alpaka by
+    <li class="footer">Generated on Mon Mar 21 2022 10:44:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

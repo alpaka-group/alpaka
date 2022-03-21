@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a5e2ccbb339968304d958f2e2b27298a5", null ]
-];

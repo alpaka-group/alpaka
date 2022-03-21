@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaster32ae4600747b2dcbbf1671e823168101 =
+[
+    [ "declareVar", "structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaster32ae4600747b2dcbbf1671e823168101.html#af9377ab23d7715321cdb6d1a089277f3", null ]
+];

@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaste9fe9eb5840f0209ef139533fa1150a27 =
-[
-    [ "declareVar", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaste9fe9eb5840f0209ef139533fa1150a27.html#a6f4fa9a00978572360b6e98f9a61122c", null ]
-];

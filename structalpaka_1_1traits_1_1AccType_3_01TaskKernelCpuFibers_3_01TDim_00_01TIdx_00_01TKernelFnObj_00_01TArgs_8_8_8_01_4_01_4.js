@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1AccType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1traits_1_1AccType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#afe09b9cfc056d7afbfc022c0c44a7043", null ]
-];

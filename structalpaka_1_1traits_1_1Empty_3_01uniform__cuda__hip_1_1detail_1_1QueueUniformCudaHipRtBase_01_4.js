@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1Empty_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4 =
-[
-    [ "empty", "structalpaka_1_1traits_1_1Empty_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html#acc56be4d76591f7977bf18501c5a2c39", null ]
-];

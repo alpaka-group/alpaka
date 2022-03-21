@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1GetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01std_1_1enable__if__09390fec59aeee0c844e460638e96de7 =
-[
-    [ "getExtent", "structalpaka_1_1traits_1_1GetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01std_1_1enable__if__09390fec59aeee0c844e460638e96de7.html#a38f60f82cfa3d5457ce6458f9f00c2a9", null ]
-];

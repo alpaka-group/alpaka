@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['acc_4394',['Acc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a814d71c640fde499f251a17477032b17',1,'alpaka::test::KernelExecutionFixture::Acc()'],['../namespacealpaka.html#a0668b792050a8ae5f1575da61ffe6217',1,'alpaka::Acc()']]],
+  ['acc_4394',['Acc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a814d71c640fde499f251a17477032b17',1,'alpaka::test::KernelExecutionFixture::Acc()'],['../namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a',1,'alpaka::Acc()']]],
   ['acccpufibersifavailableelseint_4395',['AccCpuFibersIfAvailableElseInt',['../namespacealpaka_1_1test_1_1detail.html#acefd9676d90cf53d754d3d25f92b9573',1,'alpaka::test::detail']]],
   ['acccpuomp2blocksifavailableelseint_4396',['AccCpuOmp2BlocksIfAvailableElseInt',['../namespacealpaka_1_1test_1_1detail.html#a7b225e7486ad769712f62e0b6954eef8',1,'alpaka::test::detail']]],
   ['acccpuomp2threadsifavailableelseint_4397',['AccCpuOmp2ThreadsIfAvailableElseInt',['../namespacealpaka_1_1test_1_1detail.html#a7d67bfce90d9a2ab277bf358e13a86c0',1,'alpaka::test::detail']]],

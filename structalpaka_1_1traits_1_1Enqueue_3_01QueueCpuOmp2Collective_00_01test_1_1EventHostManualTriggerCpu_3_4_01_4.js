@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01test_1_1EventHostManualTriggerCpu_3_4_01_4 =
-[
-    [ "enqueue", "structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01test_1_1EventHostManualTriggerCpu_3_4_01_4.html#a529d21cb494fd2f4f983ed0063a9175f", null ]
-];

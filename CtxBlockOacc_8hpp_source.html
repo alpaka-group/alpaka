@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div class="title">CtxBlockOacc.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="CtxBlockOacc_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2021 Jeffrey Kelling, Bernhard Manfred Gruber</span></div>
+<a href="CtxBlockOacc_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jeffrey Kelling, Bernhard Manfred Gruber</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of Alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    };</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">namespace </span>trait</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">struct </span>SyncBlockThreads&lt;CtxBlockOacc&lt;TDim, TIdx&gt;&gt;</div>
@@ -304,7 +304,7 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                <span class="keywordflow">if</span>(!data)</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                {</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                    traits::SyncBlockThreads&lt;CtxBlockOacc&lt;TDim, TIdx&gt;&gt;::masterOpBlockThreads(</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                    trait::SyncBlockThreads&lt;CtxBlockOacc&lt;TDim, TIdx&gt;&gt;::masterOpBlockThreads(</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                        smem,</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                        [&amp;data, &amp;smem]() { smem.template alloc&lt;T&gt;(TuniqueId); });</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                    data = smem.template getLatestVarPtr&lt;T&gt;();</div>
@@ -322,7 +322,7 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                <span class="comment">// Nothing to do. Block shared memory is automatically freed when all threads left the block.</span></div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            }</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        };</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    } <span class="comment">// namespace trait</span></div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="preprocessor">#endif</span></div>
@@ -346,7 +346,7 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2000100f133e487003d84c679be35c3d.html">ctx</a></li><li class="navelem"><a class="el" href="dir_d8068193f043ce6bc9f29f540068036e.html">block</a></li><li class="navelem"><a class="el" href="CtxBlockOacc_8hpp.html">CtxBlockOacc.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 21 2022 09:32:48 for alpaka by
+    <li class="footer">Generated on Mon Mar 21 2022 10:44:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

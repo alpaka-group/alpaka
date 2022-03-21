@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1SyncBlockThreadsPredicate_3_01BlockAnd_00_01BlockSyncUniformCudaHipBuiltIn_01_4 =
+[
+    [ "syncBlockThreadsPredicate", "structalpaka_1_1trait_1_1SyncBlockThreadsPredicate_3_01BlockAnd_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html#a67e76164693212a8f88c81192f99f652", null ]
+];

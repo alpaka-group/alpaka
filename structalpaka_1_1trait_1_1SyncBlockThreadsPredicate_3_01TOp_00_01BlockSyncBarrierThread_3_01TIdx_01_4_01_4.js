@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4 =
+[
+    [ "syncBlockThreadsPredicate", "structalpaka_1_1trait_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4.html#a770967599e51cc862f51f58148518532", null ]
+];

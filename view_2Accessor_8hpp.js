@@ -7,7 +7,7 @@ var view_2Accessor_8hpp =
     [ "MemoryHandle< Accessor< TMemoryHandle, TElem, TBufferIdx, TDim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle_3_01Accessor_3_01TMemoryHandle_00_01TEld2199dd1bfe1d6b8c7c32bc0d080b289.html", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle_3_01Accessor_3_01TMemoryHandle_00_01TEld2199dd1bfe1d6b8c7c32bc0d080b289" ],
     [ "ReadAccess", "structalpaka_1_1experimental_1_1ReadAccess.html", null ],
     [ "ReadWriteAccess", "structalpaka_1_1experimental_1_1ReadWriteAccess.html", null ],
-    [ "BuildAccessor", "structalpaka_1_1experimental_1_1traits_1_1BuildAccessor.html", "structalpaka_1_1experimental_1_1traits_1_1BuildAccessor" ],
+    [ "BuildAccessor", "structalpaka_1_1experimental_1_1trait_1_1BuildAccessor.html", "structalpaka_1_1experimental_1_1trait_1_1BuildAccessor" ],
     [ "WriteAccess", "structalpaka_1_1experimental_1_1WriteAccess.html", null ],
     [ "BufferAccessor", "view_2Accessor_8hpp.html#a240177523f37bc7351981bf2161ac253", null ],
     [ "MemoryHandle", "view_2Accessor_8hpp.html#a08e1e73eded52aa45fca531a9bc5f392", null ],

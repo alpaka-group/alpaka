@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1trait_1_1Min_3_01MinStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_049e4666dbb9a3887ecba3c8661049386 =
+[
+    [ "operator()", "structalpaka_1_1math_1_1trait_1_1Min_3_01MinStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_049e4666dbb9a3887ecba3c8661049386.html#afbf3e5e06f4676b1fcea53655ff34186", null ]
+];

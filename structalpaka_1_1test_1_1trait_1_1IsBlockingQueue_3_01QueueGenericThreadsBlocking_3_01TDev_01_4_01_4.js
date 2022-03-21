@@ -1,0 +1,4 @@
+var structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4 =
+[
+    [ "value", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html#aff4200216d2667b2797236e90dafe915", null ]
+];

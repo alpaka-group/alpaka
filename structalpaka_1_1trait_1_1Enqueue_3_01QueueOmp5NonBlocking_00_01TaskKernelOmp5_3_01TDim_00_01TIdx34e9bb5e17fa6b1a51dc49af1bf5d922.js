@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1Enqueue_3_01QueueOmp5NonBlocking_00_01TaskKernelOmp5_3_01TDim_00_01TIdx34e9bb5e17fa6b1a51dc49af1bf5d922 =
+[
+    [ "enqueue", "structalpaka_1_1trait_1_1Enqueue_3_01QueueOmp5NonBlocking_00_01TaskKernelOmp5_3_01TDim_00_01TIdx34e9bb5e17fa6b1a51dc49af1bf5d922.html#ac5ee6b2ee03904e8cfb2d41d553b1efd", null ]
+];

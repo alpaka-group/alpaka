@@ -1,0 +1,5 @@
+var structalpaka_1_1trait_1_1AtomicOp_3_01TOp_00_01AtomicStdLibLock_3_01THashTableSize_01_4_00_01T_00_01THierarchy_01_4 =
+[
+    [ "atomicOp", "structalpaka_1_1trait_1_1AtomicOp_3_01TOp_00_01AtomicStdLibLock_3_01THashTableSize_01_4_00_01T_00_01THierarchy_01_4.html#a5a676fffcae3834de7e6672e634baf6e", null ],
+    [ "atomicOp", "structalpaka_1_1trait_1_1AtomicOp_3_01TOp_00_01AtomicStdLibLock_3_01THashTableSize_01_4_00_01T_00_01THierarchy_01_4.html#a2aad45088c015bf3c7dad285ef5c9768", null ]
+];

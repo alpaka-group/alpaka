@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4 =
-[
-    [ "getMem", "structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html#a93a9c641b96934991fc7e395d989e44b", null ]
-];

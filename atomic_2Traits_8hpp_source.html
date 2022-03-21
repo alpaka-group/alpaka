@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('atomic_2Traits_8hpp_source.html',''); 
 <div class="title">Traits.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="atomic_2Traits_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2020 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber</span></div>
+<a href="atomic_2Traits_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -144,13 +144,13 @@ $(document).ready(function(){initNavTree('atomic_2Traits_8hpp_source.html',''); 
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> THierarchy&gt;</div>
 <div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52">   56</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52">AtomicHierarchyConcept</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1detail_1_1AtomicHierarchyConceptType.html">detail::AtomicHierarchyConceptType&lt;THierarchy&gt;::type</a>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">    //! The atomic operation traits.</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">    //! The atomic operation trait.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>trait</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {<span class="comment"></span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">        //! The atomic operation trait.</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp, <span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1AtomicOp.html">   63</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1AtomicOp.html">AtomicOp</a>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AtomicOp.html">   63</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1AtomicOp.html">AtomicOp</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    } <span class="comment">// namespace trait</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">    //! Executes the given operation atomically.</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">    //!</span></div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('atomic_2Traits_8hpp_source.html',''); 
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        THierarchy <span class="keyword">const</span>&amp; = THierarchy()) -&gt; T</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <span class="keyword">typename</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;AtomicHierarchyConcept&lt;THierarchy&gt;</a>, TAtomic&gt;;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">traits::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, value);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">trait::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, value);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">    //! Executes the given operation atomically.</span></div>
@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('atomic_2Traits_8hpp_source.html',''); 
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        THierarchy <span class="keyword">const</span>&amp; = THierarchy()) -&gt; T</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    {</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <span class="keyword">typename</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;AtomicHierarchyConcept&lt;THierarchy&gt;</a>, TAtomic&gt;;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">traits::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, compare, value);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">trait::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, compare, value);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">    //! Executes an atomic add operation.</span></div>
@@ -401,8 +401,8 @@ $(document).ready(function(){initNavTree('atomic_2Traits_8hpp_source.html',''); 
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_afc0cabb316d5524d381a35c8c67edf81"><div class="ttname"><a href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00076">Traits.hpp:76</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1concepts_html_a2246e15a1ea76fcf04ee357e03aad4d8"><div class="ttname"><a href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">alpaka::concepts::ImplementationBase</a></div><div class="ttdeci">typename detail::ImplementationBaseType&lt; TConcept, TDerived &gt;::type ImplementationBase</div><div class="ttdoc">Returns the type that implements the given concept in the inheritance hierarchy.</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00071">Concepts.hpp:71</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1AtomicOp_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1AtomicOp.html">alpaka::trait::AtomicOp</a></div><div class="ttdoc">The atomic operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00063">Traits.hpp:63</a></div></div>
 <div class="ttc" id="astructalpaka_1_1detail_1_1AtomicHierarchyConceptType_html"><div class="ttname"><a href="structalpaka_1_1detail_1_1AtomicHierarchyConceptType.html">alpaka::detail::AtomicHierarchyConceptType</a></div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00034">Traits.hpp:34</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1AtomicOp_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1AtomicOp.html">alpaka::traits::AtomicOp</a></div><div class="ttdoc">The atomic operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00063">Traits.hpp:63</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a148285a6d01c5470b8a96a3c2987dc26"><div class="ttname"><a href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">alpaka::atomicExch</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicExch(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic exchange operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00189">Traits.hpp:189</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a802e615af70018a5f2a5d4972bc11a52"><div class="ttname"><a href="namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52">alpaka::AtomicHierarchyConcept</a></div><div class="ttdeci">typename detail::AtomicHierarchyConceptType&lt; THierarchy &gt;::type AtomicHierarchyConcept</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00056">Traits.hpp:56</a></div></div>
 <div class="ttc" id="astructalpaka_1_1ConceptAtomicThreads_html"><div class="ttname"><a href="structalpaka_1_1ConceptAtomicThreads.html">alpaka::ConceptAtomicThreads</a></div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00027">Traits.hpp:27</a></div></div>
@@ -427,7 +427,7 @@ $(document).ready(function(){initNavTree('atomic_2Traits_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="atomic_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 21 2022 09:32:48 for alpaka by
+    <li class="footer">Generated on Mon Mar 21 2022 10:44:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

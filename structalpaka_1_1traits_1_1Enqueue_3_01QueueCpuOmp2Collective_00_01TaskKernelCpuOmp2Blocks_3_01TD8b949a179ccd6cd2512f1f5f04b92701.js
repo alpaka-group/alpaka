@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01TaskKernelCpuOmp2Blocks_3_01TD8b949a179ccd6cd2512f1f5f04b92701 =
-[
-    [ "enqueue", "structalpaka_1_1traits_1_1Enqueue_3_01QueueCpuOmp2Collective_00_01TaskKernelCpuOmp2Blocks_3_01TD8b949a179ccd6cd2512f1f5f04b92701.html#abba4688a1f8f86f36ab8eb382dee397a", null ]
-];

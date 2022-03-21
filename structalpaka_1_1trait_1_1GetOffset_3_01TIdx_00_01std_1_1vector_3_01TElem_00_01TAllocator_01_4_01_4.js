@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4 =
+[
+    [ "getOffset", "structalpaka_1_1trait_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a453e1564243d8690743c3ef2f0449736", null ]
+];

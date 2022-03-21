@@ -105,8 +105,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1test_1_1integ"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1integ.html">integ</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1test_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1traits.html">traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1test_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The test specifics. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1test_1_1trait"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1trait.html">trait</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1test_1_1trait"><td class="mdescLeft">&#160;</td><td class="mdescRight">The test specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1test_1_1uniform__cuda__hip"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,25 +136,25 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aeb709daccc3367a9bb87e3fdab2ac5b8"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:aeb709daccc3367a9bb87e3fdab2ac5b8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#aeb709daccc3367a9bb87e3fdab2ac5b8">DefaultQueue</a> = typename <a class="el" href="structalpaka_1_1test_1_1traits_1_1DefaultQueueType.html">traits::DefaultQueueType</a>&lt; TAcc &gt;::type</td></tr>
-<tr class="memdesc:aeb709daccc3367a9bb87e3fdab2ac5b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The queue type that should be used for the given accelerator.  <a href="namespacealpaka_1_1test.html#aeb709daccc3367a9bb87e3fdab2ac5b8">More...</a><br /></td></tr>
-<tr class="separator:aeb709daccc3367a9bb87e3fdab2ac5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae344a5d456b09ef271a7eeaea35daba7"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:ae344a5d456b09ef271a7eeaea35daba7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#ae344a5d456b09ef271a7eeaea35daba7">DefaultQueue</a> = typename <a class="el" href="structalpaka_1_1test_1_1trait_1_1DefaultQueueType.html">trait::DefaultQueueType</a>&lt; TAcc &gt;::type</td></tr>
+<tr class="memdesc:ae344a5d456b09ef271a7eeaea35daba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The queue type that should be used for the given accelerator.  <a href="namespacealpaka_1_1test.html#ae344a5d456b09ef271a7eeaea35daba7">More...</a><br /></td></tr>
+<tr class="separator:ae344a5d456b09ef271a7eeaea35daba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61f6b665ee46c5d41d00ac18855df6e1"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:a61f6b665ee46c5d41d00ac18855df6e1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">EnabledAccs</a> = typename <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">meta::Filter</a>&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a5b2492362925e722c3ae9390502e10e9">detail::EnabledAccsElseInt</a>&lt; TDim, TIdx &gt;, std::is_class &gt;</td></tr>
 <tr class="memdesc:a61f6b665ee46c5d41d00ac18855df6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector containing all available accelerators.  <a href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">More...</a><br /></td></tr>
 <tr class="separator:a61f6b665ee46c5d41d00ac18855df6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb0be2fed1fdbeea296fd08ac8f9d8ea"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
-<tr class="memitem:afb0be2fed1fdbeea296fd08ac8f9d8ea"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#afb0be2fed1fdbeea296fd08ac8f9d8ea">EventHostManualTrigger</a> = typename <a class="el" href="structalpaka_1_1test_1_1traits_1_1EventHostManualTriggerType.html">traits::EventHostManualTriggerType</a>&lt; TDev &gt;::type</td></tr>
-<tr class="memdesc:afb0be2fed1fdbeea296fd08ac8f9d8ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event host manual trigger type trait alias template to remove the ::type.  <a href="namespacealpaka_1_1test.html#afb0be2fed1fdbeea296fd08ac8f9d8ea">More...</a><br /></td></tr>
-<tr class="separator:afb0be2fed1fdbeea296fd08ac8f9d8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac795f7f8d53f898f710f74bd3566cf56"><td class="memTemplParams" colspan="2">template&lt;typename TQueue &gt; </td></tr>
-<tr class="memitem:ac795f7f8d53f898f710f74bd3566cf56"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#ac795f7f8d53f898f710f74bd3566cf56">IsBlockingQueue</a> = <a class="el" href="structalpaka_1_1test_1_1traits_1_1IsBlockingQueue.html">traits::IsBlockingQueue</a>&lt; TQueue &gt;</td></tr>
-<tr class="memdesc:ac795f7f8d53f898f710f74bd3566cf56"><td class="mdescLeft">&#160;</td><td class="mdescRight">The queue type that should be used for the given accelerator.  <a href="namespacealpaka_1_1test.html#ac795f7f8d53f898f710f74bd3566cf56">More...</a><br /></td></tr>
-<tr class="separator:ac795f7f8d53f898f710f74bd3566cf56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a636bdcebb2611f94676b22399e0c5732"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:a636bdcebb2611f94676b22399e0c5732"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a636bdcebb2611f94676b22399e0c5732">Iterator</a> = <a class="el" href="classalpaka_1_1test_1_1traits_1_1IteratorView.html">traits::IteratorView</a>&lt; TView &gt;</td></tr>
-<tr class="separator:a636bdcebb2611f94676b22399e0c5732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5751f63b161a4e0460c55f2f5c3d2a17"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:a5751f63b161a4e0460c55f2f5c3d2a17"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a5751f63b161a4e0460c55f2f5c3d2a17">EventHostManualTrigger</a> = typename <a class="el" href="structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType.html">trait::EventHostManualTriggerType</a>&lt; TDev &gt;::type</td></tr>
+<tr class="memdesc:a5751f63b161a4e0460c55f2f5c3d2a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event host manual trigger type trait alias template to remove the ::type.  <a href="namespacealpaka_1_1test.html#a5751f63b161a4e0460c55f2f5c3d2a17">More...</a><br /></td></tr>
+<tr class="separator:a5751f63b161a4e0460c55f2f5c3d2a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf76f887cb2963d7524fcb09c865354e"><td class="memTemplParams" colspan="2">template&lt;typename TQueue &gt; </td></tr>
+<tr class="memitem:abf76f887cb2963d7524fcb09c865354e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">IsBlockingQueue</a> = <a class="el" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">trait::IsBlockingQueue</a>&lt; TQueue &gt;</td></tr>
+<tr class="memdesc:abf76f887cb2963d7524fcb09c865354e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The queue type that should be used for the given accelerator.  <a href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">More...</a><br /></td></tr>
+<tr class="separator:abf76f887cb2963d7524fcb09c865354e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa839db9d57839ee169d666ff52272a13"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:aa839db9d57839ee169d666ff52272a13"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13">Iterator</a> = <a class="el" href="classalpaka_1_1test_1_1trait_1_1IteratorView.html">trait::IteratorView</a>&lt; TView &gt;</td></tr>
+<tr class="separator:aa839db9d57839ee169d666ff52272a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac981ce6a8a742c033eb0e664cc0de959"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#ac981ce6a8a742c033eb0e664cc0de959">TestAccs</a> = <a class="el" href="namespacealpaka_1_1meta.html#ad0cbe491078fbefb5d6c6908dd4d799e">meta::Apply</a>&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#ae3d5270239c3fdbcb3480c1cdb4fb996">detail::InstantiatedEnabledAccs</a>, <a class="el" href="namespacealpaka_1_1meta.html#a8ec9f76ad5048e654936626c56845f2c">meta::Concatenate</a> &gt;</td></tr>
 <tr class="memdesc:ac981ce6a8a742c033eb0e664cc0de959"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple containing fully instantiated accelerators.  <a href="namespacealpaka_1_1test.html#ac981ce6a8a742c033eb0e664cc0de959">More...</a><br /></td></tr>
 <tr class="separator:ac981ce6a8a742c033eb0e664cc0de959"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,10 +171,10 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:adbab173d7dd9ddda3603e4c57679c6b4"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:adbab173d7dd9ddda3603e4c57679c6b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">begin</a> (TView &amp;view) -&gt; <a class="el" href="namespacealpaka_1_1test.html#a636bdcebb2611f94676b22399e0c5732">Iterator</a>&lt; TView &gt;</td></tr>
+<tr class="memitem:adbab173d7dd9ddda3603e4c57679c6b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">begin</a> (TView &amp;view) -&gt; <a class="el" href="namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13">Iterator</a>&lt; TView &gt;</td></tr>
 <tr class="separator:adbab173d7dd9ddda3603e4c57679c6b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a306087b4550df25e8368a6b8072c755e"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:a306087b4550df25e8368a6b8072c755e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">end</a> (TView &amp;view) -&gt; <a class="el" href="namespacealpaka_1_1test.html#a636bdcebb2611f94676b22399e0c5732">Iterator</a>&lt; TView &gt;</td></tr>
+<tr class="memitem:a306087b4550df25e8368a6b8072c755e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">end</a> (TView &amp;view) -&gt; <a class="el" href="namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13">Iterator</a>&lt; TView &gt;</td></tr>
 <tr class="separator:a306087b4550df25e8368a6b8072c755e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f2aac1d04ce746a78be008faa0266a7"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TQueue &gt; </td></tr>
 <tr class="memitem:a2f2aac1d04ce746a78be008faa0266a7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a2f2aac1d04ce746a78be008faa0266a7">iotaFillView</a> (TQueue &amp;queue, TView &amp;view) -&gt; void</td></tr>
@@ -203,8 +203,8 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The test specifics. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a id="aeb709daccc3367a9bb87e3fdab2ac5b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb709daccc3367a9bb87e3fdab2ac5b8">&#9670;&nbsp;</a></span>DefaultQueue</h2>
+<a id="ae344a5d456b09ef271a7eeaea35daba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae344a5d456b09ef271a7eeaea35daba7">&#9670;&nbsp;</a></span>DefaultQueue</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -212,7 +212,7 @@ Functions</h2></td></tr>
 template&lt;typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#aeb709daccc3367a9bb87e3fdab2ac5b8">alpaka::test::DefaultQueue</a> = typedef typename <a class="el" href="structalpaka_1_1test_1_1traits_1_1DefaultQueueType.html">traits::DefaultQueueType</a>&lt;TAcc&gt;::type</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#ae344a5d456b09ef271a7eeaea35daba7">alpaka::test::DefaultQueue</a> = typedef typename <a class="el" href="structalpaka_1_1test_1_1trait_1_1DefaultQueueType.html">trait::DefaultQueueType</a>&lt;TAcc&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -243,8 +243,8 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 
 </div>
 </div>
-<a id="afb0be2fed1fdbeea296fd08ac8f9d8ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb0be2fed1fdbeea296fd08ac8f9d8ea">&#9670;&nbsp;</a></span>EventHostManualTrigger</h2>
+<a id="a5751f63b161a4e0460c55f2f5c3d2a17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5751f63b161a4e0460c55f2f5c3d2a17">&#9670;&nbsp;</a></span>EventHostManualTrigger</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,19 +252,19 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 template&lt;typename TDev &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#afb0be2fed1fdbeea296fd08ac8f9d8ea">alpaka::test::EventHostManualTrigger</a> = typedef typename <a class="el" href="structalpaka_1_1test_1_1traits_1_1EventHostManualTriggerType.html">traits::EventHostManualTriggerType</a>&lt;TDev&gt;::type</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#a5751f63b161a4e0460c55f2f5c3d2a17">alpaka::test::EventHostManualTrigger</a> = typedef typename <a class="el" href="structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType.html">trait::EventHostManualTriggerType</a>&lt;TDev&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The event host manual trigger type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="EventHostManualTrigger_8hpp_source.html#l00032">32</a> of file <a class="el" href="EventHostManualTrigger_8hpp_source.html">EventHostManualTrigger.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EventHostManualTrigger_8hpp_source.html#l00031">31</a> of file <a class="el" href="EventHostManualTrigger_8hpp_source.html">EventHostManualTrigger.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ac795f7f8d53f898f710f74bd3566cf56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac795f7f8d53f898f710f74bd3566cf56">&#9670;&nbsp;</a></span>IsBlockingQueue</h2>
+<a id="abf76f887cb2963d7524fcb09c865354e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf76f887cb2963d7524fcb09c865354e">&#9670;&nbsp;</a></span>IsBlockingQueue</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,7 +272,7 @@ template&lt;typename TDev &gt; </div>
 template&lt;typename TQueue &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#ac795f7f8d53f898f710f74bd3566cf56">alpaka::test::IsBlockingQueue</a> = typedef <a class="el" href="structalpaka_1_1test_1_1traits_1_1IsBlockingQueue.html">traits::IsBlockingQueue</a>&lt;TQueue&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">alpaka::test::IsBlockingQueue</a> = typedef <a class="el" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">trait::IsBlockingQueue</a>&lt;TQueue&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -283,8 +283,8 @@ template&lt;typename TQueue &gt; </div>
 
 </div>
 </div>
-<a id="a636bdcebb2611f94676b22399e0c5732"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a636bdcebb2611f94676b22399e0c5732">&#9670;&nbsp;</a></span>Iterator</h2>
+<a id="aa839db9d57839ee169d666ff52272a13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa839db9d57839ee169d666ff52272a13">&#9670;&nbsp;</a></span>Iterator</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,7 +292,7 @@ template&lt;typename TQueue &gt; </div>
 template&lt;typename TView &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#a636bdcebb2611f94676b22399e0c5732">alpaka::test::Iterator</a> = typedef <a class="el" href="classalpaka_1_1test_1_1traits_1_1IteratorView.html">traits::IteratorView</a>&lt;TView&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13">alpaka::test::Iterator</a> = typedef <a class="el" href="classalpaka_1_1test_1_1trait_1_1IteratorView.html">trait::IteratorView</a>&lt;TView&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -388,7 +388,7 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1test.html#a636bdcebb2611f94676b22399e0c5732">Iterator</a>&lt;TView&gt;
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13">Iterator</a>&lt;TView&gt;
     </td>
         </tr>
       </table>
@@ -411,7 +411,7 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1test.html#a636bdcebb2611f94676b22399e0c5732">Iterator</a>&lt;TView&gt;
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13">Iterator</a>&lt;TView&gt;
     </td>
         </tr>
       </table>
@@ -452,7 +452,7 @@ template&lt;typename TView , typename TQueue &gt; </div>
 
 <p>Fills the given view with increasing values starting at 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00206">206</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00207">207</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -475,7 +475,7 @@ template&lt;typename TDev &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="EventHostManualTrigger_8hpp_source.html#l00035">35</a> of file <a class="el" href="EventHostManualTrigger_8hpp_source.html">EventHostManualTrigger.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EventHostManualTrigger_8hpp_source.html#l00034">34</a> of file <a class="el" href="EventHostManualTrigger_8hpp_source.html">EventHostManualTrigger.hpp</a>.</p>
 
 </div>
 </div>
@@ -520,7 +520,7 @@ template&lt;typename TElem , typename TDim , typename TIdx , typename TDev , typ
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00025">25</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00026">26</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -553,7 +553,7 @@ template&lt;typename TAcc , typename TView , typename TQueue &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00229">229</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00230">230</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -586,7 +586,7 @@ template&lt;typename TAcc , typename TView &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00142">142</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00143">143</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -619,7 +619,7 @@ template&lt;typename TAcc , typename TViewB , typename TViewA &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00188">188</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00189">189</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -654,7 +654,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test.html">test</a></li>
-    <li class="footer">Generated on Mon Mar 21 2022 09:32:50 for alpaka by
+    <li class="footer">Generated on Mon Mar 21 2022 10:44:08 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

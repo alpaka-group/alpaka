@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1PrepareForAsyncCopy_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
+[
+    [ "prepareForAsyncCopy", "structalpaka_1_1trait_1_1PrepareForAsyncCopy_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a070fb08b8606c2581c773af0e637b604", null ]
+];

@@ -2,7 +2,7 @@ var namespacealpaka_1_1test =
 [
     [ "cpu", "namespacealpaka_1_1test_1_1cpu.html", "namespacealpaka_1_1test_1_1cpu" ],
     [ "detail", "namespacealpaka_1_1test_1_1detail.html", "namespacealpaka_1_1test_1_1detail" ],
-    [ "traits", "namespacealpaka_1_1test_1_1traits.html", "namespacealpaka_1_1test_1_1traits" ],
+    [ "trait", "namespacealpaka_1_1test_1_1trait.html", "namespacealpaka_1_1test_1_1trait" ],
     [ "uniform_cuda_hip", "namespacealpaka_1_1test_1_1uniform__cuda__hip.html", "namespacealpaka_1_1test_1_1uniform__cuda__hip" ],
     [ "Array", "structalpaka_1_1test_1_1Array.html", "structalpaka_1_1test_1_1Array" ],
     [ "CreateVecWithIdx", "structalpaka_1_1test_1_1CreateVecWithIdx.html", [

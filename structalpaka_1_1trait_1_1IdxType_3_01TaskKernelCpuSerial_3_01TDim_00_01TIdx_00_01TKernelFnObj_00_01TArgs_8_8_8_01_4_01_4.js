@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4 =
+[
+    [ "type", "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a3bd6be829c8601227b22040b2480f622", null ]
+];

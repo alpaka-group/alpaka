@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetPitchBytes_3_01TIdxIntegralConst_00_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
+[
+    [ "getPitchBytes", "structalpaka_1_1trait_1_1GetPitchBytes_3_01TIdxIntegralConst_00_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a36c4f9feaadc4133af6aba8a7b03fc5b", null ]
+];

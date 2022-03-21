@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1MemFence_3_01MemFenceUniformCudaHipBuiltIn_00_01memory__scope_1_1Block_01_4 =
+[
+    [ "mem_fence", "structalpaka_1_1trait_1_1MemFence_3_01MemFenceUniformCudaHipBuiltIn_00_01memory__scope_1_1Block_01_4.html#a11c54625a8df6b8561f288db58ea427b", null ]
+];

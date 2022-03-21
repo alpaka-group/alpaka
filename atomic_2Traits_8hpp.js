@@ -7,7 +7,7 @@ var atomic_2Traits_8hpp =
     [ "AtomicHierarchyConceptType< hierarchy::Blocks >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4" ],
     [ "AtomicHierarchyConceptType< hierarchy::Grids >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4" ],
     [ "AtomicHierarchyConceptType< hierarchy::Threads >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4" ],
-    [ "AtomicOp", "structalpaka_1_1traits_1_1AtomicOp.html", null ],
+    [ "AtomicOp", "structalpaka_1_1trait_1_1AtomicOp.html", null ],
     [ "AtomicHierarchyConcept", "atomic_2Traits_8hpp.html#a802e615af70018a5f2a5d4972bc11a52", null ],
     [ "atomicAdd", "atomic_2Traits_8hpp.html#ac8d44ae90fcfe2fdb973c49542fd0db5", null ],
     [ "atomicAnd", "atomic_2Traits_8hpp.html#afcb672dfb9494d1e3907cc68ac9f6bdc", null ],

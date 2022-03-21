@@ -1,0 +1,4 @@
+var structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevUniformCudaHipRt_01_4 =
+[
+    [ "isSupported", "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevUniformCudaHipRt_01_4.html#a57fc76158c0a292ecd5b6aaf7c16cc67", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNoncc3418cdf5ea14849eed331af2118e8f =
+[
+    [ "waiterWaitFor", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNoncc3418cdf5ea14849eed331af2118e8f.html#a9679f7d717fe3d217666d8ec2a35ef41", null ]
+];

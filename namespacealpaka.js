@@ -18,7 +18,7 @@ var namespacealpaka =
     [ "omp5", "namespacealpaka_1_1omp5.html", "namespacealpaka_1_1omp5" ],
     [ "rand", "namespacealpaka_1_1rand.html", "namespacealpaka_1_1rand" ],
     [ "test", "namespacealpaka_1_1test.html", "namespacealpaka_1_1test" ],
-    [ "traits", "namespacealpaka_1_1traits.html", "namespacealpaka_1_1traits" ],
+    [ "trait", "namespacealpaka_1_1trait.html", "namespacealpaka_1_1trait" ],
     [ "uniform_cuda_hip", "namespacealpaka_1_1uniform__cuda__hip.html", "namespacealpaka_1_1uniform__cuda__hip" ],
     [ "warp", "namespacealpaka_1_1warp.html", "namespacealpaka_1_1warp" ],
     [ "AccCpuFibers", "classalpaka_1_1AccCpuFibers.html", "classalpaka_1_1AccCpuFibers" ],

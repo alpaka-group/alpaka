@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1Unmap_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4 =
+[
+    [ "unmap", "structalpaka_1_1trait_1_1Unmap_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4.html#ab792271aeb064e0177cd26c23464885f", null ]
+];

@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div class="title">TaskKernelCpuTbbBlocks.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="TaskKernelCpuTbbBlocks_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2021 Benjamin Worpitz, Erik Zenker, René Widera, Felice Pantaleo, Bernhard Manfred Gruber</span></div>
+<a href="TaskKernelCpuTbbBlocks_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Erik Zenker, René Widera, Felice Pantaleo, Bernhard Manfred Gruber</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            , m_args(std::forward&lt;TArgs&gt;(args)...)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt;std::decay_t&lt;TWorkDiv&gt;&gt;::value == TDim::value,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a>&lt;std::decay_t&lt;TWorkDiv&gt;&gt;::value == TDim::value,</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="stringliteral">&quot;The work division and the execution task have to be of the same dimensionality!&quot;</span>);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span> </div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        std::tuple&lt;std::decay_t&lt;TArgs&gt;...&gt; m_args;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    };</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">namespace </span>trait</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    {<span class="comment"></span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">        //! The CPU TBB block execution task accelerator type trait specialization.</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
@@ -243,19 +243,19 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        {</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keyword">using</span> type = TIdx;</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        };</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    } <span class="comment">// namespace trait</span></div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="anamespacealpaka_html_aba87713ec0232bbf70beb24e063e32ea"><div class="ttname"><a href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">alpaka::Dim</a></div><div class="ttdeci">typename traits::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
 <div class="ttc" id="akernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac556c317f934c69c8c8c083c5068f681"><div class="ttname"><a href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00058">Debug.hpp:58</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1core_html_a3bc48ef7c999409550fcbe1a948d6f31"><div class="ttname"><a href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">alpaka::core::apply</a></div><div class="ttdeci">constexpr auto apply(TFunc &amp;&amp;f, Tuple&lt; TArgs... &gt; t)</div><div class="ttdef"><b>Definition:</b> <a href="Tuple_8hpp_source.html#l00031">Tuple.hpp:31</a></div></div>
 <div class="ttc" id="adim_2Traits_8hpp_html"><div class="ttname"><a href="dim_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_aee3fb80b82e8f3e9601195afb0b8c34c"><div class="ttname"><a href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim</a></div><div class="ttdeci">typename trait::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html_afba6dfdddd358c0ee5a1c6406afd2c11"><div class="ttname"><a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a></div><div class="ttdeci">#define ALPAKA_DECAY_T(Type)</div><div class="ttdoc">Wrapper around std::decay_t for parameter pack expansion expressions.</div><div class="ttdef"><b>Definition:</b> <a href="Decay_8hpp_source.html#l00030">Decay.hpp:30</a></div></div>
 <div class="ttc" id="aMapIdx_8hpp_html"><div class="ttname"><a href="MapIdx_8hpp.html">MapIdx.hpp</a></div></div>
 <div class="ttc" id="aAccCpuTbbBlocks_8hpp_html"><div class="ttname"><a href="AccCpuTbbBlocks_8hpp.html">AccCpuTbbBlocks.hpp</a></div></div>
@@ -272,7 +272,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuTbbBlocks_8hpp.html">TaskKernelCpuTbbBlocks.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 21 2022 09:32:49 for alpaka by
+    <li class="footer">Generated on Mon Mar 21 2022 10:44:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
