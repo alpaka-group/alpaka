@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>When an accelerator back-end using <em>OpenMP</em> is enabled, the compiler and the platform have to support the corresponding minimum <em>OpenMP</em> version.</p>
 <p>When an accelerator back-end using <em>TBB</em> is enabled, the compiler and the platform have to support the corresponding minimum <em>TBB</em> version.</p>
 <h1>Usage </h1>
-<p>The library is header only so nothing has to be built. CMake 3.18+ is required to provide the correct defines and include paths. Just call <code>ALPAKA_ADD_EXECUTABLE</code> instead of <code>CUDA_ADD_EXECUTABLE</code> or <code>ADD_EXECUTABLE</code> and the difficulties of the CUDA nvcc compiler in handling <code>.cu</code> and <code>.cpp</code> files are automatically taken care of. Source files do not need any special file ending. Examples of how to utilize alpaka within CMake can be found in the <code>example</code> folder.</p>
+<p>The library is header only so nothing has to be built. CMake 3.18+ is required to provide the correct defines and include paths. Just call <code>alpaka_add_executable</code> instead of <code>add_executable</code> and the difficulties of the CUDA nvcc compiler in handling <code>.cu</code> and <code>.cpp</code> files are automatically taken care of. Source files do not need any special file ending. Examples of how to utilize alpaka within CMake can be found in the <code>example</code> folder.</p>
 <p>The whole alpaka library can be included with: <code>#include &lt;<a class="el" href="alpaka_8hpp.html">alpaka/alpaka.hpp</a>&gt;</code> Code that is not intended to be utilized by the user is hidden in the <code>detail</code> namespace.</p>
 <p>Furthermore, for a CUDA-like experience when adopting alpaka we provide the library <a href="https://github.com/alpaka-group/cupla"><em>cupla</em></a>. It enables a simple and straightforward way of porting existing CUDA applications to alpaka and thus to a variety of accelerators.</p>
 <h1>Introduction </h1>
@@ -299,7 +299,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Mar 20 2022 22:18:57 for alpaka by
+    <li class="footer">Generated on Mon Mar 21 2022 09:32:51 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
