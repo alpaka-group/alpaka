@@ -1,4 +1,5 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber,
+ * Antonio Di Pilato
  *
  * This file is part of alpaka.
  *
@@ -389,9 +390,8 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicInc(acc, success, operandOrig);
-        // testAtomicDec(acc, success, operandOrig);
+        testAtomicInc(acc, success, operandOrig);
+        testAtomicDec(acc, success, operandOrig);
 
         testAtomicAnd(acc, success, operandOrig);
         testAtomicOr(acc, success, operandOrig);
@@ -440,9 +440,7 @@ public:
         unsigned long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-#    if UINT_MAX == ULONG_MAX // LLP64
         testAtomicSub(acc, success, operandOrig);
-#    endif
 
 #    if ULONG_MAX == ULLONG_MAX // LP64
 #        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
@@ -453,10 +451,8 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
-#    if UINT_MAX == ULONG_MAX // LLP64
         testAtomicInc(acc, success, operandOrig);
         testAtomicDec(acc, success, operandOrig);
-#    endif
 
 #    if ULONG_MAX == ULLONG_MAX // LP64
 #        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
@@ -481,8 +477,7 @@ public:
         unsigned long long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-        // Not supported
-        // testAtomicSub(acc, success, operandOrig);
+        testAtomicSub(acc, success, operandOrig);
 
 #    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
         testAtomicMin(acc, success, operandOrig);
@@ -491,9 +486,8 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicInc(acc, success, operandOrig);
-        // testAtomicDec(acc, success, operandOrig);
+        testAtomicInc(acc, success, operandOrig);
+        testAtomicDec(acc, success, operandOrig);
 
 #    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
         testAtomicAnd(acc, success, operandOrig);
@@ -514,12 +508,10 @@ public:
         -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-        // Not supported
-        // testAtomicSub(acc, success, operandOrig);
+        testAtomicSub(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicMin(acc, success, operandOrig);
-        // testAtomicMax(acc, success, operandOrig);
+        testAtomicMin(acc, success, operandOrig);
+        testAtomicMax(acc, success, operandOrig);
 
         testAtomicExch(acc, success, operandOrig);
 
@@ -546,15 +538,12 @@ public:
         -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-        // Not supported
-        // testAtomicSub(acc, success, operandOrig);
+        testAtomicSub(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicMin(acc, success, operandOrig);
-        // testAtomicMax(acc, success, operandOrig);
+        testAtomicMin(acc, success, operandOrig);
+        testAtomicMax(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicExch(acc, success, operandOrig);
+        testAtomicExch(acc, success, operandOrig);
 
         // Not supported
         // testAtomicInc(acc, success, operandOrig);
@@ -608,9 +597,8 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicInc(acc, success, operandOrig);
-        // testAtomicDec(acc, success, operandOrig);
+        testAtomicInc(acc, success, operandOrig);
+        testAtomicDec(acc, success, operandOrig);
 
         testAtomicAnd(acc, success, operandOrig);
         testAtomicOr(acc, success, operandOrig);
@@ -659,9 +647,7 @@ public:
         unsigned long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-#    if UINT_MAX == ULONG_MAX // LLP64
         testAtomicSub(acc, success, operandOrig);
-#    endif
 
 #    if ULONG_MAX == ULLONG_MAX // LP64
 #        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
@@ -672,10 +658,8 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
-#    if UINT_MAX == ULONG_MAX // LLP64
         testAtomicInc(acc, success, operandOrig);
         testAtomicDec(acc, success, operandOrig);
-#    endif
 
 #    if ULONG_MAX == ULLONG_MAX // LP64
 #        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
@@ -700,8 +684,7 @@ public:
         unsigned long long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-        // Not supported
-        // testAtomicSub(acc, success, operandOrig);
+        testAtomicSub(acc, success, operandOrig);
 
 #    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
         testAtomicMin(acc, success, operandOrig);
@@ -710,9 +693,8 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicInc(acc, success, operandOrig);
-        // testAtomicDec(acc, success, operandOrig);
+        testAtomicInc(acc, success, operandOrig);
+        testAtomicDec(acc, success, operandOrig);
 
 #    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
         testAtomicAnd(acc, success, operandOrig);
@@ -733,12 +715,10 @@ public:
         -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-        // Not supported
-        // testAtomicSub(acc, success, operandOrig);
+        testAtomicSub(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicMin(acc, success, operandOrig);
-        // testAtomicMax(acc, success, operandOrig);
+        testAtomicMin(acc, success, operandOrig);
+        testAtomicMax(acc, success, operandOrig);
 
         testAtomicExch(acc, success, operandOrig);
 
@@ -765,15 +745,12 @@ public:
         -> void
     {
         testAtomicAdd(acc, success, operandOrig);
-        // Not supported
-        // testAtomicSub(acc, success, operandOrig);
+        testAtomicSub(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicMin(acc, success, operandOrig);
-        // testAtomicMax(acc, success, operandOrig);
+        testAtomicMin(acc, success, operandOrig);
+        testAtomicMax(acc, success, operandOrig);
 
-        // Not supported
-        // testAtomicExch(acc, success, operandOrig);
+        testAtomicExch(acc, success, operandOrig);
 
         // Not supported
         // testAtomicInc(acc, success, operandOrig);
