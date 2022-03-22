@@ -9,17 +9,16 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
 // UniformCudaHip implementation
-#    define ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE cuda
-#    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
+#    define ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE hip
+#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #    undef ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
 
 namespace alpaka
 {
-    template<typename TDim, typename TIdx>
-    using AccGpuCudaRt = cuda::AccGpuUniformCudaHipRt<TDim, TIdx>;
+    using DevHipRt = hip::DevUniformCudaHipRt;
 }
 
-#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
+#endif // ALPAKA_ACC_GPU_HIP_ENABLED

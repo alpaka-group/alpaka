@@ -8,9 +8,25 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#if !defined(ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE)
+#    error This is an internal header file, and should never be included directly.
+#endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#error This file should not be included with ALPAKA_ACC_GPU_CUDA_ENABLED and ALPAKA_ACC_GPU_HIP_ENABLED both defined.
+#endif
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_core_UniformCudaHip_hpp_CUDA)                             \
+    || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_core_UniformCudaHip_hpp_HIP)
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_core_UniformCudaHip_hpp_CUDA)
+#        define alpaka_core_UniformCudaHip_hpp_CUDA
+#    endif
+
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_core_UniformCudaHip_hpp_HIP)
+#        define alpaka_core_UniformCudaHip_hpp_HIP
+#    endif
+
 
 #    include <alpaka/core/BoostPredef.hpp>
 
@@ -27,7 +43,7 @@
 #    include <tuple>
 #    include <type_traits>
 
-namespace alpaka::uniform_cuda_hip::detail
+namespace alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail
 {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
     using Error_t = cudaError;
@@ -99,16 +115,21 @@ namespace alpaka::uniform_cuda_hip::detail
         Error_t const error(ALPAKA_API_PREFIX(GetLastError)());
         rtCheck<TThrow>(error, desc, file, line);
     }
-} // namespace alpaka::uniform_cuda_hip::detail
+} // namespace alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail
 
 #    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 //! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
 #        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                     \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<true>(                                               \
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckLastError<true>(                           \
                 "'" #cmd "' A previous API call (not this one) set the error ",                                       \
                 __FILE__,                                                                                             \
                 __LINE__);                                                                                            \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<true>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckIgnore<true>(                              \
+                cmd,                                                                                                  \
+                #cmd,                                                                                                 \
+                __FILE__,                                                                                             \
+                __LINE__,                                                                                             \
+                __VA_ARGS__)
 #    else
 #        if BOOST_COMP_CLANG
 #            pragma clang diagnostic push
@@ -116,11 +137,16 @@ namespace alpaka::uniform_cuda_hip::detail
 #        endif
 //! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
 #        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                     \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<true>(                                               \
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckLastError<true>(                           \
                 "'" #cmd "' A previous API call (not this one) set the error ",                                       \
                 __FILE__,                                                                                             \
                 __LINE__);                                                                                            \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<true>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckIgnore<true>(                              \
+                cmd,                                                                                                  \
+                #cmd,                                                                                                 \
+                __FILE__,                                                                                             \
+                __LINE__,                                                                                             \
+                ##__VA_ARGS__)
 #        if BOOST_COMP_CLANG
 #            pragma clang diagnostic pop
 #        endif
@@ -132,11 +158,16 @@ namespace alpaka::uniform_cuda_hip::detail
 #    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 //! CUDA/HIP runtime error checking with log, ignoring specific error values
 #        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                            \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<false>(                                              \
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckLastError<false>(                          \
                 "'" #cmd "' A previous API call (not this one) set the error ",                                       \
                 __FILE__,                                                                                             \
                 __LINE__);                                                                                            \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<false>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckIgnore<false>(                             \
+                cmd,                                                                                                  \
+                #cmd,                                                                                                 \
+                __FILE__,                                                                                             \
+                __LINE__,                                                                                             \
+                __VA_ARGS__)
 #    else
 #        if BOOST_COMP_CLANG
 #            pragma clang diagnostic push
@@ -144,11 +175,16 @@ namespace alpaka::uniform_cuda_hip::detail
 #        endif
 //! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
 #        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                            \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<false>(                                              \
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckLastError<false>(                          \
                 "'" #cmd "' A previous API call (not this one) set the error ",                                       \
                 __FILE__,                                                                                             \
                 __LINE__);                                                                                            \
-            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<false>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+            ::alpaka::ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::rtCheckIgnore<false>(                             \
+                cmd,                                                                                                  \
+                #cmd,                                                                                                 \
+                __FILE__,                                                                                             \
+                __LINE__,                                                                                             \
+                ##__VA_ARGS__)
 #        if BOOST_COMP_CLANG
 #            pragma clang diagnostic pop
 #        endif
@@ -156,4 +192,127 @@ namespace alpaka::uniform_cuda_hip::detail
 
 //! CUDA/HIP runtime error checking with log.
 #    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(cmd) ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd)
+
+//! Macros explicitly for the CUDA version
+#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#        if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+//! CUDA runtime error checking with log and exception, ignoring specific error values
+#            define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)                                                             \
+                ::alpaka::cuda::detail::rtCheckLastError<true>(                                                       \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::cuda::detail::rtCheckIgnore<true>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+#        else
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#            endif
+//! CUDA runtime error checking with log and exception, ignoring specific error values
+#            define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)                                                             \
+                ::alpaka::cuda::detail::rtCheckLastError<true>(                                                       \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::cuda::detail::rtCheckIgnore<true>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic pop
+#            endif
+#        endif
+
+//! CUDA runtime error checking with log and exception.
+#        define ALPAKA_CUDA_RT_CHECK(cmd) ALPAKA_CUDA_RT_CHECK_IGNORE(cmd)
+
+#        if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+//! CUDA runtime error checking with log, ignoring specific error values
+#            define ALPAKA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                                     \
+                ::alpaka::cuda::detail::rtCheckLastError<false>(                                                      \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::cuda::detail::rtCheckIgnore<false>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+#        else
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#            endif
+//! CUDA runtime error checking with log and exception, ignoring specific error values
+#            define ALPAKA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                                     \
+                ::alpaka::cuda::detail::rtCheckLastError<false>(                                                      \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::cuda::detail::rtCheckIgnore<false>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic pop
+#            endif
+#        endif
+
+//! CUDA runtime error checking with log.
+#        define ALPAKA_HIP_RT_CHECK_NOEXCEPT(cmd) ALPAKA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd)
+
+#    endif // ALPAKA_ACC_GPU_CUDA_ENABLED
+
+//! Macros explicitly for the HIP version
+#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+
+#        if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+//! HIP runtime error checking with log and exception, ignoring specific error values
+#            define ALPAKA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                              \
+                ::alpaka::hip::detail::rtCheckLastError<true>(                                                        \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::hip::detail::rtCheckIgnore<true>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+#        else
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#            endif
+//! HIP runtime error checking with log and exception, ignoring specific error values
+#            define ALPAKA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                              \
+                ::alpaka::hip::detail::rtCheckLastError<true>(                                                        \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::hip::detail::rtCheckIgnore<true>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic pop
+#            endif
+#        endif
+
+//! HIP runtime error checking with log and exception.
+#        define ALPAKA_HIP_RT_CHECK(cmd) ALPAKA_HIP_RT_CHECK_IGNORE(cmd)
+
+#        if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+//! HIP runtime error checking with log, ignoring specific error values
+#            define ALPAKA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                                     \
+                ::alpaka::hip::detail::rtCheckLastError<false>(                                                       \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::hip::detail::rtCheckIgnore<false>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+#        else
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic push
+#                pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#            endif
+//! HIP runtime error checking with log and exception, ignoring specific error values
+#            define ALPAKA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                                     \
+                ::alpaka::hip::detail::rtCheckLastError<false>(                                                       \
+                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+                    __FILE__,                                                                                         \
+                    __LINE__);                                                                                        \
+                ::alpaka::hip::detail::rtCheckIgnore<false>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+#            if BOOST_COMP_CLANG
+#                pragma clang diagnostic pop
+#            endif
+#        endif
+
+//! HIP runtime error checking with log.
+#        define ALPAKA_HIP_RT_CHECK_NOEXCEPT(cmd) ALPAKA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd)
+
+#    endif // ALPAKA_ACC_GPU_HIP_ENABLED
+
 #endif

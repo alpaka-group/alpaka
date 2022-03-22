@@ -10,9 +10,10 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/dev/DevCudaRt.hpp>
+#include <alpaka/dev/DevHipRt.hpp>
 #include <alpaka/dev/DevOacc.hpp>
 #include <alpaka/dev/DevOmp5.hpp>
-#include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/mem/view/ViewAccessOps.hpp>
 #include <alpaka/vec/Vec.hpp>
@@ -163,19 +164,37 @@ namespace alpaka
             }
         };
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-        //! The CUDA/HIP RT device CreateStaticDevMemView trait specialization.
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+        //! The CUDA RT device CreateStaticDevMemView trait specialization.
         template<>
-        struct CreateStaticDevMemView<DevUniformCudaHipRt>
+        struct CreateStaticDevMemView<DevCudaRt>
         {
             template<typename TElem, typename TExtent>
-            static auto createStaticDevMemView(TElem* pMem, DevUniformCudaHipRt const& dev, TExtent const& extent)
+            static auto createStaticDevMemView(TElem* pMem, DevCudaRt const& dev, TExtent const& extent)
             {
                 TElem* pMemAcc(nullptr);
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                    ALPAKA_API_PREFIX(GetSymbolAddress)(reinterpret_cast<void**>(&pMemAcc), *pMem));
+                ALPAKA_CUDA_RT_CHECK(cudaGetSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *pMem));
 
-                return alpaka::ViewPlainPtr<DevUniformCudaHipRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                return alpaka::ViewPlainPtr<DevCudaRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                    pMemAcc,
+                    dev,
+                    extent);
+            }
+        };
+#endif
+
+#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+        //! The HIP RT device CreateStaticDevMemView trait specialization.
+        template<>
+        struct CreateStaticDevMemView<DevHipRt>
+        {
+            template<typename TElem, typename TExtent>
+            static auto createStaticDevMemView(TElem* pMem, DevHipRt const& dev, TExtent const& extent)
+            {
+                TElem* pMemAcc(nullptr);
+                ALPAKA_HIP_RT_CHECK(hipGetSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *pMem));
+
+                return alpaka::ViewPlainPtr<DevHipRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMemAcc,
                     dev,
                     extent);
@@ -230,19 +249,40 @@ namespace alpaka
             }
         };
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
         //! The CUDA/HIP RT device CreateViewPlainPtr trait specialization.
         template<>
-        struct CreateViewPlainPtr<DevUniformCudaHipRt>
+        struct CreateViewPlainPtr<DevCudaRt>
         {
             template<typename TElem, typename TExtent, typename TPitch>
             static auto createViewPlainPtr(
-                DevUniformCudaHipRt const& dev,
+                DevCudaRt const& dev,
                 TElem* pMem,
                 TExtent const& extent,
                 TPitch const& pitch)
             {
-                return alpaka::ViewPlainPtr<DevUniformCudaHipRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                return alpaka::ViewPlainPtr<DevCudaRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                    pMem,
+                    dev,
+                    extent,
+                    pitch);
+            }
+        };
+#endif
+
+#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+        //! The CUDA/HIP RT device CreateViewPlainPtr trait specialization.
+        template<>
+        struct CreateViewPlainPtr<DevHipRt>
+        {
+            template<typename TElem, typename TExtent, typename TPitch>
+            static auto createViewPlainPtr(
+                DevHipRt const& dev,
+                TElem* pMem,
+                TExtent const& extent,
+                TPitch const& pitch)
+            {
+                return alpaka::ViewPlainPtr<DevHipRt, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMem,
                     dev,
                     extent,

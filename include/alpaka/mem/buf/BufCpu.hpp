@@ -310,7 +310,6 @@ namespace alpaka
 
                 if(!isPinned(buf))
                 {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                     if(buf.m_spBufCpuImpl->m_extentElements.prod() != 0)
                     {
                         // - cudaHostRegisterDefault:
@@ -318,20 +317,24 @@ namespace alpaka
                         // - cudaHostRegisterPortable:
                         //   The memory returned by this call will be considered as pinned memory by all CUDA contexts,
                         //   not just the one that performed the allocation.
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
-                            ALPAKA_API_PREFIX(HostRegister)(
-                                const_cast<void*>(reinterpret_cast<void const*>(getPtrNative(buf))),
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                        ALPAKA_CUDA_RT_CHECK_IGNORE(
+                            cudaHostRegister(
+                                const_cast<void*>(reinterpret_cast<void const*>(buf.data())),
                                 getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
-                                ALPAKA_API_PREFIX(HostRegisterDefault)),
-                            ALPAKA_API_PREFIX(ErrorHostMemoryAlreadyRegistered));
-
+                                cudaHostRegisterDefault),
+                            cudaErrorHostMemoryAlreadyRegistered);
+#endif
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+                        ALPAKA_HIP_RT_CHECK_IGNORE(
+                            hipHostRegister(
+                                const_cast<void*>(reinterpret_cast<void const*>(buf.data())),
+                                getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
+                                hipHostRegisterDefault),
+                            hipErrorHostMemoryAlreadyRegistered);
+#endif
                         buf.m_spBufCpuImpl->m_bPinned = true;
                     }
-#else
-                    static_assert(
-                        meta::DependentFalseType<TElem>::value,
-                        "Memory pinning of BufCpu is not implemented when CUDA or HIP is not enabled!");
-#endif
                 }
             }
         };
@@ -354,18 +357,17 @@ namespace alpaka
 
                 if(isPinned(bufImpl))
                 {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
-                        ALPAKA_API_PREFIX(HostUnregister)(
-                            const_cast<void*>(reinterpret_cast<void const*>(bufImpl.m_pMem))),
-                        ALPAKA_API_PREFIX(ErrorHostMemoryNotRegistered));
-
-                    bufImpl.m_bPinned = false;
-#else
-                    static_assert(
-                        meta::DependentFalseType<TElem>::value,
-                        "Memory unpinning of BufCpu is not implemented when CUDA or HIP is not enabled!");
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                    ALPAKA_CUDA_RT_CHECK_IGNORE(
+                        cudaHostUnregister(const_cast<void*>(reinterpret_cast<void const*>(bufImpl.m_pMem))),
+                        cudaErrorHostMemoryNotRegistered);
 #endif
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+                    ALPAKA_HIP_RT_CHECK_IGNORE(
+                        hipHostUnregister(const_cast<void*>(reinterpret_cast<void const*>(bufImpl.m_pMem))),
+                        hipErrorHostMemoryNotRegistered);
+#endif
+                    bufImpl.m_bPinned = false;
                 }
             }
         };

@@ -7,9 +7,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#if !defined(ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE)
+#    error This is an internal header file, and should never be included directly.
+#endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#error This file should not be included with ALPAKA_ACC_GPU_CUDA_ENABLED and ALPAKA_ACC_GPU_HIP_ENABLED both defined.
+#endif
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_acc_AccGpuUniformCudaHipRt_hpp_CUDA)                      \
+    || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_acc_AccGpuUniformCudaHipRt_hpp_HIP)
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_acc_AccGpuUniformCudaHipRt_hpp_CUDA)
+#        define alpaka_acc_AccGpuUniformCudaHipRt_hpp_CUDA
+#    endif
+
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_acc_AccGpuUniformCudaHipRt_hpp_HIP)
+#        define alpaka_acc_AccGpuUniformCudaHipRt_hpp_HIP
+#    endif
 
 // Base classes.
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
@@ -44,13 +59,15 @@
 
 namespace alpaka
 {
-    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    class TaskKernelGpuUniformCudaHipRt;
+    namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
+    {
+        template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
+        class TaskKernelGpuUniformCudaHipRt;
 
-    //! The GPU CUDA accelerator.
-    //!
-    //! This accelerator allows parallel kernel execution on devices supporting CUDA.
-    template<
+        //! The GPU CUDA accelerator.
+        //!
+        //! This accelerator allows parallel kernel execution on devices supporting CUDA.
+        template<
         typename TDim,
         typename TIdx>
     class AccGpuUniformCudaHipRt :
@@ -72,45 +89,48 @@ namespace alpaka
         public TimeUniformCudaHipBuiltIn,
         public warp::WarpUniformCudaHipBuiltIn,
         public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TDim, TIdx>>
-    {
-        static_assert(
-            sizeof(TIdx) >= sizeof(int),
-            "Index type is not supported, consider using int or a larger type.");
-
-    public:
-        ALPAKA_FN_HOST_ACC AccGpuUniformCudaHipRt(Vec<TDim, TIdx> const& threadElemExtent)
-            : WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent)
-            , gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>()
-            , bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>()
-            , AtomicHierarchy<
-                  AtomicUniformCudaHipBuiltIn, // atomics between grids
-                  AtomicUniformCudaHipBuiltIn, // atomics between blocks
-                  AtomicUniformCudaHipBuiltIn // atomics between threads
-                  >()
-            , math::MathUniformCudaHipBuiltIn()
-            , BlockSharedMemDynUniformCudaHipBuiltIn()
-            , BlockSharedMemStUniformCudaHipBuiltIn()
-            , BlockSyncUniformCudaHipBuiltIn()
-            , MemFenceUniformCudaHipBuiltIn()
-            , rand::RandUniformCudaHipRand()
-            , TimeUniformCudaHipBuiltIn()
         {
-        }
-    };
+            static_assert(
+                sizeof(TIdx) >= sizeof(int),
+                "Index type is not supported, consider using int or a larger type.");
+
+        public:
+            ALPAKA_FN_HOST_ACC AccGpuUniformCudaHipRt(Vec<TDim, TIdx> const& threadElemExtent)
+                : WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent)
+                , gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>()
+                , bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>()
+                , AtomicHierarchy<
+                      AtomicUniformCudaHipBuiltIn, // atomics between grids
+                      AtomicUniformCudaHipBuiltIn, // atomics between blocks
+                      AtomicUniformCudaHipBuiltIn // atomics between threads
+                      >()
+                , math::MathUniformCudaHipBuiltIn()
+                , BlockSharedMemDynUniformCudaHipBuiltIn()
+                , BlockSharedMemStUniformCudaHipBuiltIn()
+                , BlockSyncUniformCudaHipBuiltIn()
+                , MemFenceUniformCudaHipBuiltIn()
+                , rand::RandUniformCudaHipRand()
+                , TimeUniformCudaHipBuiltIn()
+            {
+            }
+        };
+
+    } // namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
 
     namespace trait
     {
         //! The GPU CUDA accelerator accelerator type trait specialization.
         template<typename TDim, typename TIdx>
-        struct AccType<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct AccType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            using type = AccGpuUniformCudaHipRt<TDim, TIdx>;
+            using type = ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>;
         };
         //! The GPU CUDA accelerator device properties get trait specialization.
         template<typename TDim, typename TIdx>
-        struct GetAccDevProps<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct GetAccDevProps<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getAccDevProps(DevUniformCudaHipRt const& dev) -> AccDevProps<TDim, TIdx>
+            ALPAKA_FN_HOST static auto getAccDevProps(
+                ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::DevUniformCudaHipRt const& dev) -> AccDevProps<TDim, TIdx>
             {
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 // Reading only the necessary attributes with cudaDeviceGetAttribute is faster than reading all with
@@ -169,8 +189,8 @@ namespace alpaka
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
                         static_cast<size_t>(sharedMemSizeBytes)};
-
-#    else
+#    endif
+#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
                 hipDeviceProp_t hipDevProp;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipGetDeviceProperties(&hipDevProp, dev.getNativeHandle()));
 
@@ -201,24 +221,29 @@ namespace alpaka
         };
         //! The GPU CUDA accelerator name trait specialization.
         template<typename TDim, typename TIdx>
-        struct GetAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct GetAccName<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
             ALPAKA_FN_HOST static auto getAccName() -> std::string
             {
-                return "AccGpuUniformCudaHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+                return "AccGpuCudaRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+#    endif
+#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+                return "AccGpuHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+#    endif
             }
         };
 
         //! The GPU CUDA accelerator device type trait specialization.
         template<typename TDim, typename TIdx>
-        struct DevType<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct DevType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            using type = DevUniformCudaHipRt;
+            using type = ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::DevUniformCudaHipRt;
         };
 
         //! The GPU CUDA accelerator dimension getter trait specialization.
         template<typename TDim, typename TIdx>
-        struct DimType<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct DimType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
             using type = TDim;
         };
@@ -231,7 +256,7 @@ namespace alpaka
         // https://github.com/alpaka-group/alpaka/pull/695#issuecomment-446103194
         // The execution task TaskKernelGpuUniformCudaHipRt is therefore performing this check on device side.
         template<typename TDim, typename TIdx>
-        struct CheckFnReturnType<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct CheckFnReturnType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
             template<typename TKernelFnObj, typename... TArgs>
             void operator()(TKernelFnObj const&, TArgs const&...)
@@ -243,15 +268,19 @@ namespace alpaka
     {
         //! The GPU CUDA accelerator execution task type trait specialization.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-        struct CreateTaskKernel<AccGpuUniformCudaHipRt<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        struct CreateTaskKernel<
+            ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>,
+            TWorkDiv,
+            TKernelFnObj,
+            TArgs...>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,
                 TKernelFnObj const& kernelFnObj,
                 TArgs&&... args)
             {
-                return TaskKernelGpuUniformCudaHipRt<
-                    AccGpuUniformCudaHipRt<TDim, TIdx>,
+                return ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::TaskKernelGpuUniformCudaHipRt<
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>,
                     TDim,
                     TIdx,
                     TKernelFnObj,
@@ -261,14 +290,14 @@ namespace alpaka
 
         //! The CPU CUDA execution task platform type trait specialization.
         template<typename TDim, typename TIdx>
-        struct PltfType<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct PltfType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            using type = PltfUniformCudaHipRt;
+            using type = ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::PltfUniformCudaHipRt;
         };
 
         //! The GPU CUDA accelerator idx type trait specialization.
         template<typename TDim, typename TIdx>
-        struct IdxType<AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct IdxType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
             using type = TIdx;
         };

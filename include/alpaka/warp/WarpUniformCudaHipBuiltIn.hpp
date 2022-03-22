@@ -49,13 +49,13 @@ namespace alpaka::warp
         struct Activemask<WarpUniformCudaHipBuiltIn>
         {
             __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 -> std::uint32_t
 #        else
                 -> std::uint64_t
 #        endif
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 // Workaround for clang + CUDA 9.2 which uses the wrong PTX ISA,
                 // discussion in https://github.com/alpaka-group/alpaka/pull/1003
                 // Can't use __activemask(), so emulate with __ballot_sync()
@@ -78,7 +78,7 @@ namespace alpaka::warp
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate) -> std::int32_t
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 return __all_sync(activemask(warp), predicate);
 #        else
                 return __all(predicate);
@@ -93,7 +93,7 @@ namespace alpaka::warp
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate) -> std::int32_t
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 return __any_sync(activemask(warp), predicate);
 #        else
                 return __any(predicate);
@@ -108,13 +108,13 @@ namespace alpaka::warp
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
                 std::int32_t predicate)
             // return type is required by the compiler
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 -> std::uint32_t
 #        else
                 -> std::uint64_t
 #        endif
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 return __ballot_sync(activemask(warp), predicate);
 #        else
                 return __ballot(predicate);
@@ -132,7 +132,7 @@ namespace alpaka::warp
                 int srcLane,
                 std::int32_t width) -> float
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 return __shfl_sync(activemask(warp), val, srcLane, width);
 #        else
                 return __shfl(val, srcLane, width);
@@ -145,7 +145,7 @@ namespace alpaka::warp
                 int srcLane,
                 std::int32_t width) -> std::int32_t
             {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 return __shfl_sync(activemask(warp), val, srcLane, width);
 #        else
                 return __shfl(val, srcLane, width);

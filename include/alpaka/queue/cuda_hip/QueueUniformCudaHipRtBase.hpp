@@ -8,10 +8,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#if !defined(ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE)
+#    error This is an internal header file, and should never be included directly.
+#endif
 
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#error This file should not be included with ALPAKA_ACC_GPU_CUDA_ENABLED and ALPAKA_ACC_GPU_HIP_ENABLED both defined.
+#endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_queue_cuda_hip_QueueUniformCudaHipRtBase_hpp_CUDA)        \
+    || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_queue_cuda_hip_QueueUniformCudaHipRtBase_hpp_HIP)
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_queue_cuda_hip_QueueUniformCudaHipRtBase_hpp_CUDA)
+#        define alpaka_queue_cuda_hip_QueueUniformCudaHipRtBase_hpp_CUDA
+#    endif
+
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_queue_cuda_hip_QueueUniformCudaHipRtBase_hpp_HIP)
+#        define alpaka_queue_cuda_hip_QueueUniformCudaHipRtBase_hpp_HIP
+#    endif
 
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
@@ -29,7 +43,7 @@
 
 namespace alpaka
 {
-    namespace uniform_cuda_hip
+    namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
     {
         namespace detail
         {
@@ -110,16 +124,17 @@ namespace alpaka
                 std::shared_ptr<QueueUniformCudaHipRtImpl> m_spQueueImpl;
             };
         } // namespace detail
-    } // namespace uniform_cuda_hip
+    } // namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
 
     namespace trait
     {
         //! The CUDA/HIP RT non-blocking queue device get trait specialization.
         template<>
-        struct GetDev<uniform_cuda_hip::detail::QueueUniformCudaHipRtBase>
+        struct GetDev<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::QueueUniformCudaHipRtBase>
         {
-            ALPAKA_FN_HOST static auto getDev(uniform_cuda_hip::detail::QueueUniformCudaHipRtBase const& queue)
-                -> DevUniformCudaHipRt
+            ALPAKA_FN_HOST static auto getDev(
+                ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::QueueUniformCudaHipRtBase const& queue)
+                -> ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::DevUniformCudaHipRt
             {
                 return queue.m_spQueueImpl->m_dev;
             }
@@ -127,9 +142,10 @@ namespace alpaka
 
         //! The CUDA/HIP RT blocking queue test trait specialization.
         template<>
-        struct Empty<uniform_cuda_hip::detail::QueueUniformCudaHipRtBase>
+        struct Empty<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::QueueUniformCudaHipRtBase>
         {
-            ALPAKA_FN_HOST static auto empty(uniform_cuda_hip::detail::QueueUniformCudaHipRtBase const& queue) -> bool
+            ALPAKA_FN_HOST static auto empty(
+                ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::QueueUniformCudaHipRtBase const& queue) -> bool
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -147,10 +163,10 @@ namespace alpaka
         //! Blocks execution of the calling thread until the queue has finished processing all previously requested
         //! tasks (kernels, data copies, ...)
         template<>
-        struct CurrentThreadWaitFor<uniform_cuda_hip::detail::QueueUniformCudaHipRtBase>
+        struct CurrentThreadWaitFor<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::QueueUniformCudaHipRtBase>
         {
             ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                uniform_cuda_hip::detail::QueueUniformCudaHipRtBase const& queue) -> void
+                ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::detail::QueueUniformCudaHipRtBase const& queue) -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

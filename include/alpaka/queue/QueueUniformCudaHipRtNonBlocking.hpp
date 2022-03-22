@@ -8,9 +8,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#if !defined(ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE)
+#    error This is an internal header file, and should never be included directly.
+#endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#error This file should not be included with ALPAKA_ACC_GPU_CUDA_ENABLED and ALPAKA_ACC_GPU_HIP_ENABLED both defined.
+#endif
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_queue_QueueUniformCudaHipRtNonBlocking_hpp_CUDA)          \
+    || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_queue_QueueUniformCudaHipRtNonBlocking_hpp_HIP)
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_queue_QueueUniformCudaHipRtNonBlocking_hpp_CUDA)
+#        define alpaka_queue_QueueUniformCudaHipRtNonBlocking_hpp_CUDA
+#    endif
+
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_queue_QueueUniformCudaHipRtNonBlocking_hpp_HIP)
+#        define alpaka_queue_QueueUniformCudaHipRtNonBlocking_hpp_HIP
+#    endif
 
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
@@ -36,51 +51,48 @@
 
 namespace alpaka
 {
-    class EventUniformCudaHipRt;
-
-    //! The CUDA/HIP RT non-blocking queue.
-    class QueueUniformCudaHipRtNonBlocking final : public uniform_cuda_hip::detail::QueueUniformCudaHipRtBase
+    namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
     {
-    public:
-        ALPAKA_FN_HOST QueueUniformCudaHipRtNonBlocking(DevUniformCudaHipRt const& dev)
-            : uniform_cuda_hip::detail::QueueUniformCudaHipRtBase(dev)
-        {
-        }
-        ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRtNonBlocking const& rhs) const -> bool
-        {
-            return (m_spQueueImpl == rhs.m_spQueueImpl);
-        }
-        ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRtNonBlocking const& rhs) const -> bool
-        {
-            return !((*this) == rhs);
-        }
-    };
+        class EventUniformCudaHipRt;
 
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-    using QueueCudaRtNonBlocking = QueueUniformCudaHipRtNonBlocking;
-#    else
-    using QueueHipRtNonBlocking = QueueUniformCudaHipRtNonBlocking;
-#    endif
+        //! The CUDA/HIP RT non-blocking queue.
+        class QueueUniformCudaHipRtNonBlocking final : public detail::QueueUniformCudaHipRtBase
+        {
+        public:
+            ALPAKA_FN_HOST QueueUniformCudaHipRtNonBlocking(DevUniformCudaHipRt const& dev)
+                : detail::QueueUniformCudaHipRtBase(dev)
+            {
+            }
+            ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRtNonBlocking const& rhs) const -> bool
+            {
+                return (m_spQueueImpl == rhs.m_spQueueImpl);
+            }
+            ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRtNonBlocking const& rhs) const -> bool
+            {
+                return !((*this) == rhs);
+            }
+        };
+    } // namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
 
     namespace trait
     {
         //! The CUDA/HIP RT non-blocking queue device type trait specialization.
         template<>
-        struct DevType<QueueUniformCudaHipRtNonBlocking>
+        struct DevType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::QueueUniformCudaHipRtNonBlocking>
         {
-            using type = DevUniformCudaHipRt;
+            using type = ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::DevUniformCudaHipRt;
         };
 
         //! The CUDA/HIP RT non-blocking queue event type trait specialization.
         template<>
-        struct EventType<QueueUniformCudaHipRtNonBlocking>
+        struct EventType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::QueueUniformCudaHipRtNonBlocking>
         {
-            using type = EventUniformCudaHipRt;
+            using type = ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::EventUniformCudaHipRt;
         };
 
         //! The CUDA/HIP RT sync queue enqueue trait specialization.
         template<typename TTask>
-        struct Enqueue<QueueUniformCudaHipRtNonBlocking, TTask>
+        struct Enqueue<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::QueueUniformCudaHipRtNonBlocking, TTask>
         {
             enum class CallbackState
             {
@@ -129,7 +141,9 @@ namespace alpaka
                 }
             }
 
-            ALPAKA_FN_HOST static auto enqueue(QueueUniformCudaHipRtNonBlocking& queue, TTask const& task) -> void
+            ALPAKA_FN_HOST static auto enqueue(
+                ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::QueueUniformCudaHipRtNonBlocking& queue,
+                TTask const& task) -> void
             {
                 auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
@@ -139,7 +153,7 @@ namespace alpaka
                     0u));
 
                 // We start a new std::thread which stores the task to be executed.
-                // This circumvents the limitation that it is not possible to call CUDA methods within the CUDA/HIP
+                // This circumvents the limitation that it is not possible to call CUDA/HIP methods within the CUDA/HIP
                 // callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
                 // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
                 // before it executes the next task in the queue (CUDA/HIP stream).
@@ -159,7 +173,7 @@ namespace alpaka
 
                             task();
 
-                            // Notify the waiting CUDA thread.
+                            // Notify the waiting CUDA/HIP thread.
                             pCallbackSynchronizationData->state = CallbackState::finished;
                         }
                         pCallbackSynchronizationData->m_event.notify_one();
@@ -171,9 +185,10 @@ namespace alpaka
 
         //! The CUDA/HIP RT non-blocking queue native handle trait specialization.
         template<>
-        struct NativeHandle<QueueUniformCudaHipRtNonBlocking>
+        struct NativeHandle<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::QueueUniformCudaHipRtNonBlocking>
         {
-            [[nodiscard]] static auto getNativeHandle(QueueUniformCudaHipRtNonBlocking const& queue)
+            [[nodiscard]] static auto getNativeHandle(
+                ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::QueueUniformCudaHipRtNonBlocking const& queue)
             {
                 return queue.getNativeHandle();
             }

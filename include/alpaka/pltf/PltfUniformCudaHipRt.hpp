@@ -7,9 +7,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#if !defined(ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE)
+#    error This is an internal header file, and should never be included directly.
+#endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#error This file should not be included with ALPAKA_ACC_GPU_CUDA_ENABLED and ALPAKA_ACC_GPU_HIP_ENABLED both defined.
+#endif
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_pltf_PltfUniformCudaHipRt_hpp_CUDA)                       \
+    || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_pltf_PltfUniformCudaHipRt_hpp_HIP)
+
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(alpaka_pltf_PltfUniformCudaHipRt_hpp_CUDA)
+#        define alpaka_pltf_PltfUniformCudaHipRt_hpp_CUDA
+#    endif
+
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(alpaka_pltf_PltfUniformCudaHipRt_hpp_HIP)
+#        define alpaka_pltf_PltfUniformCudaHipRt_hpp_HIP
+#    endif
 
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
@@ -18,7 +33,8 @@
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 #        include <alpaka/core/Cuda.hpp>
-#    else
+#    endif
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 #        include <alpaka/core/Hip.hpp>
 #    endif
 
@@ -29,25 +45,28 @@
 
 namespace alpaka
 {
-    //! The CUDA/HIP RT platform.
-    class PltfUniformCudaHipRt : public concepts::Implements<ConceptPltf, PltfUniformCudaHipRt>
+    namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
     {
-    public:
-        ALPAKA_FN_HOST PltfUniformCudaHipRt() = delete;
-    };
+        //! The CUDA/HIP RT platform.
+        class PltfUniformCudaHipRt : public concepts::Implements<ConceptPltf, PltfUniformCudaHipRt>
+        {
+        public:
+            ALPAKA_FN_HOST PltfUniformCudaHipRt() = delete;
+        };
+    } // namespace ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
 
     namespace trait
     {
         //! The CUDA/HIP RT platform device type trait specialization.
         template<>
-        struct DevType<PltfUniformCudaHipRt>
+        struct DevType<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::PltfUniformCudaHipRt>
         {
-            using type = DevUniformCudaHipRt;
+            using type = ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::DevUniformCudaHipRt;
         };
 
         //! The CUDA/HIP RT platform device count get trait specialization.
         template<>
-        struct GetDevCount<PltfUniformCudaHipRt>
+        struct GetDevCount<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::PltfUniformCudaHipRt>
         {
             ALPAKA_FN_HOST static auto getDevCount() -> std::size_t
             {
@@ -64,13 +83,14 @@ namespace alpaka
 
         //! The CUDA/HIP RT platform device get trait specialization.
         template<>
-        struct GetDevByIdx<PltfUniformCudaHipRt>
+        struct GetDevByIdx<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::PltfUniformCudaHipRt>
         {
-            ALPAKA_FN_HOST static auto getDevByIdx(std::size_t const& devIdx) -> DevUniformCudaHipRt
+            ALPAKA_FN_HOST static auto getDevByIdx(std::size_t const& devIdx)
+                -> ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::DevUniformCudaHipRt
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                std::size_t const devCount(getDevCount<PltfUniformCudaHipRt>());
+                std::size_t const devCount(getDevCount<ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::PltfUniformCudaHipRt>());
                 if(devIdx >= devCount)
                 {
                     std::stringstream ssErr;
@@ -81,13 +101,14 @@ namespace alpaka
 
                 if(isDevUsable(devIdx))
                 {
-                    DevUniformCudaHipRt dev(static_cast<int>(devIdx));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE::DevUniformCudaHipRt dev(static_cast<int>(devIdx));
 
                     // Log this device.
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     cudaDeviceProp devProp;
-#        else
+#        endif
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                     hipDeviceProp_t devProp;
 #        endif
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
@@ -114,7 +135,8 @@ namespace alpaka
             {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 cudaError rc(cudaSetDevice(static_cast<int>(iDevice)));
-#    else
+#    endif
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 hipError_t rc(hipSetDevice(static_cast<int>(iDevice)));
 #    endif
 
@@ -148,8 +170,9 @@ namespace alpaka
             ALPAKA_FN_HOST static auto printDeviceProperties(
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                 cudaDeviceProp const& devProp
-#        else
-                hipDeviceProp_t const& devProp
+#        endif
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+                    hipDeviceProp_t const& devProp
 #        endif
                 ) -> void
             {
@@ -241,7 +264,8 @@ namespace alpaka
                 std::cout << "sharedMemPerMultiprocessor: " << devProp.sharedMemPerMultiprocessor << std::endl;
                 std::cout << "regsPerMultiprocessor: " << devProp.regsPerMultiprocessor << std::endl;
                 std::cout << "managedMemory: " << devProp.managedMemory << std::endl;
-#        else
+#        endif
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 std::cout << "clockInstructionRate: " << devProp.clockInstructionRate << "kHz" << std::endl;
                 std::cout << "maxSharedMemoryPerMultiProcessor: " << devProp.maxSharedMemoryPerMultiProcessor / kiB
                           << " KiB" << std::endl;

@@ -13,13 +13,13 @@
 
 // UniformCudaHip implementation
 #    define ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE cuda
-#    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
+#    include <alpaka/mem/buf/BufUniformCudaHipRt.hpp>
 #    undef ALPAKA_UNIFORM_CUDA_HIP_RT_NAMESPACE
 
 namespace alpaka
 {
-    template<typename TDim, typename TIdx>
-    using AccGpuCudaRt = cuda::AccGpuUniformCudaHipRt<TDim, TIdx>;
+    template<typename TElem, typename TDim, typename TIdx>
+    using BufCudaRt = cuda::BufUniformCudaHipRt<TElem, TDim, TIdx>;
 }
 
 #endif // ALPAKA_ACC_GPU_CUDA_ENABLED
