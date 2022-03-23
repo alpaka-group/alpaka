@@ -213,20 +213,22 @@ Authors
 
 - Benjamin Worpitz* (original author)
 - Dr. Sergei Bastrakov*
+- Dr. Andrea Bocci
 - Dr. Antonio Di Pilato
 - Simeon Ehrig
-- Bernhard Manfred Gruber
-- Dr. Axel Huebl*
+- Bernhard Manfred Gruber*
 - Dr. Jeffrey Kelling
+- Dr. Felice Pantaleo
 - Jan Stephan*
 - Dr. Jiří Vyskočil
-- Rene Widera*
+- René Widera*
 
 ### Former Members, Contributions and Thanks
 
 - Dr. Michael Bussmann
 - Mat Colgrove
 - Valentin Gehrke
+- Dr. Axel Huebl
 - Maximilian Knespel
 - Jakob Krude
 - Alexander Matthes
