@@ -12,15 +12,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Visual Studio 2022 #1583
   - CUDA 11.6 #1616
   - ROCm 5.0 #1631
-  - Xcode 12.4, 13.2.1 #1638
+  - Xcode 12.4 / 13.2.1 #1638
 - Platform support removed:
-  - CUDA 11.0, 11.1 + MSVC #1331
+  - CUDA 11.0 / 11.1 + MSVC #1331
   - clang 5 + CUDA #1466
   - Ubuntu 18.04 #1471
   - TBB versions before oneTBB #1456
-  - clang 6, 7 + CUDA #1506
+  - clang 6 / 7 + CUDA #1506
   - Boost < 1.74 #1521
-  - CUDA 11.3, 11.4, 11.5 + clang #1627
+  - CUDA 11.3 - 11.5 + clang #1627
   - Xcode 11.3.1 #1638
 
 ### Bug Fixes:
