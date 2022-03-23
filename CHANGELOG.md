@@ -3,6 +3,117 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.9.0] - 2022-03-31
+### Compatibility Changes:
+- Platform support added:
+  - oneTBB #1456
+  - clang 13 #1476
+  - CUDA 11.5 #1486
+  - Visual Studio 2022 #1583
+  - CUDA 11.6 #1616
+  - ROCm 5.0 #1631
+  - Xcode 12.4, 13.2.1 #1638
+- Platform support removed:
+  - CUDA 11.0, 11.1 + MSVC #1331
+  - clang 5 + CUDA #1466
+  - Ubuntu 18.04 #1471
+  - TBB versions before oneTBB #1456
+  - clang 6, 7 + CUDA #1506
+  - Boost < 1.74 #1521
+  - CUDA 11.3, 11.4, 11.5 + clang #1627
+  - Xcode 11.3.1 #1638
+
+### Bug Fixes:
+- alpaka TBB kernels are now protected when called from within existing parallel TBB code #1450
+- The cheat sheet now reflects the 0.8 changes to alpaka's RNG features #1469
+- alpaka `Queue`s will now wait for active asynchronous operations before destructing #1514
+- The test cases no longer fail on non-x86 hardware because of `-Werror` #1516
+- Several small fixes for the OpenACC and OpenMP 5 back-ends #1564
+- Avoid locking in CPU atomic operations #1566
+- alpaka's `NormReal` RNG distribution is now copyable (like the other distributions) #1591
+- The class layout of `BufCpu` no longer depends on whether the CUDA and HIP back-ends are enabled. #1612
+- Fixed several smaller bugs in `alpaka::Vec` #1620
+- Destructors no longer throw an exception #1632
+
+### New Features:
+- alpaka now requires C++17 (or newer). This release therefore includes many refactoring PRs that migrate the code base to C++17:
+  - Set CMake requirements, remove versions checks, fix warnings, etc. #1466
+  - Removed pre-C++17 workarounds #1483
+  - Replaced `alpaka::meta::apply` with `std::apply` #1493
+  - Replaced a lot of macros and template metaprogramming sections with `if constexpr` blocks #1495
+  - Replaced `alpaka::meta::Void` with `std::void_t` #1499
+  - Replaced some of alpaka's metafunctions with their standard counterparts #1501
+  - Make use of C++17 mandatory copy elision #1502
+  - Simplified CPU kernel launches #1511
+  - Make use of generic `std` container interfaces #1554
+  - Replaced `std::enable_if` with `if constexpr` where possible #1556
+  - Replaced `alpaka::ignore_unused` with C++17 `[[maybe_unused]]` and `std::ignore` #1563
+  - Make use of nested namespaces #1587 #1592
+  - Make use of variable template versions of `std` traits #1594
+- alpaka `Event`s can now be queried for their device type #1479
+- Some alpaka buffers can now be allocated asynchronously within a device queue (queue-ordered memory buffers) #1481
+  - This capability can be queried with the `hasAsyncBufSupport` trait #1578
+- alpaka buffers can now be zero-dimensional (scalar) #1536
+- Apply `alpaka::memset` and `alpaka::memcpy` to the whole buffer if no extent is supplied by the user #1547
+- Added an accessor-like interface to buffers and views #1570
+- Host code utilizing the CUDA and HIP back-ends can now be compiled with a non-CUDA/HIP compiler if there is no device code in the translation unit #1567
+- Added `alpaka::getNativeHandle()` to obtain the back-end specific handles from alpaka `Device`s #1579
+  - `alpaka::getNativeHandle()` can also be called on `Queue`s and `Event`s #1623
+- Added an experimental SYCL back-end. All SYCL back-end functionality currently lives in the `alpaka::experimental` namespace. See the `README_SYCL.md` for more information about the usage and the restrictions of this back-end. #1598
+- alpaka's memory fences can now also be applied to the grid level #1641
+- `alpaka::getWarpSize()` was renamed to `alpaka::getWarpSizes()` and will now return a `std::vector` of supported warp sizes #1644
+- Documentation updates:
+  - Improved installation and usage documentation #1571
+  - Added documentation on how to write unit tests #1609
+  - The HIP portion of the compiler support matrix has been simplified #1637
+
+### Misc:
+- The CUDA and HIP back-ends no longer explicitly set the device where this is unnecessary #1515
+- `clang-tidy`'s modernization suggestions have been applied to the code base #1584
+- alpaka's math headers have been squashed. For each back-end there is now only one header instead of one for each math function. #1585
+- Updated the Boost predefinition header to reflect the upgrade to Boost 1.74 #1586
+- Removed the `alpaka::extent` namespace (the contents now live in the main `alpaka` namespace) #1593
+- Refactored implementations of `BufCpu` and `BufUniformCudaHipRt` #1608
+- Removed unnecessary specializations of `GetPitchBytes` trait #1614
+- All alpaka-specific CMake variables follow the `${PROJECT_NAME}_VARIABLE_FOO_BAR` pattern. This means that all alpaka-specific CMake variables look like this: `alpaka_VARIABLE_FOO_BAR`. #1653
+- alpaka now enforces that kernel arguments are trivially copyable #1635
+- Renamed namespace `traits` to `trait` #1651
+- alpaka now enforces that kernel functions are trivially copyable #1654
+
+### Breaking Changes
+- C++14 is no longer supported (see above)
+- alpaka now uses Boost.Atomic by default if the latter can be found by CMake. This can be turned off by passing `-DALPAKA_ACC_CPU_DISABLE_ATOMIC_REF=ON` during the CMake configuration phase. #1566
+- Removed the `alpaka::extent` namespace (the contents now live in the main `alpaka` namespace) #1593
+- Kernel arguments are required to be trivially copyable. This was always a requirement but is now enforced by alpaka #1635
+- All alpaka-specific CMake variables follow the `${PROJECT_NAME}_VARIABLE_FOO_BAR` pattern. This means that all alpaka-specific CMake variables look like this: `alpaka_VARIABLE_FOO_BAR`. #1653
+- `alpaka::getWarpSize()` was renamed to `alpaka::getWarpSizes()` and now returns a vector of supported warp sizes #1644
+- `alpaka::clock()` is now deprecated and will be removed in the next release. The compiler will warn about its usage. #1645
+- Renamed namespace `traits` to `trait` #1651
+- Removed support for `std::function` kernel functions #1654
+- Kernel functions are required to be trivially copyable. With the exception of `std::function` (see bullet point directly above) this was always a requirement but is now enforced by alpaka. #1654
+
+### Test Cases / CI:
+- Added clang 11, 12 + CUDA 11 tests to CI #1466
+- Removed Ubuntu 18.04 from CI #1471
+- Upgraded all Linux CI runners to Ubuntu 20.04 #1484
+- Test whether alpaka can be installed through `cmake --install` #1488
+- GitHub CI runners now use all available cores #1508
+- Migrated all CUDA runners from GitHub to GitLab #1520
+- Refactored `matMul` test #1526
+- macOS CI runners now install and test OpenMP 2.x #1533
+- Always enable the serial back-end when building the test cases and/or examples #1534
+- GitLab CI runners are executed in stages to reduce CI pressure #1537
+- Fixed the pitch calculation in `randomCells2D` example #1549
+- Updated test infrastructure to Catch2 v2.13.8 #1557
+- GitLab CI runners will display all required information to locally reproduce the test environment #1589
+- Refactored `alpaka::test` #1596
+- `matMul` test will now measure the performance of `alpaka::memcpy` #1599
+- The move constructors and assignment operators of buffers are now unit-tested #1611
+- Added more tests for `alpaka::Vec` #1633
+- Added test for `alpaka::Vec` being trivially copyable #1639
+- CI runners will retry to download Boost when necessary #1640
+- Updated used CMake versions to their latest point releases #1638 #1649
+
 ## [0.8.0] - 2021-12-20
 ### Compatibility Changes:
 - Platform support added:
