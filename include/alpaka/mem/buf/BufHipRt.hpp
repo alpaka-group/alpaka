@@ -11,13 +11,13 @@
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
-#    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #    include <alpaka/core/ApiHipRt.hpp>
+#    include <alpaka/mem/buf/BufUniformCudaHipRt.hpp>
 
 namespace alpaka
 {
-    template<typename TDim, typename TIdx>
-    using AccGpuHipRt = AccGpuUniformCudaHipRt<ApiHipRt, TDim, TIdx>;
+    template<typename TElem, typename TDim, typename TIdx>
+    using BufHipRt = BufUniformCudaHipRt<ApiHipRt, TElem, TDim, TIdx>;
 }
 
 #endif // ALPAKA_ACC_GPU_HIP_ENABLED

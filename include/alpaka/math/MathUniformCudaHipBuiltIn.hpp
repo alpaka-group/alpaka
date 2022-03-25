@@ -12,6 +12,7 @@
 
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Concepts.hpp>
+#include <alpaka/core/CudaHipCommon.hpp>
 #include <alpaka/core/Decay.hpp>
 #include <alpaka/core/UniformCudaHip.hpp>
 #include <alpaka/core/Unreachable.hpp>
