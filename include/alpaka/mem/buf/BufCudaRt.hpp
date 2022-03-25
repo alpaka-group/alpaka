@@ -9,15 +9,15 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#    include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
-#    include <alpaka/core/ApiHipRt.hpp>
+#    include <alpaka/core/ApiCudaRt.hpp>
+#    include <alpaka/mem/buf/BufUniformCudaHipRt.hpp>
 
 namespace alpaka
 {
-    template<typename TDim, typename TIdx>
-    using AccGpuHipRt = AccGpuUniformCudaHipRt<ApiHipRt, TDim, TIdx>;
+    template<typename TElem, typename TDim, typename TIdx>
+    using BufCudaRt = BufUniformCudaHipRt<ApiCudaRt, TElem, TDim, TIdx>;
 }
 
-#endif // ALPAKA_ACC_GPU_HIP_ENABLED
+#endif // ALPAKA_ACC_GPU_CUDA_ENABLED

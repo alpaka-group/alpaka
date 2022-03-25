@@ -9,16 +9,15 @@
 
 #pragma once
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
-#    include <alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp>
+#    include <alpaka/core/ApiHipRt.hpp>
+#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
 
 namespace alpaka
 {
-    //! The CUDA/HIP RT non-blocking queue.
-    template<typename TApi>
-    using QueueUniformCudaHipRtNonBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, false>;
-
+    //! The HIP RT non-blocking queue.
+    using QueueHipRtNonBlocking = QueueUniformCudaHipRtNonBlocking<ApiHipRt>;
 } // namespace alpaka
 
-#endif
+#endif // ALPAKA_ACC_GPU_HIP_ENABLED
