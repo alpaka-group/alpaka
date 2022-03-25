@@ -643,19 +643,18 @@ if(alpaka_ACC_SYCL_ENABLE)
     if(alpaka_SYCL_ONEAPI_FPGA)
         target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_FPGA")
         # try to come as close to -fintelfpga as possible with the following two flags
-        alpaka_set_compiler_options(DEVICE target alpaka $<$<AND:$<CONFIG:Debug>,$<PLATFORM_ID:Linux>>:"SHELL:-g">
-                                                         $<$<AND:$<CONFIG:Debug>,$<PLATFORM_ID:Windows>>:"SHELL:-Zi">)
-        alpaka_set_compiler_options(DEVICE target alpaka "-MMD") # prevent FPGA compiler from complaining about missing dependency files
+        alpaka_set_compiler_options(DEVICE target alpaka "-fintelfpga")
 
         if(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
             target_compile_definitions(alpaka INTERFACE "ALPAKA_FPGA_EMULATION")
-            # No extra link flag needed because emulation is the default
+            alpaka_set_compiler_options(DEVICE target alpaka "-Xsemulator")
+            target_link_options(alpaka INTERFACE "-Xsemulator")
         elseif(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "simulation")
-            alpaka_set_compiler_options(DEVICE target alpaka "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_FPGA_TARGET} \"-simulation\"")
-            target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_FPGA_TARGET} \"-simulation\"")
+            alpaka_set_compiler_options(DEVICE target alpaka "-Xssimulation")
+            target_link_options(alpaka INTERFACE "-Xssimulation")
         elseif(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "hardware")
-            alpaka_set_compiler_options(DEVICE target alpaka "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_FPGA_TARGET} \"-hardware\"")
-            target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_FPGA_TARGET} \"-hardware\"")
+            alpaka_set_compiler_options(DEVICE target alpaka "-Xshardware")
+            target_link_options(alpaka INTERFACE "-Xshardware")
         endif()
 
         if(NOT alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
