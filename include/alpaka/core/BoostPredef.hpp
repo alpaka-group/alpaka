@@ -19,8 +19,7 @@
 #        include <hip/hip_runtime.h>
 // HIP defines "abort()" as "{asm("trap;");}", which breaks some kernels
 #        undef abort
-// there is no HIP_VERSION macro
-#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER_AVAILABLE
+#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
 #        if defined(BOOST_LANG_CUDA) && BOOST_LANG_CUDA
 #            undef BOOST_LANG_CUDA
 #            define BOOST_LANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
