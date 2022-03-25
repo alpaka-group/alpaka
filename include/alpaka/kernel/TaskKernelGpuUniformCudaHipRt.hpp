@@ -272,23 +272,11 @@ namespace alpaka
                 std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
                             gridDim,
                             blockDim,
                             static_cast<std::size_t>(blockSharedMemDynSizeBytes),
                             queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
-#        else
-                        hipLaunchKernelGGL(
-                            HIP_KERNEL_NAME(kernelName),
-                            gridDim,
-                            blockDim,
-                            static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
-                            queue.getNativeHandle(),
-                            threadElemExtent,
-                            task.m_kernelFnObj,
-                            args...);
-#        endif
                     },
                     task.m_args);
 
@@ -399,23 +387,11 @@ namespace alpaka
                 std::apply(
                     [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
                     {
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         kernelName<<<
                             gridDim,
                             blockDim,
                             static_cast<std::size_t>(blockSharedMemDynSizeBytes),
                             queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
-#        else
-                        hipLaunchKernelGGL(
-                            HIP_KERNEL_NAME(kernelName),
-                            gridDim,
-                            blockDim,
-                            static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
-                            queue.getNativeHandle(),
-                            threadElemExtent,
-                            task.m_kernelFnObj,
-                            args...);
-#        endif
                     },
                     task.m_args);
 
