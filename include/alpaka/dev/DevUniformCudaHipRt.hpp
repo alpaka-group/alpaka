@@ -39,8 +39,14 @@ namespace alpaka
         struct GetDevByIdx;
     }
     class PltfUniformCudaHipRt;
-    class QueueUniformCudaHipRtBlocking;
-    class QueueUniformCudaHipRtNonBlocking;
+
+    namespace uniform_cuda_hip::detail
+    {
+        template<bool TBlocking>
+        class QueueUniformCudaHipRt;
+    }
+    using QueueUniformCudaHipRtBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<true>;
+    using QueueUniformCudaHipRtNonBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<false>;
 
     //! The CUDA/HIP RT device handle.
     class DevUniformCudaHipRt
