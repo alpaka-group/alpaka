@@ -12,8 +12,8 @@
 
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/CudaHipMath.hpp>
 #include <alpaka/core/Decay.hpp>
+#include <alpaka/core/UniformCudaHip.hpp>
 #include <alpaka/core/Unreachable.hpp>
 #include <alpaka/math/Traits.hpp>
 
@@ -200,6 +200,14 @@ namespace alpaka::math
 
 #        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#        endif
+
+#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDA_ARCH__)
+#            include <cuda_runtime.h>
+#        endif
+
+#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && defined(__HIP_DEVICE_COMPILE__)
+#            include <hip/math_functions.h>
 #        endif
 
     namespace trait
