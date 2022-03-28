@@ -1,4 +1,4 @@
-/* Copyright 2022 Felice Pantaleo, Andrea Bocci
+/* Copyright 2022 Felice Pantaleo, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -12,13 +12,27 @@
 #include <alpaka/atomic/Traits.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 
-#include <boost/atomic.hpp>
+#if defined(ALPAKA_HAS_STD_ATOMIC_REF)
+#    include <atomic>
+#else
+#    include <boost/atomic.hpp>
+#endif
 
 #include <array>
 #include <type_traits>
 
 namespace alpaka
 {
+    namespace detail
+    {
+#if defined(ALPAKA_HAS_STD_ATOMIC_REF)
+        template<typename T>
+        using atomic_ref = std::atomic_ref<T>;
+#else
+        template<typename T>
+        using atomic_ref = boost::atomic_ref<T>;
+#endif
+    } // namespace detail
     //! The atomic ops based on atomic_ref for CPU accelerators.
     //
     //  Atomics can be used in the grids, blocks and threads hierarchy levels.
@@ -32,7 +46,7 @@ namespace alpaka
     void isSupportedByAtomicAtomicRef()
     {
         static_assert(
-            std::is_trivially_copyable_v<T> && boost::atomic_ref<T>::required_alignment <= alignof(T),
+            std::is_trivially_copyable_v<T> && detail::atomic_ref<T>::required_alignment <= alignof(T),
             "Type not supported by AtomicAtomicRef, please recompile defining "
             "ALPAKA_DISABLE_ATOMIC_ATOMICREF.");
     }
@@ -46,7 +60,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 return ref.fetch_add(value);
             }
         };
@@ -58,7 +72,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 return ref.fetch_sub(value);
             }
         };
@@ -70,7 +84,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = old;
                 result = std::min(result, value);
@@ -90,7 +104,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = old;
                 result = std::max(result, value);
@@ -110,7 +124,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = value;
                 while(!ref.compare_exchange_weak(old, result))
@@ -128,7 +142,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = ((old >= value) ? 0 : static_cast<T>(old + 1));
                 while(!ref.compare_exchange_weak(old, result))
@@ -146,7 +160,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result = ((old >= value) ? 0 : static_cast<T>(old - 1));
                 while(!ref.compare_exchange_weak(old, result))
@@ -164,7 +178,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 return ref.fetch_and(value);
             }
         };
@@ -176,7 +190,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 return ref.fetch_or(value);
             }
         };
@@ -188,7 +202,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto atomicOp(AtomicAtomicRef const&, T* const addr, T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 return ref.fetch_xor(value);
             }
         };
@@ -204,7 +218,7 @@ namespace alpaka
                 T const& value) -> T
             {
                 isSupportedByAtomicAtomicRef<T>();
-                boost::atomic_ref<T> ref(*addr);
+                detail::atomic_ref<T> ref(*addr);
                 T old = ref;
                 T result;
                 do

@@ -60,6 +60,9 @@ set(_alpaka_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 # Normalize the path (e.g. remove ../)
 get_filename_component(_alpaka_ROOT_DIR ${_alpaka_ROOT_DIR} ABSOLUTE)
 
+# Compiler feature tests.
+set(_alpaka_FEATURE_TESTS_DIR "${_alpaka_ROOT_DIR}/cmake/tests")
+
 # Add common functions.
 set(_alpaka_COMMON_FILE "${_alpaka_ROOT_DIR}/cmake/common.cmake")
 include(${_alpaka_COMMON_FILE})
@@ -181,5 +184,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
                   "${_alpaka_ROOT_DIR}/cmake/addLibrary.cmake"
                   "${_alpaka_ROOT_DIR}/cmake/alpakaCommon.cmake"
                   "${_alpaka_ROOT_DIR}/cmake/common.cmake"
+            DESTINATION "${_alpaka_INSTALL_CMAKEDIR}")
+    install(DIRECTORY "${_alpaka_ROOT_DIR}/cmake/tests"
             DESTINATION "${_alpaka_INSTALL_CMAKEDIR}")
 endif()
