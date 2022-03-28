@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('Assert_8hpp_source.html',''); initResi
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="Assert_8hpp.html#a328f757c64444f381ff6575f5caa54e8">   17</a></span>&#160;<span class="preprocessor">#define ALPAKA_ASSERT(EXPRESSION) assert(EXPRESSION)</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="Assert_8hpp.html#a73eef5bdf73d2c61db1fced592d0ca16">   17</a></span>&#160;<span class="preprocessor">#define ALPAKA_ASSERT(...) assert(__VA_ARGS__)</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#if defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) || defined(SYCL_EXT_ONEAPI_ASSERT)</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION) ALPAKA_ASSERT(EXPRESSION)</span></div>
@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('Assert_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Assert_8hpp.html">Assert.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 28 2022 09:52:55 for alpaka by
+    <li class="footer">Generated on Mon Mar 28 2022 10:40:45 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
