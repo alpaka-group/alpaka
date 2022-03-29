@@ -1,4 +1,4 @@
-/** Copyright 2021 Jakob Krude, Benjamin Worpitz, Bernhard Manfred Gruber
+/** Copyright 2022 Jakob Krude, Benjamin Worpitz, Bernhard Manfred Gruber, Sergei Bastrakov
  *
  * This file is part of alpaka.
  *
@@ -12,20 +12,28 @@
 #include "Defines.hpp"
 #include "Functor.hpp"
 
+#include <alpaka/math/Complex.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
 #include <catch2/catch.hpp>
 
+#include <cmath>
+
 using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 
-using Functors
-    = alpaka::meta::Concatenate<alpaka::test::unit::math::UnaryFunctors, alpaka::test::unit::math::BinaryFunctors>;
+// Setup for float + double tests
+using FunctorsReal = alpaka::meta::
+    Concatenate<alpaka::test::unit::math::UnaryFunctorsReal, alpaka::test::unit::math::BinaryFunctorsReal>;
+using TestAccFunctorTuplesReal = alpaka::meta::CartesianProduct<std::tuple, TestAccs, FunctorsReal>;
+using DataTypesReal = std::tuple<float, double>;
 
-using TestAccFunctorTuples = alpaka::meta::CartesianProduct<std::tuple, TestAccs, Functors>;
-
-using DataTypes = std::tuple<float, double>;
+// Setup for complex float + complex double tests
+using FunctorsComplex = alpaka::meta::
+    Concatenate<alpaka::test::unit::math::UnaryFunctorsComplex, alpaka::test::unit::math::BinaryFunctorsComplex>;
+using TestAccFunctorTuplesComplex = alpaka::meta::CartesianProduct<std::tuple, TestAccs, FunctorsComplex>;
+using DataTypesComplex = std::tuple<alpaka::Complex<float>, alpaka::Complex<double>>;
 
 template<std::size_t TCapacity>
 struct TestKernel
@@ -44,6 +52,20 @@ struct TestKernel
             results[i] = functor(args[i], acc);
         }
     }
+};
+
+//! Helper trait to determine underlying type of real and complex numbers
+template<typename T>
+struct UnderlyingType
+{
+    using type = T;
+};
+
+//! Specialization for complex
+template<typename T>
+struct UnderlyingType<alpaka::Complex<T>>
+{
+    using type = T;
 };
 
 template<typename TAcc, typename TFunctor>
@@ -100,8 +122,9 @@ struct TestTemplate
 
         // Fill the buffer with random test-numbers.
         alpaka::test::unit::math::fillWithRndArgs<TData>(args, functor, seed);
+        using Underlying = typename UnderlyingType<TData>::type;
         for(size_t i = 0; i < Results::capacity; ++i)
-            results(i) = static_cast<TData>(std::nan(""));
+            results(i) = static_cast<Underlying>(std::nan(""));
 
         // Copy both buffer to the device
         args.copyToDevice(queue);
@@ -114,23 +137,58 @@ struct TestTemplate
         // Copy back the results (encapsulated in the buffer class).
         results.copyFromDevice(queue);
         alpaka::wait(queue);
-        std::cout.precision(std::numeric_limits<TData>::digits10 + 1);
+        std::cout.precision(std::numeric_limits<Underlying>::digits10 + 1);
 
         INFO("Operator: " << functor)
         INFO("Type: " << typeid(TData).name()) // Compiler specific.
 #if ALPAKA_DEBUG_FULL
-        INFO("The args buffer: \n" << std::setprecision(std::numeric_limits<TData>::digits10 + 1) << args << "\n")
+        INFO("The args buffer: \n" << std::setprecision(std::numeric_limits<Underlying>::digits10 + 1) << args << "\n")
 #endif
         for(size_t i = 0; i < Args::capacity; ++i)
         {
             INFO("Idx i: " << i)
             TData std_result = functor(args(i));
-            REQUIRE(results(i) == Approx(std_result).margin(std::numeric_limits<TData>::epsilon()));
+            REQUIRE(isApproxEqual(results(i), std_result));
         }
+    }
+
+    //! Approximate comparison of real numbers
+    template<typename T>
+    static bool isApproxEqual(T const& a, T const& b)
+    {
+        return a == Approx(b).margin(std::numeric_limits<T>::epsilon());
+    }
+
+    //! Is complex number considered finite for math testing.
+    //! Complex numbers with absolute value close to max() of underlying type are considered infinite.
+    //! The reason is, CUDA/HIP implementation cannot guarantee correct treatment of such values due to implementing
+    //! some math functions via calls to others. For extreme values of arguments, it could cause intermediate results
+    //! to become infinite or NaN. So in this function we consider all large enough values to be effectively infinite
+    //! and equivalent to one another. Thus, the tests do not concern accuracy for extreme values. However, they still
+    //! check the implementation for "reasonable" values.
+    template<typename T>
+    static bool isFinite(alpaka::Complex<T> const& z)
+    {
+        auto const absValue = abs(z);
+        auto const maxAbs = static_cast<T>(0.1) * std::numeric_limits<T>::max();
+        return std::isfinite(absValue) && (absValue < maxAbs);
+    }
+
+    //! Approximate comparison of complex numbers
+    template<typename T>
+    static bool isApproxEqual(alpaka::Complex<T> const& a, alpaka::Complex<T> const& b)
+    {
+        // Consider all infinite values equal, @see comment at isFinite()
+        if(!isFinite(a) && !isFinite(b))
+            return true;
+        // For the same reason use relative difference comparison with quite a large margin
+        auto const marginValue = static_cast<T>(1.0e4) * std::numeric_limits<T>::epsilon();
+        return (a.real() == Approx(b.real()).margin(marginValue).epsilon(marginValue))
+            && (a.imag() == Approx(b.imag()).margin(marginValue).epsilon(marginValue));
     }
 };
 
-TEMPLATE_LIST_TEST_CASE("mathOps", "[math] [operator]", TestAccFunctorTuples)
+TEMPLATE_LIST_TEST_CASE("mathOpsReal", "[math] [operator]", TestAccFunctorTuplesReal)
 {
     /*
      * All alpaka::math:: functions are tested here except sincos.
@@ -182,7 +240,17 @@ TEMPLATE_LIST_TEST_CASE("mathOps", "[math] [operator]", TestAccFunctorTuples)
     using Acc = std::tuple_element_t<0u, TestType>;
     using Functor = std::tuple_element_t<1u, TestType>;
 
-    alpaka::meta::forEachType<DataTypes>(TestTemplate<Acc, Functor>());
+    alpaka::meta::forEachType<DataTypesReal>(TestTemplate<Acc, Functor>());
+}
+
+TEMPLATE_LIST_TEST_CASE("mathOpsComplex", "[math] [operator]", TestAccFunctorTuplesComplex)
+{
+    // Same as previous template test, but for complex.
+
+    using Acc = std::tuple_element_t<0u, TestType>;
+    using Functor = std::tuple_element_t<1u, TestType>;
+
+    alpaka::meta::forEachType<DataTypesComplex>(TestTemplate<Acc, Functor>());
 }
 
 namespace custom
@@ -191,11 +259,13 @@ namespace custom
     {
         Abs,
         Acos,
+        Arg,
         Asin,
         Atan,
         Atan2,
         Cbrt,
         Ceil,
+        Conj,
         Cos,
         Erf,
         Exp,
@@ -237,6 +307,12 @@ namespace custom
         return Custom::Acos | c;
     }
 
+    ALPAKA_FN_HOST_ACC auto arg(Custom c);
+    ALPAKA_FN_HOST_ACC auto arg(Custom c)
+    {
+        return Custom::Arg | c;
+    }
+
     ALPAKA_FN_HOST_ACC auto asin(Custom c);
     ALPAKA_FN_HOST_ACC auto asin(Custom c)
     {
@@ -265,6 +341,12 @@ namespace custom
     ALPAKA_FN_HOST_ACC auto ceil(Custom c)
     {
         return Custom::Ceil | c;
+    }
+
+    ALPAKA_FN_HOST_ACC auto conj(Custom c);
+    ALPAKA_FN_HOST_ACC auto conj(Custom c)
+    {
+        return Custom::Conj | c;
     }
 
     ALPAKA_FN_HOST_ACC auto cos(Custom c);
@@ -392,10 +474,12 @@ struct AdlKernel
 
         ALPAKA_CHECK(*success, alpaka::math::abs(acc, Custom::Arg1) == (Custom::Abs | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::acos(acc, Custom::Arg1) == (Custom::Acos | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::arg(acc, Custom::Arg1) == (Custom::Arg | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::asin(acc, Custom::Arg1) == (Custom::Asin | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::atan(acc, Custom::Arg1) == (Custom::Atan | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::cbrt(acc, Custom::Arg1) == (Custom::Cbrt | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::ceil(acc, Custom::Arg1) == (Custom::Ceil | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::conj(acc, Custom::Arg1) == (Custom::Conj | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::cos(acc, Custom::Arg1) == (Custom::Cos | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::erf(acc, Custom::Arg1) == (Custom::Erf | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::exp(acc, Custom::Arg1) == (Custom::Exp | Custom::Arg1));
