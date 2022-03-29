@@ -12,6 +12,7 @@
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 #    include <alpaka/core/Concepts.hpp>
+#    include <alpaka/math/Complex.hpp>
 #    include <alpaka/math/Traits.hpp>
 
 #    include <CL/sycl.hpp>
@@ -28,6 +29,11 @@ namespace alpaka::experimental::math
 
     //! The SYCL acos.
     class AcosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathAcos, AcosGenericSycl>
+    {
+    };
+
+    //! The SYCL arg.
+    class ArgGenericSycl : public concepts::Implements<alpaka::math::ConceptMathArg, ArgGenericSycl>
     {
     };
 
@@ -53,6 +59,11 @@ namespace alpaka::experimental::math
 
     //! The SYCL ceil.
     class CeilGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCeil, CeilGenericSycl>
+    {
+    };
+
+    //! The SYCL conj.
+    class ConjGenericSycl : public concepts::Implements<alpaka::math::ConceptMathConj, ConjGenericSycl>
     {
     };
 
@@ -160,11 +171,13 @@ namespace alpaka::experimental::math
     class MathGenericSycl
         : public AbsGenericSycl
         , public AcosGenericSycl
+        , public ArgGenericSycl
         , public AsinGenericSycl
         , public AtanGenericSycl
         , public Atan2GenericSycl
         , public CbrtGenericSycl
         , public CeilGenericSycl
+        , public ConjGenericSycl
         , public CosGenericSycl
         , public ErfGenericSycl
         , public ExpGenericSycl
@@ -213,6 +226,21 @@ namespace alpaka::math::trait
         auto operator()(experimental::math::AcosGenericSycl const&, TArg const& arg)
         {
             return sycl::acos(arg);
+        }
+    };
+
+    //! The SYCL arg trait specialization.
+    template<typename TArgument>
+    struct Arg<experimental::math::ArgGenericSycl, TArgument, std::enable_if_t<std::is_arithmetic_v<TArgument>>>
+    {
+        auto operator()(experimental::math::ArgGenericSycl const&, TArgument const& argument)
+        {
+            if constexpr(std::is_integral_v<TArgument>)
+                return sycl::atan2(0.0, static_cast<double>(argument));
+            else if constexpr(std::is_floating_point_v<TArgument>)
+                return sycl::atan2(TArgument{0.0}, argument);
+            else
+                static_assert(!sizeof(TArgument), "Unsupported data type");
         }
     };
 
@@ -272,6 +300,16 @@ namespace alpaka::math::trait
         auto operator()(experimental::math::CeilGenericSycl const&, TArg const& arg)
         {
             return sycl::ceil(arg);
+        }
+    };
+
+    //! The SYCL conj trait specialization.
+    template<typename TArg>
+    struct Conj<experimental::math::ConjGenericSycl, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+    {
+        auto operator()(experimental::math::ConjGenericSycl const&, TArg const& arg)
+        {
+            return Complex<TArg>{arg, TArg{0.0}};
         }
     };
 

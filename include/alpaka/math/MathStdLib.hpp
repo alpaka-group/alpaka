@@ -1,5 +1,5 @@
 /* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber,
- * Jeffrey Kelling
+ * Jeffrey Kelling, Sergei Bastrakov
  *
  * This file is part of alpaka.
  *
@@ -25,6 +25,11 @@ namespace alpaka::math
     {
     };
 
+    //! The standard library arg, implementation covered by the general template.
+    class ArgStdLib : public concepts::Implements<ConceptMathArg, ArgStdLib>
+    {
+    };
+
     //! The standard library asin, implementation covered by the general template.
     class AsinStdLib : public concepts::Implements<ConceptMathAsin, AsinStdLib>
     {
@@ -47,6 +52,11 @@ namespace alpaka::math
 
     //! The standard library ceil, implementation covered by the general template.
     class CeilStdLib : public concepts::Implements<ConceptMathCeil, CeilStdLib>
+    {
+    };
+
+    //! The standard library conj, implementation covered by the general template.
+    class ConjStdLib : public concepts::Implements<ConceptMathConj, ConjStdLib>
     {
     };
 
@@ -154,11 +164,13 @@ namespace alpaka::math
     class MathStdLib
         : public AbsStdLib
         , public AcosStdLib
+        , public ArgStdLib
         , public AsinStdLib
         , public AtanStdLib
         , public Atan2StdLib
         , public CbrtStdLib
         , public CeilStdLib
+        , public ConjStdLib
         , public CosStdLib
         , public ErfStdLib
         , public ExpStdLib
