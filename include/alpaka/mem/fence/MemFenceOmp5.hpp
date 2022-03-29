@@ -33,7 +33,7 @@ namespace alpaka
             static auto mem_fence(MemFenceOmp5 const&, TMemScope const&)
             {
                 // We only have one fence scope available in OpenMP 5 which encompasses the whole device
-#    pragma omp flush acq_rel
+#    pragma omp flush
             }
         };
     } // namespace trait
