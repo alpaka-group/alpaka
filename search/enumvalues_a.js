@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unrestricted_4532',['Unrestricted',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870',1,'alpaka']]]
+  ['unrestricted_4530',['Unrestricted',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870',1,'alpaka']]]
 ];

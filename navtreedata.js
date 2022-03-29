@@ -63,22 +63,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"DevOmp5_8hpp.html#abbef4249dfcd6989eff6088e26bb911f",
-"QueueFpgaSyclXilinxNonBlocking_8hpp.html",
-"atomic_2Traits_8hpp.html",
-"classalpaka_1_1Vec.html#ad617df99935286b9f948b9588a34f15d",
-"classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a55658ce02f27391754093dfad9d41309",
-"dir_7d123124934e174b4626b90ed7337338.html",
-"namespacealpaka_1_1bt.html",
-"structalpaka_1_1ConceptBlockSync.html",
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html",
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#aa8abbf9905db1f78226aaa9642f4127f",
-"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html",
-"structalpaka_1_1trait_1_1Clock.html",
-"structalpaka_1_1trait_1_1ElemType_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html",
-"structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_010u_01_4_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html",
-"structalpaka_1_1trait_1_1IsPinned_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a2a6e00828f6f2e5e8a3a2db7075c0eaa",
-"structalpaka_1_1warp_1_1trait_1_1Activemask_3_01WarpSingleThread_01_4.html"
+"DevUniformCudaHipRt_8hpp.html",
+"QueueGenericSyclBase_8hpp.html",
+"atomic_2Traits_8hpp.html#a148285a6d01c5470b8a96a3c2987dc26",
+"classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f",
+"classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a7f3509d61a53cfdc81f0f33cb44cefea",
+"dir_80053b06cd80a729c5eaac439ea18035.html",
+"namespacealpaka_1_1concepts.html",
+"structalpaka_1_1ConceptIdxBt.html",
+"structalpaka_1_1detail_1_1TaskSetUniformCudaHip.html",
+"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#aec6de5589bd0ec66372f9a9ad3a90a98",
+"structalpaka_1_1test_1_1Array.html",
+"structalpaka_1_1trait_1_1Clock_3_01TimeOmp_01_4.html#abab2dbc8fdc0a897572a73af23f1fe14",
+"structalpaka_1_1trait_1_1ElemType_3_01T_00_01std_1_1enable__if__t_3_01alpaka_1_1detail_1_1isCudae2f22444a388ee63213a77f066aee0b6.html",
+"structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_01Dim_3_01TExtent_01_4_1_1value_01-_011u_01_4_002c5479748c8a9190fed6961527b568f7.html",
+"structalpaka_1_1trait_1_1IsPinned_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a97d7d9f4819f6bb21912c077ddc1afeb",
+"structalpaka_1_1warp_1_1trait_1_1Activemask_3_01WarpUniformCudaHipBuiltIn_01_4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

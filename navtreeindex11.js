@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html":[3,0,0,112],
-"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html#a971c39c6152c1229ed7290d50b25f0f2":[3,0,0,112,0],
 "structalpaka_1_1test_1_1Array.html":[3,0,0,17,4],
 "structalpaka_1_1test_1_1Array.html#a04628f2285009616a68d1498cfe7e9ec":[3,0,0,17,4,2],
 "structalpaka_1_1test_1_1Array.html#a497b6cac032fe839f122e0a6211d0e69":[3,0,0,17,4,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1trait_1_1BufType_3_01DevUniformCudaHipRt_00_01TElem_00_01TDim_00_01TIdx_01_4.html#a81b9f4650b3cd817ed762bd3d63930f4":[3,0,0,18,93,0],
 "structalpaka_1_1trait_1_1CastVec.html":[3,0,0,18,94],
 "structalpaka_1_1trait_1_1CastVec_3_01TValNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html":[3,0,0,18,95],
-"structalpaka_1_1trait_1_1CastVec_3_01TValNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#ad346f78dc78ab6717ee4c3bb7fd53ef4":[3,0,0,18,95,0]
+"structalpaka_1_1trait_1_1CastVec_3_01TValNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#ad346f78dc78ab6717ee4c3bb7fd53ef4":[3,0,0,18,95,0],
+"structalpaka_1_1trait_1_1Clock.html":[3,0,0,18,96],
+"structalpaka_1_1trait_1_1Clock_3_01TimeOmp_01_4.html":[3,0,0,18,97]
 };
