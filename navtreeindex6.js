@@ -115,8 +115,8 @@ var NAVTREEINDEX6 =
 "functions_type_w.html":[3,2,3,15],
 "functions_u.html":[3,2,0,19],
 "functions_v.html":[3,2,0,20],
-"functions_vars.html":[3,2,2,0],
 "functions_vars.html":[3,2,2],
+"functions_vars.html":[3,2,2,0],
 "functions_vars_c.html":[3,2,2,1],
 "functions_vars_e.html":[3,2,2,2],
 "functions_vars_h.html":[3,2,2,3],
@@ -140,8 +140,8 @@ var NAVTREEINDEX6 =
 "idx_2Traits_8hpp.html":[4,0,0,0,11,4],
 "idx_2Traits_8hpp.html#a0163f6f6c406d381013f117fdbe7ef70":[4,0,0,0,11,4,5],
 "idx_2Traits_8hpp_source.html":[4,0,0,0,11,4],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "intrinsic_2Traits_8hpp.html":[4,0,0,0,12,4],
 "intrinsic_2Traits_8hpp.html#a2a62cce3174fe200218ab6bc06b134ed":[4,0,0,0,12,4,6],
 "intrinsic_2Traits_8hpp.html#a67995b6d001811d321496aab52684356":[4,0,0,0,12,4,4],
@@ -247,7 +247,7 @@ var NAVTREEINDEX6 =
 "meta_2Set_8hpp_source.html":[4,0,0,0,16,15],
 "namespacealpaka.html":[2,0,0],
 "namespacealpaka.html":[3,0,0],
-"namespacealpaka_1_1bt.html":[3,0,0,0],
 "namespacealpaka_1_1bt.html":[2,0,0,0],
+"namespacealpaka_1_1bt.html":[3,0,0,0],
 "namespacealpaka_1_1concepts.html":[2,0,0,1]
 };

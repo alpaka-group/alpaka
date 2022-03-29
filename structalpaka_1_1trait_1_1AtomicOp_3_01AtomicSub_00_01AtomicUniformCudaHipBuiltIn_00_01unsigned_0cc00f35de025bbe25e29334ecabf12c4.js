@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0cc00f35de025bbe25e29334ecabf12c4 =
+[
+    [ "atomicOp", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0cc00f35de025bbe25e29334ecabf12c4.html#ad1411bd3eebf44e91e37698a4085bf02", null ]
+];
