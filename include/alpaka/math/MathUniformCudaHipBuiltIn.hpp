@@ -1,5 +1,5 @@
 /* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bert Wesarg, Valentin Gehrke, René Widera,
- * Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Jeffrey Kelling
+ * Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Jeffrey Kelling, Sergei Bastrakov
  *
  * This file is part of alpaka.
  *
@@ -15,6 +15,7 @@
 #include <alpaka/core/Decay.hpp>
 #include <alpaka/core/UniformCudaHip.hpp>
 #include <alpaka/core/Unreachable.hpp>
+#include <alpaka/math/Complex.hpp>
 #include <alpaka/math/Traits.hpp>
 
 #include <type_traits>
@@ -30,6 +31,11 @@ namespace alpaka::math
 
     //! The CUDA built in acos.
     class AcosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAcos, AcosUniformCudaHipBuiltIn>
+    {
+    };
+
+    //! The CUDA built in arg.
+    class ArgUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathArg, ArgUniformCudaHipBuiltIn>
     {
     };
 
@@ -55,6 +61,11 @@ namespace alpaka::math
 
     //! The CUDA built in ceil.
     class CeilUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCeil, CeilUniformCudaHipBuiltIn>
+    {
+    };
+
+    //! The CUDA built in conj.
+    class ConjUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathConj, ConjUniformCudaHipBuiltIn>
     {
     };
 
@@ -164,11 +175,13 @@ namespace alpaka::math
     class MathUniformCudaHipBuiltIn
         : public AbsUniformCudaHipBuiltIn
         , public AcosUniformCudaHipBuiltIn
+        , public ArgUniformCudaHipBuiltIn
         , public AsinUniformCudaHipBuiltIn
         , public AtanUniformCudaHipBuiltIn
         , public Atan2UniformCudaHipBuiltIn
         , public CbrtUniformCudaHipBuiltIn
         , public CeilUniformCudaHipBuiltIn
+        , public ConjUniformCudaHipBuiltIn
         , public CosUniformCudaHipBuiltIn
         , public ErfUniformCudaHipBuiltIn
         , public ExpUniformCudaHipBuiltIn
@@ -212,7 +225,7 @@ namespace alpaka::math
 
     namespace trait
     {
-        //! The CUDA built in abs trait specialization.
+        //! The CUDA abs trait specialization for real types.
         template<typename TArg>
         struct Abs<AbsUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_signed_v<TArg>>>
         {
@@ -235,7 +248,19 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA acos trait specialization.
+        //! The CUDA abs trait specialization for complex types.
+        template<typename T>
+        struct Abs<AbsUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                return sqrt(ctx, arg.real() * arg.real() + arg.imag() * arg.imag());
+            }
+        };
+
+        //! The CUDA acos trait specialization for real types.
         template<typename TArg>
         struct Acos<AcosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -252,7 +277,45 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA asin trait specialization.
+        //! The CUDA acos trait specialization for complex types.
+        template<typename T>
+        struct Acos<AcosUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                // This holds everywhere, including the branch cuts: acos(z) = -i * ln(z + i * sqrt(1 - z^2))
+                return Complex<T>{0.0, -1.0} * log(ctx, arg + Complex<T>{0.0, 1.0} * sqrt(ctx, T(1.0) - arg * arg));
+            }
+        };
+
+        //! The CUDA arg trait specialization for real types.
+        template<typename TArgument>
+        struct Arg<ArgUniformCudaHipBuiltIn, TArgument, std::enable_if_t<std::is_floating_point_v<TArgument>>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, TArgument const& argument)
+            {
+                // Fall back to atan2 so that boundary cases are resolved consistently
+                return atan2(ctx, TArgument{0.0}, argument);
+            }
+        };
+
+        //! The CUDA arg Complex<T> specialization for complex types.
+        template<typename T>
+        struct Arg<ArgUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+            {
+                return atan2(ctx, argument.imag(), argument.real());
+            }
+        };
+
+        //! The CUDA asin trait specialization for real types.
         template<typename TArg>
         struct Asin<AsinUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -269,7 +332,20 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA atan trait specialization.
+        //! The CUDA asin trait specialization for complex types.
+        template<typename T>
+        struct Asin<AsinUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                // This holds everywhere, including the branch cuts: asin(z) = i * ln(sqrt(1 - z^2) - i * z)
+                return Complex<T>{0.0, 1.0} * log(ctx, sqrt(ctx, T(1.0) - arg * arg) - Complex<T>{0.0, 1.0} * arg);
+            }
+        };
+
+        //! The CUDA atan trait specialization for real types.
         template<typename TArg>
         struct Atan<AtanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -283,6 +359,19 @@ namespace alpaka::math
                     static_assert(!sizeof(TArg), "Unsupported data type");
 
                 ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA atan trait specialization for complex types.
+        template<typename T>
+        struct Atan<AtanUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                // This holds everywhere, including the branch cuts: atan(z) = -i/2 * ln((i - z) / (i + z))
+                return Complex<T>{0.0, -0.5} * log(ctx, (Complex<T>{0.0, 1.0} - arg) / (Complex<T>{0.0, 1.0} + arg));
             }
         };
 
@@ -341,7 +430,27 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA cos trait specialization.
+        //! The CUDA conj trait specialization for real types.
+        template<typename TArg>
+        struct Conj<ConjUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+        {
+            __device__ auto operator()(ConjUniformCudaHipBuiltIn const& /* conj_ctx */, TArg const& arg)
+            {
+                return Complex<TArg>{arg, TArg{0.0}};
+            }
+        };
+
+        //! The CUDA conj specialization for complex types.
+        template<typename T>
+        struct Conj<ConjUniformCudaHipBuiltIn, Complex<T>>
+        {
+            __device__ auto operator()(ConjUniformCudaHipBuiltIn const& /* conj_ctx */, Complex<T> const& arg)
+            {
+                return Complex<T>{arg.real(), -arg.imag()};
+            }
+        };
+
+        //! The CUDA cos trait specialization for real types.
         template<typename TArg>
         struct Cos<CosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -355,6 +464,19 @@ namespace alpaka::math
                     static_assert(!sizeof(TArg), "Unsupported data type");
 
                 ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA cos trait specialization for complex types.
+        template<typename T>
+        struct Cos<CosUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                // cos(z) = 0.5 * (exp(i * z) + exp(-i * z))
+                return T(0.5) * (exp(ctx, Complex<T>{0.0, 1.0} * arg) + exp(ctx, Complex<T>{0.0, -1.0} * arg));
             }
         };
 
@@ -375,7 +497,7 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA exp trait specialization.
+        //! The CUDA exp trait specialization for real types.
         template<typename TArg>
         struct Exp<ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -389,6 +511,21 @@ namespace alpaka::math
                     static_assert(!sizeof(TArg), "Unsupported data type");
 
                 ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA exp trait specialization for complex types.
+        template<typename T>
+        struct Exp<ExpUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                // exp(z) = exp(x + iy) = exp(x) * (cos(y) + i * sin(y))
+                auto re = T{}, im = T{};
+                sincos(ctx, arg.imag(), im, re);
+                return exp(ctx, arg.real()) * Complex<T>{re, im};
             }
         };
 
@@ -462,7 +599,7 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA log trait specialization.
+        //! The CUDA log trait specialization for real types.
         template<typename TArg>
         struct Log<LogUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -476,6 +613,20 @@ namespace alpaka::math
                     static_assert(!sizeof(TArg), "Unsupported data type");
 
                 ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA log trait specialization for complex types.
+        template<typename T>
+        struct Log<LogUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+            {
+                // Branch cut along the negative real axis (same as for std::complex),
+                // principal value of ln(z) = ln(|z|) + i * arg(z)
+                return log(ctx, abs(ctx, argument)) + Complex<T>{0.0, 1.0} * arg(ctx, argument);
             }
         };
 
@@ -541,7 +692,7 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA pow trait specialization.
+        //! The CUDA pow trait specialization for real types.
         template<typename TBase, typename TExp>
         struct Pow<
             PowUniformCudaHipBuiltIn,
@@ -564,6 +715,19 @@ namespace alpaka::math
                 using Ret [[maybe_unused]]
                 = std::conditional_t<is_decayed_v<TBase, float> && is_decayed_v<TExp, float>, float, double>;
                 ALPAKA_UNREACHABLE(Ret{});
+            }
+        };
+
+        //! The CUDA pow trait specialization for complex types.
+        template<typename T, typename U>
+        struct Pow<PowUniformCudaHipBuiltIn, Complex<T>, Complex<U>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& base, Complex<U> const& exponent)
+            {
+                // pow(z1, z2) = e^(z2 * log(z1))
+                return exp(ctx, exponent * log(ctx, base));
             }
         };
 
@@ -647,7 +811,7 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA rsqrt trait specialization.
+        //! The CUDA rsqrt trait specialization for real types.
         template<typename TArg>
         struct Rsqrt<RsqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
         {
@@ -664,7 +828,19 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA sin trait specialization.
+        //! The CUDA rsqrt trait specialization for complex types.
+        template<typename T>
+        struct Rsqrt<RsqrtUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                return T{1.0} / sqrt(ctx, arg);
+            }
+        };
+
+        //! The CUDA sin trait specialization for real types.
         template<typename TArg>
         struct Sin<SinUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -681,7 +857,21 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA sincos trait specialization.
+        //! The CUDA sin trait specialization for complex types.
+        template<typename T>
+        struct Sin<SinUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                // sin(z) = (exp(i * z) - exp(-i * z)) / 2i
+                return (exp(ctx, Complex<T>{0.0, 1.0} * arg) - exp(ctx, Complex<T>{0.0, -1.0} * arg))
+                    / Complex<T>{0.0, 2.0};
+            }
+        };
+
+        //! The CUDA sincos trait specialization for real types.
         template<typename TArg>
         struct SinCos<SinCosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -700,7 +890,24 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA sqrt trait specialization.
+        //! The CUDA sincos trait specialization for complex types.
+        template<typename T>
+        struct SinCos<SinCosUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(
+                TCtx const& ctx,
+                Complex<T> const& arg,
+                Complex<T>& result_sin,
+                Complex<T>& result_cos) -> void
+            {
+                result_sin = sin(ctx, arg);
+                result_cos = cos(ctx, arg);
+            }
+        };
+
+        //! The CUDA sqrt trait specialization for real types.
         template<typename TArg>
         struct Sqrt<SqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
         {
@@ -717,7 +924,24 @@ namespace alpaka::math
             }
         };
 
-        //! The CUDA tan trait specialization.
+        //! The CUDA sqrt trait specialization for complex types.
+        template<typename T>
+        struct Sqrt<SqrtUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+            {
+                // Branch cut along the negative real axis (same as for std::complex),
+                // principal value of sqrt(z) = sqrt(|z|) * e^(i * arg(z) / 2)
+                auto const halfArg = T(0.5) * arg(ctx, argument);
+                auto re = T{}, im = T{};
+                sincos(ctx, halfArg, im, re);
+                return sqrt(ctx, abs(ctx, argument)) * Complex<T>(re, im);
+            }
+        };
+
+        //! The CUDA tan trait specialization for real types.
         template<typename TArg>
         struct Tan<TanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
@@ -731,6 +955,21 @@ namespace alpaka::math
                     static_assert(!sizeof(TArg), "Unsupported data type");
 
                 ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA tan trait specialization for complex types.
+        template<typename T>
+        struct Tan<TanUniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            {
+                // tan(z) = i * (e^-iz - e^iz) / (e^-iz + e^iz) = i * (1 - e^2iz) / (1 + e^2iz)
+                // Warning: this straightforward implementation can easily result in NaN as 0/0 or inf/inf.
+                auto const expValue = exp(ctx, Complex<T>{0.0, 2.0} * arg);
+                return Complex<T>{0.0, 1.0} * (T{1.0} - expValue) / (T{1.0} + expValue);
             }
         };
 

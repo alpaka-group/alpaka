@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Sergei Bastrakov
  *
  * This file is part of alpaka.
  *
@@ -13,6 +13,7 @@
 #include <alpaka/core/Concepts.hpp>
 
 #include <cmath>
+#include <complex>
 
 namespace alpaka::math
 {
@@ -21,6 +22,10 @@ namespace alpaka::math
     };
 
     struct ConceptMathAcos
+    {
+    };
+
+    struct ConceptMathArg
     {
     };
 
@@ -41,6 +46,10 @@ namespace alpaka::math
     };
 
     struct ConceptMathCeil
+    {
+    };
+
+    struct ConceptMathConj
     {
     };
 
@@ -153,6 +162,21 @@ namespace alpaka::math
             }
         };
 
+        //! The arg trait.
+        template<typename T, typename TArgument, typename TSfinae = void>
+        struct Arg
+        {
+            //!@todo why is this needed here, but not in other functions?
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArgument const& argument)
+            {
+                // This is an ADL call. If you get a compile error here then your type is not supported by the
+                // backend and we could not find arg(TArgument) in the namespace of your type.
+                using std::arg;
+                return arg(argument);
+            }
+        };
+
         //! The asin trait.
         template<typename T, typename TArg, typename TSfinae = void>
         struct Asin
@@ -215,6 +239,19 @@ namespace alpaka::math
                 // backend and we could not find ceil(TArg) in the namespace of your type.
                 using std::ceil;
                 return ceil(arg);
+            }
+        };
+
+        //! The conj trait.
+        template<typename T, typename TArg, typename TSfinae = void>
+        struct Conj
+        {
+            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArg const& arg)
+            {
+                // This is an ADL call. If you get a compile error here then your type is not supported by the
+                // backend and we could not find conj(TArg) in the namespace of your type.
+                using std::conj;
+                return conj(arg);
             }
         };
 
@@ -561,6 +598,20 @@ namespace alpaka::math
         return trait::Acos<ImplementationBase, TArg>{}(acos_ctx, arg);
     }
 
+    //! Computes the complex argument of the value.
+    //!
+    //! \tparam T The type of the object specializing Arg.
+    //! \tparam TArgument The argument type.
+    //! \param arg_ctx The object specializing Arg.
+    //! \param argument The argument.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename T, typename TArgument>
+    ALPAKA_FN_HOST_ACC auto arg(T const& arg_ctx, TArgument const& argument)
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMathArg, T>;
+        return trait::Arg<ImplementationBase, TArgument>{}(arg_ctx, argument);
+    }
+
     //! Computes the principal value of the arc sine.
     //!
     //! The valid real argument range is [-1.0, 1.0]. For other values
@@ -633,6 +684,20 @@ namespace alpaka::math
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathCeil, T>;
         return trait::Ceil<ImplementationBase, TArg>{}(ceil_ctx, arg);
+    }
+
+    //! Computes the complex conjugate of arg.
+    //!
+    //! \tparam T The type of the object specializing Conj.
+    //! \tparam TArg The arg type.
+    //! \param conj_ctx The object specializing Conj.
+    //! \param arg The arg.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename T, typename TArg>
+    ALPAKA_FN_HOST_ACC auto conj(T const& conj_ctx, TArg const& arg)
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMathConj, T>;
+        return trait::Conj<ImplementationBase, TArg>{}(conj_ctx, arg);
     }
 
     //! Computes the cosine (measured in radians).
