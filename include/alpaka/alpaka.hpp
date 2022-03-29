@@ -143,6 +143,7 @@
 #include <alpaka/kernel/TaskKernelOmp5.hpp>
 #include <alpaka/kernel/Traits.hpp>
 // math
+#include <alpaka/math/Complex.hpp>
 #include <alpaka/math/MathGenericSycl.hpp>
 #include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/math/MathUniformCudaHipBuiltIn.hpp>
