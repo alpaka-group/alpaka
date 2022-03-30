@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4 =
+[
+    [ "getNativeHandle", "structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3", null ]
+];

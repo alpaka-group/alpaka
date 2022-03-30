@@ -14,5 +14,8 @@ var DevUniformCudaHipRt_8hpp =
     [ "QueueType< DevUniformCudaHipRt, Blocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_00_01Blocking_01_4.html", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_00_01Blocking_01_4" ],
     [ "QueueType< DevUniformCudaHipRt, NonBlocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_00_01NonBlocking_01_4.html", "structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_00_01NonBlocking_01_4" ],
     [ "Reset< DevUniformCudaHipRt >", "structalpaka_1_1trait_1_1Reset_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1trait_1_1Reset_3_01DevUniformCudaHipRt_01_4" ],
-    [ "DevCudaRt", "DevUniformCudaHipRt_8hpp.html#a28e85e5b3182910ce26538c4f4b1d9fd", null ]
+    [ "QueueUniformCudaHipRt", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt" ],
+    [ "DevCudaRt", "DevUniformCudaHipRt_8hpp.html#a28e85e5b3182910ce26538c4f4b1d9fd", null ],
+    [ "QueueUniformCudaHipRtBlocking", "DevUniformCudaHipRt_8hpp.html#ab0b41862622ca0a42306953f270fa055", null ],
+    [ "QueueUniformCudaHipRtNonBlocking", "DevUniformCudaHipRt_8hpp.html#abb9a658a30c53026d7fb363509f6891a", null ]
 ];

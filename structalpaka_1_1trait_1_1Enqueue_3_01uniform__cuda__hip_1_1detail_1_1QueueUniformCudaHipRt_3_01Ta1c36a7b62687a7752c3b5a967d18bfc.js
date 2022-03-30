@@ -1,0 +1,6 @@
+var structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta1c36a7b62687a7752c3b5a967d18bfc =
+[
+    [ "m_event", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta1c36a7b62687a7752c3b5a967d18bfc.html#a7cb5e27520e0d262c6f27c03a07029ab", null ],
+    [ "m_mutex", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta1c36a7b62687a7752c3b5a967d18bfc.html#a525adfaecc9b5680354621a3191a2419", null ],
+    [ "m_state", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta1c36a7b62687a7752c3b5a967d18bfc.html#a456b547a36789b815bd1cf5ef8693c15", null ]
+];

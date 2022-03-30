@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"QueueFpgaSyclXilinxBlocking_8hpp_source.html":[4,0,0,0,19,10],
+"QueueFpgaSyclXilinxNonBlocking_8hpp.html":[4,0,0,0,19,11],
 "QueueFpgaSyclXilinxNonBlocking_8hpp_source.html":[4,0,0,0,19,11],
 "QueueGenericSyclBase_8hpp.html":[4,0,0,0,19,2,0],
 "QueueGenericSyclBase_8hpp_source.html":[4,0,0,0,19,2,0],
@@ -25,14 +27,14 @@ var NAVTREEINDEX2 =
 "QueueOmp5NonBlocking_8hpp_source.html":[4,0,0,0,19,21],
 "QueueTestFixture_8hpp.html":[4,0,0,0,22,5,2],
 "QueueTestFixture_8hpp_source.html":[4,0,0,0,22,5,2],
-"QueueUniformCudaHipRtBase_8hpp.html":[4,0,0,0,19,1,0],
-"QueueUniformCudaHipRtBase_8hpp_source.html":[4,0,0,0,19,1,0],
 "QueueUniformCudaHipRtBlocking_8hpp.html":[4,0,0,0,19,22],
-"QueueUniformCudaHipRtBlocking_8hpp.html#a311549e8bc3033e0f1387da53b6f4618":[4,0,0,0,19,22,6],
+"QueueUniformCudaHipRtBlocking_8hpp.html#a311549e8bc3033e0f1387da53b6f4618":[4,0,0,0,19,22,0],
 "QueueUniformCudaHipRtBlocking_8hpp_source.html":[4,0,0,0,19,22],
 "QueueUniformCudaHipRtNonBlocking_8hpp.html":[4,0,0,0,19,23],
-"QueueUniformCudaHipRtNonBlocking_8hpp.html#aebad4c35c3d61402485ed3c4524298db":[4,0,0,0,19,23,6],
+"QueueUniformCudaHipRtNonBlocking_8hpp.html#aebad4c35c3d61402485ed3c4524298db":[4,0,0,0,19,23,0],
 "QueueUniformCudaHipRtNonBlocking_8hpp_source.html":[4,0,0,0,19,23],
+"QueueUniformCudaHipRt_8hpp.html":[4,0,0,0,19,1,0],
+"QueueUniformCudaHipRt_8hpp_source.html":[4,0,0,0,19,1,0],
 "Queue_8hpp.html":[4,0,0,0,22,5,0],
 "Queue_8hpp.html#abf76f887cb2963d7524fcb09c865354e":[4,0,0,0,22,5,0,10],
 "Queue_8hpp.html#ac624a0b804a66cb8868f004e2a412a4c":[4,0,0,0,22,5,0,11],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a":[4,0,0,0,0,17,12],
 "acc_2Traits_8hpp_source.html":[4,0,0,0,0,17],
 "alpaka_8hpp.html":[4,0,0,0,29],
-"alpaka_8hpp_source.html":[4,0,0,0,29],
-"annotated.html":[3,0],
-"atomic_2Traits_8hpp.html":[4,0,0,0,1,11]
+"alpaka_8hpp_source.html":[4,0,0,0,29]
 };

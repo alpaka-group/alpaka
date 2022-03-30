@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4 =
-[
-    [ "currentThreadWaitFor", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html#a97607ef60b641d8fee3f2c4b331beffe", null ]
-];
