@@ -1,4 +1,0 @@
-var structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_01TidxDimOut_01_9_0a1u_01_4_01_4 =
-[
-    [ "mapIdxPitchBytes", "structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_01TidxDimOut_01_9_0a1u_01_4_01_4.html#ab936cc341e50e26dec9fde0342592e88", null ]
-];

@@ -98,17 +98,17 @@ $(document).ready(function(){initNavTree('structalpaka_1_1meta_1_1detail_1_1NdLo
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af48dbbd82556375179fbe1c2e1ebdd56"><td class="memTemplParams" colspan="2">template&lt;typename TIndex , typename TExtentVec , typename TFnObj &gt; </td></tr>
-<tr class="memitem:af48dbbd82556375179fbe1c2e1ebdd56"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html#af48dbbd82556375179fbe1c2e1ebdd56">ndLoop</a> (TIndex &amp;, TExtentVec const &amp;, TFnObj const &amp;) -&gt; void</td></tr>
-<tr class="separator:af48dbbd82556375179fbe1c2e1ebdd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90d824260bca87eed1821af01d757e1d"><td class="memTemplParams" colspan="2">template&lt;typename TIndex , typename TExtentVec , typename TFnObj &gt; </td></tr>
+<tr class="memitem:a90d824260bca87eed1821af01d757e1d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html#a90d824260bca87eed1821af01d757e1d">ndLoop</a> (const TIndex &amp;idx, TExtentVec const &amp;, TFnObj const &amp;f) -&gt; void</td></tr>
+<tr class="separator:a90d824260bca87eed1821af01d757e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>N-dimensional loop iteration template. </p>
 
-<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00027">27</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00028">28</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af48dbbd82556375179fbe1c2e1ebdd56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af48dbbd82556375179fbe1c2e1ebdd56">&#9670;&nbsp;</a></span>ndLoop()</h2>
+<a id="a90d824260bca87eed1821af01d757e1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90d824260bca87eed1821af01d757e1d">&#9670;&nbsp;</a></span>ndLoop()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,8 +121,8 @@ template&lt;typename TIndex , typename TExtentVec , typename TFnObj &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1meta_1_1detail_1_1NdLoop.html">alpaka::meta::detail::NdLoop</a>&lt; std::index_sequence&lt;&gt; &gt;::ndLoop </td>
           <td>(</td>
-          <td class="paramtype">TIndex &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype">const TIndex &amp;&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -134,7 +134,7 @@ template&lt;typename TIndex , typename TExtentVec , typename TFnObj &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">TFnObj const &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -150,7 +150,7 @@ template&lt;typename TIndex , typename TExtentVec , typename TFnObj &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00031">31</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00032">32</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
 
 </div>
 </div>
@@ -163,7 +163,7 @@ template&lt;typename TIndex , typename TExtentVec , typename TFnObj &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1meta.html">meta</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1meta_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html">NdLoop&lt; std::index_sequence&lt;&gt; &gt;</a></li>
-    <li class="footer">Generated on Wed Mar 30 2022 12:08:46 for alpaka by
+    <li class="footer">Generated on Wed Mar 30 2022 13:46:23 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

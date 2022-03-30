@@ -1,4 +1,0 @@
-var structalpaka_1_1detail_1_1MapIdx_3_011u_00_01TidxDimIn_00_01std_1_1enable__if__t_3_01TidxDimIn_01_9_0a1u_01_4_01_4 =
-[
-    [ "mapIdx", "structalpaka_1_1detail_1_1MapIdx_3_011u_00_01TidxDimIn_00_01std_1_1enable__if__t_3_01TidxDimIn_01_9_0a1u_01_4_01_4.html#a1c0a22ee1dd282f50148c4949ef7cfd1", null ]
-];
