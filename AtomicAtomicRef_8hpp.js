@@ -12,5 +12,6 @@ var AtomicAtomicRef_8hpp =
     [ "AtomicOp< AtomicOr, AtomicAtomicRef, T, THierarchy >", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4" ],
     [ "AtomicOp< AtomicSub, AtomicAtomicRef, T, THierarchy >", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4" ],
     [ "AtomicOp< AtomicXor, AtomicAtomicRef, T, THierarchy >", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4" ],
+    [ "atomic_ref", "AtomicAtomicRef_8hpp.html#a9ee62c9b6003cde99028340666f38685", null ],
     [ "isSupportedByAtomicAtomicRef", "AtomicAtomicRef_8hpp.html#ae9234c08c7824fc7b5a9a73e6a11fbd1", null ]
 ];

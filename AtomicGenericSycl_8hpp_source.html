@@ -160,14 +160,14 @@ $(document).ready(function(){initNavTree('AtomicGenericSycl_8hpp_source.html',''
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="comment">// atomic_ref is already part of the SYCL spec but oneAPI has not caught up yet.</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy&gt;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">using</span> global_ref = sycl::ext::oneapi::atomic_ref&lt;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">using</span> global_ref = <a class="code" href="namespacealpaka_1_1detail.html#a9ee62c9b6003cde99028340666f38685">sycl::ext::oneapi::atomic_ref</a>&lt;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            T,</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            sycl::ext::oneapi::memory_order::relaxed,</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            SyclMemoryScope&lt;THierarchy&gt;::value,</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            sycl::access::address_space::global_space&gt;;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">using</span> local_ref = sycl::ext::oneapi::atomic_ref&lt;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">using</span> local_ref = <a class="code" href="namespacealpaka_1_1detail.html#a9ee62c9b6003cde99028340666f38685">sycl::ext::oneapi::atomic_ref</a>&lt;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            T,</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            sycl::ext::oneapi::memory_order::relaxed,</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            SyclMemoryScope&lt;THierarchy&gt;::value,</div>
@@ -417,13 +417,14 @@ $(document).ready(function(){initNavTree('AtomicGenericSycl_8hpp_source.html',''
 <div class="ttc" id="anamespacealpaka_html_afc0cabb316d5524d381a35c8c67edf81"><div class="ttname"><a href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00076">Traits.hpp:76</a></div></div>
 <div class="ttc" id="aDependentFalseType_8hpp_html"><div class="ttname"><a href="DependentFalseType_8hpp.html">DependentFalseType.hpp</a></div></div>
 <div class="ttc" id="aPositioning_8hpp_html"><div class="ttname"><a href="Positioning_8hpp.html">Positioning.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1detail_html_a9ee62c9b6003cde99028340666f38685"><div class="ttname"><a href="namespacealpaka_1_1detail.html#a9ee62c9b6003cde99028340666f38685">alpaka::detail::atomic_ref</a></div><div class="ttdeci">boost::atomic_ref&lt; T &gt; atomic_ref</div><div class="ttdef"><b>Definition:</b> <a href="AtomicAtomicRef_8hpp_source.html#l00033">AtomicAtomicRef.hpp:33</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1experimental_html"><div class="ttname"><a href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div><div class="ttdef"><b>Definition:</b> <a href="view_2Accessor_8hpp_source.html#l00026">Accessor.hpp:26</a></div></div>
 <div class="ttc" id="aOp_8hpp_html"><div class="ttname"><a href="Op_8hpp.html">Op.hpp</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="AtomicGenericSycl_8hpp.html">AtomicGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Tue Mar 29 2022 11:51:23 for alpaka by
+    <li class="footer">Generated on Wed Mar 30 2022 08:56:42 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

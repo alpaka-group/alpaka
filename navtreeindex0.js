@@ -70,7 +70,8 @@ var NAVTREEINDEX0 =
 "Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e":[4,0,0,0,3,3,3],
 "Assert_8hpp_source.html":[4,0,0,0,3,3],
 "AtomicAtomicRef_8hpp.html":[4,0,0,0,1,0],
-"AtomicAtomicRef_8hpp.html#ae9234c08c7824fc7b5a9a73e6a11fbd1":[4,0,0,0,1,0,12],
+"AtomicAtomicRef_8hpp.html#a9ee62c9b6003cde99028340666f38685":[4,0,0,0,1,0,12],
+"AtomicAtomicRef_8hpp.html#ae9234c08c7824fc7b5a9a73e6a11fbd1":[4,0,0,0,1,0,13],
 "AtomicAtomicRef_8hpp_source.html":[4,0,0,0,1,0],
 "AtomicCpu_8hpp.html":[4,0,0,0,1,1],
 "AtomicCpu_8hpp.html#a0bad0e6d480fa2fafe60330f304067b5":[4,0,0,0,1,1,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "DevOacc_8hpp_source.html":[4,0,0,0,5,7],
 "DevOmp5_8hpp.html":[4,0,0,0,5,8],
 "DevOmp5_8hpp.html#a1994bcdaa7cefe3ae066eb3033530826":[4,0,0,0,5,8,16],
-"DevOmp5_8hpp.html#abbef4249dfcd6989eff6088e26bb911f":[4,0,0,0,5,8,15],
-"DevOmp5_8hpp_source.html":[4,0,0,0,5,8]
+"DevOmp5_8hpp.html#abbef4249dfcd6989eff6088e26bb911f":[4,0,0,0,5,8,15]
 };

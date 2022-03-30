@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"QueueFpgaSyclXilinxNonBlocking_8hpp_source.html":[4,0,0,0,19,11],
 "QueueGenericSyclBase_8hpp.html":[4,0,0,0,19,2,0],
 "QueueGenericSyclBase_8hpp_source.html":[4,0,0,0,19,2,0],
 "QueueGenericSyclBlocking_8hpp.html":[4,0,0,0,19,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "alpaka_8hpp.html":[4,0,0,0,29],
 "alpaka_8hpp_source.html":[4,0,0,0,29],
 "annotated.html":[3,0],
-"atomic_2Traits_8hpp.html":[4,0,0,0,1,11],
-"atomic_2Traits_8hpp.html#a0c8304545460e9c2aedf08a91626185d":[4,0,0,0,1,11,21]
+"atomic_2Traits_8hpp.html":[4,0,0,0,1,11]
 };
