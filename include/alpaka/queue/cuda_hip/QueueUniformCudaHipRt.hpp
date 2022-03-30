@@ -212,24 +212,24 @@ namespace alpaka
             {
                 // explicitly copy the shared_ptr so that this method holds the state even when the executing thread
                 // has already finished.
-                const auto pCallbackSynchronizationData
+                const auto spCallbackSynchronizationData
                     = reinterpret_cast<CallbackSynchronizationData*>(arg)->shared_from_this();
 
                 // Notify the executing thread.
                 {
-                    std::unique_lock<std::mutex> lock(pCallbackSynchronizationData->m_mutex);
-                    pCallbackSynchronizationData->m_state = CallbackState::notified;
+                    std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
+                    spCallbackSynchronizationData->m_state = CallbackState::notified;
                 }
-                pCallbackSynchronizationData->m_event.notify_one();
+                spCallbackSynchronizationData->m_event.notify_one();
 
                 // Wait for the executing thread to finish the task if it has not already finished.
-                std::unique_lock<std::mutex> lock(pCallbackSynchronizationData->m_mutex);
-                if(pCallbackSynchronizationData->m_state != CallbackState::finished)
+                std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
+                if(spCallbackSynchronizationData->m_state != CallbackState::finished)
                 {
-                    pCallbackSynchronizationData->m_event.wait(
+                    spCallbackSynchronizationData->m_event.wait(
                         lock,
-                        [pCallbackSynchronizationData]()
-                        { return pCallbackSynchronizationData->m_state == CallbackState::finished; });
+                        [&spCallbackSynchronizationData]()
+                        { return spCallbackSynchronizationData->m_state == CallbackState::finished; });
                 }
             }
 
@@ -237,11 +237,11 @@ namespace alpaka
                 uniform_cuda_hip::detail::QueueUniformCudaHipRt<TBlocking>& queue,
                 TTask const& task) -> void
             {
-                auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
+                auto spCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
                     queue.getNativeHandle(),
                     uniformCudaHipRtCallback,
-                    pCallbackSynchronizationData.get(),
+                    spCallbackSynchronizationData.get(),
                     0u));
 
                 // We start a new std::thread which stores the task to be executed.
@@ -250,25 +250,25 @@ namespace alpaka
                 // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
                 // before it executes the next task in the queue (CUDA/HIP stream).
                 std::thread t(
-                    [pCallbackSynchronizationData, task]()
+                    [spCallbackSynchronizationData, task]()
                     {
                         // If the callback has not yet been called, we wait for it.
                         {
-                            std::unique_lock<std::mutex> lock(pCallbackSynchronizationData->m_mutex);
-                            if(pCallbackSynchronizationData->m_state != CallbackState::notified)
+                            std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
+                            if(spCallbackSynchronizationData->m_state != CallbackState::notified)
                             {
-                                pCallbackSynchronizationData->m_event.wait(
+                                spCallbackSynchronizationData->m_event.wait(
                                     lock,
-                                    [pCallbackSynchronizationData]()
-                                    { return pCallbackSynchronizationData->m_state == CallbackState::notified; });
+                                    [&spCallbackSynchronizationData]()
+                                    { return spCallbackSynchronizationData->m_state == CallbackState::notified; });
                             }
 
                             task();
 
                             // Notify the waiting CUDA/HIP thread.
-                            pCallbackSynchronizationData->m_state = CallbackState::finished;
+                            spCallbackSynchronizationData->m_state = CallbackState::finished;
                         }
-                        pCallbackSynchronizationData->m_event.notify_one();
+                        spCallbackSynchronizationData->m_event.notify_one();
                     });
 
                 if constexpr(TBlocking)
