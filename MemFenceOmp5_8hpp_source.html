@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('MemFenceOmp5_8hpp_source.html',''); in
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp5_00_01TMemScope_01_4.html#a61d7c590e21913f933d01b73c4e2ea5f">   33</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp5_00_01TMemScope_01_4.html#a61d7c590e21913f933d01b73c4e2ea5f">mem_fence</a>(<a class="code" href="classalpaka_1_1MemFenceOmp5.html">MemFenceOmp5</a> <span class="keyword">const</span>&amp;, TMemScope <span class="keyword">const</span>&amp;)</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                <span class="comment">// We only have one fence scope available in OpenMP 5 which encompasses the whole device</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#    pragma omp flush acq_rel</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#    pragma omp flush</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        };</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    } <span class="comment">// namespace trait</span></div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('MemFenceOmp5_8hpp_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceOmp5_8hpp.html">MemFenceOmp5.hpp</a></li>
-    <li class="footer">Generated on Wed Mar 30 2022 10:10:30 for alpaka by
+    <li class="footer">Generated on Wed Mar 30 2022 12:08:44 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
