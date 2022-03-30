@@ -206,9 +206,12 @@ namespace alpaka
             static void HIPRT_CB
 #    endif
             uniformCudaHipRtCallback(
+#    if !defined(CUDA_VERSION) || CUDA_VERSION <= 9020
                 ALPAKA_API_PREFIX(Stream_t) /*queue*/,
                 ALPAKA_API_PREFIX(Error_t) /*status*/,
+#    endif
                 void* arg)
+
             {
                 // explicitly copy the shared_ptr so that this method holds the state even when the executing thread
                 // has already finished.
@@ -238,11 +241,18 @@ namespace alpaka
                 TTask const& task) -> void
             {
                 auto spCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && CUDA_VERSION > 9020
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(LaunchHostFunc)(
+                    queue.getNativeHandle(),
+                    uniformCudaHipRtCallback,
+                    spCallbackSynchronizationData.get()));
+#    else
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
                     queue.getNativeHandle(),
                     uniformCudaHipRtCallback,
                     spCallbackSynchronizationData.get(),
                     0u));
+#    endif
 
                 // We start a new std::thread which stores the task to be executed.
                 // This circumvents the limitation that it is not possible to call CUDA/HIP methods within the CUDA/HIP
