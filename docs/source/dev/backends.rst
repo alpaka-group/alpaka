@@ -268,7 +268,9 @@ The following tables list the functions available in the `CUDA Runtime API <http
     +------------------------------+---------------------------------------------------------+
     | CUDA                         | alpaka                                                  |
     +==============================+=========================================================+
-    | cudaStreamAddCallback        | alpaka::enqueue(queue, [](){dosomething();})            |
+    | cudaLaunchHostFunc           | alpaka::enqueue(queue, [](){dosomething();})            |
+    |                              |                                                         |
+    | cudaStreamAddCallback        | \                                                       |
     +------------------------------+---------------------------------------------------------+
     | cudaStreamAttachMemAsync     | --                                                      |
     +------------------------------+---------------------------------------------------------+
