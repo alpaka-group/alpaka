@@ -191,7 +191,7 @@ CMAKE_CXX_FLAGS
     * nvptx: `-fopenmp -fopenmp-targets=nvptx64-nvidia-cuda`
 
     CMake actually sets `-fopenmp` automatically, but OpenMP support is
-    detected after the deteced compiler is tested, which fails with
+    detected after the detected compiler is tested, which fails with
     `-fopenmp-targets=` being present alone.
       
   * GCC
@@ -204,7 +204,7 @@ CMAKE_CXX_FLAGS
       
   * NVHPC
     
-    * host: `-ta=host` or `-ta=-ta=multicore`
+    * host: `-ta=host` or `-ta=multicore`
       
     * nvptx: `-ta=tesla`
 
