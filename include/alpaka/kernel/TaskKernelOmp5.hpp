@@ -171,7 +171,7 @@ namespace alpaka
                         // The first thread does some checks in the first block executed.
                         if((::omp_get_thread_num() == 0) && (t == 0))
                         {
-                            int const numThreads(::omp_get_num_threads());
+                            int const numThreads = ::omp_get_num_threads();
                             printf("%s omp_get_num_threads: %d\n", __func__, numThreads);
                             if(numThreads != static_cast<int>(blockThreadCount))
                             {

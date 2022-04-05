@@ -131,7 +131,7 @@ namespace alpaka
                                         "The OpenMP 2.0 runtime did not create a parallel region!");
                                 }
 
-                                int const numThreads(::omp_get_num_threads());
+                                int const numThreads = ::omp_get_num_threads();
                                 if(numThreads != iBlockThreadCount)
                                 {
                                     throw std::runtime_error(
