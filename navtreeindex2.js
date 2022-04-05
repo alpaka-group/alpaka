@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"QueueFpgaSyclIntelNonBlocking_8hpp.html":[4,0,0,0,19,9],
+"QueueFpgaSyclIntelNonBlocking_8hpp_source.html":[4,0,0,0,19,9],
+"QueueFpgaSyclXilinxBlocking_8hpp.html":[4,0,0,0,19,10],
 "QueueFpgaSyclXilinxBlocking_8hpp_source.html":[4,0,0,0,19,10],
 "QueueFpgaSyclXilinxNonBlocking_8hpp.html":[4,0,0,0,19,11],
 "QueueFpgaSyclXilinxNonBlocking_8hpp_source.html":[4,0,0,0,19,11],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "acc_2Traits_8hpp.html":[4,0,0,0,0,17],
 "acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,17,13],
 "acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,17,14],
-"acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a":[4,0,0,0,0,17,12],
-"acc_2Traits_8hpp_source.html":[4,0,0,0,0,17],
-"alpaka_8hpp.html":[4,0,0,0,29],
-"alpaka_8hpp_source.html":[4,0,0,0,29]
+"acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a":[4,0,0,0,0,17,12]
 };

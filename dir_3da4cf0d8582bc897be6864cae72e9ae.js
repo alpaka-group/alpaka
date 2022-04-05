@@ -18,11 +18,6 @@ var dir_3da4cf0d8582bc897be6864cae72e9ae =
       [ "GetDevByIdx< PltfOmp5 >", "structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfOmp5_01_4.html", "structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfOmp5_01_4" ],
       [ "GetDevCount< PltfOmp5 >", "structalpaka_1_1trait_1_1GetDevCount_3_01PltfOmp5_01_4.html", "structalpaka_1_1trait_1_1GetDevCount_3_01PltfOmp5_01_4" ]
     ] ],
-    [ "PltfUniformCudaHipRt.hpp", "PltfUniformCudaHipRt_8hpp.html", [
-      [ "PltfUniformCudaHipRt", "classalpaka_1_1PltfUniformCudaHipRt.html", "classalpaka_1_1PltfUniformCudaHipRt" ],
-      [ "DevType< PltfUniformCudaHipRt >", "structalpaka_1_1trait_1_1DevType_3_01PltfUniformCudaHipRt_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01PltfUniformCudaHipRt_01_4" ],
-      [ "GetDevByIdx< PltfUniformCudaHipRt >", "structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_01_4.html", "structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_01_4" ],
-      [ "GetDevCount< PltfUniformCudaHipRt >", "structalpaka_1_1trait_1_1GetDevCount_3_01PltfUniformCudaHipRt_01_4.html", "structalpaka_1_1trait_1_1GetDevCount_3_01PltfUniformCudaHipRt_01_4" ]
-    ] ],
+    [ "PltfUniformCudaHipRt.hpp", "PltfUniformCudaHipRt_8hpp.html", "PltfUniformCudaHipRt_8hpp" ],
     [ "Traits.hpp", "pltf_2Traits_8hpp.html", "pltf_2Traits_8hpp" ]
 ];

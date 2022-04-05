@@ -63,22 +63,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"DevOmp5_8hpp_source.html",
-"QueueFpgaSyclXilinxBlocking_8hpp_source.html",
-"annotated.html",
-"classalpaka_1_1ViewPlainPtr.html#a3d2d8a080f115b70e313662e312c3677",
-"classalpaka_1_1rand_1_1RandDefault.html",
-"dir_a7ea804b58dbe69fc7c600cb292cbe23.html",
-"namespacealpaka_1_1cpu_1_1detail.html",
-"structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType.html",
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html",
-"structalpaka_1_1meta_1_1DependentFalseType.html",
-"structalpaka_1_1test_1_1QueueTestFixture.html#ab985951be3fd8592432a205192614ff5",
-"structalpaka_1_1trait_1_1BufType_3_01DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4.html",
-"structalpaka_1_1trait_1_1ElemType.html",
-"structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01s6056b2842e4438764a552fc19eb35c4d.html",
-"structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4.html",
-"structalpaka_1_1warp_1_1trait_1_1Any_3_01WarpSingleThread_01_4.html"
+"DevOmp5_8hpp.html#abbef4249dfcd6989eff6088e26bb911f",
+"QueueFpgaSyclIntelNonBlocking_8hpp.html",
+"acc_2Traits_8hpp_source.html",
+"classalpaka_1_1ViewPlainPtr.html#a0b6b3e7109483fc1ee554230f299b09e",
+"classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a8a71c20821289af377e03333901a5179",
+"dir_978fff6d009a0eab698f51257fa3760a.html",
+"namespacealpaka_1_1core_1_1vectorization.html",
+"structalpaka_1_1concepts_1_1ImplementsConcept.html#a2d20969b814a4a787a48a138c3d4fe89",
+"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html",
+"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html#a749dd3d42bbde76aab2525dfbc4211e8",
+"structalpaka_1_1test_1_1QueueTestFixture.html#a31498dfa654e0b1798e8c371c1ff3f31",
+"structalpaka_1_1trait_1_1BufType.html",
+"structalpaka_1_1trait_1_1DimType_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html#a0dd74c7f7746a8cdecb127149967600e",
+"structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_01Dim_3_01TExtent_01_4_1_1value_01-_014u_01_4_00f61d80e1893e99f751b04a7bd1a4240c.html",
+"structalpaka_1_1trait_1_1Malloc.html",
+"structalpaka_1_1warp_1_1trait_1_1All_3_01WarpUniformCudaHipBuiltIn_01_4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"dir_978fff6d009a0eab698f51257fa3760a.html":[4,0,0,0,5],
+"dir_9b06e2d5421d26ecb89f5fc8cf901459.html":[4,0,0,0,16],
+"dir_9c737d14007cafba76b1e7c7800c2a61.html":[4,0,0,0,21],
 "dir_a7ea804b58dbe69fc7c600cb292cbe23.html":[4,0,0,0,23],
 "dir_aa5c7be85b62141dab4191e7fe585875.html":[4,0,0,0,15,0],
 "dir_b0220b247b6d146638519e84a2a8e9ad.html":[4,0,0,0,15,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "namespacealpaka_1_1core_1_1threads.html":[2,0,0,2,2],
 "namespacealpaka_1_1core_1_1threads_1_1detail.html":[3,0,0,2,2,0],
 "namespacealpaka_1_1core_1_1threads_1_1detail.html":[2,0,0,2,2,0],
-"namespacealpaka_1_1core_1_1vectorization.html":[3,0,0,2,3],
-"namespacealpaka_1_1core_1_1vectorization.html":[2,0,0,2,3],
-"namespacealpaka_1_1cpu.html":[2,0,0,3],
-"namespacealpaka_1_1cpu.html":[3,0,0,3]
+"namespacealpaka_1_1core_1_1vectorization.html":[3,0,0,2,3]
 };

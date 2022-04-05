@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html#a749dd3d42bbde76aab2525dfbc4211e8":[3,0,0,13,7,4],
+"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html#a96caad1a9a0f91802c68dfc0afdc4107":[3,0,0,13,7,1],
+"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html#aaa8cbee4b86f50bde78aa11c0a638e48":[3,0,0,13,7,3],
 "structalpaka_1_1meta_1_1DependentFalseType.html":[3,0,0,13,8],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[3,0,0,13,11],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html":[3,0,0,13,12],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html#aa00ad0d7a9a4757c11fcf43fce795084":[3,0,0,17,5,1,0],
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html":[3,0,0,17,5,2],
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html#adad2a1df042dbc8fe4ea781cc5de4396":[3,0,0,17,5,2,0],
-"structalpaka_1_1test_1_1QueueTestFixture.html":[3,0,0,17,9],
-"structalpaka_1_1test_1_1QueueTestFixture.html#a31498dfa654e0b1798e8c371c1ff3f31":[3,0,0,17,9,1],
-"structalpaka_1_1test_1_1QueueTestFixture.html#aa7ea709cee86b8cf754023ac959d39c6":[3,0,0,17,9,0],
-"structalpaka_1_1test_1_1QueueTestFixture.html#ab6d9a51ae066c4b3a3d1ac2b2b12715e":[3,0,0,17,9,5]
+"structalpaka_1_1test_1_1QueueTestFixture.html":[3,0,0,17,9]
 };

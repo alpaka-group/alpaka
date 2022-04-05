@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"DevOmp5_8hpp.html#abbef4249dfcd6989eff6088e26bb911f":[4,0,0,0,5,8,15],
 "DevOmp5_8hpp_source.html":[4,0,0,0,5,8],
 "DevUniformCudaHipRt_8hpp.html":[4,0,0,0,5,9],
 "DevUniformCudaHipRt_8hpp.html#a28e85e5b3182910ce26538c4f4b1d9fd":[4,0,0,0,5,9,15],
@@ -39,6 +40,7 @@ var NAVTREEINDEX1 =
 "EventOmp5_8hpp.html#a0173206e98595f605bffe9a6198da754":[4,0,0,0,8,8,0],
 "EventOmp5_8hpp_source.html":[4,0,0,0,8,8],
 "EventUniformCudaHipRt_8hpp.html":[4,0,0,0,8,9],
+"EventUniformCudaHipRt_8hpp.html#a6f508034ba4e3b4079efd7e3dfb9838b":[4,0,0,0,8,9,12],
 "EventUniformCudaHipRt_8hpp_source.html":[4,0,0,0,8,9],
 "ExampleDefaultAcc_8hpp.html":[4,0,0,0,9,0],
 "ExampleDefaultAcc_8hpp.html#a8aec9660f2a0dd2e01db1edd34e4cafa":[4,0,0,0,9,0,0],
@@ -230,6 +232,7 @@ var NAVTREEINDEX1 =
 "PltfOmp5_8hpp.html":[4,0,0,0,18,7],
 "PltfOmp5_8hpp_source.html":[4,0,0,0,18,7],
 "PltfUniformCudaHipRt_8hpp.html":[4,0,0,0,18,8],
+"PltfUniformCudaHipRt_8hpp.html#a11c8a88607a57558a48b2f279bbec545":[4,0,0,0,18,8,4],
 "PltfUniformCudaHipRt_8hpp_source.html":[4,0,0,0,18,8],
 "Positioning_8hpp.html":[4,0,0,0,3,18],
 "Positioning_8hpp_source.html":[4,0,0,0,3,18],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "QueueCpuSyclIntelNonBlocking_8hpp.html":[4,0,0,0,19,7],
 "QueueCpuSyclIntelNonBlocking_8hpp_source.html":[4,0,0,0,19,7],
 "QueueFpgaSyclIntelBlocking_8hpp.html":[4,0,0,0,19,8],
-"QueueFpgaSyclIntelBlocking_8hpp_source.html":[4,0,0,0,19,8],
-"QueueFpgaSyclIntelNonBlocking_8hpp.html":[4,0,0,0,19,9],
-"QueueFpgaSyclIntelNonBlocking_8hpp_source.html":[4,0,0,0,19,9],
-"QueueFpgaSyclXilinxBlocking_8hpp.html":[4,0,0,0,19,10]
+"QueueFpgaSyclIntelBlocking_8hpp_source.html":[4,0,0,0,19,8]
 };

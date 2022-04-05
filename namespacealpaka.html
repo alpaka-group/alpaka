@@ -469,6 +469,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ac9381e9159626b8969f257249c4c9386"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">Buf</a> = typename <a class="el" href="structalpaka_1_1trait_1_1BufType.html">trait::BufType</a>&lt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">alpaka::Dev</a>&lt; TDev &gt;, TElem, TDim, TIdx &gt;::type</td></tr>
 <tr class="memdesc:ac9381e9159626b8969f257249c4c9386"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer type trait alias template to remove the ::type.  <a href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">More...</a><br /></td></tr>
 <tr class="separator:ac9381e9159626b8969f257249c4c9386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d0a0cf839acc949da9fcf4d05571ad4"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a9d0a0cf839acc949da9fcf4d05571ad4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9d0a0cf839acc949da9fcf4d05571ad4">BufCudaRt</a> = <a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html">BufUniformCudaHipRt</a>&lt; TElem, TDim, TIdx &gt;</td></tr>
+<tr class="separator:a9d0a0cf839acc949da9fcf4d05571ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32355d5c313b0846505aeaf5d42484be"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a32355d5c313b0846505aeaf5d42484be"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a> = typename <a class="el" href="structalpaka_1_1trait_1_1DevType.html">trait::DevType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a32355d5c313b0846505aeaf5d42484be"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device type trait alias template to remove the ::type.  <a href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">More...</a><br /></td></tr>
@@ -492,6 +495,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:a097911074293c18d5a37aac3266f9a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc8723b925f6ddf8b27631b71a7c22c6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#acc8723b925f6ddf8b27631b71a7c22c6">EventCpu</a> = <a class="el" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads</a>&lt; <a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> &gt;</td></tr>
 <tr class="separator:acc8723b925f6ddf8b27631b71a7c22c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f508034ba4e3b4079efd7e3dfb9838b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6f508034ba4e3b4079efd7e3dfb9838b">EventCudaRt</a> = <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html">EventUniformCudaHipRt</a></td></tr>
+<tr class="separator:a6f508034ba4e3b4079efd7e3dfb9838b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0173206e98595f605bffe9a6198da754"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0173206e98595f605bffe9a6198da754">EventOmp5</a> = <a class="el" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads</a>&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> &gt;</td></tr>
 <tr class="separator:a0173206e98595f605bffe9a6198da754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memTemplParams" colspan="2">template&lt;class TDim , class TIdx &gt; </td></tr>
@@ -511,6 +516,8 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6b83bc07c7ca78824c9b5026f951cff4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4">Pltf</a> = typename <a class="el" href="structalpaka_1_1trait_1_1PltfType.html">trait::PltfType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a6b83bc07c7ca78824c9b5026f951cff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The platform type trait alias template to remove the ::type.  <a href="namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4">More...</a><br /></td></tr>
 <tr class="separator:a6b83bc07c7ca78824c9b5026f951cff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c8a88607a57558a48b2f279bbec545"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a11c8a88607a57558a48b2f279bbec545">PltfCudaRt</a> = <a class="el" href="classalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a></td></tr>
+<tr class="separator:a11c8a88607a57558a48b2f279bbec545"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="memTemplParams" colspan="2">template&lt;typename TEnv , typename TProperty &gt; </td></tr>
 <tr class="memitem:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa">Queue</a> = typename <a class="el" href="structalpaka_1_1trait_1_1QueueType.html">trait::QueueType</a>&lt; TEnv, TProperty &gt;::type</td></tr>
 <tr class="memdesc:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue based on the environment and a property.  <a href="namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa">More...</a><br /></td></tr>
@@ -1103,6 +1110,24 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 
 </div>
 </div>
+<a id="a9d0a0cf839acc949da9fcf4d05571ad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d0a0cf839acc949da9fcf4d05571ad4">&#9670;&nbsp;</a></span>BufCudaRt</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a9d0a0cf839acc949da9fcf4d05571ad4">alpaka::BufCudaRt</a> = typedef <a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html">BufUniformCudaHipRt</a>&lt;TElem, TDim, TIdx&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00086">86</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a32355d5c313b0846505aeaf5d42484be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32355d5c313b0846505aeaf5d42484be">&#9670;&nbsp;</a></span>Dev</h2>
 
@@ -1233,6 +1258,22 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a6f508034ba4e3b4079efd7e3dfb9838b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f508034ba4e3b4079efd7e3dfb9838b">&#9670;&nbsp;</a></span>EventCudaRt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a6f508034ba4e3b4079efd7e3dfb9838b">alpaka::EventCudaRt</a> = typedef <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html">EventUniformCudaHipRt</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="EventUniformCudaHipRt_8hpp_source.html#l00121">121</a> of file <a class="el" href="EventUniformCudaHipRt_8hpp_source.html">EventUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a0173206e98595f605bffe9a6198da754"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0173206e98595f605bffe9a6198da754">&#9670;&nbsp;</a></span>EventOmp5</h2>
 
@@ -1340,6 +1381,22 @@ template&lt;typename T &gt; </div>
 <p>The platform type trait alias template to remove the ::type. </p>
 
 <p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00050">50</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a11c8a88607a57558a48b2f279bbec545"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11c8a88607a57558a48b2f279bbec545">&#9670;&nbsp;</a></span>PltfCudaRt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a11c8a88607a57558a48b2f279bbec545">alpaka::PltfCudaRt</a> = typedef <a class="el" href="classalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="PltfUniformCudaHipRt_8hpp_source.html#l00040">40</a> of file <a class="el" href="PltfUniformCudaHipRt_8hpp_source.html">PltfUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -6455,7 +6512,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Tue Apr 5 2022 13:40:58 for alpaka by
+    <li class="footer">Generated on Tue Apr 5 2022 16:40:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

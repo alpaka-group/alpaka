@@ -159,6 +159,7 @@ var NAVTREEINDEX0 =
 "BufOmp5_8hpp.html":[4,0,0,0,15,1,12],
 "BufOmp5_8hpp_source.html":[4,0,0,0,15,1,12],
 "BufUniformCudaHipRt_8hpp.html":[4,0,0,0,15,1,13],
+"BufUniformCudaHipRt_8hpp.html#a9d0a0cf839acc949da9fcf4d05571ad4":[4,0,0,0,15,1,13,23],
 "BufUniformCudaHipRt_8hpp_source.html":[4,0,0,0,15,1,13],
 "CartesianProduct_8hpp.html":[4,0,0,0,16,1],
 "CartesianProduct_8hpp.html#a912098ffc7a3de7e5b522a451e81da24":[4,0,0,0,16,1,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "DevOacc_8hpp.html":[4,0,0,0,5,7],
 "DevOacc_8hpp_source.html":[4,0,0,0,5,7],
 "DevOmp5_8hpp.html":[4,0,0,0,5,8],
-"DevOmp5_8hpp.html#a1994bcdaa7cefe3ae066eb3033530826":[4,0,0,0,5,8,16],
-"DevOmp5_8hpp.html#abbef4249dfcd6989eff6088e26bb911f":[4,0,0,0,5,8,15]
+"DevOmp5_8hpp.html#a1994bcdaa7cefe3ae066eb3033530826":[4,0,0,0,5,8,16]
 };

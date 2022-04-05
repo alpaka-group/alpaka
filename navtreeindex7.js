@@ -1,9 +1,12 @@
 var NAVTREEINDEX7 =
 {
+"namespacealpaka_1_1core_1_1vectorization.html":[2,0,0,2,3],
+"namespacealpaka_1_1cpu.html":[2,0,0,3],
+"namespacealpaka_1_1cpu.html":[3,0,0,3],
 "namespacealpaka_1_1cpu_1_1detail.html":[2,0,0,3,0],
 "namespacealpaka_1_1cpu_1_1detail.html":[3,0,0,3,0],
-"namespacealpaka_1_1cuda.html":[3,0,0,4],
 "namespacealpaka_1_1cuda.html":[2,0,0,4],
+"namespacealpaka_1_1cuda.html":[3,0,0,4],
 "namespacealpaka_1_1cuda_1_1detail.html":[2,0,0,4,0],
 "namespacealpaka_1_1cuda_1_1trait.html":[2,0,0,4,1],
 "namespacealpaka_1_1detail.html":[3,0,0,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1OffloadBuiltInSharedMemFixed.html":[3,0,0,101],
 "structalpaka_1_1OffloadBuiltInSharedMemOff.html":[3,0,0,102],
 "structalpaka_1_1concepts_1_1Implements.html":[3,0,0,1,1],
-"structalpaka_1_1concepts_1_1ImplementsConcept.html":[3,0,0,1,2],
-"structalpaka_1_1concepts_1_1ImplementsConcept.html#a2d20969b814a4a787a48a138c3d4fe89":[3,0,0,1,2,1],
-"structalpaka_1_1concepts_1_1ImplementsConcept.html#a521431bcccdbca069d740d586f7299f4":[3,0,0,1,2,2],
-"structalpaka_1_1concepts_1_1ImplementsConcept.html#aaf12905eb12d1225a0065e53740b1d24":[3,0,0,1,2,0]
+"structalpaka_1_1concepts_1_1ImplementsConcept.html":[3,0,0,1,2]
 };

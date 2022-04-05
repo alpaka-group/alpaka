@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a8a71c20821289af377e03333901a5179":[3,0,0,16,6,2],
+"classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ac858584e5976e466b1fcbf1a6beee3b4":[3,0,0,16,6,1],
+"classalpaka_1_1rand_1_1Philox4x32x10Vector.html#ac8d20c40667921a60ff320987d777a6e":[3,0,0,16,6,7],
 "classalpaka_1_1rand_1_1RandDefault.html":[3,0,0,16,7],
 "classalpaka_1_1rand_1_1RandUniformCudaHipRand.html":[3,0,0,16,9],
 "classalpaka_1_1rand_1_1RandomDevice.html":[3,0,0,16,8],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "dir_7d123124934e174b4626b90ed7337338.html":[4,0,0,0,27],
 "dir_7f059d0868492c7d09d9464b52bc41e5.html":[4,0,0,0,15,1,2],
 "dir_80053b06cd80a729c5eaac439ea18035.html":[4,0,0,0,2,0],
-"dir_820f4fd4051d8a4d65c2fe0dda35bb00.html":[4,0,0,0,11,1],
-"dir_978fff6d009a0eab698f51257fa3760a.html":[4,0,0,0,5],
-"dir_9b06e2d5421d26ecb89f5fc8cf901459.html":[4,0,0,0,16],
-"dir_9c737d14007cafba76b1e7c7800c2a61.html":[4,0,0,0,21]
+"dir_820f4fd4051d8a4d65c2fe0dda35bb00.html":[4,0,0,0,11,1]
 };
