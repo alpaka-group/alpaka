@@ -295,96 +295,106 @@ $(document).ready(function(){initNavTree('QueueUniformCudaHipRt_8hpp_source.html
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            <span class="keyword">static</span> <span class="keywordtype">void</span> HIPRT_CB</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a474bd2ac55e259e62ce0e028af34e2a1">  208</a></span>&#160;            <a class="code" href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a474bd2ac55e259e62ce0e028af34e2a1">uniformCudaHipRtCallback</a>(</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                <a class="code" href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(Stream_t) <span class="comment">/*queue*/</span>,</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                <a class="code" href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(<a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a>) <span class="comment">/*status*/</span>,</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <span class="keywordtype">void</span>* arg)</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            {</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                <span class="comment">// explicitly copy the shared_ptr so that this method holds the state even when the executing thread</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                <span class="comment">// has already finished.</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span> spCallbackSynchronizationData</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                    = <span class="keyword">reinterpret_cast&lt;</span>CallbackSynchronizationData*<span class="keyword">&gt;</span>(arg)-&gt;shared_from_this();</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                <span class="comment">// Notify the executing thread.</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                    std::unique_lock&lt;std::mutex&gt; lock(spCallbackSynchronizationData-&gt;m_mutex);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                    spCallbackSynchronizationData-&gt;m_state = CallbackState::notified;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                }</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                spCallbackSynchronizationData-&gt;m_event.notify_one();</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                <span class="comment">// Wait for the executing thread to finish the task if it has not already finished.</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock(spCallbackSynchronizationData-&gt;m_mutex);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                <span class="keywordflow">if</span>(spCallbackSynchronizationData-&gt;m_state != CallbackState::finished)</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                    spCallbackSynchronizationData-&gt;m_event.wait(</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                        lock,</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                        [&amp;spCallbackSynchronizationData]()</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                        { <span class="keywordflow">return</span> spCallbackSynchronizationData-&gt;m_state == CallbackState::finished; });</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a5be71fe28c14ba7323a286233b2164ac">  236</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a5be71fe28c14ba7323a286233b2164ac">enqueue</a>(</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                <a class="code" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt;TBlocking&gt;</a>&amp; queue,</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                TTask <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            {</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                <span class="keyword">auto</span> spCallbackSynchronizationData = std::make_shared&lt;CallbackSynchronizationData&gt;();</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(<a class="code" href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(StreamAddCallback)(</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                    queue.getNativeHandle(),</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                    uniformCudaHipRtCallback,</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                    spCallbackSynchronizationData.get(),</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                    0u));</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                <span class="comment">// We start a new std::thread which stores the task to be executed.</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                <span class="comment">// This circumvents the limitation that it is not possible to call CUDA/HIP methods within the CUDA/HIP</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                <span class="comment">// callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                <span class="comment">// The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="comment">// before it executes the next task in the queue (CUDA/HIP stream).</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                std::thread t(</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                    [spCallbackSynchronizationData, task]()</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                    {</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                        <span class="comment">// If the callback has not yet been called, we wait for it.</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                        {</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                            std::unique_lock&lt;std::mutex&gt; lock(spCallbackSynchronizationData-&gt;m_mutex);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                            <span class="keywordflow">if</span>(spCallbackSynchronizationData-&gt;m_state != CallbackState::notified)</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                            {</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                                spCallbackSynchronizationData-&gt;m_event.wait(</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                                    lock,</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                                    [&amp;spCallbackSynchronizationData]()</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                                    { <span class="keywordflow">return</span> spCallbackSynchronizationData-&gt;m_state == CallbackState::notified; });</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                            }</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                            task();</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                            <span class="comment">// Notify the waiting CUDA/HIP thread.</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                            spCallbackSynchronizationData-&gt;m_state = CallbackState::finished;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                        }</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                        spCallbackSynchronizationData-&gt;m_event.notify_one();</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                    });</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                <span class="keywordflow">if</span> constexpr(TBlocking)</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                {</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    t.join();</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                }</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                {</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                    t.detach();</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                }</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            }</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        };</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">        //! The CUDA/HIP RT queue native handle trait specialization.</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> TBlocking&gt;</div>
-<div class="line"><a name="l00287"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html">  287</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1NativeHandle.html">NativeHandle</a>&lt;uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt;TBlocking&gt;&gt;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        {</div>
-<div class="line"><a name="l00289"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3">  289</a></span>&#160;            [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3">getNativeHandle</a>(</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                <a class="code" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt;TBlocking&gt;</a> <span class="keyword">const</span>&amp; queue)</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                <span class="keywordflow">return</span> queue.<a class="code" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html#a47b5e94d5ab40abe81efa0e678a0874e">getNativeHandle</a>();</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        };</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;#    <span class="keywordflow">if</span> !defined(CUDA_VERSION) || CUDA_VERSION &lt;= 9020</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                <a class="code" href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(Stream_t) <span class="comment">/*queue*/</span>,</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <a class="code" href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(<a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a>) <span class="comment">/*status*/</span>,</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;#    endif</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                <span class="keywordtype">void</span>* arg)</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            {</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                <span class="comment">// explicitly copy the shared_ptr so that this method holds the state even when the executing thread</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                <span class="comment">// has already finished.</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span> spCallbackSynchronizationData</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                    = <span class="keyword">reinterpret_cast&lt;</span>CallbackSynchronizationData*<span class="keyword">&gt;</span>(arg)-&gt;shared_from_this();</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                <span class="comment">// Notify the executing thread.</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                {</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                    std::unique_lock&lt;std::mutex&gt; lock(spCallbackSynchronizationData-&gt;m_mutex);</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                    spCallbackSynchronizationData-&gt;m_state = CallbackState::notified;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                spCallbackSynchronizationData-&gt;m_event.notify_one();</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                <span class="comment">// Wait for the executing thread to finish the task if it has not already finished.</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock(spCallbackSynchronizationData-&gt;m_mutex);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                <span class="keywordflow">if</span>(spCallbackSynchronizationData-&gt;m_state != CallbackState::finished)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                    spCallbackSynchronizationData-&gt;m_event.wait(</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                        lock,</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                        [&amp;spCallbackSynchronizationData]()</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                        { <span class="keywordflow">return</span> spCallbackSynchronizationData-&gt;m_state == CallbackState::finished; });</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                }</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a5be71fe28c14ba7323a286233b2164ac">  239</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a5be71fe28c14ba7323a286233b2164ac">enqueue</a>(</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                <a class="code" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt;TBlocking&gt;</a>&amp; queue,</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                TTask <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;            {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                <span class="keyword">auto</span> spCallbackSynchronizationData = std::make_shared&lt;CallbackSynchronizationData&gt;();</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; CUDA_VERSION &gt; 9020</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(<a class="code" href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(LaunchHostFunc)(</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                    queue.getNativeHandle(),</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                    uniformCudaHipRtCallback,</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                    spCallbackSynchronizationData.get()));</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(<a class="code" href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(StreamAddCallback)(</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                    queue.getNativeHandle(),</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                    uniformCudaHipRtCallback,</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                    spCallbackSynchronizationData.get(),</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                    0u));</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="comment">// We start a new std::thread which stores the task to be executed.</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                <span class="comment">// This circumvents the limitation that it is not possible to call CUDA/HIP methods within the CUDA/HIP</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                <span class="comment">// callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <span class="comment">// The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                <span class="comment">// before it executes the next task in the queue (CUDA/HIP stream).</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                std::thread t(</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                    [spCallbackSynchronizationData, task]()</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                    {</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                        <span class="comment">// If the callback has not yet been called, we wait for it.</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                        {</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                            std::unique_lock&lt;std::mutex&gt; lock(spCallbackSynchronizationData-&gt;m_mutex);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                            <span class="keywordflow">if</span>(spCallbackSynchronizationData-&gt;m_state != CallbackState::notified)</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                            {</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                                spCallbackSynchronizationData-&gt;m_event.wait(</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                                    lock,</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                                    [&amp;spCallbackSynchronizationData]()</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                                    { <span class="keywordflow">return</span> spCallbackSynchronizationData-&gt;m_state == CallbackState::notified; });</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                            }</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                            task();</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                            <span class="comment">// Notify the waiting CUDA/HIP thread.</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                            spCallbackSynchronizationData-&gt;m_state = CallbackState::finished;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                        }</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                        spCallbackSynchronizationData-&gt;m_event.notify_one();</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                    });</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                <span class="keywordflow">if</span> constexpr(TBlocking)</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                {</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                    t.join();</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                {</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                    t.detach();</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                }</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            }</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        };</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        //! The CUDA/HIP RT queue native handle trait specialization.</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> TBlocking&gt;</div>
+<div class="line"><a name="l00297"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html">  297</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1NativeHandle.html">NativeHandle</a>&lt;uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt;TBlocking&gt;&gt;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        {</div>
+<div class="line"><a name="l00299"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3">  299</a></span>&#160;            [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3">getNativeHandle</a>(</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                <a class="code" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt;TBlocking&gt;</a> <span class="keyword">const</span>&amp; queue)</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            {</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <span class="keywordflow">return</span> queue.<a class="code" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html#a47b5e94d5ab40abe81efa0e678a0874e">getNativeHandle</a>();</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        };</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructalpaka_1_1trait_1_1DevType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1DevType.html">alpaka::trait::DevType</a></div><div class="ttdoc">The device type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00026">Traits.hpp:26</a></div></div>
@@ -414,7 +424,7 @@ $(document).ready(function(){initNavTree('QueueUniformCudaHipRt_8hpp_source.html
 <div class="ttc" id="aclassalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT queue.</div><div class="ttdef"><b>Definition:</b> <a href="DevUniformCudaHipRt_8hpp_source.html#l00046">DevUniformCudaHipRt.hpp:46</a></div></div>
 <div class="ttc" id="await_2Traits_8hpp_html"><div class="ttname"><a href="wait_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1GetDev_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4_html_a546979b7e57e3329ceb9550d23fa91fb"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetDev_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a546979b7e57e3329ceb9550d23fa91fb">alpaka::trait::GetDev&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; &gt;::getDev</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getDev(uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; const &amp;queue) -&gt; DevUniformCudaHipRt</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00143">QueueUniformCudaHipRt.hpp:143</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4_html_a00a943e7a5c003b76dab3c18736683f3"><div class="ttname"><a href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3">alpaka::trait::NativeHandle&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; &gt;::getNativeHandle</a></div><div class="ttdeci">static auto getNativeHandle(uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; const &amp;queue)</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00289">QueueUniformCudaHipRt.hpp:289</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4_html_a00a943e7a5c003b76dab3c18736683f3"><div class="ttname"><a href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3">alpaka::trait::NativeHandle&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; &gt;::getNativeHandle</a></div><div class="ttdeci">static auto getNativeHandle(uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; const &amp;queue)</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00299">QueueUniformCudaHipRt.hpp:299</a></div></div>
 <div class="ttc" id="aCudaHipCommon_8hpp_html_a221d7f397ce9c41696e7fcf3dbcfd95b"><div class="ttname"><a href="CudaHipCommon_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a></div><div class="ttdeci">#define ALPAKA_API_PREFIX(name)</div><div class="ttdoc">prefix a name with cuda</div><div class="ttdef"><b>Definition:</b> <a href="CudaHipCommon_8hpp_source.html#l00032">CudaHipCommon.hpp:32</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta1c36a7b62687a7752c3b5a967d18bfc_html_a525adfaecc9b5680354621a3191a2419"><div class="ttname"><a href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta1c36a7b62687a7752c3b5a967d18bfc.html#a525adfaecc9b5680354621a3191a2419">alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt;, TTask &gt;::CallbackSynchronizationData::m_mutex</a></div><div class="ttdeci">std::mutex m_mutex</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00198">QueueUniformCudaHipRt.hpp:198</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1CurrentThreadWaitFor_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1CurrentThreadWaitFor.html">alpaka::trait::CurrentThreadWaitFor</a></div><div class="ttdoc">The thread wait trait.</div><div class="ttdef"><b>Definition:</b> <a href="wait_2Traits_8hpp_source.html#l00026">Traits.hpp:26</a></div></div>
@@ -428,7 +438,7 @@ $(document).ready(function(){initNavTree('QueueUniformCudaHipRt_8hpp_source.html
 <div class="ttc" id="aclassalpaka_1_1DevUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevUniformCudaHipRt_8hpp_source.html#l00052">DevUniformCudaHipRt.hpp:52</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl_html_a0f753524b226278604787dd3cf67555f"><div class="ttname"><a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a0f753524b226278604787dd3cf67555f">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl::operator=</a></div><div class="ttdeci">auto operator=(QueueUniformCudaHipRtImpl &amp;&amp;) -&gt; QueueUniformCudaHipRtImpl &amp;=delete</div></div>
 <div class="ttc" id="aqueue_2Traits_8hpp_html"><div class="ttname"><a href="queue_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4_html_a5be71fe28c14ba7323a286233b2164ac"><div class="ttname"><a href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a5be71fe28c14ba7323a286233b2164ac">alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt;, TTask &gt;::enqueue</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto enqueue(uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; &amp;queue, TTask const &amp;task) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00236">QueueUniformCudaHipRt.hpp:236</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4_html_a5be71fe28c14ba7323a286233b2164ac"><div class="ttname"><a href="structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_00_01TTask_01_4.html#a5be71fe28c14ba7323a286233b2164ac">alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt;, TTask &gt;::enqueue</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto enqueue(uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; &amp;queue, TTask const &amp;task) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00239">QueueUniformCudaHipRt.hpp:239</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_html_add15f5fe78b9e591624609f9d9e2ba52"><div class="ttname"><a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html#add15f5fe78b9e591624609f9d9e2ba52">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt::QueueUniformCudaHipRt</a></div><div class="ttdeci">ALPAKA_FN_HOST QueueUniformCudaHipRt(DevUniformCudaHipRt const &amp;dev)</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00099">QueueUniformCudaHipRt.hpp:99</a></div></div>
 <div class="ttc" id="aevent_2Traits_8hpp_html"><div class="ttname"><a href="event_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1uniform__cuda__hip_1_1detail_html_a48180eda98f53c8391a17fa921d7b958"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">alpaka::uniform_cuda_hip::detail::Error_t</a></div><div class="ttdeci">cudaError Error_t</div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00033">UniformCudaHip.hpp:33</a></div></div>
@@ -440,7 +450,7 @@ $(document).ready(function(){initNavTree('QueueUniformCudaHipRt_8hpp_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_35e231cfaf39d44c1525e8247564e585.html">queue</a></li><li class="navelem"><a class="el" href="dir_2176bdc4abbfee27816f3bddb372b87e.html">cuda_hip</a></li><li class="navelem"><a class="el" href="QueueUniformCudaHipRt_8hpp.html">QueueUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 5 2022 16:40:48 for alpaka by
+    <li class="footer">Generated on Tue Apr 5 2022 16:42:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
