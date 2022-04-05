@@ -36,6 +36,12 @@ namespace alpaka
         ALPAKA_FN_HOST PltfUniformCudaHipRt() = delete;
     };
 
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+    using PltfCudaRt = PltfUniformCudaHipRt;
+#    else
+    using PltfHipRt = PltfUniformCudaHipRt;
+#    endif
+
     namespace trait
     {
         //! The CUDA/HIP RT platform device type trait specialization.
