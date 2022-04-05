@@ -260,7 +260,7 @@ $(document).ready(function(){initNavTree('TaskKernelOmp5_8hpp_source.html',''); 
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                        <span class="comment">// The first thread does some checks in the first block executed.</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                        <span class="keywordflow">if</span>((::omp_get_thread_num() == 0) &amp;&amp; (t == 0))</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                        {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                            <span class="keywordtype">int</span> <span class="keyword">const</span> numThreads(::omp_get_num_threads());</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                            <span class="keywordtype">int</span> <span class="keyword">const</span> numThreads = ::omp_get_num_threads();</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                            printf(<span class="stringliteral">&quot;%s omp_get_num_threads: %d\n&quot;</span>, __func__, numThreads);</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                            <span class="keywordflow">if</span>(numThreads != <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(blockThreadCount))</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                            {</div>
@@ -403,7 +403,7 @@ $(document).ready(function(){initNavTree('TaskKernelOmp5_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelOmp5_8hpp.html">TaskKernelOmp5.hpp</a></li>
-    <li class="footer">Generated on Thu Mar 31 2022 14:22:28 for alpaka by
+    <li class="footer">Generated on Tue Apr 5 2022 13:04:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
