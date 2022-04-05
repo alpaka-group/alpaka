@@ -81,6 +81,14 @@ namespace alpaka
         TIdx m_pitchBytes;
     };
 
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+    template<typename TElem, typename TDim, typename TIdx>
+    using BufCudaRt = BufUniformCudaHipRt<TElem, TDim, TIdx>;
+#    else
+    template<typename TElem, typename TDim, typename TIdx>
+    using BufHipRt = BufUniformCudaHipRt<TElem, TDim, TIdx>;
+#    endif
+
     namespace trait
     {
         //! The BufUniformCudaHipRt device type trait specialization.
