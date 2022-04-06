@@ -166,7 +166,8 @@ namespace alpaka::math
         template<typename T, typename TArgument, typename TSfinae = void>
         struct Arg
         {
-            //!@todo why is this needed here, but not in other functions?
+            // It is unclear why this is needed here and not in other math trait structs. But removing it causes
+            // warnings with calling a __host__ function from a __host__ __device__ function when building for CUDA.
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArgument const& argument)
             {

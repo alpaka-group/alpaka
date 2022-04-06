@@ -166,8 +166,9 @@ struct TestTemplate
         // Consider all infinite values equal, @see comment at isFinite()
         if(!isFinite(a) && !isFinite(b))
             return true;
-        // For the same reason use relative difference comparison with quite a large margin
-        auto const marginValue = static_cast<T>(1.0e4) * std::numeric_limits<T>::epsilon();
+        // For the same reason use relative difference comparison with a large margin
+        auto const scalingFactor = static_cast<T>(std::is_same_v<T, float> ? 1e4 : 1e6);
+        auto const marginValue = scalingFactor * std::numeric_limits<T>::epsilon();
         return (a.real() == Approx(b.real()).margin(marginValue).epsilon(marginValue))
             && (a.imag() == Approx(b.imag()).margin(marginValue).epsilon(marginValue));
     }

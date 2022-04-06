@@ -16,7 +16,9 @@
 
 #include <catch2/catch.hpp>
 
+#include <complex>
 #include <tuple>
+#include <type_traits>
 
 using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 
@@ -34,3 +36,10 @@ TEMPLATE_LIST_TEST_CASE("mathOpsComplexDouble", "[math] [operator]", TestAccFunc
     auto testTemplate = TestTemplate<Acc, Functor>{};
     testTemplate.template operator()<alpaka::Complex<double>>();
 }
+
+#ifdef __cpp_lib_is_layout_compatible
+TEMPLATE_LIST_TEST_CASE("mathOpsComplexDouble", "[layout]", TestAccs)
+{
+    STATIC_REQUIRE(std::is_layout_compatible_v<alpaka::Complex<double> std::complex<double>>);
+}
+#endif
