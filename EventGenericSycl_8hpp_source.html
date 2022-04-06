@@ -124,12 +124,12 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> operator==(EventGenericSycl <span class="keyword">const</span>&amp; lhs, EventGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a6ffccb70408f2e4ef54710801da312cf">operator==</a>(EventGenericSycl <span class="keyword">const</span>&amp; lhs, EventGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">return</span> (lhs.m_event == rhs.m_event);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> operator!=(EventGenericSycl <span class="keyword">const</span>&amp; lhs, EventGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#add7b0ae928b77951134fee455fc0e142">operator!=</a>(EventGenericSycl <span class="keyword">const</span>&amp; lhs, EventGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> !(lhs == rhs);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
@@ -273,6 +273,8 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="ttc" id="await_2Traits_8hpp_html"><div class="ttname"><a href="wait_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aQueueGenericSyclNonBlocking_8hpp_html"><div class="ttname"><a href="QueueGenericSyclNonBlocking_8hpp.html">QueueGenericSyclNonBlocking.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a5906c3e845cdb7c70e581d378c212e81"><div class="ttname"><a href="namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81">alpaka::isComplete</a></div><div class="ttdeci">ALPAKA_FN_HOST auto isComplete(TEvent const &amp;event) -&gt; bool</div><div class="ttdoc">Tests if the given event has already been completed.</div><div class="ttdef"><b>Definition:</b> <a href="event_2Traits_8hpp_source.html#l00039">Traits.hpp:39</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_add7b0ae928b77951134fee455fc0e142"><div class="ttname"><a href="namespacealpaka.html#add7b0ae928b77951134fee455fc0e142">alpaka::operator!=</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC bool operator!=(Complex&lt; T &gt; const &amp;lhs, Complex&lt; T &gt; const &amp;rhs)</div><div class="ttdoc">Inequality of two complex numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Complex_8hpp_source.html#l00316">Complex.hpp:316</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a6ffccb70408f2e4ef54710801da312cf"><div class="ttname"><a href="namespacealpaka.html#a6ffccb70408f2e4ef54710801da312cf">alpaka::operator==</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC bool operator==(Complex&lt; T &gt; const &amp;lhs, Complex&lt; T &gt; const &amp;rhs)</div><div class="ttdoc">Equality of two complex numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Complex_8hpp_source.html#l00290">Complex.hpp:290</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1experimental_html"><div class="ttname"><a href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div><div class="ttdef"><b>Definition:</b> <a href="view_2Accessor_8hpp_source.html#l00026">Accessor.hpp:26</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1NativeHandle_html_a5bd0a7077325fd9fd45c60c8133f9b3f"><div class="ttname"><a href="structalpaka_1_1trait_1_1NativeHandle.html#a5bd0a7077325fd9fd45c60c8133f9b3f">alpaka::trait::NativeHandle::getNativeHandle</a></div><div class="ttdeci">static auto getNativeHandle(TImpl const &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="traits_2Traits_8hpp_source.html#l00023">Traits.hpp:23</a></div></div>
 <div class="ttc" id="aQueueGenericSyclBlocking_8hpp_html"><div class="ttname"><a href="QueueGenericSyclBlocking_8hpp.html">QueueGenericSyclBlocking.hpp</a></div></div>
@@ -281,7 +283,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cb41fd9734833cacff31b3343158f46b.html">event</a></li><li class="navelem"><a class="el" href="EventGenericSycl_8hpp.html">EventGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 5 2022 16:42:28 for alpaka by
+    <li class="footer">Generated on Wed Apr 6 2022 14:54:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

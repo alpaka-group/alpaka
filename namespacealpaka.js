@@ -67,6 +67,7 @@ var namespacealpaka =
     [ "BufCpu", "classalpaka_1_1BufCpu.html", "classalpaka_1_1BufCpu" ],
     [ "BufOmp5", "classalpaka_1_1BufOmp5.html", "classalpaka_1_1BufOmp5" ],
     [ "BufUniformCudaHipRt", "classalpaka_1_1BufUniformCudaHipRt.html", "classalpaka_1_1BufUniformCudaHipRt" ],
+    [ "Complex", "classalpaka_1_1Complex.html", "classalpaka_1_1Complex" ],
     [ "ConceptAcc", "structalpaka_1_1ConceptAcc.html", null ],
     [ "ConceptAtomicBlocks", "structalpaka_1_1ConceptAtomicBlocks.html", null ],
     [ "ConceptAtomicGrids", "structalpaka_1_1ConceptAtomicGrids.html", null ],

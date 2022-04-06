@@ -209,12 +209,12 @@ $(document).ready(function(){initNavTree('DevGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        {</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> operator==(DevGenericSycl <span class="keyword">const</span>&amp; lhs, DevGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a6ffccb70408f2e4ef54710801da312cf">operator==</a>(DevGenericSycl <span class="keyword">const</span>&amp; lhs, DevGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        {</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">return</span> (lhs.m_impl == rhs.m_impl);</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> operator!=(DevGenericSycl <span class="keyword">const</span>&amp; lhs, DevGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">friend</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#add7b0ae928b77951134fee455fc0e142">operator!=</a>(DevGenericSycl <span class="keyword">const</span>&amp; lhs, DevGenericSycl <span class="keyword">const</span>&amp; rhs) -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        {</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="keywordflow">return</span> !(lhs == rhs);</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div>
@@ -352,6 +352,8 @@ $(document).ready(function(){initNavTree('DevGenericSycl_8hpp_source.html',''); 
 <div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aQueueGenericSyclBase_8hpp_html"><div class="ttname"><a href="QueueGenericSyclBase_8hpp.html">QueueGenericSyclBase.hpp</a></div></div>
 <div class="ttc" id="amem_2buf_2Traits_8hpp_html"><div class="ttname"><a href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_add7b0ae928b77951134fee455fc0e142"><div class="ttname"><a href="namespacealpaka.html#add7b0ae928b77951134fee455fc0e142">alpaka::operator!=</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC bool operator!=(Complex&lt; T &gt; const &amp;lhs, Complex&lt; T &gt; const &amp;rhs)</div><div class="ttdoc">Inequality of two complex numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Complex_8hpp_source.html#l00316">Complex.hpp:316</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a6ffccb70408f2e4ef54710801da312cf"><div class="ttname"><a href="namespacealpaka.html#a6ffccb70408f2e4ef54710801da312cf">alpaka::operator==</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC bool operator==(Complex&lt; T &gt; const &amp;lhs, Complex&lt; T &gt; const &amp;rhs)</div><div class="ttdoc">Equality of two complex numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Complex_8hpp_source.html#l00290">Complex.hpp:290</a></div></div>
 <div class="ttc" id="aProperties_8hpp_html"><div class="ttname"><a href="Properties_8hpp.html">Properties.hpp</a></div></div>
 <div class="ttc" id="atraits_2Traits_8hpp_html"><div class="ttname"><a href="traits_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1experimental_html"><div class="ttname"><a href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div><div class="ttdef"><b>Definition:</b> <a href="view_2Accessor_8hpp_source.html#l00026">Accessor.hpp:26</a></div></div>
@@ -364,7 +366,7 @@ $(document).ready(function(){initNavTree('DevGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 5 2022 16:42:28 for alpaka by
+    <li class="footer">Generated on Wed Apr 6 2022 14:54:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

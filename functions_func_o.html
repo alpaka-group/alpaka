@@ -89,6 +89,9 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <li>ones()
 : <a class="el" href="classalpaka_1_1Vec.html#a0f9c20adc8c791ed09ad385a01bd4bd2">alpaka::Vec&lt; TDim, TVal &gt;</a>
 </li>
+<li>operator std::complex&lt; T &gt;()
+: <a class="el" href="classalpaka_1_1Complex.html#a27c495b9e0934447d99c8fc02e2c47ac">alpaka::Complex&lt; T &gt;</a>
+</li>
 <li>operator!=()
 : <a class="el" href="classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e">alpaka::DevCpu</a>
 , <a class="el" href="classalpaka_1_1DevOmp5.html#adb4b0ed1d895fd74e00e9a8ee7730f2f">alpaka::DevOmp5</a>
@@ -152,24 +155,36 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_011_00_01TAccessModes_01_4.html#ae097ff05912d125ec4bcbb2b695aa545">alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, 1, TAccessModes &gt;</a>
 , <a class="el" href="structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#af3d551659be2562ac259d0a0d7b1b8e9">alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, TDim, TAccessModes &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Abs.html#a33abf0c968519ff1620619e9bcea10e3">alpaka::math::trait::Abs&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a3634ec2e61cea5af32ab858d64de04db">alpaka::math::trait::Abs&lt; AbsUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__8758fe8df23a9f12745165492a7e6f38.html#a24eb996208b50a0a2386ff3b02d2d95d">alpaka::math::trait::Abs&lt; AbsUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_signed_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Acos.html#ad3c07bb73d0fca1580e287c649e1ff20">alpaka::math::trait::Acos&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a06b9ad2551a97865319d7e1f5870db06">alpaka::math::trait::Acos&lt; AcosUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable3c2ea34d0cd91c4379fd600b3169ef44.html#a07ef3fdd072c7786ae262dc6e7ec8c83">alpaka::math::trait::Acos&lt; AcosUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Arg.html#ae139535b86adc4c80433d5728acf69cf">alpaka::math::trait::Arg&lt; T, TArgument, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Arg_3_01ArgUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a97382feca27f8a83f6d5d01f4730a14c">alpaka::math::trait::Arg&lt; ArgUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Arg_3_01ArgUniformCudaHipBuiltIn_00_01TArgument_00_01std_1_1ena41da7bbec2d4bd369815ed2897e90855.html#ab4aa06e2f4b6a59db687ba72e8a02ac7">alpaka::math::trait::Arg&lt; ArgUniformCudaHipBuiltIn, TArgument, std::enable_if_t&lt; std::is_floating_point_v&lt; TArgument &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Asin.html#a4b835e309d5dde999913c5f179473339">alpaka::math::trait::Asin&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Asin_3_01AsinUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#af21d39b5d123edf390102d0fd6d32134">alpaka::math::trait::Asin&lt; AsinUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Asin_3_01AsinUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable0d81bf304fc1a159a07d6d1372ed293c.html#a7e7bcf4ff1041f6bcb17ba6a04c2fb0d">alpaka::math::trait::Asin&lt; AsinUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Atan2.html#ab10c04359f11fa0795482cea424608e1">alpaka::math::trait::Atan2&lt; T, Ty, Tx, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Atan2_3_01Atan2UniformCudaHipBuiltIn_00_01Ty_00_01Tx_00_01std_143918b1375d502186e62ac8f6cf80cba.html#a32d4bead4cc3c71e1bdbf6a6fbcb286b">alpaka::math::trait::Atan2&lt; Atan2UniformCudaHipBuiltIn, Ty, Tx, std::enable_if_t&lt; std::is_floating_point_v&lt; Ty &gt; &amp;&amp;std::is_floating_point_v&lt; Tx &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Atan.html#adeba202a179037ca913d187503708cde">alpaka::math::trait::Atan&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Atan_3_01AtanUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#afdf355565d976d759e9fd19053470a07">alpaka::math::trait::Atan&lt; AtanUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Atan_3_01AtanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablef44417a29397111fab4521d2e50ad6f1.html#a2e9c7d9ec1867afe40df022baffd85af">alpaka::math::trait::Atan&lt; AtanUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Cbrt.html#a032b51aca7ff14ea0c47bed45d203cf9">alpaka::math::trait::Cbrt&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable4d848cda127c8b0ac632b3d4bc23c0a7.html#aabdb9562d9213e0a35f202720dae6202">alpaka::math::trait::Cbrt&lt; CbrtUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_arithmetic_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Ceil.html#aa1cdc59639044a46f99c7c54b84e11ed">alpaka::math::trait::Ceil&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Ceil_3_01CeilUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablec0b7bf37153f07d18e61aeb076625049.html#aabc6c7cfcc2103d9d246743acd427a6b">alpaka::math::trait::Ceil&lt; CeilUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Conj.html#aa7a6e6bd417eeff7c77c444c2ad6d75f">alpaka::math::trait::Conj&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Conj_3_01ConjUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a18c81b9dee01fbc3770d69d30513e7bd">alpaka::math::trait::Conj&lt; ConjUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Conj_3_01ConjUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablea9e3f97a54abded383223db0eb2943f0.html#ab096e4acda155c21378ffa7e74837cbc">alpaka::math::trait::Conj&lt; ConjUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Cos.html#a8722ac119e4dcea09a774317837e2346">alpaka::math::trait::Cos&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a19ca1fd216a23e9473c8d6ae461284e5">alpaka::math::trait::Cos&lt; CosUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__77c2a1b9a963af296dfd9194e8bc2b16.html#a5418f22486ef7b5f83f6434d80f52479">alpaka::math::trait::Cos&lt; CosUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Erf.html#a248ca12691d89b9c17fe65465f95d4b4">alpaka::math::trait::Erf&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Erf_3_01ErfUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__325a41d8ce02642aded92908b2ef6695.html#a5e5e858aa5e2c18bd67ee398ef3f49e5">alpaka::math::trait::Erf&lt; ErfUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Exp.html#a5398c6cb9f18e137f5587d34ccafdc64">alpaka::math::trait::Exp&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#ada63cb95786affe6dc33130ede7323cb">alpaka::math::trait::Exp&lt; ExpUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__f71d9907bbca97a9532ccf78ec0d7af9.html#a3f3368cadfcfe0f0a65077c6a146c3f8">alpaka::math::trait::Exp&lt; ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Floor.html#abdf781f1ad7ded7e40c9fda3aa636d4e">alpaka::math::trait::Floor&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Floor_3_01FloorUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enab4f5d40cad66c219c5f49880b8e4b9470.html#a3195d9d9fa13a6b9b6e740010d94b018">alpaka::math::trait::Floor&lt; FloorUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
@@ -184,6 +199,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Llround.html#a695a3cbe7bdc2907591630ac86d4d2a7">alpaka::math::trait::Llround&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1en50b040d364538463ab513b6a6896668a.html#a5b1d964f02000740acca7c3e285f0539">alpaka::math::trait::Llround&lt; RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Log.html#a757426c9cff1dbd55228b0c32bf5ec75">alpaka::math::trait::Log&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a4d1999fb5bd99bdf2cca0be10dc3802d">alpaka::math::trait::Log&lt; LogUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__58a8dc598c994ee681d1178d132c69a9.html#a40aabedbe2658e20f643e94e09a3f0c6">alpaka::math::trait::Log&lt; LogUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Lround.html#a20d7fba4ba7673af5c1ba96d140ec3b9">alpaka::math::trait::Lround&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1ena458c21f6af3f10eb3a804c65359a703b.html#ac83385a34aaac046223525c2d875cd5e">alpaka::math::trait::Lround&lt; RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
@@ -194,20 +210,26 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Min_3_01MinStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_049e4666dbb9a3887ecba3c8661049386.html#afbf3e5e06f4676b1fcea53655ff34186">alpaka::math::trait::Min&lt; MinStdLib, Tx, Ty, std::enable_if_t&lt; std::is_arithmetic_v&lt; Tx &gt; &amp;&amp;std::is_arithmetic_v&lt; Ty &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1en777bf58aa42216551e3452ef9548ce97.html#a829288c293eeb6a41604f0ce4161cce8">alpaka::math::trait::Min&lt; MinUniformCudaHipBuiltIn, Tx, Ty, std::enable_if_t&lt; std::is_arithmetic_v&lt; Tx &gt; &amp;&amp;std::is_arithmetic_v&lt; Ty &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Pow.html#a85edb4eea2967c4f41be34c9a93baa2a">alpaka::math::trait::Pow&lt; T, TBase, TExp, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_00_01Complex_3_01U_01_4_01_4.html#a12c85c78655639d00fe5835840fd195a">alpaka::math::trait::Pow&lt; PowUniformCudaHipBuiltIn, Complex&lt; T &gt;, Complex&lt; U &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01TBase_00_01TExp_00_01std_b30f2b4387785793cb8484f02d20cd5b.html#aba6a65acf5c7a0c4d1c350583c9c598d">alpaka::math::trait::Pow&lt; PowUniformCudaHipBuiltIn, TBase, TExp, std::enable_if_t&lt; std::is_floating_point_v&lt; TBase &gt; &amp;&amp;std::is_floating_point_v&lt; TExp &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Remainder.html#aa92ac41566e99ca97fee3f12a55a04fa">alpaka::math::trait::Remainder&lt; T, Tx, Ty, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Remainder_3_01RemainderUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00f1d23303b2a2701bf867c44a4b50b526.html#a0bf1328f991f36fbc49cee1a38dc9e94">alpaka::math::trait::Remainder&lt; RemainderUniformCudaHipBuiltIn, Tx, Ty, std::enable_if_t&lt; std::is_floating_point_v&lt; Tx &gt; &amp;&amp;std::is_floating_point_v&lt; Ty &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Round.html#a719f1f61db7c0840f78f04200b569714">alpaka::math::trait::Round&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabf21f961167a24690dbda5a225958194f.html#aeacf10a88ccfc3a047b179b8708f6825">alpaka::math::trait::Round&lt; RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Rsqrt.html#a098d46f8e2585ac68c223460a994699a">alpaka::math::trait::Rsqrt&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a918ac434a96d1d891543d4dc6e18db26">alpaka::math::trait::Rsqrt&lt; RsqrtUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabb2c763615c019cecc5d7856473483e6b.html#a00136fda39da216b7706f3e97624fc36">alpaka::math::trait::Rsqrt&lt; RsqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_arithmetic_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Sin.html#ab68639bd72a028c224221a8307efbd0b">alpaka::math::trait::Sin&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Sin_3_01SinUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#ac7c9edb100018205724935d8119329c5">alpaka::math::trait::Sin&lt; SinUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Sin_3_01SinUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__130122f6c79207e962dfc06d80849001.html#a9a1ccfbf78e65591307c9e190c32838a">alpaka::math::trait::Sin&lt; SinUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1SinCos.html#a6acc31ad5ff9fe500255d53a8606784e">alpaka::math::trait::SinCos&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1SinCos_3_01SinCosUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a72ac6954517ebbf05ca6e1d70a802d6c">alpaka::math::trait::SinCos&lt; SinCosUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1SinCos_3_01SinCosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1en80b8ac36655159f8861a805440d233c7.html#a335eb337bdc302f389b712229d958a46">alpaka::math::trait::SinCos&lt; SinCosUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Sqrt.html#af77153a4d14461b62de56cb5c03054b4">alpaka::math::trait::Sqrt&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Sqrt_3_01SqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a7e7df3c9503488b06fe8c5a900017e98">alpaka::math::trait::Sqrt&lt; SqrtUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Sqrt_3_01SqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enableeba4806433d092fc5faaadb4ed75179e.html#a669be23a46d1b04524b34b8e0f3702ad">alpaka::math::trait::Sqrt&lt; SqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_arithmetic_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Tan.html#ab10dfe9d85bd2ae48ff059e4d78e25dc">alpaka::math::trait::Tan&lt; T, TArg, TSfinae &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1trait_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a04f852ecafc7769fcf7c7c7a077d850b">alpaka::math::trait::Tan&lt; TanUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__9baf2eb68e8f22af8dbb97eb706310c1.html#a02dfed338aa15cf345895e2638db22fd">alpaka::math::trait::Tan&lt; TanUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Trunc.html#a7e126cff40e52afc7de71b43eb67a6a4">alpaka::math::trait::Trunc&lt; T, TArg, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1trait_1_1Trunc_3_01TruncUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enab2f89028e4b864334a758b6f5246154fe.html#a831264b4a4ddabb2ef36743c42c1eb1f">alpaka::math::trait::Trunc&lt; TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;</a>
@@ -251,26 +273,39 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ac5a3f09546ba544e04cc73bec1905082">alpaka::trait::detail::AtomicOp&lt; BlockOr &gt;</a>
 </li>
 <li>operator*()
-: <a class="el" href="classalpaka_1_1BufOmp5.html#aa99329196cddda9b03bde8dfe9e7ccc2">alpaka::BufOmp5&lt; TElem, TDim, TIdx &gt;</a>
-, <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#af903091a86ee5f4b5e05fb7788deb600">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
+: <a class="el" href="classalpaka_1_1BufOmp5.html#a837b459de284775b03130ce3e219a92c">alpaka::BufOmp5&lt; TElem, TDim, TIdx &gt;</a>
+, <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#a8d990a012d769f8abe7ad8b0f157543d">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
 , <a class="el" href="classalpaka_1_1test_1_1trait_1_1IteratorView.html#a1134f9d989c8d8a2d29409f00864d78e">alpaka::test::trait::IteratorView&lt; TView, TSfinae &gt;</a>
+</li>
+<li>operator*=()
+: <a class="el" href="classalpaka_1_1Complex.html#a4346c7c159b9f3f1cc310d31204fd0b0">alpaka::Complex&lt; T &gt;</a>
 </li>
 <li>operator++()
 : <a class="el" href="classalpaka_1_1test_1_1trait_1_1IteratorView.html#a4950daf77d5cd28cafe74ef131467a50">alpaka::test::trait::IteratorView&lt; TView, TSfinae &gt;</a>
 </li>
+<li>operator+=()
+: <a class="el" href="classalpaka_1_1Complex.html#a65d025660f26e904347f0393d05682d4">alpaka::Complex&lt; T &gt;</a>
+</li>
 <li>operator--()
 : <a class="el" href="classalpaka_1_1test_1_1trait_1_1IteratorView.html#ae0f2af11b20d471ebac80701d7432055">alpaka::test::trait::IteratorView&lt; TView, TSfinae &gt;</a>
 </li>
+<li>operator-=()
+: <a class="el" href="classalpaka_1_1Complex.html#a12b30a9b0f047006139c9881a916f79f">alpaka::Complex&lt; T &gt;</a>
+</li>
 <li>operator-&gt;()
-: <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#aba386bad1c444aeb7dfcb7a1344d6a08">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
+: <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#aec19df26decf41d5adfe9d0784ffd126">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
+</li>
+<li>operator/=()
+: <a class="el" href="classalpaka_1_1Complex.html#aa0d02a3d7abbab9015116e5b763b3fa2">alpaka::Complex&lt; T &gt;</a>
 </li>
 <li>operator=()
 : <a class="el" href="classalpaka_1_1BlockSharedMemDynOmp5BuiltIn.html#aad0f92dbc728a7e80561c2d010a43ef3">alpaka::BlockSharedMemDynOmp5BuiltIn</a>
 , <a class="el" href="classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#aa2f46183262ab7f5e0a8da1ad60abd9f">alpaka::bt::IdxBtRefFiberIdMap&lt; TDim, TIdx &gt;</a>
 , <a class="el" href="classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html#a7ddda54280726b2cb14ba69ec408cc28">alpaka::bt::IdxBtRefThreadIdMap&lt; TDim, TIdx &gt;</a>
+, <a class="el" href="classalpaka_1_1Complex.html#ac2b8609299892af375aae903656b756e">alpaka::Complex&lt; T &gt;</a>
 , <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;</a>
 , <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a2b96ccd5655fbc5968277ed48066003d">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;</a>
-, <a class="el" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b">alpaka::core::detail::ScopeLogStdOut</a>
+, <a class="el" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876">alpaka::core::detail::ScopeLogStdOut</a>
 , <a class="el" href="classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#ae2c2a2112d81e30356a459e49ac78b62">alpaka::cpu::detail::QueueCpuOmp2CollectiveImpl</a>
 , <a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html#ae190997f7f7db148ae8d0ea325320cdd">alpaka::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt;</a>
 , <a class="el" href="classalpaka_1_1detail_1_1BufOmp5Impl.html#a55619f5946e3d4a092367fd4a2e24afa">alpaka::detail::BufOmp5Impl&lt; TElem, TDim, TIdx &gt;</a>
@@ -301,12 +336,12 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html#a3535de1c84e04835316aa456d4d38aee">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt;</a>
 </li>
 <li>operator[]()
-: <a class="el" href="structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_011_00_01TAccessModes_01_4.html#a9c0148e9e341775c670e2bc6c7eae5ba">alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, 1, TAccessModes &gt;</a>
+: <a class="el" href="structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_011_00_01TAccessModes_01_4.html#a07772bed43358b409c5296cb6200b066">alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, 1, TAccessModes &gt;</a>
 , <a class="el" href="structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#acd148ab9116875358fdad68dfc88cb4a">alpaka::experimental::Accessor&lt; TElem *, TElem, TBufferIdx, TDim, TAccessModes &gt;</a>
-, <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#a7543ae7559a3b9150fc4a21ae82fc69b">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
-, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#a62fff6b87c5f556e166eff73e5ba4310">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 1 &gt;</a>
+, <a class="el" href="structalpaka_1_1internal_1_1ViewAccessOps.html#a357c630325301564e130b93995cc5c17">alpaka::internal::ViewAccessOps&lt; TView &gt;</a>
+, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#adaf57668af893d5f5bc40a295bf88d86">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 1 &gt;</a>
 , <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a33172063ca5dd6c61e7aed1a7c881339">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 2 &gt;</a>
-, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html#a2ba188be4a4c25498d94dc2b7b3936b1">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 3 &gt;</a>
+, <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html#a0b47a9109804b98aa1b1702cbff7ad37">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 3 &gt;</a>
 , <a class="el" href="structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html#a0c0368727b999ad54e850faab0c3c5ec">alpaka::meta::CudaVectorArrayWrapper&lt; TScalar, 4 &gt;</a>
 , <a class="el" href="structalpaka_1_1test_1_1Array.html#a497b6cac032fe839f122e0a6211d0e69">alpaka::test::Array&lt; TType, TSize &gt;</a>
 , <a class="el" href="classalpaka_1_1Vec.html#a550d1c86077a8f3fb5c4ba4f27e2d275">alpaka::Vec&lt; TDim, TVal &gt;</a>
@@ -317,7 +352,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 5 2022 16:42:31 for alpaka by
+    <li class="footer">Generated on Wed Apr 6 2022 14:54:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

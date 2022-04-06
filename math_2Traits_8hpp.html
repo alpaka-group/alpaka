@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('math_2Traits_8hpp.html',''); initResiz
 <div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Concepts_8hpp_source.html">alpaka/core/Concepts.hpp</a>&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;complex&gt;</code><br />
 </div>
 <p><a href="math_2Traits_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -102,6 +103,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathAbs.html">alpaka::math::ConceptMathAbs</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathAcos.html">alpaka::math::ConceptMathAcos</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathArg.html">alpaka::math::ConceptMathArg</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathAsin.html">alpaka::math::ConceptMathAsin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,6 +115,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCbrt.html">alpaka::math::ConceptMathCbrt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCeil.html">alpaka::math::ConceptMathCeil</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathConj.html">alpaka::math::ConceptMathConj</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCos.html">alpaka::math::ConceptMathCos</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,6 +164,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Acos.html">alpaka::math::trait::Acos&lt; T, TArg, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The acos trait.  <a href="structalpaka_1_1math_1_1trait_1_1Acos.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Arg.html">alpaka::math::trait::Arg&lt; T, TArgument, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The arg trait.  <a href="structalpaka_1_1math_1_1trait_1_1Arg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Asin.html">alpaka::math::trait::Asin&lt; T, TArg, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The asin trait.  <a href="structalpaka_1_1math_1_1trait_1_1Asin.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +181,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Ceil.html">alpaka::math::trait::Ceil&lt; T, TArg, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ceil trait.  <a href="structalpaka_1_1math_1_1trait_1_1Ceil.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Conj.html">alpaka::math::trait::Conj&lt; T, TArg, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The conj trait.  <a href="structalpaka_1_1math_1_1trait_1_1Conj.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Cos.html">alpaka::math::trait::Cos&lt; T, TArg, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cos trait.  <a href="structalpaka_1_1math_1_1trait_1_1Cos.html#details">More...</a><br /></td></tr>
@@ -263,6 +274,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a469b3c9f385a10cc3ab9085a7b438582"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a469b3c9f385a10cc3ab9085a7b438582">alpaka::math::acos</a> (T const &amp;acos_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:a469b3c9f385a10cc3ab9085a7b438582"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the principal value of the arc cosine.  <a href="namespacealpaka_1_1math.html#a469b3c9f385a10cc3ab9085a7b438582">More...</a><br /></td></tr>
 <tr class="separator:a469b3c9f385a10cc3ab9085a7b438582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce1d158f5771b3fd25990e3808d2a6a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TArgument &gt; </td></tr>
+<tr class="memitem:afce1d158f5771b3fd25990e3808d2a6a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">alpaka::math::arg</a> (T const &amp;arg_ctx, TArgument const &amp;argument)</td></tr>
+<tr class="memdesc:afce1d158f5771b3fd25990e3808d2a6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the complex argument of the value.  <a href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">More...</a><br /></td></tr>
+<tr class="separator:afce1d158f5771b3fd25990e3808d2a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32a005a4c29788b7c85a6796676a9cb6"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TArg &gt; </td></tr>
 <tr class="memitem:a32a005a4c29788b7c85a6796676a9cb6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a32a005a4c29788b7c85a6796676a9cb6">alpaka::math::asin</a> (T const &amp;asin_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:a32a005a4c29788b7c85a6796676a9cb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the principal value of the arc sine.  <a href="namespacealpaka_1_1math.html#a32a005a4c29788b7c85a6796676a9cb6">More...</a><br /></td></tr>
@@ -283,6 +298,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aa0a98ac2a832e07982ac7edc92e74c6f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#aa0a98ac2a832e07982ac7edc92e74c6f">alpaka::math::ceil</a> (T const &amp;ceil_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:aa0a98ac2a832e07982ac7edc92e74c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the smallest integer value not less than arg.  <a href="namespacealpaka_1_1math.html#aa0a98ac2a832e07982ac7edc92e74c6f">More...</a><br /></td></tr>
 <tr class="separator:aa0a98ac2a832e07982ac7edc92e74c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a8aed4e7f4477d91cfceebf9897e021"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TArg &gt; </td></tr>
+<tr class="memitem:a6a8aed4e7f4477d91cfceebf9897e021"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021">alpaka::math::conj</a> (T const &amp;conj_ctx, TArg const &amp;arg)</td></tr>
+<tr class="memdesc:a6a8aed4e7f4477d91cfceebf9897e021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the complex conjugate of arg.  <a href="namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021">More...</a><br /></td></tr>
+<tr class="separator:a6a8aed4e7f4477d91cfceebf9897e021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TArg &gt; </td></tr>
 <tr class="memitem:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a45cebc1e1e7df3d7cf1c965e290f6b2f">alpaka::math::cos</a> (T const &amp;cos_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the cosine (measured in radians).  <a href="namespacealpaka_1_1math.html#a45cebc1e1e7df3d7cf1c965e290f6b2f">More...</a><br /></td></tr>
@@ -386,7 +405,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="math_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 5 2022 16:42:29 for alpaka by
+    <li class="footer">Generated on Wed Apr 6 2022 14:54:34 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

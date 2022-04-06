@@ -182,11 +182,11 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        oacc::detail::BufOaccImpl&lt;TElem, TDim, TIdx&gt;&amp; operator*()</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        oacc::detail::BufOaccImpl&lt;TElem, TDim, TIdx&gt;&amp; <a class="code" href="namespacealpaka.html#af2d9f4c8c50a62252b5579333b424940">operator*</a>()</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span> *m_spBufImpl;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keyword">const</span> oacc::detail::BufOaccImpl&lt;TElem, TDim, TIdx&gt;&amp; operator*()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keyword">const</span> oacc::detail::BufOaccImpl&lt;TElem, TDim, TIdx&gt;&amp; <a class="code" href="namespacealpaka.html#af2d9f4c8c50a62252b5579333b424940">operator*</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> *m_spBufImpl;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
@@ -500,6 +500,7 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div class="ttc" id="aAssert_8hpp_html"><div class="ttname"><a href="Assert_8hpp.html">Assert.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a3f43b3bce664426a2f439c6a4071e88a"><div class="ttname"><a href="namespacealpaka.html#a3f43b3bce664426a2f439c6a4071e88a">alpaka::unmap</a></div><div class="ttdeci">ALPAKA_FN_HOST auto unmap(TBuf &amp;buf, TDev const &amp;dev) -&gt; void</div><div class="ttdoc">Unmaps the buffer from the memory of the given device.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2buf_2Traits_8hpp_source.html#l00132">Traits.hpp:132</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a864a91f6b0565f1d0ecf2e3e23e3b868"><div class="ttname"><a href="namespacealpaka.html#a864a91f6b0565f1d0ecf2e3e23e3b868">alpaka::getExtentVecEnd</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC constexpr auto getExtentVecEnd(TExtent const &amp;extent={}) -&gt; Vec&lt; TDim, Idx&lt; TExtent &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00580">Vec.hpp:580</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_af2d9f4c8c50a62252b5579333b424940"><div class="ttname"><a href="namespacealpaka.html#af2d9f4c8c50a62252b5579333b424940">alpaka::operator*</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC Complex&lt; T &gt; operator*(Complex&lt; T &gt; const &amp;lhs, Complex&lt; T &gt; const &amp;rhs)</div><div class="ttdoc">Muptiplication of two complex numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Complex_8hpp_source.html#l00242">Complex.hpp:242</a></div></div>
 <div class="ttc" id="acore_2Common_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="amem_2buf_2Traits_8hpp_html"><div class="ttname"><a href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a3aaedbd7debc6261ddacecaa58272a30"><div class="ttname"><a href="namespacealpaka.html#a3aaedbd7debc6261ddacecaa58272a30">alpaka::isPinned</a></div><div class="ttdeci">ALPAKA_FN_HOST auto isPinned(TBuf const &amp;buf) -&gt; bool</div><div class="ttdoc">The pin state of the buffer.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2buf_2Traits_8hpp_source.html#l00162">Traits.hpp:162</a></div></div>
@@ -518,7 +519,7 @@ $(document).ready(function(){initNavTree('BufOacc_8hpp_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufOacc_8hpp.html">BufOacc.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 5 2022 16:42:28 for alpaka by
+    <li class="footer">Generated on Wed Apr 6 2022 14:54:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
