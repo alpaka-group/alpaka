@@ -15,27 +15,35 @@
 #include <cmath>
 #include <complex>
 #include <iostream>
+#include <type_traits>
 
 namespace alpaka
 {
     //! Implementation of a complex number useable on host and device.
     //!
     //! It follows the layout of std::complex and so array-oriented access.
-    //! Inside the class template implements all methods and operators as std::complex<T>.
-    //! Additionally, provides an implicit conversion to and from std::complex<T>.
+    //! The class template implements all methods and operators as std::complex<T>.
+    //! Additionally, it provides an implicit conversion to and from std::complex<T>.
     //! All methods besides operators << and >> are host-device.
-    //! Note that it does not provide non-member functions of std::complex besides the operators.
+    //! It does not provide non-member functions of std::complex besides the operators.
     //! Those are provided the same way as alpaka math functions for real numbers.
     //!
     //! Note that unlike most of alpaka, this is a concrete type template, and not merely a concept.
     //!
-    //! Naming and order of the methods match https://en.cppreference.com/w/cpp/numeric/complex.
+    //! Naming and order of the methods match https://en.cppreference.com/w/cpp/numeric/complex in C++17.
+    //! Implementation chose to not extend it e.g. by adding constexpr to some places that would get it in C++20.
+    //! The motivation is that with internal conversion to std::complex<T> for CPU backends, it would define the common
+    //! interface for genetic code anyways.
+    //! So it is more clear to have alpaka's interface exactly matching when possible, and not "improving".
     //!
     //! @tparam T type of the real and imaginary part: float, double, or long double.
     template<typename T>
     class Complex
     {
     public:
+        // Make sure the input type is floating-point
+        static_assert(std::is_floating_point_v<T>);
+
         //! Type of the real and imaginary parts
         using value_type = T;
 
@@ -307,8 +315,7 @@ namespace alpaka
     template<typename T>
     constexpr ALPAKA_FN_HOST_ACC bool operator!=(Complex<T> const& lhs, Complex<T> const& rhs)
     {
-        return !math::floatEqualExactNoWarning(lhs.real(), rhs.real())
-            || !math::floatEqualExactNoWarning(lhs.imag(), rhs.imag());
+        return !(lhs == rhs);
     }
 
     //! Inequality of a complex and a real number
@@ -381,7 +388,7 @@ namespace alpaka
         return std::acosh(std::complex<T>(x));
     }
 
-    //! Host-side arg falling back to std:: implementation
+    //! Argument
     template<typename T>
     constexpr ALPAKA_FN_HOST T arg(Complex<T> const& x)
     {

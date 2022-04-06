@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2022 Erik Zenker, Benjamin Worpitz, Jan Stephan, Sergei Bastrakov
+# Copyright 2022 Erik Zenker, Benjamin Worpitz, Jan Stephan, Sergei Bastrakov
 #
 # This file exemplifies usage of alpaka.
 #
