@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [0.9.0] - 2022-03-31
+## [0.9.0] - 2022-04-14
 ### Compatibility Changes:
 - Platform support added:
   - oneTBB #1456
@@ -34,8 +34,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The class layout of `BufCpu` no longer depends on whether the CUDA and HIP back-ends are enabled. #1612
 - Fixed several smaller bugs in `alpaka::Vec` #1620
 - Destructors no longer throw an exception #1632
+- Implemented work-around for Intel compiler bug with OpenMP back-ends #1677
 
 ### New Features:
+- alpaka now has native complex number support #1336
 - alpaka now requires C++17 (or newer). This release therefore includes many refactoring PRs that migrate the code base to C++17:
   - Set CMake requirements, remove versions checks, fix warnings, etc. #1466
   - Removed pre-C++17 workarounds #1483
@@ -62,10 +64,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added an experimental SYCL back-end. All SYCL back-end functionality currently lives in the `alpaka::experimental` namespace. See the `README_SYCL.md` for more information about the usage and the restrictions of this back-end. #1598
 - alpaka's memory fences can now also be applied to the grid level #1641
 - `alpaka::getWarpSize()` was renamed to `alpaka::getWarpSizes()` and will now return a `std::vector` of supported warp sizes #1644
+- Added previously missing atomic functions for some datatypes #1658
+- `ALPAKA_ASSERT` is now variadic #1661
 - Documentation updates:
   - Improved installation and usage documentation #1571
   - Added documentation on how to write unit tests #1609
   - The HIP portion of the compiler support matrix has been simplified #1637
+  - The OpenMP 5 documentation has been extended #1672
 
 ### Misc:
 - The CUDA and HIP back-ends no longer explicitly set the device where this is unnecessary #1515
@@ -79,10 +84,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - alpaka now enforces that kernel arguments are trivially copyable #1635
 - Renamed namespace `traits` to `trait` #1651
 - alpaka now enforces that kernel functions are trivially copyable #1654
+- Replaced the internal `hipLaunchKernelGGL()` call with a `kernel<<<...>>>()` call #1663
+- `BOOST_LANG_HIP` will now report a (somewhat) correct version number (for internal consumption) #1664
+- Refactored `Queue` implementation for CUDA and HIP to reduce code duplication #1667
+- `core/CudaHipMath.hpp` was merged back into `math/MathUniformCudaHipBuiltIn.hpp` #1668
+- The OpenMP 5 memory fence no longer explicitly sets the `acq_rel` memory order clause since it is the default #1673
+- Improved handling of `std::shared_ptr` inside the CUDA/HIP queues #1674
+- Internally replaced the deprecated `cudaStreamAddCallback` with `cudaLaunchHostFunc` #1675
+- Added CUDA- and HIP-specific aliases for `Event`s, `Platform`s and `Buffer`s #1678
 
 ### Breaking Changes
 - C++14 is no longer supported (see above)
 - alpaka now uses Boost.Atomic by default if the latter can be found by CMake. This can be turned off by passing `-DALPAKA_ACC_CPU_DISABLE_ATOMIC_REF=ON` during the CMake configuration phase. #1566
+  - When compiling in C++20 mode, alpaka will use `std::atomic_ref<T>` instead #1671
 - Removed the `alpaka::extent` namespace (the contents now live in the main `alpaka` namespace) #1593
 - Kernel arguments are required to be trivially copyable. This was always a requirement but is now enforced by alpaka #1635
 - All alpaka-specific CMake variables follow the `${PROJECT_NAME}_VARIABLE_FOO_BAR` pattern. This means that all alpaka-specific CMake variables look like this: `alpaka_VARIABLE_FOO_BAR`. #1653
@@ -109,6 +123,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Refactored `alpaka::test` #1596
 - `matMul` test will now measure the performance of `alpaka::memcpy` #1599
 - The move constructors and assignment operators of buffers are now unit-tested #1611
+- Unit tests will now be run with zero dimensionality, too #1619
 - Added more tests for `alpaka::Vec` #1633
 - Added test for `alpaka::Vec` being trivially copyable #1639
 - CI runners will retry to download Boost when necessary #1640
