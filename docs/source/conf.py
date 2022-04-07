@@ -13,7 +13,7 @@ author = 'Benjamin Worpitz, René Widera, Axel Huebl, Michael Bussmann'
 # The short X.Y version.
 version = u'0.9.0'
 # The full version, including alpha/beta/rc tags.
-release = u'0.9.0-develop'
+release = u'0.9.0-rc1'
 
 # The master toctree document.
 master_doc = 'index'
