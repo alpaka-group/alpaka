@@ -68,27 +68,21 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
     [ "AccFpgaSyclIntel.hpp", "AccFpgaSyclIntel_8hpp.html", null ],
     [ "AccFpgaSyclXilinx.hpp", "AccFpgaSyclXilinx_8hpp.html", null ],
     [ "AccGenericSycl.hpp", "AccGenericSycl_8hpp.html", null ],
-    [ "AccGpuCudaRt.hpp", "AccGpuCudaRt_8hpp.html", [
-      [ "AccGpuCudaRt", "classalpaka_1_1AccGpuCudaRt.html", "classalpaka_1_1AccGpuCudaRt" ],
-      [ "TaskKernelGpuUniformCudaHipRt", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt" ],
-      [ "AccType< AccGpuCudaRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1AccType_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccType_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "CreateTaskKernel< AccGpuCudaRt< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_00_01TWorkDiveffd0e28e1027b2a1d7f4d1b6ce23d06.html", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_00_01TWorkDiveffd0e28e1027b2a1d7f4d1b6ce23d06" ],
-      [ "GetAccName< AccGpuCudaRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4" ]
-    ] ],
+    [ "AccGpuCudaRt.hpp", "AccGpuCudaRt_8hpp.html", "AccGpuCudaRt_8hpp" ],
     [ "AccGpuHipRt.hpp", "AccGpuHipRt_8hpp.html", null ],
     [ "AccGpuSyclIntel.hpp", "AccGpuSyclIntel_8hpp.html", null ],
     [ "AccGpuUniformCudaHipRt.hpp", "AccGpuUniformCudaHipRt_8hpp.html", [
       [ "AccGpuUniformCudaHipRt", "classalpaka_1_1AccGpuUniformCudaHipRt.html", "classalpaka_1_1AccGpuUniformCudaHipRt" ],
-      [ "CheckFnReturnType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "CheckFnReturnType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "TaskKernelGpuUniformCudaHipRt", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt" ],
-      [ "AccType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1AccType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "CreateTaskKernel< AccGpuUniformCudaHipRt< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_00_90a3450f9e2e3939212d5686ac7bb8d6.html", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_00_90a3450f9e2e3939212d5686ac7bb8d6" ],
-      [ "DevType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "DimType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccDevProps< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccName< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "IdxType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ]
+      [ "AccType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1AccType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "CreateTaskKernel< AccGpuUniformCudaHipRt< TApi, TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TId2b31198cd80c8176a5a7c616a15a177c.html", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TId2b31198cd80c8176a5a7c616a15a177c" ],
+      [ "DevType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "DimType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "GetAccDevProps< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "GetAccName< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "IdxType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "PltfType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "AccOacc.hpp", "AccOacc_8hpp.html", null ],
     [ "AccOmp5.hpp", "AccOmp5_8hpp.html", [

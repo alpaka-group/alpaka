@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01Even9bd2d2c09c98f9f04aeae65df74fb19f =
+[
+    [ "waiterWaitFor", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01Even9bd2d2c09c98f9f04aeae65df74fb19f.html#a0c22dc2cc99ae889e27e32de2502dd7c", null ]
+];

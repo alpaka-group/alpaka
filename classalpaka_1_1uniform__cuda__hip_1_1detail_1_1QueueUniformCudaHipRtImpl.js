@@ -1,9 +1,9 @@
 var classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl =
 [
-    [ "QueueUniformCudaHipRtImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#ad56a1fce57cf03c563c67d7e4ac9aba1", null ],
-    [ "QueueUniformCudaHipRtImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a4c96533fef2e5d2aad1c9fb060ba688f", null ],
-    [ "~QueueUniformCudaHipRtImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a8e95ab84a2acb7197994eb65b767ef0a", null ],
-    [ "getNativeHandle", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#aa3c60863741710bd47aeb89ea795e78e", null ],
-    [ "operator=", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a0f753524b226278604787dd3cf67555f", null ],
-    [ "m_dev", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#aabfb2d19e792c3e1ced8bca0b332573e", null ]
+    [ "QueueUniformCudaHipRtImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a51dcb5b0a6e4a0459153a85b8b96a1b3", null ],
+    [ "QueueUniformCudaHipRtImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a49c2eff5d7c3d6fbe9dc544e8a2f34b9", null ],
+    [ "~QueueUniformCudaHipRtImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#ac56d4fd91710fc9bac1b4386ab8f8fe2", null ],
+    [ "getNativeHandle", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a0afa600871acf0da0241dd9da7aefc03", null ],
+    [ "operator=", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a291ed8660abeb9328ae685a8bf52b66b", null ],
+    [ "m_dev", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a5a531360d044968bb22616fc3d66f700", null ]
 ];

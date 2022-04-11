@@ -1,4 +1,4 @@
 var classalpaka_1_1PltfUniformCudaHipRt =
 [
-    [ "PltfUniformCudaHipRt", "classalpaka_1_1PltfUniformCudaHipRt.html#aa96e4c2db9a5179adb7bc9f05c9a0034", null ]
+    [ "PltfUniformCudaHipRt", "classalpaka_1_1PltfUniformCudaHipRt.html#a6a31df83b54152f94ea5428f11ef68c2", null ]
 ];

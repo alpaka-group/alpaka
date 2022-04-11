@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['makeintegersequenceoffset_4591',['MakeIntegerSequenceOffset',['../namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b',1,'alpaka::meta']]],
-  ['memcpykind_4592',['MemcpyKind',['../structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#ad77a0d398d6b96b8ccb1aebdf15df289',1,'alpaka::detail::TaskCopyUniformCudaHip&lt; DimInt&lt; 0u &gt;, TViewDst, TViewSrc, TExtent &gt;::MemcpyKind()'],['../structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a42bc3840456c9eb382a97dd4edc9fc11',1,'alpaka::detail::TaskCopyUniformCudaHip&lt; DimInt&lt; 1u &gt;, TViewDst, TViewSrc, TExtent &gt;::MemcpyKind()'],['../structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_012u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a04b1012d48e2777f1b491b10a0ea827e',1,'alpaka::detail::TaskCopyUniformCudaHip&lt; DimInt&lt; 2u &gt;, TViewDst, TViewSrc, TExtent &gt;::MemcpyKind()'],['../structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_013u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#ab893cce954458e1fb8019cc95ededc89',1,'alpaka::detail::TaskCopyUniformCudaHip&lt; DimInt&lt; 3u &gt;, TViewDst, TViewSrc, TExtent &gt;::MemcpyKind()']]],
-  ['memoryhandle_4593',['MemoryHandle',['../namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392',1,'alpaka::experimental']]],
-  ['mimicconst_4594',['MimicConst',['../namespacealpaka_1_1test_1_1trait.html#a07bf83614dc7e964550ca100bc5c97af',1,'alpaka::test::trait']]]
+  ['makeintegersequenceoffset_4793',['MakeIntegerSequenceOffset',['../namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b',1,'alpaka::meta']]],
+  ['memcpy3dparms_5ft_4794',['Memcpy3DParms_t',['../structalpaka_1_1ApiCudaRt.html#a26642307a4946dffdd78854cf71d5245',1,'alpaka::ApiCudaRt']]],
+  ['memcpykind_5ft_4795',['MemcpyKind_t',['../structalpaka_1_1ApiCudaRt.html#a7c5dc9512cded3a07ac915ae2ae74623',1,'alpaka::ApiCudaRt']]],
+  ['memoryhandle_4796',['MemoryHandle',['../namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392',1,'alpaka::experimental']]],
+  ['mimicconst_4797',['MimicConst',['../namespacealpaka_1_1test_1_1trait.html#a07bf83614dc7e964550ca100bc5c97af',1,'alpaka::test::trait']]]
 ];

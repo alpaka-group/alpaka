@@ -1,9 +1,9 @@
 var classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl =
 [
-    [ "EventUniformCudaHipImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a25f8c75b19507097861e04ae1b6674ef", null ],
-    [ "EventUniformCudaHipImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#aac7f0276069a4a78ed38340d561fae91", null ],
-    [ "~EventUniformCudaHipImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a15a44dd75fe0919619449ab91e360301", null ],
-    [ "getNativeHandle", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#aee04c6283519948b74fac631d5a572c2", null ],
-    [ "operator=", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a7b07da29c79a7b44bfaf16875630ff8c", null ],
-    [ "m_dev", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#acfdae6ee7ab31525735e6fd860f6f273", null ]
+    [ "EventUniformCudaHipImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ae386256f2faeb07ff581dd377eb353c6", null ],
+    [ "EventUniformCudaHipImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a0005d68c8d9e91be84478aaeb18c0c13", null ],
+    [ "~EventUniformCudaHipImpl", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#abe888db61d34415b62fd0ce51c4a8447", null ],
+    [ "getNativeHandle", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ae85646e41d8c7157608cae7c7f59d396", null ],
+    [ "operator=", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a5b92f3314008b7fe641adb1ad66fed74", null ],
+    [ "m_dev", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a8bbec46ea091f96ba5b98a9c6d216396", null ]
 ];

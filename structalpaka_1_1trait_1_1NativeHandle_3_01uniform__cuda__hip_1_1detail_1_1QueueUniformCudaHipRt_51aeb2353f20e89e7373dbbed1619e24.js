@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_51aeb2353f20e89e7373dbbed1619e24 =
+[
+    [ "getNativeHandle", "structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_51aeb2353f20e89e7373dbbed1619e24.html#a4b1b3fcefa9fff539a0d8dcd34c42345", null ]
+];

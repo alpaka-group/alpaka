@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('structalpaka_1_1rand_1_1engine_1_1trai
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ae47ca50676bf4a4aa47bffc76902fa3a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ae47ca50676bf4a4aa47bffc76902fa3a">Backend</a> = std::conditional_t&lt; <a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#acea651234def7205f295eb001cc2abc3">isGPU</a>&lt; TAcc &gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCudaArray.html">PhiloxBaseCudaArray</a>&lt; TParams, TImpl &gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray.html">PhiloxBaseStdArray</a>&lt; TParams, TImpl &gt; &gt;</td></tr>
+<tr class="memitem:ae47ca50676bf4a4aa47bffc76902fa3a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ae47ca50676bf4a4aa47bffc76902fa3a">Backend</a> = std::conditional_t&lt; <a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#a5f0529ecd75e5a3e1cef57755a28ae35">isGPU</a>&lt; TAcc &gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCudaArray.html">PhiloxBaseCudaArray</a>&lt; TParams, TImpl &gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray.html">PhiloxBaseStdArray</a>&lt; TParams, TImpl &gt; &gt;</td></tr>
 <tr class="separator:ae47ca50676bf4a4aa47bffc76902fa3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab74dddc406c79d61497b8ca3a803ba32"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ab74dddc406c79d61497b8ca3a803ba32">Base</a> = <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html">PhiloxBaseCommon</a>&lt; <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ae47ca50676bf4a4aa47bffc76902fa3a">Backend</a>, TParams, TImpl &gt;</td></tr>
 <tr class="memdesc:ab74dddc406c79d61497b8ca3a803ba32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base type to be inherited from.  <a href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ab74dddc406c79d61497b8ca3a803ba32">More...</a><br /></td></tr>
@@ -127,7 +127,7 @@ struct alpaka::rand::engine::trait::PhiloxBaseTraits&lt; TAcc, TParams, TImpl, T
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00039">39</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00049">49</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ae47ca50676bf4a4aa47bffc76902fa3a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae47ca50676bf4a4aa47bffc76902fa3a">&#9670;&nbsp;</a></span>Backend</h2>
@@ -138,12 +138,12 @@ struct alpaka::rand::engine::trait::PhiloxBaseTraits&lt; TAcc, TParams, TImpl, T
 template&lt;typename TAcc , typename TParams , typename TImpl , typename TSfinae  = void&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html">alpaka::rand::engine::trait::PhiloxBaseTraits</a>&lt; TAcc, TParams, TImpl, TSfinae &gt;::<a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ae47ca50676bf4a4aa47bffc76902fa3a">Backend</a> =  std::conditional_t&lt;<a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#acea651234def7205f295eb001cc2abc3">isGPU</a>&lt;TAcc&gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCudaArray.html">PhiloxBaseCudaArray</a>&lt;TParams, TImpl&gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray.html">PhiloxBaseStdArray</a>&lt;TParams, TImpl&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html">alpaka::rand::engine::trait::PhiloxBaseTraits</a>&lt; TAcc, TParams, TImpl, TSfinae &gt;::<a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ae47ca50676bf4a4aa47bffc76902fa3a">Backend</a> =  std::conditional_t&lt;<a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#a5f0529ecd75e5a3e1cef57755a28ae35">isGPU</a>&lt;TAcc&gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCudaArray.html">PhiloxBaseCudaArray</a>&lt;TParams, TImpl&gt;, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray.html">PhiloxBaseStdArray</a>&lt;TParams, TImpl&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00044">44</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00054">54</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
 
 </div>
 </div>
@@ -163,7 +163,7 @@ template&lt;typename TAcc , typename TParams , typename TImpl , typename TSfinae
 
 <p>Base type to be inherited from. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00055">55</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00065">65</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +183,7 @@ template&lt;typename TAcc , typename TParams , typename TImpl , typename TSfinae
 
 <p>Counter array type. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00048">48</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00058">58</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
 
 </div>
 </div>
@@ -203,7 +203,7 @@ template&lt;typename TAcc , typename TParams , typename TImpl , typename TSfinae
 
 <p>Key array type. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00049">49</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00059">59</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
 
 </div>
 </div>
@@ -225,7 +225,7 @@ template&lt;typename TDistributionResultScalar &gt; </div>
 
 <p>Distribution container type. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00053">53</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00063">63</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
 
 </div>
 </div>
@@ -238,7 +238,7 @@ template&lt;typename TDistributionResultScalar &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1engine.html">engine</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html">trait</a></li><li class="navelem"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html">PhiloxBaseTraits</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:35 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:28:01 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

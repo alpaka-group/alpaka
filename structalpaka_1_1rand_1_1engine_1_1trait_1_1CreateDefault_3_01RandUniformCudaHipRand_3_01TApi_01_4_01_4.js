@@ -1,0 +1,4 @@
+var structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_3_01TApi_01_4_01_4 =
+[
+    [ "createDefault", "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_3_01TApi_01_4_01_4.html#aa9846e36830e81c1a1b8c76ce98bac60", null ]
+];

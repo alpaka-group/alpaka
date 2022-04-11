@@ -1,6 +1,6 @@
 var classalpaka_1_1TaskKernelGpuUniformCudaHipRt =
 [
-    [ "TaskKernelGpuUniformCudaHipRt", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a0c3d4f4f71694b90fd3b7722535d3141", null ],
-    [ "m_args", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#afb87ebbc43129443f3c8d7c184780a3c", null ],
-    [ "m_kernelFnObj", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a4c6f582f454228cc59454a83ba05572c", null ]
+    [ "TaskKernelGpuUniformCudaHipRt", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a8670d9407b302e594f922885e5b9d1e9", null ],
+    [ "m_args", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a81cbbfab8168bd34880ce326a25d83aa", null ],
+    [ "m_kernelFnObj", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html#a35fc3725cde6251430e0930d4a8ee681", null ]
 ];

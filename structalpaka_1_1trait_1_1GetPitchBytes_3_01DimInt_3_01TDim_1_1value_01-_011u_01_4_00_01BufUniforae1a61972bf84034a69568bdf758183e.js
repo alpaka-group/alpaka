@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01__011u_01_4_00_01BufUniforae1a61972bf84034a69568bdf758183e =
+[
+    [ "getPitchBytes", "structalpaka_1_1trait_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUniforae1a61972bf84034a69568bdf758183e.html#a7bfc08069e66551c134413f50b22f0f3", null ]
+];

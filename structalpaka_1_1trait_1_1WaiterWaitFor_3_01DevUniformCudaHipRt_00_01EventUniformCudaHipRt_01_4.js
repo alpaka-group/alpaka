@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1WaiterWaitFor_3_01DevUniformCudaHipRt_00_01EventUniformCudaHipRt_01_4 =
-[
-    [ "waiterWaitFor", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01DevUniformCudaHipRt_00_01EventUniformCudaHipRt_01_4.html#a536119e211519b5a788eb98f4bde576e", null ]
-];

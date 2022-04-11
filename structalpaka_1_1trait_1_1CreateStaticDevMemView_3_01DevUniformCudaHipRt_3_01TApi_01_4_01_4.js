@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4 =
+[
+    [ "createStaticDevMemView", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#aa5f7bfc03b3790cfdfcbc340ad300bf6", null ]
+];

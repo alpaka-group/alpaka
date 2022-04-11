@@ -85,7 +85,6 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1uniform__cuda__hip_
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::uniform_cuda_hip::detail Namespace Reference</div>  </div>
@@ -104,11 +103,6 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT queue implementation.  <a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a48180eda98f53c8391a17fa921d7b958"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a> = cudaError</td></tr>
-<tr class="separator:a48180eda98f53c8391a17fa921d7b958"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:af9741bdf6dda9699e1dd8ca18d81d16a"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
@@ -117,40 +111,23 @@ Functions</h2></td></tr>
 <tr class="memitem:a552124cfd6ee8654baa53bc1710c0974"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:a552124cfd6ee8654baa53bc1710c0974"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">convertVecToUniformCudaHipDim</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;vec) -&gt; dim3</td></tr>
 <tr class="separator:a552124cfd6ee8654baa53bc1710c0974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9b758c58752823aed57978d33f33c0f"><td class="memTemplParams" colspan="2">template&lt;bool TThrow&gt; </td></tr>
-<tr class="memitem:ae9b758c58752823aed57978d33f33c0f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ae9b758c58752823aed57978d33f33c0f">rtCheck</a> (<a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a> const &amp;error, char const *desc, char const *file, int const &amp;line) noexcept(!TThrow)</td></tr>
-<tr class="memdesc:ae9b758c58752823aed57978d33f33c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API error checking with log and exception, ignoring specific error values.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ae9b758c58752823aed57978d33f33c0f">More...</a><br /></td></tr>
-<tr class="separator:ae9b758c58752823aed57978d33f33c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b987d326df2f40b4473b6cbd1f29ec1"><td class="memTemplParams" colspan="2">template&lt;bool TThrow, typename... TErrors&gt; </td></tr>
-<tr class="memitem:a4b987d326df2f40b4473b6cbd1f29ec1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a4b987d326df2f40b4473b6cbd1f29ec1">rtCheckIgnore</a> (<a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a> const &amp;error, char const *cmd, char const *file, int const &amp;line, TErrors &amp;&amp;... ignoredErrorCodes) noexcept(!TThrow)</td></tr>
-<tr class="memdesc:a4b987d326df2f40b4473b6cbd1f29ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API error checking with log and exception, ignoring specific error values.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a4b987d326df2f40b4473b6cbd1f29ec1">More...</a><br /></td></tr>
-<tr class="separator:a4b987d326df2f40b4473b6cbd1f29ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5b4f0f3f7d263cd199bc2a3f27d1251"><td class="memTemplParams" colspan="2">template&lt;bool TThrow&gt; </td></tr>
-<tr class="memitem:aa5b4f0f3f7d263cd199bc2a3f27d1251"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aa5b4f0f3f7d263cd199bc2a3f27d1251">rtCheckLastError</a> (char const *desc, char const *file, int const &amp;line) noexcept(!TThrow)</td></tr>
-<tr class="memdesc:aa5b4f0f3f7d263cd199bc2a3f27d1251"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API last error checking with log and exception.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aa5b4f0f3f7d263cd199bc2a3f27d1251">More...</a><br /></td></tr>
-<tr class="separator:aa5b4f0f3f7d263cd199bc2a3f27d1251"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a0b0f5201f3d3aba739fda9ab1c0ecf7b">uniformCudaHipKernel</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs... args)</td></tr>
-<tr class="memdesc:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP kernel entry point.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a0b0f5201f3d3aba739fda9ab1c0ecf7b">More...</a><br /></td></tr>
-<tr class="separator:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1133404607a47b93d80cd9a0312272bd"><td class="memTemplParams" colspan="2">template&lt;typename TApi , bool TThrow&gt; </td></tr>
+<tr class="memitem:a1133404607a47b93d80cd9a0312272bd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a1133404607a47b93d80cd9a0312272bd">rtCheck</a> (typename TApi::Error_t const &amp;error, char const *desc, char const *file, int const &amp;line) noexcept(!TThrow)</td></tr>
+<tr class="memdesc:a1133404607a47b93d80cd9a0312272bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API error checking with log and exception, ignoring specific error values.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a1133404607a47b93d80cd9a0312272bd">More...</a><br /></td></tr>
+<tr class="separator:a1133404607a47b93d80cd9a0312272bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9873f7dc899a466c5648661e37bc682"><td class="memTemplParams" colspan="2">template&lt;typename TApi , bool TThrow, typename... TErrors&gt; </td></tr>
+<tr class="memitem:ac9873f7dc899a466c5648661e37bc682"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac9873f7dc899a466c5648661e37bc682">rtCheckIgnore</a> (typename TApi::Error_t const &amp;error, char const *cmd, char const *file, int const &amp;line, TErrors &amp;&amp;... ignoredErrorCodes) noexcept(!TThrow)</td></tr>
+<tr class="memdesc:ac9873f7dc899a466c5648661e37bc682"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API error checking with log and exception, ignoring specific error values.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac9873f7dc899a466c5648661e37bc682">More...</a><br /></td></tr>
+<tr class="separator:ac9873f7dc899a466c5648661e37bc682"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadbc4c37adaf4a8dee896d831b707b54"><td class="memTemplParams" colspan="2">template&lt;typename TApi , bool TThrow&gt; </td></tr>
+<tr class="memitem:aadbc4c37adaf4a8dee896d831b707b54"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aadbc4c37adaf4a8dee896d831b707b54">rtCheckLastError</a> (char const *desc, char const *file, int const &amp;line) noexcept(!TThrow)</td></tr>
+<tr class="memdesc:aadbc4c37adaf4a8dee896d831b707b54"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API last error checking with log and exception.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aadbc4c37adaf4a8dee896d831b707b54">More...</a><br /></td></tr>
+<tr class="separator:aadbc4c37adaf4a8dee896d831b707b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6e8357781880bf4fce35d32a57a382"><td class="memTemplParams" colspan="2">template&lt;typename TApi , typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:aea6e8357781880bf4fce35d32a57a382"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aea6e8357781880bf4fce35d32a57a382">uniformCudaHipKernel</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs... args)</td></tr>
+<tr class="memdesc:aea6e8357781880bf4fce35d32a57a382"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP kernel entry point.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aea6e8357781880bf4fce35d32a57a382">More...</a><br /></td></tr>
+<tr class="separator:aea6e8357781880bf4fce35d32a57a382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a48180eda98f53c8391a17fa921d7b958"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48180eda98f53c8391a17fa921d7b958">&#9670;&nbsp;</a></span>Error_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">alpaka::uniform_cuda_hip::detail::Error_t</a> = typedef cudaError</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00033">33</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af9741bdf6dda9699e1dd8ca18d81d16a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9741bdf6dda9699e1dd8ca18d81d16a">&#9670;&nbsp;</a></span>checkVecOnly3Dim()</h2>
@@ -171,7 +148,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00097">97</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00103">103</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -194,17 +171,17 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00114">114</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00120">120</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ae9b758c58752823aed57978d33f33c0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9b758c58752823aed57978d33f33c0f">&#9670;&nbsp;</a></span>rtCheck()</h2>
+<a id="a1133404607a47b93d80cd9a0312272bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1133404607a47b93d80cd9a0312272bd">&#9670;&nbsp;</a></span>rtCheck()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;bool TThrow&gt; </div>
+template&lt;typename TApi , bool TThrow&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -212,7 +189,7 @@ template&lt;bool TThrow&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void alpaka::uniform_cuda_hip::detail::rtCheck </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a> const &amp;&#160;</td>
+          <td class="paramtype">typename TApi::Error_t const &amp;&#160;</td>
           <td class="paramname"><em>error</em>, </td>
         </tr>
         <tr>
@@ -248,17 +225,17 @@ template&lt;bool TThrow&gt; </div>
 
 <p>CUDA/HIP runtime API error checking with log and exception, ignoring specific error values. </p>
 
-<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00040">40</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00036">36</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a4b987d326df2f40b4473b6cbd1f29ec1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b987d326df2f40b4473b6cbd1f29ec1">&#9670;&nbsp;</a></span>rtCheckIgnore()</h2>
+<a id="ac9873f7dc899a466c5648661e37bc682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9873f7dc899a466c5648661e37bc682">&#9670;&nbsp;</a></span>rtCheckIgnore()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;bool TThrow, typename... TErrors&gt; </div>
+template&lt;typename TApi , bool TThrow, typename... TErrors&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -266,7 +243,7 @@ template&lt;bool TThrow, typename... TErrors&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void alpaka::uniform_cuda_hip::detail::rtCheckIgnore </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a> const &amp;&#160;</td>
+          <td class="paramtype">typename TApi::Error_t const &amp;&#160;</td>
           <td class="paramname"><em>error</em>, </td>
         </tr>
         <tr>
@@ -308,17 +285,17 @@ template&lt;bool TThrow, typename... TErrors&gt; </div>
 
 <p>CUDA/HIP runtime API error checking with log and exception, ignoring specific error values. </p>
 
-<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00069">69</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00064">64</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aa5b4f0f3f7d263cd199bc2a3f27d1251"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5b4f0f3f7d263cd199bc2a3f27d1251">&#9670;&nbsp;</a></span>rtCheckLastError()</h2>
+<a id="aadbc4c37adaf4a8dee896d831b707b54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadbc4c37adaf4a8dee896d831b707b54">&#9670;&nbsp;</a></span>rtCheckLastError()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;bool TThrow&gt; </div>
+template&lt;typename TApi , bool TThrow&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -356,17 +333,17 @@ template&lt;bool TThrow&gt; </div>
 
 <p>CUDA/HIP runtime API last error checking with log and exception. </p>
 
-<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00097">97</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00093">93</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a0b0f5201f3d3aba739fda9ab1c0ecf7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b0f5201f3d3aba739fda9ab1c0ecf7b">&#9670;&nbsp;</a></span>uniformCudaHipKernel()</h2>
+<a id="aea6e8357781880bf4fce35d32a57a382"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea6e8357781880bf4fce35d32a57a382">&#9670;&nbsp;</a></span>uniformCudaHipKernel()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </div>
+template&lt;typename TApi , typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">__global__ void alpaka::uniform_cuda_hip::detail::uniformCudaHipKernel </td>
@@ -396,7 +373,7 @@ template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnOb
 
 <p>The GPU CUDA/HIP kernel entry point. </p>
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00076">76</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00082">82</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -406,7 +383,7 @@ template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnOb
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:35 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:28:01 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

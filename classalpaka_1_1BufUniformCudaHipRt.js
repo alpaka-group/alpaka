@@ -1,8 +1,8 @@
 var classalpaka_1_1BufUniformCudaHipRt =
 [
-    [ "BufUniformCudaHipRt", "classalpaka_1_1BufUniformCudaHipRt.html#a2e2f5207cf2c61a9cd2efe3d460dbd38", null ],
-    [ "m_dev", "classalpaka_1_1BufUniformCudaHipRt.html#a1c72f4c26b8b7d220425e20c63381461", null ],
-    [ "m_extentElements", "classalpaka_1_1BufUniformCudaHipRt.html#a5a7222bbff5253382f8b354093fd1306", null ],
-    [ "m_pitchBytes", "classalpaka_1_1BufUniformCudaHipRt.html#acf4c14a541daae875713f3ef9499bd0b", null ],
-    [ "m_spMem", "classalpaka_1_1BufUniformCudaHipRt.html#a50b56191566f1aba5171f6f72ca512eb", null ]
+    [ "BufUniformCudaHipRt", "classalpaka_1_1BufUniformCudaHipRt.html#aa80a4b6dc389a7b8c64c376ce25971c1", null ],
+    [ "m_dev", "classalpaka_1_1BufUniformCudaHipRt.html#a2be17321b0c97550643d5cb706ab5256", null ],
+    [ "m_extentElements", "classalpaka_1_1BufUniformCudaHipRt.html#a3122e68c3707a176284c61e3736a7878", null ],
+    [ "m_pitchBytes", "classalpaka_1_1BufUniformCudaHipRt.html#a1c4b73ee06fd8574ed4eccdb983b2c22", null ],
+    [ "m_spMem", "classalpaka_1_1BufUniformCudaHipRt.html#af698ef4e3a877601a9980e6b0c4f65b4", null ]
 ];

@@ -175,9 +175,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The acceleration properties on a device.  <a href="structalpaka_1_1AccDevProps.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1AccGpuCudaRt.html">AccGpuCudaRt</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator.  <a href="classalpaka_1_1AccGpuCudaRt.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator.  <a href="classalpaka_1_1AccGpuUniformCudaHipRt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,6 +186,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1AllocCpuNew.html">AllocCpuNew</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU new allocator.  <a href="classalpaka_1_1AllocCpuNew.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1AtomicAdd.html">AtomicAdd</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The addition function object.  <a href="structalpaka_1_1AtomicAdd.html#details">More...</a><br /></td></tr>
@@ -459,6 +458,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ae3a0f745fcf8e6ac0125e5ba7911e11a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a> = typename <a class="el" href="structalpaka_1_1trait_1_1AccType.html">trait::AccType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:ae3a0f745fcf8e6ac0125e5ba7911e11a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator type trait alias template to remove the ::type.  <a href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">More...</a><br /></td></tr>
 <tr class="separator:ae3a0f745fcf8e6ac0125e5ba7911e11a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac41d3de7aa83e26273d7f08f8e76fe1d"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:ac41d3de7aa83e26273d7f08f8e76fe1d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d">AccGpuCudaRt</a> = <a class="el" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TDim, TIdx &gt;</td></tr>
+<tr class="separator:ac41d3de7aa83e26273d7f08f8e76fe1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bad0e6d480fa2fafe60330f304067b5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0bad0e6d480fa2fafe60330f304067b5">AtomicCpu</a> = <a class="el" href="classalpaka_1_1AtomicStdLibLock.html">AtomicStdLibLock</a>&lt; 16 &gt;</td></tr>
 <tr class="separator:a0bad0e6d480fa2fafe60330f304067b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe27c0dad6ddd453657dee8f0bb343ff"><td class="memTemplParams" colspan="2">template&lt;typename TGridAtomic , typename TBlockAtomic , typename TThreadAtomic &gt; </td></tr>
@@ -472,15 +474,16 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ac9381e9159626b8969f257249c4c9386"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">Buf</a> = typename <a class="el" href="structalpaka_1_1trait_1_1BufType.html">trait::BufType</a>&lt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">alpaka::Dev</a>&lt; TDev &gt;, TElem, TDim, TIdx &gt;::type</td></tr>
 <tr class="memdesc:ac9381e9159626b8969f257249c4c9386"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer type trait alias template to remove the ::type.  <a href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">More...</a><br /></td></tr>
 <tr class="separator:ac9381e9159626b8969f257249c4c9386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d0a0cf839acc949da9fcf4d05571ad4"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:a9d0a0cf839acc949da9fcf4d05571ad4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9d0a0cf839acc949da9fcf4d05571ad4">BufCudaRt</a> = <a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html">BufUniformCudaHipRt</a>&lt; TElem, TDim, TIdx &gt;</td></tr>
-<tr class="separator:a9d0a0cf839acc949da9fcf4d05571ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4501d6cc83b94366a4a141ed1b504b8"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:ae4501d6cc83b94366a4a141ed1b504b8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae4501d6cc83b94366a4a141ed1b504b8">BufCudaRt</a> = <a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html">BufUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TElem, TDim, TIdx &gt;</td></tr>
+<tr class="separator:ae4501d6cc83b94366a4a141ed1b504b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32355d5c313b0846505aeaf5d42484be"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a32355d5c313b0846505aeaf5d42484be"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a> = typename <a class="el" href="structalpaka_1_1trait_1_1DevType.html">trait::DevType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a32355d5c313b0846505aeaf5d42484be"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device type trait alias template to remove the ::type.  <a href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">More...</a><br /></td></tr>
 <tr class="separator:a32355d5c313b0846505aeaf5d42484be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28e85e5b3182910ce26538c4f4b1d9fd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a28e85e5b3182910ce26538c4f4b1d9fd">DevCudaRt</a> = <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a></td></tr>
-<tr class="separator:a28e85e5b3182910ce26538c4f4b1d9fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dab48915b0cb9623165d122b33dd103"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103">DevCudaRt</a> = <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a> &gt;</td></tr>
+<tr class="memdesc:a8dab48915b0cb9623165d122b33dd103"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT device handle.  <a href="namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103">More...</a><br /></td></tr>
+<tr class="separator:a8dab48915b0cb9623165d122b33dd103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee3fb80b82e8f3e9601195afb0b8c34c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aee3fb80b82e8f3e9601195afb0b8c34c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim</a> = typename <a class="el" href="structalpaka_1_1trait_1_1DimType.html">trait::DimType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:aee3fb80b82e8f3e9601195afb0b8c34c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension type trait alias template to remove the ::type.  <a href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">More...</a><br /></td></tr>
@@ -498,12 +501,13 @@ Typedefs</h2></td></tr>
 <tr class="separator:a097911074293c18d5a37aac3266f9a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc8723b925f6ddf8b27631b71a7c22c6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#acc8723b925f6ddf8b27631b71a7c22c6">EventCpu</a> = <a class="el" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads</a>&lt; <a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> &gt;</td></tr>
 <tr class="separator:acc8723b925f6ddf8b27631b71a7c22c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f508034ba4e3b4079efd7e3dfb9838b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6f508034ba4e3b4079efd7e3dfb9838b">EventCudaRt</a> = <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html">EventUniformCudaHipRt</a></td></tr>
-<tr class="separator:a6f508034ba4e3b4079efd7e3dfb9838b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ad78249cee4204531842783fbc021c9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5ad78249cee4204531842783fbc021c9">EventCudaRt</a> = <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html">EventUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a> &gt;</td></tr>
+<tr class="memdesc:a5ad78249cee4204531842783fbc021c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT device event.  <a href="namespacealpaka.html#a5ad78249cee4204531842783fbc021c9">More...</a><br /></td></tr>
+<tr class="separator:a5ad78249cee4204531842783fbc021c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0173206e98595f605bffe9a6198da754"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0173206e98595f605bffe9a6198da754">EventOmp5</a> = <a class="el" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads</a>&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> &gt;</td></tr>
 <tr class="separator:a0173206e98595f605bffe9a6198da754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memTemplParams" colspan="2">template&lt;class TDim , class TIdx &gt; </td></tr>
-<tr class="memitem:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa">ExampleDefaultAcc</a> = <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt; TDim, TIdx &gt;</td></tr>
+<tr class="memitem:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa">ExampleDefaultAcc</a> = <a class="el" href="namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d">alpaka::AccGpuCudaRt</a>&lt; TDim, TIdx &gt;</td></tr>
 <tr class="memdesc:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the default accelerator used by examples. From a list of all accelerators the first one which is enabled is chosen. <a class="el" href="classalpaka_1_1AccCpuSerial.html" title="The CPU serial accelerator.">AccCpuSerial</a> is selected last.  <a href="namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa">More...</a><br /></td></tr>
 <tr class="separator:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0163f6f6c406d381013f117fdbe7ef70"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -519,8 +523,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6b83bc07c7ca78824c9b5026f951cff4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4">Pltf</a> = typename <a class="el" href="structalpaka_1_1trait_1_1PltfType.html">trait::PltfType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a6b83bc07c7ca78824c9b5026f951cff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The platform type trait alias template to remove the ::type.  <a href="namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4">More...</a><br /></td></tr>
 <tr class="separator:a6b83bc07c7ca78824c9b5026f951cff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11c8a88607a57558a48b2f279bbec545"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a11c8a88607a57558a48b2f279bbec545">PltfCudaRt</a> = <a class="el" href="classalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a></td></tr>
-<tr class="separator:a11c8a88607a57558a48b2f279bbec545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2da3c226528d12baea2581aaa6fb9cd5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5">PltfCudaRt</a> = <a class="el" href="classalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a> &gt;</td></tr>
+<tr class="memdesc:a2da3c226528d12baea2581aaa6fb9cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT platform.  <a href="namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5">More...</a><br /></td></tr>
+<tr class="separator:a2da3c226528d12baea2581aaa6fb9cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="memTemplParams" colspan="2">template&lt;typename TEnv , typename TProperty &gt; </td></tr>
 <tr class="memitem:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa">Queue</a> = typename <a class="el" href="structalpaka_1_1trait_1_1QueueType.html">trait::QueueType</a>&lt; TEnv, TProperty &gt;::type</td></tr>
 <tr class="memdesc:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue based on the environment and a property.  <a href="namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa">More...</a><br /></td></tr>
@@ -529,24 +534,31 @@ Typedefs</h2></td></tr>
 <tr class="separator:a5b74cbab627401664d95c8a91c859a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a11334697bff8a6fb14559535908633"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8a11334697bff8a6fb14559535908633">QueueCpuNonBlocking</a> = <a class="el" href="classalpaka_1_1QueueGenericThreadsNonBlocking.html">QueueGenericThreadsNonBlocking</a>&lt; <a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> &gt;</td></tr>
 <tr class="separator:a8a11334697bff8a6fb14559535908633"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a311549e8bc3033e0f1387da53b6f4618"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a311549e8bc3033e0f1387da53b6f4618">QueueCudaRtBlocking</a> = <a class="el" href="namespacealpaka.html#ab0b41862622ca0a42306953f270fa055">QueueUniformCudaHipRtBlocking</a></td></tr>
-<tr class="separator:a311549e8bc3033e0f1387da53b6f4618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebad4c35c3d61402485ed3c4524298db"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aebad4c35c3d61402485ed3c4524298db">QueueCudaRtNonBlocking</a> = <a class="el" href="namespacealpaka.html#abb9a658a30c53026d7fb363509f6891a">QueueUniformCudaHipRtNonBlocking</a></td></tr>
-<tr class="separator:aebad4c35c3d61402485ed3c4524298db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e8b3978a69f4844792b91f2632ea66f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f">QueueCudaRtBlocking</a> = <a class="el" href="namespacealpaka.html#a13646f485ddbe5f1809a3d24f77429eb">QueueUniformCudaHipRtBlocking</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a> &gt;</td></tr>
+<tr class="memdesc:a2e8b3978a69f4844792b91f2632ea66f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT blocking queue.  <a href="namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f">More...</a><br /></td></tr>
+<tr class="separator:a2e8b3978a69f4844792b91f2632ea66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1b1d2362f1b9fc854fc0ba4008c85e4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab1b1d2362f1b9fc854fc0ba4008c85e4">QueueCudaRtNonBlocking</a> = <a class="el" href="namespacealpaka.html#af493861b6c8c71c887690654c4943238">QueueUniformCudaHipRtNonBlocking</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a> &gt;</td></tr>
+<tr class="memdesc:ab1b1d2362f1b9fc854fc0ba4008c85e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT non-blocking queue.  <a href="namespacealpaka.html#ab1b1d2362f1b9fc854fc0ba4008c85e4">More...</a><br /></td></tr>
+<tr class="separator:ab1b1d2362f1b9fc854fc0ba4008c85e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbef4249dfcd6989eff6088e26bb911f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abbef4249dfcd6989eff6088e26bb911f">QueueOmp5Blocking</a> = <a class="el" href="classalpaka_1_1QueueGenericThreadsBlocking.html">QueueGenericThreadsBlocking</a>&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> &gt;</td></tr>
 <tr class="separator:abbef4249dfcd6989eff6088e26bb911f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1994bcdaa7cefe3ae066eb3033530826"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1994bcdaa7cefe3ae066eb3033530826">QueueOmp5NonBlocking</a> = <a class="el" href="classalpaka_1_1QueueGenericThreadsNonBlocking.html">QueueGenericThreadsNonBlocking</a>&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> &gt;</td></tr>
 <tr class="separator:a1994bcdaa7cefe3ae066eb3033530826"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0b41862622ca0a42306953f270fa055"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab0b41862622ca0a42306953f270fa055">QueueUniformCudaHipRtBlocking</a> = <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt; true &gt;</td></tr>
-<tr class="memdesc:ab0b41862622ca0a42306953f270fa055"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT blocking queue.  <a href="namespacealpaka.html#ab0b41862622ca0a42306953f270fa055">More...</a><br /></td></tr>
-<tr class="separator:ab0b41862622ca0a42306953f270fa055"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb9a658a30c53026d7fb363509f6891a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abb9a658a30c53026d7fb363509f6891a">QueueUniformCudaHipRtNonBlocking</a> = <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt; false &gt;</td></tr>
-<tr class="memdesc:abb9a658a30c53026d7fb363509f6891a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT blocking queue.  <a href="namespacealpaka.html#abb9a658a30c53026d7fb363509f6891a">More...</a><br /></td></tr>
-<tr class="separator:abb9a658a30c53026d7fb363509f6891a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13646f485ddbe5f1809a3d24f77429eb"><td class="memTemplParams" colspan="2">template&lt;typename TApi &gt; </td></tr>
+<tr class="memitem:a13646f485ddbe5f1809a3d24f77429eb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a13646f485ddbe5f1809a3d24f77429eb">QueueUniformCudaHipRtBlocking</a> = <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt; TApi, true &gt;</td></tr>
+<tr class="memdesc:a13646f485ddbe5f1809a3d24f77429eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT blocking queue.  <a href="namespacealpaka.html#a13646f485ddbe5f1809a3d24f77429eb">More...</a><br /></td></tr>
+<tr class="separator:a13646f485ddbe5f1809a3d24f77429eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af493861b6c8c71c887690654c4943238"><td class="memTemplParams" colspan="2">template&lt;typename TApi &gt; </td></tr>
+<tr class="memitem:af493861b6c8c71c887690654c4943238"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af493861b6c8c71c887690654c4943238">QueueUniformCudaHipRtNonBlocking</a> = <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt; TApi, false &gt;</td></tr>
+<tr class="memdesc:af493861b6c8c71c887690654c4943238"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT non-blocking queue.  <a href="namespacealpaka.html#af493861b6c8c71c887690654c4943238">More...</a><br /></td></tr>
+<tr class="separator:af493861b6c8c71c887690654c4943238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78675a272ead29bbbf706b20727fa209"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a78675a272ead29bbbf706b20727fa209"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a> = typename <a class="el" href="structalpaka_1_1remove__restrict.html">remove_restrict</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a78675a272ead29bbbf706b20727fa209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to remove <b>restrict</b> from a type.  <a href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">More...</a><br /></td></tr>
 <tr class="separator:a78675a272ead29bbbf706b20727fa209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa48aeb76936551ea2dc5c4fe4759eb35"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:aa48aeb76936551ea2dc5c4fe4759eb35"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa48aeb76936551ea2dc5c4fe4759eb35">TaskKernelGpuCudaRt</a> = <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt;</td></tr>
+<tr class="separator:aa48aeb76936551ea2dc5c4fe4759eb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -1047,6 +1059,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ac41d3de7aa83e26273d7f08f8e76fe1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac41d3de7aa83e26273d7f08f8e76fe1d">&#9670;&nbsp;</a></span>AccGpuCudaRt</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TIdx &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d">alpaka::AccGpuCudaRt</a> = typedef <a class="el" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TDim, TIdx&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="AccGpuCudaRt_8hpp_source.html#l00020">20</a> of file <a class="el" href="AccGpuCudaRt_8hpp_source.html">AccGpuCudaRt.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a0bad0e6d480fa2fafe60330f304067b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bad0e6d480fa2fafe60330f304067b5">&#9670;&nbsp;</a></span>AtomicCpu</h2>
 
@@ -1121,8 +1151,8 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 
 </div>
 </div>
-<a id="a9d0a0cf839acc949da9fcf4d05571ad4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d0a0cf839acc949da9fcf4d05571ad4">&#9670;&nbsp;</a></span>BufCudaRt</h2>
+<a id="ae4501d6cc83b94366a4a141ed1b504b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4501d6cc83b94366a4a141ed1b504b8">&#9670;&nbsp;</a></span>BufCudaRt</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1130,12 +1160,12 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a9d0a0cf839acc949da9fcf4d05571ad4">alpaka::BufCudaRt</a> = typedef <a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html">BufUniformCudaHipRt</a>&lt;TElem, TDim, TIdx&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#ae4501d6cc83b94366a4a141ed1b504b8">alpaka::BufCudaRt</a> = typedef <a class="el" href="classalpaka_1_1BufUniformCudaHipRt.html">BufUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TElem, TDim, TIdx&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00086">86</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BufCudaRt_8hpp_source.html#l00020">20</a> of file <a class="el" href="BufCudaRt_8hpp_source.html">BufCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1159,19 +1189,21 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a28e85e5b3182910ce26538c4f4b1d9fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28e85e5b3182910ce26538c4f4b1d9fd">&#9670;&nbsp;</a></span>DevCudaRt</h2>
+<a id="a8dab48915b0cb9623165d122b33dd103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dab48915b0cb9623165d122b33dd103">&#9670;&nbsp;</a></span>DevCudaRt</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a28e85e5b3182910ce26538c4f4b1d9fd">alpaka::DevCudaRt</a> = typedef <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103">alpaka::DevCudaRt</a> = typedef <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00084">84</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+<p>The CUDA RT device handle. </p>
+
+<p class="definition">Definition at line <a class="el" href="DevCudaRt_8hpp_source.html#l00020">20</a> of file <a class="el" href="DevCudaRt_8hpp_source.html">DevCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1269,19 +1301,21 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a6f508034ba4e3b4079efd7e3dfb9838b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f508034ba4e3b4079efd7e3dfb9838b">&#9670;&nbsp;</a></span>EventCudaRt</h2>
+<a id="a5ad78249cee4204531842783fbc021c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ad78249cee4204531842783fbc021c9">&#9670;&nbsp;</a></span>EventCudaRt</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a6f508034ba4e3b4079efd7e3dfb9838b">alpaka::EventCudaRt</a> = typedef <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html">EventUniformCudaHipRt</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a5ad78249cee4204531842783fbc021c9">alpaka::EventCudaRt</a> = typedef <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html">EventUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="EventUniformCudaHipRt_8hpp_source.html#l00121">121</a> of file <a class="el" href="EventUniformCudaHipRt_8hpp_source.html">EventUniformCudaHipRt.hpp</a>.</p>
+<p>The CUDA RT device event. </p>
+
+<p class="definition">Definition at line <a class="el" href="EventCudaRt_8hpp_source.html#l00020">20</a> of file <a class="el" href="EventCudaRt_8hpp_source.html">EventCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1310,7 +1344,7 @@ template&lt;typename T &gt; </div>
 template&lt;class TDim , class TIdx &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa">alpaka::ExampleDefaultAcc</a> = typedef <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt;TDim, TIdx&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa">alpaka::ExampleDefaultAcc</a> = typedef <a class="el" href="namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d">alpaka::AccGpuCudaRt</a>&lt;TDim, TIdx&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1395,19 +1429,21 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a11c8a88607a57558a48b2f279bbec545"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11c8a88607a57558a48b2f279bbec545">&#9670;&nbsp;</a></span>PltfCudaRt</h2>
+<a id="a2da3c226528d12baea2581aaa6fb9cd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2da3c226528d12baea2581aaa6fb9cd5">&#9670;&nbsp;</a></span>PltfCudaRt</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a11c8a88607a57558a48b2f279bbec545">alpaka::PltfCudaRt</a> = typedef <a class="el" href="classalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5">alpaka::PltfCudaRt</a> = typedef <a class="el" href="classalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="PltfUniformCudaHipRt_8hpp_source.html#l00040">40</a> of file <a class="el" href="PltfUniformCudaHipRt_8hpp_source.html">PltfUniformCudaHipRt.hpp</a>.</p>
+<p>The CUDA RT platform. </p>
+
+<p class="definition">Definition at line <a class="el" href="PltfCudaRt_8hpp_source.html#l00020">20</a> of file <a class="el" href="PltfCudaRt_8hpp_source.html">PltfCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1470,35 +1506,39 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
 
 </div>
 </div>
-<a id="a311549e8bc3033e0f1387da53b6f4618"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a311549e8bc3033e0f1387da53b6f4618">&#9670;&nbsp;</a></span>QueueCudaRtBlocking</h2>
+<a id="a2e8b3978a69f4844792b91f2632ea66f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e8b3978a69f4844792b91f2632ea66f">&#9670;&nbsp;</a></span>QueueCudaRtBlocking</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a311549e8bc3033e0f1387da53b6f4618">alpaka::QueueCudaRtBlocking</a> = typedef <a class="el" href="namespacealpaka.html#ab0b41862622ca0a42306953f270fa055">QueueUniformCudaHipRtBlocking</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f">alpaka::QueueCudaRtBlocking</a> = typedef <a class="el" href="namespacealpaka.html#a13646f485ddbe5f1809a3d24f77429eb">QueueUniformCudaHipRtBlocking</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html#l00023">23</a> of file <a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html">QueueUniformCudaHipRtBlocking.hpp</a>.</p>
+<p>The CUDA RT blocking queue. </p>
+
+<p class="definition">Definition at line <a class="el" href="QueueCudaRtBlocking_8hpp_source.html#l00020">20</a> of file <a class="el" href="QueueCudaRtBlocking_8hpp_source.html">QueueCudaRtBlocking.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aebad4c35c3d61402485ed3c4524298db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebad4c35c3d61402485ed3c4524298db">&#9670;&nbsp;</a></span>QueueCudaRtNonBlocking</h2>
+<a id="ab1b1d2362f1b9fc854fc0ba4008c85e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1b1d2362f1b9fc854fc0ba4008c85e4">&#9670;&nbsp;</a></span>QueueCudaRtNonBlocking</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#aebad4c35c3d61402485ed3c4524298db">alpaka::QueueCudaRtNonBlocking</a> = typedef <a class="el" href="namespacealpaka.html#abb9a658a30c53026d7fb363509f6891a">QueueUniformCudaHipRtNonBlocking</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#ab1b1d2362f1b9fc854fc0ba4008c85e4">alpaka::QueueCudaRtNonBlocking</a> = typedef <a class="el" href="namespacealpaka.html#af493861b6c8c71c887690654c4943238">QueueUniformCudaHipRtNonBlocking</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00023">23</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
+<p>The CUDA RT non-blocking queue. </p>
+
+<p class="definition">Definition at line <a class="el" href="QueueCudaRtNonBlocking_8hpp_source.html#l00020">20</a> of file <a class="el" href="QueueCudaRtNonBlocking_8hpp_source.html">QueueCudaRtNonBlocking.hpp</a>.</p>
 
 </div>
 </div>
@@ -1534,32 +1574,16 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
 
 </div>
 </div>
-<a id="ab0b41862622ca0a42306953f270fa055"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0b41862622ca0a42306953f270fa055">&#9670;&nbsp;</a></span>QueueUniformCudaHipRtBlocking</h2>
+<a id="a13646f485ddbe5f1809a3d24f77429eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13646f485ddbe5f1809a3d24f77429eb">&#9670;&nbsp;</a></span>QueueUniformCudaHipRtBlocking</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt; true &gt; <a class="el" href="namespacealpaka.html#ab0b41862622ca0a42306953f270fa055">alpaka::QueueUniformCudaHipRtBlocking</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The CUDA/HIP RT blocking queue. </p>
-
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00048">48</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
-
-</div>
-</div>
-<a id="abb9a658a30c53026d7fb363509f6891a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb9a658a30c53026d7fb363509f6891a">&#9670;&nbsp;</a></span>QueueUniformCudaHipRtNonBlocking</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt; false &gt; <a class="el" href="namespacealpaka.html#abb9a658a30c53026d7fb363509f6891a">alpaka::QueueUniformCudaHipRtNonBlocking</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a13646f485ddbe5f1809a3d24f77429eb">alpaka::QueueUniformCudaHipRtBlocking</a> = typedef <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt;TApi, true&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1567,6 +1591,26 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
 <p>The CUDA/HIP RT blocking queue. </p>
 
 <p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00049">49</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="af493861b6c8c71c887690654c4943238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af493861b6c8c71c887690654c4943238">&#9670;&nbsp;</a></span>QueueUniformCudaHipRtNonBlocking</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#af493861b6c8c71c887690654c4943238">alpaka::QueueUniformCudaHipRtNonBlocking</a> = typedef <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">uniform_cuda_hip::detail::QueueUniformCudaHipRt</a>&lt;TApi, false&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The CUDA/HIP RT non-blocking queue. </p>
+
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00052">52</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1587,6 +1631,24 @@ template&lt;typename T &gt; </div>
 <p>Helper to remove <b>restrict</b> from a type. </p>
 
 <p class="definition">Definition at line <a class="el" href="RemoveRestrict_8hpp_source.html#l00039">39</a> of file <a class="el" href="RemoveRestrict_8hpp_source.html">RemoveRestrict.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa48aeb76936551ea2dc5c4fe4759eb35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa48aeb76936551ea2dc5c4fe4759eb35">&#9670;&nbsp;</a></span>TaskKernelGpuCudaRt</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#aa48aeb76936551ea2dc5c4fe4759eb35">alpaka::TaskKernelGpuCudaRt</a> = typedef <a class="el" href="classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html">TaskKernelGpuUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TAcc, TDim, TIdx, TKernelFnObj, TArgs...&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuCudaRt_8hpp_source.html#l00020">20</a> of file <a class="el" href="TaskKernelGpuCudaRt_8hpp_source.html">TaskKernelGpuCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -8143,7 +8205,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:33 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:27:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

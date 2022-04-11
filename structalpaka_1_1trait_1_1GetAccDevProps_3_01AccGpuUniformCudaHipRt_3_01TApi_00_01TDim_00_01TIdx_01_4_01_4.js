@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4 =
+[
+    [ "getAccDevProps", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#a7c9df52c045dd0395a06e557b5018ada", null ]
+];

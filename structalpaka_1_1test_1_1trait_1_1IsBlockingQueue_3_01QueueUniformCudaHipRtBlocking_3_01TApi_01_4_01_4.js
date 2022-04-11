@@ -1,0 +1,4 @@
+var structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_01_4 =
+[
+    [ "value", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_01_4.html#a29f4cd2065ced1528e1b77271d39d2dc", null ]
+];

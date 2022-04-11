@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1GetDev_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4 =
-[
-    [ "getDev", "structalpaka_1_1trait_1_1GetDev_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a546979b7e57e3329ceb9550d23fa91fb", null ]
-];

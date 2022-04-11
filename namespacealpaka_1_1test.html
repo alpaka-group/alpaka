@@ -141,7 +141,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ae344a5d456b09ef271a7eeaea35daba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The queue type that should be used for the given accelerator.  <a href="namespacealpaka_1_1test.html#ae344a5d456b09ef271a7eeaea35daba7">More...</a><br /></td></tr>
 <tr class="separator:ae344a5d456b09ef271a7eeaea35daba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61f6b665ee46c5d41d00ac18855df6e1"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:a61f6b665ee46c5d41d00ac18855df6e1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">EnabledAccs</a> = typename <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">meta::Filter</a>&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a5b2492362925e722c3ae9390502e10e9">detail::EnabledAccsElseInt</a>&lt; TDim, TIdx &gt;, std::is_class &gt;</td></tr>
+<tr class="memitem:a61f6b665ee46c5d41d00ac18855df6e1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">EnabledAccs</a> = typename <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">meta::Filter</a>&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#ad12ee2f89b76795fd465d73abfe4c985">detail::EnabledAccsElseInt</a>&lt; TDim, TIdx &gt;, std::is_class &gt;</td></tr>
 <tr class="memdesc:a61f6b665ee46c5d41d00ac18855df6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector containing all available accelerators.  <a href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">More...</a><br /></td></tr>
 <tr class="separator:a61f6b665ee46c5d41d00ac18855df6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5751f63b161a4e0460c55f2f5c3d2a17"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
@@ -164,9 +164,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ac0f459f4608106cb91d1aebf5899600a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#ac0f459f4608106cb91d1aebf5899600a">TestIdxs</a> = std::tuple&lt; std::int64_t, std::uint64_t, std::int32_t, std::uint32_t &gt;</td></tr>
 <tr class="memdesc:ac0f459f4608106cb91d1aebf5899600a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple holding idx types.  <a href="namespacealpaka_1_1test.html#ac0f459f4608106cb91d1aebf5899600a">More...</a><br /></td></tr>
 <tr class="separator:ac0f459f4608106cb91d1aebf5899600a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac624a0b804a66cb8868f004e2a412a4c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#ac624a0b804a66cb8868f004e2a412a4c">TestQueues</a> = std::tuple&lt; std::tuple&lt; <a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42">QueueCpuBlocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a8a11334697bff8a6fb14559535908633">QueueCpuNonBlocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>, <a class="el" href="namespacealpaka.html#ab0b41862622ca0a42306953f270fa055">QueueUniformCudaHipRtBlocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>, <a class="el" href="namespacealpaka.html#abb9a658a30c53026d7fb363509f6891a">QueueUniformCudaHipRtNonBlocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#abbef4249dfcd6989eff6088e26bb911f">QueueOmp5Blocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#a1994bcdaa7cefe3ae066eb3033530826">QueueOmp5NonBlocking</a> &gt; &gt;</td></tr>
-<tr class="memdesc:ac624a0b804a66cb8868f004e2a412a4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple holding tuples of devices and corresponding queue types.  <a href="namespacealpaka_1_1test.html#ac624a0b804a66cb8868f004e2a412a4c">More...</a><br /></td></tr>
-<tr class="separator:ac624a0b804a66cb8868f004e2a412a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ea69247bef1af1f509ffa0c7414ad9a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a7ea69247bef1af1f509ffa0c7414ad9a">TestQueues</a> = std::tuple&lt; std::tuple&lt; <a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42">QueueCpuBlocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a8a11334697bff8a6fb14559535908633">QueueCpuNonBlocking</a> &gt;, std::tuple&lt; <a class="el" href="namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103">DevCudaRt</a>, <a class="el" href="namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f">QueueCudaRtBlocking</a> &gt;, std::tuple&lt; <a class="el" href="namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103">DevCudaRt</a>, <a class="el" href="namespacealpaka.html#ab1b1d2362f1b9fc854fc0ba4008c85e4">QueueCudaRtNonBlocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#abbef4249dfcd6989eff6088e26bb911f">QueueOmp5Blocking</a> &gt;, std::tuple&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#a1994bcdaa7cefe3ae066eb3033530826">QueueOmp5NonBlocking</a> &gt; &gt;</td></tr>
+<tr class="memdesc:a7ea69247bef1af1f509ffa0c7414ad9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple holding tuples of devices and corresponding queue types.  <a href="namespacealpaka_1_1test.html#a7ea69247bef1af1f509ffa0c7414ad9a">More...</a><br /></td></tr>
+<tr class="separator:a7ea69247bef1af1f509ffa0c7414ad9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -232,14 +232,14 @@ template&lt;typename TAcc &gt; </div>
 template&lt;typename TDim , typename TIdx &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">alpaka::test::EnabledAccs</a> = typedef typename <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">meta::Filter</a>&lt;<a class="el" href="namespacealpaka_1_1test_1_1detail.html#a5b2492362925e722c3ae9390502e10e9">detail::EnabledAccsElseInt</a>&lt;TDim, TIdx&gt;, std::is_class&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">alpaka::test::EnabledAccs</a> = typedef typename <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">meta::Filter</a>&lt;<a class="el" href="namespacealpaka_1_1test_1_1detail.html#ad12ee2f89b76795fd465d73abfe4c985">detail::EnabledAccsElseInt</a>&lt;TDim, TIdx&gt;, std::is_class&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>A vector containing all available accelerators. </p>
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00195">195</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00185">185</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -316,7 +316,7 @@ template&lt;typename TView &gt; </div>
 <p>A std::tuple containing fully instantiated accelerators. </p>
 <p>TestAccs = tuple&lt; Acc1&lt;Dim1,Idx1&gt;, ..., AccN&lt;Dim1,Idx1&gt;, Acc1&lt;Dim2,Idx1&gt;, ..., AccN&lt;Dim2,Idx1&gt;, ..., Acc1&lt;DimN,IdxN&gt;, ..., AccN&lt;DimN,IdxN&gt;&gt; </p>
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00257">257</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00247">247</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -356,14 +356,14 @@ template&lt;typename TView &gt; </div>
 
 </div>
 </div>
-<a id="ac624a0b804a66cb8868f004e2a412a4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac624a0b804a66cb8868f004e2a412a4c">&#9670;&nbsp;</a></span>TestQueues</h2>
+<a id="a7ea69247bef1af1f509ffa0c7414ad9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ea69247bef1af1f509ffa0c7414ad9a">&#9670;&nbsp;</a></span>TestQueues</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#ac624a0b804a66cb8868f004e2a412a4c">alpaka::test::TestQueues</a> = typedef std::tuple&lt; std::tuple&lt;<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42">QueueCpuBlocking</a>&gt;, std::tuple&lt;<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a8a11334697bff8a6fb14559535908633">QueueCpuNonBlocking</a>&gt; , std::tuple&lt;<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>, <a class="el" href="namespacealpaka.html#ab0b41862622ca0a42306953f270fa055">QueueUniformCudaHipRtBlocking</a>&gt;, std::tuple&lt;<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>, <a class="el" href="namespacealpaka.html#abb9a658a30c53026d7fb363509f6891a">QueueUniformCudaHipRtNonBlocking</a>&gt; , std::tuple&lt;<a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#abbef4249dfcd6989eff6088e26bb911f">QueueOmp5Blocking</a>&gt;, std::tuple&lt;<a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#a1994bcdaa7cefe3ae066eb3033530826">QueueOmp5NonBlocking</a>&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#a7ea69247bef1af1f509ffa0c7414ad9a">alpaka::test::TestQueues</a> = typedef std::tuple&lt; std::tuple&lt;<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42">QueueCpuBlocking</a>&gt;, std::tuple&lt;<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a>, <a class="el" href="namespacealpaka.html#a8a11334697bff8a6fb14559535908633">QueueCpuNonBlocking</a>&gt; , std::tuple&lt;<a class="el" href="namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103">DevCudaRt</a>, <a class="el" href="namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f">QueueCudaRtBlocking</a>&gt;, std::tuple&lt;<a class="el" href="namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103">DevCudaRt</a>, <a class="el" href="namespacealpaka.html#ab1b1d2362f1b9fc854fc0ba4008c85e4">QueueCudaRtNonBlocking</a>&gt; , std::tuple&lt;<a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#abbef4249dfcd6989eff6088e26bb911f">QueueOmp5Blocking</a>&gt;, std::tuple&lt;<a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a>, <a class="el" href="namespacealpaka.html#a1994bcdaa7cefe3ae066eb3033530826">QueueOmp5NonBlocking</a>&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -644,7 +644,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 
 <p>Writes the enabled accelerators to the given stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00213">213</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00203">203</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -654,7 +654,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test.html">test</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:35 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:28:01 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -102,7 +102,6 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <code>#include &lt;<a class="el" href="AccGpuCudaRt_8hpp_source.html">alpaka/acc/AccGpuCudaRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="AccGpuHipRt_8hpp_source.html">alpaka/acc/AccGpuHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="AccGpuSyclIntel_8hpp_source.html">alpaka/acc/AccGpuSyclIntel.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="AccGpuUniformCudaHipRt_8hpp_source.html">alpaka/acc/AccGpuUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="AccOacc_8hpp_source.html">alpaka/acc/AccOacc.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="AccOmp5_8hpp_source.html">alpaka/acc/AccOmp5.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="acc_2Traits_8hpp_source.html">alpaka/acc/Traits.hpp</a>&gt;</code><br />
@@ -154,11 +153,12 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <code>#include &lt;<a class="el" href="Vectorize_8hpp_source.html">alpaka/core/Vectorize.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevCpu_8hpp_source.html">alpaka/dev/DevCpu.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevCpuSyclIntel_8hpp_source.html">alpaka/dev/DevCpuSyclIntel.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="DevCudaRt_8hpp_source.html">alpaka/dev/DevCudaRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevFpgaSyclIntel_8hpp_source.html">alpaka/dev/DevFpgaSyclIntel.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevFpgaSyclXilinx_8hpp_source.html">alpaka/dev/DevFpgaSyclXilinx.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevGenericSycl_8hpp_source.html">alpaka/dev/DevGenericSycl.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevGpuSyclIntel_8hpp_source.html">alpaka/dev/DevGpuSyclIntel.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="DevUniformCudaHipRt_8hpp_source.html">alpaka/dev/DevUniformCudaHipRt.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="DevHipRt_8hpp_source.html">alpaka/dev/DevHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Wait_8hpp_source.html">alpaka/dev/cpu/Wait.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DimArithmetic_8hpp_source.html">alpaka/dim/DimArithmetic.hpp</a>&gt;</code><br />
@@ -166,13 +166,14 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <code>#include &lt;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventCpu_8hpp_source.html">alpaka/event/EventCpu.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventCpuSyclIntel_8hpp_source.html">alpaka/event/EventCpuSyclIntel.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="EventCudaRt_8hpp_source.html">alpaka/event/EventCudaRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventFpgaSyclIntel_8hpp_source.html">alpaka/event/EventFpgaSyclIntel.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventFpgaSyclXilinx_8hpp_source.html">alpaka/event/EventFpgaSyclXilinx.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventGenericSycl_8hpp_source.html">alpaka/event/EventGenericSycl.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventGpuSyclIntel_8hpp_source.html">alpaka/event/EventGpuSyclIntel.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="EventHipRt_8hpp_source.html">alpaka/event/EventHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventOacc_8hpp_source.html">alpaka/event/EventOacc.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventOmp5_8hpp_source.html">alpaka/event/EventOmp5.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="EventUniformCudaHipRt_8hpp_source.html">alpaka/event/EventUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="event_2Traits_8hpp_source.html">alpaka/event/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="extent_2Traits_8hpp_source.html">alpaka/extent/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Accessors_8hpp_source.html">alpaka/idx/Accessors.hpp</a>&gt;</code><br />
@@ -197,8 +198,9 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <code>#include &lt;<a class="el" href="TaskKernelFpgaSyclIntel_8hpp_source.html">alpaka/kernel/TaskKernelFpgaSyclIntel.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="TaskKernelFpgaSyclXilinx_8hpp_source.html">alpaka/kernel/TaskKernelFpgaSyclXilinx.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="TaskKernelGenericSycl_8hpp_source.html">alpaka/kernel/TaskKernelGenericSycl.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="TaskKernelGpuCudaRt_8hpp_source.html">alpaka/kernel/TaskKernelGpuCudaRt.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="TaskKernelGpuHipRt_8hpp_source.html">alpaka/kernel/TaskKernelGpuHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="TaskKernelGpuSyclIntel_8hpp_source.html">alpaka/kernel/TaskKernelGpuSyclIntel.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="TaskKernelOacc_8hpp_source.html">alpaka/kernel/TaskKernelOacc.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="TaskKernelOmp5_8hpp_source.html">alpaka/kernel/TaskKernelOmp5.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="kernel_2Traits_8hpp_source.html">alpaka/kernel/Traits.hpp</a>&gt;</code><br />
@@ -211,13 +213,14 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <code>#include &lt;<a class="el" href="mem_2alloc_2Traits_8hpp_source.html">alpaka/mem/alloc/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufCpu_8hpp_source.html">alpaka/mem/buf/BufCpu.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufCpuSyclIntel_8hpp_source.html">alpaka/mem/buf/BufCpuSyclIntel.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BufCudaRt_8hpp_source.html">alpaka/mem/buf/BufCudaRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufFpgaSyclIntel_8hpp_source.html">alpaka/mem/buf/BufFpgaSyclIntel.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufFpgaSyclXilinx_8hpp_source.html">alpaka/mem/buf/BufFpgaSyclXilinx.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufGenericSycl_8hpp_source.html">alpaka/mem/buf/BufGenericSycl.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufGpuSyclIntel_8hpp_source.html">alpaka/mem/buf/BufGpuSyclIntel.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BufHipRt_8hpp_source.html">alpaka/mem/buf/BufHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufOacc_8hpp_source.html">alpaka/mem/buf/BufOacc.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BufOmp5_8hpp_source.html">alpaka/mem/buf/BufOmp5.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="BufUniformCudaHipRt_8hpp_source.html">alpaka/mem/buf/BufUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mem_2buf_2Traits_8hpp_source.html">alpaka/mem/buf/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="MemFenceCpu_8hpp_source.html">alpaka/mem/fence/MemFenceCpu.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="MemFenceCpuSerial_8hpp_source.html">alpaka/mem/fence/MemFenceCpuSerial.hpp</a>&gt;</code><br />
@@ -255,12 +258,13 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <code>#include &lt;<a class="el" href="offset_2Traits_8hpp_source.html">alpaka/offset/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PltfCpu_8hpp_source.html">alpaka/pltf/PltfCpu.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PltfCpuSyclIntel_8hpp_source.html">alpaka/pltf/PltfCpuSyclIntel.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="PltfCudaRt_8hpp_source.html">alpaka/pltf/PltfCudaRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PltfFpgaSyclIntel_8hpp_source.html">alpaka/pltf/PltfFpgaSyclIntel.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PltfFpgaSyclXilinx_8hpp_source.html">alpaka/pltf/PltfFpgaSyclXilinx.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PltfGpuSyclIntel_8hpp_source.html">alpaka/pltf/PltfGpuSyclIntel.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="PltfHipRt_8hpp_source.html">alpaka/pltf/PltfHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PltfOacc_8hpp_source.html">alpaka/pltf/PltfOacc.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PltfOmp5_8hpp_source.html">alpaka/pltf/PltfOmp5.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="PltfUniformCudaHipRt_8hpp_source.html">alpaka/pltf/PltfUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="pltf_2Traits_8hpp_source.html">alpaka/pltf/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="RandDefault_8hpp_source.html">alpaka/rand/RandDefault.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="RandPhilox_8hpp_source.html">alpaka/rand/RandPhilox.hpp</a>&gt;</code><br />
@@ -272,16 +276,18 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <code>#include &lt;<a class="el" href="QueueCpuNonBlocking_8hpp_source.html">alpaka/queue/QueueCpuNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueCpuSyclIntelBlocking_8hpp_source.html">alpaka/queue/QueueCpuSyclIntelBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueCpuSyclIntelNonBlocking_8hpp_source.html">alpaka/queue/QueueCpuSyclIntelNonBlocking.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="QueueCudaRtBlocking_8hpp_source.html">alpaka/queue/QueueCudaRtBlocking.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="QueueCudaRtNonBlocking_8hpp_source.html">alpaka/queue/QueueCudaRtNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueFpgaSyclIntelBlocking_8hpp_source.html">alpaka/queue/QueueFpgaSyclIntelBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueFpgaSyclIntelNonBlocking_8hpp_source.html">alpaka/queue/QueueFpgaSyclIntelNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueFpgaSyclXilinxBlocking_8hpp_source.html">alpaka/queue/QueueFpgaSyclXilinxBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueFpgaSyclXilinxNonBlocking_8hpp_source.html">alpaka/queue/QueueFpgaSyclXilinxNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueGpuSyclIntelBlocking_8hpp_source.html">alpaka/queue/QueueGpuSyclIntelBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueGpuSyclIntelNonBlocking_8hpp_source.html">alpaka/queue/QueueGpuSyclIntelNonBlocking.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="QueueHipRtBlocking_8hpp_source.html">alpaka/queue/QueueHipRtBlocking.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="QueueHipRtNonBlocking_8hpp_source.html">alpaka/queue/QueueHipRtNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueOaccBlocking_8hpp_source.html">alpaka/queue/QueueOaccBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueOmp5Blocking_8hpp_source.html">alpaka/queue/QueueOmp5Blocking.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html">alpaka/queue/QueueUniformCudaHipRtBlocking.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="queue_2Traits_8hpp_source.html">alpaka/queue/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="time_2Traits_8hpp_source.html">alpaka/time/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="traits_2Traits_8hpp_source.html">alpaka/traits/Traits.hpp</a>&gt;</code><br />
@@ -299,7 +305,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html',''); initResizable()
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="alpaka_8hpp.html">alpaka.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:33 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:27:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

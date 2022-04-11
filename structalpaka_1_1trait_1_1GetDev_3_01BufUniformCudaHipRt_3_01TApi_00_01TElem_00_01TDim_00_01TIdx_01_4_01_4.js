@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
+[
+    [ "getDev", "structalpaka_1_1trait_1_1GetDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a4b0ddb32d3d69ba6a242a8427e820053", null ]
+];

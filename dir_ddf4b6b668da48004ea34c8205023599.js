@@ -38,6 +38,8 @@ var dir_ddf4b6b668da48004ea34c8205023599 =
     [ "TaskKernelFpgaSyclIntel.hpp", "TaskKernelFpgaSyclIntel_8hpp.html", null ],
     [ "TaskKernelFpgaSyclXilinx.hpp", "TaskKernelFpgaSyclXilinx_8hpp.html", null ],
     [ "TaskKernelGenericSycl.hpp", "TaskKernelGenericSycl_8hpp.html", null ],
+    [ "TaskKernelGpuCudaRt.hpp", "TaskKernelGpuCudaRt_8hpp.html", "TaskKernelGpuCudaRt_8hpp" ],
+    [ "TaskKernelGpuHipRt.hpp", "TaskKernelGpuHipRt_8hpp.html", null ],
     [ "TaskKernelGpuSyclIntel.hpp", "TaskKernelGpuSyclIntel_8hpp.html", null ],
     [ "TaskKernelGpuUniformCudaHipRt.hpp", "TaskKernelGpuUniformCudaHipRt_8hpp.html", "TaskKernelGpuUniformCudaHipRt_8hpp" ],
     [ "TaskKernelOacc.hpp", "TaskKernelOacc_8hpp.html", null ],

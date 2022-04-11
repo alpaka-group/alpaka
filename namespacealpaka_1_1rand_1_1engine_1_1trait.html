@@ -107,8 +107,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandomDevice_01_4.html">CreateDefault&lt; RandomDevice &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html">CreateDefault&lt; RandUniformCudaHipRand &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP random number default generator get trait specialization.  <a href="structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_3_01TApi_01_4_01_4.html">CreateDefault&lt; RandUniformCudaHipRand&lt; TApi &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP random number default generator get trait specialization.  <a href="structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_3_01TApi_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html">CreateDefault&lt; TinyMersenneTwister &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device random number default generator get trait specialization.  <a href="structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html#details">More...</a><br /></td></tr>
@@ -134,9 +134,12 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:acea651234def7205f295eb001cc2abc3"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:acea651234def7205f295eb001cc2abc3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#acea651234def7205f295eb001cc2abc3">isGPU</a> = std::is_same_v&lt;typename <a class="el" href="structalpaka_1_1trait_1_1DevType.html">alpaka::trait::DevType</a>&lt;TAcc&gt;::type, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a>&gt;</td></tr>
-<tr class="separator:acea651234def7205f295eb001cc2abc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f0529ecd75e5a3e1cef57755a28ae35"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a5f0529ecd75e5a3e1cef57755a28ae35"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#a5f0529ecd75e5a3e1cef57755a28ae35">isGPU</a> = false</td></tr>
+<tr class="separator:a5f0529ecd75e5a3e1cef57755a28ae35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc4a29b04d279dbc9d230d9e4dbdc04"><td class="memTemplParams" colspan="2">template&lt;typename TApi , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a4fc4a29b04d279dbc9d230d9e4dbdc04"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#a4fc4a29b04d279dbc9d230d9e4dbdc04">isGPU&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt; &gt;</a> = true</td></tr>
+<tr class="separator:a4fc4a29b04d279dbc9d230d9e4dbdc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The random number generator engine trait. </p>
@@ -160,8 +163,8 @@ template&lt;typename TScalar &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="acea651234def7205f295eb001cc2abc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acea651234def7205f295eb001cc2abc3">&#9670;&nbsp;</a></span>isGPU</h2>
+<a id="a5f0529ecd75e5a3e1cef57755a28ae35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f0529ecd75e5a3e1cef57755a28ae35">&#9670;&nbsp;</a></span>isGPU</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,17 +175,43 @@ template&lt;typename TAcc &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto alpaka::rand::engine::trait::isGPU = std::is_same_v&lt;typename <a class="el" href="structalpaka_1_1trait_1_1DevType.html">alpaka::trait::DevType</a>&lt;TAcc&gt;::type, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a>&gt;</td>
+          <td class="memname">constexpr bool alpaka::rand::engine::trait::isGPU = false</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00023">23</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00028">28</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a4fc4a29b04d279dbc9d230d9e4dbdc04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fc4a29b04d279dbc9d230d9e4dbdc04">&#9670;&nbsp;</a></span>isGPU&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt; &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi , typename TDim , typename TIdx &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#a5f0529ecd75e5a3e1cef57755a28ae35">alpaka::rand::engine::trait::isGPU</a>&lt; <a class="el" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt</a>&lt; TApi, TDim, TIdx &gt; &gt; = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="PhiloxBaseTraits_8hpp_source.html#l00032">32</a> of file <a class="el" href="PhiloxBaseTraits_8hpp_source.html">PhiloxBaseTraits.hpp</a>.</p>
 
 </div>
 </div>
@@ -192,7 +221,7 @@ template&lt;typename TAcc &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1engine.html">engine</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html">trait</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:35 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:28:01 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

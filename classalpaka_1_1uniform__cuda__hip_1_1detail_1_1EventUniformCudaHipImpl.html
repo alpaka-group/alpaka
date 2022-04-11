@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl Class Reference</title>
+<title>alpaka: alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl&lt; TApi &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,7 +88,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1uniform__cuda__hip_1_1d
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
+<div class="title">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl&lt; TApi &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -99,41 +99,46 @@ $(document).ready(function(){initNavTree('classalpaka_1_1uniform__cuda__hip_1_1d
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a25f8c75b19507097861e04ae1b6674ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a25f8c75b19507097861e04ae1b6674ef">EventUniformCudaHipImpl</a> (<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a> const &amp;dev, bool bBusyWait)</td></tr>
-<tr class="separator:a25f8c75b19507097861e04ae1b6674ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac7f0276069a4a78ed38340d561fae91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#aac7f0276069a4a78ed38340d561fae91">EventUniformCudaHipImpl</a> (<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> const &amp;)=delete</td></tr>
-<tr class="separator:aac7f0276069a4a78ed38340d561fae91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15a44dd75fe0919619449ab91e360301"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a15a44dd75fe0919619449ab91e360301">~EventUniformCudaHipImpl</a> ()</td></tr>
-<tr class="separator:a15a44dd75fe0919619449ab91e360301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee04c6283519948b74fac631d5a572c2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#aee04c6283519948b74fac631d5a572c2">getNativeHandle</a> () const noexcept</td></tr>
-<tr class="separator:aee04c6283519948b74fac631d5a572c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b07da29c79a7b44bfaf16875630ff8c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a7b07da29c79a7b44bfaf16875630ff8c">operator=</a> (<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> &amp;=delete</td></tr>
-<tr class="separator:a7b07da29c79a7b44bfaf16875630ff8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae386256f2faeb07ff581dd377eb353c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ae386256f2faeb07ff581dd377eb353c6">EventUniformCudaHipImpl</a> (<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt; const &amp;dev, bool bBusyWait)</td></tr>
+<tr class="separator:ae386256f2faeb07ff581dd377eb353c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0005d68c8d9e91be84478aaeb18c0c13"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a0005d68c8d9e91be84478aaeb18c0c13">EventUniformCudaHipImpl</a> (<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> const &amp;)=delete</td></tr>
+<tr class="separator:a0005d68c8d9e91be84478aaeb18c0c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe888db61d34415b62fd0ce51c4a8447"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#abe888db61d34415b62fd0ce51c4a8447">~EventUniformCudaHipImpl</a> ()</td></tr>
+<tr class="separator:abe888db61d34415b62fd0ce51c4a8447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae85646e41d8c7157608cae7c7f59d396"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ae85646e41d8c7157608cae7c7f59d396">getNativeHandle</a> () const noexcept</td></tr>
+<tr class="separator:ae85646e41d8c7157608cae7c7f59d396"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b92f3314008b7fe641adb1ad66fed74"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a5b92f3314008b7fe641adb1ad66fed74">operator=</a> (<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> &amp;=delete</td></tr>
+<tr class="separator:a5b92f3314008b7fe641adb1ad66fed74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:acfdae6ee7ab31525735e6fd860f6f273"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#acfdae6ee7ab31525735e6fd860f6f273">m_dev</a></td></tr>
-<tr class="memdesc:acfdae6ee7ab31525735e6fd860f6f273"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device this event is bound to.  <a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#acfdae6ee7ab31525735e6fd860f6f273">More...</a><br /></td></tr>
-<tr class="separator:acfdae6ee7ab31525735e6fd860f6f273"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bbec46ea091f96ba5b98a9c6d216396"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a8bbec46ea091f96ba5b98a9c6d216396">m_dev</a></td></tr>
+<tr class="memdesc:a8bbec46ea091f96ba5b98a9c6d216396"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device this event is bound to.  <a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a8bbec46ea091f96ba5b98a9c6d216396">More...</a><br /></td></tr>
+<tr class="separator:a8bbec46ea091f96ba5b98a9c6d216396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The CUDA/HIP RT device event implementation. </p>
+<div class="textblock"><h3>template&lt;typename TApi&gt;<br />
+class alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl&lt; TApi &gt;</h3>
 
-<p class="definition">Definition at line <a class="el" href="EventUniformCudaHipRt_8hpp_source.html#l00039">39</a> of file <a class="el" href="EventUniformCudaHipRt_8hpp_source.html">EventUniformCudaHipRt.hpp</a>.</p>
+<p>The CUDA/HIP RT device event implementation. </p>
+
+<p class="definition">Definition at line <a class="el" href="EventUniformCudaHipRt_8hpp_source.html#l00040">40</a> of file <a class="el" href="EventUniformCudaHipRt_8hpp_source.html">EventUniformCudaHipRt.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a25f8c75b19507097861e04ae1b6674ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25f8c75b19507097861e04ae1b6674ef">&#9670;&nbsp;</a></span>EventUniformCudaHipImpl() <span class="overload">[1/2]</span></h2>
+<a id="ae386256f2faeb07ff581dd377eb353c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae386256f2faeb07ff581dd377eb353c6">&#9670;&nbsp;</a></span>EventUniformCudaHipImpl() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl::EventUniformCudaHipImpl </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>&lt; TApi &gt;::<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt; const &amp;&#160;</td>
           <td class="paramname"><em>dev</em>, </td>
         </tr>
         <tr>
@@ -155,23 +160,25 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="EventUniformCudaHipRt_8hpp_source.html#l00042">42</a> of file <a class="el" href="EventUniformCudaHipRt_8hpp_source.html">EventUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="EventUniformCudaHipRt_8hpp_source.html#l00043">43</a> of file <a class="el" href="EventUniformCudaHipRt_8hpp_source.html">EventUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aac7f0276069a4a78ed38340d561fae91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac7f0276069a4a78ed38340d561fae91">&#9670;&nbsp;</a></span>EventUniformCudaHipImpl() <span class="overload">[2/2]</span></h2>
+<a id="a0005d68c8d9e91be84478aaeb18c0c13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0005d68c8d9e91be84478aaeb18c0c13">&#9670;&nbsp;</a></span>EventUniformCudaHipImpl() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl::EventUniformCudaHipImpl </td>
+          <td class="memname"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>&lt; TApi &gt;::<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a>&lt; TApi &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -185,17 +192,19 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a15a44dd75fe0919619449ab91e360301"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15a44dd75fe0919619449ab91e360301">&#9670;&nbsp;</a></span>~EventUniformCudaHipImpl()</h2>
+<a id="abe888db61d34415b62fd0ce51c4a8447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe888db61d34415b62fd0ce51c4a8447">&#9670;&nbsp;</a></span>~EventUniformCudaHipImpl()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl::~EventUniformCudaHipImpl </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>&lt; TApi &gt;::~<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -213,17 +222,19 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aee04c6283519948b74fac631d5a572c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee04c6283519948b74fac631d5a572c2">&#9670;&nbsp;</a></span>getNativeHandle()</h2>
+<a id="ae85646e41d8c7157608cae7c7f59d396"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae85646e41d8c7157608cae7c7f59d396">&#9670;&nbsp;</a></span>getNativeHandle()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl::getNativeHandle </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>&lt; TApi &gt;::getNativeHandle </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -240,19 +251,21 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7b07da29c79a7b44bfaf16875630ff8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b07da29c79a7b44bfaf16875630ff8c">&#9670;&nbsp;</a></span>operator=()</h2>
+<a id="a5b92f3314008b7fe641adb1ad66fed74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b92f3314008b7fe641adb1ad66fed74">&#9670;&nbsp;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl::operator= </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>&lt; TApi &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a>&lt; TApi &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a> &amp;=delete</td>
         </tr>
@@ -267,14 +280,16 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="acfdae6ee7ab31525735e6fd860f6f273"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfdae6ee7ab31525735e6fd860f6f273">&#9670;&nbsp;</a></span>m_dev</h2>
+<a id="a8bbec46ea091f96ba5b98a9c6d216396"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bbec46ea091f96ba5b98a9c6d216396">&#9670;&nbsp;</a></span>m_dev</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a> alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl::m_dev</td>
+          <td class="memname">const <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt;TApi&gt; <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>&lt; TApi &gt;::m_dev</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -294,7 +309,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html">EventUniformCudaHipImpl</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:35 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:28:01 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

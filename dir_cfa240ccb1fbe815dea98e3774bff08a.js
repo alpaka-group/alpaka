@@ -3,6 +3,11 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "STLTuple", "dir_298dd4d75e7796bf73b504e1b19e1883.html", "dir_298dd4d75e7796bf73b504e1b19e1883" ],
     [ "Align.hpp", "Align_8hpp.html", "Align_8hpp" ],
     [ "AlignedAlloc.hpp", "AlignedAlloc_8hpp.html", "AlignedAlloc_8hpp" ],
+    [ "ApiCudaRt.hpp", "ApiCudaRt_8hpp.html", [
+      [ "ApiCudaRt", "structalpaka_1_1ApiCudaRt.html", "structalpaka_1_1ApiCudaRt" ],
+      [ "HostFnAdaptor", "structalpaka_1_1ApiCudaRt_1_1HostFnAdaptor.html", "structalpaka_1_1ApiCudaRt_1_1HostFnAdaptor" ]
+    ] ],
+    [ "ApiHipRt.hpp", "ApiHipRt_8hpp.html", null ],
     [ "Assert.hpp", "Assert_8hpp.html", "Assert_8hpp" ],
     [ "BarrierThread.hpp", "BarrierThread_8hpp.html", [
       [ "BarrierThread", "classalpaka_1_1core_1_1threads_1_1BarrierThread.html", "classalpaka_1_1core_1_1threads_1_1BarrierThread" ],

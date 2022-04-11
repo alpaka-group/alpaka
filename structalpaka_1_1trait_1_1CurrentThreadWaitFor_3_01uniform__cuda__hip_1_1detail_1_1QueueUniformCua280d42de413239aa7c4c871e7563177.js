@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCua280d42de413239aa7c4c871e7563177 =
+[
+    [ "currentThreadWaitFor", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCua280d42de413239aa7c4c871e7563177.html#a4a328d8da827cae485eb7f028cb3c310", null ]
+];

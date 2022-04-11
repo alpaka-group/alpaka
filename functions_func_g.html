@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a363da10a1c07dc0f02b9b52b845bdc28">alpaka::trait::GetAccDevProps&lt; AccCpuOmp2Threads&lt; TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a6ff6ce1dbdeb5eb8af0058958ea25ae9">alpaka::trait::GetAccDevProps&lt; AccCpuSerial&lt; TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a94b4467d5f9f71dbe2b1c8e8909e038f">alpaka::trait::GetAccDevProps&lt; AccCpuThreads&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#a475c3c03b44c6d33cefe50acb5018e98">alpaka::trait::GetAccDevProps&lt; AccGpuUniformCudaHipRt&lt; TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#a7c9df52c045dd0395a06e557b5018ada">alpaka::trait::GetAccDevProps&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#ae9693a65739f4553a441f82e2f7d26ff">alpaka::trait::GetAccDevProps&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1Implec4465b046a886d60103801615307265a.html#a7824b716785d6e4aa0dd40dc52f7689b">alpaka::trait::GetAccDevProps&lt; TAcc, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptUniformCudaHip, TAcc &gt;::value &gt; &gt;</a>
 </li>
@@ -106,8 +106,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#aa8b3185b0e54356f7007cbc643bbf1db">alpaka::trait::GetAccName&lt; AccCpuOmp2Threads&lt; TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccName_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a3be6b3bf227534727ba4928217f3a01c">alpaka::trait::GetAccName&lt; AccCpuSerial&lt; TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccName_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a0e86cefcabf338911a38867e45b7f572">alpaka::trait::GetAccName&lt; AccCpuThreads&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetAccName_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#aa346e5a1b6b9d2cf395e29c9eb4fcf37">alpaka::trait::GetAccName&lt; AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#acd67819f10e5324994c5edefc8d3bdc6">alpaka::trait::GetAccName&lt; AccGpuUniformCudaHipRt&lt; TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#aca44386a17de5dea75975a1fbdea01f6">alpaka::trait::GetAccName&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetAccName_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#a7d4a30c5947bd5549abf8905c72c3892">alpaka::trait::GetAccName&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;</a>
 </li>
 <li>getAllExistingQueues()
@@ -128,29 +127,41 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>getDev()
 : <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a4b5686d240ff4cbd8143980bebf16c70">alpaka::trait::GetDev&lt; BufCpu&lt; TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#aed8d36ca6b47805fb42f37fb4034edb8">alpaka::trait::GetDev&lt; BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a816e9fe26e476eaff3f30aaa3139f0b0">alpaka::trait::GetDev&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a4b0ddb32d3d69ba6a242a8427e820053">alpaka::trait::GetDev&lt; BufUniformCudaHipRt&lt; TApi, TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01EventGenericThreads_3_01TDev_01_4_01_4.html#aaf69876c74034fd866c4897ae05e805d">alpaka::trait::GetDev&lt; EventGenericThreads&lt; TDev &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01EventUniformCudaHipRt_01_4.html#aaa95dff416307609216d23cc57f270f2">alpaka::trait::GetDev&lt; EventUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html#a96c3419895e207f5d7fdd5b22c57e140">alpaka::trait::GetDev&lt; EventUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01QueueCpuOmp2Collective_01_4.html#ac65ac69bc2e34972e90aa31870f467ff">alpaka::trait::GetDev&lt; QueueCpuOmp2Collective &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html#ac27d146e0f0ca71af5808df25207c005">alpaka::trait::GetDev&lt; QueueGenericThreadsBlocking&lt; TDev &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html#a9052e71f3e18c79bb20b90262ce072fc">alpaka::trait::GetDev&lt; QueueGenericThreadsNonBlocking&lt; TDev &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html#afbd002ab0c9f09334e063d24b1cd8d6a">alpaka::trait::GetDev&lt; std::array&lt; TElem, Tsize &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a4e188bfc1378b4d50fad980611d61b59">alpaka::trait::GetDev&lt; std::vector&lt; TElem, TAllocator &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html#a66868ecfc8f8199b85fb84dba7fe62f8">alpaka::trait::GetDev&lt; test::EventHostManualTriggerCpu&lt; TDev &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01test_1_1EventHostManualTriggerCuda_01_4.html#a2743db25c2635c2d826b9e6d5e2deef8">alpaka::trait::GetDev&lt; test::EventHostManualTriggerCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a546979b7e57e3329ceb9550d23fa91fb">alpaka::trait::GetDev&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01test_1_1EventHostManualTriggerCuda_01_4.html#a9bbeaffc293f94864cfc0328fc69055f">alpaka::trait::GetDev&lt; test::EventHostManualTriggerCuda &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4.html#a01b6b6ea7b24e29a656cfe18c919b541">alpaka::trait::GetDev&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a7c7cab92e98a65bca5f5ffd621ed7819">alpaka::trait::GetDev&lt; ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDev_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#aae47861aae3e65b87c1b101f3437d82b">alpaka::trait::GetDev&lt; ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
 </li>
 <li>getDevByIdx()
 : <a class="el" href="structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfCpu_01_4.html#a6f3f42afa41c50c37671dd221208477b">alpaka::trait::GetDevByIdx&lt; PltfCpu &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfOmp5_01_4.html#aad4f032636e825ea829a4e975a9b4c60">alpaka::trait::GetDevByIdx&lt; PltfOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_01_4.html#a1c03af33175371a11642293b45a5eb02">alpaka::trait::GetDevByIdx&lt; PltfUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html#ad3d85651a4cee8686a3de39bbee8bf10">alpaka::trait::GetDevByIdx&lt; PltfUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 </li>
 <li>getDevCount()
 : <a class="el" href="structalpaka_1_1trait_1_1GetDevCount_3_01PltfCpu_01_4.html#a1eb0c0401944643e063268ef160415e1">alpaka::trait::GetDevCount&lt; PltfCpu &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetDevCount_3_01PltfOmp5_01_4.html#a1907ef735fb53f775d7012200596cdd3">alpaka::trait::GetDevCount&lt; PltfOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetDevCount_3_01PltfUniformCudaHipRt_01_4.html#a1dd3fe792364360905b0e07483740c56">alpaka::trait::GetDevCount&lt; PltfUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetDevCount_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html#afb662ae49c3429de7a8f8c4ca9994272">alpaka::trait::GetDevCount&lt; PltfUniformCudaHipRt&lt; TApi &gt; &gt;</a>
+</li>
+<li>getDeviceCount()
+: <a class="el" href="structalpaka_1_1ApiCudaRt.html#a041ccb1515340f4828b0fda068e674f6">alpaka::ApiCudaRt</a>
+</li>
+<li>getDeviceProperties()
+: <a class="el" href="structalpaka_1_1ApiCudaRt.html#abbbd51a415431d12fec2547e996b2900">alpaka::ApiCudaRt</a>
+</li>
+<li>getErrorName()
+: <a class="el" href="structalpaka_1_1ApiCudaRt.html#a2f65b32c665f36341438c4be1bbcfe79">alpaka::ApiCudaRt</a>
+</li>
+<li>getErrorString()
+: <a class="el" href="structalpaka_1_1ApiCudaRt.html#a1b473ad4e82f9177f8ce66b153884b92">alpaka::ApiCudaRt</a>
 </li>
 <li>getExtent()
 : <a class="el" href="structalpaka_1_1trait_1_1GetExtent.html#ab17f894cd4aaf52f32dc73e6e2b842b2">alpaka::trait::GetExtent&lt; TIdxIntegralConst, TExtent, TSfinae &gt;</a>
@@ -162,7 +173,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>getFreeMemBytes()
 : <a class="el" href="structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevCpu_01_4.html#a81760a6562fe53ee773c8a56efd497cc">alpaka::trait::GetFreeMemBytes&lt; DevCpu &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevOmp5_01_4.html#a5405c99b0e5739fa8b5358ea833c1823">alpaka::trait::GetFreeMemBytes&lt; DevOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevUniformCudaHipRt_01_4.html#ac0deae33a591dde62981b7a5c3d14ec2">alpaka::trait::GetFreeMemBytes&lt; DevUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a9eb2d05b6ebfbc9d14846ce7e620dabb">alpaka::trait::GetFreeMemBytes&lt; DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 </li>
 <li>getIdx()
 : <a class="el" href="structalpaka_1_1trait_1_1GetIdx_3_01bt_1_1IdxBtLinear_3_01DimInt_3_011u_01_4_00_01TIdx_01_4_00_0adf34939fd28e194a295c94e397eeac3.html#ab0f63d405c668f46bcc337096038b67b">alpaka::trait::GetIdx&lt; bt::IdxBtLinear&lt; DimInt&lt; 1u &gt;, TIdx &gt;, origin::Block, unit::Threads &gt;</a>
@@ -181,6 +192,9 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="structalpaka_1_1trait_1_1GetIdx_3_01TIdxBt_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#ac8c43ed1277ea537c6b894d841581813">alpaka::trait::GetIdx&lt; TIdxBt, origin::Block, unit::Threads &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html#a034d32a407581fd3af01891f8f2dce4c">alpaka::trait::GetIdx&lt; TIdxGb, origin::Grid, unit::Blocks &gt;</a>
 </li>
+<li>getLastError()
+: <a class="el" href="structalpaka_1_1ApiCudaRt.html#a40c7d22c7abb67133f833baa3a31d732">alpaka::ApiCudaRt</a>
+</li>
 <li>getLatestVarPtr()
 : <a class="el" href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#af14ad17349beb10f28f5a8d0bb10ffc1">alpaka::detail::BlockSharedMemStMemberImpl&lt; TMinDataAlignBytes &gt;</a>
 </li>
@@ -192,7 +206,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>getMemBytes()
 : <a class="el" href="structalpaka_1_1trait_1_1GetMemBytes_3_01DevCpu_01_4.html#a4245513adb9e8d250d61793fba127ce5">alpaka::trait::GetMemBytes&lt; DevCpu &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetMemBytes_3_01DevOmp5_01_4.html#a2b526d113a14a967b93c732848161eb4">alpaka::trait::GetMemBytes&lt; DevOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetMemBytes_3_01DevUniformCudaHipRt_01_4.html#a802cce3a19f56e9bcb4d3e7d3e99d49f">alpaka::trait::GetMemBytes&lt; DevUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetMemBytes_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#aa7ea2d9fc68a528845c6519e37b764ce">alpaka::trait::GetMemBytes&lt; DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 </li>
 <li>getMutex()
 : <a class="el" href="classalpaka_1_1AtomicStdLibLock.html#abd7e8f44d7b0b5bbbe46e485041d9704">alpaka::AtomicStdLibLock&lt; THashTableSize &gt;</a>
@@ -200,23 +214,23 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>getName()
 : <a class="el" href="structalpaka_1_1trait_1_1GetName_3_01DevCpu_01_4.html#addedcc3e49eab86497c28178dde9885e">alpaka::trait::GetName&lt; DevCpu &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetName_3_01DevOmp5_01_4.html#a03edcdf995145a64c542cd6f227c2bdf">alpaka::trait::GetName&lt; DevOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetName_3_01DevUniformCudaHipRt_01_4.html#a7d6a0264fe782f0b1a8f9b09caf8da14">alpaka::trait::GetName&lt; DevUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetName_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#adc8a0e70d05c4729a08815ed347e88bd">alpaka::trait::GetName&lt; DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 </li>
 <li>getNativeHandle()
 : <a class="el" href="classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482">alpaka::DevCpu</a>
 , <a class="el" href="classalpaka_1_1DevOmp5.html#aa8bff6517e7454b74644b0d1f474b3e1">alpaka::DevOmp5</a>
-, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#ae14a4236b7b0494f836416690fb5fd7e">alpaka::DevUniformCudaHipRt</a>
-, <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html#a45777a998cbd571605b7943bf9491da1">alpaka::EventUniformCudaHipRt</a>
+, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#a24ea73afe71618eef57a61741e983d37">alpaka::DevUniformCudaHipRt&lt; TApi &gt;</a>
+, <a class="el" href="classalpaka_1_1EventUniformCudaHipRt.html#ab70769a85b77c0de3f4460f971dfed33">alpaka::EventUniformCudaHipRt&lt; TApi &gt;</a>
 , <a class="el" href="classalpaka_1_1omp5_1_1detail_1_1DevOmp5Impl.html#a017f1969c3fb461e12f79073d4790cef">alpaka::omp5::detail::DevOmp5Impl</a>
 , <a class="el" href="structalpaka_1_1trait_1_1NativeHandle.html#a5bd0a7077325fd9fd45c60c8133f9b3f">alpaka::trait::NativeHandle&lt; TImpl, TSfinae &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01DevCpu_01_4.html#a875b9321f67c9514d447cfd2d3338b10">alpaka::trait::NativeHandle&lt; DevCpu &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01DevOmp5_01_4.html#a9ea1f6ac292a551b2425294719875f61">alpaka::trait::NativeHandle&lt; DevOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01DevUniformCudaHipRt_01_4.html#afa36db14ea2702080946dbebf516aa6d">alpaka::trait::NativeHandle&lt; DevUniformCudaHipRt &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01EventUniformCudaHipRt_01_4.html#a91a08df865d266bd7ac38749fafd9c9e">alpaka::trait::NativeHandle&lt; EventUniformCudaHipRt &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TBlocking_01_4_01_4.html#a00a943e7a5c003b76dab3c18736683f3">alpaka::trait::NativeHandle&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt; &gt;</a>
-, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#aee04c6283519948b74fac631d5a572c2">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>
-, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html#a47b5e94d5ab40abe81efa0e678a0874e">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TBlocking &gt;</a>
-, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#aa3c60863741710bd47aeb89ea795e78e">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl</a>
+, <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#ad744e2ce1b82589f8ba7ea33780a3a3b">alpaka::trait::NativeHandle&lt; DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html#a6b392b336d30e4726f24335d82f79456">alpaka::trait::NativeHandle&lt; EventUniformCudaHipRt&lt; TApi &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_51aeb2353f20e89e7373dbbed1619e24.html#a4b1b3fcefa9fff539a0d8dcd34c42345">alpaka::trait::NativeHandle&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt; &gt;</a>
+, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ae85646e41d8c7157608cae7c7f59d396">alpaka::uniform_cuda_hip::detail::EventUniformCudaHipImpl&lt; TApi &gt;</a>
+, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html#ac2c7ec9d889fb36446d84aa7260473cf">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt;</a>
+, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a0afa600871acf0da0241dd9da7aefc03">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl&lt; TApi &gt;</a>
 </li>
 <li>getOffset()
 : <a class="el" href="structalpaka_1_1trait_1_1GetOffset.html#adf2d7913c5fe51dabe5a33bb2d75c21e">alpaka::trait::GetOffset&lt; TIdx, TOffsets, TSfinae &gt;</a>
@@ -225,7 +239,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="structalpaka_1_1trait_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a453e1564243d8690743c3ef2f0449736">alpaka::trait::GetOffset&lt; TIdx, std::vector&lt; TElem, TAllocator &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a2921863fffcb7177b81f6ec9faa73f63">alpaka::trait::GetOffset&lt; TIdxIntegralConst, BufCpu&lt; TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#aac2c7b5eaeeed29c106538070541b7b5">alpaka::trait::GetOffset&lt; TIdxIntegralConst, BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a30365b7a549167ed2dd37d5d6b1a8557">alpaka::trait::GetOffset&lt; TIdxIntegralConst, BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01BufUniformCudaHipRt_3_01TApi_00_0194e051419718c825036231c1be064757.html#a63cf4fe31685d5dd7e97e75a08e150de">alpaka::trait::GetOffset&lt; TIdxIntegralConst, BufUniformCudaHipRt&lt; TApi, TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a82a15336abaa3ae4ad3a20fe098e274f">alpaka::trait::GetOffset&lt; TIdxIntegralConst, ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
 </li>
 <li>getOmpSchedule()
@@ -233,28 +247,31 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 </li>
 <li>getPitchBytes()
 : <a class="el" href="structalpaka_1_1trait_1_1GetPitchBytes.html#aed18ecb1e48a0e00d23e91727f14561f">alpaka::trait::GetPitchBytes&lt; TIdx, TView, TSfinae &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUnifor3bb77abc88a9fae2394755f8b76c6ef9.html#a286bf4d851841f8d242e67292898d268">alpaka::trait::GetPitchBytes&lt; DimInt&lt; TDim::value - 1u &gt;, BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUniforae1a61972bf84034a69568bdf758183e.html#a7bfc08069e66551c134413f50b22f0f3">alpaka::trait::GetPitchBytes&lt; DimInt&lt; TDim::value - 1u &gt;, BufUniformCudaHipRt&lt; TApi, TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetPitchBytes_3_01TIdxIntegralConst_00_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a36c4f9feaadc4133af6aba8a7b03fc5b">alpaka::trait::GetPitchBytes&lt; TIdxIntegralConst, ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
 </li>
 <li>getPtrDev()
-: <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevCpu_01_4.html#a191c5a0b64c5d666cee028007c82e070">alpaka::trait::GetPtrDev&lt; BufCpu&lt; TElem, TDim, TIdx &gt;, DevCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevOmp5_01_4.html#a0d008730cead728c8b20a2daeb26cf3c">alpaka::trait::GetPtrDev&lt; BufCpu&lt; TElem, TDim, TIdx &gt;, DevOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4.html#a4c07f989a8dbaa53a126405fa423c6d1">alpaka::trait::GetPtrDev&lt; BufCpu&lt; TElem, TDim, TIdx &gt;, DevUniformCudaHipRt &gt;</a>
+: <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevCpu_01_4.html#a66b9e9da121e5415750fa5490062771b">alpaka::trait::GetPtrDev&lt; BufCpu&lt; TElem, TDim, TIdx &gt;, DevCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevOmp5_01_4.html#aeedd887c5c40166045b0f2d2d23d3c11">alpaka::trait::GetPtrDev&lt; BufCpu&lt; TElem, TDim, TIdx &gt;, DevOmp5 &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#af10a580021f16df9d5756e0a1abebfe8">alpaka::trait::GetPtrDev&lt; BufCpu&lt; TElem, TDim, TIdx &gt;, DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevOmp5_01_4.html#a93f809d1c3e6f9127cfd402d3f032adf">alpaka::trait::GetPtrDev&lt; BufOmp5&lt; TElem, TDim, TIdx &gt;, DevOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4.html#a1fb77578fd117867c68ea87422b72f77">alpaka::trait::GetPtrDev&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt;, DevUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TI1d297e90c6baf5572a528bbc508c5d3c.html#aaf66e9f0861d45147620bb8c92691079">alpaka::trait::GetPtrDev&lt; BufUniformCudaHipRt&lt; TApi, TElem, TDim, TIdx &gt;, DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 </li>
 <li>getPtrNative()
 : <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a05b1e55c8edddcbc4d415402551cebba">alpaka::trait::GetPtrNative&lt; BufCpu&lt; TElem, TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a22a9afc77b7c5ef2b1dc8672dba691fe">alpaka::trait::GetPtrNative&lt; BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a7d99f91d850d6ef337b5efcb9e333e74">alpaka::trait::GetPtrNative&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a1508890573532b5eaa2579cfe7c6af94">alpaka::trait::GetPtrNative&lt; BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#aa6210be3f2f317fd3f10a01d2109b37d">alpaka::trait::GetPtrNative&lt; BufUniformCudaHipRt&lt; TApi, TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html#a3ee36be0ce9361dfcc071164d04a67f0">alpaka::trait::GetPtrNative&lt; std::array&lt; TElem, Tsize &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#aef46de0bb41b87ff1c36f8aa2f680b73">alpaka::trait::GetPtrNative&lt; std::vector&lt; TElem, TAllocator &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a30e628e64b8ec0f85d80aae66ec985b1">alpaka::trait::GetPtrNative&lt; ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#ad2c5975db902755d856dd03b5ed5c1c7">alpaka::trait::GetPtrNative&lt; ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#aa4d901e4dcc813295c1e330ca1925206">alpaka::trait::GetPtrNative&lt; ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetPtrNative_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#acacf964db77464d0b8c5fce6db6fe222">alpaka::trait::GetPtrNative&lt; ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
 </li>
 <li>getSize()
 : <a class="el" href="structalpaka_1_1warp_1_1trait_1_1GetSize_3_01WarpSingleThread_01_4.html#ae752aa52b82a6ee326373d8bf6386db9">alpaka::warp::trait::GetSize&lt; WarpSingleThread &gt;</a>
 , <a class="el" href="structalpaka_1_1warp_1_1trait_1_1GetSize_3_01WarpUniformCudaHipBuiltIn_01_4.html#aef241fde88770d8cedebecfda3b98e86">alpaka::warp::trait::GetSize&lt; WarpUniformCudaHipBuiltIn &gt;</a>
+</li>
+<li>getSymbolAddress()
+: <a class="el" href="structalpaka_1_1ApiCudaRt.html#acf6099ee9d1e05ae756c535ab9a0366b">alpaka::ApiCudaRt</a>
 </li>
 <li>getVarPtr()
 : <a class="el" href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ab0b0a1794b3e5b2a14dbfb480dd95c7d">alpaka::detail::BlockSharedMemStMemberImpl&lt; TMinDataAlignBytes &gt;</a>
@@ -262,7 +279,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>getWarpSizes()
 : <a class="el" href="structalpaka_1_1trait_1_1GetWarpSizes_3_01DevCpu_01_4.html#ad423279ea7a565f018d2d5c309240510">alpaka::trait::GetWarpSizes&lt; DevCpu &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1GetWarpSizes_3_01DevOmp5_01_4.html#a8a12283ad4128364a056ad0418be23ea">alpaka::trait::GetWarpSizes&lt; DevOmp5 &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1GetWarpSizes_3_01DevUniformCudaHipRt_01_4.html#a8a84283e6cec972ad74557ecbfb325ae">alpaka::trait::GetWarpSizes&lt; DevUniformCudaHipRt &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1GetWarpSizes_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a8b5898825629bdc3f0e640efd3ea0746">alpaka::trait::GetWarpSizes&lt; DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 </li>
 <li>getWorkDiv()
 : <a class="el" href="structalpaka_1_1trait_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Elems_01_4.html#a25f129a825dc7a968bb8b7f8e78515bd">alpaka::trait::GetWorkDiv&lt; TWorkDiv, origin::Block, unit::Elems &gt;</a>
@@ -281,7 +298,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:35 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:28:02 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

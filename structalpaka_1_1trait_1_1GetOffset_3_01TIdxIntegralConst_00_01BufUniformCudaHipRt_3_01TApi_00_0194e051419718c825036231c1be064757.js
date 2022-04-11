@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01BufUniformCudaHipRt_3_01TApi_00_0194e051419718c825036231c1be064757 =
+[
+    [ "getOffset", "structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01BufUniformCudaHipRt_3_01TApi_00_0194e051419718c825036231c1be064757.html#a63cf4fe31685d5dd7e97e75a08e150de", null ]
+];

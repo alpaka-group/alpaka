@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('PhiloxBaseTraits_8hpp.html',''); initR
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="PhiloxBaseCommon_8hpp_source.html">alpaka/rand/Philox/PhiloxBaseCommon.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PhiloxBaseStdArray_8hpp_source.html">alpaka/rand/Philox/PhiloxBaseStdArray.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="DevUniformCudaHipRt_8hpp_source.html">alpaka/dev/DevUniformCudaHipRt.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="AccGpuUniformCudaHipRt_8hpp_source.html">alpaka/acc/AccGpuUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="PhiloxBaseCudaArray_8hpp_source.html">alpaka/rand/Philox/PhiloxBaseCudaArray.hpp</a>&gt;</code><br />
 </div>
 <p><a href="PhiloxBaseTraits_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -119,9 +119,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:acea651234def7205f295eb001cc2abc3"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:acea651234def7205f295eb001cc2abc3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#acea651234def7205f295eb001cc2abc3">alpaka::rand::engine::trait::isGPU</a> = std::is_same_v&lt;typename <a class="el" href="structalpaka_1_1trait_1_1DevType.html">alpaka::trait::DevType</a>&lt;TAcc&gt;::type, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a>&gt;</td></tr>
-<tr class="separator:acea651234def7205f295eb001cc2abc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f0529ecd75e5a3e1cef57755a28ae35"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a5f0529ecd75e5a3e1cef57755a28ae35"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#a5f0529ecd75e5a3e1cef57755a28ae35">alpaka::rand::engine::trait::isGPU</a> = false</td></tr>
+<tr class="separator:a5f0529ecd75e5a3e1cef57755a28ae35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc4a29b04d279dbc9d230d9e4dbdc04"><td class="memTemplParams" colspan="2">template&lt;typename TApi , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a4fc4a29b04d279dbc9d230d9e4dbdc04"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1engine_1_1trait.html#a4fc4a29b04d279dbc9d230d9e4dbdc04">alpaka::rand::engine::trait::isGPU&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt; &gt;</a> = true</td></tr>
+<tr class="separator:a4fc4a29b04d279dbc9d230d9e4dbdc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -129,7 +132,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="dir_3fed8e0f808af832c9a01894efdb4599.html">Philox</a></li><li class="navelem"><a class="el" href="PhiloxBaseTraits_8hpp.html">PhiloxBaseTraits.hpp</a></li>
-    <li class="footer">Generated on Thu Apr 7 2022 13:59:33 for alpaka by
+    <li class="footer">Generated on Mon Apr 11 2022 08:27:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
