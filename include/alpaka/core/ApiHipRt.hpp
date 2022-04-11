@@ -29,7 +29,7 @@ namespace alpaka
         using Error_t = ::hipError_t;
         using Event_t = ::hipEvent_t;
         using Extent_t = ::hipExtent;
-        using Flag_t = int;
+        using Flag_t = unsigned int;
         using FuncAttributes_t = ::hipFuncAttributes;
         using HostFn_t = void (*)(void* data); // same as hipHostFn_t
         using Limit_t = ::hipLimit_t;
@@ -153,7 +153,7 @@ namespace alpaka
             return ::hipEventCreate(event);
         }
 
-        static inline Error_t eventCreateWithFlags(Event_t* event, unsigned int flags)
+        static inline Error_t eventCreateWithFlags(Event_t* event, Flag_t flags)
         {
             return ::hipEventCreateWithFlags(event, flags);
         }
@@ -236,7 +236,7 @@ namespace alpaka
             return ::hipGetSymbolAddress(devPtr, symbol);
         }
 
-        static inline Error_t hostGetDevicePointer(void** pDevice, void* pHost, unsigned int flags)
+        static inline Error_t hostGetDevicePointer(void** pDevice, void* pHost, Flag_t flags)
         {
             return ::hipHostGetDevicePointer(pDevice, pHost, flags);
         }
@@ -246,12 +246,12 @@ namespace alpaka
             return ::hipHostFree(ptr);
         }
 
-        static inline Error_t hostMalloc(void** ptr, size_t size, unsigned int flags)
+        static inline Error_t hostMalloc(void** ptr, size_t size, Flag_t flags)
         {
             return ::hipHostMalloc(ptr, size, flags);
         }
 
-        static inline Error_t hostRegister(void* ptr, size_t size, unsigned int flags)
+        static inline Error_t hostRegister(void* ptr, size_t size, Flag_t flags)
         {
             return ::hipHostRegister(ptr, size, flags);
         }
@@ -352,7 +352,7 @@ namespace alpaka
             return ::hipStreamCreate(pStream);
         }
 
-        static inline Error_t streamCreateWithFlags(Stream_t* pStream, unsigned int flags)
+        static inline Error_t streamCreateWithFlags(Stream_t* pStream, Flag_t flags)
         {
             return ::hipStreamCreateWithFlags(pStream, flags);
         }
@@ -372,7 +372,7 @@ namespace alpaka
             return ::hipStreamSynchronize(stream);
         }
 
-        static inline Error_t streamWaitEvent(Stream_t stream, Event_t event, unsigned int flags)
+        static inline Error_t streamWaitEvent(Stream_t stream, Event_t event, Flag_t flags)
         {
             return ::hipStreamWaitEvent(stream, event, flags);
         }

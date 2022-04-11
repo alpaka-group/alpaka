@@ -29,7 +29,7 @@ namespace alpaka
         using Error_t = ::cudaError_t;
         using Event_t = ::cudaEvent_t;
         using Extent_t = ::cudaExtent;
-        using Flag_t = int;
+        using Flag_t = unsigned int;
         using FuncAttributes_t = ::cudaFuncAttributes;
         using HostFn_t = void (*)(void* data); // same as cudaHostFn_t, without the CUDART_CB calling convention
         using Limit_t = ::cudaLimit;
@@ -139,7 +139,7 @@ namespace alpaka
             return ::cudaEventCreate(event);
         }
 
-        static inline Error_t eventCreateWithFlags(Event_t* event, unsigned int flags)
+        static inline Error_t eventCreateWithFlags(Event_t* event, Flag_t flags)
         {
             return ::cudaEventCreateWithFlags(event, flags);
         }
@@ -226,7 +226,7 @@ namespace alpaka
             return ::cudaGetSymbolAddress(devPtr, symbol);
         }
 
-        static inline Error_t hostGetDevicePointer(void** pDevice, void* pHost, unsigned int flags)
+        static inline Error_t hostGetDevicePointer(void** pDevice, void* pHost, Flag_t flags)
         {
             return ::cudaHostGetDevicePointer(pDevice, pHost, flags);
         }
@@ -236,12 +236,12 @@ namespace alpaka
             return ::cudaFreeHost(ptr);
         }
 
-        static inline Error_t hostMalloc(void** ptr, size_t size, unsigned int flags)
+        static inline Error_t hostMalloc(void** ptr, size_t size, Flag_t flags)
         {
             return ::cudaHostAlloc(ptr, size, flags);
         }
 
-        static inline Error_t hostRegister(void* ptr, size_t size, unsigned int flags)
+        static inline Error_t hostRegister(void* ptr, size_t size, Flag_t flags)
         {
             return ::cudaHostRegister(ptr, size, flags);
         }
@@ -354,7 +354,7 @@ namespace alpaka
             return ::cudaStreamCreate(pStream);
         }
 
-        static inline Error_t streamCreateWithFlags(Stream_t* pStream, unsigned int flags)
+        static inline Error_t streamCreateWithFlags(Stream_t* pStream, Flag_t flags)
         {
             return ::cudaStreamCreateWithFlags(pStream, flags);
         }
@@ -374,7 +374,7 @@ namespace alpaka
             return ::cudaStreamSynchronize(stream);
         }
 
-        static inline Error_t streamWaitEvent(Stream_t stream, Event_t event, unsigned int flags)
+        static inline Error_t streamWaitEvent(Stream_t stream, Event_t event, Flag_t flags)
         {
             return ::cudaStreamWaitEvent(stream, event, flags);
         }
