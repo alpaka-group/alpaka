@@ -52,6 +52,13 @@ namespace alpaka
         static constexpr Flag_t eventDisableTiming = cudaEventDisableTiming;
         static constexpr Flag_t eventInterprocess = cudaEventInterprocess;
 
+        static constexpr Flag_t hostMallocDefault = cudaHostAllocDefault;
+        static constexpr Flag_t hostMallocMapped = cudaHostAllocMapped;
+        static constexpr Flag_t hostMallocPortable = cudaHostAllocPortable;
+        static constexpr Flag_t hostMallocWriteCombined = cudaHostAllocWriteCombined;
+        static constexpr Flag_t hostMallocCoherent = cudaHostAllocDefault; // Not supported.
+        static constexpr Flag_t hostMallocNonCoherent = cudaHostAllocDefault; // Not supported.
+
         static constexpr Flag_t hostRegisterDefault = cudaHostRegisterDefault;
         static constexpr Flag_t hostRegisterPortable = cudaHostRegisterPortable;
         static constexpr Flag_t hostRegisterMapped = cudaHostRegisterMapped;
@@ -222,6 +229,16 @@ namespace alpaka
         static inline Error_t hostGetDevicePointer(void** pDevice, void* pHost, unsigned int flags)
         {
             return ::cudaHostGetDevicePointer(pDevice, pHost, flags);
+        }
+
+        static inline Error_t hostFree(void* ptr)
+        {
+            return ::cudaFreeHost(ptr);
+        }
+
+        static inline Error_t hostMalloc(void** ptr, size_t size, unsigned int flags)
+        {
+            return ::cudaHostAlloc(ptr, size, flags);
         }
 
         static inline Error_t hostRegister(void* ptr, size_t size, unsigned int flags)

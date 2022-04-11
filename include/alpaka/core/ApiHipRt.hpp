@@ -52,6 +52,13 @@ namespace alpaka
         static constexpr Flag_t eventDisableTiming = hipEventDisableTiming;
         static constexpr Flag_t eventInterprocess = hipEventInterprocess;
 
+        static constexpr Flag_t hostMallocDefault = hipHostMallocDefault;
+        static constexpr Flag_t hostMallocMapped = hipHostMallocMapped;
+        static constexpr Flag_t hostMallocPortable = hipHostMallocPortable;
+        static constexpr Flag_t hostMallocWriteCombined = hipHostMallocWriteCombined;
+        static constexpr Flag_t hostMallocCoherent = hipHostMallocCoherent;
+        static constexpr Flag_t hostMallocNonCoherent = hipHostMallocNonCoherent;
+
         static constexpr Flag_t hostRegisterDefault = hipHostRegisterDefault;
         static constexpr Flag_t hostRegisterPortable = hipHostRegisterPortable;
         static constexpr Flag_t hostRegisterMapped = hipHostRegisterMapped;
@@ -232,6 +239,16 @@ namespace alpaka
         static inline Error_t hostGetDevicePointer(void** pDevice, void* pHost, unsigned int flags)
         {
             return ::hipHostGetDevicePointer(pDevice, pHost, flags);
+        }
+
+        static inline Error_t hostFree(void* ptr)
+        {
+            return ::hipHostFree(ptr);
+        }
+
+        static inline Error_t hostMalloc(void** ptr, size_t size, unsigned int flags)
+        {
+            return ::hipHostMalloc(ptr, size, flags);
         }
 
         static inline Error_t hostRegister(void* ptr, size_t size, unsigned int flags)
