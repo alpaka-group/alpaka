@@ -46,12 +46,11 @@ namespace alpaka
                 // To avoid issues with HIP(cuda) the alignment will be set also for HIP(clang)
                 // to 4kib.
                 // @todo evaluate requirements when the HIP ecosystem is more stable
-                constexpr size_t minAlignement = 4096;
+                constexpr size_t minAlignement = std::max<size_t>(TAlignment::value, 4096);
 #else
                 constexpr size_t minAlignement = TAlignment::value;
 #endif
-                return reinterpret_cast<T*>(
-                    core::alignedAlloc(std::max(TAlignment::value, minAlignement), sizeElems * sizeof(T)));
+                return reinterpret_cast<T*>(core::alignedAlloc(minAlignement, sizeElems * sizeof(T)));
             }
         };
 
@@ -61,7 +60,12 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto free(AllocCpuAligned<TAlignment> const& /* alloc */, T const* const ptr) -> void
             {
-                core::alignedFree(const_cast<void*>(reinterpret_cast<void const*>(ptr)));
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+                constexpr size_t minAlignement = std::max<size_t>(TAlignment::value, 4096);
+#else
+                constexpr size_t minAlignement = TAlignment::value;
+#endif
+                core::alignedFree(minAlignement, const_cast<void*>(reinterpret_cast<void const*>(ptr)));
             }
         };
     } // namespace trait
