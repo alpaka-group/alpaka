@@ -304,6 +304,31 @@ namespace alpaka
         };
 #    endif
 
+        //! The pinned/mapped memory allocation trait specialization for the CUDA/HIP devices.
+        template<typename TApi, typename TElem, typename TDim, typename TIdx>
+        struct BufAllocMapped<TElem, TDim, TIdx, DevUniformCudaHipRt<TApi>>
+        {
+            template<typename TExtent>
+            ALPAKA_FN_HOST static auto allocMappedBuf(
+                DevCpu const& host,
+                DevUniformCudaHipRt<TApi> const&,
+                TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                // Allocate CUDA/HIP page-locked memory on the host, mapped into the CUDA/HIP address space and
+                // accessible to all CUDA/HIP devices.
+                TElem* memPtr;
+                TApi::hostMalloc(
+                    reinterpret_cast<void**>(&memPtr),
+                    sizeof(TElem) * static_cast<std::size_t>(getExtentProduct(extent)),
+                    TApi::hostMallocMapped | TApi::hostMallocPortable);
+                auto deleter = [](TElem* ptr) { TApi::hostFree(ptr); };
+
+                return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+            }
+        };
+
         //! The BufUniformCudaHipRt CUDA/HIP device memory mapping trait specialization.
         template<typename TApi, typename TElem, typename TDim, typename TIdx>
         struct Map<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>, DevUniformCudaHipRt<TApi>>
