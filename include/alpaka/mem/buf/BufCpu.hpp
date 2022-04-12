@@ -272,6 +272,19 @@ namespace alpaka
         {
         };
 
+        //! The pinned/mapped memory allocation trait specialization.
+        template<typename TElem, typename TDim, typename TIdx>
+        struct BufAllocMapped<TElem, TDim, TIdx, DevCpu>
+        {
+            template<typename TExtent>
+            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, DevCpu const&, TExtent const& extent)
+                -> BufCpu<TElem, TDim, TIdx>
+            {
+                // Allocate standard host memory.
+                return allocBuf(host, extent);
+            }
+        };
+
         //! The BufCpu memory mapping trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct Map<BufCpu<TElem, TDim, TIdx>, DevCpu>
