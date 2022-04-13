@@ -229,7 +229,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Abs<AbsUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_signed_v<TArg>>>
         {
-            __device__ auto operator()(AbsUniformCudaHipBuiltIn const& /* abs_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(AbsUniformCudaHipBuiltIn const& /* abs_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::fabsf(arg);
@@ -254,7 +254,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 return sqrt(ctx, arg.real() * arg.real() + arg.imag() * arg.imag());
             }
@@ -264,7 +264,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Acos<AcosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(AcosUniformCudaHipBuiltIn const& /* acos_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(AcosUniformCudaHipBuiltIn const& /* acos_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::acosf(arg);
@@ -283,7 +283,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 // This holds everywhere, including the branch cuts: acos(z) = -i * ln(z + i * sqrt(1 - z^2))
                 return Complex<T>{0.0, -1.0} * log(ctx, arg + Complex<T>{0.0, 1.0} * sqrt(ctx, T(1.0) - arg * arg));
@@ -296,7 +296,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, TArgument const& argument)
+            __host__ __device__ auto operator()(TCtx const& ctx, TArgument const& argument)
             {
                 // Fall back to atan2 so that boundary cases are resolved consistently
                 return atan2(ctx, TArgument{0.0}, argument);
@@ -309,7 +309,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
             {
                 return atan2(ctx, argument.imag(), argument.real());
             }
@@ -319,7 +319,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Asin<AsinUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(AsinUniformCudaHipBuiltIn const& /* asin_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(AsinUniformCudaHipBuiltIn const& /* asin_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::asinf(arg);
@@ -338,7 +338,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 // This holds everywhere, including the branch cuts: asin(z) = i * ln(sqrt(1 - z^2) - i * z)
                 return Complex<T>{0.0, 1.0} * log(ctx, sqrt(ctx, T(1.0) - arg * arg) - Complex<T>{0.0, 1.0} * arg);
@@ -349,7 +349,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Atan<AtanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(AtanUniformCudaHipBuiltIn const& /* atan_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(AtanUniformCudaHipBuiltIn const& /* atan_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::atanf(arg);
@@ -368,7 +368,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 // This holds everywhere, including the branch cuts: atan(z) = -i/2 * ln((i - z) / (i + z))
                 return Complex<T>{0.0, -0.5} * log(ctx, (Complex<T>{0.0, 1.0} - arg) / (Complex<T>{0.0, 1.0} + arg));
@@ -383,7 +383,10 @@ namespace alpaka::math
             Tx,
             std::enable_if_t<std::is_floating_point_v<Ty> && std::is_floating_point_v<Tx>>>
         {
-            __device__ auto operator()(Atan2UniformCudaHipBuiltIn const& /* atan2_ctx */, Ty const& y, Tx const& x)
+            __host__ __device__ auto operator()(
+                Atan2UniformCudaHipBuiltIn const& /* atan2_ctx */,
+                Ty const& y,
+                Tx const& x)
             {
                 if constexpr(is_decayed_v<Ty, float> && is_decayed_v<Tx, float>)
                     return ::atan2f(y, x);
@@ -400,7 +403,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Cbrt<CbrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
         {
-            __device__ auto operator()(CbrtUniformCudaHipBuiltIn const& /* cbrt_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(CbrtUniformCudaHipBuiltIn const& /* cbrt_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::cbrtf(arg);
@@ -417,7 +420,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Ceil<CeilUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(CeilUniformCudaHipBuiltIn const& /* ceil_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(CeilUniformCudaHipBuiltIn const& /* ceil_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::ceilf(arg);
@@ -434,7 +437,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Conj<ConjUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(ConjUniformCudaHipBuiltIn const& /* conj_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(ConjUniformCudaHipBuiltIn const& /* conj_ctx */, TArg const& arg)
             {
                 return Complex<TArg>{arg, TArg{0.0}};
             }
@@ -444,7 +447,7 @@ namespace alpaka::math
         template<typename T>
         struct Conj<ConjUniformCudaHipBuiltIn, Complex<T>>
         {
-            __device__ auto operator()(ConjUniformCudaHipBuiltIn const& /* conj_ctx */, Complex<T> const& arg)
+            __host__ __device__ auto operator()(ConjUniformCudaHipBuiltIn const& /* conj_ctx */, Complex<T> const& arg)
             {
                 return Complex<T>{arg.real(), -arg.imag()};
             }
@@ -454,7 +457,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Cos<CosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(CosUniformCudaHipBuiltIn const& /* cos_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(CosUniformCudaHipBuiltIn const& /* cos_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::cosf(arg);
@@ -473,7 +476,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 // cos(z) = 0.5 * (exp(i * z) + exp(-i * z))
                 return T(0.5) * (exp(ctx, Complex<T>{0.0, 1.0} * arg) + exp(ctx, Complex<T>{0.0, -1.0} * arg));
@@ -484,7 +487,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Erf<ErfUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(ErfUniformCudaHipBuiltIn const& /* erf_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(ErfUniformCudaHipBuiltIn const& /* erf_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::erff(arg);
@@ -501,7 +504,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Exp<ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(ExpUniformCudaHipBuiltIn const& /* exp_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(ExpUniformCudaHipBuiltIn const& /* exp_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::expf(arg);
@@ -520,7 +523,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 // exp(z) = exp(x + iy) = exp(x) * (cos(y) + i * sin(y))
                 auto re = T{}, im = T{};
@@ -533,7 +536,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Floor<FloorUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(FloorUniformCudaHipBuiltIn const& /* floor_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(FloorUniformCudaHipBuiltIn const& /* floor_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::floorf(arg);
@@ -554,7 +557,10 @@ namespace alpaka::math
             Ty,
             std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
         {
-            __device__ auto operator()(FmodUniformCudaHipBuiltIn const& /* fmod_ctx */, Tx const& x, Ty const& y)
+            __host__ __device__ auto operator()(
+                FmodUniformCudaHipBuiltIn const& /* fmod_ctx */,
+                Tx const& x,
+                Ty const& y)
             {
                 if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float>)
                     return ::fmodf(x, y);
@@ -573,7 +579,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Isfinite<IsfiniteUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(IsfiniteUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(IsfiniteUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
             {
                 return ::isfinite(arg);
             }
@@ -583,7 +589,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Isinf<IsinfUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(IsinfUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(IsinfUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
             {
                 return ::isinf(arg);
             }
@@ -593,7 +599,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Isnan<IsnanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(IsnanUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(IsnanUniformCudaHipBuiltIn const& /* ctx */, TArg const& arg)
             {
                 return ::isnan(arg);
             }
@@ -603,7 +609,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Log<LogUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(LogUniformCudaHipBuiltIn const& /* log_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(LogUniformCudaHipBuiltIn const& /* log_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::logf(arg);
@@ -622,7 +628,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
             {
                 // Branch cut along the negative real axis (same as for std::complex),
                 // principal value of ln(z) = ln(|z|) + i * arg(z)
@@ -638,7 +644,10 @@ namespace alpaka::math
             Ty,
             std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
         {
-            __device__ auto operator()(MaxUniformCudaHipBuiltIn const& /* max_ctx */, Tx const& x, Ty const& y)
+            __host__ __device__ auto operator()(
+                MaxUniformCudaHipBuiltIn const& /* max_ctx */,
+                Tx const& x,
+                Ty const& y)
             {
                 if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
                     return ::max(x, y);
@@ -669,7 +678,10 @@ namespace alpaka::math
             Ty,
             std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
         {
-            __device__ auto operator()(MinUniformCudaHipBuiltIn const& /* min_ctx */, Tx const& x, Ty const& y)
+            __host__ __device__ auto operator()(
+                MinUniformCudaHipBuiltIn const& /* min_ctx */,
+                Tx const& x,
+                Ty const& y)
             {
                 if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
                     return ::min(x, y);
@@ -700,7 +712,7 @@ namespace alpaka::math
             TExp,
             std::enable_if_t<std::is_floating_point_v<TBase> && std::is_floating_point_v<TExp>>>
         {
-            __device__ auto operator()(
+            __host__ __device__ auto operator()(
                 PowUniformCudaHipBuiltIn const& /* pow_ctx */,
                 TBase const& base,
                 TExp const& exp)
@@ -724,7 +736,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& base, Complex<U> const& exponent)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& base, Complex<U> const& exponent)
             {
                 // pow(z1, z2) = e^(z2 * log(z1))
                 return exp(ctx, exponent * log(ctx, base));
@@ -739,7 +751,7 @@ namespace alpaka::math
             Ty,
             std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
         {
-            __device__ auto operator()(
+            __host__ __device__ auto operator()(
                 RemainderUniformCudaHipBuiltIn const& /* remainder_ctx */,
                 Tx const& x,
                 Ty const& y)
@@ -762,7 +774,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Round<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* round_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* round_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::roundf(arg);
@@ -779,7 +791,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Lround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* lround_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* lround_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::lroundf(arg);
@@ -796,7 +808,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Llround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* llround_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(RoundUniformCudaHipBuiltIn const& /* llround_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::llroundf(arg);
@@ -815,7 +827,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Rsqrt<RsqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
         {
-            __device__ auto operator()(RsqrtUniformCudaHipBuiltIn const& /* rsqrt_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(RsqrtUniformCudaHipBuiltIn const& /* rsqrt_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::rsqrtf(arg);
@@ -834,7 +846,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 return T{1.0} / sqrt(ctx, arg);
             }
@@ -844,7 +856,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Sin<SinUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(SinUniformCudaHipBuiltIn const& /* sin_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(SinUniformCudaHipBuiltIn const& /* sin_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::sinf(arg);
@@ -863,7 +875,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 // sin(z) = (exp(i * z) - exp(-i * z)) / 2i
                 return (exp(ctx, Complex<T>{0.0, 1.0} * arg) - exp(ctx, Complex<T>{0.0, -1.0} * arg))
@@ -875,7 +887,7 @@ namespace alpaka::math
         template<typename TArg>
         struct SinCos<SinCosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(
+            __host__ __device__ auto operator()(
                 SinCosUniformCudaHipBuiltIn const& /* sincos_ctx */,
                 TArg const& arg,
                 TArg& result_sin,
@@ -896,7 +908,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(
+            __host__ __device__ auto operator()(
                 TCtx const& ctx,
                 Complex<T> const& arg,
                 Complex<T>& result_sin,
@@ -911,7 +923,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Sqrt<SqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_arithmetic_v<TArg>>>
         {
-            __device__ auto operator()(SqrtUniformCudaHipBuiltIn const& /* sqrt_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(SqrtUniformCudaHipBuiltIn const& /* sqrt_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::sqrtf(arg);
@@ -930,7 +942,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
             {
                 // Branch cut along the negative real axis (same as for std::complex),
                 // principal value of sqrt(z) = sqrt(|z|) * e^(i * arg(z) / 2)
@@ -945,7 +957,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Tan<TanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(TanUniformCudaHipBuiltIn const& /* tan_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(TanUniformCudaHipBuiltIn const& /* tan_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::tanf(arg);
@@ -964,7 +976,7 @@ namespace alpaka::math
         {
             //! Take context as original (accelerator) type, since we call other math functions
             template<typename TCtx>
-            __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& arg)
             {
                 // tan(z) = i * (e^-iz - e^iz) / (e^-iz + e^iz) = i * (1 - e^2iz) / (1 + e^2iz)
                 // Warning: this straightforward implementation can easily result in NaN as 0/0 or inf/inf.
@@ -977,7 +989,7 @@ namespace alpaka::math
         template<typename TArg>
         struct Trunc<TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
         {
-            __device__ auto operator()(TruncUniformCudaHipBuiltIn const& /* trunc_ctx */, TArg const& arg)
+            __host__ __device__ auto operator()(TruncUniformCudaHipBuiltIn const& /* trunc_ctx */, TArg const& arg)
             {
                 if constexpr(is_decayed_v<TArg, float>)
                     return ::truncf(arg);
