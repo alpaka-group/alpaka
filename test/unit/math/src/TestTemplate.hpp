@@ -53,17 +53,21 @@ struct UnderlyingType<alpaka::Complex<T>>
     using type = T;
 };
 
+//! Base test template for math unit tests
+//! @tparam TAcc Accelerator.
+//! @tparam TFunctor Functor defined in Functor.hpp.
 template<typename TAcc, typename TFunctor>
 struct TestTemplate
 {
-    template<typename TData>
-    auto operator()() -> void
+    //! wrappedFunctor is either a TFunctor{} or TFunctor{} wrapped into a host-device lambda
+    template<typename TData, typename TWrappedFunctor = TFunctor>
+    auto operator()(TWrappedFunctor const& wrappedFunctor = TWrappedFunctor{}) -> void
     {
         std::random_device rd{};
         auto const seed = rd();
         std::cout << "testing"
                   << " acc:" << typeid(TAcc).name() << " data type:" << typeid(TData).name()
-                  << " functor:" << typeid(TFunctor).name() << " seed:" << seed << std::endl;
+                  << " functor:" << typeid(TWrappedFunctor).name() << " seed:" << seed << std::endl;
 
         // SETUP (defines and initialising)
         // DevAcc and DevHost are defined in Buffer.hpp too.
@@ -115,10 +119,11 @@ struct TestTemplate
         args.copyToDevice(queue);
         results.copyToDevice(queue);
 
-        auto const taskKernel
-            = alpaka::createTaskKernel<TAcc>(workDiv, kernel, results.pDevBuffer, functor, args.pDevBuffer);
         // Enqueue the kernel execution task.
+        auto const taskKernel
+            = alpaka::createTaskKernel<TAcc>(workDiv, kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
         alpaka::enqueue(queue, taskKernel);
+
         // Copy back the results (encapsulated in the buffer class).
         results.copyFromDevice(queue);
         alpaka::wait(queue);
