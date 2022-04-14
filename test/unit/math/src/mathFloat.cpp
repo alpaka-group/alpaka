@@ -76,5 +76,5 @@ TEMPLATE_LIST_TEST_CASE("mathOpsFloat", "[math] [operator]", TestAccFunctorTuple
     using Acc = std::tuple_element_t<0u, TestType>;
     using Functor = std::tuple_element_t<1u, TestType>;
     auto testTemplate = TestTemplate<Acc, Functor>{};
-    testTemplate.template operator()<double>();
+    testTemplate.template operator()<float>();
 }
