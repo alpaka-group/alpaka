@@ -219,6 +219,7 @@ Authors
 - Dr. Antonio Di Pilato
 - Simeon Ehrig
 - Bernhard Manfred Gruber*
+- Dr. Axel Huebl
 - Dr. Jeffrey Kelling
 - Dr. Felice Pantaleo
 - Jan Stephan*
@@ -230,7 +231,6 @@ Authors
 - Dr. Michael Bussmann
 - Mat Colgrove
 - Valentin Gehrke
-- Dr. Axel Huebl
 - Maximilian Knespel
 - Jakob Krude
 - Alexander Matthes
