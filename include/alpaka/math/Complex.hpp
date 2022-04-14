@@ -356,6 +356,9 @@ namespace alpaka
 
     //! Host-only math functions matching std::complex<T>.
     //!
+    //! Due to issue #1688, these functions are technically marked host-device and suppress related warnings.
+    //! However, they must be called for host only.
+    //!
     //! They take and return alpaka::Complex (or a real number when appropriate).
     //! Internally cast, fall back to std::complex implementation and cast back.
     //! These functions can be used directly on the host side.
@@ -368,176 +371,201 @@ namespace alpaka
     //!
 
     //! Absolute value
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST T abs(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC T abs(Complex<T> const& x)
     {
         return std::abs(std::complex<T>(x));
     }
 
     //! Arc cosine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> acos(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> acos(Complex<T> const& x)
     {
         return std::acos(std::complex<T>(x));
     }
 
     //! Arc hyperbolic cosine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> acosh(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> acosh(Complex<T> const& x)
     {
         return std::acosh(std::complex<T>(x));
     }
 
     //! Argument
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST T arg(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC T arg(Complex<T> const& x)
     {
         return std::arg(std::complex<T>(x));
     }
 
     //! Arc sine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> asin(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> asin(Complex<T> const& x)
     {
         return std::asin(std::complex<T>(x));
     }
 
     //! Arc hyperbolic sine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> asinh(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> asinh(Complex<T> const& x)
     {
         return std::asinh(std::complex<T>(x));
     }
 
     //! Arc tangent
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> atan(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> atan(Complex<T> const& x)
     {
         return std::atan(std::complex<T>(x));
     }
 
     //! Arc hyperbolic tangent
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> atanh(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> atanh(Complex<T> const& x)
     {
         return std::atanh(std::complex<T>(x));
     }
 
     //! Complex conjugate
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> conj(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> conj(Complex<T> const& x)
     {
         return std::conj(std::complex<T>(x));
     }
 
     //! Cosine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> cos(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> cos(Complex<T> const& x)
     {
         return std::cos(std::complex<T>(x));
     }
 
     //! Hyperbolic cosine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> cosh(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> cosh(Complex<T> const& x)
     {
         return std::cosh(std::complex<T>(x));
     }
 
     //! Exponential
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> exp(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> exp(Complex<T> const& x)
     {
         return std::exp(std::complex<T>(x));
     }
 
     //! Natural logarithm
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> log(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> log(Complex<T> const& x)
     {
         return std::log(std::complex<T>(x));
     }
 
     //! Base 10 logarithm
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> log10(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> log10(Complex<T> const& x)
     {
         return std::log10(std::complex<T>(x));
     }
 
     //! Squared magnitude
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST T norm(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC T norm(Complex<T> const& x)
     {
         return std::norm(std::complex<T>(x));
     }
 
     //! Get a complex number with given magnitude and phase angle
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> polar(T const& r, T const& theta = T())
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> polar(T const& r, T const& theta = T())
     {
         return std::polar(r, theta);
     }
 
     //! Complex power of a complex number
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T, typename U>
-    constexpr ALPAKA_FN_HOST Complex<T> pow(Complex<T> const& x, Complex<U> const& y)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> pow(Complex<T> const& x, Complex<U> const& y)
     {
         return std::pow(std::complex<T>(x), std::complex<U>(y));
     }
 
     //! Real power of a complex number
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T, typename U>
-    constexpr ALPAKA_FN_HOST Complex<T> pow(Complex<T> const& x, U const& y)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> pow(Complex<T> const& x, U const& y)
     {
         return std::pow(std::complex<T>(x), y);
     }
 
     //! Complex power of a real number
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T, typename U>
-    constexpr ALPAKA_FN_HOST Complex<T> pow(T const& x, Complex<U> const& y)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> pow(T const& x, Complex<U> const& y)
     {
         return std::pow(x, std::complex<U>(y));
     }
 
     //! Projection onto the Riemann sphere
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> proj(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> proj(Complex<T> const& x)
     {
         return std::proj(std::complex<T>(x));
     }
 
     //! Sine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> sin(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> sin(Complex<T> const& x)
     {
         return std::sin(std::complex<T>(x));
     }
 
     //! Hyperbolic sine
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> sinh(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> sinh(Complex<T> const& x)
     {
         return std::sinh(std::complex<T>(x));
     }
 
     //! Square root
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> sqrt(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> sqrt(Complex<T> const& x)
     {
         return std::sqrt(std::complex<T>(x));
     }
 
     //! Tangent
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> tan(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> tan(Complex<T> const& x)
     {
         return std::tan(std::complex<T>(x));
     }
 
     //! Hyperbolic tangent
+    ALPAKA_NO_HOST_ACC_WARNING
     template<typename T>
-    constexpr ALPAKA_FN_HOST Complex<T> tanh(Complex<T> const& x)
+    constexpr ALPAKA_FN_HOST_ACC Complex<T> tanh(Complex<T> const& x)
     {
         return std::tanh(std::complex<T>(x));
     }
