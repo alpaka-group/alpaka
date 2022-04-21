@@ -8,6 +8,11 @@
       "orcid": "0000-0003-3396-6154"
     },
     {
+      "name": "Bocci, Andrea",
+      "affiliation": "CERN",
+      "orcid": "0000-0002-6515-5666"
+    },
+    {
       "name": "Di Pilato, Antonio",
       "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf, CERN",
       "orcid": "0000-0002-9233-3632"
@@ -23,9 +28,19 @@
       "orcid": "0000-0001-7848-1690"
     },
     {
+      "name": "Huebl, Axel",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "orcid": "0000-0003-1943-7141"
+    },
+    {
       "name": "Kelling, Jeffrey",
       "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
       "orcid": "0000-0003-1761-2591"
+    },
+    {
+      "name": "Pantaleo, Felice",
+      "affiliation": "CERN",
+      "orcid": "0000-0003-3266-4357"
     },
     {
       "name": "Stephan, Jan",
@@ -41,6 +56,10 @@
       "name": "Widera, René",
       "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
       "orcid": "0000-0003-1642-0459"
+    },
+    {
+      "name": "Worpitz, Benjamin",
+      "affiliation": "LogMeIn Inc."
     }
   ],
   "contributors": [
@@ -52,12 +71,6 @@
     {
       "name": "Gehrke, Valentin",
       "affiliation": "TU Dresden",
-      "type": "Other"
-    },
-    {
-      "name": "Huebl, Axel",
-      "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf, TU Dresden",
-      "orcid": "0000-0003-1943-7141",
       "type": "Other"
     },
     {
@@ -115,11 +128,6 @@
     {
       "name":"Wesarg, Bert",
       "affiliation":"TU Dresden",
-      "type": "Other"
-    },
-    {
-      "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf, TU Dresden, LogMeIn Inc.",
-      "name": "Worpitz, Benjamin",
       "type": "Other"
     },
     {
