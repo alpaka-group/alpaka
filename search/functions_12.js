@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['tan_4488',['tan',['../namespacealpaka.html#ad03a8dd9fadd0b96327816652c74aa2e',1,'alpaka::tan()'],['../namespacealpaka_1_1math.html#a8ce518d7587dd645a3bbf943ef36db9c',1,'alpaka::math::tan()']]],
-  ['tanh_4489',['tanh',['../namespacealpaka.html#aaebd267dda6211c2f4fa6129f8fabbda',1,'alpaka']]],
+  ['tan_4488',['tan',['../namespacealpaka.html#a8a99b95a420e342af1d31e69cfd75aee',1,'alpaka::tan()'],['../namespacealpaka_1_1math.html#a8ce518d7587dd645a3bbf943ef36db9c',1,'alpaka::math::tan()']]],
+  ['tanh_4489',['tanh',['../namespacealpaka.html#a20aaf879faf604ffbe737ad73edf5744',1,'alpaka']]],
   ['taskcopycpu_4490',['TaskCopyCpu',['../structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#ac4da34a7ffb1de5fd650c653de8f98e5',1,'alpaka::detail::TaskCopyCpu&lt; DimInt&lt; 0u &gt;, TViewDst, TViewSrc, TExtent &gt;']]],
   ['taskcopycpubase_4491',['TaskCopyCpuBase',['../structalpaka_1_1detail_1_1TaskCopyCpuBase.html#ab376448422f952b7afc5f96b519c3671',1,'alpaka::detail::TaskCopyCpuBase']]],
   ['taskcopyomp5_4492',['TaskCopyOmp5',['../structalpaka_1_1detail_1_1TaskCopyOmp5.html#a28966d16cb6285bde8f471c46a1826ca',1,'alpaka::detail::TaskCopyOmp5::TaskCopyOmp5()'],['../structalpaka_1_1detail_1_1TaskCopyOmp5_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a4d0a9c972ca805eae75e97a4db56a7e0',1,'alpaka::detail::TaskCopyOmp5&lt; DimInt&lt; 0u &gt;, TViewDst, TViewSrc, TExtent &gt;::TaskCopyOmp5()'],['../structalpaka_1_1detail_1_1TaskCopyOmp5_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a7e35ce20dfe51d6202d72252499ac739',1,'alpaka::detail::TaskCopyOmp5&lt; DimInt&lt; 1u &gt;, TViewDst, TViewSrc, TExtent &gt;::TaskCopyOmp5()']]],

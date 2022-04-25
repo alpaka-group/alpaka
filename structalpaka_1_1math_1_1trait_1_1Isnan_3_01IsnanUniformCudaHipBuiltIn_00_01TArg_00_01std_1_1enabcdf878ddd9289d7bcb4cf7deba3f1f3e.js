@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1trait_1_1Isnan_3_01IsnanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabcdf878ddd9289d7bcb4cf7deba3f1f3e =
 [
-    [ "operator()", "structalpaka_1_1math_1_1trait_1_1Isnan_3_01IsnanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabcdf878ddd9289d7bcb4cf7deba3f1f3e.html#a383dcc1711b39325f074c28e8fa79b6c", null ]
+    [ "operator()", "structalpaka_1_1math_1_1trait_1_1Isnan_3_01IsnanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabcdf878ddd9289d7bcb4cf7deba3f1f3e.html#afcc393961d6e07e68e22e34fc51b21f9", null ]
 ];

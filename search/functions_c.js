@@ -6,7 +6,7 @@ var searchData=
   ['nextnumber_4377',['nextNumber',['../classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8d2e74db05dac543b0b3ba4880cd3ae4',1,'alpaka::rand::engine::PhiloxSingle']]],
   ['nextpowerof2_4378',['nextPowerOf2',['../classalpaka_1_1AtomicStdLibLock.html#ac898400b0c10a88ec74410b703968b12',1,'alpaka::AtomicStdLibLock']]],
   ['nextvector_4379',['nextVector',['../classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9070c8635360989ce12058eab374830d',1,'alpaka::rand::engine::PhiloxVector']]],
-  ['norm_4380',['norm',['../namespacealpaka.html#a17894dd0863213d688f80f31a4a9ab79',1,'alpaka']]],
+  ['norm_4380',['norm',['../namespacealpaka.html#a52a183b4a85128a90c040667353b5294',1,'alpaka']]],
   ['normalreal_4381',['NormalReal',['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#a9816d6269d94c84886f7183971bf3683',1,'alpaka::rand::distribution::gpu::NormalReal::NormalReal(const Acc &amp;acc)'],['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#a606805941cae77489a42a0626f109f6f',1,'alpaka::rand::distribution::gpu::NormalReal::NormalReal(const NormalReal &amp;other)']]],
   ['nrounds_4382',['nRounds',['../classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a50b5c6a04230924b43a743254673df71',1,'alpaka::rand::engine::PhiloxBaseCommon']]]
 ];

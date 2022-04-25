@@ -130,7 +130,7 @@ var searchData=
   ['exampledefaultacc_947',['ExampleDefaultAcc',['../namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa',1,'alpaka']]],
   ['exampledefaultacc_2ehpp_948',['ExampleDefaultAcc.hpp',['../ExampleDefaultAcc_8hpp.html',1,'']]],
   ['exec_949',['exec',['../namespacealpaka.html#aba309bace6bd6e1cf4c564bbe396a9ba',1,'alpaka']]],
-  ['exp_950',['Exp',['../structalpaka_1_1math_1_1trait_1_1Exp.html',1,'alpaka::math::trait::Exp&lt; T, TArg, TSfinae &gt;'],['../namespacealpaka.html#a617759d1d9787d4b033d08cf8b4c9178',1,'alpaka::exp()'],['../namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df',1,'alpaka::math::exp()']]],
+  ['exp_950',['Exp',['../structalpaka_1_1math_1_1trait_1_1Exp.html',1,'alpaka::math::trait::Exp&lt; T, TArg, TSfinae &gt;'],['../namespacealpaka.html#aec3fd0772955ff432f9180094b98ba60',1,'alpaka::exp()'],['../namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df',1,'alpaka::math::exp()']]],
   ['exp_3c_20expuniformcudahipbuiltin_2c_20complex_3c_20t_20_3e_20_3e_951',['Exp&lt; ExpUniformCudaHipBuiltIn, Complex&lt; T &gt; &gt;',['../structalpaka_1_1math_1_1trait_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html',1,'alpaka::math::trait']]],
   ['exp_3c_20expuniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_5fv_3c_20targ_20_3e_20_3e_20_3e_952',['Exp&lt; ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point_v&lt; TArg &gt; &gt; &gt;',['../structalpaka_1_1math_1_1trait_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__f71d9907bbca97a9532ccf78ec0d7af9.html',1,'alpaka::math::trait']]],
   ['expstdlib_953',['ExpStdLib',['../classalpaka_1_1math_1_1ExpStdLib.html',1,'alpaka::math']]],
