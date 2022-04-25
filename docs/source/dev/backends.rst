@@ -149,6 +149,13 @@ Depending on the cmake argument ``ALPAKA_ACC_GPU_CUDA_ONLY_MODE`` the function a
 
    You can not call CUDA-only methods, except when ``ALPAKA_ACC_GPU_CUDA_ONLY_MODE`` is enabled.
 
+.. note::
+
+   When calling a ``constexpr`` function from inside a device function, also mark the called function as a device function, e.g. by prepending ``ALPAKA_FN_ACC``.
+
+   Note that some compilers do that by default, but not all.
+   For details please refer to `#1580 <https://github.com/alpaka-group/alpaka/issues/1580>`_ .
+
 **Memory**
 
 .. table::
