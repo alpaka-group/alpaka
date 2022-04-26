@@ -13,9 +13,6 @@
 #include <alpaka/core/Common.hpp>
 
 #include <new>
-#if BOOST_COMP_INTEL
-#    include <aligned_new>
-#endif
 
 namespace alpaka::core
 {

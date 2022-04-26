@@ -38,7 +38,7 @@ namespace alpaka
             {
 #ifdef __cpp_lib_bitops
                 return std::popcount(value);
-#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
                 return __builtin_popcount(value);
 #elif BOOST_COMP_MSVC
                 return __popcnt(value);
@@ -52,7 +52,7 @@ namespace alpaka
             {
 #ifdef __cpp_lib_bitops
                 return std::popcount(value);
-#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
                 return __builtin_popcountll(value);
 #elif BOOST_COMP_MSVC
                 return static_cast<std::int32_t>(__popcnt64(value));
@@ -70,7 +70,7 @@ namespace alpaka
             {
 #ifdef __cpp_lib_bitops
                 return std::countr_zero(value);
-#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
                 return __builtin_ffs(value);
 #elif BOOST_COMP_MSVC
                 // Implementation based on
@@ -89,7 +89,7 @@ namespace alpaka
             {
 #ifdef __cpp_lib_bitops
                 return std::countr_zero(value);
-#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG
                 return __builtin_ffsll(value);
 #elif BOOST_COMP_MSVC
                 // Implementation based on

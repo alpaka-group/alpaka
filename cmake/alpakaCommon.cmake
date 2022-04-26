@@ -179,6 +179,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_
     message(FATAL_ERROR "Clang versions < 4.0 are not supported!")
 endif()
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+    message(WARNING "The Intel Classic compiler (icpc) is no longer supported. Please upgrade to the Intel LLVM compiler (ipcx)!")
+endif()
+
 if(alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE AND (alpaka_ACC_GPU_CUDA_ENABLE OR alpaka_ACC_GPU_HIP_ENABLE))
     message(FATAL_ERROR "Fibers and CUDA or HIP back-end can not be enabled both at the same time.")
 endif()
