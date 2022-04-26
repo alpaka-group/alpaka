@@ -237,11 +237,6 @@ jobs:
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.20.6, OMP_NUM_THREADS: 3, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_EXTENSIONS: OFF}
 
-        # icpc
-        - name: linux_icpc_release
-          os: ubuntu-latest
-          env: {CXX: icpc,    CC: icc,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.75.0, ALPAKA_CI_CMAKE_VER: 3.19.8, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
-
         ## NVHPC
         - name: linux_nvhpc-21.9_release_oacc_multicore
         # # gcc is used to compile the dependencies, NVHPC will be used to compile alpaka
