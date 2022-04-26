@@ -14,6 +14,9 @@
 #include <alpaka/intrinsic/Traits.hpp>
 
 #include <bitset>
+#if __has_include(<bit>)
+#    include <bit>
+#endif
 
 #if BOOST_COMP_MSVC
 #    include <intrin.h>
@@ -33,7 +36,9 @@ namespace alpaka
         {
             static auto popcount(IntrinsicCpu const& /*intrinsic*/, std::uint32_t value) -> std::int32_t
             {
-#if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#ifdef __cpp_lib_bitops
+                return std::popcount(value);
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_popcount(value);
 #elif BOOST_COMP_MSVC
                 return __popcnt(value);
@@ -45,7 +50,9 @@ namespace alpaka
 
             static auto popcount(IntrinsicCpu const& /*intrinsic*/, std::uint64_t value) -> std::int32_t
             {
-#if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#ifdef __cpp_lib_bitops
+                return std::popcount(value);
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_popcountll(value);
 #elif BOOST_COMP_MSVC
                 return static_cast<std::int32_t>(__popcnt64(value));
@@ -61,7 +68,9 @@ namespace alpaka
         {
             static auto ffs(IntrinsicCpu const& /*intrinsic*/, std::int32_t value) -> std::int32_t
             {
-#if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#ifdef __cpp_lib_bitops
+                return std::countr_zero(value);
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_ffs(value);
 #elif BOOST_COMP_MSVC
                 // Implementation based on
@@ -78,7 +87,9 @@ namespace alpaka
 
             static auto ffs(IntrinsicCpu const& /*intrinsic*/, std::int64_t value) -> std::int32_t
             {
-#if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+#ifdef __cpp_lib_bitops
+                return std::countr_zero(value);
+#elif BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_ffsll(value);
 #elif BOOST_COMP_MSVC
                 // Implementation based on
