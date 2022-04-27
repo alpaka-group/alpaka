@@ -583,6 +583,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">allocBuf</a> (TDev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:a7ff762720c64dc454a53faa6622c227d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">More...</a><br /></td></tr>
 <tr class="separator:a7ff762720c64dc454a53faa6622c227d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a454ad163b8d81f6459c62f913a2202ef"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &gt; </td></tr>
+<tr class="memitem:a454ad163b8d81f6459c62f913a2202ef"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a454ad163b8d81f6459c62f913a2202ef">allocMappedBuf</a> (<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> const &amp;host, TDev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
+<tr class="memdesc:a454ad163b8d81f6459c62f913a2202ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates pinned/mapped memory on host, accessible by the given device.  <a href="namespacealpaka.html#a454ad163b8d81f6459c62f913a2202ef">More...</a><br /></td></tr>
+<tr class="separator:a454ad163b8d81f6459c62f913a2202ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
 <tr class="memitem:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">atomicAdd</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
 <tr class="memdesc:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic add operation.  <a href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">More...</a><br /></td></tr>
@@ -1147,7 +1151,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 
 <p>The memory buffer type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00065">65</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1834,7 +1838,7 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TQueue 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00092">92</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00099">99</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1885,7 +1889,65 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &g
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00077">77</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00084">84</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a454ad163b8d81f6459c62f913a2202ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a454ad163b8d81f6459c62f913a2202ef">&#9670;&nbsp;</a></span>allocMappedBuf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::allocMappedBuf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> const &amp;&#160;</td>
+          <td class="paramname"><em>host</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TDev const &amp;&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em> = <code>TExtent()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Allocates pinned/mapped memory on host, accessible by the given device. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TElem</td><td>The element type of the returned buffer. </td></tr>
+    <tr><td class="paramname">TIdx</td><td>The linear index type of the buffer. </td></tr>
+    <tr><td class="paramname">TExtent</td><td>The extent type of the buffer. </td></tr>
+    <tr><td class="paramname">TDev</td><td>The type of device the buffer is accessible from. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">host</td><td>The host device to allocate the buffer on. </td></tr>
+    <tr><td class="paramname">dev</td><td>The device to make the memory accessible from. </td></tr>
+    <tr><td class="paramname">extent</td><td>The extent of the buffer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00131">131</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5291,7 +5353,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00162">162</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00185">185</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5592,7 +5654,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00120">120</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00143">143</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -6817,7 +6879,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00142">142</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00165">165</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -7118,7 +7180,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00173">173</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00196">196</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8017,7 +8079,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00132">132</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00155">155</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8054,7 +8116,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00152">152</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00175">175</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8168,7 +8230,7 @@ template&lt;typename TDev , typename TDim &gt; </div>
 <p>Check if the given device can allocate a stream-ordered memory buffer of the given dimensionality. </p>
 <p>TDev is the type of device to allocate the buffer on. TDim is the dimensionality of the buffer to allocate. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00108">108</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00115">115</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8206,7 +8268,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Apr 27 2022 13:15:24 for alpaka by
+    <li class="footer">Generated on Wed Apr 27 2022 14:31:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

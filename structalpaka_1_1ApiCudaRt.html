@@ -113,8 +113,8 @@ Public Types</h2></td></tr>
 <tr class="separator:a3f6bb2df64b334a3769fe3789897bad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad579fcfccdc253a806e93df4cc64f4f9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#ad579fcfccdc253a806e93df4cc64f4f9">Extent_t</a> = ::cudaExtent</td></tr>
 <tr class="separator:ad579fcfccdc253a806e93df4cc64f4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a458d17a7b88b1f0ad03976e95a895b5b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> = int</td></tr>
-<tr class="separator:a458d17a7b88b1f0ad03976e95a895b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18752be590bfa5b5ac9cc279a6a34066"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> = unsigned int</td></tr>
+<tr class="separator:a18752be590bfa5b5ac9cc279a6a34066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ccccc0d5b085bcbce0824184d0c1dcc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a8ccccc0d5b085bcbce0824184d0c1dcc">FuncAttributes_t</a> = ::cudaFuncAttributes</td></tr>
 <tr class="separator:a8ccccc0d5b085bcbce0824184d0c1dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf25e9ca7af5ff52ba86a3dc328ca603"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#aaf25e9ca7af5ff52ba86a3dc328ca603">HostFn_t</a> = void(*)(void *data)</td></tr>
@@ -146,8 +146,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a79aa3bf7b9090164164a6f9e59d6b4d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb0c4976375738bda85cef1942bdefb9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#acb0c4976375738bda85cef1942bdefb9">eventCreate</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f6bb2df64b334a3769fe3789897bad0">Event_t</a> *event)</td></tr>
 <tr class="separator:acb0c4976375738bda85cef1942bdefb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a171881126ba857634abfd8925e55e45c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a171881126ba857634abfd8925e55e45c">eventCreateWithFlags</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f6bb2df64b334a3769fe3789897bad0">Event_t</a> *event, unsigned int flags)</td></tr>
-<tr class="separator:a171881126ba857634abfd8925e55e45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8eb19bfa7a9d5a8a85934ce97af43d1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#af8eb19bfa7a9d5a8a85934ce97af43d1">eventCreateWithFlags</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f6bb2df64b334a3769fe3789897bad0">Event_t</a> *event, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> flags)</td></tr>
+<tr class="separator:af8eb19bfa7a9d5a8a85934ce97af43d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff228d452ab49767ffe1f5e75948d805"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#aff228d452ab49767ffe1f5e75948d805">eventDestroy</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f6bb2df64b334a3769fe3789897bad0">Event_t</a> event)</td></tr>
 <tr class="separator:aff228d452ab49767ffe1f5e75948d805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e3e01be3b0d7e8ef96de767f9191013"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a7e3e01be3b0d7e8ef96de767f9191013">eventQuery</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f6bb2df64b334a3769fe3789897bad0">Event_t</a> event)</td></tr>
@@ -180,10 +180,14 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a3484f56382d28f95888b32639ab5e594"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf6099ee9d1e05ae756c535ab9a0366b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#acf6099ee9d1e05ae756c535ab9a0366b">getSymbolAddress</a> (void **devPtr, const void *symbol)</td></tr>
 <tr class="separator:acf6099ee9d1e05ae756c535ab9a0366b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a02627511ea6ecbb7910f551b7b492e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a6a02627511ea6ecbb7910f551b7b492e">hostGetDevicePointer</a> (void **pDevice, void *pHost, unsigned int flags)</td></tr>
-<tr class="separator:a6a02627511ea6ecbb7910f551b7b492e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ba0fabb2bad6a3eaf2c9ba63094e241"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a9ba0fabb2bad6a3eaf2c9ba63094e241">hostRegister</a> (void *ptr, size_t size, unsigned int flags)</td></tr>
-<tr class="separator:a9ba0fabb2bad6a3eaf2c9ba63094e241"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52883cb2a35bedf75db003e693834f23"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a52883cb2a35bedf75db003e693834f23">hostFree</a> (void *ptr)</td></tr>
+<tr class="separator:a52883cb2a35bedf75db003e693834f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7286886bff8cdb11108cd591e343c635"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a7286886bff8cdb11108cd591e343c635">hostGetDevicePointer</a> (void **pDevice, void *pHost, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> flags)</td></tr>
+<tr class="separator:a7286886bff8cdb11108cd591e343c635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04a1fe1867415cf73187e7d843201418"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a04a1fe1867415cf73187e7d843201418">hostMalloc</a> (void **ptr, size_t size, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> flags)</td></tr>
+<tr class="separator:a04a1fe1867415cf73187e7d843201418"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc01f93a5230beff86c24382a5bc366c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#adc01f93a5230beff86c24382a5bc366c">hostRegister</a> (void *ptr, size_t size, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> flags)</td></tr>
+<tr class="separator:adc01f93a5230beff86c24382a5bc366c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a502117743d312d08f4b176b38167d3c2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a502117743d312d08f4b176b38167d3c2">hostUnregister</a> (void *ptr)</td></tr>
 <tr class="separator:a502117743d312d08f4b176b38167d3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7f4ed362b7d1033184cba77ca0c461c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#ac7f4ed362b7d1033184cba77ca0c461c">launchHostFunc</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> stream, <a class="el" href="structalpaka_1_1ApiCudaRt.html#aaf25e9ca7af5ff52ba86a3dc328ca603">HostFn_t</a> fn, void *userData)</td></tr>
@@ -222,16 +226,16 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:add68676a06f3354d5934f7ade715065a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b1046c9f0d5e9b2486a08d68c2e45f3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a6b1046c9f0d5e9b2486a08d68c2e45f3">streamCreate</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> *pStream)</td></tr>
 <tr class="separator:a6b1046c9f0d5e9b2486a08d68c2e45f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2d25e5ee8fcd5997d40c64a46cd10fd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#ae2d25e5ee8fcd5997d40c64a46cd10fd">streamCreateWithFlags</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> *pStream, unsigned int flags)</td></tr>
-<tr class="separator:ae2d25e5ee8fcd5997d40c64a46cd10fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab19ca8203007301219a6ab1b8c4b4263"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#ab19ca8203007301219a6ab1b8c4b4263">streamCreateWithFlags</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> *pStream, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> flags)</td></tr>
+<tr class="separator:ab19ca8203007301219a6ab1b8c4b4263"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e970985652aa75ab0a73db16d064b43"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a3e970985652aa75ab0a73db16d064b43">streamDestroy</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> stream)</td></tr>
 <tr class="separator:a3e970985652aa75ab0a73db16d064b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab319661a116359f42ebee95ed730d537"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#ab319661a116359f42ebee95ed730d537">streamQuery</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> stream)</td></tr>
 <tr class="separator:ab319661a116359f42ebee95ed730d537"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2f71446c5bf9137b5ad2b2f793574b3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#aa2f71446c5bf9137b5ad2b2f793574b3">streamSynchronize</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> stream)</td></tr>
 <tr class="separator:aa2f71446c5bf9137b5ad2b2f793574b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacac83b2cc2140510aedbdb7ebe00832"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#aacac83b2cc2140510aedbdb7ebe00832">streamWaitEvent</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> stream, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f6bb2df64b334a3769fe3789897bad0">Event_t</a> event, unsigned int flags)</td></tr>
-<tr class="separator:aacac83b2cc2140510aedbdb7ebe00832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a170c02adeee73a65af761b17d489c674"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a170c02adeee73a65af761b17d489c674">streamWaitEvent</a> (<a class="el" href="structalpaka_1_1ApiCudaRt.html#a24a388c0118a7415b0856672ddbf6e92">Stream_t</a> stream, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f6bb2df64b334a3769fe3789897bad0">Event_t</a> event, <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> flags)</td></tr>
+<tr class="separator:a170c02adeee73a65af761b17d489c674"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -263,21 +267,33 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a850557ecb124b0deb5248e692409177b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affcd44f74126c53f739b70a86bc00a92"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#affcd44f74126c53f739b70a86bc00a92">errorUnsupportedLimit</a> = ::cudaErrorUnsupportedLimit</td></tr>
 <tr class="separator:affcd44f74126c53f739b70a86bc00a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f82d6d33d84ecd5e11b940c31eaf783"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f82d6d33d84ecd5e11b940c31eaf783">eventBlockingSync</a> = cudaEventBlockingSync</td></tr>
+<tr class="memitem:a3f82d6d33d84ecd5e11b940c31eaf783"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a3f82d6d33d84ecd5e11b940c31eaf783">eventBlockingSync</a> = cudaEventBlockingSync</td></tr>
 <tr class="separator:a3f82d6d33d84ecd5e11b940c31eaf783"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05d000259aa4cfbcea54ff442d68fb8c"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a05d000259aa4cfbcea54ff442d68fb8c">eventDefault</a> = cudaEventDefault</td></tr>
+<tr class="memitem:a05d000259aa4cfbcea54ff442d68fb8c"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a05d000259aa4cfbcea54ff442d68fb8c">eventDefault</a> = cudaEventDefault</td></tr>
 <tr class="separator:a05d000259aa4cfbcea54ff442d68fb8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2920494dd5564274071562fbaf667bd2"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a2920494dd5564274071562fbaf667bd2">eventDisableTiming</a> = cudaEventDisableTiming</td></tr>
+<tr class="memitem:a2920494dd5564274071562fbaf667bd2"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a2920494dd5564274071562fbaf667bd2">eventDisableTiming</a> = cudaEventDisableTiming</td></tr>
 <tr class="separator:a2920494dd5564274071562fbaf667bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13b959fb5f66d5d518e96cdb5093a1c9"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a13b959fb5f66d5d518e96cdb5093a1c9">eventInterprocess</a> = cudaEventInterprocess</td></tr>
+<tr class="memitem:a13b959fb5f66d5d518e96cdb5093a1c9"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a13b959fb5f66d5d518e96cdb5093a1c9">eventInterprocess</a> = cudaEventInterprocess</td></tr>
 <tr class="separator:a13b959fb5f66d5d518e96cdb5093a1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820f18e0a1ab0fa1888fab261bf57dbf"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a820f18e0a1ab0fa1888fab261bf57dbf">hostRegisterDefault</a> = cudaHostRegisterDefault</td></tr>
+<tr class="memitem:abfa2b5a486a9b3f142917fb14b9921d9"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#abfa2b5a486a9b3f142917fb14b9921d9">hostMallocCoherent</a> = cudaHostAllocDefault</td></tr>
+<tr class="separator:abfa2b5a486a9b3f142917fb14b9921d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48731bce43a4fef07420eb4dc48351c7"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a48731bce43a4fef07420eb4dc48351c7">hostMallocDefault</a> = cudaHostAllocDefault</td></tr>
+<tr class="separator:a48731bce43a4fef07420eb4dc48351c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747bc880d01ad4e14b0c092b09bc4ae1"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a747bc880d01ad4e14b0c092b09bc4ae1">hostMallocMapped</a> = cudaHostAllocMapped</td></tr>
+<tr class="separator:a747bc880d01ad4e14b0c092b09bc4ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a683cbda89fc70dab5961bb7793adeff3"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a683cbda89fc70dab5961bb7793adeff3">hostMallocNonCoherent</a> = cudaHostAllocDefault</td></tr>
+<tr class="separator:a683cbda89fc70dab5961bb7793adeff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3187101fc192325a8c34d223d969336b"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a3187101fc192325a8c34d223d969336b">hostMallocPortable</a> = cudaHostAllocPortable</td></tr>
+<tr class="separator:a3187101fc192325a8c34d223d969336b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a0394d9df40d85a854880dadcf4cad6"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a3a0394d9df40d85a854880dadcf4cad6">hostMallocWriteCombined</a> = cudaHostAllocWriteCombined</td></tr>
+<tr class="separator:a3a0394d9df40d85a854880dadcf4cad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a820f18e0a1ab0fa1888fab261bf57dbf"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a820f18e0a1ab0fa1888fab261bf57dbf">hostRegisterDefault</a> = cudaHostRegisterDefault</td></tr>
 <tr class="separator:a820f18e0a1ab0fa1888fab261bf57dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad24dc8d17cba117654327efc6f6d07f8"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#ad24dc8d17cba117654327efc6f6d07f8">hostRegisterIoMemory</a> = cudaHostRegisterIoMemory</td></tr>
+<tr class="memitem:ad24dc8d17cba117654327efc6f6d07f8"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#ad24dc8d17cba117654327efc6f6d07f8">hostRegisterIoMemory</a> = cudaHostRegisterIoMemory</td></tr>
 <tr class="separator:ad24dc8d17cba117654327efc6f6d07f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab59ece9a5d64a4782417e7aed7eaa10"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#aab59ece9a5d64a4782417e7aed7eaa10">hostRegisterMapped</a> = cudaHostRegisterMapped</td></tr>
+<tr class="memitem:aab59ece9a5d64a4782417e7aed7eaa10"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#aab59ece9a5d64a4782417e7aed7eaa10">hostRegisterMapped</a> = cudaHostRegisterMapped</td></tr>
 <tr class="separator:aab59ece9a5d64a4782417e7aed7eaa10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a528b5b339c1e9a1a0bdc7ca708fbc539"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a528b5b339c1e9a1a0bdc7ca708fbc539">hostRegisterPortable</a> = cudaHostRegisterPortable</td></tr>
+<tr class="memitem:a528b5b339c1e9a1a0bdc7ca708fbc539"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a528b5b339c1e9a1a0bdc7ca708fbc539">hostRegisterPortable</a> = cudaHostRegisterPortable</td></tr>
 <tr class="separator:a528b5b339c1e9a1a0bdc7ca708fbc539"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53e97caaa4aed473e25616a06a812dfe"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#ac9adb2c41dcb8d8011c1f8eca0b77f54">Limit_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a53e97caaa4aed473e25616a06a812dfe">limitMallocHeapSize</a> = ::cudaLimitMallocHeapSize</td></tr>
 <tr class="separator:a53e97caaa4aed473e25616a06a812dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -293,9 +309,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:aa7cd1a3223b7ade5fcbd69544c6bbd10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4027d293a3ec5f86ab0ea3e3acbaf478"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a4027d293a3ec5f86ab0ea3e3acbaf478">name</a> [] = &quot;Cuda&quot;</td></tr>
 <tr class="separator:a4027d293a3ec5f86ab0ea3e3acbaf478"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbed245f9832d3012bcb085a620a6490"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#adbed245f9832d3012bcb085a620a6490">streamDefault</a> = cudaStreamDefault</td></tr>
+<tr class="memitem:adbed245f9832d3012bcb085a620a6490"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#adbed245f9832d3012bcb085a620a6490">streamDefault</a> = cudaStreamDefault</td></tr>
 <tr class="separator:adbed245f9832d3012bcb085a620a6490"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a725d59f09639c4501c76e86bca6da7d1"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a725d59f09639c4501c76e86bca6da7d1">streamNonBlocking</a> = cudaStreamNonBlocking</td></tr>
+<tr class="memitem:a725d59f09639c4501c76e86bca6da7d1"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a725d59f09639c4501c76e86bca6da7d1">streamNonBlocking</a> = cudaStreamNonBlocking</td></tr>
 <tr class="separator:a725d59f09639c4501c76e86bca6da7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c833232308d55f8e41239748bf2ed1c"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a7c833232308d55f8e41239748bf2ed1c">success</a> = ::cudaSuccess</td></tr>
 <tr class="separator:a7c833232308d55f8e41239748bf2ed1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -386,14 +402,14 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a458d17a7b88b1f0ad03976e95a895b5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a458d17a7b88b1f0ad03976e95a895b5b">&#9670;&nbsp;</a></span>Flag_t</h2>
+<a id="a18752be590bfa5b5ac9cc279a6a34066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18752be590bfa5b5ac9cc279a6a34066">&#9670;&nbsp;</a></span>Flag_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">alpaka::ApiCudaRt::Flag_t</a> =  int</td>
+          <td class="memname">using <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">alpaka::ApiCudaRt::Flag_t</a> =  unsigned int</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -571,7 +587,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00105">105</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00112">112</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -609,7 +625,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00110">110</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00117">117</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -636,7 +652,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00115">115</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00122">122</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -674,7 +690,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00120">120</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00127">127</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -701,7 +717,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00125">125</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00132">132</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -729,12 +745,12 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00130">130</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00137">137</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a171881126ba857634abfd8925e55e45c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a171881126ba857634abfd8925e55e45c">&#9670;&nbsp;</a></span>eventCreateWithFlags()</h2>
+<a id="af8eb19bfa7a9d5a8a85934ce97af43d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8eb19bfa7a9d5a8a85934ce97af43d1">&#9670;&nbsp;</a></span>eventCreateWithFlags()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -751,7 +767,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td>
           <td class="paramname"><em>flags</em>&#160;</td>
         </tr>
         <tr>
@@ -767,7 +783,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00135">135</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00142">142</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -795,7 +811,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00140">140</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00147">147</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -823,7 +839,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00145">145</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00152">152</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -861,7 +877,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00150">150</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00157">157</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -889,7 +905,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00155">155</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00162">162</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -917,7 +933,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00160">160</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00167">167</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -955,7 +971,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00165">165</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00172">172</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -993,7 +1009,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00175">175</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00182">182</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1033,7 +1049,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00181">181</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00188">188</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1061,7 +1077,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00186">186</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00193">193</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1115,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00191">191</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00198">198</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1143,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00196">196</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00203">203</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1155,7 +1171,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00201">201</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00208">208</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1182,7 +1198,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00206">206</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00213">213</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1222,7 +1238,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00217">217</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00224">224</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1260,12 +1276,40 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00211">211</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00218">218</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a6a02627511ea6ecbb7910f551b7b492e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a02627511ea6ecbb7910f551b7b492e">&#9670;&nbsp;</a></span>hostGetDevicePointer()</h2>
+<a id="a52883cb2a35bedf75db003e693834f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52883cb2a35bedf75db003e693834f23">&#9670;&nbsp;</a></span>hostFree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a> alpaka::ApiCudaRt::hostFree </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00234">234</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a7286886bff8cdb11108cd591e343c635"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7286886bff8cdb11108cd591e343c635">&#9670;&nbsp;</a></span>hostGetDevicePointer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1288,7 +1332,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td>
           <td class="paramname"><em>flags</em>&#160;</td>
         </tr>
         <tr>
@@ -1304,12 +1348,56 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00222">222</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00229">229</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a9ba0fabb2bad6a3eaf2c9ba63094e241"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ba0fabb2bad6a3eaf2c9ba63094e241">&#9670;&nbsp;</a></span>hostRegister()</h2>
+<a id="a04a1fe1867415cf73187e7d843201418"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04a1fe1867415cf73187e7d843201418">&#9670;&nbsp;</a></span>hostMalloc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structalpaka_1_1ApiCudaRt.html#a84d107b6538ef3414e3f777a5b9502e5">Error_t</a> alpaka::ApiCudaRt::hostMalloc </td>
+          <td>(</td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00239">239</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="adc01f93a5230beff86c24382a5bc366c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc01f93a5230beff86c24382a5bc366c">&#9670;&nbsp;</a></span>hostRegister()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1332,7 +1420,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td>
           <td class="paramname"><em>flags</em>&#160;</td>
         </tr>
         <tr>
@@ -1348,7 +1436,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00227">227</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00244">244</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1376,7 +1464,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00232">232</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00249">249</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1420,7 +1508,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00237">237</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00254">254</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1464,7 +1552,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00375">375</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00392">392</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1514,7 +1602,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00365">365</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00382">382</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1558,7 +1646,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00370">370</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00387">387</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1596,7 +1684,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00248">248</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00265">265</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1634,7 +1722,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00253">253</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00270">270</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1678,7 +1766,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00258">258</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00275">275</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1728,7 +1816,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00271">271</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00288">288</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1778,7 +1866,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00281">281</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00298">298</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1852,7 +1940,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00286">286</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00303">303</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1890,7 +1978,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00299">299</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00316">316</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1946,7 +2034,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00304">304</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00321">321</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1984,7 +2072,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00276">276</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00293">293</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2046,7 +2134,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00309">309</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00326">326</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2096,7 +2184,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00320">320</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00337">337</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2146,7 +2234,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00325">325</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00342">342</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2174,7 +2262,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00330">330</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00347">347</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2202,12 +2290,12 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00335">335</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00352">352</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ae2d25e5ee8fcd5997d40c64a46cd10fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2d25e5ee8fcd5997d40c64a46cd10fd">&#9670;&nbsp;</a></span>streamCreateWithFlags()</h2>
+<a id="ab19ca8203007301219a6ab1b8c4b4263"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab19ca8203007301219a6ab1b8c4b4263">&#9670;&nbsp;</a></span>streamCreateWithFlags()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2224,7 +2312,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td>
           <td class="paramname"><em>flags</em>&#160;</td>
         </tr>
         <tr>
@@ -2240,7 +2328,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00340">340</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00357">357</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2268,7 +2356,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00345">345</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00362">362</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2296,7 +2384,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00350">350</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00367">367</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2324,12 +2412,12 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00355">355</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00372">372</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aacac83b2cc2140510aedbdb7ebe00832"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacac83b2cc2140510aedbdb7ebe00832">&#9670;&nbsp;</a></span>streamWaitEvent()</h2>
+<a id="a170c02adeee73a65af761b17d489c674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a170c02adeee73a65af761b17d489c674">&#9670;&nbsp;</a></span>streamWaitEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2352,7 +2440,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a>&#160;</td>
           <td class="paramname"><em>flags</em>&#160;</td>
         </tr>
         <tr>
@@ -2368,7 +2456,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00360">360</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00377">377</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2393,7 +2481,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00068">68</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00075">75</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2417,7 +2505,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00069">69</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00076">76</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2441,7 +2529,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00070">70</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00077">77</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2465,7 +2553,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00071">71</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00078">78</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2489,7 +2577,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00072">72</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00079">79</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2513,7 +2601,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00073">73</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00080">80</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2537,7 +2625,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00074">74</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00081">81</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2561,7 +2649,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00075">75</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00082">82</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2585,7 +2673,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00076">76</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00083">83</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2719,7 +2807,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::eventBlockingSync = cudaEventBlockingSync</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::eventBlockingSync = cudaEventBlockingSync</td>
         </tr>
       </table>
   </td>
@@ -2743,7 +2831,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::eventDefault = cudaEventDefault</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::eventDefault = cudaEventDefault</td>
         </tr>
       </table>
   </td>
@@ -2767,7 +2855,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::eventDisableTiming = cudaEventDisableTiming</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::eventDisableTiming = cudaEventDisableTiming</td>
         </tr>
       </table>
   </td>
@@ -2791,7 +2879,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::eventInterprocess = cudaEventInterprocess</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::eventInterprocess = cudaEventInterprocess</td>
         </tr>
       </table>
   </td>
@@ -2805,8 +2893,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a820f18e0a1ab0fa1888fab261bf57dbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a820f18e0a1ab0fa1888fab261bf57dbf">&#9670;&nbsp;</a></span>hostRegisterDefault</h2>
+<a id="abfa2b5a486a9b3f142917fb14b9921d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfa2b5a486a9b3f142917fb14b9921d9">&#9670;&nbsp;</a></span>hostMallocCoherent</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2815,7 +2903,31 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::hostRegisterDefault = cudaHostRegisterDefault</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostMallocCoherent = cudaHostAllocDefault</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00059">59</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a48731bce43a4fef07420eb4dc48351c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48731bce43a4fef07420eb4dc48351c7">&#9670;&nbsp;</a></span>hostMallocDefault</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostMallocDefault = cudaHostAllocDefault</td>
         </tr>
       </table>
   </td>
@@ -2829,8 +2941,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="ad24dc8d17cba117654327efc6f6d07f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad24dc8d17cba117654327efc6f6d07f8">&#9670;&nbsp;</a></span>hostRegisterIoMemory</h2>
+<a id="a747bc880d01ad4e14b0c092b09bc4ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a747bc880d01ad4e14b0c092b09bc4ae1">&#9670;&nbsp;</a></span>hostMallocMapped</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2839,7 +2951,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::hostRegisterIoMemory = cudaHostRegisterIoMemory</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostMallocMapped = cudaHostAllocMapped</td>
         </tr>
       </table>
   </td>
@@ -2849,12 +2961,12 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00058">58</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00056">56</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aab59ece9a5d64a4782417e7aed7eaa10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab59ece9a5d64a4782417e7aed7eaa10">&#9670;&nbsp;</a></span>hostRegisterMapped</h2>
+<a id="a683cbda89fc70dab5961bb7793adeff3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a683cbda89fc70dab5961bb7793adeff3">&#9670;&nbsp;</a></span>hostMallocNonCoherent</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2863,7 +2975,31 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::hostRegisterMapped = cudaHostRegisterMapped</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostMallocNonCoherent = cudaHostAllocDefault</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00060">60</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a3187101fc192325a8c34d223d969336b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3187101fc192325a8c34d223d969336b">&#9670;&nbsp;</a></span>hostMallocPortable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostMallocPortable = cudaHostAllocPortable</td>
         </tr>
       </table>
   </td>
@@ -2877,6 +3013,102 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a id="a3a0394d9df40d85a854880dadcf4cad6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a0394d9df40d85a854880dadcf4cad6">&#9670;&nbsp;</a></span>hostMallocWriteCombined</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostMallocWriteCombined = cudaHostAllocWriteCombined</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00058">58</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a820f18e0a1ab0fa1888fab261bf57dbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a820f18e0a1ab0fa1888fab261bf57dbf">&#9670;&nbsp;</a></span>hostRegisterDefault</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostRegisterDefault = cudaHostRegisterDefault</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00062">62</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ad24dc8d17cba117654327efc6f6d07f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad24dc8d17cba117654327efc6f6d07f8">&#9670;&nbsp;</a></span>hostRegisterIoMemory</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostRegisterIoMemory = cudaHostRegisterIoMemory</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00065">65</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aab59ece9a5d64a4782417e7aed7eaa10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab59ece9a5d64a4782417e7aed7eaa10">&#9670;&nbsp;</a></span>hostRegisterMapped</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostRegisterMapped = cudaHostRegisterMapped</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00064">64</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a528b5b339c1e9a1a0bdc7ca708fbc539"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a528b5b339c1e9a1a0bdc7ca708fbc539">&#9670;&nbsp;</a></span>hostRegisterPortable</h2>
 
@@ -2887,7 +3119,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::hostRegisterPortable = cudaHostRegisterPortable</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::hostRegisterPortable = cudaHostRegisterPortable</td>
         </tr>
       </table>
   </td>
@@ -2897,7 +3129,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00056">56</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00063">63</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2921,7 +3153,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00079">79</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00086">86</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2945,7 +3177,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00078">78</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00085">85</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2969,7 +3201,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00060">60</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00067">67</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2993,7 +3225,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00061">61</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00068">68</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -3017,7 +3249,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00062">62</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00069">69</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -3041,7 +3273,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00063">63</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00070">70</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -3079,7 +3311,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::streamDefault = cudaStreamDefault</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::streamDefault = cudaStreamDefault</td>
         </tr>
       </table>
   </td>
@@ -3089,7 +3321,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00065">65</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00072">72</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -3103,7 +3335,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a458d17a7b88b1f0ad03976e95a895b5b">Flag_t</a> alpaka::ApiCudaRt::streamNonBlocking = cudaStreamNonBlocking</td>
+          <td class="memname">constexpr <a class="el" href="structalpaka_1_1ApiCudaRt.html#a18752be590bfa5b5ac9cc279a6a34066">Flag_t</a> alpaka::ApiCudaRt::streamNonBlocking = cudaStreamNonBlocking</td>
         </tr>
       </table>
   </td>
@@ -3113,7 +3345,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00066">66</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApiCudaRt_8hpp_source.html#l00073">73</a> of file <a class="el" href="ApiCudaRt_8hpp_source.html">ApiCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -3174,7 +3406,7 @@ template&lt;class T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a></li>
-    <li class="footer">Generated on Wed Apr 27 2022 13:15:25 for alpaka by
+    <li class="footer">Generated on Wed Apr 27 2022 14:31:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

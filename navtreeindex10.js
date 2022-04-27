@@ -1,5 +1,14 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#a996acae600d13e6b6f31aea89e12d724":[3,0,0,6,4,1],
+"structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#acd148ab9116875358fdad68dfc88cb4a":[3,0,0,6,4,4],
+"structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#ae20cd1b406c679dc209c52ca36e1c28a":[3,0,0,6,4,0],
+"structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#af3d551659be2562ac259d0a0d7b1b8e9":[3,0,0,6,4,3],
+"structalpaka_1_1experimental_1_1ReadAccess.html":[3,0,0,6,5],
+"structalpaka_1_1experimental_1_1ReadWriteAccess.html":[3,0,0,6,6],
+"structalpaka_1_1experimental_1_1WriteAccess.html":[3,0,0,6,7],
+"structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl.html":[3,0,0,6,0,0],
+"structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01ReadAccess_01_4.html":[3,0,0,6,0,1],
 "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01ReadAccess_01_4.html#a853461f98fab5d7deb685392f588ed27":[3,0,0,6,0,1,0],
 "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01ReadWriteAccess_01_4.html":[3,0,0,6,0,2],
 "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01ReadWriteAccess_01_4.html#ad036077a6ca9ccd2374392011b40fc92":[3,0,0,6,0,2,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#a19435f652a1c8560e88e2b533f81ed7f":[3,0,0,13,4,0],
 "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#a62fff6b87c5f556e166eff73e5ba4310":[3,0,0,13,4,3],
 "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#a87e5f85c2bcf58d5d2347b598c20e00d":[3,0,0,13,4,4],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#aca93505eac8430f01f5c06161db09120":[3,0,0,13,4,1],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#adaf57668af893d5f5bc40a295bf88d86":[3,0,0,13,4,2],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html":[3,0,0,13,5],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a33172063ca5dd6c61e7aed1a7c881339":[3,0,0,13,5,2],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a33f4aba1ebdea6f92d74595e1b1dfc23":[3,0,0,13,5,1],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#aa8abbf9905db1f78226aaa9642f4127f":[3,0,0,13,5,0],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#abefb94f77518716a675e72590684b089":[3,0,0,13,5,3],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#aec6de5589bd0ec66372f9a9ad3a90a98":[3,0,0,13,5,4],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html":[3,0,0,13,6],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html#a0b47a9109804b98aa1b1702cbff7ad37":[3,0,0,13,6,2]
+"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html#aca93505eac8430f01f5c06161db09120":[3,0,0,13,4,1]
 };

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['blockshareddynmemberallockib_4557',['BlockSharedDynMemberAllocKiB',['../namespacealpaka.html#a28aba9f9b9c76167878d4d304943d54b',1,'alpaka']]]
+  ['blockshareddynmemberallockib_4575',['BlockSharedDynMemberAllocKiB',['../namespacealpaka.html#a28aba9f9b9c76167878d4d304943d54b',1,'alpaka']]]
 ];
