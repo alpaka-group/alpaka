@@ -108,9 +108,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1AlignedDelete.html">AlignedDelete</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">destroy aligned object and free aligned memory  <a href="structalpaka_1_1core_1_1AlignedDelete.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html">RoundUpToPowerOfTwo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds to the next higher power of two (if not already power of two).  <a href="structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,10 +115,9 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aac97800a3823af1fc97594e29b6677ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a> <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#aac97800a3823af1fc97594e29b6677ab">alignedAlloc</a> (size_t alignment, size_t size) -&gt; void *</td></tr>
-<tr class="memdesc:aac97800a3823af1fc97594e29b6677ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds to the next higher power of two (if not already power of two).  <a href="namespacealpaka_1_1core.html#aac97800a3823af1fc97594e29b6677ab">More...</a><br /></td></tr>
 <tr class="separator:aac97800a3823af1fc97594e29b6677ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37ee6854f4b95a55572f293d23d1d6fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a> <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a37ee6854f4b95a55572f293d23d1d6fc">alignedFree</a> (void *ptr)</td></tr>
-<tr class="separator:a37ee6854f4b95a55572f293d23d1d6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18d2c3add663581bbb1c223acd7b0973"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a> <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a18d2c3add663581bbb1c223acd7b0973">alignedFree</a> (size_t alignment, void *ptr)</td></tr>
+<tr class="separator:a18d2c3add663581bbb1c223acd7b0973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bc48ef7c999409550fcbe1a948d6f31"><td class="memTemplParams" colspan="2">template&lt;typename TFunc , typename... TArgs&gt; </td></tr>
 <tr class="memitem:a3bc48ef7c999409550fcbe1a948d6f31"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">apply</a> (TFunc &amp;&amp;f, Tuple&lt; TArgs... &gt; t)</td></tr>
 <tr class="separator:a3bc48ef7c999409550fcbe1a948d6f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,14 +161,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Rounds to the next higher power of two (if not already power of two). </p>
-
-<p class="definition">Definition at line <a class="el" href="AlignedAlloc_8hpp_source.html#l00025">25</a> of file <a class="el" href="AlignedAlloc_8hpp_source.html">AlignedAlloc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AlignedAlloc_8hpp_source.html#l00022">22</a> of file <a class="el" href="AlignedAlloc_8hpp_source.html">AlignedAlloc.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a37ee6854f4b95a55572f293d23d1d6fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37ee6854f4b95a55572f293d23d1d6fc">&#9670;&nbsp;</a></span>alignedFree()</h2>
+<a id="a18d2c3add663581bbb1c223acd7b0973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d2c3add663581bbb1c223acd7b0973">&#9670;&nbsp;</a></span>alignedFree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,14 +174,24 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a> <a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void alpaka::core::alignedFree </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>alignment</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ptr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="AlignedAlloc_8hpp_source.html#l00040">40</a> of file <a class="el" href="AlignedAlloc_8hpp_source.html">AlignedAlloc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AlignedAlloc_8hpp_source.html#l00027">27</a> of file <a class="el" href="AlignedAlloc_8hpp_source.html">AlignedAlloc.hpp</a>.</p>
 
 </div>
 </div>
@@ -327,7 +331,7 @@ template&lt;typename T , typename V &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li>
-    <li class="footer">Generated on Tue Apr 26 2022 05:47:48 for alpaka by
+    <li class="footer">Generated on Wed Apr 27 2022 13:15:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,7 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html#a1e950bc9d4d06f41c74e0c430d8f2f84":[3,0,0,2,3,0,0],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01double_01_4.html":[3,0,0,2,3,1],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01double_01_4.html#acd7b25ddd257c466bc352cca889acbd8":[3,0,0,2,3,1,0],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01float_01_4.html":[3,0,0,2,3,2],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01float_01_4.html#ad7168f9c1ea9680b5a43341c6fa2aea9":[3,0,0,2,3,2,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html#af3d551659be2562ac259d0a0d7b1b8e9":[3,0,0,6,4,3],
 "structalpaka_1_1experimental_1_1ReadAccess.html":[3,0,0,6,5],
 "structalpaka_1_1experimental_1_1ReadWriteAccess.html":[3,0,0,6,6],
-"structalpaka_1_1experimental_1_1WriteAccess.html":[3,0,0,6,7]
+"structalpaka_1_1experimental_1_1WriteAccess.html":[3,0,0,6,7],
+"structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl.html":[3,0,0,6,0,0],
+"structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01ReadAccess_01_4.html":[3,0,0,6,0,1]
 };

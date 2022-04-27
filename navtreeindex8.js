@@ -232,9 +232,7 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html":[3,0,0,1,0,1],
 "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html#a45345ca3b1f0416e30745f367d064790":[3,0,0,1,0,1,0],
 "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html#a5b70f58ae2c30fe8144ab57a69d6e402":[3,0,0,1,0,1,1],
-"structalpaka_1_1core_1_1AlignedDelete.html":[3,0,0,2,4],
-"structalpaka_1_1core_1_1AlignedDelete.html#afe12d3079d65fb40ccc2f7664dd7cf91":[3,0,0,2,4,0],
-"structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html":[3,0,0,2,5],
+"structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html":[3,0,0,2,4],
 "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html":[3,0,0,2,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,2,1,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html#aef04edfcc394cb33753d692b1c4aba82":[3,0,0,2,1,0,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html#a85011be7320707a2418e539e588f332f":[3,0,0,2,2,0,2,0],
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html":[3,0,0,2,2,0,3],
 "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html#ad2a3e362e0bbc3532cb92eff1791f1ca":[3,0,0,2,2,0,3,0],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html":[3,0,0,2,3,0]
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html":[3,0,0,2,3,0],
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html#a1e950bc9d4d06f41c74e0c430d8f2f84":[3,0,0,2,3,0,0],
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01double_01_4.html":[3,0,0,2,3,1]
 };
