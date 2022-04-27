@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    include <alpaka/core/Concepts.hpp>
+#    include <alpaka/core/ThreadPool.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
 #    include <alpaka/pltf/Traits.hpp>
@@ -28,6 +29,7 @@
 #    endif
 
 #    include <cstddef>
+#    include <future>
 #    include <string>
 #    include <vector>
 
@@ -43,7 +45,20 @@ namespace alpaka
     {
         template<typename TApi, bool TBlocking>
         class QueueUniformCudaHipRt;
-    }
+
+        inline auto getThreadPool() -> core::ThreadPool&
+        {
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wexit-time-destructors"
+#    endif
+            static core::ThreadPool pool;
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
+            return pool;
+        }
+    } // namespace uniform_cuda_hip::detail
 
     template<typename TApi>
     using QueueUniformCudaHipRtBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, true>;
@@ -71,7 +86,7 @@ namespace alpaka
     public:
         ALPAKA_FN_HOST auto operator==(DevUniformCudaHipRt const& rhs) const -> bool
         {
-            return m_iDevice == rhs.m_iDevice;
+            return getNativeHandle() == rhs.getNativeHandle();
         }
         ALPAKA_FN_HOST auto operator!=(DevUniformCudaHipRt const& rhs) const -> bool
         {
@@ -81,6 +96,10 @@ namespace alpaka
         [[nodiscard]] auto getNativeHandle() const noexcept -> int
         {
             return m_iDevice;
+        }
+        auto sendTaskToThePool(std::packaged_task<void()>&& task) -> std::future<void>
+        {
+            return uniform_cuda_hip::detail::getThreadPool().submit(std::move(task));
         }
 
     private:

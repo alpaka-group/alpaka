@@ -236,12 +236,12 @@ namespace alpaka
                     uniformCudaHipRtHostFunc,
                     spCallbackSynchronizationData.get()));
 
-                // We start a new std::thread which stores the task to be executed.
+                // We submit the task to be executed to the thread pool.
                 // This circumvents the limitation that it is not possible to call CUDA/HIP methods within the CUDA/HIP
                 // callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
                 // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
                 // before it executes the next task in the queue (CUDA/HIP stream).
-                std::thread t(
+                auto f = getDev(queue).sendTaskToThePool(std::packaged_task<void()>(
                     [spCallbackSynchronizationData, task]()
                     {
                         // If the callback has not yet been called, we wait for it.
@@ -261,15 +261,11 @@ namespace alpaka
                             spCallbackSynchronizationData->m_state = CallbackState::finished;
                         }
                         spCallbackSynchronizationData->m_event.notify_one();
-                    });
+                    }));
 
                 if constexpr(TBlocking)
                 {
-                    t.join();
-                }
-                else
-                {
-                    t.detach();
+                    f.wait();
                 }
             }
         };
