@@ -71,7 +71,7 @@ namespace alpaka::uniform_cuda_hip::detail
         if(error != TApi::success)
         {
             std::array<typename TApi::Error_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{
-                ignoredErrorCodes...};
+                {ignoredErrorCodes...}};
 
             // If the error code is not one of the ignored ones.
             if(std::find(std::cbegin(aIgnoredErrorCodes), std::cend(aIgnoredErrorCodes), error)
