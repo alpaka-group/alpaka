@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('Vectorize_8hpp_source.html',''); initR
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//!  for(...){...}`</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"></span><span class="comment">// \TODO: Implement for other compilers.</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// See: http://stackoverflow.com/questions/2706286/pragmas-swp-ivdep-prefetch-support-in-various-compilers</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">/*#if BOOST_COMP_INTEL || BOOST_COMP_HPACC</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">/*#if BOOST_COMP_HPACC</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma(&quot;ivdep&quot;)</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">#elif BOOST_COMP_PGI</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma(&quot;vector&quot;)</span></div>
@@ -452,7 +452,7 @@ $(document).ready(function(){initNavTree('Vectorize_8hpp_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Vectorize_8hpp.html">Vectorize.hpp</a></li>
-    <li class="footer">Generated on Mon May 2 2022 15:20:55 for alpaka by
+    <li class="footer">Generated on Tue May 3 2022 08:39:03 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

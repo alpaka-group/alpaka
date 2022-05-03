@@ -152,26 +152,9 @@ $(document).ready(function(){initNavTree('Align_8hpp_source.html',''); initResiz
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    } <span class="comment">// namespace align</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// ICC does not support constant expressions as parameters to alignas</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// The optimal alignment for a type is the next higher or equal power of two.</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#if BOOST_COMP_INTEL</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#    define ALPAKA_OPTIMAL_ALIGNMENT_SIZE(...)                                                                        \</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">        ((__VA_ARGS__) == 1                                                                                           \</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">             ? 1                                                                                                      \</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">             : ((__VA_ARGS__) &lt;= 2                                                                                    \</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">                    ? 2                                                                                               \</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">                    : ((__VA_ARGS__) &lt;= 4                                                                             \</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">                           ? 4                                                                                        \</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">                           : ((__VA_ARGS__) &lt;= 8                                                                      \</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">                                  ? 8                                                                                 \</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">                                  : ((__VA_ARGS__) &lt;= 16                                                              \</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">                                         ? 16                                                                         \</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">                                         : ((__VA_ARGS__) &lt;= 32 ? 32 : ((__VA_ARGS__) &lt;= 64 ? 64 : 128)))))))</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#    define ALPAKA_OPTIMAL_ALIGNMENT(...) ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(std::remove_cv_t&lt;__VA_ARGS__&gt;))</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="Align_8hpp.html#aa32712c717c4b16951a245ffaa20b7e1">   83</a></span>&#160;<span class="preprocessor">#    define ALPAKA_OPTIMAL_ALIGNMENT(...)                                                                             \</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">        ::alpaka::core::align::OptimalAlignment&lt;sizeof(std::remove_cv_t&lt;__VA_ARGS__&gt;)&gt;::value</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// The optimal alignment for a type is the next higher or equal power of two.</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="Align_8hpp.html#aa32712c717c4b16951a245ffaa20b7e1">   67</a></span>&#160;<span class="preprocessor">#define ALPAKA_OPTIMAL_ALIGNMENT(...)                                                                                 \</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">    ::alpaka::core::align::OptimalAlignment&lt;sizeof(std::remove_cv_t&lt;__VA_ARGS__&gt;)&gt;::value</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_html"><div class="ttname"><a href="structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html">alpaka::core::detail::RoundUpToPowerOfTwoHelper</a></div><div class="ttdoc">Base case for N being a power of two.</div><div class="ttdef"><b>Definition:</b> <a href="Align_8hpp_source.html#l00029">Align.hpp:29</a></div></div>
@@ -183,7 +166,7 @@ $(document).ready(function(){initNavTree('Align_8hpp_source.html',''); initResiz
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Align_8hpp.html">Align.hpp</a></li>
-    <li class="footer">Generated on Mon May 2 2022 15:20:55 for alpaka by
+    <li class="footer">Generated on Tue May 3 2022 08:39:03 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
