@@ -160,7 +160,7 @@ $(document).ready(function(){initNavTree('UniformCudaHip_8hpp_source.html',''); 
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span>(error != TApi::success)</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            std::array&lt;<span class="keyword">typename</span> TApi::Error_t, <span class="keyword">sizeof</span>...(ignoredErrorCodes)&gt; <span class="keyword">const</span> aIgnoredErrorCodes{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                ignoredErrorCodes...};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                {ignoredErrorCodes...}};</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="comment">// If the error code is not one of the ignored ones.</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">if</span>(std::find(std::cbegin(aIgnoredErrorCodes), std::cend(aIgnoredErrorCodes), error)</div>
@@ -264,7 +264,7 @@ $(document).ready(function(){initNavTree('UniformCudaHip_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="UniformCudaHip_8hpp.html">UniformCudaHip.hpp</a></li>
-    <li class="footer">Generated on Tue May 3 2022 08:39:03 for alpaka by
+    <li class="footer">Generated on Tue May 3 2022 09:02:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
