@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <condition_variable>
 #include <functional>
 #include <future>
@@ -24,30 +25,6 @@ namespace alpaka::core
         using taskType = std::packaged_task<void()>;
 
     public:
-        ThreadPool()
-        {
-            for(unsigned int i = 0u; i < std::thread::hardware_concurrency(); ++i)
-                //! All the threads run the lambda function in loop
-                m_threads.emplace_back(std::thread(
-                    [this]
-                    {
-                        taskType task;
-                        while(true)
-                        {
-                            {
-                                std::unique_lock<std::mutex> lock{m_mutex};
-                                m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
-
-                                if(m_stop && m_tasks.empty())
-                                    return;
-
-                                task = std::move(m_tasks.front());
-                                m_tasks.pop();
-                            }
-                            task();
-                        }
-                    }));
-        }
         ~ThreadPool()
         {
             {
@@ -65,15 +42,45 @@ namespace alpaka::core
                 std::unique_lock<std::mutex> lock{m_mutex};
                 m_tasks.emplace(std::move(newTask));
             }
+            {
+                std::unique_lock<std::mutex> lock_c{c_mutex};
+                if(m_busyThreads == m_threads.size())
+                {
+                    m_threads.emplace_back(std::thread(
+                        [this]
+                        {
+                            taskType task;
+                            while(true)
+                            {
+                                {
+                                    std::unique_lock<std::mutex> lock{m_mutex};
+                                    m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
+
+                                    if(m_stop && m_tasks.empty())
+                                        break;
+
+                                    task = std::move(m_tasks.front());
+                                    m_tasks.pop();
+                                }
+
+                                task();
+                                m_busyThreads--;
+                            }
+                        }));
+                }
+            }
             m_cond.notify_one();
+            m_busyThreads++;
+
             return f;
         }
 
     private:
         std::vector<std::thread> m_threads;
         std::condition_variable m_cond;
-        std::mutex m_mutex;
-        bool m_stop = false;
+        std::mutex m_mutex, c_mutex;
+        bool m_stop{false};
         std::queue<taskType> m_tasks;
+        std::atomic<unsigned int> m_busyThreads{0};
     };
 } // namespace alpaka::core
