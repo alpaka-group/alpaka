@@ -325,6 +325,25 @@ if(${alpaka_DEBUG} GREATER 1)
 endif()
 
 #-------------------------------------------------------------------------------
+# If available, use C++20 math constants. Otherwise, fall back to M_PI etc.
+if(${alpaka_CXX_STANDARD} VERSION_LESS "20")
+    set(alpaka_HAS_STD_MATH_CONSTANTS FALSE)
+else()
+    try_compile(alpaka_HAS_STD_MATH_CONSTANTS # Result stored here
+                "${PROJECT_BINARY_DIR}/alpakaFeatureTests" # Binary directory for output file
+                SOURCES "${_alpaka_FEATURE_TESTS_DIR}/MathConstants.cpp" # Source file
+                CXX_STANDARD 20
+                CXX_STANDARD_REQUIRED TRUE
+                CXX_EXTENSIONS FALSE)
+endif()
+
+if(NOT alpaka_HAS_STD_MATH_CONSTANTS)
+    message(STATUS "C++20 math constants not found. Falling back to non-standard constants.")
+    # Enable non-standard constants for MSVC.
+    target_compile_definitions(alpaka INTERFACE "$<$<OR:$<CXX_COMPILER_ID:MSVC>,$<AND:$<COMPILE_LANGUAGE:CUDA>,$<PLATFORM_ID:Windows>>>:_USE_MATH_DEFINES>")
+endif()
+
+#-------------------------------------------------------------------------------
 # Find TBB.
 if(alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE)
     find_package(TBB 2021.4.0.0 REQUIRED)
