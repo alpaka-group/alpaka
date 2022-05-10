@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2021 Benjamin Worpitz, Bernhard Manfred Gruber
+# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
 #
 # This file is part of alpaka.
 #
@@ -36,7 +36,34 @@ then
     sudo add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main'
 fi
 
+# add clang-13 repository for ubuntu 22.04
+if [[ "$(cat /etc/os-release)" == *"22.04"* && "${ALPAKA_CI_CLANG_VER}" -eq 13 ]]
+then
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+    sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-13 main'
+fi
+
+# add clang-14 repository for ubuntu 20.04
+if [[ "$(cat /etc/os-release)" == *"20.04"* && "${ALPAKA_CI_CLANG_VER}" -eq 14 ]]
+then
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+    sudo add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main'
+fi
+
+# add clang-14 repository for ubuntu 22.04
+if [[ "$(cat /etc/os-release)" == *"22.04"* && "${ALPAKA_CI_CLANG_VER}" -eq 14 ]]
+then
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+    sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main'
+fi
+
 travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install clang-${ALPAKA_CI_CLANG_VER}
+
+if [ -n "${ALPAKA_CI_SANITIZERS}" ]
+then
+    # llvm-symbolize is required for meaningful output. This is part of the llvm base package which we don't install by default.
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install llvm-${ALPAKA_CI_CLANG_VER}
+fi
 
 if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
 then

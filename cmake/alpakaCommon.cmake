@@ -270,6 +270,10 @@ if(alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
     if(NOT Boost_FIBER_FOUND)
         message(FATAL_ERROR "Optional alpaka dependency Boost.Fiber could not be found!")
     endif()
+    
+    if(${alpaka_CXX_STANDARD} VERSION_GREATER_EQUAL "20")
+        message(FATAL_ERROR "The Boost.fiber back-end cannot be used in C++20 mode!")
+    endif()
 endif()
 
 if(${alpaka_DEBUG} GREATER 1)

@@ -7,6 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/test/Extent.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -19,6 +20,21 @@
 
 #include <numeric>
 #include <type_traits>
+
+/* This test fails to execute with clang-14 in ASan mode. Until we have a small reproducer for either catch2 or
+ * clang-14 we disable the ASan here. */
+#if BOOST_COMP_CLANG && (BOOST_COMP_CLANG >= BOOST_VERSION_NUMBER(14, 0, 0))
+#    if __has_feature(address_sanitizer)
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wreserved-identifier"
+#        pragma clang diagnostic ignored "-Wmissing-prototypes"
+extern "C" auto __asan_default_options() -> char const*
+{
+    return "alloc_dealloc_mismatch=0";
+}
+#        pragma clang diagnostic pop
+#    endif
+#endif
 
 template<typename TAcc>
 static auto testBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void

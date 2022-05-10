@@ -43,6 +43,17 @@ linux_nvcc-11.6_gcc-10_debug:
     ALPAKA_CI_CMAKE_VER: 3.19.8
   stage: stageRun1
 
+linux_nvcc-11.6_gcc-11_release:
+  extends: .base_cuda_gcc
+  variables:
+    ALPAKA_CI_UBUNTU_VER: "20.04"
+    ALPAKA_CI_CUDA_VERSION: "11.6"
+    ALPAKA_CI_GCC_VER: 11
+    CMAKE_BUILD_TYPE: Release
+    ALPAKA_BOOST_VERSION: 1.79.0
+    ALPAKA_CI_CMAKE_VER: 3.23.1
+  stage: stageRun1
+
 # nvcc + clang
 linux_nvcc-11.6_clang-8_release:
   extends: .base_cuda_clang

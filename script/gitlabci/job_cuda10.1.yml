@@ -1,7 +1,7 @@
 linux_clang-9_cuda-10.1_debug:
   extends: .base_cuda_clang_compile_only
   variables:
-    ALPAKA_CI_UBUNTU_VER: "20.04"
+    ALPAKA_CI_UBUNTU_VER: "18.04"
     ALPAKA_CI_CUDA_VERSION: "10.1"
     ALPAKA_CI_CLANG_VER: 9
     CMAKE_BUILD_TYPE: Debug
@@ -15,7 +15,7 @@ linux_clang-9_cuda-10.1_debug:
 linux_clang-10_cuda-10.1_release:
   extends: .base_cuda_clang_compile_only
   variables:
-    ALPAKA_CI_UBUNTU_VER: "20.04"
+    ALPAKA_CI_UBUNTU_VER: "18.04"
     ALPAKA_CI_CUDA_VERSION: "10.1"
     CMAKE_CUDA_ARCHITECTURES: "35;61"
     ALPAKA_CI_CLANG_VER: 10
@@ -29,7 +29,7 @@ linux_clang-10_cuda-10.1_release:
 linux_clang-11_cuda-10.1_debug:
   extends: .base_cuda_clang
   variables:
-    ALPAKA_CI_UBUNTU_VER: "20.04"
+    ALPAKA_CI_UBUNTU_VER: "18.04"
     ALPAKA_CI_CUDA_VERSION: "10.1"
     ALPAKA_CI_CLANG_VER: 11
     CMAKE_BUILD_TYPE: Debug
