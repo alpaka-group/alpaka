@@ -71,8 +71,7 @@ namespace alpaka::core
         };
 
         //! ITaskPkg.
-        // \NOTE: We can not use std::packaged_task as it forces the use of std::future
-        // but we additionally support boost::fibers::promise.
+        // \NOTE: We can not use std::packaged_task as it forces the use of std::future.
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wweak-vtables"

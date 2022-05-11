@@ -15,7 +15,6 @@
 // version number
 #include <alpaka/version.hpp>
 // acc
-#include <alpaka/acc/AccCpuFibers.hpp>
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #include <alpaka/acc/AccCpuSerial.hpp>
@@ -57,7 +56,6 @@
 #include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
 #include <alpaka/block/shared/st/Traits.hpp>
 // sync
-#include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
 #include <alpaka/block/sync/BlockSyncGenericSycl.hpp>
@@ -76,7 +74,6 @@
 #include <alpaka/core/ConcurrentExecPool.hpp>
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/core/Debug.hpp>
-#include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/Hip.hpp>
 #include <alpaka/core/OmpSchedule.hpp>
 #include <alpaka/core/Positioning.hpp>
@@ -122,7 +119,6 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/idx/bt/IdxBtGenericSycl.hpp>
 #include <alpaka/idx/bt/IdxBtOmp.hpp>
-#include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
 #include <alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp>
 #include <alpaka/idx/bt/IdxBtZero.hpp>
@@ -130,7 +126,6 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp>
 // kernel
-#include <alpaka/kernel/TaskKernelCpuFibers.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp2Threads.hpp>
 #include <alpaka/kernel/TaskKernelCpuSerial.hpp>

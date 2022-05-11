@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -45,13 +45,6 @@ namespace alpaka::test
 #else
         template<typename TDim, typename TIdx>
         using AccCpuThreadsIfAvailableElseInt = int;
-#endif
-#if defined(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
-        template<typename TDim, typename TIdx>
-        using AccCpuFibersIfAvailableElseInt = AccCpuFibers<TDim, TIdx>;
-#else
-        template<typename TDim, typename TIdx>
-        using AccCpuFibersIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
         template<typename TDim, typename TIdx>
@@ -167,7 +160,6 @@ namespace alpaka::test
         using EnabledAccsElseInt = std::tuple<
             AccCpuSerialIfAvailableElseInt<TDim, TIdx>,
             AccCpuThreadsIfAvailableElseInt<TDim, TIdx>,
-            AccCpuFibersIfAvailableElseInt<TDim, TIdx>,
             AccCpuTbbIfAvailableElseInt<TDim, TIdx>,
             AccCpuOmp2BlocksIfAvailableElseInt<TDim, TIdx>,
             AccCpuOmp2ThreadsIfAvailableElseInt<TDim, TIdx>,

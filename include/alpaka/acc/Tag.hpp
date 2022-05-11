@@ -1,4 +1,4 @@
-/* Copyright 2022 Simeon Ehrig
+/* Copyright 2022 Simeon Ehrig, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -25,7 +25,6 @@
 
 namespace alpaka
 {
-    CREATE_ACC_TAG(TagCpuFibers);
     CREATE_ACC_TAG(TagCpuOmp2Blocks);
     CREATE_ACC_TAG(TagCpuOmp2Threads);
     CREATE_ACC_TAG(TagCpuSerial);
