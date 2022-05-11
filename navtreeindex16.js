@@ -1,6 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,453],
 "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_01_4.html#a844022eccdb3e44933faad6b5bbb2005":[3,0,0,18,453,0],
 "structalpaka_1_1trait_1_1IdxType_3_01gb_1_1IdxGbLinear_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,457],
 "structalpaka_1_1trait_1_1IdxType_3_01gb_1_1IdxGbLinear_3_01TDim_00_01TIdx_01_4_01_4.html#aaf02b7bdf3293b7fc625c3fe3e008906":[3,0,0,18,457,0],
@@ -134,8 +133,7 @@ var NAVTREEINDEX16 =
 "structalpaka_1_1trait_1_1PltfType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#aea9a5bd7a5b9d4093dfda9df331770ec":[3,0,0,18,538,0],
 "structalpaka_1_1trait_1_1Popcount.html":[3,0,0,18,540],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html":[3,0,0,18,541],
-"structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html#a746eae9914486ab322d0cd7cd3cbbaff":[3,0,0,18,541,0],
-"structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html#ac99ac75e5033e9431e23d1063b34c882":[3,0,0,18,541,1],
+"structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html#a4434eaa511b6e3281fec03d90357980d":[3,0,0,18,541,0],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html":[3,0,0,18,542],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html#adf1db7a05178482ffca1452cb8d0620a":[3,0,0,18,542,0],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html#afd0aca80c7fac8e398e9743bbeb259aa":[3,0,0,18,542,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX16 =
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html":[3,0,0,18,610],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html#a9f2b49612c179b2b22abacb4d1d102fd":[3,0,0,18,610,0],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01EventG7e36a52cc67be52fa1b4944fd74cc55c.html":[3,0,0,18,611],
-"structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01EventG7e36a52cc67be52fa1b4944fd74cc55c.html#a3e42884ded6975972352d9fc7605f9de":[3,0,0,18,611,0]
+"structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01EventG7e36a52cc67be52fa1b4944fd74cc55c.html#a3e42884ded6975972352d9fc7605f9de":[3,0,0,18,611,0],
+"structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01Eve1997da4d547a82a9d47dff51beb12816.html":[3,0,0,18,612],
+"structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01Eve1997da4d547a82a9d47dff51beb12816.html#af8b5bb4a351c7c439dd57e7d3e91241b":[3,0,0,18,612,0]
 };
