@@ -92,5 +92,21 @@ var math_2Traits_8hpp =
     [ "sincos", "math_2Traits_8hpp.html#aa9c34631f3c434a4d15abc468badb395", null ],
     [ "sqrt", "math_2Traits_8hpp.html#a203339f78df48ceb4f44d82ba2c11924", null ],
     [ "tan", "math_2Traits_8hpp.html#a8ce518d7587dd645a3bbf943ef36db9c", null ],
-    [ "trunc", "math_2Traits_8hpp.html#a870c86f26ec22dc2b10627f861c7120e", null ]
+    [ "trunc", "math_2Traits_8hpp.html#a870c86f26ec22dc2b10627f861c7120e", null ],
+    [ "e", "math_2Traits_8hpp.html#a7ad96b482f538f4c4a525beac7c9c938", null ],
+    [ "e_v", "math_2Traits_8hpp.html#a75ff4dc70ac01e917ba009145ab6899f", null ],
+    [ "inv_pi", "math_2Traits_8hpp.html#a49b601f677cc0e47cd9b51b5d5405bda", null ],
+    [ "inv_pi_v", "math_2Traits_8hpp.html#aa5c27246c5cd910f35c5584c2091bdb6", null ],
+    [ "ln10", "math_2Traits_8hpp.html#a848369863d11a27a9c0bf9b8b29c0031", null ],
+    [ "ln10_v", "math_2Traits_8hpp.html#a7b14fcb498215b4c1e32cb70f1cd9b16", null ],
+    [ "ln2", "math_2Traits_8hpp.html#add06099c9dca88df3bcbb471baa84ff3", null ],
+    [ "ln2_v", "math_2Traits_8hpp.html#a0404ebc7713dd7791198ea70dacee212", null ],
+    [ "log10e", "math_2Traits_8hpp.html#a617db05f0367dfbb9398370b7e7f5e91", null ],
+    [ "log10e_v", "math_2Traits_8hpp.html#a751c0ef97018dcee1cf7019fc0529321", null ],
+    [ "log2e", "math_2Traits_8hpp.html#a92b1f2068eb397d6595d34b6c9342e56", null ],
+    [ "log2e_v", "math_2Traits_8hpp.html#affdf0c731f607ef48d21f84936a64d57", null ],
+    [ "pi", "math_2Traits_8hpp.html#af8ab5729dca9ebd236d7e93022b2dddb", null ],
+    [ "pi_v", "math_2Traits_8hpp.html#adb265600b531d553d78f95ebc98c40a2", null ],
+    [ "sqrt2", "math_2Traits_8hpp.html#a9b47d1920aa77d0d0475ea69e2813c3a", null ],
+    [ "sqrt2_v", "math_2Traits_8hpp.html#a56eedc1d1ffa0ce7c2a222a08f041a83", null ]
 ];
