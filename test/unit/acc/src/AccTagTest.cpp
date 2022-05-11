@@ -1,4 +1,4 @@
-/* Copyright 2022 Simeon Ehrig
+/* Copyright 2022 Simeon Ehrig, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -23,7 +23,6 @@ using TestAccs = alpaka::test::EnabledAccs<Dim, Idx>;
 using TagList = std::tuple<
     alpaka::TagCpuSerial,
     alpaka::TagCpuThreads,
-    alpaka::TagCpuFibers,
     alpaka::TagCpuTbbBlocks,
     alpaka::TagCpuOmp2Blocks,
     alpaka::TagCpuOmp2Threads,
@@ -46,7 +45,6 @@ using AccToTagMap = std::tuple<
 using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccCpuSerialIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSerial>,
     std::pair<alpaka::test::detail::AccCpuThreadsIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuThreads>,
-    std::pair<alpaka::test::detail::AccCpuFibersIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuFibers>,
     std::pair<alpaka::test::detail::AccCpuTbbIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuTbbBlocks>,
     std::pair<alpaka::test::detail::AccCpuOmp2BlocksIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuOmp2Blocks>,
     std::pair<alpaka::test::detail::AccCpuOmp2ThreadsIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuOmp2Threads>,

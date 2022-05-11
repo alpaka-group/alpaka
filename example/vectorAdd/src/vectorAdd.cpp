@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file exemplifies usage of alpaka.
  *
@@ -83,7 +83,6 @@ auto main() -> int
     // - AccGpuCudaRt
     // - AccGpuHipRt
     // - AccCpuThreads
-    // - AccCpuFibers
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
     // - AccOmp5
