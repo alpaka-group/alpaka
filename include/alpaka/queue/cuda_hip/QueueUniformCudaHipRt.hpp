@@ -27,8 +27,11 @@
 #        include <alpaka/core/Hip.hpp>
 #    endif
 
+#    include <alpaka/core/CallbackThread.hpp>
+
 #    include <condition_variable>
 #    include <functional>
+#    include <future>
 #    include <memory>
 #    include <mutex>
 #    include <thread>
@@ -85,6 +88,8 @@ namespace alpaka
 
         public:
             DevUniformCudaHipRt<TApi> const m_dev; //!< The device this queue is bound to.
+            core::CallbackThread m_callbackThread;
+
         private:
             typename TApi::Stream_t m_UniformCudaHipQueue;
         };
@@ -113,6 +118,10 @@ namespace alpaka
             [[nodiscard]] auto getNativeHandle() const noexcept
             {
                 return m_spQueueImpl->getNativeHandle();
+            }
+            auto getCallbackThread() -> core::CallbackThread&
+            {
+                return m_spQueueImpl->m_callbackThread;
             }
 
         public:
@@ -241,7 +250,7 @@ namespace alpaka
                 // callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
                 // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
                 // before it executes the next task in the queue (CUDA/HIP stream).
-                std::thread t(
+                auto f = queue.getCallbackThread().submit(std::packaged_task<void()>(
                     [spCallbackSynchronizationData, task]()
                     {
                         // If the callback has not yet been called, we wait for it.
@@ -261,15 +270,11 @@ namespace alpaka
                             spCallbackSynchronizationData->m_state = CallbackState::finished;
                         }
                         spCallbackSynchronizationData->m_event.notify_one();
-                    });
+                    }));
 
                 if constexpr(TBlocking)
                 {
-                    t.join();
-                }
-                else
-                {
-                    t.detach();
+                    f.wait();
                 }
             }
         };
