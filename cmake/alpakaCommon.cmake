@@ -241,26 +241,30 @@ if(alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
    alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
    alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
 
-    # Check for C++20 std::atomic_ref first
-    if(${alpaka_CXX_STANDARD} VERSION_GREATER_EQUAL "20")
-        try_compile(alpaka_HAS_STD_ATOMIC_REF # Result stored here
-                    "${PROJECT_BINARY_DIR}/alpakaFeatureTests" # Binary directory for output file
-                    SOURCES "${_alpaka_FEATURE_TESTS_DIR}/StdAtomicRef.cpp" # Source file
-                    CXX_STANDARD 20
-                    CXX_STANDARD_REQUIRED TRUE
-                    CXX_EXTENSIONS FALSE)
-        if(alpaka_HAS_STD_ATOMIC_REF)
-            message(STATUS "std::atomic_ref<T> found")
-            target_compile_definitions(alpaka INTERFACE ALPAKA_HAS_STD_ATOMIC_REF)
-        else()
-            message(STATUS "std::atomic_ref<T> NOT found")
+    if(NOT alpaka_ACC_CPU_DISABLE_ATOMIC_REF)
+        # Check for C++20 std::atomic_ref first
+        if(${alpaka_CXX_STANDARD} VERSION_GREATER_EQUAL "20")
+            try_compile(alpaka_HAS_STD_ATOMIC_REF # Result stored here
+                        "${PROJECT_BINARY_DIR}/alpakaFeatureTests" # Binary directory for output file
+                        SOURCES "${_alpaka_FEATURE_TESTS_DIR}/StdAtomicRef.cpp" # Source file
+                        CXX_STANDARD 20
+                        CXX_STANDARD_REQUIRED TRUE
+                        CXX_EXTENSIONS FALSE)
+            if(alpaka_HAS_STD_ATOMIC_REF AND (NOT alpaka_ACC_CPU_DISABLE_ATOMIC_REF))
+                message(STATUS "std::atomic_ref<T> found")
+                target_compile_definitions(alpaka INTERFACE ALPAKA_HAS_STD_ATOMIC_REF)
+            else()
+                message(STATUS "std::atomic_ref<T> NOT found")
+            endif()
+        endif()
+
+        if(Boost_ATOMIC_FOUND AND (NOT alpaka_HAS_STD_ATOMIC_REF))
+            message(STATUS "boost::atomic_ref<T> found")
+            target_link_libraries(alpaka INTERFACE Boost::atomic)
         endif()
     endif()
 
-    if(Boost_ATOMIC_FOUND AND (NOT alpaka_HAS_STD_ATOMIC_REF) AND (NOT alpaka_ACC_CPU_DISABLE_ATOMIC_REF))
-        message(STATUS "boost::atomic_ref<T> found")
-        target_link_libraries(alpaka INTERFACE Boost::atomic)
-    else()
+    if(alpaka_ACC_CPU_DISABLE_ATOMIC_REF OR ((NOT alpaka_HAS_STD_ATOMIC_REF) AND (NOT Boost_ATOMIC_FOUND)))
         message(STATUS "atomic_ref<T> was not found or manually disabled. Falling back to lock-based CPU atomics.")
         target_compile_definitions(alpaka INTERFACE ALPAKA_DISABLE_ATOMIC_ATOMICREF)
     endif()

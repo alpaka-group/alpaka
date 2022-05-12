@@ -55,7 +55,7 @@ namespace alpaka
                 DevCpu dev,
                 TElem* pMem,
                 std::function<void(TElem*)> deleter,
-                TExtent const& extent)
+                TExtent const& extent) noexcept
                 : m_dev(std::move(dev))
                 , m_extentElements(getExtentVecEnd<TDim>(extent))
                 , m_pMem(pMem)
