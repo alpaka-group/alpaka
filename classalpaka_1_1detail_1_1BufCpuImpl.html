@@ -101,9 +101,9 @@ $(document).ready(function(){initNavTree('classalpaka_1_1detail_1_1BufCpuImpl.ht
 Public Member Functions</h2></td></tr>
 <tr class="memitem:adeb569361a4aefa3172e7ef8cd8515da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html#adeb569361a4aefa3172e7ef8cd8515da">BufCpuImpl</a> (<a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html">BufCpuImpl</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:adeb569361a4aefa3172e7ef8cd8515da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeffeb4a110ddaf606b642533488a7d78"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
-<tr class="memitem:aeffeb4a110ddaf606b642533488a7d78"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html#aeffeb4a110ddaf606b642533488a7d78">BufCpuImpl</a> (<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> dev, TElem *pMem, std::function&lt; void(TElem *)&gt; deleter, TExtent const &amp;extent)</td></tr>
-<tr class="separator:aeffeb4a110ddaf606b642533488a7d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11d1d4c9bb6af11f5ba92bf46f0e6ef"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
+<tr class="memitem:aa11d1d4c9bb6af11f5ba92bf46f0e6ef"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html#aa11d1d4c9bb6af11f5ba92bf46f0e6ef">BufCpuImpl</a> (<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> dev, TElem *pMem, std::function&lt; void(TElem *)&gt; deleter, TExtent const &amp;extent) noexcept</td></tr>
+<tr class="separator:aa11d1d4c9bb6af11f5ba92bf46f0e6ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b28f75adc5d7f37677b09616cf2c749"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html#a8b28f75adc5d7f37677b09616cf2c749">~BufCpuImpl</a> ()</td></tr>
 <tr class="separator:a8b28f75adc5d7f37677b09616cf2c749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae190997f7f7db148ae8d0ea325320cdd"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html#ae190997f7f7db148ae8d0ea325320cdd">operator=</a> (<a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html">BufCpuImpl</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html">BufCpuImpl</a> &amp;=delete</td></tr>
@@ -130,8 +130,8 @@ class alpaka::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt;</h3>
 
 <p class="definition">Definition at line <a class="el" href="BufCpu_8hpp_source.html#l00044">44</a> of file <a class="el" href="BufCpu_8hpp_source.html">BufCpu.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aeffeb4a110ddaf606b642533488a7d78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeffeb4a110ddaf606b642533488a7d78">&#9670;&nbsp;</a></span>BufCpuImpl() <span class="overload">[1/2]</span></h2>
+<a id="aa11d1d4c9bb6af11f5ba92bf46f0e6ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa11d1d4c9bb6af11f5ba92bf46f0e6ef">&#9670;&nbsp;</a></span>BufCpuImpl() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,7 +175,7 @@ template&lt;typename TExtent &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -370,7 +370,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1detail_1_1BufCpuImpl.html">BufCpuImpl</a></li>
-    <li class="footer">Generated on Thu May 12 2022 09:56:43 for alpaka by
+    <li class="footer">Generated on Fri May 13 2022 08:47:53 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
