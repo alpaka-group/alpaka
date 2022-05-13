@@ -1,5 +1,12 @@
 var NAVTREEINDEX8 =
 {
+"namespacemembers_d.html":[2,1,0,3],
+"namespacemembers_e.html":[2,1,0,4],
+"namespacemembers_enum.html":[2,1,4],
+"namespacemembers_f.html":[2,1,0,5],
+"namespacemembers_func.html":[2,1,1],
+"namespacemembers_func.html":[2,1,1,0],
+"namespacemembers_func_b.html":[2,1,1,1],
 "namespacemembers_func_c.html":[2,1,1,2],
 "namespacemembers_func_d.html":[2,1,1,3],
 "namespacemembers_func_e.html":[2,1,1,4],
@@ -242,12 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1ConceptMemFence.html":[3,0,0,80],
 "structalpaka_1_1ConceptPltf.html":[3,0,0,81],
 "structalpaka_1_1ConceptTime.html":[3,0,0,82],
-"structalpaka_1_1ConceptUniformCudaHip.html":[3,0,0,83],
-"structalpaka_1_1ConceptWorkDiv.html":[3,0,0,84],
-"structalpaka_1_1OffloadBuiltInSharedMemAlloc.html":[3,0,0,101],
-"structalpaka_1_1OffloadBuiltInSharedMemFixed.html":[3,0,0,102],
-"structalpaka_1_1OffloadBuiltInSharedMemOff.html":[3,0,0,103],
-"structalpaka_1_1concepts_1_1Implements.html":[3,0,0,1,1],
-"structalpaka_1_1concepts_1_1ImplementsConcept.html":[3,0,0,1,2],
-"structalpaka_1_1concepts_1_1ImplementsConcept.html#a2d20969b814a4a787a48a138c3d4fe89":[3,0,0,1,2,1]
+"structalpaka_1_1ConceptUniformCudaHip.html":[3,0,0,83]
 };

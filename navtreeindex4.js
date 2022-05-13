@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1IGenericThreadsQueue.html":[3,0,0,90],
+"classalpaka_1_1IGenericThreadsQueue.html#a776e8baf163e70b643071a07a7bfd797":[3,0,0,90,0],
 "classalpaka_1_1IGenericThreadsQueue.html#a79362d9e87c0fb1adc99259cbca14f01":[3,0,0,90,1],
 "classalpaka_1_1IGenericThreadsQueue.html#affa1aeacb97fee03da7a4589b822c1b7":[3,0,0,90,2],
 "classalpaka_1_1IntrinsicCpu.html":[3,0,0,91],
@@ -148,6 +150,9 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html#ac8f89a32ca77ab4b554d33ece5963622":[3,0,0,0,3,4],
 "classalpaka_1_1bt_1_1IdxBtUniformCudaHipBuiltIn.html":[3,0,0,0,4],
 "classalpaka_1_1bt_1_1IdxBtZero.html":[3,0,0,0,5],
+"classalpaka_1_1core_1_1CallbackThread.html":[3,0,0,2,4],
+"classalpaka_1_1core_1_1CallbackThread.html#aa8b4bfd968c32fd2675f6f145c898cd4":[3,0,0,2,4,1],
+"classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176":[3,0,0,2,4,0],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html":[3,0,0,2,1,2],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a0a7bf5a4d133c70d14df39e7f7b355c6":[3,0,0,2,1,2,1],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c":[3,0,0,2,1,2,5],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#a8f3b6ce0aef9f798ac7dc199986d3d81":[3,0,0,8,0,0,9],
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#aa67a052a95800aa46aa6d5c7cb34b7ea":[3,0,0,8,0,0,5],
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#abbbbb5285db80c714b720ca50c6e9a7a":[3,0,0,8,0,0,6],
-"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#aefafd32e165f17ab5c2ba4185f860c35":[3,0,0,8,0,0,0],
-"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#af6cd286e954abb1e37179d53c57fbec3":[3,0,0,8,0,0,4],
-"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#afe535b5673e7b7c0b48ed9a877a6dfbb":[3,0,0,8,0,0,3],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html":[3,0,0,8,0,1],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a0ffb025fb2c06caecd10b53cf99346cf":[3,0,0,8,0,1,3],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a1db2100f72b696537eb19250adbb17c6":[3,0,0,8,0,1,5]
+"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#aefafd32e165f17ab5c2ba4185f860c35":[3,0,0,8,0,0,0]
 };

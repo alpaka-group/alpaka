@@ -1,5 +1,12 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01MersenneTwister_01_4.html#acf7d55fed992f054a86f76c777169dff":[3,0,0,16,1,1,1,0],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandDefault_01_4.html":[3,0,0,16,1,1,2],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandDefault_01_4.html#a7fba71b8fb1c5669c3f939c7ed4b854a":[3,0,0,16,1,1,2,0],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_3_01TApi_01_4_01_4.html":[3,0,0,16,1,1,4],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_3_01TApi_01_4_01_4.html#aa9846e36830e81c1a1b8c76ce98bac60":[3,0,0,16,1,1,4,0],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandomDevice_01_4.html":[3,0,0,16,1,1,3],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandomDevice_01_4.html#af0f9d56d7c6edb37835f2fa9dff868db":[3,0,0,16,1,1,3,0],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html":[3,0,0,16,1,1,5],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html#a16d9091f608e8fd9228e123c7dcf07cc":[3,0,0,16,1,1,5,0],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html":[3,0,0,16,1,1,6],
@@ -242,12 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html#a860ed77db6918117a8fa172c31f10bb7":[3,0,0,18,81,0],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html":[3,0,0,18,82],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html#a5187da77d5694458d7aa2a72b4c4481d":[3,0,0,18,82,0],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0cc00f35de025bbe25e29334ecabf12c4.html":[3,0,0,18,84],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0cc00f35de025bbe25e29334ecabf12c4.html#ad1411bd3eebf44e91e37698a4085bf02":[3,0,0,18,84,0],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0edcc6f3ba23e6d4c23fe54e8a4528baa.html":[3,0,0,18,83],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0edcc6f3ba23e6d4c23fe54e8a4528baa.html#a7b2d9c046dbcd7845c044aeb71f8d356":[3,0,0,18,83,0],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html":[3,0,0,18,85],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#adb8cab53685b8d93c202cf6925fefbf5":[3,0,0,18,85,0],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html":[3,0,0,18,86],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#acb7ecdfa259c71be925a91d432d39c23":[3,0,0,18,86,0]
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicSub_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0cc00f35de025bbe25e29334ecabf12c4.html":[3,0,0,18,84]
 };

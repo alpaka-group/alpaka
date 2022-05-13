@@ -18,6 +18,9 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
       [ "AtomicOp< BlockOr >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4" ]
     ] ],
     [ "BoostPredef.hpp", "BoostPredef_8hpp.html", "BoostPredef_8hpp" ],
+    [ "CallbackThread.hpp", "CallbackThread_8hpp.html", [
+      [ "CallbackThread", "classalpaka_1_1core_1_1CallbackThread.html", "classalpaka_1_1core_1_1CallbackThread" ]
+    ] ],
     [ "ClipCast.hpp", "ClipCast_8hpp.html", "ClipCast_8hpp" ],
     [ "Common.hpp", "core_2Common_8hpp.html", "core_2Common_8hpp" ],
     [ "Concepts.hpp", "Concepts_8hpp.html", "Concepts_8hpp" ],

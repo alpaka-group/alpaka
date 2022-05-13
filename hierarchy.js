@@ -51,6 +51,7 @@ var hierarchy =
     [ "alpaka::ConceptTime", "structalpaka_1_1ConceptTime.html", null ],
     [ "alpaka::ConceptUniformCudaHip", "structalpaka_1_1ConceptUniformCudaHip.html", null ],
     [ "alpaka::ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],
+    [ "alpaka::core::CallbackThread", "classalpaka_1_1core_1_1CallbackThread.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", null ],
     [ "alpaka::core::detail::AssertValueUnsigned< TArg >", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html", null ],
     [ "alpaka::core::detail::ConcurrentExecPool< TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding >", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html", null ],

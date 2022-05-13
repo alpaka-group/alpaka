@@ -1,5 +1,12 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1ConceptWorkDiv.html":[3,0,0,84],
+"structalpaka_1_1OffloadBuiltInSharedMemAlloc.html":[3,0,0,101],
+"structalpaka_1_1OffloadBuiltInSharedMemFixed.html":[3,0,0,102],
+"structalpaka_1_1OffloadBuiltInSharedMemOff.html":[3,0,0,103],
+"structalpaka_1_1concepts_1_1Implements.html":[3,0,0,1,1],
+"structalpaka_1_1concepts_1_1ImplementsConcept.html":[3,0,0,1,2],
+"structalpaka_1_1concepts_1_1ImplementsConcept.html#a2d20969b814a4a787a48a138c3d4fe89":[3,0,0,1,2,1],
 "structalpaka_1_1concepts_1_1ImplementsConcept.html#a521431bcccdbca069d740d586f7299f4":[3,0,0,1,2,2],
 "structalpaka_1_1concepts_1_1ImplementsConcept.html#aaf12905eb12d1225a0065e53740b1d24":[3,0,0,1,2,0],
 "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType.html":[3,0,0,1,0,0],
@@ -8,7 +15,7 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html":[3,0,0,1,0,1],
 "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html#a45345ca3b1f0416e30745f367d064790":[3,0,0,1,0,1,0],
 "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html#a5b70f58ae2c30fe8144ab57a69d6e402":[3,0,0,1,0,1,1],
-"structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html":[3,0,0,2,4],
+"structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html":[3,0,0,2,5],
 "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html":[3,0,0,2,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,2,1,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html#aef04edfcc394cb33753d692b1c4aba82":[3,0,0,2,1,0,0],
@@ -242,12 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase.html#a8bee475c413423ff80cf5bd23b81b60f":[3,0,0,5,69,3],
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,5,65],
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a121d489ebd36e54dc03c8b2e3d0a02b4":[3,0,0,5,65,1],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a2451acfb7a4921b4b036420a6c90ebf6":[3,0,0,5,65,0],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,5,66],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#a11a97e7bc8047d9af67c4adef2c54965":[3,0,0,5,66,1],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#ae8c1e5559dcaf2e1da4fc9f17e01f80f":[3,0,0,5,66,0],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,5,67],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html#ad6ad9f67fa9a363b2047c6e2eae17e30":[3,0,0,5,67,1],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html#ae18d1b6b94da355955ab713f192e5880":[3,0,0,5,67,0],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,5,68]
+"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a2451acfb7a4921b4b036420a6c90ebf6":[3,0,0,5,65,0]
 };

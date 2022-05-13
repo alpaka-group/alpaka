@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#af6cd286e954abb1e37179d53c57fbec3":[3,0,0,8,0,0,4],
+"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#afe535b5673e7b7c0b48ed9a877a6dfbb":[3,0,0,8,0,0,3],
+"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html":[3,0,0,8,0,1],
+"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a0ffb025fb2c06caecd10b53cf99346cf":[3,0,0,8,0,1,3],
+"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a1db2100f72b696537eb19250adbb17c6":[3,0,0,8,0,1,5],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a2fd8e0401d2078fca727f434a3a4393f":[3,0,0,8,0,1,4],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a36bfd4aa8eff934a8319aa567c427ee5":[3,0,0,8,0,1,7],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a777b92aea219c1ac1a72627655ccbdf6":[3,0,0,8,0,1,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX5 =
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#a675bbf440dfde25de99b0043566dc15d":[3,0,0,17,0,0,0,1],
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#acab93336c9819d7d39f9532496e7a5f6":[3,0,0,17,0,0,0,4],
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ad2ac5adf6ee44792f3de0c9c6e85fc5e":[3,0,0,17,0,0,0,7],
-"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ad2e9df84c86ff695c1d1f5b5bbbbad82":[3,0,0,17,0,0,0,8],
-"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#adee6c6f0bd05472c0ad7f463f14d2f2e":[3,0,0,17,0,0,0,0],
-"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ae71618990f91800e18eae0ea39cd69a3":[3,0,0,17,0,0,0,6],
-"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#af362e00502febd42536ef31b92844e3b":[3,0,0,17,0,0,0,5],
-"classalpaka_1_1test_1_1trait_1_1IteratorView.html":[3,0,0,17,2,20],
-"classalpaka_1_1test_1_1trait_1_1IteratorView.html#a1134f9d989c8d8a2d29409f00864d78e":[3,0,0,17,2,20,3]
+"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ad2e9df84c86ff695c1d1f5b5bbbbad82":[3,0,0,17,0,0,0,8]
 };
