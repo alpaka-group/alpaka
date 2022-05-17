@@ -12,6 +12,7 @@
 #include <alpaka/core/AlignedAlloc.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
+#include <alpaka/dev/cpu/SysInfo.hpp>
 #include <alpaka/mem/alloc/Traits.hpp>
 
 #include <algorithm>
@@ -37,16 +38,15 @@ namespace alpaka
                 std::size_t const& sizeElems) -> T*
             {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-                // For CUDA host memory must be aligned to 4 kib to pin it with `cudaHostRegister`,
+                // For CUDA/HIP host memory must be aligned to 4 kib to pin it with `cudaHostRegister`,
                 // this was described in older programming guides but was removed later.
                 // From testing with PIConGPU and cuda-memcheck we found out that the alignment is still required.
                 //
                 // For HIP the required alignment is the size of a cache line.
                 // https://rocm-developer-tools.github.io/HIP/group__Memory.html#gab8258f051e1a1f7385f794a15300e674
-                // To avoid issues with HIP(cuda) the alignment will be set also for HIP(clang)
-                // to 4kib.
-                // @todo evaluate requirements when the HIP ecosystem is more stable
-                constexpr size_t minAlignement = std::max<size_t>(TAlignment::value, 4096);
+                // On most x86 systems the page size is 4KiB and on OpenPower 64KiB.
+                // Page size can be tested on the terminal with: `getconf PAGE_SIZE`
+                size_t minAlignement = std::max<size_t>(TAlignment::value, cpu::detail::getPageSize());
 #else
                 constexpr size_t minAlignement = TAlignment::value;
 #endif
@@ -61,7 +61,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto free(AllocCpuAligned<TAlignment> const& /* alloc */, T const* const ptr) -> void
             {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-                constexpr size_t minAlignement = std::max<size_t>(TAlignment::value, 4096);
+                size_t minAlignement = std::max<size_t>(TAlignment::value, cpu::detail::getPageSize());
 #else
                 constexpr size_t minAlignement = TAlignment::value;
 #endif

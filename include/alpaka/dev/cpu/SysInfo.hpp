@@ -135,6 +135,7 @@ namespace alpaka
 #    if defined(_SC_PAGESIZE)
                 return static_cast<std::size_t>(sysconf(_SC_PAGESIZE));
 #    else
+                // this is legacy and only used as fallback
                 return = static_cast<size_t>(getpagesize());
 #    endif
 #else
@@ -183,9 +184,6 @@ namespace alpaka
                 return static_cast<std::size_t>(sysconf(_SC_AIX_REALMEM)) * static_cast<std::size_t>(1024);
 
 #    elif defined(_SC_PHYS_PAGES) // Linux, FreeBSD, OpenBSD, Solaris.
-                return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES)) * getPageSize();
-
-#    elif defined(_SC_PHYS_PAGES) // Legacy.
                 return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES)) * getPageSize();
 
 #    elif defined(CTL_HW)                                                                                             \
