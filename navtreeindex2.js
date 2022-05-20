@@ -152,12 +152,13 @@ var NAVTREEINDEX2 =
 "Sycl_8hpp.html":[4,0,0,0,3,23],
 "Sycl_8hpp_source.html":[4,0,0,0,3,23],
 "SysInfo_8hpp.html":[4,0,0,0,5,0,0],
-"SysInfo_8hpp.html#a00bbec37f6a4dd972e4c008f6c0dffff":[4,0,0,0,5,0,0,4],
-"SysInfo_8hpp.html#a46231469ec522b61a9df6f64f476cff5":[4,0,0,0,5,0,0,6],
-"SysInfo_8hpp.html#a72677a79325c068d68aec4c38626f943":[4,0,0,0,5,0,0,3],
-"SysInfo_8hpp.html#a84fb47ca375df6c2f0b222b59f79dcbe":[4,0,0,0,5,0,0,5],
+"SysInfo_8hpp.html#a00bbec37f6a4dd972e4c008f6c0dffff":[4,0,0,0,5,0,0,5],
+"SysInfo_8hpp.html#a46231469ec522b61a9df6f64f476cff5":[4,0,0,0,5,0,0,7],
+"SysInfo_8hpp.html#a72677a79325c068d68aec4c38626f943":[4,0,0,0,5,0,0,4],
+"SysInfo_8hpp.html#a84fb47ca375df6c2f0b222b59f79dcbe":[4,0,0,0,5,0,0,6],
 "SysInfo_8hpp.html#ab0526bd4fa319cb72d2b73b00250807a":[4,0,0,0,5,0,0,0],
 "SysInfo_8hpp.html#abb8c51265e5de4cb525e1dbd924ff436":[4,0,0,0,5,0,0,2],
+"SysInfo_8hpp.html#af2ac645a7cbcea6b028b465a34943e94":[4,0,0,0,5,0,0,3],
 "SysInfo_8hpp.html#af5d9967fd07396367c4f477eef019918":[4,0,0,0,5,0,0,1],
 "SysInfo_8hpp_source.html":[4,0,0,0,5,0,0],
 "TaskKernelCpuFibers_8hpp.html":[4,0,0,0,13,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "UniformCudaHip_8hpp.html":[4,0,0,0,3,25],
 "UniformCudaHip_8hpp.html#a1133404607a47b93d80cd9a0312272bd":[4,0,0,0,3,25,4],
 "UniformCudaHip_8hpp.html#a22859ac71d0dd3e9e1f743a8f70ec323":[4,0,0,0,3,25,3],
-"UniformCudaHip_8hpp.html#a3543744ca91201d363b4c4008f9bc589":[4,0,0,0,3,25,1],
-"UniformCudaHip_8hpp.html#a945307717858a91dc304bc7a18757a0b":[4,0,0,0,3,25,2]
+"UniformCudaHip_8hpp.html#a3543744ca91201d363b4c4008f9bc589":[4,0,0,0,3,25,1]
 };

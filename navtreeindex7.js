@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"hierarchy.html":[3,1],
 "idx_2Traits_8hpp.html":[4,0,0,0,11,4],
 "idx_2Traits_8hpp.html#a0163f6f6c406d381013f117fdbe7ef70":[4,0,0,0,11,4,5],
 "idx_2Traits_8hpp_source.html":[4,0,0,0,11,4],
@@ -145,8 +146,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1core_1_1threads.html":[2,0,0,2,2],
 "namespacealpaka_1_1core_1_1threads_1_1detail.html":[3,0,0,2,2,0],
 "namespacealpaka_1_1core_1_1threads_1_1detail.html":[2,0,0,2,2,0],
-"namespacealpaka_1_1core_1_1vectorization.html":[3,0,0,2,3],
 "namespacealpaka_1_1core_1_1vectorization.html":[2,0,0,2,3],
+"namespacealpaka_1_1core_1_1vectorization.html":[3,0,0,2,3],
 "namespacealpaka_1_1cpu.html":[2,0,0,3],
 "namespacealpaka_1_1cpu.html":[3,0,0,3],
 "namespacealpaka_1_1cpu_1_1detail.html":[2,0,0,3,0],
@@ -203,8 +204,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1rand_1_1distribution_1_1cpu.html":[2,0,0,18,0,0],
 "namespacealpaka_1_1rand_1_1distribution_1_1gpu.html":[3,0,0,16,0,1],
 "namespacealpaka_1_1rand_1_1distribution_1_1gpu.html":[2,0,0,18,0,1],
-"namespacealpaka_1_1rand_1_1distribution_1_1gpu_1_1detail.html":[2,0,0,18,0,1,0],
 "namespacealpaka_1_1rand_1_1distribution_1_1gpu_1_1detail.html":[3,0,0,16,0,1,0],
+"namespacealpaka_1_1rand_1_1distribution_1_1gpu_1_1detail.html":[2,0,0,18,0,1,0],
 "namespacealpaka_1_1rand_1_1distribution_1_1trait.html":[3,0,0,16,0,2],
 "namespacealpaka_1_1rand_1_1distribution_1_1trait.html":[2,0,0,18,0,2],
 "namespacealpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip.html":[3,0,0,16,0,3],
@@ -244,10 +245,9 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1unit.html":[2,0,0,22],
 "namespacealpaka_1_1warp.html":[2,0,0,23],
 "namespacealpaka_1_1warp.html":[3,0,0,20],
-"namespacealpaka_1_1warp_1_1trait.html":[2,0,0,23,0],
 "namespacealpaka_1_1warp_1_1trait.html":[3,0,0,20,0],
+"namespacealpaka_1_1warp_1_1trait.html":[2,0,0,23,0],
 "namespacemembers.html":[2,1,0],
 "namespacemembers.html":[2,1,0,0],
-"namespacemembers_b.html":[2,1,0,1],
-"namespacemembers_c.html":[2,1,0,2]
+"namespacemembers_b.html":[2,1,0,1]
 };

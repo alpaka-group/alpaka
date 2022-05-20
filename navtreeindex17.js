@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1trait_1_1WaiterWaitFor_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,18,609],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html#afbfd1d49fce674a504c638081b0bfa7d":[3,0,0,18,609,0],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html":[3,0,0,18,610],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueCpuOmp2Collective_00_01EventCpu_01_4.html#a9f2b49612c179b2b22abacb4d1d102fd":[3,0,0,18,610,0],

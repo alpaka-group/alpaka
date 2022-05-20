@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1EventUniformCudaHipRt.html#aef15d4b969be61e90368c7cc456dccae":[3,0,0,89,2],
 "classalpaka_1_1IGenericThreadsQueue.html":[3,0,0,90],
 "classalpaka_1_1IGenericThreadsQueue.html#a776e8baf163e70b643071a07a7bfd797":[3,0,0,90,0],
 "classalpaka_1_1IGenericThreadsQueue.html#a79362d9e87c0fb1adc99259cbca14f01":[3,0,0,90,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#a6b52c2b6a7b8dd9396fc07dffd20addb":[3,0,0,8,0,0,1],
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#a8f3b6ce0aef9f798ac7dc199986d3d81":[3,0,0,8,0,0,9],
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#aa67a052a95800aa46aa6d5c7cb34b7ea":[3,0,0,8,0,0,5],
-"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#abbbbb5285db80c714b720ca50c6e9a7a":[3,0,0,8,0,0,6],
-"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#aefafd32e165f17ab5c2ba4185f860c35":[3,0,0,8,0,0,0]
+"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#abbbbb5285db80c714b720ca50c6e9a7a":[3,0,0,8,0,0,6]
 };

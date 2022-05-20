@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ad2e9df84c86ff695c1d1f5b5bbbbad82":[3,0,0,17,0,0,0,8],
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#adee6c6f0bd05472c0ad7f463f14d2f2e":[3,0,0,17,0,0,0,0],
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ae71618990f91800e18eae0ea39cd69a3":[3,0,0,17,0,0,0,6],
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#af362e00502febd42536ef31b92844e3b":[3,0,0,17,0,0,0,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "globals.html":[4,1,0],
 "globals_defs.html":[4,1,3],
 "globals_func.html":[4,1,1],
-"globals_type.html":[4,1,2],
-"hierarchy.html":[3,1]
+"globals_type.html":[4,1,2]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"namespacemembers_c.html":[2,1,0,2],
 "namespacemembers_d.html":[2,1,0,3],
 "namespacemembers_e.html":[2,1,0,4],
 "namespacemembers_enum.html":[2,1,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1ConceptMemAlloc.html":[3,0,0,79],
 "structalpaka_1_1ConceptMemFence.html":[3,0,0,80],
 "structalpaka_1_1ConceptPltf.html":[3,0,0,81],
-"structalpaka_1_1ConceptTime.html":[3,0,0,82],
-"structalpaka_1_1ConceptUniformCudaHip.html":[3,0,0,83]
+"structalpaka_1_1ConceptTime.html":[3,0,0,82]
 };

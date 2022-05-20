@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#aefafd32e165f17ab5c2ba4185f860c35":[3,0,0,8,0,0,0],
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#af6cd286e954abb1e37179d53c57fbec3":[3,0,0,8,0,0,4],
 "classalpaka_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#afe535b5673e7b7c0b48ed9a877a6dfbb":[3,0,0,8,0,0,3],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html":[3,0,0,8,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#a20e55e6eec3a781ae3b646a78430a4a5":[3,0,0,17,0,0,0,3],
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#a675bbf440dfde25de99b0043566dc15d":[3,0,0,17,0,0,0,1],
 "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#acab93336c9819d7d39f9532496e7a5f6":[3,0,0,17,0,0,0,4],
-"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ad2ac5adf6ee44792f3de0c9c6e85fc5e":[3,0,0,17,0,0,0,7],
-"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ad2e9df84c86ff695c1d1f5b5bbbbad82":[3,0,0,17,0,0,0,8]
+"classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html#ad2ac5adf6ee44792f3de0c9c6e85fc5e":[3,0,0,17,0,0,0,7]
 };
