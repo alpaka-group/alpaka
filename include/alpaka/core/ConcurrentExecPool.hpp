@@ -59,7 +59,7 @@ namespace alpaka::core
                 }
                 else
                 {
-                    t = std::queue<T>::front();
+                    t = std::move(std::queue<T>::front());
                     std::queue<T>::pop();
                     return true;
                 }
@@ -200,7 +200,7 @@ namespace alpaka::core
             {
                 auto ret = fn0();
                 fn1();
-                return std::move(ret);
+                return ret;
             }
             else
             {
