@@ -276,12 +276,10 @@ namespace alpaka
                 {
                     alpaka::enqueue(
                         queue,
-                        [ptr, queue]()
+                        [ptr]()
                         {
                             // free the memory
                             alpaka::free(Allocator{}, ptr);
-                            // keep the queue alive until all memory operations are complete
-                            [&queue = std::as_const(queue)]() {}();
                         });
                 };
 
