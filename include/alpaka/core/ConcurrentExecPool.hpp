@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Jeffrey Kelling
  *
  * This file is part of alpaka.
  *
@@ -15,6 +15,7 @@
 // Therefore, we can not even parse those parts when compiling device code.
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/ThreadTraits.hpp>
 
 #include <atomic>
 #include <exception>
@@ -228,6 +229,8 @@ namespace alpaka::core
             bool TisYielding = true>
         class ConcurrentExecPool final
         {
+            using Type = ConcurrentExecPool<TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding>;
+
         public:
             //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum
             //! number of queued tasks.
@@ -235,11 +238,7 @@ namespace alpaka::core
             //! \param concurrentExecutionCount
             //!    The guaranteed number of concurrent executors used in the pool.
             //!    This is also the maximum number of tasks worked on concurrently.
-            ConcurrentExecPool(TIdx concurrentExecutionCount)
-                : m_vConcurrentExecs()
-                , m_qTasks()
-                , m_numActiveTasks(0u)
-                , m_bShutdownFlag(false)
+            ConcurrentExecPool(TIdx concurrentExecutionCount) : m_vConcurrentExecs(), m_qTasks()
             {
                 if(concurrentExecutionCount < 1)
                 {
@@ -324,6 +323,12 @@ namespace alpaka::core
                 return m_numActiveTasks == 0u;
             }
 
+            void detach(std::unique_ptr<Type>&& self)
+            {
+                m_self = std::move(self);
+                m_bDetachedFlag = true;
+            }
+
         private:
             //! The function the concurrent executors are executing.
             void concurrentExecFn()
@@ -340,6 +345,12 @@ namespace alpaka::core
                     }
                     else
                     {
+                        if(m_bDetachedFlag.exchange(false))
+                        {
+                            // Pool was detached and is idle, delete
+                            auto self = std::move(m_self);
+                            return;
+                        }
                         TYield::yield();
                     }
                 }
@@ -350,7 +361,10 @@ namespace alpaka::core
             {
                 for(auto&& concurrentExec : m_vConcurrentExecs)
                 {
-                    concurrentExec.join();
+                    if(!isThisThread(concurrentExec))
+                        concurrentExec.join();
+                    else
+                        concurrentExec.detach();
                 }
             }
             //! Pops a task from the queue.
@@ -366,8 +380,10 @@ namespace alpaka::core
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
             ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
-            std::atomic<std::uint32_t> m_numActiveTasks;
-            std::atomic<bool> m_bShutdownFlag;
+            std::atomic<std::uint32_t> m_numActiveTasks = 0u;
+            std::atomic<bool> m_bShutdownFlag = false;
+            std::atomic<bool> m_bDetachedFlag = false;
+            std::unique_ptr<Type> m_self = nullptr;
         };
 
         //! ConcurrentExecPool using a condition variable to wait for new work.
@@ -387,6 +403,8 @@ namespace alpaka::core
             typename TCondVar>
         class ConcurrentExecPool<TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false> final
         {
+            using Type = ConcurrentExecPool<TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false>;
+
         public:
             //! Creates a concurrent executors pool with a specific number of concurrent executors and a maximum
             //! number of queued tasks.
@@ -397,10 +415,8 @@ namespace alpaka::core
             ConcurrentExecPool(TIdx concurrentExecutionCount)
                 : m_vConcurrentExecs()
                 , m_qTasks()
-                , m_numActiveTasks(0u)
                 , m_mtxWakeup()
                 , m_cvWakeup()
-                , m_bShutdownFlag(false)
             {
                 if(concurrentExecutionCount < 1)
                 {
@@ -479,9 +495,9 @@ namespace alpaka::core
                 {
                     std::lock_guard<TMutex> lock(m_mtxWakeup);
                     m_qTasks.push(std::move(upTaskPackage));
-
-                    m_cvWakeup.notify_one();
                 }
+
+                m_cvWakeup.notify_one();
 
                 return future;
             }
@@ -494,6 +510,17 @@ namespace alpaka::core
             [[nodiscard]] auto isIdle() const -> bool
             {
                 return m_numActiveTasks == 0u;
+            }
+
+            void detach(std::unique_ptr<Type>&& self)
+            {
+                m_self = std::move(self);
+
+                {
+                    std::lock_guard<TMutex> lock(m_mtxWakeup);
+                    m_bDetachedFlag = true;
+                }
+                m_cvWakeup.notify_one();
             }
 
         private:
@@ -517,13 +544,23 @@ namespace alpaka::core
                         std::unique_lock<TMutex> lock(m_mtxWakeup);
                         if(m_qTasks.empty())
                         {
+                            if(m_bDetachedFlag)
+                            {
+                                // Pool was detached and is idle, delete
+                                auto self = std::move(m_self);
+                                lock.unlock();
+                                return;
+                            }
+
                             // If the shutdown flag has been set since the last check, return now.
                             if(m_bShutdownFlag)
                             {
                                 return;
                             }
 
-                            m_cvWakeup.wait(lock, [this]() { return ((!m_qTasks.empty()) || m_bShutdownFlag); });
+                            m_cvWakeup.wait(
+                                lock,
+                                [this]() { return ((!m_qTasks.empty()) || m_bShutdownFlag || m_bDetachedFlag); });
                         }
                     }
                 }
@@ -534,7 +571,10 @@ namespace alpaka::core
             {
                 for(auto&& concurrentExec : m_vConcurrentExecs)
                 {
-                    concurrentExec.join();
+                    if(!isThisThread(concurrentExec))
+                        concurrentExec.join();
+                    else
+                        concurrentExec.detach();
                 }
             }
             //! Pops a task from the queue.
@@ -550,11 +590,14 @@ namespace alpaka::core
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
             ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
-            std::atomic<std::uint32_t> m_numActiveTasks;
+            std::atomic<std::uint32_t> m_numActiveTasks = 0u;
 
             TMutex m_mtxWakeup;
             TCondVar m_cvWakeup;
-            std::atomic<bool> m_bShutdownFlag;
+            std::atomic<bool> m_bShutdownFlag = false;
+
+            std::atomic<bool> m_bDetachedFlag = false;
+            std::unique_ptr<Type> m_self = nullptr;
         };
     } // namespace detail
 } // namespace alpaka::core
