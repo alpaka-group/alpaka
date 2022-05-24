@@ -81,6 +81,7 @@
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/RemoveRestrict.hpp>
 #include <alpaka/core/Sycl.hpp>
+#include <alpaka/core/ThreadTraits.hpp>
 #include <alpaka/core/Unreachable.hpp>
 #include <alpaka/core/Unroll.hpp>
 #include <alpaka/core/Utility.hpp>
