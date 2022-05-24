@@ -503,12 +503,15 @@ namespace alpaka::core
                 // Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).
                 while(!m_bShutdownFlag)
                 {
-                    auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
-
-                    // Use popTask so we only ever have one reference to the ITaskPkg
-                    if(popTask(currentTaskPackage))
+                    // enter anonymous scope to limit lifetime of `currentTaskPackage`: destroy before entering wait
                     {
-                        currentTaskPackage->runTask();
+                        auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
+
+                        // Use popTask so we only ever have one reference to the ITaskPkg
+                        if(popTask(currentTaskPackage))
+                        {
+                            currentTaskPackage->runTask();
+                        }
                     }
                     {
                         std::unique_lock<TMutex> lock(m_mtxWakeup);
