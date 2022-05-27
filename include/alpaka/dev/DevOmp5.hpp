@@ -48,7 +48,7 @@ namespace alpaka
     namespace omp5::detail
     {
         //! The Omp5 device implementation.
-        class DevOmp5Impl : public : alpaka::detail::QueueRegistry<IGenericThreadsQueue<DevOmp5>>
+        class DevOmp5Impl : public alpaka::detail::QueueRegistry<IGenericThreadsQueue<DevOmp5>>
         {
         public:
             DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice)
@@ -145,6 +145,11 @@ namespace alpaka
         ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOmp5>> spQueue) const -> void
         {
             m_spDevOmp5Impl->registerQueue(spQueue);
+        }
+
+        auto registerCleanup(omp5::detail::DevOmp5Impl::CleanerFunctor c) const -> void
+        {
+            m_spDevOmp5Impl->registerCleanup(c);
         }
 
     public:

@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber, Antonio Di Pilato, Jeffrey Kelling
  *
  * This file is part of Alpaka.
  *
@@ -44,7 +44,7 @@ namespace alpaka
     namespace oacc::detail
     {
         //! The OpenACC device implementation.
-        class DevOaccImpl : public : alpaka::detail::QueueRegistry<IGenericThreadsQueue<DevOmp5>>
+        class DevOaccImpl : public alpaka::detail::QueueRegistry<IGenericThreadsQueue<DevOacc>>
         {
         public:
             DevOaccImpl(int iDevice) noexcept : m_deviceType(::acc_get_device_type()), m_iDevice(iDevice)
@@ -185,6 +185,11 @@ namespace alpaka
         ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOacc>> spQueue) const -> void
         {
             m_devOaccImpl->registerQueue(spQueue);
+        }
+
+        auto registerCleanup(oacc::detail::DevOaccImpl::CleanerFunctor c) const -> void
+        {
+            m_devOaccImpl->registerCleanup(c);
         }
 
     private:

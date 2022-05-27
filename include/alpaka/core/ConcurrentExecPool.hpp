@@ -323,10 +323,18 @@ namespace alpaka::core
                 return m_numActiveTasks == 0u;
             }
 
-            void detach(std::unique_ptr<Type>&& self)
+            void detach(std::shared_ptr<Type>&& self)
             {
                 m_self = std::move(self);
                 m_bDetachedFlag = true;
+            }
+
+            std::shared_ptr<Type> takeDetachHandle()
+            {
+                if(m_bDetachedFlag.exchange(false))
+                    return std::move(m_self);
+                else
+                    return nullptr;
             }
 
         private:
@@ -345,10 +353,10 @@ namespace alpaka::core
                     }
                     else
                     {
-                        if(m_bDetachedFlag.exchange(false))
+                        auto self = takeDetachHandle();
+                        if(self)
                         {
-                            // Pool was detached and is idle, delete
-                            auto self = std::move(m_self);
+                            // Pool was detached and is idle, stop and delete
                             return;
                         }
                         TYield::yield();
@@ -383,7 +391,7 @@ namespace alpaka::core
             std::atomic<std::uint32_t> m_numActiveTasks = 0u;
             std::atomic<bool> m_bShutdownFlag = false;
             std::atomic<bool> m_bDetachedFlag = false;
-            std::unique_ptr<Type> m_self = nullptr;
+            std::shared_ptr<Type> m_self = nullptr;
         };
 
         //! ConcurrentExecPool using a condition variable to wait for new work.
@@ -512,7 +520,7 @@ namespace alpaka::core
                 return m_numActiveTasks == 0u;
             }
 
-            void detach(std::unique_ptr<Type>&& self)
+            void detach(std::shared_ptr<Type>&& self)
             {
                 m_self = std::move(self);
 
@@ -521,6 +529,14 @@ namespace alpaka::core
                     m_bDetachedFlag = true;
                 }
                 m_cvWakeup.notify_one();
+            }
+
+            std::shared_ptr<Type> takeDetachHandle()
+            {
+                if(m_bDetachedFlag.exchange(false))
+                    return std::move(m_self);
+                else
+                    return nullptr;
             }
 
         private:
@@ -544,10 +560,10 @@ namespace alpaka::core
                         std::unique_lock<TMutex> lock(m_mtxWakeup);
                         if(m_qTasks.empty())
                         {
-                            if(m_bDetachedFlag)
+                            auto self = takeDetachHandle();
+                            if(self)
                             {
-                                // Pool was detached and is idle, delete
-                                auto self = std::move(m_self);
+                                // Pool was detached and is idle, stop and delete
                                 lock.unlock();
                                 return;
                             }
@@ -597,7 +613,7 @@ namespace alpaka::core
             std::atomic<bool> m_bShutdownFlag = false;
 
             std::atomic<bool> m_bDetachedFlag = false;
-            std::unique_ptr<Type> m_self = nullptr;
+            std::shared_ptr<Type> m_self = nullptr;
         };
     } // namespace detail
 } // namespace alpaka::core
