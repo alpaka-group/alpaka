@@ -70,6 +70,15 @@ namespace alpaka
                     -> QueueGenericThreadsNonBlockingImpl<TDev>& = delete;
                 ~QueueGenericThreadsNonBlockingImpl() override
                 {
+                    m_dev.registerCleanup(
+                        [pool = std::weak_ptr<ThreadPool>(m_workerThread)]() noexcept
+                        {
+                            auto s = pool.lock();
+                            if(s)
+                            {
+                                s = s->takeDetachHandle();
+                            }
+                        });
                     m_workerThread->detach(std::move(m_workerThread));
                 }
 
@@ -86,7 +95,7 @@ namespace alpaka
             public:
                 TDev const m_dev; //!< The device this queue is bound to.
 
-                std::unique_ptr<ThreadPool> m_workerThread;
+                std::shared_ptr<ThreadPool> m_workerThread;
             };
         } // namespace detail
     } // namespace generic

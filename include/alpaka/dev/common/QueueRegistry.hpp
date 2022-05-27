@@ -11,9 +11,10 @@
 
 #include <alpaka/core/Common.hpp>
 
+#include <deque>
+#include <functional>
 #include <memory>
 #include <mutex>
-#include <vector>
 
 namespace alpaka
 {
@@ -33,7 +34,7 @@ namespace alpaka
 
                 for(auto it = std::begin(m_queues); it != std::end(m_queues);)
                 {
-                    auto spQueue(it->lock());
+                    auto spQueue = it->lock();
                     if(spQueue)
                     {
                         vspQueues.emplace_back(std::move(spQueue));
@@ -54,12 +55,29 @@ namespace alpaka
                 std::lock_guard<std::mutex> lk(m_Mutex);
 
                 // Register this queue on the device.
-                m_queues.push_back(spQueue);
+                m_queues.push_back(std::move(spQueue));
+            }
+
+            using CleanerFunctor = std::function<void()>;
+            ALPAKA_FN_HOST auto registerCleanup(CleanerFunctor cleaner) const -> void
+            {
+                std::lock_guard<std::mutex> lk(m_Mutex);
+
+                m_cleanup.emplace_back(std::move(cleaner));
+            }
+
+            ~QueueRegistry()
+            {
+                for(auto& c : m_cleanup)
+                {
+                    c();
+                }
             }
 
         private:
             std::mutex mutable m_Mutex;
-            std::vector<std::weak_ptr<TQueue>> mutable m_queues;
+            std::deque<std::weak_ptr<TQueue>> mutable m_queues;
+            std::deque<CleanerFunctor> mutable m_cleanup;
         };
     } // namespace detail
 } // namespace alpaka
