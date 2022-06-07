@@ -14,7 +14,7 @@
 namespace alpaka
 {
     template<typename TDev>
-    class EventGenericThreads;
+    struct EventGenericThreads;
 
 #if BOOST_COMP_CLANG
 // avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every

@@ -31,22 +31,21 @@ namespace alpaka
     {
         //! The CPU device event implementation.
         template<typename TDev>
-        class EventGenericThreadsImpl final
-            : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
+        struct EventGenericThreadsImpl final
+            : concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
         {
-        public:
             EventGenericThreadsImpl(TDev dev) noexcept : m_dev(std::move(dev))
             {
             }
             EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> const&) = delete;
             auto operator=(EventGenericThreadsImpl<TDev> const&) -> EventGenericThreadsImpl<TDev>& = delete;
 
-            auto isReady() noexcept -> bool
+            auto isReady() const noexcept -> bool
             {
-                return (m_LastReadyEnqueueCount == m_enqueueCount);
+                return m_LastReadyEnqueueCount == m_enqueueCount;
             }
 
-            auto wait(std::size_t const& enqueueCount, std::unique_lock<std::mutex>& lk) const noexcept -> void
+            auto wait(std::size_t enqueueCount, std::unique_lock<std::mutex>& lk) const noexcept -> void
             {
                 ALPAKA_ASSERT(enqueueCount <= m_enqueueCount);
 
@@ -54,6 +53,7 @@ namespace alpaka
                 {
                     auto future = m_future;
                     lk.unlock();
+                    assert(m_future.valid());
                     future.get();
                     lk.lock();
                 }
@@ -73,11 +73,10 @@ namespace alpaka
 
     //! The CPU device event.
     template<typename TDev>
-    class EventGenericThreads final
-        : public concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
-        , public concepts::Implements<ConceptGetDev, EventGenericThreads<TDev>>
+    struct EventGenericThreads final
+        : concepts::Implements<ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
+        , concepts::Implements<ConceptGetDev, EventGenericThreads<TDev>>
     {
-    public:
         //! \param bBusyWaiting Unused. EventGenericThreads never does busy waiting.
         EventGenericThreads(TDev const& dev, [[maybe_unused]] bool bBusyWaiting = true)
             : m_spEventImpl(std::make_shared<generic::detail::EventGenericThreadsImpl<TDev>>(dev))
@@ -85,16 +84,17 @@ namespace alpaka
         }
         auto operator==(EventGenericThreads<TDev> const& rhs) const -> bool
         {
-            return (m_spEventImpl == rhs.m_spEventImpl);
-        }
-        auto operator!=(EventGenericThreads<TDev> const& rhs) const -> bool
-        {
-            return !((*this) == rhs);
+            return m_spEventImpl == rhs.m_spEventImpl;
         }
 
-    public:
+        auto operator!=(EventGenericThreads<TDev> const& rhs) const -> bool
+        {
+            return !(*this == rhs);
+        }
+
         std::shared_ptr<generic::detail::EventGenericThreadsImpl<TDev>> m_spEventImpl;
     };
+
     namespace trait
     {
         //! The CPU device event device type trait specialization.
@@ -103,6 +103,7 @@ namespace alpaka
         {
             using type = TDev;
         };
+
         //! The CPU device event device get trait specialization.
         template<typename TDev>
         struct GetDev<EventGenericThreads<TDev>>
@@ -121,7 +122,6 @@ namespace alpaka
             ALPAKA_FN_HOST static auto isComplete(EventGenericThreads<TDev> const& event) -> bool
             {
                 std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
-
                 return event.m_spEventImpl->isReady();
             }
         };
@@ -144,30 +144,22 @@ namespace alpaka
                 // Setting the event state and enqueuing it has to be atomic.
                 std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                ++spEventImpl->m_enqueueCount;
+                auto const enqueueCount = ++spEventImpl->m_enqueueCount;
 
-                // Workaround: Clang can not support this when natively compiling device code. See
-                // ConcurrentExecPool.hpp.
-                if constexpr(!((BOOST_COMP_CLANG_CUDA != BOOST_VERSION_NUMBER_NOT_AVAILABLE)
-                               && (BOOST_ARCH_PTX != BOOST_VERSION_NUMBER_NOT_AVAILABLE)))
-                {
-                    auto const enqueueCount = spEventImpl->m_enqueueCount;
+                spEventImpl->m_future = queueImpl.m_workerThread.submit(
+                    [spEventImpl, enqueueCount]() mutable
+                    {
+                        std::lock_guard<std::mutex> lk2(spEventImpl->m_mutex);
 
-                    // Enqueue a task that only resets the events flag if it is completed.
-                    spEventImpl->m_future = queueImpl.m_workerThread.enqueueTask(
-                        [spEventImpl, enqueueCount]()
+                        // Nothing to do if it has been re-enqueued to a later position in the queue.
+                        if(enqueueCount == spEventImpl->m_enqueueCount)
                         {
-                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-
-                            // Nothing to do if it has been re-enqueued to a later position in the queue.
-                            if(enqueueCount == spEventImpl->m_enqueueCount)
-                            {
-                                spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
-                            }
-                        });
-                }
+                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+                        }
+                    });
             }
         };
+
         //! The CPU non-blocking device queue enqueue trait specialization.
         template<typename TDev>
         struct Enqueue<QueueGenericThreadsNonBlocking<TDev>, EventGenericThreads<TDev>>
@@ -181,6 +173,7 @@ namespace alpaka
                 alpaka::enqueue(*queue.m_spQueueImpl, event);
             }
         };
+
         //! The CPU blocking device queue enqueue trait specialization.
         template<typename TDev>
         struct Enqueue<alpaka::generic::detail::QueueGenericThreadsBlockingImpl<TDev>, EventGenericThreads<TDev>>
@@ -197,16 +190,15 @@ namespace alpaka
 
                     queueImpl.m_bCurrentlyExecutingTask = true;
 
-                    auto& eventImpl(*event.m_spEventImpl);
-
                     {
                         // Setting the event state and enqueuing it has to be atomic.
+                        auto& eventImpl = *event.m_spEventImpl;
                         std::lock_guard<std::mutex> evLk(eventImpl.m_mutex);
 
-                        ++eventImpl.m_enqueueCount;
                         // NOTE: Difference to non-blocking version: directly set the event state instead of enqueuing.
-                        eventImpl.m_LastReadyEnqueueCount = eventImpl.m_enqueueCount;
+                        eventImpl.m_LastReadyEnqueueCount = ++eventImpl.m_enqueueCount;
 
+                        assert(!eventImpl.m_future.valid());
                         eventImpl.m_future = promise.get_future();
                     }
 
@@ -215,6 +207,7 @@ namespace alpaka
                 promise.set_value();
             }
         };
+
         //! The CPU blocking device queue enqueue trait specialization.
         template<typename TDev>
         struct Enqueue<QueueGenericThreadsBlocking<TDev>, EventGenericThreads<TDev>>
@@ -229,6 +222,7 @@ namespace alpaka
             }
         };
     } // namespace trait
+
     namespace trait
     {
         namespace generic
@@ -268,6 +262,7 @@ namespace alpaka
                 wait(*event.m_spEventImpl);
             }
         };
+
         //! The CPU device event implementation thread wait trait specialization.
         //!
         //! Waits until the event itself and therefore all tasks preceding it in the queue it is enqueued to have been
@@ -281,11 +276,10 @@ namespace alpaka
                 alpaka::generic::detail::EventGenericThreadsImpl<TDev> const& eventImpl) -> void
             {
                 std::unique_lock<std::mutex> lk(eventImpl.m_mutex);
-
-                auto const enqueueCount = eventImpl.m_enqueueCount;
-                eventImpl.wait(enqueueCount, lk);
+                eventImpl.wait(eventImpl.m_enqueueCount, lk);
             }
         };
+
         //! The CPU non-blocking device queue event wait trait specialization.
         template<typename TDev>
         struct WaiterWaitFor<
@@ -293,11 +287,7 @@ namespace alpaka
             EventGenericThreads<TDev>>
         {
             ALPAKA_FN_HOST static auto waiterWaitFor(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>& queueImpl,
-#else
-                alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>&,
-#endif
                 EventGenericThreads<TDev> const& event) -> void
             {
                 // Copy the shared pointer of the event implementation.
@@ -309,21 +299,19 @@ namespace alpaka
 
                 if(!spEventImpl->isReady())
                 {
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                     // Enqueue a task that waits for the given event.
-                    queueImpl.m_workerThread.enqueueTask(
-                        [spEventImpl, enqueueCount]()
+                    queueImpl.m_workerThread.submit(
+                        [spEventImpl, enqueueCount]
                         {
                             std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
                             spEventImpl->wait(enqueueCount, lk2);
                         });
-#endif
                 }
             }
         };
+
         //! The CPU non-blocking device queue event wait trait specialization.
         template<typename TDev>
         struct WaiterWaitFor<QueueGenericThreadsNonBlocking<TDev>, EventGenericThreads<TDev>>
@@ -335,6 +323,7 @@ namespace alpaka
                 wait(*queue.m_spQueueImpl, event);
             }
         };
+
         //! The CPU blocking device queue event wait trait specialization.
         template<typename TDev>
         struct WaiterWaitFor<alpaka::generic::detail::QueueGenericThreadsBlockingImpl<TDev>, EventGenericThreads<TDev>>
@@ -347,6 +336,7 @@ namespace alpaka
                 wait(*event.m_spEventImpl);
             }
         };
+
         //! The CPU blocking device queue event wait trait specialization.
         template<typename TDev>
         struct WaiterWaitFor<QueueGenericThreadsBlocking<TDev>, EventGenericThreads<TDev>>
@@ -358,6 +348,7 @@ namespace alpaka
                 wait(*queue.m_spQueueImpl, event);
             }
         };
+
         //! The CPU non-blocking device event wait trait specialization.
         //!
         //! Any future work submitted in any queue of this device will wait for event to complete before beginning

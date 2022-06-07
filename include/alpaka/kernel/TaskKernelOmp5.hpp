@@ -261,8 +261,7 @@ namespace alpaka
                 QueueOmp5NonBlocking& queue,
                 TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> const& task) -> void
             {
-                queue.m_spQueueImpl->m_workerThread.enqueueTask([&queue, task]()
-                                                                { task(queue.m_spQueueImpl->m_dev); });
+                queue.m_spQueueImpl->m_workerThread.submit([&queue, task]() { task(queue.m_spQueueImpl->m_dev); });
             }
         };
     } // namespace trait

@@ -40,13 +40,11 @@ namespace alpaka::test
     {
         //! Event that can be enqueued into a queue and can be triggered by the Host.
         template<class TDev = DevCpu>
-        class EventHostManualTriggerCpuImpl
+        struct EventHostManualTriggerCpuImpl
         {
-        public:
             //! Constructor.
             ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(TDev dev) noexcept
                 : m_dev(std::move(dev))
-                , m_mutex()
                 , m_enqueueCount(0u)
                 , m_bIsReady(true)
             {
@@ -57,13 +55,12 @@ namespace alpaka::test
             void trigger()
             {
                 {
-                    std::unique_lock<std::mutex> lock(m_mutex);
+                    std::lock_guard<std::mutex> lock(m_mutex);
                     m_bIsReady = true;
                 }
                 m_conditionVariable.notify_one();
             }
 
-        public:
             TDev const m_dev; //!< The device this event is bound to.
 
             mutable std::mutex m_mutex; //!< The mutex used to synchronize access to the event.
@@ -78,9 +75,8 @@ namespace alpaka::test
 
     //! Event that can be enqueued into a queue and can be triggered by the Host.
     template<class TDev = DevCpu>
-    class EventHostManualTriggerCpu
+    struct EventHostManualTriggerCpu
     {
-    public:
         //! Constructor.
         ALPAKA_FN_HOST EventHostManualTriggerCpu(TDev const& dev)
             : m_spEventImpl(std::make_shared<cpu::detail::EventHostManualTriggerCpuImpl<TDev>>(dev))
@@ -102,7 +98,6 @@ namespace alpaka::test
             m_spEventImpl->trigger();
         }
 
-    public:
         std::shared_ptr<cpu::detail::EventHostManualTriggerCpuImpl<TDev>> m_spEventImpl;
     };
 
@@ -165,7 +160,6 @@ namespace alpaka::trait
     template<typename TDev>
     struct GetDev<test::EventHostManualTriggerCpu<TDev>>
     {
-        //
         ALPAKA_FN_HOST static auto getDev(test::EventHostManualTriggerCpu<TDev> const& event) -> TDev
         {
             return event.m_spEventImpl->m_dev;
@@ -188,13 +182,8 @@ namespace alpaka::trait
     template<typename TDev>
     struct Enqueue<QueueGenericThreadsNonBlocking<TDev>, test::EventHostManualTriggerCpu<TDev>>
     {
-        //
         ALPAKA_FN_HOST static auto enqueue(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             QueueGenericThreadsNonBlocking<TDev>& queue,
-#else
-            QueueGenericThreadsNonBlocking<TDev>&,
-#endif
             test::EventHostManualTriggerCpu<TDev>& event) -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -213,31 +202,24 @@ namespace alpaka::trait
 
             // Increment the enqueue counter. This is used to skip waits for events that had already been finished
             // and re-enqueued which would lead to deadlocks.
-            ++spEventImpl->m_enqueueCount;
-
-            // Workaround: Clang can not support this when natively compiling device code. See
-            // ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-            auto const enqueueCount = spEventImpl->m_enqueueCount;
+            auto const enqueueCount = ++spEventImpl->m_enqueueCount;
 
             // Enqueue a task that only resets the events flag if it is completed.
-            queue.m_spQueueImpl->m_workerThread.enqueueTask(
-                [spEventImpl, enqueueCount]()
+            queue.m_spQueueImpl->m_workerThread.submit(
+                [spEventImpl, enqueueCount]
                 {
                     std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
                     spEventImpl->m_conditionVariable.wait(
                         lk2,
                         [spEventImpl, enqueueCount]
-                        { return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady; });
+                        { return enqueueCount != spEventImpl->m_enqueueCount || spEventImpl->m_bIsReady; });
                 });
-#endif
         }
     };
 
     template<typename TDev>
     struct Enqueue<QueueGenericThreadsBlocking<TDev>, test::EventHostManualTriggerCpu<TDev>>
     {
-        //
         ALPAKA_FN_HOST static auto enqueue(
             QueueGenericThreadsBlocking<TDev>&,
             test::EventHostManualTriggerCpu<TDev>& event) -> void
@@ -258,14 +240,12 @@ namespace alpaka::trait
 
             // Increment the enqueue counter. This is used to skip waits for events that had already been finished
             // and re-enqueued which would lead to deadlocks.
-            ++spEventImpl->m_enqueueCount;
-
-            auto const enqueueCount = spEventImpl->m_enqueueCount;
+            auto const enqueueCount = ++spEventImpl->m_enqueueCount;
 
             spEventImpl->m_conditionVariable.wait(
                 lk,
                 [spEventImpl, enqueueCount]
-                { return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady; });
+                { return enqueueCount != spEventImpl->m_enqueueCount || spEventImpl->m_bIsReady; });
         }
     };
 } // namespace alpaka::trait

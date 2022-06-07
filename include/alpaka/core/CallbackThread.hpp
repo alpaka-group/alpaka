@@ -11,9 +11,9 @@
 
 #include <atomic>
 #include <condition_variable>
-#include <functional>
 #include <future>
 #include <mutex>
+#include <optional>
 #include <queue>
 #include <thread>
 
@@ -32,11 +32,13 @@ namespace alpaka::core
                 m_thread.join();
         }
 
+        //! Submits a task to the thread. The lifetime of the task may be as long as the lifetime of the returned
+        //! future.
         auto submit(Task&& newTask) -> std::future<void>
         {
             auto f = newTask.get_future();
             {
-                std::unique_lock<std::mutex> lock{m_mutex};
+                std::lock_guard<std::mutex> lock{m_mutex};
                 m_tasks.emplace(std::move(newTask));
                 if(!m_thread.joinable())
                     startWorkerThread();
@@ -45,14 +47,26 @@ namespace alpaka::core
             return f;
         }
 
+        //! Submits any callable as task to the thread. The lifetime of the task is ensured to end when the task
+        //! completed and is not extended to the lifetime of the returned future.
         template<typename Callable>
         auto submit(Callable&& callable) -> std::future<void>
         {
-            return submit(Task{std::forward<Callable>(callable)});
+            // We wrap the callable into an optional, so we can destroy the callable when it was executed
+            // the shared state of a std::future obtained from a std::packaged_task may hold the enqueued task and thus
+            // extends the lifetime callable inside the task. This caused a problem e.g. with EventGenericThreadsImpl,
+            // which holds a future to a task, which captures a shared pointer to the EventGenericThreadsImpl itself,
+            // which results in a cyclic reference of shared pointers and the EventGenericThreadsImpl will leak.
+            return submit(Task{[c = std::optional<std::decay_t<Callable>>{std::forward<Callable>(callable)}]() mutable
+                               {
+                                   c.value()();
+                                   c = std::nullopt;
+                               }});
         }
 
         auto taskCount() const -> std::size_t
         {
+            // TODO(bgruber): not accurate
             std::lock_guard<std::mutex> lock{m_mutex};
             return m_tasks.size();
         }

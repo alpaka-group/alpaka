@@ -22,7 +22,7 @@
 namespace alpaka
 {
     template<typename TDev>
-    class EventGenericThreads;
+    struct EventGenericThreads;
 
     namespace generic
     {
