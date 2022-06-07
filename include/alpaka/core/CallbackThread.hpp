@@ -31,6 +31,7 @@ namespace alpaka::core
             if(m_thread.joinable())
                 m_thread.join();
         }
+
         auto submit(Task&& newTask) -> std::future<void>
         {
             auto f = newTask.get_future();
@@ -44,10 +45,22 @@ namespace alpaka::core
             return f;
         }
 
+        template<typename Callable>
+        auto submit(Callable&& callable) -> std::future<void>
+        {
+            return submit(Task{std::forward<Callable>(callable)});
+        }
+
+        auto taskCount() const -> std::size_t
+        {
+            std::lock_guard<std::mutex> lock{m_mutex};
+            return m_tasks.size();
+        }
+
     private:
         std::thread m_thread;
         std::condition_variable m_cond;
-        std::mutex m_mutex;
+        mutable std::mutex m_mutex;
         std::atomic<bool> m_stop{false};
         std::queue<Task> m_tasks;
 
