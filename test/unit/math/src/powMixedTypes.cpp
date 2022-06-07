@@ -7,6 +7,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "Defines.hpp"
+
 #include <alpaka/math/Traits.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -15,26 +17,6 @@
 #include <catch2/catch.hpp>
 
 #include <type_traits>
-
-// https://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
-template<typename TAcc, typename FP>
-ALPAKA_FN_ACC auto almost_equal(TAcc const& acc, FP x, FP y, int ulp)
-    -> std::enable_if_t<!std::numeric_limits<FP>::is_integer, bool>
-{
-    // the machine epsilon has to be scaled to the magnitude of the values used
-    // and multiplied by the desired precision in ULPs (units in the last place)
-    return alpaka::math::abs(acc, x - y)
-        <= std::numeric_limits<FP>::epsilon() * alpaka::math::abs(acc, x + y) * static_cast<FP>(ulp)
-        // unless the result is subnormal
-        || alpaka::math::abs(acc, x - y) < std::numeric_limits<FP>::min();
-}
-
-//! Version for alpaka::Complex
-template<typename TAcc, typename FP>
-ALPAKA_FN_ACC bool almost_equal(TAcc const& acc, alpaka::Complex<FP> x, alpaka::Complex<FP> y, int ulp)
-{
-    return almost_equal(acc, x.real(), y.real(), ulp) && almost_equal(acc, x.imag(), y.imag(), ulp);
-}
 
 template<typename TExpected>
 class PowMixedTypesTestKernel
@@ -46,6 +28,7 @@ public:
     {
         auto expected = alpaka::math::pow(acc, TExpected{arg1}, TExpected{arg2});
         auto actual = alpaka::math::pow(acc, arg1, arg2);
+        using alpaka::test::unit::math::almost_equal;
         ALPAKA_CHECK(*success, almost_equal(acc, expected, actual, 1));
     }
 };
