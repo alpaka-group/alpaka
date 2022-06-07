@@ -739,8 +739,12 @@ namespace alpaka::math
             template<typename TCtx>
             __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& base, Complex<U> const& exponent)
             {
+                // Type promotion matching rules of complex std::pow but simplified given our math only supports float
+                // and double, no long double.
+                using Promoted
+                    = Complex<std::conditional_t<is_decayed_v<T, float> && is_decayed_v<U, float>, float, double>>;
                 // pow(z1, z2) = e^(z2 * log(z1))
-                return exp(ctx, exponent * log(ctx, base));
+                return exp(ctx, Promoted{exponent} * log(ctx, Promoted{base}));
             }
         };
 
