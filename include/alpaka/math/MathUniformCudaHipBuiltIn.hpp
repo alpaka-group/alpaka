@@ -748,6 +748,30 @@ namespace alpaka::math
             }
         };
 
+        //! The CUDA pow trait specialization for complex and real types.
+        template<typename T, typename U>
+        struct Pow<PowUniformCudaHipBuiltIn, Complex<T>, U>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& base, U const& exponent)
+            {
+                return pow(ctx, base, Complex<U>{exponent});
+            }
+        };
+
+        //! The CUDA pow trait specialization for real and complex types.
+        template<typename T, typename U>
+        struct Pow<PowUniformCudaHipBuiltIn, T, Complex<U>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __host__ __device__ auto operator()(TCtx const& ctx, T const& base, Complex<U> const& exponent)
+            {
+                return pow(ctx, Complex<T>{base}, exponent);
+            }
+        };
+
         //! The CUDA remainder trait specialization.
         template<typename Tx, typename Ty>
         struct Remainder<
