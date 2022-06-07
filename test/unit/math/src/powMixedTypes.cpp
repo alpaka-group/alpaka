@@ -18,6 +18,39 @@
 
 #include <type_traits>
 
+//! Convert the given real or complex input type to the given real or complex output type avoiding warnings.
+//! This conversion is surprisingly tricky to do in a way that no compiler complains.
+//! In principle it could be accomplished by a constexpr function, but in practice that turned out not possible.
+//! The general implementation does direct initialization, works for pairs of types supporting it.
+template<typename TInput, typename TOutput, typename TSfinae = void>
+struct Convert
+{
+    ALPAKA_FN_ACC auto operator()(TInput const arg) const
+    {
+        return TOutput{arg};
+    }
+};
+
+//! Specialization for real -> real conversion
+template<typename TInput, typename TOutput>
+struct Convert<TInput, TOutput, std::enable_if_t<std::is_floating_point_v<TOutput>>>
+{
+    ALPAKA_FN_ACC auto operator()(TInput const arg) const
+    {
+        return static_cast<TOutput>(arg);
+    }
+};
+
+//! Specialization for real -> complex conversion
+template<typename TInput, typename TOutputValueType>
+struct Convert<TInput, alpaka::Complex<TOutputValueType>, std::enable_if_t<std::is_floating_point_v<TInput>>>
+{
+    ALPAKA_FN_ACC auto operator()(TInput const arg) const
+    {
+        return alpaka::Complex<TOutputValueType>{static_cast<TOutputValueType>(arg)};
+    }
+};
+
 template<typename TExpected>
 class PowMixedTypesTestKernel
 {
@@ -26,7 +59,7 @@ public:
     template<typename TAcc, typename TArg1, typename TArg2>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, TArg1 const arg1, TArg2 const arg2) const -> void
     {
-        auto expected = alpaka::math::pow(acc, TExpected{arg1}, TExpected{arg2});
+        auto expected = alpaka::math::pow(acc, Convert<TArg1, TExpected>{}(arg1), Convert<TArg2, TExpected>{}(arg2));
         auto actual = alpaka::math::pow(acc, arg1, arg2);
         using alpaka::test::unit::math::almost_equal;
         ALPAKA_CHECK(*success, almost_equal(acc, expected, actual, 1));
