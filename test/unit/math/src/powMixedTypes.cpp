@@ -76,6 +76,18 @@ TEMPLATE_LIST_TEST_CASE("powMixedTypes", "[powMixedTypes]", TestAccs)
     REQUIRE(fixture(kernelDouble, doubleArg, floatArg));
     REQUIRE(fixture(kernelDouble, doubleArg, doubleArg));
 
+    // all combinations of pow(real, complex)
+    REQUIRE(fixture(kernelComplexFloat, floatArg, floatComplexArg));
+    REQUIRE(fixture(kernelComplexDouble, floatArg, doubleComplexArg));
+    REQUIRE(fixture(kernelComplexDouble, doubleArg, floatComplexArg));
+    REQUIRE(fixture(kernelComplexDouble, doubleArg, doubleComplexArg));
+
+    // all combinations of pow(complex, real)
+    REQUIRE(fixture(kernelComplexFloat, floatComplexArg, floatArg));
+    REQUIRE(fixture(kernelComplexDouble, floatComplexArg, doubleArg));
+    REQUIRE(fixture(kernelComplexDouble, doubleComplexArg, floatArg));
+    REQUIRE(fixture(kernelComplexDouble, doubleComplexArg, doubleArg));
+
     // all combinations of pow(complex, complex)
     REQUIRE(fixture(kernelComplexFloat, floatComplexArg, floatComplexArg));
     REQUIRE(fixture(kernelComplexDouble, floatComplexArg, doubleComplexArg));
