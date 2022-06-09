@@ -21,7 +21,7 @@ fi
 
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
-    make VERBOSE=1 -j${ALPAKA_CI_BUILD_JOBS}
+    make VERBOSE=1 -j${ALPAKA_CI_BUILD_JOBS} queueTest
 elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     "$MSBUILD_EXECUTABLE" "alpaka.sln" -p:Configuration=${CMAKE_BUILD_TYPE} -maxcpucount:${ALPAKA_CI_BUILD_JOBS} -verbosity:minimal

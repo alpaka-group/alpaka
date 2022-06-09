@@ -39,7 +39,7 @@ then
 
     if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
     then
-        ctest -V
+        ctest -V -R queueTest --repeat-until-fail 100 --timeout 20
     elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
         ctest -V -C ${CMAKE_BUILD_TYPE}
