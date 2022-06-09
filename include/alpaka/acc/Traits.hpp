@@ -12,6 +12,7 @@
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
+#include <alpaka/core/DemangleTypeNames.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
@@ -47,7 +48,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getAccName() -> std::string
             {
-                return typeid(TAcc).name();
+                return core::demangled<TAcc>;
             }
         };
     } // namespace trait
