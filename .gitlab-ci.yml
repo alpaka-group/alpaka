@@ -10,10 +10,10 @@
 #   stageCompileN = round robin distributed within the file
 
 stages:
-  - stageCompile0
   - stageRun0
   - stageCompile1
   - stageRun1
+  - stageCompile0
 
 
 variables:
