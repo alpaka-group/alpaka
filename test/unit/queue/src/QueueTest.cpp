@@ -171,3 +171,16 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
     firstTaskFinishedFuture.get();
     secondTaskFinishedFuture.get();
 }
+
+TEMPLATE_LIST_TEST_CASE("destructingQueueInTaskShouldNotCrash", "[queue]", TestQueues)
+{
+    {
+        using DevQueue = TestType;
+        using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
+        Fixture f;
+
+        alpaka::enqueue(
+            f.m_queue,
+            [queue = f.m_queue]() { std::this_thread::sleep_for(std::chrono::milliseconds(100u)); });
+    }
+}
