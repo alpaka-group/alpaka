@@ -174,6 +174,19 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
     secondTaskFinishedFuture.get();
 }
 
+TEMPLATE_LIST_TEST_CASE("destructingQueueInTaskShouldNotCrash", "[queue]", TestQueues)
+{
+    {
+        using DevQueue = TestType;
+        using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
+        Fixture f;
+
+        alpaka::enqueue(
+            f.m_queue,
+            [queue = f.m_queue]() { std::this_thread::sleep_for(std::chrono::milliseconds(100u)); });
+    }
+}
+
 //! This task launches a long task in a non-blocking queue and destroys the
 //! queue before the task is finished. The run time of the task is a bit longer
 //! than all other tests here, so the task would run past program termination if
