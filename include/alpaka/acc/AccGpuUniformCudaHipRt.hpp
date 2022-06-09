@@ -17,6 +17,7 @@
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/core/DemangleTypeNames.hpp>
 #    include <alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp>
@@ -223,7 +224,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getAccName() -> std::string
             {
                 return std::string("AccGpu") + TApi::name + "Rt<" + std::to_string(TDim::value) + ","
-                    + typeid(TIdx).name() + ">";
+                    + core::demangled<TIdx> + ">";
             }
         };
 

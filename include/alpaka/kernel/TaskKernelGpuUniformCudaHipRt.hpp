@@ -42,6 +42,7 @@
 // Implementation details.
 #        include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #        include <alpaka/core/Decay.hpp>
+#        include <alpaka/core/DemangleTypeNames.hpp>
 #        include <alpaka/core/RemoveRestrict.hpp>
 #        include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #        include <alpaka/kernel/Traits.hpp>
@@ -298,7 +299,7 @@ namespace alpaka
                     // custom error message.
                     std::ignore = TApi::streamSynchronize(queue.getNativeHandle());
                     auto const msg = std::string{
-                        "'execution of kernel: '" + std::string{typeid(TKernelFnObj).name()} + "' failed with"};
+                        "'execution of kernel: '" + std::string{core::demangled<TKernelFnObj>} + "' failed with"};
                     ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(msg.c_str(), __FILE__, __LINE__);
                 }
             }
@@ -406,8 +407,8 @@ namespace alpaka
                 std::ignore = TApi::streamSynchronize(queue.getNativeHandle());
                 if constexpr(ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL)
                 {
-                    auto const msg = std::string{
-                        "'execution of kernel: '" + std::string{typeid(TKernelFnObj).name()} + "' failed with"};
+                    auto const msg
+                        = std::string{"'execution of kernel: '" + core::demangled<TKernelFnObj> + "' failed with"};
                     ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(msg.c_str(), __FILE__, __LINE__);
                 }
             }
