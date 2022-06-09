@@ -721,7 +721,7 @@ namespace alpaka::math
                 if constexpr(is_decayed_v<TBase, float> && is_decayed_v<TExp, float>)
                     return ::powf(base, exp);
                 else if constexpr(is_decayed_v<TBase, double> || is_decayed_v<TExp, double>)
-                    return ::pow(base, exp);
+                    return ::pow(static_cast<double>(base), static_cast<double>(exp));
                 else
                     static_assert(!sizeof(TBase), "Unsupported data type");
 
