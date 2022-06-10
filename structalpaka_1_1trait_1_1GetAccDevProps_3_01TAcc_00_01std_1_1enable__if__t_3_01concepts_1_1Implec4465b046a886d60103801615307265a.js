@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1GetAccDevProps_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1Implec4465b046a886d60103801615307265a =
-[
-    [ "getAccDevProps", "structalpaka_1_1trait_1_1GetAccDevProps_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1Implec4465b046a886d60103801615307265a.html#a7824b716785d6e4aa0dd40dc52f7689b", null ]
-];

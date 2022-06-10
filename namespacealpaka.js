@@ -83,7 +83,6 @@ var namespacealpaka =
     [ "ConceptMemFence", "structalpaka_1_1ConceptMemFence.html", null ],
     [ "ConceptPltf", "structalpaka_1_1ConceptPltf.html", null ],
     [ "ConceptTime", "structalpaka_1_1ConceptTime.html", null ],
-    [ "ConceptUniformCudaHip", "structalpaka_1_1ConceptUniformCudaHip.html", null ],
     [ "ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],
     [ "DevCpu", "classalpaka_1_1DevCpu.html", "classalpaka_1_1DevCpu" ],
     [ "DevOmp5", "classalpaka_1_1DevOmp5.html", "classalpaka_1_1DevOmp5" ],

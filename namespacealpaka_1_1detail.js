@@ -11,7 +11,6 @@ var namespacealpaka_1_1detail =
     [ "BufOmp5Impl", "classalpaka_1_1detail_1_1BufOmp5Impl.html", "classalpaka_1_1detail_1_1BufOmp5Impl" ],
     [ "CheckFnReturnType", "structalpaka_1_1detail_1_1CheckFnReturnType.html", "structalpaka_1_1detail_1_1CheckFnReturnType" ],
     [ "CheckFnReturnType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
-    [ "CheckFnReturnType< TAcc, std::enable_if_t< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1Idb1d013e6e562d20ba2fa163c625e24a.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01std_1_1enable__if__t_3_01concepts_1_1Idb1d013e6e562d20ba2fa163c625e24a" ],
     [ "CreateExtent", "structalpaka_1_1detail_1_1CreateExtent.html", "structalpaka_1_1detail_1_1CreateExtent" ],
     [ "CreateOffset", "structalpaka_1_1detail_1_1CreateOffset.html", "structalpaka_1_1detail_1_1CreateOffset" ],
     [ "CreatePitchBytes", "structalpaka_1_1detail_1_1CreatePitchBytes.html", "structalpaka_1_1detail_1_1CreatePitchBytes" ],
