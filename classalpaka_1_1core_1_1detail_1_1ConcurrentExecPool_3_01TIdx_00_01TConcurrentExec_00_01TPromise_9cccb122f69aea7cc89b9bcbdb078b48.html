@@ -106,6 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abe02c25d7f0bade0d4faac3c387750a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">~ConcurrentExecPool</a> ()</td></tr>
 <tr class="memdesc:abe02c25d7f0bade0d4faac3c387750a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Completes any currently running task normally. Signals a std::runtime_error exception to any other tasks that was not able to run.  <a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">More...</a><br /></td></tr>
 <tr class="separator:abe02c25d7f0bade0d4faac3c387750a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cf2b983ce50f1d760b32b93ee8f7af3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a3cf2b983ce50f1d760b32b93ee8f7af3">detach</a> (std::shared_ptr&lt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html">Type</a> &gt; &amp;&amp;self)</td></tr>
+<tr class="separator:a3cf2b983ce50f1d760b32b93ee8f7af3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29842d9a59ee0a98e7f2cd99427784dc"><td class="memTemplParams" colspan="2">template&lt;typename TFnObj , typename... TArgs&gt; </td></tr>
 <tr class="memitem:a29842d9a59ee0a98e7f2cd99427784dc"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">enqueueTask</a> (TFnObj &amp;&amp;task, TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a29842d9a59ee0a98e7f2cd99427784dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the given function on one of the pool in First In First Out (FIFO) order.  <a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc">More...</a><br /></td></tr>
@@ -116,6 +118,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac58d49b2614e9067ab2dd8cfa28c8963"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b96ccd5655fbc5968277ed48066003d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a2b96ccd5655fbc5968277ed48066003d">operator=</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td></tr>
 <tr class="separator:a2b96ccd5655fbc5968277ed48066003d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b4ccef6a221b34f7fb55d7605eb1841"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a5b4ccef6a221b34f7fb55d7605eb1841">takeDetachHandle</a> ()</td></tr>
+<tr class="separator:a5b4ccef6a221b34f7fb55d7605eb1841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TIdx, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex, typename TCondVar&gt;<br />
@@ -133,7 +137,7 @@ class alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromi
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00388">388</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00412">412</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aaac41c49f885aa725c922da24f537f86"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaac41c49f885aa725c922da24f537f86">&#9670;&nbsp;</a></span>ConcurrentExecPool() <span class="overload">[1/2]</span></h2>
@@ -169,7 +173,7 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00397">397</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00423">423</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -228,11 +232,41 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 
 <p>Completes any currently running task normally. Signals a std::runtime_error exception to any other tasks that was not able to run. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00424">424</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00448">448</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3cf2b983ce50f1d760b32b93ee8f7af3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cf2b983ce50f1d760b32b93ee8f7af3">&#9670;&nbsp;</a></span>detach()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield , typename TMutex , typename TCondVar &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::detach </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html">Type</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00523">523</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a29842d9a59ee0a98e7f2cd99427784dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a29842d9a59ee0a98e7f2cd99427784dc">&#9670;&nbsp;</a></span>enqueueTask()</h2>
 
@@ -298,7 +332,7 @@ template&lt;typename TFnObj , typename... TArgs&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Signals when the task has completed with either success or an exception. Also results in an exception if the pool is destroyed before execution has begun. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00464">464</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00488">488</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -329,7 +363,7 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The number of concurrent executors available. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00489">489</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00513">513</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -360,7 +394,7 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>If the thread pool is idle. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00494">494</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00518">518</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -392,6 +426,35 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 
 </div>
 </div>
+<a id="a5b4ccef6a221b34f7fb55d7605eb1841"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b4ccef6a221b34f7fb55d7605eb1841">&#9670;&nbsp;</a></span>takeDetachHandle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield , typename TMutex , typename TCondVar &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html">Type</a>&gt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;::takeDetachHandle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00534">534</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/alpaka/alpaka/include/alpaka/core/<a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a></li>
 </ul>
@@ -401,7 +464,7 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html">ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;</a></li>
-    <li class="footer">Generated on Fri Jun 10 2022 08:40:47 for alpaka by
+    <li class="footer">Generated on Fri Jun 10 2022 14:16:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

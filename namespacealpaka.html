@@ -871,6 +871,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ae9234c08c7824fc7b5a9a73e6a11fbd1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ae9234c08c7824fc7b5a9a73e6a11fbd1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae9234c08c7824fc7b5a9a73e6a11fbd1">isSupportedByAtomicAtomicRef</a> ()</td></tr>
 <tr class="separator:ae9234c08c7824fc7b5a9a73e6a11fbd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eff06f85c5dea1113339591f05ebc0e"><td class="memTemplParams" colspan="2">template&lt;typename TThread &gt; </td></tr>
+<tr class="memitem:a8eff06f85c5dea1113339591f05ebc0e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8eff06f85c5dea1113339591f05ebc0e">isThisThread</a> (const TThread &amp;thread) -&gt; bool</td></tr>
+<tr class="memdesc:a8eff06f85c5dea1113339591f05ebc0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the given thread handle is a handle for the executing thread.  <a href="namespacealpaka.html#a8eff06f85c5dea1113339591f05ebc0e">More...</a><br /></td></tr>
+<tr class="separator:a8eff06f85c5dea1113339591f05ebc0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49da61db606743ad5f75c6db33cfc043"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:a49da61db606743ad5f75c6db33cfc043"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a49da61db606743ad5f75c6db33cfc043">isValidAccDevProps</a> (<a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps) -&gt; bool</td></tr>
 <tr class="separator:a49da61db606743ad5f75c6db33cfc043"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1488,7 +1492,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00220">220</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00187">187</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1504,7 +1508,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00219">219</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00186">186</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1556,7 +1560,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00277">277</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00247">247</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -1572,7 +1576,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00276">276</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00246">246</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -5376,6 +5380,31 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a8eff06f85c5dea1113339591f05ebc0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8eff06f85c5dea1113339591f05ebc0e">&#9670;&nbsp;</a></span>isThisThread()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TThread &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::isThisThread </td>
+          <td>(</td>
+          <td class="paramtype">const TThread &amp;&#160;</td>
+          <td class="paramname"><em>thread</em></td><td>)</td>
+          <td> -&gt; bool
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the given thread handle is a handle for the executing thread. </p>
+
+<p class="definition">Definition at line <a class="el" href="ThreadTraits_8hpp_source.html#l00029">29</a> of file <a class="el" href="ThreadTraits_8hpp_source.html">ThreadTraits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a49da61db606743ad5f75c6db33cfc043"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49da61db606743ad5f75c6db33cfc043">&#9670;&nbsp;</a></span>isValidAccDevProps()</h2>
 
@@ -8266,7 +8295,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Jun 10 2022 08:40:47 for alpaka by
+    <li class="footer">Generated on Fri Jun 10 2022 14:16:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

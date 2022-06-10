@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('DevCpu_8hpp.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="QueueRegistry_8hpp_source.html">alpaka/dev/common/QueueRegistry.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="SysInfo_8hpp_source.html">alpaka/dev/cpu/SysInfo.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mem_2buf_2Traits_8hpp_source.html">alpaka/mem/buf/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="pltf_2Traits_8hpp_source.html">alpaka/pltf/Traits.hpp</a>&gt;</code><br />
@@ -116,9 +117,6 @@ $(document).ready(function(){initNavTree('DevCpu_8hpp.html',''); initResizable()
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufCpu.html">alpaka::BufCpu&lt; TElem, TDim, TIdx &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU memory buffer.  <a href="classalpaka_1_1BufCpu.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html">alpaka::cpu::detail::DevCpuImpl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device implementation.  <a href="classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevCpu.html">alpaka::DevCpu</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device handle.  <a href="classalpaka_1_1DevCpu.html#details">More...</a><br /></td></tr>
@@ -171,6 +169,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a32307243b945c51f1a00dc17d96ea261"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cpu_1_1detail.html#a32307243b945c51f1a00dc17d96ea261">alpaka::cpu::detail::DevCpuImpl</a> = <a class="el" href="classalpaka_1_1detail_1_1QueueRegistry.html">alpaka::detail::QueueRegistry</a>&lt; cpu::ICpuQueue &gt;</td></tr>
+<tr class="memdesc:a32307243b945c51f1a00dc17d96ea261"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device implementation.  <a href="namespacealpaka_1_1cpu_1_1detail.html#a32307243b945c51f1a00dc17d96ea261">More...</a><br /></td></tr>
+<tr class="separator:a32307243b945c51f1a00dc17d96ea261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63e1bf3207d308d5e6f7f4e012f2d00e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cpu.html#a63e1bf3207d308d5e6f7f4e012f2d00e">alpaka::cpu::ICpuQueue</a> = IGenericThreadsQueue&lt; DevCpu &gt;</td></tr>
 <tr class="memdesc:a63e1bf3207d308d5e6f7f4e012f2d00e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU queue interface.  <a href="namespacealpaka_1_1cpu.html#a63e1bf3207d308d5e6f7f4e012f2d00e">More...</a><br /></td></tr>
 <tr class="separator:a63e1bf3207d308d5e6f7f4e012f2d00e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,7 +186,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="DevCpu_8hpp.html">DevCpu.hpp</a></li>
-    <li class="footer">Generated on Fri Jun 10 2022 08:40:47 for alpaka by
+    <li class="footer">Generated on Fri Jun 10 2022 14:16:11 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

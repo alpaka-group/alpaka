@@ -315,8 +315,8 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                QueueOaccNonBlocking&amp; queue,</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                TaskKernelOacc&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt; <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                queue.m_spQueueImpl-&gt;m_workerThread.enqueueTask([&amp;queue, task]()</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                                                                { task(queue.m_spQueueImpl-&gt;m_dev); });</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                queue.m_spQueueImpl-&gt;m_workerThread-&gt;enqueueTask([&amp;queue, task]()</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                                                                 { task(queue.m_spQueueImpl-&gt;m_dev); });</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            }</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        };</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    } <span class="comment">// namespace trait</span></div>
@@ -350,7 +350,7 @@ $(document).ready(function(){initNavTree('TaskKernelOacc_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelOacc_8hpp.html">TaskKernelOacc.hpp</a></li>
-    <li class="footer">Generated on Fri Jun 10 2022 08:40:46 for alpaka by
+    <li class="footer">Generated on Fri Jun 10 2022 14:16:11 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

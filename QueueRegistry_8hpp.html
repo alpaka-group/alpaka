@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: Member List</title>
+<title>alpaka: /home/runner/work/alpaka/alpaka/include/alpaka/dev/common/QueueRegistry.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('QueueRegistry_8hpp.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -83,21 +83,42 @@ $(document).ready(function(){initNavTree('classalpaka_1_1cpu_1_1detail_1_1DevCpu
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::cpu::detail::DevCpuImpl Member List</div>  </div>
+<div class="title">QueueRegistry.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html">alpaka::cpu::detail::DevCpuImpl</a>, including all inherited members.</p>
-<table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html#ac2248e6537ca83c1ef7defcfcca2b34f">getAllExistingQueues</a>() const -&gt; std::vector&lt; std::shared_ptr&lt; cpu::ICpuQueue &gt;&gt;</td><td class="entry"><a class="el" href="classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html">alpaka::cpu::detail::DevCpuImpl</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html#a70981e8e7a7b5c82cc178d0e2d7b6848">registerQueue</a>(std::shared_ptr&lt; cpu::ICpuQueue &gt; spQueue) const -&gt; void</td><td class="entry"><a class="el" href="classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html">alpaka::cpu::detail::DevCpuImpl</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-</table></div><!-- contents -->
+<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<code>#include &lt;deque&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;mutex&gt;</code><br />
+</div>
+<p><a href="QueueRegistry_8hpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1QueueRegistry.html">alpaka::detail::QueueRegistry&lt; TQueue &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device implementation.  <a href="classalpaka_1_1detail_1_1QueueRegistry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
+<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka accelerator library. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html">alpaka::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jun 10 2022 08:40:47 for alpaka by
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="dir_8f14782a672cdb098bfbc2217f5c6c1d.html">common</a></li><li class="navelem"><a class="el" href="QueueRegistry_8hpp.html">QueueRegistry.hpp</a></li>
+    <li class="footer">Generated on Fri Jun 10 2022 14:16:11 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
