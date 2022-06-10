@@ -219,13 +219,18 @@ namespace alpaka
 
                 // Notify the executing thread.
                 {
+                    std::cout << "locking (1) in " << __func__ << std::endl;
                     std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
+                    std::cout << "locked  (1) in " << __func__ << std::endl;
                     spCallbackSynchronizationData->m_state = CallbackState::notified;
                 }
+                std::cout << "unlocked(1) in " << __func__ << std::endl;
                 spCallbackSynchronizationData->m_event.notify_one();
 
                 // Wait for the executing thread to finish the task if it has not already finished.
+                std::cout << "locking (2) in " << __func__ << std::endl;
                 std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
+                std::cout << "locked  (2) in " << __func__ << std::endl;
                 if(spCallbackSynchronizationData->m_state != CallbackState::finished)
                 {
                     std::cout << "going into wait in " << __func__ << std::endl;
@@ -257,7 +262,9 @@ namespace alpaka
                     {
                         // If the callback has not yet been called, we wait for it.
                         {
+                            std::cout << "locking in enqueue for " << typeid(decltype(queue)).name() << std::endl;
                             std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
+                            std::cout << "locked  in enqueue for " << typeid(decltype(queue)).name() << std::endl;
                             if(spCallbackSynchronizationData->m_state != CallbackState::notified)
                             {
                                 std::cout << "going into wait in enqueue for " << typeid(decltype(queue)).name()
