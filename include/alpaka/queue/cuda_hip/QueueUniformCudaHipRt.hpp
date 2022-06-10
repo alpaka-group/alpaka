@@ -228,10 +228,12 @@ namespace alpaka
                 std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
                 if(spCallbackSynchronizationData->m_state != CallbackState::finished)
                 {
+                    std::cout << "going into wait in " << __func__ << std::endl;
                     spCallbackSynchronizationData->m_event.wait(
                         lock,
                         [&spCallbackSynchronizationData]()
                         { return spCallbackSynchronizationData->m_state == CallbackState::finished; });
+                    std::cout << "woke up         in " << __func__ << std::endl;
                 }
             }
 
@@ -258,10 +260,14 @@ namespace alpaka
                             std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
                             if(spCallbackSynchronizationData->m_state != CallbackState::notified)
                             {
+                                std::cout << "going into wait in enqueue for " << typeid(decltype(queue)).name()
+                                          << std::endl;
                                 spCallbackSynchronizationData->m_event.wait(
                                     lock,
                                     [&spCallbackSynchronizationData]()
                                     { return spCallbackSynchronizationData->m_state == CallbackState::notified; });
+                                std::cout << "woke up         in enqueue for " << typeid(decltype(queue)).name()
+                                          << std::endl;
                             }
 
                             task();
