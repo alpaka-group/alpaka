@@ -207,7 +207,7 @@ namespace alpaka
             {
                 std::mutex m_mutex;
                 std::condition_variable m_event;
-                CallbackState m_state = CallbackState::enqueued;
+                std::atomic<CallbackState> m_state = CallbackState::enqueued;
             };
 
             ALPAKA_FN_HOST static void uniformCudaHipRtHostFunc(void* arg)
