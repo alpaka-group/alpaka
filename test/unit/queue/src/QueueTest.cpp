@@ -51,6 +51,7 @@ using TestQueues = alpaka::meta::Concatenate<
 
 TEMPLATE_LIST_TEST_CASE("queueIsInitiallyEmpty", "[queue]", TestQueues)
 {
+    std::cout << "TEST_queueIsInitiallyEmpty " << typeid(TestType).name() << std::endl;
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
@@ -60,6 +61,7 @@ TEMPLATE_LIST_TEST_CASE("queueIsInitiallyEmpty", "[queue]", TestQueues)
 
 TEMPLATE_LIST_TEST_CASE("queueCallbackIsWorking", "[queue]", TestQueues)
 {
+    std::cout << "TEST_queueCallbackIsWorking " << typeid(TestType).name() << std::endl;
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
     using DevQueue = TestType;
@@ -76,6 +78,7 @@ TEMPLATE_LIST_TEST_CASE("queueCallbackIsWorking", "[queue]", TestQueues)
 
 TEMPLATE_LIST_TEST_CASE("queueWaitShouldWork", "[queue]", TestQueues)
 {
+    std::cout << "TEST_queueWaitShouldWork " << typeid(TestType).name() << std::endl;
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
@@ -98,6 +101,8 @@ TEMPLATE_LIST_TEST_CASE(
     "[queue]",
     TestQueues)
 {
+    std::cout << "TEST_queueShouldNotBeEmptyWhenLastTaskIsStillExecutingAndIsEmptyAfterProcessingFinished "
+              << typeid(TestType).name() << std::endl;
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
@@ -124,6 +129,7 @@ TEMPLATE_LIST_TEST_CASE(
 
 TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQueues)
 {
+    std::cout << "TEST_queueShouldNotExecuteTasksInParallel " << typeid(TestType).name() << std::endl;
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
@@ -174,6 +180,7 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
 
 TEMPLATE_LIST_TEST_CASE("destructingQueueInTaskShouldNotCrash", "[queue]", TestQueues)
 {
+    std::cout << "TEST_destructingQueueInTaskShouldNotCrash " << typeid(TestType).name() << std::endl;
     {
         using DevQueue = TestType;
         using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
