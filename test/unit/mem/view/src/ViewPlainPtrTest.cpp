@@ -153,3 +153,34 @@ TEMPLATE_LIST_TEST_CASE("viewPlainPtrOperatorTest", "[memView]", alpaka::test::T
 {
     alpaka::test::testViewPlainPtrOperators<TestType, float>();
 }
+
+TEST_CASE("createView", "[memView]")
+{
+    using Dev = alpaka::DevCpu;
+    const auto dev = alpaka::getDevByIdx<alpaka::PltfCpu>(0u);
+
+    std::array<float, 4> a{{1, 2, 3, 4}};
+
+    // pointer overload
+    STATIC_REQUIRE(std::is_same_v<
+                   decltype(alpaka::createView(dev, a.data(), 4)),
+                   alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, int>>);
+
+    // container overload
+    STATIC_REQUIRE(std::is_same_v<
+                   decltype(alpaka::createView(dev, a, 4L)),
+                   alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, long>>);
+
+    alpaka::test::DefaultQueue<Dev> queue(dev);
+    std::array<float, 4> b;
+
+    // using as temporaries to memcpy
+    alpaka::memcpy(queue, alpaka::createView(dev, b, 4), alpaka::createView(dev, a, 4));
+    alpaka::wait(queue);
+    CHECK(a == b);
+
+    // using as temporaries to memset
+    alpaka::memset(queue, alpaka::createView(dev, a, 4), 0);
+    alpaka::wait(queue);
+    CHECK(a == std::array<float, 4>{});
+}

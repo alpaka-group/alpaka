@@ -48,18 +48,23 @@ namespace alpaka
                     typename TTCopyPred>
                 class TTask,
                 typename TDim,
-                typename TViewDst,
+                typename TViewDstFwd,
                 typename TViewSrc,
                 typename TExtent,
                 typename TCopyPred>
             auto makeTaskCopyOacc(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent,
-                DevOacc const& dev,
+                DevOacc dev,
                 TCopyPred copyPred)
             {
-                return TTask<TDim, TViewDst, TViewSrc, TExtent, TCopyPred>(viewDst, viewSrc, extent, dev, copyPred);
+                return TTask<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent, TCopyPred>(
+                    std::forward<TViewDstFwd>(viewDst),
+                    viewSrc,
+                    extent,
+                    std::move(dev),
+                    copyPred);
             }
 
             //! The OpenACC Nd device memory copy task.
@@ -91,13 +96,14 @@ namespace alpaka
 
                 using Idx = alpaka::Idx<TExtent>;
 
+                template<typename TViewDstFwd>
                 ALPAKA_FN_HOST TaskCopyOacc(
-                    TViewDst& viewDst,
+                    TViewDstFwd&& viewDst,
                     TViewSrc const& viewSrc,
                     TExtent const& extent,
-                    DevOacc const& dev,
+                    DevOacc dev,
                     TCopyPred copyPred)
-                    : m_dev(dev)
+                    : m_dev(std::move(dev))
                     , m_extent(getExtentVec(extent))
                     , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
                     , m_dstPitchBytes(getPitchBytesVec(viewDst))
@@ -210,8 +216,9 @@ namespace alpaka
                         value,
                     "The source and the destination views are required to have the same element type!");
 
+                template<typename TViewDstFwd>
                 ALPAKA_FN_HOST TaskCopyOacc(
-                    TViewDst& viewDst,
+                    TViewDstFwd&& viewDst,
                     TViewSrc const& viewSrc,
                     TExtent const& /* extent */,
                     DevOacc const& dev,
@@ -263,21 +270,21 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevOacc, DevCpu>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent)
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                return alpaka::oacc::detail::
-                    makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
-                        viewDst,
-                        viewSrc,
-                        extent,
-                        getDev(viewDst),
-                        acc_memcpy_to_device);
+                auto devDst = getDev(viewDst);
+                return alpaka::oacc::detail::makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim>(
+                    std::forward<TViewDstFwd>(viewDst),
+                    viewSrc,
+                    extent,
+                    std::move(devDst),
+                    acc_memcpy_to_device);
             }
         };
 
@@ -285,21 +292,20 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevCpu, DevOacc>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent)
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                return alpaka::oacc::detail::
-                    makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
-                        viewDst,
-                        viewSrc,
-                        extent,
-                        getDev(viewSrc),
-                        acc_memcpy_from_device);
+                return alpaka::oacc::detail::makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim>(
+                    std::forward<TViewDstFwd>(viewDst),
+                    viewSrc,
+                    extent,
+                    getDev(viewSrc),
+                    acc_memcpy_from_device);
             }
         };
 
@@ -307,48 +313,46 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevOacc, DevOacc>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent)
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
+                auto devDst = getDev(viewDst);
 #    if _OPENACC >= 201510 && (!defined __GNUC__)
                 // acc_memcpy_device is only available since OpenACC2.5, but we want the tests to compile anyway
-                if(getDev(viewDst).getNativeHandle() == getDev(viewSrc).getNativeHandle())
+                if(devDst.getNativeHandle() == getDev(viewSrc).getNativeHandle())
                 {
-                    return alpaka::oacc::detail::
-                        makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
-                            viewDst,
-                            viewSrc,
-                            extent,
-                            getDev(viewDst),
-                            acc_memcpy_device);
+                    return alpaka::oacc::detail::makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim>(
+                        std::forward<TViewDstFwd>(viewDst),
+                        viewSrc,
+                        extent,
+                        std::move(devDst),
+                        acc_memcpy_device);
                 }
                 else
 #    endif
                 {
-                    return alpaka::oacc::detail::
-                        makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim, TViewDst, TViewSrc, TExtent>(
-                            viewDst,
-                            viewSrc,
-                            extent,
-                            getDev(viewDst),
-                            [devSrc = getDev(viewSrc),
-                             devDst = getDev(viewDst)](void* dst, void* src, std::size_t size)
-                            {
-                                auto deleter
-                                    = [](void* ptr) { core::alignedFree(core::vectorization::defaultAlignment, ptr); };
-                                std::unique_ptr<void, decltype(deleter)> buf(
-                                    core::alignedAlloc(core::vectorization::defaultAlignment, size),
-                                    deleter);
-                                devSrc.makeCurrent();
-                                acc_memcpy_from_device(buf.get(), src, size);
-                                devDst.makeCurrent();
-                                acc_memcpy_to_device(dst, buf.get(), size);
-                            });
+                    return alpaka::oacc::detail::makeTaskCopyOacc<alpaka::oacc::detail::TaskCopyOacc, TDim>(
+                        std::forward<TViewDstFwd>(viewDst),
+                        viewSrc,
+                        extent,
+                        devDst,
+                        [devSrc = getDev(viewSrc), devDst](void* dst, void* src, std::size_t size)
+                        {
+                            auto deleter
+                                = [](void* ptr) { core::alignedFree(core::vectorization::defaultAlignment, ptr); };
+                            std::unique_ptr<void, decltype(deleter)> buf(
+                                core::alignedAlloc(core::vectorization::defaultAlignment, size),
+                                deleter);
+                            devSrc.makeCurrent();
+                            acc_memcpy_from_device(buf.get(), src, size);
+                            devDst.makeCurrent();
+                            acc_memcpy_to_device(dst, buf.get(), size);
+                        });
                 }
             }
         };

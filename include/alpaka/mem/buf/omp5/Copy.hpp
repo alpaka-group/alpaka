@@ -56,8 +56,9 @@ namespace alpaka
 
             using Idx = alpaka::Idx<TExtent>;
 
+            template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyOmp5(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent,
                 int const& iDstDevice,
@@ -163,8 +164,9 @@ namespace alpaka
 
             using Idx = alpaka::Idx<TExtent>;
 
+            template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyOmp5(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& /* extent */,
                 int const& iDstDevice,
@@ -225,8 +227,9 @@ namespace alpaka
 
             using Idx = alpaka::Idx<TExtent>;
 
+            template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyOmp5(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent,
                 int const& iDstDevice,
@@ -302,22 +305,18 @@ namespace alpaka
             template<typename TDim, typename TDevDst, typename TDevSrc>
             struct CreateTaskCopyImpl
             {
-                template<typename TExtent, typename TViewSrc, typename TViewDst>
+                template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
                 ALPAKA_FN_HOST static auto createTaskMemcpy(
-                    TViewDst& viewDst,
+                    TViewDstFwd&& viewDst,
                     TViewSrc const& viewSrc,
                     TExtent const& extent,
                     int iDeviceDst = 0,
-                    int iDeviceSrc = 0) -> alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>
+                    int iDeviceSrc = 0)
+                    -> alpaka::detail::TaskCopyOmp5<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    return alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>(
-                        viewDst,
-                        viewSrc,
-                        extent,
-                        iDeviceDst,
-                        iDeviceSrc);
+                    return {std::forward<TViewDstFwd>(viewDst), viewSrc, extent, iDeviceDst, iDeviceSrc};
                 }
             };
         } // namespace detail
@@ -326,20 +325,22 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevOmp5, DevCpu>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent) -> alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>
+                TExtent const& extent)
+                -> alpaka::detail::TaskCopyOmp5<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                return alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>(
-                    viewDst,
+                auto dstHandle = getDev(viewDst).getNativeHandle();
+                return {
+                    std::forward<TViewDstFwd>(viewDst),
                     viewSrc,
                     extent,
-                    getDev(viewDst).getNativeHandle(),
-                    omp_get_initial_device());
+                    std::move(dstHandle),
+                    omp_get_initial_device()};
             }
         };
 
@@ -347,20 +348,21 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevCpu, DevOmp5>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent) -> alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>
+                TExtent const& extent)
+                -> alpaka::detail::TaskCopyOmp5<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                return alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>(
-                    viewDst,
+                return {
+                    std::forward<TViewDstFwd>(viewDst),
                     viewSrc,
                     extent,
                     omp_get_initial_device(),
-                    getDev(viewSrc).getNativeHandle());
+                    getDev(viewSrc).getNativeHandle()};
             }
         };
 
@@ -368,20 +370,22 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevOmp5, DevOmp5>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent) -> alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>
+                TExtent const& extent)
+                -> alpaka::detail::TaskCopyOmp5<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                return alpaka::detail::TaskCopyOmp5<TDim, TViewDst, TViewSrc, TExtent>(
-                    viewDst,
+                auto dstHandle = getDev(viewDst).getNativeHandle();
+                return {
+                    std::forward<TViewDstFwd>(viewDst),
                     viewSrc,
                     extent,
-                    getDev(viewDst).getNativeHandle(),
-                    getDev(viewSrc).getNativeHandle());
+                    std::move(dstHandle),
+                    getDev(viewSrc).getNativeHandle()};
             }
         };
     } // namespace trait

@@ -70,8 +70,12 @@ namespace alpaka
         struct TaskSetUniformCudaHip<TApi, DimInt<0u>, TView, TExtent>
             : public TaskSetUniformCudaHipBase<TApi, DimInt<0u>, TView, TExtent>
         {
-            TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                : TaskSetUniformCudaHipBase<TApi, DimInt<0u>, TView, TExtent>(view, byte, extent)
+            template<typename TViewFwd>
+            TaskSetUniformCudaHip(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
+                : TaskSetUniformCudaHipBase<TApi, DimInt<0u>, TView, TExtent>(
+                    std::forward<TViewFwd>(view),
+                    byte,
+                    extent)
             {
             }
 
@@ -99,8 +103,12 @@ namespace alpaka
         struct TaskSetUniformCudaHip<TApi, DimInt<1u>, TView, TExtent>
             : public TaskSetUniformCudaHipBase<TApi, DimInt<1u>, TView, TExtent>
         {
-            TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                : TaskSetUniformCudaHipBase<TApi, DimInt<1u>, TView, TExtent>(view, byte, extent)
+            template<typename TViewFwd>
+            TaskSetUniformCudaHip(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
+                : TaskSetUniformCudaHipBase<TApi, DimInt<1u>, TView, TExtent>(
+                    std::forward<TViewFwd>(view),
+                    byte,
+                    extent)
             {
             }
 
@@ -142,8 +150,12 @@ namespace alpaka
         struct TaskSetUniformCudaHip<TApi, DimInt<2u>, TView, TExtent>
             : public TaskSetUniformCudaHipBase<TApi, DimInt<2u>, TView, TExtent>
         {
-            TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                : TaskSetUniformCudaHipBase<TApi, DimInt<2u>, TView, TExtent>(view, byte, extent)
+            template<typename TViewFwd>
+            TaskSetUniformCudaHip(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
+                : TaskSetUniformCudaHipBase<TApi, DimInt<2u>, TView, TExtent>(
+                    std::forward<TViewFwd>(view),
+                    byte,
+                    extent)
             {
             }
 
@@ -197,8 +209,12 @@ namespace alpaka
         struct TaskSetUniformCudaHip<TApi, DimInt<3u>, TView, TExtent>
             : public TaskSetUniformCudaHipBase<TApi, DimInt<3u>, TView, TExtent>
         {
-            TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                : TaskSetUniformCudaHipBase<TApi, DimInt<3u>, TView, TExtent>(view, byte, extent)
+            template<typename TViewFwd>
+            TaskSetUniformCudaHip(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
+                : TaskSetUniformCudaHipBase<TApi, DimInt<3u>, TView, TExtent>(
+                    std::forward<TViewFwd>(view),
+                    byte,
+                    extent)
             {
             }
 
