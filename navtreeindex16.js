@@ -1,5 +1,9 @@
 var NAVTREEINDEX16 =
 {
+"structalpaka_1_1trait_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html#ae7bf2602d787aafa411af47510b27944":[3,0,0,18,471,0],
+"structalpaka_1_1trait_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,472],
+"structalpaka_1_1trait_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a339560e60a0978615b345a5499116701":[3,0,0,18,472,0],
+"structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,445],
 "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html#aeecc5dbba97745eb7de0312add5ee36b":[3,0,0,18,445,0],
 "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,446],
 "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html#a7cf095b6e9a7da6c070a443590b7f1d3":[3,0,0,18,446,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX16 =
 "structalpaka_1_1trait_1_1Unmap_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_0322c8ae0c36c2976bf2fa15858f9a44b.html":[3,0,0,18,597],
 "structalpaka_1_1trait_1_1Unmap_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_0322c8ae0c36c2976bf2fa15858f9a44b.html#ab4d37e2a7890d0e191a841c9fa01cb29":[3,0,0,18,597,0],
 "structalpaka_1_1trait_1_1Unpin.html":[3,0,0,18,598],
-"structalpaka_1_1trait_1_1Unpin_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,600],
-"structalpaka_1_1trait_1_1Unpin_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#abf185ec47c76d1132dacdc09c85ae933":[3,0,0,18,600,0],
-"structalpaka_1_1trait_1_1Unpin_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,601],
-"structalpaka_1_1trait_1_1Unpin_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a4b70f554d71784c734ed387f2713e259":[3,0,0,18,601,0],
-"structalpaka_1_1trait_1_1Unpin_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,602]
+"structalpaka_1_1trait_1_1Unpin_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,600]
 };

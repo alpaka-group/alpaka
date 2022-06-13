@@ -1,13 +1,13 @@
 var NAVTREEINDEX8 =
 {
-"namespacealpaka_1_1trait.html":[3,0,0,18],
-"namespacealpaka_1_1trait_1_1detail.html":[2,0,0,20,0],
+"namespacealpaka_1_1trait.html":[2,0,0,20],
 "namespacealpaka_1_1trait_1_1detail.html":[3,0,0,18,0],
+"namespacealpaka_1_1trait_1_1detail.html":[2,0,0,20,0],
 "namespacealpaka_1_1trait_1_1generic.html":[2,0,0,20,1],
 "namespacealpaka_1_1uniform__cuda__hip.html":[3,0,0,19],
 "namespacealpaka_1_1uniform__cuda__hip.html":[2,0,0,21],
-"namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[3,0,0,19,0],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,21,0],
+"namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[3,0,0,19,0],
 "namespacealpaka_1_1unit.html":[2,0,0,22],
 "namespacealpaka_1_1warp.html":[2,0,0,23],
 "namespacealpaka_1_1warp.html":[3,0,0,20],

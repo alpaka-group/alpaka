@@ -1,5 +1,9 @@
 var NAVTREEINDEX15 =
 {
+"structalpaka_1_1trait_1_1GetDev_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,322],
+"structalpaka_1_1trait_1_1GetDev_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#aed8d36ca6b47805fb42f37fb4034edb8":[3,0,0,18,322,0],
+"structalpaka_1_1trait_1_1GetDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,323],
+"structalpaka_1_1trait_1_1GetDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a4b0ddb32d3d69ba6a242a8427e820053":[3,0,0,18,323,0],
 "structalpaka_1_1trait_1_1GetDev_3_01EventGenericThreads_3_01TDev_01_4_01_4.html":[3,0,0,18,324],
 "structalpaka_1_1trait_1_1GetDev_3_01EventGenericThreads_3_01TDev_01_4_01_4.html#aaf69876c74034fd866c4897ae05e805d":[3,0,0,18,324,0],
 "structalpaka_1_1trait_1_1GetDev_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,18,325],
@@ -245,9 +249,5 @@ var NAVTREEINDEX15 =
 "structalpaka_1_1trait_1_1IdxType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a5a589e26ed95c30eb4d0a1b84daf907b":[3,0,0,18,469,0],
 "structalpaka_1_1trait_1_1IdxType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,470],
 "structalpaka_1_1trait_1_1IdxType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a14125c57d3c74bcbdd3bb3bfb5bc0de9":[3,0,0,18,470,0],
-"structalpaka_1_1trait_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,471],
-"structalpaka_1_1trait_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html#ae7bf2602d787aafa411af47510b27944":[3,0,0,18,471,0],
-"structalpaka_1_1trait_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,472],
-"structalpaka_1_1trait_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a339560e60a0978615b345a5499116701":[3,0,0,18,472,0],
-"structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,445]
+"structalpaka_1_1trait_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,471]
 };
