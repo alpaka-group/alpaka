@@ -75,8 +75,8 @@ namespace alpaka::trait
     template<typename TDim, typename TPltf>
     struct CreateTaskMemcpy<TDim, experimental::DevGenericSycl<TPltf>, DevCpu>
     {
-        template<typename TExtent, typename TViewSrc, typename TViewDst>
-        static auto createTaskMemcpy(TViewDst& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
+        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
+        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -85,6 +85,7 @@ namespace alpaka::trait
             using SrcType = ElemType const*;
             using DstType = alpaka::experimental::detail::DstAccessor<ElemType, copy_dim>;
 
+            using TViewDst = std::remove_reference_t<TViewDstFwd>;
             static_assert(!std::is_const_v<TViewDst>, "The destination view cannot be const!");
 
             static_assert(
@@ -112,8 +113,8 @@ namespace alpaka::trait
     template<typename TDim, typename TPltf>
     struct CreateTaskMemcpy<TDim, DevCpu, experimental::DevGenericSycl<TPltf>>
     {
-        template<typename TExtent, typename TViewSrc, typename TViewDst>
-        static auto createTaskMemcpy(TViewDst& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
+        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
+        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -122,6 +123,7 @@ namespace alpaka::trait
             using SrcType = alpaka::experimental::detail::SrcAccessor<ElemType, copy_dim>;
             using DstType = ElemType*;
 
+            using TViewDst = std::remove_reference_t<TViewDstFwd>;
             static_assert(!std::is_const_v<TViewDst>, "The destination view cannot be const!");
 
             static_assert(
@@ -151,8 +153,8 @@ namespace alpaka::trait
     template<typename TDim, typename TPltfDst, typename TPltfSrc>
     struct CreateTaskMemcpy<TDim, experimental::DevGenericSycl<TPltfDst>, experimental::DevGenericSycl<TPltfSrc>>
     {
-        template<typename TExtent, typename TViewSrc, typename TViewDst>
-        static auto createTaskMemcpy(TViewDst& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
+        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
+        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -161,6 +163,7 @@ namespace alpaka::trait
             using SrcType = alpaka::experimental::detail::SrcAccessor<ElemType, copy_dim>;
             using DstType = alpaka::experimental::detail::DstAccessor<ElemType, copy_dim>;
 
+            using TViewDst = std::remove_reference_t<TViewDstFwd>;
             static_assert(!std::is_const_v<TViewDst>, "The destination view cannot be const!");
 
             static_assert(

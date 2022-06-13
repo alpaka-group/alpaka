@@ -62,7 +62,8 @@ namespace alpaka
                 std::is_same_v<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>,
                 "The source and the destination view are required to have the same element type!");
 
-            TaskCopyCpuBase(TViewDst& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
+            template<typename TViewFwd>
+            TaskCopyCpuBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
                 : m_extent(getExtentVec(extent))
                 , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
 #if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
@@ -156,7 +157,7 @@ namespace alpaka
         //! The CPU device 1D memory copy task.
         template<typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyCpu<DimInt<1u>, TViewDst, TViewSrc, TExtent>
-            : public TaskCopyCpuBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>
+            : TaskCopyCpuBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>
         {
             using TaskCopyCpuBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopyCpuBase;
 
@@ -212,7 +213,8 @@ namespace alpaka
                 std::is_same_v<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>,
                 "The source and the destination view are required to have the same element type!");
 
-            TaskCopyCpu(TViewDst& viewDst, TViewSrc const& viewSrc, [[maybe_unused]] TExtent const& extent)
+            template<typename TViewDstFwd>
+            TaskCopyCpu(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, [[maybe_unused]] TExtent const& extent)
                 : m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
             {
@@ -258,13 +260,14 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemcpy<TDim, DevCpu, DevCpu>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent) -> alpaka::detail::TaskCopyCpu<TDim, TViewDst, TViewSrc, TExtent>
+                TExtent const& extent)
+                -> alpaka::detail::TaskCopyCpu<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
             {
-                return alpaka::detail::TaskCopyCpu<TDim, TViewDst, TViewSrc, TExtent>(viewDst, viewSrc, extent);
+                return {std::forward<TViewDstFwd>(viewDst), viewSrc, extent};
             }
         };
     } // namespace trait

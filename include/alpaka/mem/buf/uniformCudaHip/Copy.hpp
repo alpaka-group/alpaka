@@ -55,8 +55,9 @@ namespace alpaka
 
             using Idx = alpaka::Idx<TExtent>;
 
+            template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 [[maybe_unused]] TExtent const& extent,
                 typename TApi::MemcpyKind_t const& uniformMemCpyKind,
@@ -135,8 +136,9 @@ namespace alpaka
 
             using Idx = alpaka::Idx<TExtent>;
 
+            template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent,
                 typename TApi::MemcpyKind_t const& uniformMemCpyKind,
@@ -223,8 +225,9 @@ namespace alpaka
 
             using Idx = alpaka::Idx<TExtent>;
 
+            template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent,
                 typename TApi::MemcpyKind_t const& uniformMemcpyKind,
@@ -342,8 +345,9 @@ namespace alpaka
 
             using Idx = alpaka::Idx<TExtent>;
 
+            template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyUniformCudaHip(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
                 TExtent const& extent,
                 typename TApi::MemcpyKind_t const& uniformMemcpyKind,
@@ -484,24 +488,24 @@ namespace alpaka
         template<typename TApi, typename TDim>
         struct CreateTaskMemcpy<TDim, DevCpu, DevUniformCudaHipRt<TApi>>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent)
-                -> alpaka::detail::TaskCopyUniformCudaHip<TApi, TDim, TViewDst, TViewSrc, TExtent>
+                TExtent const& extent) -> alpaka::detail::
+                TaskCopyUniformCudaHip<TApi, TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 auto const iDevice = getDev(viewSrc).getNativeHandle();
 
-                return alpaka::detail::TaskCopyUniformCudaHip<TApi, TDim, TViewDst, TViewSrc, TExtent>(
-                    viewDst,
+                return {
+                    std::forward<TViewDstFwd>(viewDst),
                     viewSrc,
                     extent,
                     TApi::memcpyDeviceToHost,
                     iDevice,
-                    iDevice);
+                    iDevice};
             }
         };
 
@@ -509,24 +513,24 @@ namespace alpaka
         template<typename TApi, typename TDim>
         struct CreateTaskMemcpy<TDim, DevUniformCudaHipRt<TApi>, DevCpu>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent)
-                -> alpaka::detail::TaskCopyUniformCudaHip<TApi, TDim, TViewDst, TViewSrc, TExtent>
+                TExtent const& extent) -> alpaka::detail::
+                TaskCopyUniformCudaHip<TApi, TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 auto const iDevice = getDev(viewDst).getNativeHandle();
 
-                return alpaka::detail::TaskCopyUniformCudaHip<TApi, TDim, TViewDst, TViewSrc, TExtent>(
-                    viewDst,
+                return {
+                    std::forward<TViewDstFwd>(viewDst),
                     viewSrc,
                     extent,
                     TApi::memcpyHostToDevice,
                     iDevice,
-                    iDevice);
+                    iDevice};
             }
         };
 
@@ -534,22 +538,24 @@ namespace alpaka
         template<typename TApi, typename TDim>
         struct CreateTaskMemcpy<TDim, DevUniformCudaHipRt<TApi>, DevUniformCudaHipRt<TApi>>
         {
-            template<typename TExtent, typename TViewSrc, typename TViewDst>
+            template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
             ALPAKA_FN_HOST static auto createTaskMemcpy(
-                TViewDst& viewDst,
+                TViewDstFwd&& viewDst,
                 TViewSrc const& viewSrc,
-                TExtent const& extent)
-                -> alpaka::detail::TaskCopyUniformCudaHip<TApi, TDim, TViewDst, TViewSrc, TExtent>
+                TExtent const& extent) -> alpaka::detail::
+                TaskCopyUniformCudaHip<TApi, TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                return alpaka::detail::TaskCopyUniformCudaHip<TApi, TDim, TViewDst, TViewSrc, TExtent>(
-                    viewDst,
+                auto const iDstDevice = getDev(viewDst).getNativeHandle();
+
+                return {
+                    std::forward<TViewDstFwd>(viewDst),
                     viewSrc,
                     extent,
                     TApi::memcpyDeviceToDevice,
-                    getDev(viewDst).getNativeHandle(),
-                    getDev(viewSrc).getNativeHandle());
+                    iDstDevice,
+                    getDev(viewSrc).getNativeHandle()};
             }
         };
 

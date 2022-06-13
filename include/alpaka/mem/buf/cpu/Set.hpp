@@ -45,7 +45,8 @@ namespace alpaka
                 meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
                 "The view and the extent are required to have compatible idx type!");
 
-            TaskSetCpuBase(TView& view, std::uint8_t const& byte, TExtent const& extent)
+            template<typename TViewFwd>
+            TaskSetCpuBase(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
                 : m_byte(byte)
                 , m_extent(getExtentVec(extent))
                 , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
@@ -164,7 +165,8 @@ namespace alpaka
                 meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
                 "The view and the extent are required to have compatible idx type!");
 
-            TaskSetCpu(TView& view, std::uint8_t const& byte, [[maybe_unused]] TExtent const& extent)
+            template<typename TViewFwd>
+            TaskSetCpu(TViewFwd&& view, std::uint8_t const& byte, [[maybe_unused]] TExtent const& extent)
                 : m_byte(byte)
                 , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
             {
@@ -203,11 +205,13 @@ namespace alpaka
         template<typename TDim>
         struct CreateTaskMemset<TDim, DevCpu>
         {
-            template<typename TExtent, typename TView>
-            ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
-                -> alpaka::detail::TaskSetCpu<TDim, TView, TExtent>
+            template<typename TExtent, typename TViewFwd>
+            ALPAKA_FN_HOST static auto createTaskMemset(
+                TViewFwd&& view,
+                std::uint8_t const& byte,
+                TExtent const& extent) -> alpaka::detail::TaskSetCpu<TDim, std::remove_reference_t<TViewFwd>, TExtent>
             {
-                return alpaka::detail::TaskSetCpu<TDim, TView, TExtent>(view, byte, extent);
+                return {std::forward<TViewFwd>(view), byte, extent};
             }
         };
     } // namespace trait
