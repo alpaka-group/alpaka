@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1detail_1_1QueueRegistry.html#a9cc2bd1f99f2ae313c2015dee7c94255":[3,0,0,5,47,0],
+"classalpaka_1_1detail_1_1QueueRegistry.html#ae307d49484041bc95c9a57dd87a9f2bb":[3,0,0,5,47,1],
+"classalpaka_1_1gb_1_1IdxGbLinear.html":[3,0,0,7,0],
 "classalpaka_1_1gb_1_1IdxGbLinear.html#a58f777f9b92b1ac9c62603a46e8985f3":[3,0,0,7,0,1],
 "classalpaka_1_1gb_1_1IdxGbLinear.html#ad0774c7f0c7672bb6b3a7a44e8dc4c4b":[3,0,0,7,0,0],
 "classalpaka_1_1gb_1_1IdxGbRef.html":[3,0,0,7,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#a1a9e15e84ee73d32ac5c074037bc837c":[3,0,0,17,7,2],
 "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#a300e828688a272f0c137bccb5003b045":[3,0,0,17,7,0],
 "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#ae12ffbf96b72c62402d762581386b25a":[3,0,0,17,7,1],
-"classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#ae156cf4f7a19ae5712808a0281cd6d22":[3,0,0,17,7,3],
-"classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#af72c209660af1cd01e6e15a87c37da9d":[3,0,0,17,7,4],
-"classalpaka_1_1test_1_1KernelExecutionFixture.html":[3,0,0,17,8],
-"classalpaka_1_1test_1_1KernelExecutionFixture.html#a1a89a721b3883649183fb0450b03e5ab":[3,0,0,17,8,6]
+"classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#ae156cf4f7a19ae5712808a0281cd6d22":[3,0,0,17,7,3]
 };

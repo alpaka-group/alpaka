@@ -1,5 +1,8 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html":[3,0,0,18,73],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html#a53e519f74989cf008f8a4982f8adabc5":[3,0,0,18,73,0],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0186c99c081bdf2e4742050da60950733e.html":[3,0,0,18,76],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0186c99c081bdf2e4742050da60950733e.html#a158eff0558a0a5785a2d81d928513845":[3,0,0,18,76,0],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html":[3,0,0,18,74],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html#ac50b3e409e40439f0905a069ed9d5abc":[3,0,0,18,74,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#a26044d38b189c113f699963c5ff75bea":[3,0,0,18,201,0],
 "structalpaka_1_1trait_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,208],
 "structalpaka_1_1trait_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#adcd0f304dd6e84e7bd527ffefc332041":[3,0,0,18,208,0],
-"structalpaka_1_1trait_1_1DimType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,209],
-"structalpaka_1_1trait_1_1DimType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a052b2091685a215f8f3697bad0c0c513":[3,0,0,18,209,0],
-"structalpaka_1_1trait_1_1DimType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,210],
-"structalpaka_1_1trait_1_1DimType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a038856a2eb2c09768947ea9c530ef26a":[3,0,0,18,210,0]
+"structalpaka_1_1trait_1_1DimType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,18,209]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1DevUniformCudaHipRt.html#af40026fe1e0275520a97b228bd9680c5":[3,0,0,86,4],
+"classalpaka_1_1EventGenericThreads.html":[3,0,0,87],
+"classalpaka_1_1EventGenericThreads.html#a4081cbbafb618f0d127dabd0efef7422":[3,0,0,87,0],
 "classalpaka_1_1EventGenericThreads.html#ab4d4c7408acba6733de31f50c14f0143":[3,0,0,87,3],
 "classalpaka_1_1EventGenericThreads.html#ad720c82c4246ec397aeb498ab5198b0d":[3,0,0,87,2],
 "classalpaka_1_1EventGenericThreads.html#ae20ec90c160e703876ee5cba211d2996":[3,0,0,87,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1detail_1_1BufOmp5Impl.html#ac6bce7edc319e18602efb45cfabf611e":[3,0,0,5,8,4],
 "classalpaka_1_1detail_1_1QueueRegistry.html":[3,0,0,5,47],
 "classalpaka_1_1detail_1_1QueueRegistry.html#a2927a8b007a9dead0f71c0e4cb48e3a6":[3,0,0,5,47,2],
-"classalpaka_1_1detail_1_1QueueRegistry.html#a29fdf8b3b24cf5a07d190322225d5919":[3,0,0,5,47,3],
-"classalpaka_1_1detail_1_1QueueRegistry.html#a9cc2bd1f99f2ae313c2015dee7c94255":[3,0,0,5,47,0],
-"classalpaka_1_1detail_1_1QueueRegistry.html#ae307d49484041bc95c9a57dd87a9f2bb":[3,0,0,5,47,1],
-"classalpaka_1_1gb_1_1IdxGbLinear.html":[3,0,0,7,0]
+"classalpaka_1_1detail_1_1QueueRegistry.html#a29fdf8b3b24cf5a07d190322225d5919":[3,0,0,5,47,3]
 };
