@@ -104,8 +104,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad7b78f00b8749c08fd9834a7a0768a0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#ad7b78f00b8749c08fd9834a7a0768a0d">TaskCopyUniformCudaHip</a> (TViewDst &amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent, typename TApi::MemcpyKind_t const &amp;uniformMemCpyKind, int const &amp;iDstDevice, int const &amp;iSrcDevice)</td></tr>
-<tr class="separator:ad7b78f00b8749c08fd9834a7a0768a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22804e1b1d0d272d173450dfe09c62a4"><td class="memTemplParams" colspan="2">template&lt;typename TViewDstFwd &gt; </td></tr>
+<tr class="memitem:a22804e1b1d0d272d173450dfe09c62a4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a22804e1b1d0d272d173450dfe09c62a4">TaskCopyUniformCudaHip</a> (TViewDstFwd &amp;&amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent, typename TApi::MemcpyKind_t const &amp;uniformMemCpyKind, int const &amp;iDstDevice, int const &amp;iSrcDevice)</td></tr>
+<tr class="separator:a22804e1b1d0d272d173450dfe09c62a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88c3352efa927272106bad909596f10"><td class="memTemplParams" colspan="2">template&lt;typename TQueue &gt; </td></tr>
 <tr class="memitem:af88c3352efa927272106bad909596f10"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#af88c3352efa927272106bad909596f10">enqueue</a> (TQueue &amp;queue) const -&gt; void</td></tr>
 <tr class="separator:af88c3352efa927272106bad909596f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,7 +117,7 @@ struct alpaka::detail::TaskCopyUniformCudaHip&lt; TApi, DimInt&lt; 1u &gt;, TVie
 
 <p>The 1D CUDA/HIP memory copy trait. </p>
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00124">124</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00125">125</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ab2ca93fa041a2eae3bf6585cfdfc337f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2ca93fa041a2eae3bf6585cfdfc337f">&#9670;&nbsp;</a></span>Idx</h2>
@@ -132,18 +133,20 @@ template&lt;typename TApi , typename TViewDst , typename TViewSrc , typename TEx
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00136">136</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00137">137</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad7b78f00b8749c08fd9834a7a0768a0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7b78f00b8749c08fd9834a7a0768a0d">&#9670;&nbsp;</a></span>TaskCopyUniformCudaHip()</h2>
+<a id="a22804e1b1d0d272d173450dfe09c62a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22804e1b1d0d272d173450dfe09c62a4">&#9670;&nbsp;</a></span>TaskCopyUniformCudaHip()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TApi , typename TViewDst , typename TViewSrc , typename TExtent &gt; </div>
+<div class="memtemplate">
+template&lt;typename TViewDstFwd &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -151,7 +154,7 @@ template&lt;typename TApi , typename TViewDst , typename TViewSrc , typename TEx
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip.html">alpaka::detail::TaskCopyUniformCudaHip</a>&lt; TApi, <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; 1u &gt;, TViewDst, TViewSrc, TExtent &gt;::<a class="el" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip.html">TaskCopyUniformCudaHip</a> </td>
           <td>(</td>
-          <td class="paramtype">TViewDst &amp;&#160;</td>
+          <td class="paramtype">TViewDstFwd &amp;&amp;&#160;</td>
           <td class="paramname"><em>viewDst</em>, </td>
         </tr>
         <tr>
@@ -197,7 +200,7 @@ template&lt;typename TApi , typename TViewDst , typename TViewSrc , typename TEx
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00138">138</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00140">140</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 
 </div>
 </div>
@@ -231,7 +234,7 @@ template&lt;typename TQueue &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00164">164</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00166">166</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 
 </div>
 </div>
@@ -244,7 +247,7 @@ template&lt;typename TQueue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html">TaskCopyUniformCudaHip&lt; TApi, DimInt&lt; 1u &gt;, TViewDst, TViewSrc, TExtent &gt;</a></li>
-    <li class="footer">Generated on Mon Jun 20 2022 11:39:11 for alpaka by
+    <li class="footer">Generated on Wed Jun 22 2022 13:18:00 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

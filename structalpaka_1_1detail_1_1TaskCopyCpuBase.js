@@ -4,7 +4,7 @@ var structalpaka_1_1detail_1_1TaskCopyCpuBase =
     [ "Elem", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a93890b82f7b319728de301dc8680fd3c", null ],
     [ "ExtentSize", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a4ec2f87d6a6b78f3559e24022c0578b7", null ],
     [ "SrcSize", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#ae8c102a791f735a9830b2a7dea0c9053", null ],
-    [ "TaskCopyCpuBase", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#ab376448422f952b7afc5f96b519c3671", null ],
+    [ "TaskCopyCpuBase", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a64359e950f05258cc73c7a53ab52ca8f", null ],
     [ "printDebug", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a853b0956c7c1e0b0e1609adfba85785e", null ],
     [ "m_dstExtent", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#ac83d988c0e78d0b27df918083f6d0863", null ],
     [ "m_dstMemNative", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html#ac83385f2a55031186b22710e7c14eccf", null ],

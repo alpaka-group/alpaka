@@ -1,4 +1,4 @@
 var structalpaka_1_1trait_1_1CreateTaskMemcpy_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_00_01D762177394bd43820f0079bef4c256ec6 =
 [
-    [ "createTaskMemcpy", "structalpaka_1_1trait_1_1CreateTaskMemcpy_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_00_01D762177394bd43820f0079bef4c256ec6.html#a04226b44d93d4f501724ecc58cbcbbcb", null ]
+    [ "createTaskMemcpy", "structalpaka_1_1trait_1_1CreateTaskMemcpy_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_00_01D762177394bd43820f0079bef4c256ec6.html#a3cef423a7818aac926fac8240e9d7f7c", null ]
 ];

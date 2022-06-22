@@ -154,27 +154,28 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Set_8hpp_source.html',
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TPltf&gt;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">struct </span>CreateTaskMemset&lt;TDim, experimental::DevGenericSycl&lt;TPltf&gt;&gt;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TView&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a1a50b36a49510b2c3d5418cbc9c11f61">createTaskMemset</a>(TView&amp; view, std::uint8_t <span class="keyword">const</span>&amp; <span class="keywordtype">byte</span>, TExtent <span class="keyword">const</span>&amp; ext)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewFwd&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac88495b5e4861e9f4a7081ccfbf47594">createTaskMemset</a>(TViewFwd&amp;&amp; view, std::uint8_t <span class="keyword">const</span>&amp; <span class="keywordtype">byte</span>, TExtent <span class="keyword">const</span>&amp; ext)</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            {</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                constexpr <span class="keyword">auto</span> set_dim = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(Dim&lt;TExtent&gt;::value);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keyword">using</span> ElemType = Elem&lt;TView&gt;;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keyword">using</span> DstType = alpaka::experimental::detail::Accessor&lt;set_dim&gt;;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="comment">// Reinterpret as byte buffer</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keyword">auto</span> buf = view.m_buffer.template reinterpret&lt;std::byte&gt;();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> byte_val = <span class="keyword">static_cast&lt;</span>std::byte<span class="keyword">&gt;</span>(byte);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> range = experimental::detail::make_sycl_range(ext, <span class="keyword">sizeof</span>(ElemType));</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                <span class="keywordflow">return</span> experimental::detail::TaskSetSycl&lt;DstType&gt;{DstType{buf, range}, byte_val};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        };</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keyword">using</span> TView = std::remove_reference_t&lt;TViewFwd&gt;;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keyword">using</span> ElemType = Elem&lt;TView&gt;;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="keyword">using</span> DstType = alpaka::experimental::detail::Accessor&lt;set_dim&gt;;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="comment">// Reinterpret as byte buffer</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keyword">auto</span> buf = view.m_buffer.template reinterpret&lt;std::byte&gt;();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> byte_val = <span class="keyword">static_cast&lt;</span>std::byte<span class="keyword">&gt;</span>(byte);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> range = experimental::detail::make_sycl_range(ext, <span class="keyword">sizeof</span>(ElemType));</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keywordflow">return</span> experimental::detail::TaskSetSycl&lt;DstType&gt;{DstType{buf, range}, byte_val};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        };</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -184,16 +185,16 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Set_8hpp_source.html',
 <div class="ttc" id="aSycl_8hpp_html"><div class="ttname"><a href="Sycl_8hpp.html">Sycl.hpp</a></div></div>
 <div class="ttc" id="amem_2buf_2sycl_2Common_8hpp_html"><div class="ttname"><a href="mem_2buf_2sycl_2Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="amem_2view_2Traits_8hpp_html"><div class="ttname"><a href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a1a50b36a49510b2c3d5418cbc9c11f61"><div class="ttname"><a href="namespacealpaka.html#a1a50b36a49510b2c3d5418cbc9c11f61">alpaka::createTaskMemset</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskMemset(TView &amp;view, std::uint8_t const &amp;byte, TExtent const &amp;extent)</div><div class="ttdoc">Create a memory set task.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00153">Traits.hpp:153</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00049">AccCpuFibers.hpp:49</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html"><div class="ttname"><a href="Debug_8hpp.html">Debug.hpp</a></div></div>
 <div class="ttc" id="aqueue_2Traits_8hpp_html"><div class="ttname"><a href="queue_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aDimIntegralConst_8hpp_html"><div class="ttname"><a href="DimIntegralConst_8hpp.html">DimIntegralConst.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_ac88495b5e4861e9f4a7081ccfbf47594"><div class="ttname"><a href="namespacealpaka.html#ac88495b5e4861e9f4a7081ccfbf47594">alpaka::createTaskMemset</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskMemset(TViewFwd &amp;&amp;view, std::uint8_t const &amp;byte, TExtent const &amp;extent)</div><div class="ttdoc">Create a memory set task.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00153">Traits.hpp:153</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="mem_2buf_2sycl_2Set_8hpp.html">Set.hpp</a></li>
-    <li class="footer">Generated on Mon Jun 20 2022 11:39:10 for alpaka by
+    <li class="footer">Generated on Wed Jun 22 2022 13:17:59 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
