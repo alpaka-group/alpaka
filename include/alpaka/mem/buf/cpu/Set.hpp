@@ -32,19 +32,6 @@ namespace alpaka
             using DstSize = Idx<TView>;
             using Elem = alpaka::Elem<TView>;
 
-            static_assert(!std::is_const_v<TView>, "The destination view can not be const!");
-
-            static_assert(
-                Dim<TView>::value == Dim<TExtent>::value,
-                "The destination view and the extent are required to have the same dimensionality!");
-            static_assert(
-                Dim<TView>::value == TDim::value,
-                "The destination view and the input TDim are required to have the same dimensionality!");
-
-            static_assert(
-                meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
-                "The view and the extent are required to have compatible idx type!");
-
             template<typename TViewFwd>
             TaskSetCpuBase(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
                 : m_byte(byte)
@@ -151,19 +138,6 @@ namespace alpaka
             using Scalar = Vec<DimInt<0u>, ExtentSize>;
             using DstSize = Idx<TView>;
             using Elem = alpaka::Elem<TView>;
-
-            static_assert(!std::is_const_v<TView>, "The destination view can not be const!");
-
-            static_assert(
-                Dim<TView>::value == Dim<TExtent>::value,
-                "The destination view and the extent are required to have the same dimensionality!");
-            static_assert(
-                Dim<TView>::value == 0u,
-                "The destination view and the input TDim are required to have the same dimensionality!");
-
-            static_assert(
-                meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
-                "The view and the extent are required to have compatible idx type!");
 
             template<typename TViewFwd>
             TaskSetCpu(TViewFwd&& view, std::uint8_t const& byte, [[maybe_unused]] TExtent const& extent)

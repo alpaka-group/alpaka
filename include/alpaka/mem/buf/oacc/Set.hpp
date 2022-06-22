@@ -97,9 +97,6 @@ namespace alpaka::trait
             TExtent const& /* extent */)
         {
             using TView = std::remove_reference_t<TViewFwd>;
-            static_assert(Dim<TView>::value == 0u, "The view is required to have dimensionality 0!");
-            static_assert(Dim<TExtent>::value == 0u, "The extent is required to have dimensionality 0!");
-
             using ExtIdx = Idx<TExtent>;
             using Dim0 = DimInt<0u>;
             using Acc = AccOacc<Dim0, ExtIdx>;

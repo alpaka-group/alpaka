@@ -38,24 +38,6 @@ namespace alpaka
         template<typename TDim, typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyOmp5
         {
-            static_assert(!std::is_const_v<TViewDst>, "The destination view can not be const!");
-
-            static_assert(
-                Dim<TViewSrc>::value == TDim::value,
-                "The source view is required to have dimensionality TDim!");
-            static_assert(
-                Dim<TViewDst>::value == Dim<TViewSrc>::value,
-                "The source and the destination views are required to have the same dimensionality!");
-            static_assert(
-                Dim<TViewDst>::value == Dim<TExtent>::value,
-                "The views and the extent are required to have the same dimensionality!");
-            // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
-            static_assert(
-                std::is_same_v<Elem<TViewDst>, typename std::remove_const<Elem<TViewSrc>>::type>,
-                "The source and the destination views are required to have the same element type!");
-
-            using Idx = alpaka::Idx<TExtent>;
-
             template<typename TViewDstFwd>
             ALPAKA_FN_HOST TaskCopyOmp5(
                 TViewDstFwd&& viewDst,
@@ -152,16 +134,6 @@ namespace alpaka
         template<typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyOmp5<DimInt<0u>, TViewDst, TViewSrc, TExtent>
         {
-            static_assert(!std::is_const_v<TViewDst>, "The destination view can not be const!");
-
-            static_assert(Dim<TViewSrc>::value == 0u, "The source view is required to have dimensionality 0!");
-            static_assert(Dim<TViewDst>::value == 0u, "The destination view is required to have dimensionality 0!");
-            static_assert(Dim<TExtent>::value == 0u, "The extent is required to have dimensionality 0!");
-            // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
-            static_assert(
-                std::is_same_v<Elem<TViewDst>, typename std::remove_const<Elem<TViewSrc>>::type>,
-                "The source and the destination view are required to have the same element type!");
-
             using Idx = alpaka::Idx<TExtent>;
 
             template<typename TViewDstFwd>
@@ -215,16 +187,6 @@ namespace alpaka
         template<typename TViewDst, typename TViewSrc, typename TExtent>
         struct TaskCopyOmp5<DimInt<1u>, TViewDst, TViewSrc, TExtent>
         {
-            static_assert(!std::is_const_v<TViewDst>, "The destination view can not be const!");
-
-            static_assert(Dim<TViewSrc>::value == 1u, "The source view is required to have dimensionality 1!");
-            static_assert(Dim<TViewDst>::value == 1u, "The destination view is required to have dimensionality 1!");
-            static_assert(Dim<TExtent>::value == 1u, "The extent is required to have dimensionality 1!");
-            // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
-            static_assert(
-                std::is_same_v<Elem<TViewDst>, typename std::remove_const<Elem<TViewSrc>>::type>,
-                "The source and the destination view are required to have the same element type!");
-
             using Idx = alpaka::Idx<TExtent>;
 
             template<typename TViewDstFwd>

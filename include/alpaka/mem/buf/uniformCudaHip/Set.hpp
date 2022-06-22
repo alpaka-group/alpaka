@@ -47,11 +47,6 @@ namespace alpaka
                 , m_extent(extent)
                 , m_iDevice(getDev(view).getNativeHandle())
             {
-                static_assert(!std::is_const_v<TView>, "The destination view can not be const!");
-
-                static_assert(
-                    Dim<TView>::value == Dim<TExtent>::value,
-                    "The destination view and the extent are required to have the same dimensionality!");
             }
 
         protected:
@@ -82,13 +77,6 @@ namespace alpaka
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
-                static_assert(
-                    Dim<TView>::value == 0u,
-                    "The destination buffer is required to be 0-dimensional (scalar) for this specialization!");
-                static_assert(
-                    Dim<TView>::value == Dim<TExtent>::value,
-                    "The destination buffer and the extent are required to have the same dimensionality!");
-
                 // Initiate the memory set.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memsetAsync(
                     getPtrNative(this->m_view),
@@ -115,13 +103,6 @@ namespace alpaka
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
-                static_assert(
-                    Dim<TView>::value == 1u,
-                    "The destination buffer is required to be 1-dimensional for this specialization!");
-                static_assert(
-                    Dim<TView>::value == Dim<TExtent>::value,
-                    "The destination buffer and the extent are required to have the same dimensionality!");
-
                 using Idx = Idx<TExtent>;
 
                 auto& view = this->m_view;
@@ -162,13 +143,6 @@ namespace alpaka
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
-                static_assert(
-                    Dim<TView>::value == 2u,
-                    "The destination buffer is required to be 2-dimensional for this specialization!");
-                static_assert(
-                    Dim<TView>::value == Dim<TExtent>::value,
-                    "The destination buffer and the extent are required to have the same dimensionality!");
-
                 using Idx = Idx<TExtent>;
 
                 auto& view = this->m_view;
@@ -221,13 +195,6 @@ namespace alpaka
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
-                static_assert(
-                    Dim<TView>::value == 3u,
-                    "The destination buffer is required to be 3-dimensional for this specialization!");
-                static_assert(
-                    Dim<TView>::value == Dim<TExtent>::value,
-                    "The destination buffer and the extent are required to have the same dimensionality!");
-
                 using Elem = alpaka::Elem<TView>;
                 using Idx = Idx<TExtent>;
 
