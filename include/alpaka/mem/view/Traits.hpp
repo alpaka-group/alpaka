@@ -16,6 +16,7 @@
 #include <alpaka/elem/Traits.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/meta/Fold.hpp>
+#include <alpaka/meta/Integral.hpp>
 #include <alpaka/offset/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
@@ -153,9 +154,13 @@ namespace alpaka
     ALPAKA_FN_HOST auto createTaskMemset(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
     {
         using TView = std::remove_reference_t<TViewFwd>;
+        static_assert(!std::is_const_v<TView>, "The view must not be const!");
         static_assert(
             Dim<TView>::value == Dim<TExtent>::value,
             "The view and the extent are required to have the same dimensionality!");
+        static_assert(
+            meta::IsIntegralSuperset<Idx<TView>, Idx<TExtent>>::value,
+            "The view and the extent must have compatible index types!");
 
         return trait::CreateTaskMemset<Dim<TView>, Dev<TView>>::createTaskMemset(
             std::forward<TViewFwd>(view),
@@ -195,14 +200,31 @@ namespace alpaka
     ALPAKA_FN_HOST auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
     {
         using TViewDst = std::remove_reference_t<TViewDstFwd>;
+        using SrcElem = Elem<TViewSrc>;
+        using DstElem = Elem<TViewDst>;
+        using ExtentIdx = Idx<TExtent>;
+        using DstIdx = Idx<TViewDst>;
+        using SrcIdx = Idx<TViewSrc>;
+
+        static_assert(!std::is_const_v<TViewDst>, "The destination view must not be const!");
+        static_assert(!std::is_const_v<DstElem>, "The destination view's element type must not be const!");
         static_assert(
             Dim<TViewDst>::value == Dim<TViewSrc>::value,
-            "The source and the destination view are required to have the same dimensionality!");
+            "The source and the destination view must have the same dimensionality!");
         static_assert(
             Dim<TViewDst>::value == Dim<TExtent>::value,
-            "The destination view and the extent are required to have the same dimensionality!");
+            "The destination view and the extent must have the same dimensionality!");
         static_assert(
-            std::is_same_v<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>,
+            std::is_same_v<DstElem, std::remove_const_t<SrcElem>>,
+            "The source and destination view must have the same element type!");
+        static_assert(
+            meta::IsIntegralSuperset<DstIdx, ExtentIdx>::value,
+            "The destination view and the extent are required to have compatible index types!");
+        static_assert(
+            meta::IsIntegralSuperset<SrcIdx, ExtentIdx>::value,
+            "The source view and the extent are required to have compatible index types!");
+        static_assert(
+            std::is_same_v<DstElem, std::remove_const_t<SrcElem>>,
             "The source and the destination view are required to have the same element type!");
 
         return trait::CreateTaskMemcpy<Dim<TViewDst>, Dev<TViewDst>, Dev<TViewSrc>>::createTaskMemcpy(
