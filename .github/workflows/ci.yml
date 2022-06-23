@@ -21,7 +21,7 @@ concurrency:
 # Therefore we aim to have each value been set in at lest one job.
 # CXX                                           : {g++, clang++}
 #   [g++] ALPAKA_CI_GCC_VER                     : {7, 8, 9, 10, 11}
-#   [clang++] ALPAKA_CI_CLANG_VER               : {5.0, 6.0, 7, 8, 9, 10, 11, 12}
+#   [clang++] ALPAKA_CI_CLANG_VER               : {6.0, 7, 8, 9, 10, 11, 12}
 #   [cl.exe] ALPAKA_CI_CL_VER                   : {2019, 2022}
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [CXX==clang++]:libc++}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
@@ -214,9 +214,6 @@ jobs:
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_DEBUG: 2, alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, CMAKE_CXX_FLAGS: "-foffload=disable", OMP_TARGET_OFFLOAD: "DISABLED", alpaka_OFFLOAD_MAX_BLOCK_SIZE: 2, alpaka_CHECK_HEADERS: ON}
 
         # clang++
-        - name: linux_clang-5_debug_c++17
-          os: ubuntu-latest
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: "5.0",  ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.76.0, ALPAKA_CI_CMAKE_VER: 3.19.8, OMP_NUM_THREADS: 3, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_CXX_STANDARD: 17}
         - name: linux_clang-6_release_asan_c++17
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: "6.0",  ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.20.6, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_CI_SANITIZERS: ASan, alpaka_CXX_STANDARD: 17}
