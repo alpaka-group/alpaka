@@ -1,10 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a4bd56bad399d093202a68d800e5c8f36":[3,0,0,5,61,4],
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a828a237566ff3278e8db284b3ac4869f":[3,0,0,5,61,7],
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#acac7fc14929e627fcf86d25c9431c78e":[3,0,0,5,61,0],
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#ad92a10242af826a841559c15308e3ca9":[3,0,0,5,61,1],
-"structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#ae25761cd7b8b6eac056b0a86c06ae58a":[3,0,0,5,61,8],
 "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,5,62],
 "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#a3cb4f5eabaed6e916a0bc63bd05791fe":[3,0,0,5,62,0],
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHip.html":[3,0,0,5,64],
@@ -249,5 +244,10 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1trait_1_1Round.html#a719f1f61db7c0840f78f04200b569714":[3,0,0,11,0,62,0],
 "structalpaka_1_1math_1_1trait_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabf21f961167a24690dbda5a225958194f.html":[3,0,0,11,0,63],
 "structalpaka_1_1math_1_1trait_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabf21f961167a24690dbda5a225958194f.html#a9686c7f93e039b4847485283ebd6345e":[3,0,0,11,0,63,0],
-"structalpaka_1_1math_1_1trait_1_1Rsqrt.html":[3,0,0,11,0,64]
+"structalpaka_1_1math_1_1trait_1_1Rsqrt.html":[3,0,0,11,0,64],
+"structalpaka_1_1math_1_1trait_1_1Rsqrt.html#a098d46f8e2585ac68c223460a994699a":[3,0,0,11,0,64,0],
+"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,11,0,65],
+"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#adae52940107c6da67805f0dd300e9ec3":[3,0,0,11,0,65,0],
+"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabb2c763615c019cecc5d7856473483e6b.html":[3,0,0,11,0,66],
+"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabb2c763615c019cecc5d7856473483e6b.html#ab1e283d9e7c37906b6caf83146390334":[3,0,0,11,0,66,0]
 };

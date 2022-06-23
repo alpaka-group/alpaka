@@ -1,10 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#aaed7d38d17a6dd55a8b25a869d93f5a4":[3,0,0,16,1,9,3],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#abd52ce5279c239863287ec8d78694cda":[3,0,0,16,1,9,4],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#af87f4cd5d2203fc47f4024937be99987":[3,0,0,16,1,9,2],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html":[3,0,0,16,1,10],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a21eba2c6dfb0a17ad7db2bac9a3c12c0":[3,0,0,16,1,10,1],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a50b9f830431378939733167bfdd9f271":[3,0,0,16,1,10,0],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a9e0c1f598cdeb0079e49144809716e75":[3,0,0,16,1,10,3],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#ae66d3425611327ffbd3032ec820f265d":[3,0,0,16,1,10,2],
@@ -249,5 +244,10 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html":[3,0,0,18,71],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#a19b28858bf95936856771060b2033cae":[3,0,0,18,71,0],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html":[3,0,0,18,72],
-"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#a81b9c40adec8fded107d1e5cff23466e":[3,0,0,18,72,0]
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#a81b9c40adec8fded107d1e5cff23466e":[3,0,0,18,72,0],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html":[3,0,0,18,73],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01int_00_01THierarchy_01_4.html#a53e519f74989cf008f8a4982f8adabc5":[3,0,0,18,73,0],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0186c99c081bdf2e4742050da60950733e.html":[3,0,0,18,76],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_0186c99c081bdf2e4742050da60950733e.html#a158eff0558a0a5785a2d81d928513845":[3,0,0,18,76,0],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicOr_00_01AtomicUniformCudaHipBuiltIn_00_01unsigned_01int_00_01THierarchy_01_4.html":[3,0,0,18,74]
 };

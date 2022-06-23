@@ -1,6 +1,5 @@
 var structalpaka_1_1detail_1_1TaskCopyOmp5 =
 [
-    [ "Idx", "structalpaka_1_1detail_1_1TaskCopyOmp5.html#adc3dd99172acc67d92118ebfcd212910", null ],
     [ "TaskCopyOmp5", "structalpaka_1_1detail_1_1TaskCopyOmp5.html#a886528b93ddf94956d26dde1df06b746", null ],
     [ "operator()", "structalpaka_1_1detail_1_1TaskCopyOmp5.html#a0ddbd2cdfb8bf22d67e9286439ab3abe", null ],
     [ "printDebug", "structalpaka_1_1detail_1_1TaskCopyOmp5.html#a6913035a39dd59212217dcb0403967c2", null ],

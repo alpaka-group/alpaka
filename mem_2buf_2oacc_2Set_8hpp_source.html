@@ -186,29 +186,26 @@ $(document).ready(function(){initNavTree('mem_2buf_2oacc_2Set_8hpp_source.html',
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            TExtent <span class="keyword">const</span>&amp; <span class="comment">/* extent */</span>)</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keyword">using</span> TView = std::remove_reference_t&lt;TViewFwd&gt;;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            static_assert(Dim&lt;TView&gt;::value == 0u, <span class="stringliteral">&quot;The view is required to have dimensionality 0!&quot;</span>);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            static_assert(Dim&lt;TExtent&gt;::value == 0u, <span class="stringliteral">&quot;The extent is required to have dimensionality 0!&quot;</span>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">using</span> ExtIdx = Idx&lt;TExtent&gt;;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">using</span> Dim0 = DimInt&lt;0u&gt;;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a> = AccOacc&lt;Dim0, ExtIdx&gt;;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keyword">auto</span> kernel = [] <a class="code" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a>(<span class="keyword">const</span> <a class="code" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a>&amp;, std::uint8_t b, std::uint8_t* mem)</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                <span class="comment">// for zero dimensional views, we just set the bytes of a single element</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <span class="keywordflow">for</span>(<span class="keyword">auto</span> i = 0u; i &lt; <span class="keyword">sizeof</span>(Elem&lt;TView&gt;); i++)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                    mem[i] = b;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            };</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">using</span> Vec0D = Vec&lt;Dim0, ExtIdx&gt;;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> createTaskKernel&lt;Acc&gt;(</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                WorkDivMembers&lt;Dim0, ExtIdx&gt;{Vec0D{}, Vec0D{}, Vec0D{}},</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                kernel,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                byte,</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                <span class="keyword">reinterpret_cast&lt;</span>std::uint8_t*<span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">alpaka::getPtrNative</a>(view)));</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    };</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">using</span> ExtIdx = Idx&lt;TExtent&gt;;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keyword">using</span> Dim0 = DimInt&lt;0u&gt;;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a> = AccOacc&lt;Dim0, ExtIdx&gt;;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">auto</span> kernel = [] <a class="code" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a>(<span class="keyword">const</span> <a class="code" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a>&amp;, std::uint8_t b, std::uint8_t* mem)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                <span class="comment">// for zero dimensional views, we just set the bytes of a single element</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <span class="keywordflow">for</span>(<span class="keyword">auto</span> i = 0u; i &lt; <span class="keyword">sizeof</span>(Elem&lt;TView&gt;); i++)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    mem[i] = b;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            };</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">using</span> Vec0D = Vec&lt;Dim0, ExtIdx&gt;;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">return</span> createTaskKernel&lt;Acc&gt;(</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                WorkDivMembers&lt;Dim0, ExtIdx&gt;{Vec0D{}, Vec0D{}, Vec0D{}},</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                kernel,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                byte,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keyword">reinterpret_cast&lt;</span>std::uint8_t*<span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">alpaka::getPtrNative</a>(view)));</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    };</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00128">AccCpuFibers.hpp:128</a></div></div>
@@ -232,19 +229,19 @@ $(document).ready(function(){initNavTree('mem_2buf_2oacc_2Set_8hpp_source.html',
 <div class="ttc" id="amem_2view_2Traits_8hpp_html"><div class="ttname"><a href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="acore_2Common_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1Vec_html_a715d74bf7082c7a9233ff4001ff03c2e"><div class="ttname"><a href="classalpaka_1_1Vec.html#a715d74bf7082c7a9233ff4001ff03c2e">alpaka::Vec::zeros</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING static constexpr ALPAKA_FN_HOST_ACC auto zeros() -&gt; Vec&lt; TDim, TVal &gt;</div><div class="ttdoc">Zero value constructor.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00124">Vec.hpp:124</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_af6f776157c5223186419fd80a87d45c5"><div class="ttname"><a href="namespacealpaka.html#af6f776157c5223186419fd80a87d45c5">alpaka::getPitchBytesVec</a></div><div class="ttdeci">auto getPitchBytesVec(TView const &amp;view=TView()) -&gt; Vec&lt; Dim&lt; TView &gt;, Idx&lt; TView &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00368">Traits.hpp:368</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_af6f776157c5223186419fd80a87d45c5"><div class="ttname"><a href="namespacealpaka.html#af6f776157c5223186419fd80a87d45c5">alpaka::getPitchBytesVec</a></div><div class="ttdeci">auto getPitchBytesVec(TView const &amp;view=TView()) -&gt; Vec&lt; Dim&lt; TView &gt;, Idx&lt; TView &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00390">Traits.hpp:390</a></div></div>
 <div class="ttc" id="aQueueOaccBlocking_8hpp_html"><div class="ttname"><a href="QueueOaccBlocking_8hpp.html">QueueOaccBlocking.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00049">AccCpuFibers.hpp:49</a></div></div>
 <div class="ttc" id="aVec_8hpp_html"><div class="ttname"><a href="Vec_8hpp.html">Vec.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a7524e1a8dac8cd18d9b9e07b10e36054"><div class="ttname"><a href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">alpaka::getPtrNative</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getPtrNative(TView const &amp;view) -&gt; Elem&lt; TView &gt; const *</div><div class="ttdoc">Gets the native pointer of the memory view.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00101">Traits.hpp:101</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a7524e1a8dac8cd18d9b9e07b10e36054"><div class="ttname"><a href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">alpaka::getPtrNative</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getPtrNative(TView const &amp;view) -&gt; Elem&lt; TView &gt; const *</div><div class="ttdoc">Gets the native pointer of the memory view.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00102">Traits.hpp:102</a></div></div>
 <div class="ttc" id="aDimIntegralConst_8hpp_html"><div class="ttname"><a href="DimIntegralConst_8hpp.html">DimIntegralConst.hpp</a></div></div>
 <div class="ttc" id="acore_2Common_8hpp_html_a1bfb3a7f88316271e795e20d2810755a"><div class="ttname"><a href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_ACC</div><div class="ttdoc">All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_F...</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00035">Common.hpp:35</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_ac88495b5e4861e9f4a7081ccfbf47594"><div class="ttname"><a href="namespacealpaka.html#ac88495b5e4861e9f4a7081ccfbf47594">alpaka::createTaskMemset</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskMemset(TViewFwd &amp;&amp;view, std::uint8_t const &amp;byte, TExtent const &amp;extent)</div><div class="ttdoc">Create a memory set task.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00153">Traits.hpp:153</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_ac88495b5e4861e9f4a7081ccfbf47594"><div class="ttname"><a href="namespacealpaka.html#ac88495b5e4861e9f4a7081ccfbf47594">alpaka::createTaskMemset</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskMemset(TViewFwd &amp;&amp;view, std::uint8_t const &amp;byte, TExtent const &amp;extent)</div><div class="ttdoc">Create a memory set task.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00154">Traits.hpp:154</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_6c93a0db3d8099b4c959509b1dc3473b.html">oacc</a></li><li class="navelem"><a class="el" href="mem_2buf_2oacc_2Set_8hpp.html">Set.hpp</a></li>
-    <li class="footer">Generated on Thu Jun 23 2022 13:40:21 for alpaka by
+    <li class="footer">Generated on Thu Jun 23 2022 17:32:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

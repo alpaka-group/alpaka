@@ -1,10 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1math_1_1trait_1_1Rsqrt.html#a098d46f8e2585ac68c223460a994699a":[3,0,0,11,0,64,0],
-"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,11,0,65],
-"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#adae52940107c6da67805f0dd300e9ec3":[3,0,0,11,0,65,0],
-"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabb2c763615c019cecc5d7856473483e6b.html":[3,0,0,11,0,66],
-"structalpaka_1_1math_1_1trait_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabb2c763615c019cecc5d7856473483e6b.html#ab1e283d9e7c37906b6caf83146390334":[3,0,0,11,0,66,0],
 "structalpaka_1_1math_1_1trait_1_1Sin.html":[3,0,0,11,0,67],
 "structalpaka_1_1math_1_1trait_1_1Sin.html#ab68639bd72a028c224221a8307efbd0b":[3,0,0,11,0,67,0],
 "structalpaka_1_1math_1_1trait_1_1SinCos.html":[3,0,0,11,0,70],
@@ -249,5 +244,10 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html":[3,0,0,16,1,9],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a1179f0fcbd156538f1c4508a65a3eccf":[3,0,0,16,1,9,5],
 "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a5e93e2b9f8cdfe14f13083188a1aa781":[3,0,0,16,1,9,1],
-"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a600b3d1d89f401f4f96e77bfdf052db6":[3,0,0,16,1,9,0]
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a600b3d1d89f401f4f96e77bfdf052db6":[3,0,0,16,1,9,0],
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#aaed7d38d17a6dd55a8b25a869d93f5a4":[3,0,0,16,1,9,3],
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#abd52ce5279c239863287ec8d78694cda":[3,0,0,16,1,9,4],
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#af87f4cd5d2203fc47f4024937be99987":[3,0,0,16,1,9,2],
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html":[3,0,0,16,1,10],
+"structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html#a21eba2c6dfb0a17ad7db2bac9a3c12c0":[3,0,0,16,1,10,1]
 };
