@@ -1,4 +1,4 @@
-/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber
+/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 
@@ -81,7 +82,13 @@ namespace alpaka
     //! \param extent The extent of the buffer.
     //! \return The newly allocated buffer.
     template<typename TElem, typename TIdx, typename TExtent, typename TDev>
-    ALPAKA_FN_HOST auto allocBuf(TDev const& dev, TExtent const& extent = TExtent())
+#if(BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(12, 1, 0)) && defined(_OPENACC) && defined(NDEBUG)
+    // Force O2 optimization level with GCC 12.1, OpenACC and Release mode.
+    // See https://github.com/alpaka-group/alpaka/issues/1752
+    [[gnu::optimize("O2")]]
+#endif
+    ALPAKA_FN_HOST auto
+    allocBuf(TDev const& dev, TExtent const& extent = TExtent())
     {
         return trait::BufAlloc<TElem, Dim<TExtent>, TIdx, TDev>::allocBuf(dev, extent);
     }
