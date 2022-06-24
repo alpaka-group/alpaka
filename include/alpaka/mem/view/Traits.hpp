@@ -223,9 +223,6 @@ namespace alpaka
         static_assert(
             meta::IsIntegralSuperset<SrcIdx, ExtentIdx>::value,
             "The source view and the extent are required to have compatible index types!");
-        static_assert(
-            std::is_same_v<DstElem, std::remove_const_t<SrcElem>>,
-            "The source and the destination view are required to have the same element type!");
 
         return trait::CreateTaskMemcpy<Dim<TViewDst>, Dev<TViewDst>, Dev<TViewSrc>>::createTaskMemcpy(
             std::forward<TViewDstFwd>(viewDst),
