@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Benjamin Worpitz, Bernhard Manfred Gruber
+# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
 #
 # This file is part of alpaka.
 #
@@ -27,8 +27,9 @@ concurrency:
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # alpaka_CI                                     : {GITHUB}
 # ALPAKA_CI_DOCKER_BASE_IMAGE_NAME              : {ubuntu:20.04}
-# ALPAKA_CI_BOOST_BRANCH                        : {boost-1.74.0, boost-1.75.0, boost-1.76.0, boost-1.77.0, boost-1.78.0}
+# ALPAKA_CI_BOOST_BRANCH                        : {boost-1.74.0, boost-1.75.0, boost-1.76.0, boost-1.77.0, boost-1.78.0, boost-1.79.0}
 # ALPAKA_CI_CMAKE_VER                           : {3.18.6, 3.19.8, 3.20.6, 3.21.6, 3.22.3}
+# ALPAKA_CI_XCODE_VER                           : {13.2.1, 13.4.1}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
 # ALPAKA_CI_ANALYSIS                            : {ON, OFF}
@@ -111,17 +112,17 @@ jobs:
         - name: windows_cl-2019_debug_analysis
           os: windows-2019
           env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.20.6,                     ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2,                                                                                                                                                  alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
-        - name: macos_xcode-12.4.0_debug_analysis
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.4.0,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                  ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2,                                                                                                                                                  alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
+        - name: macos_xcode-13.4.1_debug_analysis
+          os: macos-12
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 13.4.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0,                                                  ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2,                                                                                                                                                  alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
 
         ### macOS
-        - name: macos_xcode-12.4.0_release
-          os: macos-10.15
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 12.4.0,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.75.0,                                                  alpaka_CXX_STANDARD: 17,                                                                                                                                                                  alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
         - name: macos_xcode-13.2.1_debug
           os: macos-11
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 13.2.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.76.0,                                                  alpaka_CXX_STANDARD: 17,                                                                                                                                                                  alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
+        - name: macos_xcode-13.4.1_release
+          os: macos-12
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 13.4.1,                              CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.79.0,                                                                                                                                                                                                                                            alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
 
         ### Windows
         - name: windows_cl-2019_release
