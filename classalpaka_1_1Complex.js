@@ -2,7 +2,7 @@ var classalpaka_1_1Complex =
 [
     [ "value_type", "classalpaka_1_1Complex.html#a0c16484d081f0ea5ff0a00451376459e", null ],
     [ "Complex", "classalpaka_1_1Complex.html#a72c4975500286743e912cbb4d11a25ae", null ],
-    [ "Complex", "classalpaka_1_1Complex.html#aeab9d6965021e74da29ea2723d93a1b9", null ],
+    [ "Complex", "classalpaka_1_1Complex.html#aaa9ef2108069413debc16a1a316e1b71", null ],
     [ "Complex", "classalpaka_1_1Complex.html#abc36136d5484faba246d4e735398c704", null ],
     [ "Complex", "classalpaka_1_1Complex.html#a642d0848876d1f274d04c36691a08692", null ],
     [ "imag", "classalpaka_1_1Complex.html#ac1c798706c93a380ed5f29433728e86f", null ],
@@ -16,7 +16,7 @@ var classalpaka_1_1Complex =
     [ "operator-=", "classalpaka_1_1Complex.html#a58e11374e78a6adc0fe69d02efadd8db", null ],
     [ "operator/=", "classalpaka_1_1Complex.html#aa0d02a3d7abbab9015116e5b763b3fa2", null ],
     [ "operator/=", "classalpaka_1_1Complex.html#ac12a6d3142984d8a7954241baecff7d4", null ],
-    [ "operator=", "classalpaka_1_1Complex.html#ac2b8609299892af375aae903656b756e", null ],
+    [ "operator=", "classalpaka_1_1Complex.html#abf8ccacd45a8650fb2b1172bfe0a7d2f", null ],
     [ "real", "classalpaka_1_1Complex.html#a5f542b5e4190a925f888e7ebc7b555c4", null ],
     [ "real", "classalpaka_1_1Complex.html#a62963bae19f037083f00ac4a10328f42", null ]
 ];
