@@ -437,6 +437,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html">Vec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A n-dimensional vector.  <a href="classalpaka_1_1Vec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ViewConst.html">ViewConst</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A non-modifiable wrapper around a view. This view acts as the wrapped view, but the underlying data is only exposed const-qualified.  <a href="structalpaka_1_1ViewConst.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1ViewPlainPtr.html">ViewPlainPtr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory view to wrap plain pointers.  <a href="classalpaka_1_1ViewPlainPtr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1019,6 +1022,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e7e62dca166ed6d04974a1e393c5229"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6e7e62dca166ed6d04974a1e393c5229">unpin</a> (TBuf &amp;buf) -&gt; void</td></tr>
 <tr class="memdesc:a6e7e62dca166ed6d04974a1e393c5229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unpins the buffer.  <a href="namespacealpaka.html#a6e7e62dca166ed6d04974a1e393c5229">More...</a><br /></td></tr>
 <tr class="separator:a6e7e62dca166ed6d04974a1e393c5229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2be994b379106bbd50e768e825321768">ViewConst</a> (TView) -&gt; <a class="el" href="structalpaka_1_1ViewConst.html">ViewConst</a>&lt; std::decay_t&lt; TView &gt;&gt;</td></tr>
+<tr class="separator:a2be994b379106bbd50e768e825321768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9138b33fed58f04b121274d4a6e2806"><td class="memTemplParams" colspan="2">template&lt;typename TAwaited &gt; </td></tr>
 <tr class="memitem:ad9138b33fed58f04b121274d4a6e2806"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">wait</a> (TAwaited const &amp;awaited) -&gt; void</td></tr>
 <tr class="memdesc:ad9138b33fed58f04b121274d4a6e2806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits the thread for the completion of the given awaited action to complete.  <a href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">More...</a><br /></td></tr>
@@ -3174,7 +3180,7 @@ template&lt;typename TElem , typename TDev , typename TExtent &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A view to static device memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00407">407</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00404">404</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3223,7 +3229,7 @@ template&lt;typename TView , typename TExtent , typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A sub view to a existing view. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00481">481</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00478">478</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3498,7 +3504,7 @@ template&lt;typename TDev , typename TContainer &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A view to device memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00455">455</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00452">452</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3547,7 +3553,7 @@ template&lt;typename TDev , typename TContainer , typename TExtent &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A view to device memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00469">469</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00466">466</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3596,7 +3602,7 @@ template&lt;typename TDev , typename TElem , typename TExtent &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A view to device memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00421">421</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00418">418</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3652,7 +3658,7 @@ template&lt;typename TDev , typename TElem , typename TExtent , typename TPitch 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A view to device memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00443">443</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00440">440</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4973,7 +4979,7 @@ template&lt;typename TView &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The pitch vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00390">390</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00387">387</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4997,7 +5003,7 @@ template&lt;typename TDim , typename TView &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The pitch but only the last N elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00397">397</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00394">394</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5865,7 +5871,7 @@ template&lt;typename TViewSrc , typename TViewDstFwd , typename TQueue &gt; </di
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00257">257</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00254">254</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5921,7 +5927,7 @@ template&lt;typename TExtent , typename TViewSrc , typename TViewDstFwd , typena
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00244">244</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00241">241</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -7266,7 +7272,7 @@ template&lt;typename TView &gt; </div>
 
 <p>Prints the content of the view to the given queue. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00339">339</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00336">336</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8147,6 +8153,26 @@ template&lt;typename TBuf &gt; </div>
 
 </div>
 </div>
+<a id="a2be994b379106bbd50e768e825321768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2be994b379106bbd50e768e825321768">&#9670;&nbsp;</a></span>ViewConst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TView &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structalpaka_1_1ViewConst.html">alpaka::ViewConst</a> </td>
+          <td>(</td>
+          <td class="paramtype">TView&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="structalpaka_1_1ViewConst.html">ViewConst</a>&lt; std::decay_t&lt; TView &gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad9138b33fed58f04b121274d4a6e2806"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9138b33fed58f04b121274d4a6e2806">&#9670;&nbsp;</a></span>wait() <span class="overload">[1/2]</span></h2>
 
@@ -8295,7 +8321,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Jul 6 2022 12:51:01 for alpaka by
+    <li class="footer">Generated on Wed Jul 6 2022 14:01:41 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -122,6 +122,7 @@ var namespacealpaka =
     [ "TimeStdLib", "classalpaka_1_1TimeStdLib.html", null ],
     [ "TimeUniformCudaHipBuiltIn", "classalpaka_1_1TimeUniformCudaHipBuiltIn.html", null ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ],
+    [ "ViewConst", "structalpaka_1_1ViewConst.html", "structalpaka_1_1ViewConst" ],
     [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html", "classalpaka_1_1ViewPlainPtr" ],
     [ "ViewSubView", "classalpaka_1_1ViewSubView.html", "classalpaka_1_1ViewSubView" ],
     [ "WorkDivMembers", "classalpaka_1_1WorkDivMembers.html", "classalpaka_1_1WorkDivMembers" ],

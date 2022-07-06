@@ -718,6 +718,7 @@ var hierarchy =
     [ "alpaka::trait::ElemType< std::vector< TElem, TAllocator > >", "structalpaka_1_1trait_1_1ElemType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html", null ],
     [ "alpaka::trait::ElemType< T, std::enable_if_t< alpaka::detail::isCudaHipBuiltInType< T > > >", "structalpaka_1_1trait_1_1ElemType_3_01T_00_01std_1_1enable__if__t_3_01alpaka_1_1detail_1_1isCudae2f22444a388ee63213a77f066aee0b6.html", null ],
     [ "alpaka::trait::ElemType< T, std::enable_if_t< std::is_fundamental_v< T > > >", "structalpaka_1_1trait_1_1ElemType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__fundamental__v_3_01T_01_4_01_4_01_4.html", null ],
+    [ "alpaka::trait::ElemType< ViewConst< TView > >", "structalpaka_1_1trait_1_1ElemType_3_01ViewConst_3_01TView_01_4_01_4.html", null ],
     [ "alpaka::trait::ElemType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1ElemType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::ElemType< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::Empty< TQueue, TSfinae >", "structalpaka_1_1trait_1_1Empty.html", null ],
@@ -811,6 +812,7 @@ var hierarchy =
     [ "alpaka::trait::GetDev< test::EventHostManualTriggerCpu< TDev > >", "structalpaka_1_1trait_1_1GetDev_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html", null ],
     [ "alpaka::trait::GetDev< test::EventHostManualTriggerCuda >", "structalpaka_1_1trait_1_1GetDev_3_01test_1_1EventHostManualTriggerCuda_01_4.html", null ],
     [ "alpaka::trait::GetDev< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1trait_1_1GetDev_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4.html", null ],
+    [ "alpaka::trait::GetDev< ViewConst< TView > >", "structalpaka_1_1trait_1_1GetDev_3_01ViewConst_3_01TView_01_4_01_4.html", null ],
     [ "alpaka::trait::GetDev< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetDev_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::GetDev< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetDev_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::GetDevByIdx< TPltf, TSfinae >", "structalpaka_1_1trait_1_1GetDevByIdx.html", null ],
@@ -834,6 +836,7 @@ var hierarchy =
     [ "alpaka::trait::value >=2)> >< TExtent >", "structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_01Dim_3_01TExtent_01_4_1_1value_01-_012u_01_4_004c741c4b7ac67c293efc0fd6e77de370.html", null ],
     [ "alpaka::trait::value >=3)> >< TExtent >", "structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_01Dim_3_01TExtent_01_4_1_1value_01-_013u_01_4_00a0ae3f7cad4283402088bbf9bc8694c9.html", null ],
     [ "alpaka::trait::value >=4)> >< TExtent >", "structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_01Dim_3_01TExtent_01_4_1_1value_01-_014u_01_4_00f61d80e1893e99f751b04a7bd1a4240c.html", null ],
+    [ "alpaka::trait::GetExtent< I, ViewConst< TView > >", "structalpaka_1_1trait_1_1GetExtent_3_01I_00_01ViewConst_3_01TView_01_4_01_4.html", null ],
     [ "alpaka::trait::value)> >< TIdxIntegralConst, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01BufCpu_3_01TElem_00_01TDim_00_01TI93b2f6c3ac1d26767aa4dd7ae3cd4b2b.html", null ],
     [ "alpaka::trait::value)> >< TApi, TIdxIntegralConst, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01BufUniformCudaHipRt_3_01TApi_00_01aa2a3c7516c96221d2c844702b03af8e.html", null ],
     [ "alpaka::trait::value)> >< TIdxIntegralConst, TDim, TVal >", "structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01s6056b2842e4438764a552fc19eb35c4d.html", null ],
@@ -873,6 +876,7 @@ var hierarchy =
     [ "alpaka::trait::value >=2)> >< TOffsets >", "structalpaka_1_1trait_1_1GetOffset_3_01DimInt_3_01Dim_3_01TOffsets_01_4_1_1value_01-_012u_01_4_002d120aa3a8bdd201abf35d529c65b3b.html", null ],
     [ "alpaka::trait::value >=3)> >< TOffsets >", "structalpaka_1_1trait_1_1GetOffset_3_01DimInt_3_01Dim_3_01TOffsets_01_4_1_1value_01-_013u_01_4_08533f6e3a44d617a9c9729189cb96811.html", null ],
     [ "alpaka::trait::value >=4)> >< TOffsets >", "structalpaka_1_1trait_1_1GetOffset_3_01DimInt_3_01Dim_3_01TOffsets_01_4_1_1value_01-_014u_01_4_0149f8a8b8fbccae71c6009a924f6f40f.html", null ],
+    [ "alpaka::trait::GetOffset< I, ViewConst< TView > >", "structalpaka_1_1trait_1_1GetOffset_3_01I_00_01ViewConst_3_01TView_01_4_01_4.html", null ],
     [ "alpaka::trait::GetOffset< TIdx, std::array< TElem, Tsize > >", "structalpaka_1_1trait_1_1GetOffset_3_01TIdx_00_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html", null ],
     [ "alpaka::trait::GetOffset< TIdx, std::vector< TElem, TAllocator > >", "structalpaka_1_1trait_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html", null ],
     [ "alpaka::trait::GetOffset< TIdxIntegralConst, BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
@@ -883,6 +887,7 @@ var hierarchy =
     [ "alpaka::trait::value)> >< TIdxIntegralConst, TElem, TDim, TDev, TIdx >", "structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01ViewSubView_3_01TDev_00_01TElem_00a7b57f1ec9df5322e1a099dc0e988c86.html", null ],
     [ "alpaka::trait::GetPitchBytes< TIdx, TView, TSfinae >", "structalpaka_1_1trait_1_1GetPitchBytes.html", null ],
     [ "alpaka::trait::GetPitchBytes< DimInt< TDim::value - 1u >, BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUniforae1a61972bf84034a69568bdf758183e.html", null ],
+    [ "alpaka::trait::GetPitchBytes< I, ViewConst< TView > >", "structalpaka_1_1trait_1_1GetPitchBytes_3_01I_00_01ViewConst_3_01TView_01_4_01_4.html", null ],
     [ "alpaka::trait::GetPitchBytes< TIdxIntegralConst, ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPitchBytes_3_01TIdxIntegralConst_00_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::GetPtrDev< TView, TDev, TSfinae >", "structalpaka_1_1trait_1_1GetPtrDev.html", null ],
     [ "alpaka::trait::GetPtrDev< BufCpu< TElem, TDim, TIdx >, DevCpu >", "structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevCpu_01_4.html", null ],
@@ -896,6 +901,7 @@ var hierarchy =
     [ "alpaka::trait::GetPtrNative< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::GetPtrNative< std::array< TElem, Tsize > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html", null ],
     [ "alpaka::trait::GetPtrNative< std::vector< TElem, TAllocator > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html", null ],
+    [ "alpaka::trait::GetPtrNative< ViewConst< TView > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01ViewConst_3_01TView_01_4_01_4.html", null ],
     [ "alpaka::trait::GetPtrNative< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::GetPtrNative< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::trait::GetWarpSizes< T, TSfinae >", "structalpaka_1_1trait_1_1GetWarpSizes.html", null ],
@@ -1139,7 +1145,16 @@ var hierarchy =
       [ "alpaka::meta::CudaVectorArrayWrapper< TScalar, 3 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html", null ],
       [ "alpaka::meta::CudaVectorArrayWrapper< TScalar, 4 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html", null ]
     ] ],
+    [ "alpaka::trait::DevType< TView >", "structalpaka_1_1trait_1_1DevType.html", [
+      [ "alpaka::trait::DevType< ViewConst< TView > >", "structalpaka_1_1trait_1_1DevType_3_01ViewConst_3_01TView_01_4_01_4.html", null ]
+    ] ],
+    [ "alpaka::trait::DimType< TView >", "structalpaka_1_1trait_1_1DimType.html", [
+      [ "alpaka::trait::DimType< ViewConst< TView > >", "structalpaka_1_1trait_1_1DimType_3_01ViewConst_3_01TView_01_4_01_4.html", null ]
+    ] ],
     [ "alpaka::test::cpu::detail::EventHostManualTriggerCpuImpl< DevCpu >", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html", null ],
+    [ "alpaka::trait::IdxType< TView >", "structalpaka_1_1trait_1_1IdxType.html", [
+      [ "alpaka::trait::IdxType< ViewConst< TView > >", "structalpaka_1_1trait_1_1IdxType_3_01ViewConst_3_01TView_01_4_01_4.html", null ]
+    ] ],
     [ "alpaka::IGenericThreadsQueue< DevOmp5 >", "classalpaka_1_1IGenericThreadsQueue.html", null ],
     [ "alpaka::concepts::Implements< ConceptAcc, AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::AccCpuFibers< TDim, TIdx >", "classalpaka_1_1AccCpuFibers.html", null ]
@@ -1892,6 +1907,9 @@ var hierarchy =
     [ "alpaka::Vec< TDim, size_t >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, SrcSize >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, TIdx >", "classalpaka_1_1Vec.html", null ],
+    [ "alpaka::internal::ViewAccessOps< ViewConst< TView > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
+      [ "alpaka::ViewConst< TView >", "structalpaka_1_1ViewConst.html", null ]
+    ] ],
     [ "alpaka::internal::ViewAccessOps< ViewPlainPtr< Dev, TElem, TDim, TIdx > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
       [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "classalpaka_1_1ViewPlainPtr.html", null ]
     ] ],

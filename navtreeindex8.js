@@ -1,11 +1,14 @@
 var NAVTREEINDEX8 =
 {
+"namespacealpaka_1_1test_1_1trait.html":[2,0,0,19,3],
+"namespacealpaka_1_1test_1_1uniform__cuda__hip.html":[3,0,0,17,3],
+"namespacealpaka_1_1test_1_1uniform__cuda__hip.html":[2,0,0,19,4],
 "namespacealpaka_1_1test_1_1uniform__cuda__hip_1_1detail.html":[3,0,0,17,3,0],
 "namespacealpaka_1_1test_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,19,4,0],
-"namespacealpaka_1_1trait.html":[2,0,0,20],
 "namespacealpaka_1_1trait.html":[3,0,0,18],
-"namespacealpaka_1_1trait_1_1detail.html":[2,0,0,20,0],
+"namespacealpaka_1_1trait.html":[2,0,0,20],
 "namespacealpaka_1_1trait_1_1detail.html":[3,0,0,18,0],
+"namespacealpaka_1_1trait_1_1detail.html":[2,0,0,20,0],
 "namespacealpaka_1_1trait_1_1generic.html":[2,0,0,20,1],
 "namespacealpaka_1_1uniform__cuda__hip.html":[3,0,0,19],
 "namespacealpaka_1_1uniform__cuda__hip.html":[2,0,0,21],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1AtomicXor.html":[3,0,0,47],
 "structalpaka_1_1AtomicXor.html#a5c69029d73740534cdd74d8efdf65136":[3,0,0,47,0],
 "structalpaka_1_1BlockAnd.html":[3,0,0,48],
-"structalpaka_1_1BlockAnd.html#a6691bec07b43e1d4c47d39e0d6a1b2c7":[3,0,0,48,1],
-"structalpaka_1_1BlockAnd.html#acfec2d7f8eb656a11fdc456bcda81076a7187d01d673dfc31a62b38c573d7a983":[3,0,0,48,0],
-"structalpaka_1_1BlockCount.html":[3,0,0,49],
-"structalpaka_1_1BlockCount.html#a3c51953064389b5560b244ff3c5fffc3ae9dc43ed436ca2ec349321cb53897adc":[3,0,0,49,0]
+"structalpaka_1_1BlockAnd.html#a6691bec07b43e1d4c47d39e0d6a1b2c7":[3,0,0,48,1]
 };
