@@ -21,7 +21,7 @@ concurrency:
 # Therefore we aim to have each value been set in at lest one job.
 # CXX                                           : {g++, clang++}
 #   [g++] ALPAKA_CI_GCC_VER                     : {7, 8, 9, 10, 11, 12}
-#   [clang++] ALPAKA_CI_CLANG_VER               : {6.0, 7, 8, 9, 10, 11, 12}
+#   [clang++] ALPAKA_CI_CLANG_VER               : {6.0, 7, 8, 9, 10, 11, 12, 13, 14}
 #   [cl.exe] ALPAKA_CI_CL_VER                   : {2019, 2022}
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [CXX==clang++]:libc++}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
@@ -255,6 +255,9 @@ jobs:
         - name: linux_clang-13_debug
           os: ubuntu-22.04
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.20.6, OMP_NUM_THREADS: 3, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_EXTENSIONS: OFF}
+        - name: linux_clang-14_debug_omp5
+          os: ubuntu-latest
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 14,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.77.0, ALPAKA_CI_CMAKE_VER: 3.19.8, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu -Wno-openmp-mapping", alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, CMAKE_EXE_LINKER_FLAGS: "-fopenmp", alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF}
 
         # icpx
         - name: linux_icpx_release

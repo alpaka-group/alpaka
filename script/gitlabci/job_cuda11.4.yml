@@ -34,3 +34,18 @@ linux_nvcc-11.4_gcc-9_release:
 # gcc 10 not included because of an GCC 10.3 bug: https://github.com/alpaka-group/alpaka/issues/1297
 
 # clang not included because of an CUDA 11.4 bug: https://github.com/alpaka-group/alpaka/issues/1625
+
+# clang++ as CUDA compiler
+linux_clang-14_cuda-11.4_release:
+  extends: .base_cuda_clang
+  variables:
+    ALPAKA_CI_UBUNTU_VER: "20.04"
+    ALPAKA_CI_CUDA_VERSION: "11.4"
+    ALPAKA_CI_CLANG_VER: 14
+    CMAKE_BUILD_TYPE: Release
+    ALPAKA_BOOST_VERSION: 1.79.0
+    ALPAKA_CI_CMAKE_VER: 3.23.2
+    alpaka_ACC_GPU_CUDA_ENABLE: "ON"
+    CMAKE_CUDA_COMPILER: clang++
+    alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
+  stage: stageRun1

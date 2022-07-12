@@ -34,3 +34,5 @@ linux_nvcc-11.3_gcc-9_release:
 # gcc 10 not included because of an GCC 10.3 bug: https://github.com/alpaka-group/alpaka/issues/1297
 
 # clang not included because of an CUDA 11.3 bug: https://github.com/alpaka-group/alpaka/issues/1625
+
+# clang++ as CUDA compiler not included because of an unknown bug: https://github.com/alpaka-group/alpaka/issues/1857
