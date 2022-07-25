@@ -124,7 +124,7 @@ namespace alpaka
                 double* const addr,
                 double const& value) -> double
             {
-#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(6, 0, 0)
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(6, 0, 0) || BOOST_LANG_HIP
                 return ::atomicAdd(addr, value);
 #        else
                 // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
