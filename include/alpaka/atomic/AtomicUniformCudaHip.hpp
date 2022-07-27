@@ -39,6 +39,10 @@ namespace alpaka
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
 
+//! clang is providing a builtin for different atomic functions even if these is not supported for architectures < 6.0
+#        define CLANG_CUDA_PTX_WORKAROUND                                                                             \
+            (BOOST_COMP_CLANG && BOOST_LANG_CUDA && BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(6, 0, 0))
+
 //! These types must be in the global namespace for checking existence of respective functions in global namespace via
 //! SFINAE, so we use inline namespace.
 inline namespace alpakaGlobal
@@ -78,6 +82,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicCas,
@@ -93,6 +98,7 @@ inline namespace alpakaGlobal
             return atomicCAS_block(add, compare, value);
         }
     };
+#        endif
 
 
     // Add.
@@ -110,6 +116,8 @@ inline namespace alpakaGlobal
         }
     };
 
+
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicAdd,
@@ -123,6 +131,15 @@ inline namespace alpakaGlobal
             return atomicAdd_block(add, value);
         }
     };
+#        endif
+
+#        if CLANG_CUDA_PTX_WORKAROUND
+    // clang is providing a builtin for atomicAdd even if these is not supported by the current architecture
+    template<typename THierarchy>
+    struct AlpakaBuiltInAtomic<alpaka::AtomicAdd, double, THierarchy> : std::false_type
+    {
+    };
+#        endif
 
     // Sub.
 
@@ -444,6 +461,8 @@ inline namespace alpakaGlobal
     };
 
 } // namespace alpakaGlobal
+
+#        undef CLANG_CUDA_PTX_WORKAROUND
 #    endif
 
 #endif
