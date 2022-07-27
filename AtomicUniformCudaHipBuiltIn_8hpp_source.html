@@ -213,7 +213,7 @@ $(document).ready(function(){initNavTree('AtomicUniformCudaHipBuiltIn_8hpp_sourc
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keywordtype">double</span>* <span class="keyword">const</span> addr,</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                <span class="keywordtype">double</span> <span class="keyword">const</span>&amp; value) -&gt; <span class="keywordtype">double</span></div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#        if BOOST_ARCH_PTX &gt;= BOOST_VERSION_NUMBER(6, 0, 0)</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#        if BOOST_ARCH_PTX &gt;= BOOST_VERSION_NUMBER(6, 0, 0) || BOOST_LANG_HIP</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                <a class="code" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">return ::atomicAdd</a>(addr, value);</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#        else</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                <span class="comment">// Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions</span></div>
@@ -1213,7 +1213,7 @@ $(document).ready(function(){initNavTree('AtomicUniformCudaHipBuiltIn_8hpp_sourc
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="AtomicUniformCudaHipBuiltIn_8hpp.html">AtomicUniformCudaHipBuiltIn.hpp</a></li>
-    <li class="footer">Generated on Tue Jul 12 2022 08:13:59 for alpaka by
+    <li class="footer">Generated on Wed Jul 27 2022 08:04:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
