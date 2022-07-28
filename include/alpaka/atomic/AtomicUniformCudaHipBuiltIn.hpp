@@ -79,11 +79,21 @@ namespace alpaka
                     T* const addr,
                     T const& value) -> T
                 {
-                    // Emulating atomics with atomicCAS is mentioned in the programming guide too.
-                    // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
                     auto* const addressAsIntegralType = reinterpretAddress(addr);
                     using EmulatedType = ALPAKA_DECAY_T(decltype(*addressAsIntegralType));
-                    EmulatedType old = *addressAsIntegralType;
+
+                    // Emulating atomics with atomicCAS is mentioned in the programming guide too.
+                    // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
+#        if BOOST_LANG_HIP
+#            if __has_builtin(__hip_atomic_load)
+                    EmulatedType old{
+                        __hip_atomic_load(addressAsIntegralType, __ATOMIC_RELAXED, __HIP_MEMORY_SCOPE_AGENT)};
+#            else
+                    EmulatedType old{__atomic_load_n(addressAsIntegralType, __ATOMIC_RELAXED)};
+#            endif
+#        else
+                    EmulatedType old{*addressAsIntegralType};
+#        endif
                     EmulatedType assumed;
                     do
                     {
