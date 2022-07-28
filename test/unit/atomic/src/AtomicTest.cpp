@@ -365,6 +365,23 @@ public:
 
 #endif
 
+#if defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)
+
+template<typename TDim, typename TIdx, typename T>
+class AtomicTestKernel<alpaka::AccOacc<TDim, TIdx>, T, std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
+{
+public:
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_ACC auto operator()(alpaka::AccOacc<TDim, TIdx> const& /* acc */, bool* success, T /* operandOrig */)
+        const -> void
+    {
+        // All other types are not supported by OpenACC atomic operations.
+        ALPAKA_CHECK(*success, true);
+    }
+};
+
+#endif
+
 template<typename TAcc, typename T>
 struct TestAtomicOperations
 {
