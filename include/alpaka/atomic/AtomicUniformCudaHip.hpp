@@ -141,6 +141,16 @@ inline namespace alpakaGlobal
     };
 #        endif
 
+#        if(BOOST_LANG_HIP)
+    // HIP shows bad performance with builtin atomicAdd(float*,float) for the hierarchy threads therefore we do not
+    // call the buildin method and instead use the atomicCAS emulation. For details see:
+    // https://github.com/alpaka-group/alpaka/issues/1657
+    template<>
+    struct AlpakaBuiltInAtomic<alpaka::AtomicAdd, float, alpaka::hierarchy::Threads> : std::false_type
+    {
+    };
+#        endif
+
     // Sub.
 
     template<typename T, typename THierarchy>
