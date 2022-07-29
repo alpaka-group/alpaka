@@ -222,6 +222,18 @@ inline namespace alpakaGlobal
     struct AlpakaBuiltInAtomic<alpaka::AtomicMin, double, alpaka::hierarchy::Threads> : std::false_type
     {
     };
+
+#            if !__has_builtin(__hip_atomic_compare_exchange_strong)
+    template<typename THierarchy>
+    struct AlpakaBuiltInAtomic<alpaka::AtomicMin, unsigned long long, THierarchy> : std::false_type
+    {
+    };
+
+    template<>
+    struct AlpakaBuiltInAtomic<alpaka::AtomicMin, unsigned long long, alpaka::hierarchy::Threads> : std::false_type
+    {
+    };
+#            endif
 #        endif
 
     // Max.
@@ -275,6 +287,18 @@ inline namespace alpakaGlobal
     struct AlpakaBuiltInAtomic<alpaka::AtomicMax, double, alpaka::hierarchy::Threads> : std::false_type
     {
     };
+
+#            if !__has_builtin(__hip_atomic_compare_exchange_strong)
+    template<typename THierarchy>
+    struct AlpakaBuiltInAtomic<alpaka::AtomicMax, unsigned long long, THierarchy> : std::false_type
+    {
+    };
+
+    template<>
+    struct AlpakaBuiltInAtomic<alpaka::AtomicMax, unsigned long long, alpaka::hierarchy::Threads> : std::false_type
+    {
+    };
+#            endif
 #        endif
 
 
