@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"CpuSyclIntel_8hpp.html":[4,0,0,0,21,6],
+"CpuSyclIntel_8hpp.html#a2ee3c939647ff7e43593b83765c77aa5":[4,0,0,0,21,6,0],
+"CpuSyclIntel_8hpp.html#ac36612a48f63161cc19600d85c6eefe5":[4,0,0,0,21,6,1],
 "CpuSyclIntel_8hpp_source.html":[4,0,0,0,21,6],
 "CpuTbbBlocks_8hpp.html":[4,0,0,0,21,7],
 "CpuTbbBlocks_8hpp.html#a8e980af207c9069aefb5cdcd1a6467e3":[4,0,0,0,21,7,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "MemFenceOmp5_8hpp_source.html":[4,0,0,0,15,2,6],
 "MemFenceUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,15,2,7],
 "MemFenceUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,15,2,7],
-"MultiplyAndSplit64to32_8hpp.html":[4,0,0,0,20,0,0],
-"MultiplyAndSplit64to32_8hpp.html#a27924e14b2e5aa8a3213f77c3bd70ef8":[4,0,0,0,20,0,0,1],
-"MultiplyAndSplit64to32_8hpp.html#a49e7ac2f6ba3fb99df75a808146f1dab":[4,0,0,0,20,0,0,0],
-"MultiplyAndSplit64to32_8hpp.html#a78260ac74587972ea7408fa1305054c9":[4,0,0,0,20,0,0,2]
+"MultiplyAndSplit64to32_8hpp.html":[4,0,0,0,20,0,0]
 };

@@ -1,6 +1,6 @@
 var NAVTREEINDEX0 =
 {
-".html":[3,0,1],
+".html":[3,0,2],
 "AccCpuFibers_8hpp.html":[4,0,0,0,0,0],
 "AccCpuFibers_8hpp_source.html":[4,0,0,0,0,0],
 "AccCpuOmp2Blocks_8hpp.html":[4,0,0,0,0,1],
@@ -97,8 +97,11 @@ var NAVTREEINDEX0 =
 "AtomicOmpBuiltIn_8hpp_source.html":[4,0,0,0,1,7],
 "AtomicStdLibLock_8hpp.html":[4,0,0,0,1,8],
 "AtomicStdLibLock_8hpp_source.html":[4,0,0,0,1,8],
-"AtomicUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,1,9],
-"AtomicUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,1,9],
+"AtomicUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,1,10],
+"AtomicUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,1,10],
+"AtomicUniformCudaHip_8hpp.html":[4,0,0,0,1,9],
+"AtomicUniformCudaHip_8hpp.html#a4dd21bd3397d989144ffc9041a2e3ace":[4,0,0,0,1,9,24],
+"AtomicUniformCudaHip_8hpp_source.html":[4,0,0,0,1,9],
 "BarrierThread_8hpp.html":[4,0,0,0,3,6],
 "BarrierThread_8hpp_source.html":[4,0,0,0,3,6],
 "BlockSharedDynMemberAllocKiB_8hpp.html":[4,0,0,0,2,0,0,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "CpuOmp2Threads_8hpp.html":[4,0,0,0,21,4],
 "CpuOmp2Threads_8hpp_source.html":[4,0,0,0,21,4],
 "CpuSerial_8hpp.html":[4,0,0,0,21,5],
-"CpuSerial_8hpp_source.html":[4,0,0,0,21,5],
-"CpuSyclIntel_8hpp.html":[4,0,0,0,21,6],
-"CpuSyclIntel_8hpp.html#a2ee3c939647ff7e43593b83765c77aa5":[4,0,0,0,21,6,0],
-"CpuSyclIntel_8hpp.html#ac36612a48f63161cc19600d85c6eefe5":[4,0,0,0,21,6,1]
+"CpuSerial_8hpp_source.html":[4,0,0,0,21,5]
 };

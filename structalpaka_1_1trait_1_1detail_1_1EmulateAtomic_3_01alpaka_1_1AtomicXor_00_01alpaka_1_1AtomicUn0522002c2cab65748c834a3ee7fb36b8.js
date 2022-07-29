@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1detail_1_1EmulateAtomic_3_01alpaka_1_1AtomicXor_00_01alpaka_1_1AtomicUn0522002c2cab65748c834a3ee7fb36b8 =
+[
+    [ "atomic", "structalpaka_1_1trait_1_1detail_1_1EmulateAtomic_3_01alpaka_1_1AtomicXor_00_01alpaka_1_1AtomicUn0522002c2cab65748c834a3ee7fb36b8.html#a6131b27f34702de4d43d1ba5f5ceb510", null ]
+];

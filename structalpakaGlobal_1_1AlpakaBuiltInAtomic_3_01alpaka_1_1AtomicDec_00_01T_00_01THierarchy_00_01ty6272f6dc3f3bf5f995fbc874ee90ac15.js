@@ -1,0 +1,4 @@
+var structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicDec_00_01T_00_01THierarchy_00_01ty6272f6dc3f3bf5f995fbc874ee90ac15 =
+[
+    [ "atomic", "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicDec_00_01T_00_01THierarchy_00_01ty6272f6dc3f3bf5f995fbc874ee90ac15.html#ae61d33e9848a1e8e23863c36d754577c", null ]
+];

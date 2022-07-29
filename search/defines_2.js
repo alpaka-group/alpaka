@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['min_5floop_5055',['MIN_LOOP',['../tinymt32_8h.html#ad7a4b73a72fafba00138f2491676c498',1,'tinymt32.h']]]
+  ['clang_5fcuda_5fptx_5fworkaround_5024',['CLANG_CUDA_PTX_WORKAROUND',['../AtomicUniformCudaHip_8hpp.html#a4dd21bd3397d989144ffc9041a2e3ace',1,'AtomicUniformCudaHip.hpp']]]
 ];
