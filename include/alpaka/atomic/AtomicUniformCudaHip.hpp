@@ -167,7 +167,7 @@ inline namespace alpakaGlobal
         }
     };
 
-
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicSub,
@@ -181,6 +181,7 @@ inline namespace alpakaGlobal
             return atomicSub_block(add, value);
         }
     };
+#        endif
 
     // Min.
     template<typename T, typename THierarchy>
@@ -197,6 +198,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicMin,
@@ -210,6 +212,7 @@ inline namespace alpakaGlobal
             return atomicMin_block(add, value);
         }
     };
+#        endif
 
 // disable HIP atomicMin: see https://github.com/ROCm-Developer-Tools/hipamd/pull/40
 #        if(BOOST_LANG_HIP)
@@ -262,6 +265,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicMax,
@@ -275,6 +279,7 @@ inline namespace alpakaGlobal
             return atomicMax_block(add, value);
         }
     };
+#        endif
 
     // disable HIP atomicMax: see https://github.com/ROCm-Developer-Tools/hipamd/pull/40
 #        if(BOOST_LANG_HIP)
@@ -328,6 +333,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicExch,
@@ -341,6 +347,7 @@ inline namespace alpakaGlobal
             return atomicExch_block(add, value);
         }
     };
+#        endif
 
     // Inc.
 
@@ -358,6 +365,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicInc,
@@ -371,6 +379,7 @@ inline namespace alpakaGlobal
             return atomicInc_block(add, value);
         }
     };
+#        endif
 
     // Dec.
 
@@ -388,6 +397,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicDec,
@@ -401,6 +411,7 @@ inline namespace alpakaGlobal
             return atomicDec_block(add, value);
         }
     };
+#        endif
 
     // And.
 
@@ -418,6 +429,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicAnd,
@@ -431,7 +443,7 @@ inline namespace alpakaGlobal
             return atomicAnd_block(add, value);
         }
     };
-
+#        endif
 
     // Or.
 
@@ -449,6 +461,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicOr,
@@ -462,7 +475,7 @@ inline namespace alpakaGlobal
             return atomicOr_block(add, value);
         }
     };
-
+#        endif
 
     // Xor.
 
@@ -480,6 +493,7 @@ inline namespace alpakaGlobal
         }
     };
 
+#        if !CLANG_CUDA_PTX_WORKAROUND
     template<typename T>
     struct AlpakaBuiltInAtomic<
         alpaka::AtomicXor,
@@ -493,6 +507,7 @@ inline namespace alpakaGlobal
             return atomicXor_block(add, value);
         }
     };
+#        endif
 
 } // namespace alpakaGlobal
 
