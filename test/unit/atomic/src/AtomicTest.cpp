@@ -37,13 +37,12 @@ ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(double a, double b) -> bool
 
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename THierarchy, typename TOp, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCall(TAcc const& acc, bool* success, T operandOrig, T value) -> void
+ALPAKA_FN_ACC auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T operandOrig, T value) -> void
 {
     auto op = typename TOp::Op{};
 
     // check if the function `alpaka::atomicOp<*>` is callable
     {
-        auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
         // left operand is half of the right
         operand = operandOrig;
         T reference = operand;
@@ -58,7 +57,6 @@ ALPAKA_FN_ACC auto testAtomicCall(TAcc const& acc, bool* success, T operandOrig,
 
     // check if the function `alpaka::atomic*()` is callable
     {
-        auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
         // left operand is half of the right
         operand = operandOrig;
         T reference = operand;
@@ -74,7 +72,7 @@ ALPAKA_FN_ACC auto testAtomicCall(TAcc const& acc, bool* success, T operandOrig,
 
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename THierarchy, typename TOp, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCombinations(TAcc const& acc, bool* success, T operandOrig) -> void
+ALPAKA_FN_ACC auto testAtomicCombinations(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
 {
     // helper variables to avoid compiler conversion warnings/errors
     T constexpr one = static_cast<T>(1);
@@ -82,36 +80,35 @@ ALPAKA_FN_ACC auto testAtomicCombinations(TAcc const& acc, bool* success, T oper
     {
         // left operand is half of the right
         T const value = static_cast<T>(operandOrig / two);
-        testAtomicCall<THierarchy, TOp>(acc, success, operandOrig, value);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
     }
     {
         // left operand is twice as large as the right
         T const value = static_cast<T>(operandOrig * two);
-        testAtomicCall<THierarchy, TOp>(acc, success, operandOrig, value);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
     }
     {
         // left operand is larger by one
         T const value = static_cast<T>(operandOrig + one);
-        testAtomicCall<THierarchy, TOp>(acc, success, operandOrig, value);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
     }
     {
         // left operand is smaller by one
         T const value = static_cast<T>(operandOrig - one);
-        testAtomicCall<THierarchy, TOp>(acc, success, operandOrig, value);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
     }
     {
         // both operands are equal
         T const value = operandOrig;
-        testAtomicCall<THierarchy, TOp>(acc, success, operandOrig, value);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename THierarchy, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) -> void
+ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
     // with match
     {
@@ -153,21 +150,21 @@ ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) 
 //! check threads hierarchy
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename TOp, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicHierarchies(TAcc const& acc, bool* success, T operandOrig) -> void
+ALPAKA_FN_ACC auto testAtomicHierarchies(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
 {
-    testAtomicCombinations<alpaka::hierarchy::Threads, TOp>(acc, success, operandOrig);
-    testAtomicCombinations<alpaka::hierarchy::Blocks, TOp>(acc, success, operandOrig);
-    testAtomicCombinations<alpaka::hierarchy::Grids, TOp>(acc, success, operandOrig);
+    testAtomicCombinations<alpaka::hierarchy::Threads, TOp>(acc, success, operand, operandOrig);
+    testAtomicCombinations<alpaka::hierarchy::Blocks, TOp>(acc, success, operand, operandOrig);
+    testAtomicCombinations<alpaka::hierarchy::Grids, TOp>(acc, success, operand, operandOrig);
 }
 
 //! check all alpaka hierarchies
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename TOp, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCasHierarchies(TAcc const& acc, bool* success, T operandOrig) -> void
+ALPAKA_FN_ACC auto testAtomicCasHierarchies(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
 {
-    testAtomicCas<alpaka::hierarchy::Threads>(acc, success, operandOrig);
-    testAtomicCas<alpaka::hierarchy::Blocks>(acc, success, operandOrig);
-    testAtomicCas<alpaka::hierarchy::Grids>(acc, success, operandOrig);
+    testAtomicCas<alpaka::hierarchy::Threads>(acc, success, operand, operandOrig);
+    testAtomicCas<alpaka::hierarchy::Blocks>(acc, success, operand, operandOrig);
+    testAtomicCas<alpaka::hierarchy::Grids>(acc, success, operand, operandOrig);
 }
 
 template<typename TAcc, typename T, typename Sfinae = void>
@@ -177,17 +174,26 @@ public:
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
     {
-        testAtomicHierarchies<Add>(acc, success, operandOrig);
-        testAtomicHierarchies<Sub>(acc, success, operandOrig);
-        testAtomicHierarchies<Exch>(acc, success, operandOrig);
+        auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
+
+        testAtomicHierarchies<Add>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Sub>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Exch>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Min>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Max>(acc, success, operand, operandOrig);
+
+        testAtomicHierarchies<And>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Or>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Xor>(acc, success, operand, operandOrig);
+
         if constexpr(std::is_unsigned_v<T>)
         {
             // atomicInc / atomicDec are implemented only for unsigned integer types
-            testAtomicHierarchies<Inc>(acc, success, operandOrig);
-            testAtomicHierarchies<Dec>(acc, success, operandOrig);
+            testAtomicHierarchies<Inc>(acc, success, operand, operandOrig);
+            testAtomicHierarchies<Dec>(acc, success, operand, operandOrig);
         }
 
-        testAtomicCasHierarchies<alpaka::hierarchy::Threads>(acc, success, operandOrig);
+        testAtomicCasHierarchies<alpaka::hierarchy::Threads>(acc, success, operand, operandOrig);
     }
 };
 
@@ -199,93 +205,25 @@ public:
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
     {
-        testAtomicHierarchies<Add>(acc, success, operandOrig);
-        testAtomicHierarchies<Sub>(acc, success, operandOrig);
-        testAtomicHierarchies<Exch>(acc, success, operandOrig);
+        auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
-        // Inc, Dec are not supported on float/double types
+        testAtomicHierarchies<Add>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Sub>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Exch>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Min>(acc, success, operand, operandOrig);
+        testAtomicHierarchies<Max>(acc, success, operand, operandOrig);
 
-        testAtomicCasHierarchies<alpaka::hierarchy::Threads>(acc, success, operandOrig);
+        // Inc, Dec, Or, And, Xor are not supported on float/double types
+
+        testAtomicCasHierarchies<alpaka::hierarchy::Threads>(acc, success, operand, operandOrig);
     }
 };
 
-template<typename TAcc, typename T, typename Sfinae = void>
-class AtomicCompareOperationsTestKernel
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
-    {
-        testAtomicHierarchies<Min>(acc, success, operandOrig);
-        testAtomicHierarchies<Max>(acc, success, operandOrig);
-    }
-};
-
-template<typename TAcc, typename T, typename Sfinae = void>
-class AtomicBitOperationsTestKernel
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
-    {
-        testAtomicHierarchies<And>(acc, success, operandOrig);
-        testAtomicHierarchies<Or>(acc, success, operandOrig);
-        testAtomicHierarchies<Xor>(acc, success, operandOrig);
-    }
-};
-
-template<typename TAcc, typename T>
-class AtomicBitOperationsTestKernel<TAcc, T, std::enable_if_t<std::is_floating_point_v<T>>>
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(TAcc const& /* acc */, bool* success, T /* operandOrig */) const -> void
-    {
-        // Do not perform bitwise atomic operations for floating point types
-        ALPAKA_CHECK(*success, true);
-    }
-};
 
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
 
 template<typename TApi, typename TDim, typename TIdx, typename T>
 class AtomicTestKernel<
-    alpaka::AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
-    T,
-    std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(
-        alpaka::AccGpuUniformCudaHipRt<TApi, TDim, TIdx> const& /* acc */,
-        bool* success,
-        T /* operandOrig */) const -> void
-    {
-        // Only 32/64bit atomics are supported
-        ALPAKA_CHECK(*success, true);
-    }
-};
-
-template<typename TApi, typename TDim, typename TIdx, typename T>
-class AtomicBitOperationsTestKernel<
-    alpaka::AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
-    T,
-    std::enable_if_t<!std::is_floating_point_v<T> && (sizeof(T) != 4u && sizeof(T) != 8u)>>
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(
-        alpaka::AccGpuUniformCudaHipRt<TApi, TDim, TIdx> const& /* acc */,
-        bool* success,
-        T /* operandOrig */) const -> void
-    {
-        // Only 32/64bit atomics are supported
-        ALPAKA_CHECK(*success, true);
-    }
-};
-
-template<typename TApi, typename TDim, typename TIdx, typename T>
-class AtomicCompareOperationsTestKernel<
     alpaka::AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
     T,
     std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
@@ -319,34 +257,6 @@ public:
     }
 };
 
-template<typename TDim, typename TIdx, typename T>
-class AtomicBitOperationsTestKernel<
-    alpaka::AccOacc<TDim, TIdx>,
-    T,
-    std::enable_if_t<!std::is_floating_point_v<T> && (sizeof(T) != 4u && sizeof(T) != 8u)>>
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccOacc<TDim, TIdx> const& /* acc */, bool* success, T /* operandOrig */)
-        const -> void
-    {
-        // Only 32/64bit atomics are supported
-        ALPAKA_CHECK(*success, true);
-    }
-};
-
-template<typename TDim, typename TIdx, typename T>
-class AtomicCompareOperationsTestKernel<
-    alpaka::AccOacc<TDim, TIdx>,
-    T,
-    std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccOacc<TDim, TIdx> const& /* acc */, bool* success, T /* operandOrig */)
-        const -> void
-    {
-        // Only 32/64bit atomics are supported
 template<typename TAcc, typename T>
 struct TestAtomicOperations
 {
@@ -359,17 +269,8 @@ struct TestAtomicOperations
 
         T value = static_cast<T>(32);
 
-        // The tests are split into multiple kernel to avoid breaking the maximum kernel size.
-        // clang (HIP) e.g. shows compile error: 'error: stack size limit exceeded (155632) in
-        // _ZN6alpaka16uniform_cuda_hip6de'
         AtomicTestKernel<TAcc, T> kernel;
         REQUIRE(fixture(kernel, value));
-
-        AtomicBitOperationsTestKernel<TAcc, T> kernelBitOps;
-        REQUIRE(fixture(kernelBitOps, value));
-
-        AtomicCompareOperationsTestKernel<TAcc, T> kernelCompareOps;
-        REQUIRE(fixture(kernelCompareOps, value));
     }
 };
 
