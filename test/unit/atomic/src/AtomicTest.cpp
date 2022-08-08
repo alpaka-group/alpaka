@@ -147,27 +147,7 @@ ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T& operand, T o
     }
 }
 
-//! check threads hierarchy
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TOp, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicHierarchies(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
-{
-    testAtomicCombinations<alpaka::hierarchy::Threads, TOp>(acc, success, operand, operandOrig);
-    testAtomicCombinations<alpaka::hierarchy::Blocks, TOp>(acc, success, operand, operandOrig);
-    testAtomicCombinations<alpaka::hierarchy::Grids, TOp>(acc, success, operand, operandOrig);
-}
-
-//! check all alpaka hierarchies
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TOp, typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCasHierarchies(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
-{
-    testAtomicCas<alpaka::hierarchy::Threads>(acc, success, operand, operandOrig);
-    testAtomicCas<alpaka::hierarchy::Blocks>(acc, success, operand, operandOrig);
-    testAtomicCas<alpaka::hierarchy::Grids>(acc, success, operand, operandOrig);
-}
-
-template<typename TAcc, typename T, typename Sfinae = void>
+template<typename THierarchy, typename TAcc, typename T, typename Sfinae = void>
 class AtomicTestKernel
 {
 public:
@@ -176,30 +156,30 @@ public:
     {
         auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
-        testAtomicHierarchies<Add>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Sub>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Exch>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Min>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Max>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Add>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Sub>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Exch>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Min>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Max>(acc, success, operand, operandOrig);
 
-        testAtomicHierarchies<And>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Or>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Xor>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, And>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Or>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Xor>(acc, success, operand, operandOrig);
 
         if constexpr(std::is_unsigned_v<T>)
         {
             // atomicInc / atomicDec are implemented only for unsigned integer types
-            testAtomicHierarchies<Inc>(acc, success, operand, operandOrig);
-            testAtomicHierarchies<Dec>(acc, success, operand, operandOrig);
+            testAtomicCombinations<THierarchy, Inc>(acc, success, operand, operandOrig);
+            testAtomicCombinations<THierarchy, Dec>(acc, success, operand, operandOrig);
         }
 
-        testAtomicCasHierarchies<alpaka::hierarchy::Threads>(acc, success, operand, operandOrig);
+        testAtomicCas<THierarchy>(acc, success, operand, operandOrig);
     }
 };
 
 
-template<typename TAcc, typename T>
-class AtomicTestKernel<TAcc, T, std::enable_if_t<std::is_floating_point_v<T>>>
+template<typename THierarchy, typename TAcc, typename T>
+class AtomicTestKernel<THierarchy, TAcc, T, std::enable_if_t<std::is_floating_point_v<T>>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
@@ -207,23 +187,24 @@ public:
     {
         auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
-        testAtomicHierarchies<Add>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Sub>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Exch>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Min>(acc, success, operand, operandOrig);
-        testAtomicHierarchies<Max>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Add>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Sub>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Exch>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Min>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Max>(acc, success, operand, operandOrig);
 
         // Inc, Dec, Or, And, Xor are not supported on float/double types
 
-        testAtomicCasHierarchies<alpaka::hierarchy::Threads>(acc, success, operand, operandOrig);
+        testAtomicCas<THierarchy>(acc, success, operand, operandOrig);
     }
 };
 
 
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
 
-template<typename TApi, typename TDim, typename TIdx, typename T>
+template<typename THierarchy, typename TApi, typename TDim, typename TIdx, typename T>
 class AtomicTestKernel<
+    THierarchy,
     alpaka::AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
     T,
     std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
@@ -242,10 +223,12 @@ public:
 
 #endif
 
-#if defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)
-
-template<typename TDim, typename TIdx, typename T>
-class AtomicTestKernel<alpaka::AccOacc<TDim, TIdx>, T, std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
+template<typename THierarchy, typename TDim, typename TIdx, typename T>
+class AtomicTestKernel<
+    THierarchy,
+    alpaka::AccOacc<TDim, TIdx>,
+    T,
+    std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
@@ -269,8 +252,14 @@ struct TestAtomicOperations
 
         T value = static_cast<T>(32);
 
-        AtomicTestKernel<TAcc, T> kernel;
-        REQUIRE(fixture(kernel, value));
+        AtomicTestKernel<alpaka::hierarchy::Threads, TAcc, T> kernelAtomicThreads;
+        REQUIRE(fixture(kernelAtomicThreads, value));
+
+        AtomicTestKernel<alpaka::hierarchy::Blocks, TAcc, T> kernelAtomicBlocks;
+        REQUIRE(fixture(kernelAtomicBlocks, value));
+
+        AtomicTestKernel<alpaka::hierarchy::Grids, TAcc, T> kernelAtomicGrids;
+        REQUIRE(fixture(kernelAtomicGrids, value));
     }
 };
 
