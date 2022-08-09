@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Daniel Vollmer, Erik Zenker, René Widera, Bernhard Manfred Gruber
+/* Copyright 2022 Benjamin Worpitz, Daniel Vollmer, Erik Zenker, René Widera, Bernhard Manfred Gruber, Andrea Bocci
  *
  * This file is part of alpaka.
  *
