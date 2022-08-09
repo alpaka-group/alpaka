@@ -221,33 +221,13 @@ namespace alpaka
                 status.dwLength = sizeof(status);
                 GlobalMemoryStatusEx(&status);
                 return static_cast<std::size_t>(status.ullAvailPhys);
-
 #elif BOOST_OS_LINUX
-                std::string token;
-                std::ifstream file("/proc/meminfo");
-                if(file)
-                {
-                    while(file >> token)
-                    {
-                        if(token == "MemFree:")
-                        {
-                            std::size_t freeGlobalMemSizeBytes(0);
-                            if(file >> freeGlobalMemSizeBytes)
-                            {
-                                return freeGlobalMemSizeBytes * size_t(1024);
-                            }
-                            else
-                            {
-                                throw std::runtime_error("Unable to read MemFree value!");
-                            }
-                        }
-                    }
-                    throw std::runtime_error("Unable to find MemFree in '/proc/meminfo'!");
-                }
-                else
-                {
-                    throw std::runtime_error("Unable to open '/proc/meminfo'!");
-                }
+#    if defined(_SC_AVPHYS_PAGES)
+                return static_cast<std::size_t>(sysconf(_SC_AVPHYS_PAGES)) * getPageSize();
+#    else
+                // this is legacy and only used as fallback
+                return static_cast<std::size_t>(get_avphys_pages()) * getPageSize();
+#    endif
 #elif BOOST_OS_MACOS
                 int free_pages = 0;
                 std::size_t len = sizeof(free_pages);
