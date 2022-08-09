@@ -39,6 +39,14 @@
 #include <stdexcept>
 #include <string>
 
+#if BOOST_ARCH_X86
+#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_PGI
+#        include <cpuid.h>
+#    elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#        include <intrin.h>
+#    endif
+#endif
+
 namespace alpaka
 {
     namespace cpu
@@ -50,14 +58,12 @@ namespace alpaka
             constexpr int UNKNOWN_COMPILER = 1;
 #if BOOST_ARCH_X86
 #    if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_PGI
-#        include <cpuid.h>
             inline auto cpuid(std::uint32_t level, std::uint32_t subfunction, std::uint32_t ex[4]) -> void
             {
                 __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
             }
 
 #    elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
-#        include <intrin.h>
             inline auto cpuid(std::uint32_t level, std::uint32_t subfunction, std::uint32_t ex[4]) -> void
             {
                 __cpuidex(reinterpret_cast<int*>(ex), level, subfunction);
