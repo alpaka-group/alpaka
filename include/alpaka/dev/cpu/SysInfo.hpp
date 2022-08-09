@@ -47,12 +47,8 @@
 #    endif
 #endif
 
-namespace alpaka
+namespace alpaka::cpu::detail
 {
-    namespace cpu
-    {
-        namespace detail
-        {
             constexpr int NO_CPUID = 0;
             constexpr int UNKNOWN_CPU = 0;
             constexpr int UNKNOWN_COMPILER = 1;
@@ -241,6 +237,4 @@ namespace alpaka
 #    error "getFreeGlobalMemSizeBytes not implemented for this system!"
 #endif
             }
-        } // namespace detail
-    } // namespace cpu
-} // namespace alpaka
+} // namespace alpaka::cpu::detail
