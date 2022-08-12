@@ -301,7 +301,7 @@ namespace alpaka
                 -> BufCpu<TElem, TDim, TIdx>
             {
                 // Allocate standard host memory.
-                return allocBuf(host, extent);
+                return allocBuf<TElem, TIdx>(host, extent);
             }
         };
 
