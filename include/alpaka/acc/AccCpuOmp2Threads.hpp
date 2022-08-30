@@ -16,6 +16,7 @@
 #    endif
 
 // Base classes.
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/atomic/AtomicCpu.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
@@ -80,7 +81,8 @@ namespace alpaka
         public rand::RandStdLib,
         public TimeOmp,
         public warp::WarpSingleThread,
-        public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
+        public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>,
+        public concepts::Implements<ConceptAccCpuOmp2Threads, AccCpuOmp2Threads<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),

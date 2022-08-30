@@ -12,6 +12,7 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
 
 // Base classes.
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/atomic/AtomicCpu.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicNoOp.hpp>
@@ -73,7 +74,8 @@ namespace alpaka
         public rand::RandStdLib,
         public TimeStdLib,
         public warp::WarpSingleThread,
-        public concepts::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>
+        public concepts::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>,
+        public concepts::Implements<ConceptAccCpuSerial, AccCpuSerial<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),

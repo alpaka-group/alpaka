@@ -16,6 +16,7 @@
 #    endif
 
 // Base classes.
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/core/DemangleTypeNames.hpp>
 #    include <alpaka/ctx/block/CtxBlockOacc.hpp>
 #    include <alpaka/idx/bt/IdxBtLinear.hpp>
@@ -81,6 +82,7 @@ namespace alpaka
         , public concepts::Implements<ConceptAtomicGrids, AccOacc<TDim, TIdx>>
         , public concepts::Implements<ConceptAtomicBlocks, AccOacc<TDim, TIdx>>
         , public concepts::Implements<ConceptAtomicThreads, AccOacc<TDim, TIdx>>
+        , public concepts::Implements<ConceptAccOacc, AccOacc<TDim, TIdx>>
     {
         template<typename TDim2, typename TIdx2, typename TKernelFnObj, typename... TArgs>
         friend class ::alpaka::TaskKernelOacc;

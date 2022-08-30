@@ -11,6 +11,7 @@
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/core/BoostPredef.hpp>
 
 #    include <hip/hip_runtime_api.h>
@@ -19,6 +20,9 @@ namespace alpaka
 {
     struct ApiHipRt
     {
+        // alpaka acc tag
+        using AccTag_t = ConceptAccHip;
+
         // Names
         static constexpr char name[] = "Hip";
         static constexpr auto version = BOOST_LANG_HIP;

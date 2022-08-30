@@ -12,6 +12,7 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
 // Base classes.
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/atomic/AtomicCpu.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
@@ -75,7 +76,8 @@ namespace alpaka
         public rand::RandStdLib,
         public TimeStdLib,
         public warp::WarpSingleThread,
-        public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
+        public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>,
+        public concepts::Implements<ConceptAccCpuThreads, AccCpuThreads<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),

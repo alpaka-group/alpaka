@@ -13,6 +13,7 @@
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 // Base classes.
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/atomic/AtomicGenericSycl.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp>
@@ -63,6 +64,7 @@ namespace alpaka::experimental
         , public IntrinsicGenericSycl
         , public MemFenceGenericSycl
         , public warp::WarpGenericSycl<TDim>
+        , public concepts::Implements<ConceptAccGenericSycl, AccGenericSycl<TDim, TIdx>>
     {
     public:
 #    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED

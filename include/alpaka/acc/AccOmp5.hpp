@@ -22,6 +22,7 @@
 #    endif
 
 // Base classes.
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #    include <alpaka/block/shared/OffloadUseBuiltInSharedMem.hpp>
@@ -131,6 +132,7 @@ namespace alpaka
         , public TimeOmp
         , public warp::WarpSingleThread
         , public concepts::Implements<ConceptAcc, AccOmp5<TDim, TIdx>>
+        , public concepts::Implements<ConceptAccOmp5, AccOmp5<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),

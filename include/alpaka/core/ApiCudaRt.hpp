@@ -11,6 +11,8 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
+#    include <alpaka/acc/Tags.hpp>
+
 #    include <boost/predef.h>
 #    include <cuda_runtime_api.h>
 
@@ -18,6 +20,9 @@ namespace alpaka
 {
     struct ApiCudaRt
     {
+        // alpaka acc tag
+        using AccTag_t = ConceptAccCuda;
+
         // Names
         static constexpr char name[] = "Cuda";
         static constexpr auto version = BOOST_PREDEF_MAKE_10_VVRRP(CUDART_VERSION);

@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 #    include <alpaka/acc/AccGenericSycl.hpp>
+#    include <alpaka/acc/Tags.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/DemangleTypeNames.hpp>
 #    include <alpaka/core/Sycl.hpp>
@@ -37,6 +38,7 @@ namespace alpaka::experimental
     class AccFpgaSyclIntel
         : public AccGenericSycl<TDim, TIdx>
         , public concepts::Implements<ConceptAcc, AccFpgaSyclIntel<TDim, TIdx>>
+        , public concepts::Implements<ConceptAccFpgaSyclIntel, AccFpgaSyclIntel<TDim, TIdx>>
     {
     public:
         using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
