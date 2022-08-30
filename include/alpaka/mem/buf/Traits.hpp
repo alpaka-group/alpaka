@@ -40,7 +40,7 @@ namespace alpaka
         };
 
         //! The pinned/mapped memory allocator trait.
-        template<typename TElem, typename TDim, typename TIdx, typename TDev>
+        template<typename TPltf, typename TElem, typename TDim, typename TIdx>
         struct BufAllocMapped;
 
         //! The memory mapping trait.
@@ -124,20 +124,19 @@ namespace alpaka
 #    pragma clang diagnostic pop
 #endif
 
-    //! Allocates pinned/mapped memory on host, accessible by the given device.
+    //! Allocates pinned/mapped memory on host, accessible by all devices in the given platform.
     //!
     //! \tparam TElem The element type of the returned buffer.
     //! \tparam TIdx The linear index type of the buffer.
+    //! \tparam TPltf The device platform the buffer is accessible from.
     //! \tparam TExtent The extent type of the buffer.
-    //! \tparam TDev The type of device the buffer is accessible from.
     //! \param host The host device to allocate the buffer on.
-    //! \param dev The device to make the memory accessible from.
     //! \param extent The extent of the buffer.
     //! \return The newly allocated buffer.
-    template<typename TElem, typename TIdx, typename TExtent, typename TDev>
-    ALPAKA_FN_HOST auto allocMappedBuf(DevCpu const& host, TDev const& dev, TExtent const& extent = TExtent())
+    template<typename TPltf, typename TElem, typename TIdx, typename TExtent>
+    ALPAKA_FN_HOST auto allocMappedBuf(DevCpu const& host, TExtent const& extent = TExtent())
     {
-        return trait::BufAllocMapped<TElem, Dim<TExtent>, TIdx, TDev>::allocMappedBuf(host, dev, extent);
+        return trait::BufAllocMapped<TPltf, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
     }
 
     //! Maps the buffer into the memory of the given device.

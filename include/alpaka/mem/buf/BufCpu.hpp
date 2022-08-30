@@ -286,6 +286,7 @@ namespace alpaka
                 return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
             }
         };
+
         //! The BufCpu stream-ordered memory allocation capability trait specialization.
         template<typename TDim>
         struct HasAsyncBufSupport<TDim, DevCpu> : public std::true_type
@@ -294,10 +295,10 @@ namespace alpaka
 
         //! The pinned/mapped memory allocation trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
-        struct BufAllocMapped<TElem, TDim, TIdx, DevCpu>
+        struct BufAllocMapped<PltfCpu, TElem, TDim, TIdx>
         {
             template<typename TExtent>
-            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, DevCpu const&, TExtent const& extent)
+            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
                 -> BufCpu<TElem, TDim, TIdx>
             {
                 // Allocate standard host memory.
