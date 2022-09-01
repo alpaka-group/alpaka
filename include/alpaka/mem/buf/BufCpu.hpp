@@ -306,6 +306,12 @@ namespace alpaka
             }
         };
 
+        //! The pinned/mapped memory allocation capability trait specialization.
+        template<>
+        struct HasMappedBufSupport<PltfCpu> : public std::true_type
+        {
+        };
+
         //! The BufCpu memory mapping trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
         struct Map<BufCpu<TElem, TDim, TIdx>, DevCpu>
