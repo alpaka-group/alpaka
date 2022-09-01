@@ -239,7 +239,7 @@ namespace alpaka
                 return {
                     dev,
                     reinterpret_cast<TElem*>(memPtr),
-                    [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::free(ptr)); },
+                    [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::free(ptr)); },
                     static_cast<TIdx>(pitchBytes),
                     extent};
             }
@@ -287,7 +287,7 @@ namespace alpaka
                     dev,
                     reinterpret_cast<TElem*>(memPtr),
                     [queue = std::move(queue)](TElem* ptr)
-                    { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::freeAsync(ptr, queue.getNativeHandle())); },
+                    { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::freeAsync(ptr, queue.getNativeHandle())); },
                     width * static_cast<TIdx>(sizeof(TElem)),
                     extent);
             }
@@ -317,11 +317,11 @@ namespace alpaka
                 // Allocate CUDA/HIP page-locked memory on the host, mapped into the CUDA/HIP address space and
                 // accessible to all CUDA/HIP devices.
                 TElem* memPtr;
-                TApi::hostMalloc(
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::hostMalloc(
                     reinterpret_cast<void**>(&memPtr),
                     sizeof(TElem) * static_cast<std::size_t>(getExtentProduct(extent)),
-                    TApi::hostMallocMapped | TApi::hostMallocPortable);
-                auto deleter = [](TElem* ptr) { TApi::hostFree(ptr); };
+                    TApi::hostMallocMapped | TApi::hostMallocPortable));
+                auto deleter = [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::hostFree(ptr)); };
 
                 return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
             }
