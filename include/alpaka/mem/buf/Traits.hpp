@@ -33,7 +33,7 @@ namespace alpaka
         template<typename TElem, typename TDim, typename TIdx, typename TDev, typename TSfinae = void>
         struct AsyncBufAlloc;
 
-        //! The stream-ordered memory allocator capability trait.
+        //! The stream-ordered memory allocation capability trait.
         template<typename TDim, typename TDev>
         struct HasAsyncBufSupport : public std::false_type
         {
@@ -114,10 +114,10 @@ namespace alpaka
         return trait::AsyncBufAlloc<TElem, Dim<TExtent>, TIdx, alpaka::Dev<TQueue>>::allocAsyncBuf(queue, extent);
     }
 
-    //! Check if the given device can allocate a stream-ordered memory buffer of the given dimensionality.
+    //! Checks if the given device can allocate a stream-ordered memory buffer of the given dimensionality.
     //!
-    //! TDev is the type of device to allocate the buffer on.
-    //! TDim is the dimensionality of the buffer to allocate.
+    //! \tparam TDev The type of device to allocate the buffer on.
+    //! \tparam TDim The dimensionality of the buffer to allocate.
     /* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because these
     /  clang versions incorrectly warn about a missing 'extern'. */
 #if BOOST_COMP_CLANG
@@ -129,6 +129,34 @@ namespace alpaka
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
+
+    //! If supported, allocates stream-ordered memory on the given queue and the associated device.
+    //! Otherwise, allocates regular memory on the device associated to the queue.
+    //! Please note that stream-ordered and regular memory have different semantics:
+    //! this function is provided for convenience in the cases where the difference is not relevant,
+    //! and the stream-ordered memory is only used as a performance optimisation.
+    //!
+    //! \tparam TElem The element type of the returned buffer.
+    //! \tparam TIdx The linear index type of the buffer.
+    //! \tparam TExtent The extent type of the buffer.
+    //! \tparam TQueue The type of queue used to order the buffer allocation.
+    //! \param queue The queue used to order the buffer allocation.
+    //! \param extent The extent of the buffer.
+    //! \return The newly allocated buffer.
+    template<typename TElem, typename TIdx, typename TExtent, typename TQueue>
+    ALPAKA_FN_HOST auto allocAsyncBufIfSupported(TQueue queue, TExtent const& extent = TExtent())
+    {
+        if constexpr(hasAsyncBufSupport<alpaka::Dev<TQueue>, Dim<TExtent>>)
+        {
+            return allocAsyncBuf<TElem, TIdx>(queue, extent);
+        }
+        else
+        {
+            return allocBuf<TElem, TIdx>(getDev(queue), extent);
+        }
+
+        ALPAKA_UNREACHABLE(allocBuf<TElem, TIdx>(getDev(queue), extent));
+    }
 
     //! Allocates pinned/mapped host memory, accessible by all devices in the given platform.
     //!
