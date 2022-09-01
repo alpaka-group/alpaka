@@ -370,7 +370,7 @@ The following tables list the functions available in the `CUDA Runtime API <http
     +----------------------------+--------------------------------------------------------------------------------------------+
     | cudaGetSymbolSize          | --                                                                                         |
     +----------------------------+--------------------------------------------------------------------------------------------+
-    | cudaHostAlloc              | n/a, the existing buffer can be pinned using alpaka::prepareForAsyncCopy(memBuf)           |
+    | cudaHostAlloc              | alpaka::allocMappedBuf<TPltf, TElement>(host, extents) 1D, 2D, 3D supported!               |
     +----------------------------+--------------------------------------------------------------------------------------------+
     | cudaHostGetDevicePointer   | --                                                                                         |
     +----------------------------+--------------------------------------------------------------------------------------------+
@@ -388,7 +388,7 @@ The following tables list the functions available in the `CUDA Runtime API <http
     +----------------------------+--------------------------------------------------------------------------------------------+
     | cudaMallocArray            | --                                                                                         |
     +----------------------------+--------------------------------------------------------------------------------------------+
-    | cudaMallocHost             | alpaka::allocBuf<TElement>(device, extents) 1D, 2D, 3D supported!                          |
+    | cudaMallocHost             | alpaka::allocMappedBuf<TPltf, TElement>(host, extents) 1D, 2D, 3D supported!               |
     +----------------------------+--------------------------------------------------------------------------------------------+
     | cudaMallocManaged          | --                                                                                         |
     +----------------------------+--------------------------------------------------------------------------------------------+
