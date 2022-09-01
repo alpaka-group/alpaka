@@ -43,6 +43,12 @@ namespace alpaka
         template<typename TPltf, typename TElem, typename TDim, typename TIdx>
         struct BufAllocMapped;
 
+        //! The pinned/mapped memory allocation capability trait.
+        template<typename TPltf>
+        struct HasMappedBufSupport : public std::false_type
+        {
+        };
+
         //! The memory mapping trait.
         template<typename TBuf, typename TDev, typename TSfinae = void>
         struct Map;
@@ -124,11 +130,11 @@ namespace alpaka
 #    pragma clang diagnostic pop
 #endif
 
-    //! Allocates pinned/mapped memory on host, accessible by all devices in the given platform.
+    //! Allocates pinned/mapped host memory, accessible by all devices in the given platform.
     //!
+    //! \tparam TPltf The platform from which the buffer is accessible.
     //! \tparam TElem The element type of the returned buffer.
     //! \tparam TIdx The linear index type of the buffer.
-    //! \tparam TPltf The device platform the buffer is accessible from.
     //! \tparam TExtent The extent type of the buffer.
     //! \param host The host device to allocate the buffer on.
     //! \param extent The extent of the buffer.
@@ -137,6 +143,49 @@ namespace alpaka
     ALPAKA_FN_HOST auto allocMappedBuf(DevCpu const& host, TExtent const& extent = TExtent())
     {
         return trait::BufAllocMapped<TPltf, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
+    }
+
+    //! Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.
+    //!
+    //! \tparam TPltf The platform from which the buffer is accessible.
+    /* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because these
+    /  clang versions incorrectly warn about a missing 'extern'. */
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wmissing-variable-declarations"
+#endif
+    template<typename TPltf>
+    constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPltf>::value;
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+
+    //! If supported, allocates pinned/mapped host memory, accessible by all devices in the given platform.
+    //! Otherwise, allocates regular host memory.
+    //! Please note that pinned/mapped and regular memory may have different semantics:
+    //! this function is provided for convenience in the cases where the difference is not relevant,
+    //! and the pinned/mapped memory is only used as a performance optimisation.
+    //!
+    //! \tparam TPltf The platform from which the buffer is accessible.
+    //! \tparam TElem The element type of the returned buffer.
+    //! \tparam TIdx The linear index type of the buffer.
+    //! \tparam TExtent The extent type of the buffer.
+    //! \param host The host device to allocate the buffer on.
+    //! \param extent The extent of the buffer.
+    //! \return The newly allocated buffer.
+    template<typename TPltf, typename TElem, typename TIdx, typename TExtent>
+    ALPAKA_FN_HOST auto allocMappedBufIfSupported(DevCpu const& host, TExtent const& extent = TExtent())
+    {
+        if constexpr(hasMappedBufSupport<TPltf>)
+        {
+            return allocMappedBuf<TPltf, TElem, TIdx>(host, extent);
+        }
+        else
+        {
+            return allocBuf<TElem, TIdx>(host, extent);
+        }
+
+        ALPAKA_UNREACHABLE(allocBuf<TElem, TIdx>(host, extent));
     }
 
     //! Maps the buffer into the memory of the given device.
