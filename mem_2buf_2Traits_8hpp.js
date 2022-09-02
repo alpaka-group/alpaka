@@ -5,6 +5,7 @@ var mem_2buf_2Traits_8hpp =
     [ "BufAllocMapped", "structalpaka_1_1trait_1_1BufAllocMapped.html", null ],
     [ "BufType", "structalpaka_1_1trait_1_1BufType.html", null ],
     [ "HasAsyncBufSupport", "structalpaka_1_1trait_1_1HasAsyncBufSupport.html", null ],
+    [ "HasMappedBufSupport", "structalpaka_1_1trait_1_1HasMappedBufSupport.html", null ],
     [ "IsPinned", "structalpaka_1_1trait_1_1IsPinned.html", null ],
     [ "Map", "structalpaka_1_1trait_1_1Map.html", null ],
     [ "Pin", "structalpaka_1_1trait_1_1Pin.html", null ],
@@ -13,13 +14,16 @@ var mem_2buf_2Traits_8hpp =
     [ "Unpin", "structalpaka_1_1trait_1_1Unpin.html", null ],
     [ "Buf", "mem_2buf_2Traits_8hpp.html#ac9381e9159626b8969f257249c4c9386", null ],
     [ "allocAsyncBuf", "mem_2buf_2Traits_8hpp.html#ad3079297a886e6434a3ab3750585d033", null ],
+    [ "allocAsyncBufIfSupported", "mem_2buf_2Traits_8hpp.html#a21d637e29eec7421a73c4500aa8a16f1", null ],
     [ "allocBuf", "mem_2buf_2Traits_8hpp.html#a7ff762720c64dc454a53faa6622c227d", null ],
-    [ "allocMappedBuf", "mem_2buf_2Traits_8hpp.html#a454ad163b8d81f6459c62f913a2202ef", null ],
+    [ "allocMappedBuf", "mem_2buf_2Traits_8hpp.html#abe5f57f02a15d022db5d66e4e4da55ef", null ],
+    [ "allocMappedBufIfSupported", "mem_2buf_2Traits_8hpp.html#a659d4d94ffb5a2b560c7278488323bb7", null ],
     [ "isPinned", "mem_2buf_2Traits_8hpp.html#a3aaedbd7debc6261ddacecaa58272a30", null ],
     [ "map", "mem_2buf_2Traits_8hpp.html#a25dff962c7a90b3ea42750c96af78edc", null ],
     [ "pin", "mem_2buf_2Traits_8hpp.html#a034cbfbfbcd1ef96bcc4e6358fdfe470", null ],
     [ "prepareForAsyncCopy", "mem_2buf_2Traits_8hpp.html#a93d03d799a39746ab0418ec48f73a4eb", null ],
     [ "unmap", "mem_2buf_2Traits_8hpp.html#a3f43b3bce664426a2f439c6a4071e88a", null ],
     [ "unpin", "mem_2buf_2Traits_8hpp.html#a6e7e62dca166ed6d04974a1e393c5229", null ],
-    [ "hasAsyncBufSupport", "mem_2buf_2Traits_8hpp.html#a8a8e81d9d160079842607c98825b67ce", null ]
+    [ "hasAsyncBufSupport", "mem_2buf_2Traits_8hpp.html#a8a8e81d9d160079842607c98825b67ce", null ],
+    [ "hasMappedBufSupport", "mem_2buf_2Traits_8hpp.html#a09bd9b1c03186827ab8f08fbb0be4aeb", null ]
 ];
