@@ -30,6 +30,7 @@ project("alpakaExamples" LANGUAGES CXX)
 
 add_subdirectory("bufferCopy/")
 add_subdirectory("complex/")
+add_subdirectory("counterBasedRng/")
 add_subdirectory("heatEquation/")
 add_subdirectory("helloWorld/")
 add_subdirectory("helloWorldLambda/")
