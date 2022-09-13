@@ -5,7 +5,6 @@ var classalpaka_1_1rand_1_1engine_1_1PhiloxSingle =
     [ "State", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a84b6b446f740da741b760071b105f6bc", null ],
     [ "Traits", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a14d5794a215f630c1fa0d2c545cb6665", null ],
     [ "PhiloxSingle", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8e0fcaa3967c23607091a70e61e3ecd0", null ],
-    [ "PhiloxSingle", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a3d028cf31eb289f1b49581da54ccd826", null ],
     [ "advanceState", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a25f4838cb11b59561d87cfe747abd198", null ],
     [ "nextNumber", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8d2e74db05dac543b0b3ba4880cd3ae4", null ],
     [ "operator()", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a09eef95362f8289d074745b1bd67b797", null ],

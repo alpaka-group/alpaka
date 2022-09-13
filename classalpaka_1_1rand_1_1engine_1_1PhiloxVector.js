@@ -6,7 +6,6 @@ var classalpaka_1_1rand_1_1engine_1_1PhiloxVector =
     [ "State", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#aff92f05f8ff05d0265ecba8f5635a159", null ],
     [ "Traits", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ae69a913ace20bba8d63f1c18f242dc41", null ],
     [ "PhiloxVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#adb12dbd47334e4b6f403f1984df8e764", null ],
-    [ "PhiloxVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ae03fab633edb40ca5ccfe20fa96d04ee", null ],
     [ "nextVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9070c8635360989ce12058eab374830d", null ],
     [ "operator()", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a685c4d8e3a6e4dcff73df9cab13d6e25", null ],
     [ "skip", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ad77e028e95da99728da753ce67db2f98", null ],

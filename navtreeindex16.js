@@ -1,9 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,18,421],
-"structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a3bd6be829c8601227b22040b2480f622":[3,0,0,18,421,0],
-"structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,18,422],
-"structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#aca916dfadad9f8d52eb0d324673bc494":[3,0,0,18,422,0],
 "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDim_822aa73fb65e90858803fa0d1659168b.html":[3,0,0,18,423],
 "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDim_822aa73fb65e90858803fa0d1659168b.html#a3661e7ff93f5ec2d0b6929c6a790f564":[3,0,0,18,423,0],
 "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,18,424],
@@ -249,5 +245,9 @@ var NAVTREEINDEX16 =
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4.html#a4c4435d7ec2f7764e0ea50e741ddda61":[3,0,0,18,539,0],
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4.html":[3,0,0,18,540],
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4.html#a999ec859bc1dedb7373b96c83cec2904":[3,0,0,18,540,0],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html":[3,0,0,18,541]
+"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html":[3,0,0,18,541],
+"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html#af278791942abe5689696801217b57855":[3,0,0,18,541,0],
+"structalpaka_1_1trait_1_1TIdx.html":[3,0,0,18,550],
+"structalpaka_1_1trait_1_1TIdx.html#a99a1b5d25ea6758d3904827906a46955":[3,0,0,18,550,0],
+"structalpaka_1_1trait_1_1Unmap.html":[3,0,0,18,551]
 };

@@ -1,9 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"structalpaka_1_1ApiCudaRt.html#a53e12f308c45183b19f0edb9c36c0a05":[3,0,0,31,18],
-"structalpaka_1_1ApiCudaRt.html#a53e97caaa4aed473e25616a06a812dfe":[3,0,0,31,93],
-"structalpaka_1_1ApiCudaRt.html#a5dfd002895cb43866c99b6301e7ac3b9":[3,0,0,31,54],
-"structalpaka_1_1ApiCudaRt.html#a5fadbe694e6c7950fc6be644ad565a70":[3,0,0,31,76],
 "structalpaka_1_1ApiCudaRt.html#a6180458f528d04f52496768730b332d5":[3,0,0,31,25],
 "structalpaka_1_1ApiCudaRt.html#a62be5ae761c70eb78050020ac09a5486":[3,0,0,31,48],
 "structalpaka_1_1ApiCudaRt.html#a66837c7a54ef43f7868f1306937bb6a7":[3,0,0,31,44],
@@ -79,8 +75,8 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1AtomicAnd.html":[3,0,0,33],
 "structalpaka_1_1AtomicAnd.html#aa85005d679f8e05433faa9ed834615a7":[3,0,0,33,0],
 "structalpaka_1_1AtomicCas.html":[3,0,0,35],
-"structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,35,1],
 "structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,35,0],
+"structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,35,1],
 "structalpaka_1_1AtomicDec.html":[3,0,0,36],
 "structalpaka_1_1AtomicDec.html#aebc09cbda5fe57cd1c04e9416f6f6ebb":[3,0,0,36,0],
 "structalpaka_1_1AtomicExch.html":[3,0,0,37],
@@ -249,5 +245,9 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01TSchedule_00_01UseScheduleKind_3_01TKernel_00_01TSchedule_01_4_01_4.html":[3,0,0,5,28],
 "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01TSchedule_00_01UseScheduleKind_3_01TKernel_00_01TSchedule_01_4_01_4.html#a41a33d6c993e1f6df87c42cffc672754":[3,0,0,5,28,0],
 "structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01omp_1_1Schedule_01_4.html":[3,0,0,5,27],
-"structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01omp_1_1Schedule_01_4.html#a929f1b8003ac46859f46914ebfa4f1a5":[3,0,0,5,27,0]
+"structalpaka_1_1detail_1_1ParallelFor_3_01TKernel_00_01omp_1_1Schedule_01_4.html#a929f1b8003ac46859f46914ebfa4f1a5":[3,0,0,5,27,0],
+"structalpaka_1_1detail_1_1Print.html":[3,0,0,5,45],
+"structalpaka_1_1detail_1_1Print.html#a4ec495e56b1611200ef2491e3483b229":[3,0,0,5,45,0],
+"structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4.html":[3,0,0,5,46],
+"structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4.html#a09cc6fbf23ebcb4ee3755a6537fabe11":[3,0,0,5,46,0]
 };
