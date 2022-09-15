@@ -48,30 +48,6 @@ namespace alpaka
         struct HasMappedBufSupport : public std::false_type
         {
         };
-
-        //! The memory mapping trait.
-        template<typename TBuf, typename TDev, typename TSfinae = void>
-        struct Map;
-
-        //! The memory unmapping trait.
-        template<typename TBuf, typename TDev, typename TSfinae = void>
-        struct Unmap;
-
-        //! The memory pinning trait.
-        template<typename TBuf, typename TSfinae = void>
-        struct Pin;
-
-        //! The memory unpinning trait.
-        template<typename TBuf, typename TSfinae = void>
-        struct Unpin;
-
-        //! The memory pin state trait.
-        template<typename TBuf, typename TSfinae = void>
-        struct IsPinned;
-
-        //! The memory prepareForAsyncCopy trait.
-        template<typename TBuf, typename TSfinae = void>
-        struct PrepareForAsyncCopy;
     } // namespace trait
 
     //! The memory buffer type trait alias template to remove the ::type.
@@ -214,70 +190,5 @@ namespace alpaka
         }
 
         ALPAKA_UNREACHABLE(allocBuf<TElem, TIdx>(host, extent));
-    }
-
-    //! Maps the buffer into the memory of the given device.
-    //!
-    //! \tparam TBuf The buffer type.
-    //! \tparam TDev The device type.
-    //! \param buf The buffer to map into the device memory.
-    //! \param dev The device to map the buffer into.
-    template<typename TBuf, typename TDev>
-    ALPAKA_FN_HOST auto map(TBuf& buf, TDev const& dev) -> void
-    {
-        return trait::Map<TBuf, TDev>::map(buf, dev);
-    }
-
-    //! Unmaps the buffer from the memory of the given device.
-    //!
-    //! \tparam TBuf The buffer type.
-    //! \tparam TDev The device type.
-    //! \param buf The buffer to unmap from the device memory.
-    //! \param dev The device to unmap the buffer from.
-    template<typename TBuf, typename TDev>
-    ALPAKA_FN_HOST auto unmap(TBuf& buf, TDev const& dev) -> void
-    {
-        return trait::Unmap<TBuf, TDev>::unmap(buf, dev);
-    }
-
-    //! Pins the buffer.
-    //!
-    //! \tparam TBuf The buffer type.
-    //! \param buf The buffer to pin in the device memory.
-    template<typename TBuf>
-    ALPAKA_FN_HOST auto pin(TBuf& buf) -> void
-    {
-        return trait::Pin<TBuf>::pin(buf);
-    }
-
-    //! Unpins the buffer.
-    //!
-    //! \tparam TBuf The buffer type.
-    //! \param buf The buffer to unpin from the device memory.
-    template<typename TBuf>
-    ALPAKA_FN_HOST auto unpin(TBuf& buf) -> void
-    {
-        return trait::Unpin<TBuf>::unpin(buf);
-    }
-
-    //! The pin state of the buffer.
-    //!
-    //! \tparam TBuf The buffer type.
-    //! \param buf The buffer to get the pin state of.
-    template<typename TBuf>
-    ALPAKA_FN_HOST auto isPinned(TBuf const& buf) -> bool
-    {
-        return trait::IsPinned<TBuf>::isPinned(buf);
-    }
-
-    //! Prepares the buffer for non-blocking copy operations, e.g. pinning if
-    //! non-blocking copy between a cpu and a cuda device is wanted
-    //!
-    //! \tparam TBuf The buffer type.
-    //! \param buf The buffer to prepare in the device memory.
-    template<typename TBuf>
-    ALPAKA_FN_HOST auto prepareForAsyncCopy(TBuf& buf) -> void
-    {
-        return trait::PrepareForAsyncCopy<TBuf>::prepareForAsyncCopy(buf);
     }
 } // namespace alpaka
