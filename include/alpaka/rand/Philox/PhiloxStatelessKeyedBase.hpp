@@ -30,7 +30,7 @@ namespace alpaka::rand::engine
 
         const Key m_key;
 
-        PhiloxStatelessKeyedBase(Key&& key) : m_key(key)
+        PhiloxStatelessKeyedBase(Key&& key) : m_key(std::move(key))
         {
         }
 
