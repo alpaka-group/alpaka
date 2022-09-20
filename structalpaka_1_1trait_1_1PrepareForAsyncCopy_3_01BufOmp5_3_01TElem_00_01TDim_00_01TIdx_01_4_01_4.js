@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1PrepareForAsyncCopy_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "prepareForAsyncCopy", "structalpaka_1_1trait_1_1PrepareForAsyncCopy_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a8a1a57370d821b45487bb634ec33cd89", null ]
-];

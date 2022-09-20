@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1Unpin_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "unpin", "structalpaka_1_1trait_1_1Unpin_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#aa7a271575aa0925257f33eb499cebfd9", null ]
-];

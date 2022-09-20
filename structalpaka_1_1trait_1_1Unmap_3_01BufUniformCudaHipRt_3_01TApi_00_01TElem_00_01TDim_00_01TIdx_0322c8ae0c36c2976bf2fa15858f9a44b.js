@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1Unmap_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_0322c8ae0c36c2976bf2fa15858f9a44b =
-[
-    [ "unmap", "structalpaka_1_1trait_1_1Unmap_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_0322c8ae0c36c2976bf2fa15858f9a44b.html#ab4d37e2a7890d0e191a841c9fa01cb29", null ]
-];

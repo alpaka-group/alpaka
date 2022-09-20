@@ -875,10 +875,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a5906c3e845cdb7c70e581d378c212e81"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81">isComplete</a> (TEvent const &amp;event) -&gt; bool</td></tr>
 <tr class="memdesc:a5906c3e845cdb7c70e581d378c212e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the given event has already been completed.  <a href="namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81">More...</a><br /></td></tr>
 <tr class="separator:a5906c3e845cdb7c70e581d378c212e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aaedbd7debc6261ddacecaa58272a30"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a3aaedbd7debc6261ddacecaa58272a30"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3aaedbd7debc6261ddacecaa58272a30">isPinned</a> (TBuf const &amp;buf) -&gt; bool</td></tr>
-<tr class="memdesc:a3aaedbd7debc6261ddacecaa58272a30"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pin state of the buffer.  <a href="namespacealpaka.html#a3aaedbd7debc6261ddacecaa58272a30">More...</a><br /></td></tr>
-<tr class="separator:a3aaedbd7debc6261ddacecaa58272a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9234c08c7824fc7b5a9a73e6a11fbd1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ae9234c08c7824fc7b5a9a73e6a11fbd1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae9234c08c7824fc7b5a9a73e6a11fbd1">isSupportedByAtomicAtomicRef</a> ()</td></tr>
 <tr class="separator:ae9234c08c7824fc7b5a9a73e6a11fbd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -898,10 +894,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAlloc &gt; </td></tr>
 <tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">malloc</a> (TAlloc const &amp;alloc, std::size_t const &amp;sizeElems) -&gt; T *</td></tr>
 <tr class="separator:a30687ca1eaba239c74afd1bb2f26831c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25dff962c7a90b3ea42750c96af78edc"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
-<tr class="memitem:a25dff962c7a90b3ea42750c96af78edc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a25dff962c7a90b3ea42750c96af78edc">map</a> (TBuf &amp;buf, TDev const &amp;dev) -&gt; void</td></tr>
-<tr class="memdesc:a25dff962c7a90b3ea42750c96af78edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps the buffer into the memory of the given device.  <a href="namespacealpaka.html#a25dff962c7a90b3ea42750c96af78edc">More...</a><br /></td></tr>
-<tr class="separator:a25dff962c7a90b3ea42750c96af78edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af498aa377b6512269907da289680aa80"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, std::size_t TidxDimExtents, typename TElem &gt; </td></tr>
 <tr class="memitem:af498aa377b6512269907da289680aa80"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af498aa377b6512269907da289680aa80">mapIdx</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimExtents &gt;, TElem &gt; const &amp;extent) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
 <tr class="memdesc:af498aa377b6512269907da289680aa80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="namespacealpaka.html#af498aa377b6512269907da289680aa80">More...</a><br /></td></tr>
@@ -941,10 +933,6 @@ Functions</h2></td></tr>
 <tr class="memitem:abbc81bbd9b4cf5270f1fda4700a502bb"><td class="memTemplItemLeft" align="right" valign="top">std::basic_istream&lt; TChar, TTraits &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abbc81bbd9b4cf5270f1fda4700a502bb">operator&gt;&gt;</a> (std::basic_istream&lt; TChar, TTraits &gt; &amp;is, <a class="el" href="classalpaka_1_1Complex.html">Complex</a>&lt; T &gt; const &amp;x)</td></tr>
 <tr class="memdesc:abbc81bbd9b4cf5270f1fda4700a502bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Host-only input of a complex number.  <a href="namespacealpaka.html#abbc81bbd9b4cf5270f1fda4700a502bb">More...</a><br /></td></tr>
 <tr class="separator:abbc81bbd9b4cf5270f1fda4700a502bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a034cbfbfbcd1ef96bcc4e6358fdfe470"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a034cbfbfbcd1ef96bcc4e6358fdfe470"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a034cbfbfbcd1ef96bcc4e6358fdfe470">pin</a> (TBuf &amp;buf) -&gt; void</td></tr>
-<tr class="memdesc:a034cbfbfbcd1ef96bcc4e6358fdfe470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pins the buffer.  <a href="namespacealpaka.html#a034cbfbfbcd1ef96bcc4e6358fdfe470">More...</a><br /></td></tr>
-<tr class="separator:a034cbfbfbcd1ef96bcc4e6358fdfe470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac5de33521502710a7ca0a2b2cfc02e1"><td class="memTemplParams" colspan="2">template&lt;typename TIntrinsic &gt; </td></tr>
 <tr class="memitem:aac5de33521502710a7ca0a2b2cfc02e1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aac5de33521502710a7ca0a2b2cfc02e1">popcount</a> (TIntrinsic const &amp;intrinsic, std::uint32_t value) -&gt; std::int32_t</td></tr>
 <tr class="memdesc:aac5de33521502710a7ca0a2b2cfc02e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of 1 bits in the given 32-bit value.  <a href="namespacealpaka.html#aac5de33521502710a7ca0a2b2cfc02e1">More...</a><br /></td></tr>
@@ -953,10 +941,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a2a62cce3174fe200218ab6bc06b134ed"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed">popcount</a> (TIntrinsic const &amp;intrinsic, std::uint64_t value) -&gt; std::int32_t</td></tr>
 <tr class="memdesc:a2a62cce3174fe200218ab6bc06b134ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of 1 bits in the given 64-bit value.  <a href="namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed">More...</a><br /></td></tr>
 <tr class="separator:a2a62cce3174fe200218ab6bc06b134ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93d03d799a39746ab0418ec48f73a4eb"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a93d03d799a39746ab0418ec48f73a4eb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a93d03d799a39746ab0418ec48f73a4eb">prepareForAsyncCopy</a> (TBuf &amp;buf) -&gt; void</td></tr>
-<tr class="memdesc:a93d03d799a39746ab0418ec48f73a4eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepares the buffer for non-blocking copy operations, e.g. pinning if non-blocking copy between a cpu and a cuda device is wanted.  <a href="namespacealpaka.html#a93d03d799a39746ab0418ec48f73a4eb">More...</a><br /></td></tr>
-<tr class="separator:a93d03d799a39746ab0418ec48f73a4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e4d90e1f7462d76a92f07f09a263d93"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
 <tr class="memitem:a6e4d90e1f7462d76a92f07f09a263d93"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6e4d90e1f7462d76a92f07f09a263d93">print</a> (TView const &amp;view, std::ostream &amp;os, std::string const &amp;elementSeparator=&quot;, &quot;, std::string const &amp;rowSeparator=&quot;\n&quot;, std::string const &amp;rowPrefix=&quot;[&quot;, std::string const &amp;rowSuffix=&quot;]&quot;) -&gt; void</td></tr>
 <tr class="memdesc:a6e4d90e1f7462d76a92f07f09a263d93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the content of the view to the given queue.  <a href="namespacealpaka.html#a6e4d90e1f7462d76a92f07f09a263d93">More...</a><br /></td></tr>
@@ -1022,14 +1006,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ada1e5add594d3a2699a818b6a87cabee"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">syncBlockThreadsPredicate</a> (TBlockSync const &amp;blockSync, int predicate) -&gt; int</td></tr>
 <tr class="memdesc:ada1e5add594d3a2699a818b6a87cabee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronizes all threads within the current block (independently for all blocks), evaluates the predicate for all threads and returns the combination of all the results computed via TOp.  <a href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">More...</a><br /></td></tr>
 <tr class="separator:ada1e5add594d3a2699a818b6a87cabee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f43b3bce664426a2f439c6a4071e88a"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
-<tr class="memitem:a3f43b3bce664426a2f439c6a4071e88a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3f43b3bce664426a2f439c6a4071e88a">unmap</a> (TBuf &amp;buf, TDev const &amp;dev) -&gt; void</td></tr>
-<tr class="memdesc:a3f43b3bce664426a2f439c6a4071e88a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unmaps the buffer from the memory of the given device.  <a href="namespacealpaka.html#a3f43b3bce664426a2f439c6a4071e88a">More...</a><br /></td></tr>
-<tr class="separator:a3f43b3bce664426a2f439c6a4071e88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e7e62dca166ed6d04974a1e393c5229"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a6e7e62dca166ed6d04974a1e393c5229"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6e7e62dca166ed6d04974a1e393c5229">unpin</a> (TBuf &amp;buf) -&gt; void</td></tr>
-<tr class="memdesc:a6e7e62dca166ed6d04974a1e393c5229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unpins the buffer.  <a href="namespacealpaka.html#a6e7e62dca166ed6d04974a1e393c5229">More...</a><br /></td></tr>
-<tr class="separator:a6e7e62dca166ed6d04974a1e393c5229"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
 <tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2be994b379106bbd50e768e825321768">ViewConst</a> (TView) -&gt; <a class="el" href="structalpaka_1_1ViewConst.html">ViewConst</a>&lt; std::decay_t&lt; TView &gt;&gt;</td></tr>
 <tr class="separator:a2be994b379106bbd50e768e825321768"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1171,7 +1147,7 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; 
 
 <p>The memory buffer type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00079">79</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00055">55</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1858,7 +1834,7 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TQueue 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00112">112</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00088">88</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1909,7 +1885,7 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TQueue 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00147">147</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00123">123</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1960,7 +1936,7 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &g
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00097">97</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00073">73</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2011,7 +1987,7 @@ template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00171">171</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00147">147</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2062,7 +2038,7 @@ template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00205">205</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00181">181</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5435,43 +5411,6 @@ template&lt;typename TEvent &gt; </div>
 
 </div>
 </div>
-<a id="a3aaedbd7debc6261ddacecaa58272a30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3aaedbd7debc6261ddacecaa58272a30">&#9670;&nbsp;</a></span>isPinned()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TBuf &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::isPinned </td>
-          <td>(</td>
-          <td class="paramtype">TBuf const &amp;&#160;</td>
-          <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; bool
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The pin state of the buffer. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TBuf</td><td>The buffer type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The buffer to get the pin state of. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00268">268</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
 <a id="ae9234c08c7824fc7b5a9a73e6a11fbd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9234c08c7824fc7b5a9a73e6a11fbd1">&#9670;&nbsp;</a></span>isSupportedByAtomicAtomicRef()</h2>
 
@@ -5746,55 +5685,6 @@ template&lt;typename T , typename TAlloc &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The pointer to the allocated memory. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="mem_2alloc_2Traits_8hpp_source.html#l00038">38</a> of file <a class="el" href="mem_2alloc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a25dff962c7a90b3ea42750c96af78edc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25dff962c7a90b3ea42750c96af78edc">&#9670;&nbsp;</a></span>map()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TBuf , typename TDev &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::map </td>
-          <td>(</td>
-          <td class="paramtype">TBuf &amp;&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TDev const &amp;&#160;</td>
-          <td class="paramname"><em>dev</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; void
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Maps the buffer into the memory of the given device. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TBuf</td><td>The buffer type. </td></tr>
-    <tr><td class="paramname">TDev</td><td>The device type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The buffer to map into the device memory. </td></tr>
-    <tr><td class="paramname">dev</td><td>The device to map the buffer into. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00226">226</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -6986,43 +6876,6 @@ template&lt;typename T , typename TChar , typename TTraits &gt; </div>
 
 </div>
 </div>
-<a id="a034cbfbfbcd1ef96bcc4e6358fdfe470"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a034cbfbfbcd1ef96bcc4e6358fdfe470">&#9670;&nbsp;</a></span>pin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TBuf &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::pin </td>
-          <td>(</td>
-          <td class="paramtype">TBuf &amp;&#160;</td>
-          <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; void
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Pins the buffer. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TBuf</td><td>The buffer type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The buffer to pin in the device memory. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00248">248</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a86d7a0737b745fb6b3befa1115654941"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86d7a0737b745fb6b3befa1115654941">&#9670;&nbsp;</a></span>polar()</h2>
 
@@ -7284,43 +7137,6 @@ template&lt;typename T , typename U &gt; </div>
 <p><a class="el" href="classalpaka_1_1Complex.html" title="Implementation of a complex number useable on host and device.">Complex</a> power of a real number. </p>
 
 <p class="definition">Definition at line <a class="el" href="Complex_8hpp_source.html#l00523">523</a> of file <a class="el" href="Complex_8hpp_source.html">Complex.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a93d03d799a39746ab0418ec48f73a4eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93d03d799a39746ab0418ec48f73a4eb">&#9670;&nbsp;</a></span>prepareForAsyncCopy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TBuf &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::prepareForAsyncCopy </td>
-          <td>(</td>
-          <td class="paramtype">TBuf &amp;&#160;</td>
-          <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; void
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prepares the buffer for non-blocking copy operations, e.g. pinning if non-blocking copy between a cpu and a cuda device is wanted. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TBuf</td><td>The buffer type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The buffer to prepare in the device memory. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00279">279</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8174,92 +7990,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a3f43b3bce664426a2f439c6a4071e88a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f43b3bce664426a2f439c6a4071e88a">&#9670;&nbsp;</a></span>unmap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TBuf , typename TDev &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::unmap </td>
-          <td>(</td>
-          <td class="paramtype">TBuf &amp;&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TDev const &amp;&#160;</td>
-          <td class="paramname"><em>dev</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; void
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Unmaps the buffer from the memory of the given device. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TBuf</td><td>The buffer type. </td></tr>
-    <tr><td class="paramname">TDev</td><td>The device type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The buffer to unmap from the device memory. </td></tr>
-    <tr><td class="paramname">dev</td><td>The device to unmap the buffer from. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00238">238</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a6e7e62dca166ed6d04974a1e393c5229"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e7e62dca166ed6d04974a1e393c5229">&#9670;&nbsp;</a></span>unpin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TBuf &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::unpin </td>
-          <td>(</td>
-          <td class="paramtype">TBuf &amp;&#160;</td>
-          <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; void
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Unpins the buffer. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TBuf</td><td>The buffer type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The buffer to unpin from the device memory. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00258">258</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a2be994b379106bbd50e768e825321768"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2be994b379106bbd50e768e825321768">&#9670;&nbsp;</a></span>ViewConst()</h2>
 
@@ -8396,7 +8126,7 @@ template&lt;typename TDev , typename TDim &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00128">128</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00104">104</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8430,7 +8160,7 @@ template&lt;typename TPltf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00186">186</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00162">162</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8468,7 +8198,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Tue Sep 13 2022 08:52:46 for alpaka by
+    <li class="footer">Generated on Tue Sep 20 2022 08:26:11 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

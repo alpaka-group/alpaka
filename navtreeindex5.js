@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classalpaka_1_1detail_1_1BufOmp5Impl.html#a9685867217e51e38a0ee6aadc462b0f9":[3,0,0,5,8,2],
 "classalpaka_1_1detail_1_1BufOmp5Impl.html#aae4cb3899f3a3840de67c29bb0b99cf8":[3,0,0,5,8,1],
 "classalpaka_1_1detail_1_1BufOmp5Impl.html#ac6bce7edc319e18602efb45cfabf611e":[3,0,0,5,8,4],
 "classalpaka_1_1detail_1_1QueueRegistry.html":[3,0,0,5,47],
@@ -249,5 +248,6 @@ var NAVTREEINDEX5 =
 "classalpaka_1_1test_1_1EventHostManualTriggerCpu.html#ae54a0c6a22b688a178e2d07125e56f48":[3,0,0,17,6,0],
 "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html":[3,0,0,17,7],
 "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#a1a9e15e84ee73d32ac5c074037bc837c":[3,0,0,17,7,2],
-"classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#a300e828688a272f0c137bccb5003b045":[3,0,0,17,7,0]
+"classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#a300e828688a272f0c137bccb5003b045":[3,0,0,17,7,0],
+"classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#ae12ffbf96b72c62402d762581386b25a":[3,0,0,17,7,1]
 };
