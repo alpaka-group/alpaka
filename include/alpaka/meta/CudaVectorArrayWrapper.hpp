@@ -142,22 +142,23 @@ namespace alpaka::meta
         template<class Other>
         ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(const Other& o)
         {
-            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
+            static_assert(std::tuple_size_v<Other> == size, "Can only convert between vectors of same size.");
             static_assert(
-                std::is_same<typename Other::value_type, value_type>::value,
+                std::is_same_v<typename Other::value_type, value_type>,
                 "Can only convert between vectors of same element type.");
             this->x = o[0];
             this->y = o[1];
             this->z = o[2];
             this->w = o[3];
         }
-        operator std::array<value_type, size>() const
+        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
         {
             std::array<value_type, size> ret;
             ret[0] = this->x;
             ret[1] = this->y;
             ret[2] = this->z;
             ret[3] = this->w;
+            return ret;
         }
 
         ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
@@ -196,12 +197,13 @@ namespace alpaka::meta
             this->y = o[1];
             this->z = o[2];
         }
-        operator std::array<value_type, size>() const
+        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
         {
             std::array<value_type, size> ret;
             ret[0] = this->x;
             ret[1] = this->y;
             ret[2] = this->z;
+            return ret;
         }
 
         ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
@@ -238,11 +240,12 @@ namespace alpaka::meta
             this->x = o[0];
             this->y = o[1];
         }
-        operator std::array<value_type, size>() const
+        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
         {
             std::array<value_type, size> ret;
             ret[0] = this->x;
             ret[1] = this->y;
+            return ret;
         }
 
         ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
@@ -277,10 +280,11 @@ namespace alpaka::meta
                 "Can only convert between vectors of same element type.");
             this->x = o[0];
         }
-        operator std::array<value_type, size>() const
+        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
         {
             std::array<value_type, size> ret;
             ret[0] = this->x;
+            return ret;
         }
 
         ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[]([[maybe_unused]] int const k) noexcept

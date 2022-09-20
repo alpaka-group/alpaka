@@ -213,17 +213,13 @@ auto main() -> int
     // Copy the result from the device
     alpaka::memcpy(queueAcc, bufHostDev, bufAcc);
     const auto numElements = extent.prod();
-    // alpaka::memcpy(queueAcc,
-    //     alpaka::createView(devHost, pBufHostDev, alpaka::Vec<alpaka::DimInt<1u>, Idx>(numElements)),
-    //     alpaka::createView(devAcc, alpaka::getPtrNative(bufAcc),
-    //         alpaka::Vec<alpaka::DimInt<1u>, Idx>(numElements)));
 
     // wait in case we are using an asynchronous queue to time actual kernel runtime
     alpaka::wait(queueHost);
     alpaka::wait(queueAcc);
 
     int falseResults = 0;
-    const int MAX_PRINT_FALSE_RESULTS = extent[2] * 2;
+    const int maxPrintFalseResults = extent[2] * 2;
 
     auto aHost = alpaka::experimental::readAccess(bufHost);
     auto aAcc = alpaka::experimental::readAccess(bufHostDev);
@@ -235,7 +231,7 @@ auto main() -> int
                 Data const& valAcc(aAcc(z, y, x));
                 if(valHost != valAcc)
                 {
-                    if(falseResults < MAX_PRINT_FALSE_RESULTS)
+                    if(falseResults < maxPrintFalseResults)
                         std::cerr << "host[" << z << ", " << y << ", " << x << "] = " << valHost << " != acc[" << z
                                   << ", " << y << ", " << x << "] = " << valAcc << std::endl;
                     ++falseResults;
@@ -249,7 +245,7 @@ auto main() -> int
     }
     else
     {
-        std::cout << "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS
+        std::cout << "Found " << falseResults << " false results, printed no more than " << maxPrintFalseResults
                   << "\n"
                   << "Execution results incorrect!" << std::endl;
         return EXIT_FAILURE;

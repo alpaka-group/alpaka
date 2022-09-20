@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <alpaka/core/Unroll.hpp>
 #include <alpaka/rand/Philox/MultiplyAndSplit64to32.hpp>
 #include <alpaka/rand/Philox/PhiloxConstants.hpp>
 
@@ -60,7 +61,6 @@ namespace alpaka::rand::engine
         static_assert(vectorSize() <= 16, "Philox SP network is not specified for sizes > 16.");
         static_assert(numberWidth() % 8 == 0, "Philox number width in bits must be a multiple of 8.");
 
-        // static_assert(TWidth == 32 || TWidth == 64, "Philox implemented only for 32 and 64 bit numbers.");
         static_assert(numberWidth() == 32, "Philox implemented only for 32 bit numbers.");
 
     public:
@@ -104,7 +104,7 @@ namespace alpaka::rand::engine
             Key key{key_in};
             Counter counter = singleRound(counter_in, key);
 
-            // TODO: Consider unrolling the loop for performance
+            ALPAKA_UNROLL(numRounds())
             for(unsigned int n = 0; n < numRounds(); ++n)
             {
                 key = bumpKey(key);
