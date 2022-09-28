@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 #    include <alpaka/acc/AccGenericSycl.hpp>
+#    include <alpaka/acc/Tag.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/DemangleTypeNames.hpp>
 #    include <alpaka/core/Sycl.hpp>
@@ -80,6 +81,18 @@ namespace alpaka::trait
     struct PltfType<experimental::AccGpuSyclIntel<TDim, TIdx>>
     {
         using type = experimental::PltfGpuSyclIntel;
+    };
+
+    template<typename TDim, typename TIdx>
+    struct AccToTag<alpaka::experimental::AccGpuSyclIntel<TDim, TIdx>>
+    {
+        using type = alpaka::TagGpuSyclIntel;
+    };
+
+    template<typename TDim, typename TIdx>
+    struct TagToAcc<alpaka::TagGpuSyclIntel, TDim, TIdx>
+    {
+        using type = alpaka::experimental::AccGpuSyclIntel<TDim, TIdx>;
     };
 } // namespace alpaka::trait
 

@@ -36,6 +36,7 @@
 #    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
+#    include <alpaka/acc/Tag.hpp>
 #    include <alpaka/core/BoostPredef.hpp>
 #    include <alpaka/core/ClipCast.hpp>
 #    include <alpaka/core/Concepts.hpp>
@@ -217,6 +218,18 @@ namespace alpaka
         struct IdxType<AccCpuThreads<TDim, TIdx>>
         {
             using type = TIdx;
+        };
+
+        template<typename TDim, typename TIdx>
+        struct AccToTag<alpaka::AccCpuThreads<TDim, TIdx>>
+        {
+            using type = alpaka::TagCpuThreads;
+        };
+
+        template<typename TDim, typename TIdx>
+        struct TagToAcc<alpaka::TagCpuThreads, TDim, TIdx>
+        {
+            using type = alpaka::AccCpuThreads<TDim, TIdx>;
         };
     } // namespace trait
 } // namespace alpaka
