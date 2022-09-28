@@ -37,6 +37,7 @@
 #    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
+#    include <alpaka/acc/Tag.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 
@@ -192,6 +193,18 @@ namespace alpaka
         struct IdxType<AccCpuTbbBlocks<TDim, TIdx>>
         {
             using type = TIdx;
+        };
+
+        template<typename TDim, typename TIdx>
+        struct AccToTag<alpaka::AccCpuTbbBlocks<TDim, TIdx>>
+        {
+            using type = alpaka::TagCpuTbbBlocks;
+        };
+
+        template<typename TDim, typename TIdx>
+        struct TagToAcc<alpaka::TagCpuTbbBlocks, TDim, TIdx>
+        {
+            using type = alpaka::AccCpuTbbBlocks<TDim, TIdx>;
         };
     } // namespace trait
 } // namespace alpaka

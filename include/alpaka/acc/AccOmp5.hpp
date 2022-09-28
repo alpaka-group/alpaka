@@ -49,6 +49,7 @@
 #    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
+#    include <alpaka/acc/Tag.hpp>
 #    include <alpaka/core/ClipCast.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevOmp5.hpp>
@@ -280,6 +281,18 @@ namespace alpaka
         struct IdxType<AccOmp5<TDim, TIdx>>
         {
             using type = TIdx;
+        };
+
+        template<typename TDim, typename TIdx>
+        struct AccToTag<alpaka::AccOmp5<TDim, TIdx>>
+        {
+            using type = alpaka::TagOmp5;
+        };
+
+        template<typename TDim, typename TIdx>
+        struct TagToAcc<alpaka::TagOmp5, TDim, TIdx>
+        {
+            using type = alpaka::AccOmp5<TDim, TIdx>;
         };
     } // namespace trait
 } // namespace alpaka

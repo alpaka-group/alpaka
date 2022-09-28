@@ -34,6 +34,7 @@
 #    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
+#    include <alpaka/acc/Tag.hpp>
 #    include <alpaka/core/ClipCast.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/ctx/block/CtxBlockOacc.hpp>
@@ -344,6 +345,18 @@ namespace alpaka
                 return GetWorkDiv<WorkDivMembers<TDim, TIdx>, origin::Thread, unit::Elems>::getWorkDiv(
                     workDiv.m_blockShared);
             }
+        };
+
+        template<typename TDim, typename TIdx>
+        struct AccToTag<alpaka::AccOacc<TDim, TIdx>>
+        {
+            using type = alpaka::TagOacc;
+        };
+
+        template<typename TDim, typename TIdx>
+        struct TagToAcc<alpaka::TagOacc, TDim, TIdx>
+        {
+            using type = alpaka::AccOacc<TDim, TIdx>;
         };
     } // namespace trait
 } // namespace alpaka

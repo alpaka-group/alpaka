@@ -12,6 +12,7 @@
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
 
 #    include <alpaka/acc/AccGenericSycl.hpp>
+#    include <alpaka/acc/Tag.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/DemangleTypeNames.hpp>
 #    include <alpaka/core/Sycl.hpp>
@@ -81,6 +82,18 @@ namespace alpaka::trait
     struct PltfType<experimental::AccFpgaSyclXilinx<TDim, TIdx>>
     {
         using type = experimental::PltfFpgaSyclXilinx;
+    };
+
+    template<typename TDim, typename TIdx>
+    struct AccToTag<alpaka::experimental::AccFpgaSyclXilinx<TDim, TIdx>>
+    {
+        using type = alpaka::TagFpgaSyclXilinx;
+    };
+
+    template<typename TDim, typename TIdx>
+    struct TagToAcc<alpaka::TagFpgaSyclXilinx, TDim, TIdx>
+    {
+        using type = alpaka::experimental::AccFpgaSyclXilinx<TDim, TIdx>;
     };
 } // namespace alpaka::trait
 

@@ -31,6 +31,7 @@
 #include <alpaka/acc/AccGpuSyclIntel.hpp>
 #include <alpaka/acc/AccOacc.hpp>
 #include <alpaka/acc/AccOmp5.hpp>
+#include <alpaka/acc/Tag.hpp>
 #include <alpaka/acc/Traits.hpp>
 // atomic
 #include <alpaka/atomic/AtomicCpu.hpp>
