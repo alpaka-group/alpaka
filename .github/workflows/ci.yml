@@ -106,9 +106,9 @@ jobs:
         - name: linux_clang-8_debug_analysis
           os: ubuntu-18.04
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 8,      ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.77.0, ALPAKA_CI_CMAKE_VER: 3.20.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
-        - name: linux_clang-9_cuda-9.2_debug_analysis
+        - name: linux_clang-13_cuda-11.2_debug_analysis
           os: ubuntu-20.04
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 9,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.77.0, ALPAKA_CI_CMAKE_VER: 3.20.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CI_ANALYSIS: ON, ALPAKA_CI_RUN_TESTS: OFF, alpaka_DEBUG: 1, alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "9.2", CMAKE_CUDA_COMPILER: clang++,   alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.77.0, ALPAKA_CI_CMAKE_VER: 3.20.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CI_ANALYSIS: ON, ALPAKA_CI_RUN_TESTS: OFF, alpaka_DEBUG: 1, alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "11.2", CMAKE_CUDA_COMPILER: clang++,   alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
         - name: windows_cl-2019_debug_analysis
           os: windows-2019
           env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.20.6,                     ALPAKA_CI_ANALYSIS: ON, alpaka_DEBUG: 2,                                                                                                                                                  alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
