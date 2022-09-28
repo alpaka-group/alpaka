@@ -98,6 +98,20 @@ namespace alpaka
         //! Value constructor.
         //! This constructor is only available if the number of parameters matches the vector idx.
         ALPAKA_NO_HOST_ACC_WARNING
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(11, 3, 0)                                              \
+    && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 4, 0)
+        // This constructor tries to avoid SFINAE, which crashes nvcc 11.3. We also need to have a first
+        // argument, so an unconstrained ctor with forwarding references does not hijack the compiler provided
+        // copy-ctor.
+        template<typename... TArgs>
+        ALPAKA_FN_HOST_ACC constexpr Vec(TVal arg0, TArgs&&... args)
+            : m_data{std::move(arg0), static_cast<TVal>(std::forward<TArgs>(args))...}
+        {
+            static_assert(
+                1 + sizeof...(TArgs) == TDim::value && (std::is_convertible_v<std::decay_t<TArgs>, TVal> && ...),
+                "Wrong number of arguments to Vec constructor or types are not convertible to TVal.");
+        }
+#else
         template<
             typename... TArgs,
             typename = std::enable_if_t<
@@ -105,6 +119,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC constexpr Vec(TArgs&&... args) : m_data{static_cast<TVal>(std::forward<TArgs>(args))...}
         {
         }
+#endif
 
         //! \brief Single value constructor.
         //!
