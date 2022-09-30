@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['vec_4538',['Vec',['../classalpaka_1_1Vec.html#a9b28e4f55e2d24291409d1b1b4ca3e5b',1,'alpaka::Vec::Vec()'],['../classalpaka_1_1Vec.html#a7b6b1a4bfbc7a6b7a28fbc8f15a97755',1,'alpaka::Vec::Vec(TArgs &amp;&amp;... args)']]],
+  ['vec_4538',['Vec',['../classalpaka_1_1Vec.html#a9b28e4f55e2d24291409d1b1b4ca3e5b',1,'alpaka::Vec::Vec()'],['../classalpaka_1_1Vec.html#a7b6b1a4bfbc7a6b7a28fbc8f15a97755',1,'alpaka::Vec::Vec(TArgs &amp;&amp;... args)'],['../namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74',1,'alpaka::Vec()']]],
   ['verifybytesset_4539',['verifyBytesSet',['../namespacealpaka_1_1test.html#a2da61c4004c9b54c965c74f9b28155f2',1,'alpaka::test']]],
   ['verifyviewsequal_4540',['verifyViewsEqual',['../namespacealpaka_1_1test.html#a490d7ae473e2c0ed15d387d265d5c5dc',1,'alpaka::test']]],
   ['viewaccessops_4541',['ViewAccessOps',['../structalpaka_1_1internal_1_1ViewAccessOps.html#a46242b067a2c57eb0effddf96144bddb',1,'alpaka::internal::ViewAccessOps']]],

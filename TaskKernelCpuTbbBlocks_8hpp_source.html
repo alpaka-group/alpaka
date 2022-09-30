@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                blockSharedMemDynSizeBytes);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                            acc.m_gridBlockIdx</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                = mapIdx&lt;TDim::value&gt;(Vec&lt;DimInt&lt;1u&gt;, TIdx&gt;(<span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(i)), gridBlockExtent);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                = mapIdx&lt;TDim::value&gt;(<a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;1u&gt;, TIdx&gt;(<span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(i)), gridBlockExtent);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                            <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
@@ -257,6 +257,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_aee3fb80b82e8f3e9601195afb0b8c34c"><div class="ttname"><a href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim</a></div><div class="ttdeci">typename trait::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html_afba6dfdddd358c0ee5a1c6406afd2c11"><div class="ttname"><a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a></div><div class="ttdeci">#define ALPAKA_DECAY_T(Type)</div><div class="ttdoc">Wrapper around std::decay_t for parameter pack expansion expressions.</div><div class="ttdef"><b>Definition:</b> <a href="Decay_8hpp_source.html#l00030">Decay.hpp:30</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_ab339d2982f7e28701dd0c359855ffa74"><div class="ttname"><a href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">alpaka::Vec</a></div><div class="ttdeci">Vec(TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</div></div>
 <div class="ttc" id="aMapIdx_8hpp_html"><div class="ttname"><a href="MapIdx_8hpp.html">MapIdx.hpp</a></div></div>
 <div class="ttc" id="aAccCpuTbbBlocks_8hpp_html"><div class="ttname"><a href="AccCpuTbbBlocks_8hpp.html">AccCpuTbbBlocks.hpp</a></div></div>
 <div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -272,7 +273,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuTbbBlocks_8hpp_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuTbbBlocks_8hpp.html">TaskKernelCpuTbbBlocks.hpp</a></li>
-    <li class="footer">Generated on Wed Sep 28 2022 15:02:16 for alpaka by
+    <li class="footer">Generated on Fri Sep 30 2022 09:07:29 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -228,7 +228,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordflow">return</span> {<span class="comment">// m_multiProcessorCount</span></div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    alpaka::core::clipCast&lt;TIdx&gt;(device.template get_info&lt;sycl::info::device::max_compute_units&gt;()),</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                    <span class="comment">// m_gridBlockExtentMax</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(Vec&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(<a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                        <span class="comment">// WARNING: There is no SYCL way to determine these values</span></div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
@@ -236,7 +236,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    <span class="comment">// m_gridBlockCountMax</span></div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                    <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                    <span class="comment">// m_blockThreadExtentMax</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(Vec&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(<a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[2u]),</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[1u]),</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[0u]))),</div>
@@ -275,7 +275,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 </div><!-- doc-content -->
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00128">AccCpuFibers.hpp:128</a></div></div>
 <div class="ttc" id="akernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1Vec_html_a63e2be5b9e7ed693e6185ebdfccec584"><div class="ttname"><a href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">alpaka::Vec::all</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING static constexpr ALPAKA_FN_HOST_ACC auto all(TVal const &amp;val) -&gt; Vec&lt; TDim, TVal &gt;</div><div class="ttdoc">Single value constructor.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00114">Vec.hpp:114</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1Vec_html_a63e2be5b9e7ed693e6185ebdfccec584"><div class="ttname"><a href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">alpaka::Vec::all</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING static constexpr ALPAKA_FN_HOST_ACC auto all(TVal const &amp;val) -&gt; Vec&lt; TDim, TVal &gt;</div><div class="ttdoc">Single value constructor.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00129">Vec.hpp:129</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_abe27c0dad6ddd453657dee8f0bb343ff"><div class="ttname"><a href="namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff">alpaka::AtomicHierarchy</a></div><div class="ttdeci">alpaka::meta::InheritFromList&lt; alpaka::meta::Unique&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, concepts::Implements&lt; ConceptAtomicGrids, TGridAtomic &gt;, concepts::Implements&lt; ConceptAtomicBlocks, TBlockAtomic &gt;, concepts::Implements&lt; ConceptAtomicThreads, TThreadAtomic &gt; &gt;&gt; &gt; AtomicHierarchy</div><div class="ttdoc">build a single class to inherit from different atomic implementations</div><div class="ttdef"><b>Definition:</b> <a href="AtomicHierarchy_8hpp_source.html#l00038">AtomicHierarchy.hpp:38</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aMathGenericSycl_8hpp_html"><div class="ttname"><a href="MathGenericSycl_8hpp.html">MathGenericSycl.hpp</a></div></div>
@@ -286,6 +286,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="ttc" id="aAtomicGenericSycl_8hpp_html"><div class="ttname"><a href="AtomicGenericSycl_8hpp.html">AtomicGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aIdxGbGenericSycl_8hpp_html"><div class="ttname"><a href="IdxGbGenericSycl_8hpp.html">IdxGbGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aSycl_8hpp_html"><div class="ttname"><a href="Sycl_8hpp.html">Sycl.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_ab339d2982f7e28701dd0c359855ffa74"><div class="ttname"><a href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">alpaka::Vec</a></div><div class="ttdeci">Vec(TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</div></div>
 <div class="ttc" id="aBlockSharedMemDynGenericSycl_8hpp_html"><div class="ttname"><a href="BlockSharedMemDynGenericSycl_8hpp.html">BlockSharedMemDynGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aMemFenceGenericSycl_8hpp_html"><div class="ttname"><a href="MemFenceGenericSycl_8hpp.html">MemFenceGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aWorkDivGenericSycl_8hpp_html"><div class="ttname"><a href="WorkDivGenericSycl_8hpp.html">WorkDivGenericSycl.hpp</a></div></div>
@@ -304,7 +305,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGenericSycl_8hpp.html">AccGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Sep 28 2022 15:02:15 for alpaka by
+    <li class="footer">Generated on Fri Sep 30 2022 09:07:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

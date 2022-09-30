@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ae467143f5deed4ecdeb5de6ad22a0121">getIdx</a>(experimental::gb::IdxGbGenericSycl&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; idx, TWorkDiv <span class="keyword">const</span>&amp;)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">if</span> constexpr(TDim::value == 1)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                return Vec&lt;TDim, TIdx&gt;(static_cast&lt;TIdx&gt;(idx.my_item.get_group(0)));</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                return <a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;TDim, TIdx&gt;(static_cast&lt;TIdx&gt;(idx.my_item.get_group(0)));</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            else if constexpr(TDim::value == 2)</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">return</span> Vec&lt;TDim, TIdx&gt;(</div>
@@ -175,6 +175,7 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aSycl_8hpp_html"><div class="ttname"><a href="Sycl_8hpp.html">Sycl.hpp</a></div></div>
 <div class="ttc" id="aPositioning_8hpp_html"><div class="ttname"><a href="Positioning_8hpp.html">Positioning.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_ab339d2982f7e28701dd0c359855ffa74"><div class="ttname"><a href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">alpaka::Vec</a></div><div class="ttdeci">Vec(TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</div></div>
 <div class="ttc" id="anamespacealpaka_html_ae467143f5deed4ecdeb5de6ad22a0121"><div class="ttname"><a href="namespacealpaka.html#ae467143f5deed4ecdeb5de6ad22a0121">alpaka::getIdx</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto getIdx(TIdx const &amp;idx, TWorkDiv const &amp;workDiv) -&gt; Vec&lt; Dim&lt; TWorkDiv &gt;, Idx&lt; TIdx &gt;&gt;</div><div class="ttdoc">Get the indices requested.</div><div class="ttdef"><b>Definition:</b> <a href="Accessors_8hpp_source.html#l00028">Accessors.hpp:28</a></div></div>
 <div class="ttc" id="aVec_8hpp_html"><div class="ttname"><a href="Vec_8hpp.html">Vec.hpp</a></div></div>
 <div class="ttc" id="aidx_2Traits_8hpp_html"><div class="ttname"><a href="idx_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -182,7 +183,7 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="dir_820f4fd4051d8a4d65c2fe0dda35bb00.html">gb</a></li><li class="navelem"><a class="el" href="IdxGbGenericSycl_8hpp.html">IdxGbGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Sep 28 2022 15:02:16 for alpaka by
+    <li class="footer">Generated on Fri Sep 30 2022 09:07:29 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

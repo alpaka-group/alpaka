@@ -1006,6 +1006,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ada1e5add594d3a2699a818b6a87cabee"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">syncBlockThreadsPredicate</a> (TBlockSync const &amp;blockSync, int predicate) -&gt; int</td></tr>
 <tr class="memdesc:ada1e5add594d3a2699a818b6a87cabee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronizes all threads within the current block (independently for all blocks), evaluates the predicate for all threads and returns the combination of all the results computed via TOp.  <a href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">More...</a><br /></td></tr>
 <tr class="separator:ada1e5add594d3a2699a818b6a87cabee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplParams" colspan="2">template&lt;typename TFirstIndex , typename... TRestIndices&gt; </td></tr>
+<tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a> (TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</td></tr>
+<tr class="separator:ab339d2982f7e28701dd0c359855ffa74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
 <tr class="memitem:a2be994b379106bbd50e768e825321768"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2be994b379106bbd50e768e825321768">ViewConst</a> (TView) -&gt; <a class="el" href="structalpaka_1_1ViewConst.html">ViewConst</a>&lt; std::decay_t&lt; TView &gt;&gt;</td></tr>
 <tr class="separator:a2be994b379106bbd50e768e825321768"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4462,7 +4465,7 @@ template&lt;typename TExtent &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The extent vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00571">571</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00589">589</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4500,7 +4503,7 @@ template&lt;typename TDim , typename TExtent &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The extent but only the last TDim elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00580">580</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00598">598</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4844,7 +4847,7 @@ template&lt;typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00609">609</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00627">627</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4882,7 +4885,7 @@ template&lt;typename TDim , typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector but only the last TDim elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00618">618</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00636">636</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -7990,6 +7993,36 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ab339d2982f7e28701dd0c359855ffa74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab339d2982f7e28701dd0c359855ffa74">&#9670;&nbsp;</a></span>Vec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TFirstIndex , typename... TRestIndices&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a> </td>
+          <td>(</td>
+          <td class="paramtype">TFirstIndex &amp;&amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TRestIndices &amp;&amp;&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt;  <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2be994b379106bbd50e768e825321768"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2be994b379106bbd50e768e825321768">&#9670;&nbsp;</a></span>ViewConst()</h2>
 
@@ -8198,7 +8231,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Sep 28 2022 15:02:17 for alpaka by
+    <li class="footer">Generated on Fri Sep 30 2022 09:07:29 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

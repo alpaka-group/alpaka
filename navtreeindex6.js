@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#ae12ffbf96b72c62402d762581386b25a":[3,0,0,17,7,1],
 "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#ae156cf4f7a19ae5712808a0281cd6d22":[3,0,0,17,7,3],
 "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html#af72c209660af1cd01e6e15a87c37da9d":[3,0,0,17,7,4],
 "classalpaka_1_1test_1_1KernelExecutionFixture.html":[3,0,0,17,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "functions_v.html":[3,2,0,21],
 "functions_vars.html":[3,2,2],
 "functions_vars.html":[3,2,2,0],
-"functions_vars_d.html":[3,2,2,1],
-"functions_vars_e.html":[3,2,2,2]
+"functions_vars_d.html":[3,2,2,1]
 };

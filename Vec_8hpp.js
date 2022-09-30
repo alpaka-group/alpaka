@@ -22,5 +22,6 @@ var Vec_8hpp =
     [ "getExtentVec", "Vec_8hpp.html#afa7369abadff7e4f8afc89c526628e12", null ],
     [ "getExtentVecEnd", "Vec_8hpp.html#a864a91f6b0565f1d0ecf2e3e23e3b868", null ],
     [ "getOffsetVec", "Vec_8hpp.html#a32cb8ca9b95af8c8dea8d84f37a0ec90", null ],
-    [ "getOffsetVecEnd", "Vec_8hpp.html#ab564786b8330a1fc3848753d31316938", null ]
+    [ "getOffsetVecEnd", "Vec_8hpp.html#ab564786b8330a1fc3848753d31316938", null ],
+    [ "Vec", "Vec_8hpp.html#ab339d2982f7e28701dd0c359855ffa74", null ]
 ];

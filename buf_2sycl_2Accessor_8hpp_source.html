@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('buf_2sycl_2Accessor_8hpp_source.html',
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">typename</span> SyclAccessor::const_reference,</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keyword">typename</span> SyclAccessor::reference&gt;;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        Accessor(SyclAccessor accessor, Vec&lt;DimInt&lt;1&gt;, TIdx&gt; ext) : m_accessor{accessor}, extents{ext}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        Accessor(SyclAccessor accessor, <a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;1&gt;, TIdx&gt; ext) : m_accessor{accessor}, extents{ext}</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('buf_2sycl_2Accessor_8hpp_source.html',
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keyword">typename</span> SyclAccessor::reference&gt;;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        Accessor(SyclAccessor accessor, Vec&lt;DimInt&lt;TDim&gt;, TIdx&gt; ext) : m_accessor{accessor}, extents{ext}</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        Accessor(SyclAccessor accessor, <a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;TDim&gt;, TIdx&gt; ext) : m_accessor{accessor}, extents{ext}</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
@@ -233,6 +233,7 @@ $(document).ready(function(){initNavTree('buf_2sycl_2Accessor_8hpp_source.html',
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="anamespacealpaka_html_ab339d2982f7e28701dd0c359855ffa74"><div class="ttname"><a href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">alpaka::Vec</a></div><div class="ttdeci">Vec(TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</div></div>
 <div class="ttc" id="astructalpaka_1_1experimental_1_1trait_1_1BuildAccessor_html_aba7b16ce9e7a32c34370842e76580fe3"><div class="ttname"><a href="structalpaka_1_1experimental_1_1trait_1_1BuildAccessor.html#aba7b16ce9e7a32c34370842e76580fe3">alpaka::experimental::trait::BuildAccessor::buildAccessor</a></div><div class="ttdeci">static ALPAKA_FN_HOST_ACC auto buildAccessor(TMemoryObjectForwardRef &amp;&amp;)</div><div class="ttdef"><b>Definition:</b> <a href="view_2Accessor_8hpp_source.html#l00061">Accessor.hpp:61</a></div></div>
 <div class="ttc" id="aview_2Accessor_8hpp_html"><div class="ttname"><a href="view_2Accessor_8hpp.html">Accessor.hpp</a></div></div>
 <div class="ttc" id="aViewAccessor_8hpp_html"><div class="ttname"><a href="ViewAccessor_8hpp.html">ViewAccessor.hpp</a></div></div>
@@ -242,7 +243,7 @@ $(document).ready(function(){initNavTree('buf_2sycl_2Accessor_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="buf_2sycl_2Accessor_8hpp.html">Accessor.hpp</a></li>
-    <li class="footer">Generated on Wed Sep 28 2022 15:02:16 for alpaka by
+    <li class="footer">Generated on Fri Sep 30 2022 09:07:29 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

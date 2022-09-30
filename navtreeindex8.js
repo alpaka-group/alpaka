@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"namespacealpaka_1_1test_1_1uniform__cuda__hip.html":[2,0,0,19,4],
 "namespacealpaka_1_1test_1_1uniform__cuda__hip_1_1detail.html":[3,0,0,17,3,0],
 "namespacealpaka_1_1test_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,19,4,0],
 "namespacealpaka_1_1trait.html":[3,0,0,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1ApiCudaRt.html#a66837c7a54ef43f7868f1306937bb6a7":[3,0,0,31,44],
 "structalpaka_1_1ApiCudaRt.html#a683cbda89fc70dab5961bb7793adeff3":[3,0,0,31,86],
 "structalpaka_1_1ApiCudaRt.html#a6872c94c0c6195c0c04b3fe800811ead":[3,0,0,31,94],
-"structalpaka_1_1ApiCudaRt.html#a68c088615d81d24eb1c2b190b18db97b":[3,0,0,31,103],
-"structalpaka_1_1ApiCudaRt.html#a6b1046c9f0d5e9b2486a08d68c2e45f3":[3,0,0,31,59]
+"structalpaka_1_1ApiCudaRt.html#a68c088615d81d24eb1c2b190b18db97b":[3,0,0,31,103]
 };
