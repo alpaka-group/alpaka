@@ -262,6 +262,30 @@ TEST_CASE("basicVecTraits", "[vec]")
             STATIC_REQUIRE(referenceVec == vecLessEqual);
         }
 
+        // alpaka::Vec elementwise_min
+        {
+            STATIC_REQUIRE(alpaka::elementwise_min(vec) == vec);
+
+            constexpr auto result = alpaka::elementwise_min(vec, vec3);
+            STATIC_REQUIRE(std::is_same_v<alpaka::Dim<std::decay_t<decltype(result)>>, Dim>);
+            STATIC_REQUIRE(std::is_same_v<alpaka::Idx<std::decay_t<decltype(result)>>, Idx>);
+            STATIC_REQUIRE(result == Vec{0, 8, 3});
+
+            STATIC_REQUIRE(alpaka::elementwise_min(vec, vec3, Vec{9, 7, 9}, Vec{12, 42, 12}) == Vec{0, 7, 3});
+        }
+
+        // alpaka::Vec elementwise_max
+        {
+            STATIC_REQUIRE(alpaka::elementwise_max(vec) == vec);
+
+            constexpr auto result = alpaka::elementwise_max(vec, vec3);
+            STATIC_REQUIRE(std::is_same_v<alpaka::Dim<std::decay_t<decltype(result)>>, Dim>);
+            STATIC_REQUIRE(std::is_same_v<alpaka::Idx<std::decay_t<decltype(result)>>, Idx>);
+            STATIC_REQUIRE(result == Vec{47, 8, 15});
+
+            STATIC_REQUIRE(alpaka::elementwise_max(vec, vec3, Vec{9, 7, 9}, Vec{12, 42, 12}) == Vec{47, 42, 15});
+        }
+
         // alpaka::Vec begin/end
         STATIC_REQUIRE(
             []
