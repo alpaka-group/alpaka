@@ -19,6 +19,8 @@ var Vec_8hpp =
     [ "createVecFromIndexedFn", "Vec_8hpp.html#a8c3580b7a262d20a172b62cb8b6153c5", null ],
     [ "createVecFromIndexedFnArbitrary", "Vec_8hpp.html#a6e7b06f6d6c5bb61fc4ec65fa95e6ec4", null ],
     [ "createVecFromIndexedFnOffset", "Vec_8hpp.html#a730e9a7d0baa70426246af2bb311417a", null ],
+    [ "elementwise_max", "Vec_8hpp.html#a05ded3e1760e87f4b377803a98f98885", null ],
+    [ "elementwise_min", "Vec_8hpp.html#a9ee3ba1ec1a52cf177f41bb81e03b798", null ],
     [ "getExtentVec", "Vec_8hpp.html#afa7369abadff7e4f8afc89c526628e12", null ],
     [ "getExtentVecEnd", "Vec_8hpp.html#a864a91f6b0565f1d0ecf2e3e23e3b868", null ],
     [ "getOffsetVec", "Vec_8hpp.html#a32cb8ca9b95af8c8dea8d84f37a0ec90", null ],

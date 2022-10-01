@@ -708,6 +708,12 @@ Functions</h2></td></tr>
 <tr class="memitem:af7b7e7f67482b39bf05230d666dc9798"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af7b7e7f67482b39bf05230d666dc9798">declareSharedVar</a> (TBlockSharedMemSt const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
 <tr class="memdesc:af7b7e7f67482b39bf05230d666dc9798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a block shared variable.  <a href="namespacealpaka.html#af7b7e7f67482b39bf05230d666dc9798">More...</a><br /></td></tr>
 <tr class="separator:af7b7e7f67482b39bf05230d666dc9798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05ded3e1760e87f4b377803a98f98885"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal , typename... Vecs, typename  = std::enable_if_t&lt;(std::is_same_v&lt;Vec&lt;TDim, TVal&gt;, Vecs&gt; &amp;&amp; ...)&gt;&gt; </td></tr>
+<tr class="memitem:a05ded3e1760e87f4b377803a98f98885"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a05ded3e1760e87f4b377803a98f98885">elementwise_max</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, Vecs const &amp;... qs) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt;</td></tr>
+<tr class="separator:a05ded3e1760e87f4b377803a98f98885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ee3ba1ec1a52cf177f41bb81e03b798"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal , typename... Vecs, typename  = std::enable_if_t&lt;(std::is_same_v&lt;Vec&lt;TDim, TVal&gt;, Vecs&gt; &amp;&amp; ...)&gt;&gt; </td></tr>
+<tr class="memitem:a9ee3ba1ec1a52cf177f41bb81e03b798"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9ee3ba1ec1a52cf177f41bb81e03b798">elementwise_min</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, Vecs const &amp;... qs) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt;</td></tr>
+<tr class="separator:a9ee3ba1ec1a52cf177f41bb81e03b798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b5f410b7b40fd9e91a9c6478e2e085"><td class="memTemplParams" colspan="2">template&lt;typename TQueue &gt; </td></tr>
 <tr class="memitem:ab2b5f410b7b40fd9e91a9c6478e2e085"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab2b5f410b7b40fd9e91a9c6478e2e085">empty</a> (TQueue const &amp;queue) -&gt; bool</td></tr>
 <tr class="memdesc:ab2b5f410b7b40fd9e91a9c6478e2e085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the queue is empty (all ops in the given queue have been completed).  <a href="namespacealpaka.html#ab2b5f410b7b40fd9e91a9c6478e2e085">More...</a><br /></td></tr>
@@ -3789,6 +3795,90 @@ template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; 
 
 </div>
 </div>
+<a id="a05ded3e1760e87f4b377803a98f98885"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05ded3e1760e87f4b377803a98f98885">&#9670;&nbsp;</a></span>elementwise_max()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal , typename... Vecs, typename  = std::enable_if_t&lt;(std::is_same_v&lt;Vec&lt;TDim, TVal&gt;, Vecs&gt; &amp;&amp; ...)&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::elementwise_max </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vecs const &amp;...&#160;</td>
+          <td class="paramname"><em>qs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TVal&gt;
+    </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise maximum of one or more vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00482">482</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a9ee3ba1ec1a52cf177f41bb81e03b798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ee3ba1ec1a52cf177f41bb81e03b798">&#9670;&nbsp;</a></span>elementwise_min()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal , typename... Vecs, typename  = std::enable_if_t&lt;(std::is_same_v&lt;Vec&lt;TDim, TVal&gt;, Vecs&gt; &amp;&amp; ...)&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::elementwise_min </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vecs const &amp;...&#160;</td>
+          <td class="paramname"><em>qs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TVal&gt;
+    </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise minimum of one or more vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00464">464</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
 <a id="ab2b5f410b7b40fd9e91a9c6478e2e085"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2b5f410b7b40fd9e91a9c6478e2e085">&#9670;&nbsp;</a></span>empty()</h2>
 
@@ -4465,7 +4555,7 @@ template&lt;typename TExtent &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The extent vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00589">589</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00625">625</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4503,7 +4593,7 @@ template&lt;typename TDim , typename TExtent &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The extent but only the last TDim elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00598">598</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00634">634</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4847,7 +4937,7 @@ template&lt;typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00627">627</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00663">663</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4885,7 +4975,7 @@ template&lt;typename TDim , typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector but only the last TDim elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00636">636</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00672">672</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -8231,7 +8321,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Sep 30 2022 09:07:29 for alpaka by
+    <li class="footer">Generated on Sat Oct 1 2022 21:04:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
