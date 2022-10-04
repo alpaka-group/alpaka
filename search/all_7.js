@@ -177,9 +177,10 @@ var searchData=
   ['getworkdiv_3c_20workdivuniformcudahipbuiltin_3c_20tdim_2c_20tidx_20_3e_2c_20origin_3a_3athread_2c_20unit_3a_3aelems_20_3e_1189',['GetWorkDiv&lt; WorkDivUniformCudaHipBuiltIn&lt; TDim, TIdx &gt;, origin::Thread, unit::Elems &gt;',['../structalpaka_1_1trait_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6f65561015a833a39d77e722b88be10f.html',1,'alpaka::trait']]],
   ['gpucudart_2ehpp_1190',['GpuCudaRt.hpp',['../GpuCudaRt_8hpp.html',1,'']]],
   ['gpuhiprt_2ehpp_1191',['GpuHipRt.hpp',['../GpuHipRt_8hpp.html',1,'']]],
-  ['gpusyclintel_2ehpp_1192',['GpuSyclIntel.hpp',['../GpuSyclIntel_8hpp.html',1,'']]],
-  ['grid_1193',['Grid',['../structalpaka_1_1memory__scope_1_1Grid.html',1,'alpaka::memory_scope']]],
-  ['gridblockextentsubdivrestrictions_1194',['GridBlockExtentSubDivRestrictions',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27',1,'alpaka']]],
-  ['grids_1195',['Grids',['../structalpaka_1_1hierarchy_1_1Grids.html',1,'alpaka::hierarchy']]],
-  ['guided_1196',['Guided',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aad0bd9bc4f06fcaea08af1eae99853f75',1,'alpaka::omp::Schedule']]]
+  ['gpukernel_1192',['gpuKernel',['../namespacealpaka_1_1detail.html#a64053dbfaaaefdf2572ec83b38b30623',1,'alpaka::detail']]],
+  ['gpusyclintel_2ehpp_1193',['GpuSyclIntel.hpp',['../GpuSyclIntel_8hpp.html',1,'']]],
+  ['grid_1194',['Grid',['../structalpaka_1_1memory__scope_1_1Grid.html',1,'alpaka::memory_scope']]],
+  ['gridblockextentsubdivrestrictions_1195',['GridBlockExtentSubDivRestrictions',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27',1,'alpaka']]],
+  ['grids_1196',['Grids',['../structalpaka_1_1hierarchy_1_1Grids.html',1,'alpaka::hierarchy']]],
+  ['guided_1197',['Guided',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aad0bd9bc4f06fcaea08af1eae99853f75',1,'alpaka::omp::Schedule']]]
 ];

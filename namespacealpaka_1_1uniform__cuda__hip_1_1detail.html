@@ -123,10 +123,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aadbc4c37adaf4a8dee896d831b707b54"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aadbc4c37adaf4a8dee896d831b707b54">rtCheckLastError</a> (char const *desc, char const *file, int const &amp;line) noexcept(!TThrow)</td></tr>
 <tr class="memdesc:aadbc4c37adaf4a8dee896d831b707b54"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API last error checking with log and exception.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aadbc4c37adaf4a8dee896d831b707b54">More...</a><br /></td></tr>
 <tr class="separator:aadbc4c37adaf4a8dee896d831b707b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea6e8357781880bf4fce35d32a57a382"><td class="memTemplParams" colspan="2">template&lt;typename TApi , typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:aea6e8357781880bf4fce35d32a57a382"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aea6e8357781880bf4fce35d32a57a382">uniformCudaHipKernel</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs... args)</td></tr>
-<tr class="memdesc:aea6e8357781880bf4fce35d32a57a382"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP kernel entry point.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aea6e8357781880bf4fce35d32a57a382">More...</a><br /></td></tr>
-<tr class="separator:aea6e8357781880bf4fce35d32a57a382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af9741bdf6dda9699e1dd8ca18d81d16a"></a>
@@ -148,7 +144,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00104">104</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00103">103</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -171,7 +167,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00121">121</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00120">120</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -337,53 +333,13 @@ template&lt;typename TApi , bool TThrow&gt; </div>
 
 </div>
 </div>
-<a id="aea6e8357781880bf4fce35d32a57a382"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea6e8357781880bf4fce35d32a57a382">&#9670;&nbsp;</a></span>uniformCudaHipKernel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TApi , typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">__global__ void alpaka::uniform_cuda_hip::detail::uniformCudaHipKernel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const&#160;</td>
-          <td class="paramname"><em>threadElemExtent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TKernelFnObj const&#160;</td>
-          <td class="paramname"><em>kernelFnObj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TArgs...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The GPU CUDA/HIP kernel entry point. </p>
-
-<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00083">83</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Sat Oct 1 2022 21:04:06 for alpaka by
+    <li class="footer">Generated on Tue Oct 4 2022 09:06:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
