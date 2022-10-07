@@ -21,6 +21,9 @@ var dir_192cbe7214f78dcbefe56af07355e2bc =
       [ "Philox4x32x10Vector", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html", "classalpaka_1_1rand_1_1Philox4x32x10Vector" ],
       [ "UniformReal", "classalpaka_1_1rand_1_1UniformReal.html", "classalpaka_1_1rand_1_1UniformReal" ]
     ] ],
+    [ "RandPhiloxStateless.hpp", "RandPhiloxStateless_8hpp.html", [
+      [ "PhiloxStateless4x32x10Vector", "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector.html", "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector" ]
+    ] ],
     [ "RandStdLib.hpp", "RandStdLib_8hpp.html", "RandStdLib_8hpp" ],
     [ "RandUniformCudaHipRand.hpp", "RandUniformCudaHipRand_8hpp.html", [
       [ "CreateNormalReal< RandUniformCudaHipRand< TApi >, T, std::enable_if_t< std::is_floating_point_v< T > > >", "structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandUniformCudaHipRand_3_0df518e9b654bd428d7301d740b48ae2e.html", "structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandUniformCudaHipRand_3_0df518e9b654bd428d7301d740b48ae2e" ],

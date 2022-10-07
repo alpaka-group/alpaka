@@ -1,5 +1,13 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1DevCpu.html#ab324b087702441f8c017c75282f2c87c":[3,0,0,84,1],
+"classalpaka_1_1DevCpu.html#acd010da121738074cde3aab4b726b11d":[3,0,0,84,0],
+"classalpaka_1_1DevOmp5.html":[3,0,0,85],
+"classalpaka_1_1DevOmp5.html#a2dceb0d440486fbc6703a5a1af006d28":[3,0,0,85,6],
+"classalpaka_1_1DevOmp5.html#a34970ffbca39c32e768c00b8dc3c14c7":[3,0,0,85,8],
+"classalpaka_1_1DevOmp5.html#a8a7ca0a58190066fb04cfc1bbcd8d5d5":[3,0,0,85,2],
+"classalpaka_1_1DevOmp5.html#a9187c397da94708c84822fdd009358ee":[3,0,0,85,5],
+"classalpaka_1_1DevOmp5.html#a9b4e907588e77c0f3c112f495e5f9b5e":[3,0,0,85,0],
 "classalpaka_1_1DevOmp5.html#aa8bff6517e7454b74644b0d1f474b3e1":[3,0,0,85,1],
 "classalpaka_1_1DevOmp5.html#adb4b0ed1d895fd74e00e9a8ee7730f2f":[3,0,0,85,3],
 "classalpaka_1_1DevOmp5.html#adbaf9358b67123fec7f09db20dd9b509":[3,0,0,85,7],
@@ -241,13 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1detail_1_1BufCpuImpl.html":[3,0,0,5,7],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#a1061e7be36373082174f0dd46dcfffe1":[3,0,0,5,7,6],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#a738e54991d1f8386f2282aad91940f49":[3,0,0,5,7,4],
-"classalpaka_1_1detail_1_1BufCpuImpl.html#a8497e75a9c7003ac6ef614ceaefc8f45":[3,0,0,5,7,7],
-"classalpaka_1_1detail_1_1BufCpuImpl.html#a8b28f75adc5d7f37677b09616cf2c749":[3,0,0,5,7,2],
-"classalpaka_1_1detail_1_1BufCpuImpl.html#aa11d1d4c9bb6af11f5ba92bf46f0e6ef":[3,0,0,5,7,0],
-"classalpaka_1_1detail_1_1BufCpuImpl.html#adcb9a9ab2eab1a15c9595cca16e7410f":[3,0,0,5,7,5],
-"classalpaka_1_1detail_1_1BufCpuImpl.html#adeb569361a4aefa3172e7ef8cd8515da":[3,0,0,5,7,1],
-"classalpaka_1_1detail_1_1BufCpuImpl.html#ae190997f7f7db148ae8d0ea325320cdd":[3,0,0,5,7,3],
-"classalpaka_1_1detail_1_1BufOmp5Impl.html":[3,0,0,5,8],
-"classalpaka_1_1detail_1_1BufOmp5Impl.html#a0e89b90f9a0321de0dc9259f7ae095d5":[3,0,0,5,8,0],
-"classalpaka_1_1detail_1_1BufOmp5Impl.html#a55619f5946e3d4a092367fd4a2e24afa":[3,0,0,5,8,3]
+"classalpaka_1_1detail_1_1BufCpuImpl.html#a8497e75a9c7003ac6ef614ceaefc8f45":[3,0,0,5,7,7]
 };
