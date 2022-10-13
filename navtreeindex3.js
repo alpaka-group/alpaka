@@ -1,5 +1,11 @@
 var NAVTREEINDEX3 =
 {
+"TestIdxs_8hpp.html":[4,0,0,0,22,3,0],
+"TestIdxs_8hpp.html#ac0f459f4608106cb91d1aebf5899600a":[4,0,0,0,22,3,0,0],
+"TestIdxs_8hpp_source.html":[4,0,0,0,22,3,0],
+"ThreadTraits_8hpp.html":[4,0,0,0,3,25],
+"ThreadTraits_8hpp.html#a8eff06f85c5dea1113339591f05ebc0e":[4,0,0,0,3,25,2],
+"ThreadTraits_8hpp_source.html":[4,0,0,0,3,25],
 "TimeOmp_8hpp.html":[4,0,0,0,23,0],
 "TimeOmp_8hpp_source.html":[4,0,0,0,23,0],
 "TimeStdLib_8hpp.html":[4,0,0,0,23,1],
@@ -104,11 +110,11 @@ var NAVTREEINDEX3 =
 "WorkDivMembers_8hpp_source.html":[4,0,0,0,28,3],
 "WorkDivUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,28,4],
 "WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,28,4],
-"acc_2Traits_8hpp.html":[4,0,0,0,0,17],
-"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,17,6],
-"acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,17,7],
-"acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a":[4,0,0,0,0,17,5],
-"acc_2Traits_8hpp_source.html":[4,0,0,0,0,17],
+"acc_2Traits_8hpp.html":[4,0,0,0,0,18],
+"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,18,6],
+"acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,18,7],
+"acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a":[4,0,0,0,0,18,5],
+"acc_2Traits_8hpp_source.html":[4,0,0,0,0,18],
 "alpaka_8hpp.html":[4,0,0,0,29],
 "alpaka_8hpp_source.html":[4,0,0,0,29],
 "annotated.html":[3,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1Complex.html#abf8ccacd45a8650fb2b1172bfe0a7d2f":[3,0,0,67,16],
 "classalpaka_1_1Complex.html#ac12a6d3142984d8a7954241baecff7d4":[3,0,0,67,15],
 "classalpaka_1_1Complex.html#ac1c798706c93a380ed5f29433728e86f":[3,0,0,67,5],
-"classalpaka_1_1DevCpu.html":[3,0,0,84],
-"classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e":[3,0,0,84,3],
-"classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482":[3,0,0,84,2],
-"classalpaka_1_1DevCpu.html#a3492d59ae31f40221aae144c0d0a945e":[3,0,0,84,4],
-"classalpaka_1_1DevCpu.html#a832f88212a47e0bf1173a1fde3cd46fc":[3,0,0,84,5],
-"classalpaka_1_1DevCpu.html#a8a2518241a95dcf51ae5adea401ef7a4":[3,0,0,84,6],
-"classalpaka_1_1DevCpu.html#aa83ebb2491095ee82457b87a99807356":[3,0,0,84,7]
+"classalpaka_1_1DevCpu.html":[3,0,0,84]
 };

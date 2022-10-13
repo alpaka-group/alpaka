@@ -178,6 +178,12 @@ var NAVTREEINDEX2 =
 "SysInfo_8hpp.html#af2ac645a7cbcea6b028b465a34943e94":[4,0,0,0,5,1,0,3],
 "SysInfo_8hpp.html#af5d9967fd07396367c4f477eef019918":[4,0,0,0,5,1,0,1],
 "SysInfo_8hpp_source.html":[4,0,0,0,5,1,0],
+"Tag_8hpp.html":[4,0,0,0,0,17],
+"Tag_8hpp.html#a24b5d6fa444921ebd3bb7eb7a688ff80":[4,0,0,0,0,17,19],
+"Tag_8hpp.html#a503e1b034d84e42b00504644b8623948":[4,0,0,0,0,17,18],
+"Tag_8hpp.html#ab81964c6c549b86595784601aa5181d5":[4,0,0,0,0,17,17],
+"Tag_8hpp.html#ac7dc6f9301a777fe3a25be17ac1d60b1":[4,0,0,0,0,17,20],
+"Tag_8hpp_source.html":[4,0,0,0,0,17],
 "TaskKernelCpuFibers_8hpp.html":[4,0,0,0,13,0],
 "TaskKernelCpuFibers_8hpp_source.html":[4,0,0,0,13,0],
 "TaskKernelCpuOmp2Blocks_8hpp.html":[4,0,0,0,13,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "TestAccs_8hpp_source.html":[4,0,0,0,22,0,0],
 "TestDims_8hpp.html":[4,0,0,0,22,1,0],
 "TestDims_8hpp.html#a5a34c17994a72cc9e63b68fdcb274870":[4,0,0,0,22,1,0,0],
-"TestDims_8hpp_source.html":[4,0,0,0,22,1,0],
-"TestIdxs_8hpp.html":[4,0,0,0,22,3,0],
-"TestIdxs_8hpp.html#ac0f459f4608106cb91d1aebf5899600a":[4,0,0,0,22,3,0,0],
-"TestIdxs_8hpp_source.html":[4,0,0,0,22,3,0],
-"ThreadTraits_8hpp.html":[4,0,0,0,3,25],
-"ThreadTraits_8hpp.html#a8eff06f85c5dea1113339591f05ebc0e":[4,0,0,0,3,25,2],
-"ThreadTraits_8hpp_source.html":[4,0,0,0,3,25]
+"TestDims_8hpp_source.html":[4,0,0,0,22,1,0]
 };
