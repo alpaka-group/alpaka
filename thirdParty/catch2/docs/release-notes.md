@@ -2,6 +2,8 @@
 
 # Release notes
 **Contents**<br>
+[3.1.1](#311)<br>
+[3.1.0](#310)<br>
 [3.0.1](#301)<br>
 [2.13.7](#2137)<br>
 [2.13.6](#2136)<br>
@@ -47,6 +49,78 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+
+## 3.1.1
+
+### Improvements
+* Added `Catch::getSeed` function that user code can call to retrieve current rng-seed
+* Better detection of compiler support for `-ffile-prefix-map` (#2517)
+* Catch2's shared libraries now have `SOVERSION` set (#2516)
+* `catch2/catch_all.hpp` convenience header no longer transitively includes `windows.h` (#2432, #2526)
+
+
+### Fixes
+* Fixed compilation on Universal Windows Platform
+* Fixed compilation on VxWorks (#2515)
+* Fixed compilation on Cygwin (#2540)
+* Remove unused variable in reporter registration (#2538)
+* Fixed some symbol visibility issues with dynamic library on Windows (#2527)
+* Suppressed `-Wuseless-cast` warnings in `REQUIRE_THROWS*` macros (#2520, #2521)
+  * This was triggered when the potentially throwing expression evaluates to `void`
+* Fixed "warning: storage class is not first" with `nvc++` (#2533)
+* Fixed handling of `DL_PATHS` argument to `catch_discover_tests` on MacOS (#2483)
+* Suppressed `*-avoid-c-arrays` clang-tidy warning in `TEMPLATE_TEST_CASE` (#2095, #2536)
+
+
+### Miscellaneous
+* Fixed CMake install step for Catch2 build as dynamic library (#2485)
+* Raised minimum CMake version to 3.10 (#2523)
+  * Expect the minimum CMake version to increase once more in next few releases.
+* Whole bunch of doc updates and fixes
+  * #1444, #2497, #2547, #2549, and more
+* Added support for building Catch2 with Meson (#2530, #2539)
+
+
+
+## 3.1.0
+
+### Improvements
+* Improved suppression of `-Wparentheses` for older GCCs
+  * Turns out that even GCC 9 does not properly handle `_Pragma`s in the C++ frontend.
+* Added type constraints onto `random` generator (#2433)
+  * These constraints copy what the standard says for the underlying `std::uniform_int_distribution`
+* Suppressed -Wunused-variable from nvcc (#2306, #2427)
+* Suppressed -Wunused-variable from MinGW (#2132)
+* Added All/Any/NoneTrue range matchers (#2319)
+  * These check that all/any/none of boolean values in a range are true.
+* The JUnit reporter now normalizes classnames from C++ namespaces to Java-like namespaces (#2468)
+  * This provides better support for other JUnit based tools.
+* The Bazel support now understands `BAZEL_TEST` environment variable (#2459)
+  * The `CATCH_CONFIG_BAZEL_SUPPORT` configuration option is also still supported.
+* Returned support for compiling Catch2 with GCC 5 (#2448)
+  * This required removing inherited constructors from Catch2's internals.
+  * I recommend updating to a newer GCC anyway.
+* `catch_discover_tests` now has a new options for setting library load path(s) when running the Catch2 binary (#2467)
+
+
+### Fixes
+* Fixed crash when listing listeners without any registered listeners (#2442)
+* Fixed nvcc compilation error in constructor benchmarking helper (#2477)
+* Catch2's CMakeList supports pre-3.12 CMake again (#2428)
+  * The gain from requiring CMake 3.12 was very minor, but y'all should really update to newer CMake
+
+
+### Miscellaneous
+* Fixed SelfTest build on MinGW (#2447)
+* The in-repo conan recipe exports the CMake helper (#2460)
+* Added experimental CMake script to showcase using test case sharding together with CTest
+  * Compared to `catch_discover_tests`, it supports very limited number of options and customization
+* Added documentation page on best practices when running Catch2 tests
+* Catch2 can be built as a dynamic library (#2397, #2398)
+  * Note that Catch2 does not have visibility annotations, and you are responsible for ensuring correct visibility built into the resulting library.
+
 
 
 ## 3.0.1

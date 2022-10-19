@@ -2,7 +2,7 @@
 # Build extra tests.
 #
 
-cmake_minimum_required( VERSION 3.5 )
+cmake_minimum_required( VERSION 3.10 )
 
 project( Catch2ExtraTests LANGUAGES CXX )
 
@@ -137,6 +137,18 @@ set_tests_properties(CATCH_CONFIG_BAZEL_REPORTER-1
     LABELS "uses-python"
 )
 
+# We must now test this works without the build flag.
+add_executable( BazelReporterNoCatchConfig ${TESTS_DIR}/X30-BazelReporter.cpp )
+target_link_libraries(BazelReporterNoCatchConfig Catch2WithMain)
+add_test(NAME NO_CATCH_CONFIG_BAZEL_REPORTER-1
+  COMMAND
+  "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporterNoCatchConfig> "${CMAKE_CURRENT_BINARY_DIR}"
+)
+set_tests_properties(NO_CATCH_CONFIG_BAZEL_REPORTER-1
+  PROPERTIES
+    LABELS "uses-python"
+    ENVIRONMENT "BAZEL_TEST=1"
+)
 
 # The default handler on Windows leads to the just-in-time debugger firing,
 # which makes this test unsuitable for CI and headless runs, as it opens
@@ -459,7 +471,10 @@ add_test(
   NAME TestSpecs::OverrideFailureWithEmptySpec
   COMMAND $<TARGET_FILE:NoTests> --allow-running-no-tests
 )
-
+add_test(
+  NAME List::Listeners::WorksWithoutRegisteredListeners
+  COMMAND $<TARGET_FILE:NoTests> --list-listeners
+)
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
     DisabledMacros

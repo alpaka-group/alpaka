@@ -125,7 +125,7 @@ information that you will need for updating Catch2's documentation, and
 possibly some generic advise as well.
 
 
-### Technicalities 
+### Technicalities
 
 First, the technicalities:
 
@@ -203,7 +203,7 @@ and so on.
 
 Catch2 currently targets C++14 as the minimum supported C++ version.
 Features from higher language versions should be used only sparingly,
-when the benefits from using them outweight the maintenance overhead.
+when the benefits from using them outweigh the maintenance overhead.
 
 Example of good use of polyfilling features is our use of `conjunction`,
 where if available we use `std::conjunction` and otherwise provide our

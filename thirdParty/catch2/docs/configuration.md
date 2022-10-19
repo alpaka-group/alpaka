@@ -19,7 +19,7 @@
 Catch2 is designed to "just work" as much as possible, and most of the
 configuration options below are changed automatically during compilation,
 according to the detected environment. However, this detection can also
-be overriden by users, using macros documented below, and/or CMake options
+be overridden by users, using macros documented below, and/or CMake options
 with the same name.
 
 
@@ -98,10 +98,12 @@ is equivalent with the out-of-the-box experience.
 
 
 ## Bazel support
-When `CATCH_CONFIG_BAZEL_SUPPORT` is defined, Catch2 will register a `JUnit`
-reporter writing to a path pointed by `XML_OUTPUT_FILE` provided by Bazel.
+When `CATCH_CONFIG_BAZEL_SUPPORT` is defined or when `BAZEL_TEST=1` (which is set by the Bazel inside of a test environment),
+Catch2 will register a `JUnit` reporter writing to a path pointed by `XML_OUTPUT_FILE` provided by Bazel.
 
 > `CATCH_CONFIG_BAZEL_SUPPORT` was [introduced](https://github.com/catchorg/Catch2/pull/2399) in Catch2 3.0.1.
+
+> `CATCH_CONFIG_BAZEL_SUPPORT` was [deprecated](https://github.com/catchorg/Catch2/pull/2459) in Catch2 3.1.0.
 
 ## C++11 toggles
 
