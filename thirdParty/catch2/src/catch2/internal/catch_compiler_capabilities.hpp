@@ -53,14 +53,29 @@
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wunused-variable\"" )
 
+#    define CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
+         _Pragma( "GCC diagnostic ignored \"-Wuseless-cast\"" )
+
 #    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
 
 #endif
 
+#if defined(__CUDACC__) && !defined(__clang__)
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "nv_diagnostic push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "nv_diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "nv_diag_suppress 177" )
+#endif
+
+// clang-cl defines _MSC_VER as well as __clang__, which could cause the
+// start/stop internal suppression macros to be double defined.
 #if defined(__clang__) && !defined(_MSC_VER)
 
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
+
+#endif // __clang__ && !_MSC_VER
+
+#if defined(__clang__)
 
 // As of this writing, IBM XL's implementation of __builtin_constant_p has a bug
 // which results in calls to destructors being emitted for each temporary,
@@ -162,7 +177,7 @@
 
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
-#  if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
+#  if defined(CATCH_PLATFORM_WINDOWS_UWP)
 #    define CATCH_INTERNAL_CONFIG_NO_COLOUR_WIN32
 #  else
 #    define CATCH_INTERNAL_CONFIG_WINDOWS_SEH
@@ -323,6 +338,9 @@
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS
 #endif
+#if !defined(CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS)
+#   define CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS
+#endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
 #endif
@@ -364,5 +382,15 @@
 #    define CATCH_CONFIG_COLOUR_WIN32
 #endif
 
+#if defined( CATCH_CONFIG_SHARED_LIBRARY ) && defined( _MSC_VER ) && \
+    !defined( CATCH_CONFIG_STATIC )
+#    ifdef Catch2_EXPORTS
+#        define CATCH_EXPORT //__declspec( dllexport ) // not needed
+#    else
+#        define CATCH_EXPORT __declspec( dllimport )
+#    endif
+#else
+#    define CATCH_EXPORT
+#endif
 
 #endif // CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED

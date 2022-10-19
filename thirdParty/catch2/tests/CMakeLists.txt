@@ -146,6 +146,12 @@ include(CTest)
 
 add_executable(SelfTest ${TEST_SOURCES})
 target_link_libraries(SelfTest PRIVATE Catch2WithMain)
+if (BUILD_SHARED_LIBS AND WIN32)
+    add_custom_command(TARGET SelfTest PRE_LINK
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Catch2>
+        $<TARGET_FILE:Catch2WithMain> $<TARGET_FILE_DIR:SelfTest>
+    )
+endif()
 
 if (CATCH_ENABLE_COVERAGE)
     set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
@@ -311,6 +317,7 @@ add_test(
     $<TARGET_FILE:SelfTest> "#2025: same-level sections"
     -c "A"
     -c "B"
+    --colour-mode none
 )
 set_tests_properties(FilteredSection::GeneratorsDontCauseInfiniteLoop-2
   PROPERTIES
@@ -394,6 +401,7 @@ add_test(NAME "Benchmarking::SkipBenchmarkMacros"
     $<TARGET_FILE:SelfTest> "Skip benchmark macros"
       --reporter console
       --skip-benchmarks
+      --colour-mode none
 )
 set_tests_properties("Benchmarking::SkipBenchmarkMacros"
   PROPERTIES
@@ -501,6 +509,7 @@ add_test(NAME "Outputs::DashAsOutLocationSendsOutputToStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Factorials are computed"
       --out=-
+      --colour-mode none
 )
 set_tests_properties("Outputs::DashAsOutLocationSendsOutputToStdout"
   PROPERTIES
@@ -511,6 +520,7 @@ add_test(NAME "Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Factorials are computed"
       --reporter console::out=-
+      --colour-mode none
 )
 set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   PROPERTIES
@@ -547,6 +557,17 @@ add_test(NAME "Colours::ColourModeCanBeExplicitlySetToAnsi"
 set_tests_properties("Colours::ColourModeCanBeExplicitlySetToAnsi"
   PROPERTIES
     PASS_REGULAR_EXPRESSION "\\[1\;32mAll tests passed"
+)
+
+add_test(NAME "Reporters::JUnit::NamespacesAreNormalized"
+  COMMAND
+    $<TARGET_FILE:SelfTest>
+      --reporter junit
+      "A TEST_CASE_METHOD testing junit classname normalization"
+)
+set_tests_properties("Reporters::JUnit::NamespacesAreNormalized"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "testcase classname=\"SelfTest(\.exe)?\\.A\\.B\\.TestClass\""
 )
 
 if (CATCH_ENABLE_CONFIGURE_TESTS)
