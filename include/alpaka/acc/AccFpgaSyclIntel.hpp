@@ -35,7 +35,7 @@ namespace alpaka::experimental
     //!
     //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel FPGA target device.
     template<typename TDim, typename TIdx>
-    class AccFpgaSyclIntel
+    class AccFpgaSyclIntel final
         : public AccGenericSycl<TDim, TIdx>
         , public concepts::Implements<ConceptAcc, AccFpgaSyclIntel<TDim, TIdx>>
     {
