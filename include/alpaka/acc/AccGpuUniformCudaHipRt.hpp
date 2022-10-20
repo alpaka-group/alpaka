@@ -54,7 +54,7 @@ namespace alpaka
         typename TApi,
         typename TDim,
         typename TIdx>
-    class AccGpuUniformCudaHipRt :
+    class AccGpuUniformCudaHipRt final :
         public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
         public gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
         public bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,

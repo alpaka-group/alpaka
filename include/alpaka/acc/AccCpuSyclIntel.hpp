@@ -36,7 +36,7 @@ namespace alpaka::experimental
     //!
     //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel CPU target device.
     template<typename TDim, typename TIdx>
-    class AccCpuSyclIntel
+    class AccCpuSyclIntel final
         : public AccGenericSycl<TDim, TIdx>
         , public concepts::Implements<ConceptAcc, AccCpuSyclIntel<TDim, TIdx>>
     {
