@@ -23,6 +23,10 @@ namespace alpaka
     {
     };
 
+    //! True if TPltf is a platform, i.e. if it implements the ConceptPltf concept.
+    template<typename TPltf>
+    inline constexpr bool isPlatform = concepts::ImplementsConcept<ConceptPltf, TPltf>::value;
+
     //! The platform traits.
     namespace trait
     {

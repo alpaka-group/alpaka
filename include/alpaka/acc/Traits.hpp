@@ -29,6 +29,11 @@ namespace alpaka
     struct ConceptAcc
     {
     };
+
+    //! True if TAcc is an accelerator, i.e. if it implements the ConceptAcc concept.
+    template<typename TAcc>
+    inline constexpr bool isAccelerator = concepts::ImplementsConcept<ConceptAcc, TAcc>::value;
+
     //! The accelerator traits.
     namespace trait
     {

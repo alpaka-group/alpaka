@@ -58,6 +58,10 @@ namespace alpaka
 
     struct ConceptDev;
 
+    //! True if TDev is a device, i.e. if it implements the ConceptDev concept.
+    template<typename TDev>
+    inline constexpr bool isDevice = concepts::ImplementsConcept<ConceptDev, TDev>::value;
+
     //! \return The device this object is bound to.
     template<typename T>
     ALPAKA_FN_HOST auto getDev(T const& t)

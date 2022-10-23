@@ -20,6 +20,10 @@ namespace alpaka
 {
     struct ConceptQueue;
 
+    //! True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.
+    template<typename TQueue>
+    inline constexpr bool isQueue = concepts::ImplementsConcept<ConceptQueue, TQueue>::value;
+
     //! The queue traits.
     namespace trait
     {
