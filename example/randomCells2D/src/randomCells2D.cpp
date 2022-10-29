@@ -165,7 +165,6 @@ auto main() -> int
     using BufAcc = alpaka::Buf<Acc, float, Dim, Idx>;
     using BufHostRand = alpaka::Buf<Host, RandomEngineSingle<Acc>, Dim, Idx>;
     using BufAccRand = alpaka::Buf<Acc, RandomEngineSingle<Acc>, Dim, Idx>;
-    using BufHostRandVec = alpaka::Buf<Host, RandomEngineVector<Acc>, Dim, Idx>;
     using BufAccRandVec = alpaka::Buf<Acc, RandomEngineVector<Acc>, Dim, Idx>;
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
@@ -195,11 +194,9 @@ auto main() -> int
     BufAcc bufAccV{alpaka::allocBuf<float, Idx>(devAcc, extent)};
     float* const ptrBufAccV{alpaka::getPtrNative(bufAccV)};
 
-    BufHostRand bufHostRandS{alpaka::allocBuf<RandomEngineSingle<Acc>, Idx>(devHost, extent)};
     BufAccRand bufAccRandS{alpaka::allocBuf<RandomEngineSingle<Acc>, Idx>(devAcc, extent)};
     RandomEngineSingle<Acc>* const ptrBufAccRandS{alpaka::getPtrNative(bufAccRandS)};
 
-    BufHostRandVec bufHostRandV{alpaka::allocBuf<RandomEngineVector<Acc>, Idx>(devHost, extent)};
     BufAccRandVec bufAccRandV{alpaka::allocBuf<RandomEngineVector<Acc>, Idx>(devAcc, extent)};
     RandomEngineVector<Acc>* const ptrBufAccRandV{alpaka::getPtrNative(bufAccRandV)};
 
