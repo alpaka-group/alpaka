@@ -186,25 +186,21 @@ auto main() -> int
     // Setup buffer.
     BufHost bufHostS{alpaka::allocBuf<float, Idx>(devHost, extent)};
     float* const ptrBufHostS{alpaka::getPtrNative(bufHostS)};
-    BufAcc bufAccS{alpaka::allocBuf<float, Idx>(devAcc, extent)};
-    float* const ptrBufAccS{alpaka::getPtrNative(bufAccS)};
 
     BufHost bufHostV{alpaka::allocBuf<float, Idx>(devHost, extent)};
     float* const ptrBufHostV{alpaka::getPtrNative(bufHostV)};
-    BufAcc bufAccV{alpaka::allocBuf<float, Idx>(devAcc, extent)};
-    float* const ptrBufAccV{alpaka::getPtrNative(bufAccV)};
+
+
+    InitRandomKernel initRandomKernel;
 
     BufAccRand bufAccRandS{alpaka::allocBuf<RandomEngineSingle<Acc>, Idx>(devAcc, extent)};
     RandomEngineSingle<Acc>* const ptrBufAccRandS{alpaka::getPtrNative(bufAccRandS)};
-
-    BufAccRandVec bufAccRandV{alpaka::allocBuf<RandomEngineVector<Acc>, Idx>(devAcc, extent)};
-    RandomEngineVector<Acc>* const ptrBufAccRandV{alpaka::getPtrNative(bufAccRandV)};
-
-    InitRandomKernel initRandomKernel;
     auto pitchBufAccRandS = alpaka::getPitchBytes<1u>(bufAccRandS);
     alpaka::exec<Acc>(queue, workdiv, initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
     alpaka::wait(queue);
 
+    BufAccRandVec bufAccRandV{alpaka::allocBuf<RandomEngineVector<Acc>, Idx>(devAcc, extent)};
+    RandomEngineVector<Acc>* const ptrBufAccRandV{alpaka::getPtrNative(bufAccRandV)};
     auto pitchBufAccRandV = alpaka::getPitchBytes<1u>(bufAccRandV);
     alpaka::exec<Acc>(queue, workdiv, initRandomKernel, extent, ptrBufAccRandV, pitchBufAccRandV);
     alpaka::wait(queue);
@@ -221,8 +217,9 @@ auto main() -> int
         }
     }
 
+    BufAcc bufAccS{alpaka::makeAvailable(queue, devAcc, bufHostS)};
+    float* const ptrBufAccS{alpaka::getPtrNative(bufAccS)};
     auto pitchBufAccS = alpaka::getPitchBytes<1u>(bufAccS);
-    alpaka::memcpy(queue, bufAccS, bufHostS);
     RunTimestepKernelSingle runTimestepKernelSingle;
     alpaka::exec<Acc>(
         queue,
@@ -233,10 +230,11 @@ auto main() -> int
         ptrBufAccS,
         pitchBufAccRandS,
         pitchBufAccS);
-    alpaka::memcpy(queue, bufHostS, bufAccS);
+    alpaka::makeAvailable(queue, bufHostS, bufAccS);
 
+    BufAcc bufAccV{alpaka::makeAvailable(queue, devAcc, bufHostV)};
+    float* const ptrBufAccV{alpaka::getPtrNative(bufAccV)};
     auto pitchBufAccV = alpaka::getPitchBytes<1u>(bufAccV);
-    alpaka::memcpy(queue, bufAccV, bufHostV);
     RunTimestepKernelVector runTimestepKernelVector;
     alpaka::exec<Acc>(
         queue,
@@ -247,7 +245,7 @@ auto main() -> int
         ptrBufAccV,
         pitchBufAccRandV,
         pitchBufAccV);
-    alpaka::memcpy(queue, bufHostV, bufAccV);
+    alpaka::makeAvailable(queue, bufHostV, bufAccV);
     alpaka::wait(queue);
 
     float avgS = 0;
