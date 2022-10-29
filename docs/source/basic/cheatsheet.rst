@@ -167,6 +167,16 @@ Enqueue a memory copy from device to host
 
      memcpy(queue, bufHost, bufDevice, extent);
 
+Makes the memory of bufA available on dev via bufB. A zero-copy can be performed and bufA and bufB may share the memory.
+  .. code-block:: c++
+
+     auto bufB = makeAvailable(queue, dev, bufA);
+
+Makes the memory of bufB available on the device of bufA, as bufA. A zero-copy can be performed and bufA and bufB may share the memory.
+  .. code-block:: c++
+
+     makeAvailable(queue, bufA, bufB);
+
 .. raw:: pdf
 
    PageBreak

@@ -325,3 +325,55 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
         CHECK(read(buf2) == 1);
     } // both buffers destruct fine here
 }
+
+
+TEMPLATE_LIST_TEST_CASE("Zerocopy", "[memBuf]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Dim = alpaka::Dim<Acc>;
+    using Idx = alpaka::Idx<Acc>;
+    using Dev = alpaka::Dev<Acc>;
+    using Queue = alpaka::test::DefaultQueue<Dev>;
+    using Elem = int;
+
+    constexpr auto accIsHostDev = std::is_same_v<Dev, alpaka::DevCpu>;
+
+    auto const extent
+        = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
+    auto const hostDev = alpaka::getDevByIdx<alpaka::PltfCpu>(0);
+    auto const accDev = alpaka::getDevByIdx<alpaka::Pltf<Dev>>(0);
+    auto queue = Queue(accDev);
+
+    // create and fill host buffer
+    auto hostBuf = alpaka::allocBuf<Elem, Idx>(hostDev, extent);
+    alpaka::test::iotaFillView(queue, hostBuf);
+    {
+        INFO("hostBuf initially");
+        alpaka::test::iotaCheckView(queue, hostBuf);
+    }
+
+    // zero-copy to device, check it there
+    auto devBuf = alpaka::makeAvailable(queue, accDev, hostBuf);
+    if constexpr(accIsHostDev)
+        CHECK(alpaka::getPtrNative(devBuf) == alpaka::getPtrNative(hostBuf));
+    {
+        INFO("devBuf");
+        alpaka::test::iotaCheckView(queue, devBuf);
+    }
+
+    // case 1: zero-copy back to host into existing buffer, check it there
+    {
+        alpaka::makeAvailable(queue, hostBuf, devBuf);
+        INFO("hostBuf after copying back");
+        alpaka::test::iotaCheckView(queue, hostBuf);
+    }
+
+    // case 2: zero-copy back to host into new buffer, check it there
+    {
+        auto dstHostBuf = alpaka::makeAvailable(queue, hostDev, devBuf);
+        if constexpr(accIsHostDev)
+            CHECK(alpaka::getPtrNative(devBuf) == alpaka::getPtrNative(hostBuf));
+        INFO("dstHostBuf after copying back");
+        alpaka::test::iotaCheckView(queue, dstHostBuf);
+    }
+}
