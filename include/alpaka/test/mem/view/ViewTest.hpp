@@ -202,7 +202,8 @@ namespace alpaka::test
         REQUIRE(fixture(verifyViewsEqualKernel, test::begin(viewA), test::end(viewA), test::begin(viewB)));
     }
 
-    //! Fills the given view with increasing values starting at 0.
+    //! Fills the given view with increasing values starting at 0. To verify that a view is like that, use \ref
+    //! iotaCheckView.
     template<typename TView, typename TQueue>
     ALPAKA_FN_HOST auto iotaFillView(TQueue& queue, TView& view) -> void
     {
@@ -210,7 +211,6 @@ namespace alpaka::test
         using PltfHost = Pltf<DevHost>;
 
         using Elem = Elem<TView>;
-
         DevHost const devHost = getDevByIdx<PltfHost>(0);
 
         auto const extent = getExtentVec(view);
@@ -224,6 +224,30 @@ namespace alpaka::test
         memcpy(queue, view, plainBuf);
 
         wait(queue);
+    }
+
+    //! Checks that the given view contains increasing values starting at 0. To initialize such a view, use \ref
+    //! iotaFillView.
+    template<typename TView, typename TQueue>
+    ALPAKA_FN_HOST auto iotaCheckView(TQueue& queue, TView& view) -> void
+    {
+        using Elem = Elem<TView>;
+
+        // prepare a host buffer
+        auto const devHost = getDevByIdx<PltfCpu>(0);
+        auto const extent = getExtentVec(view);
+        std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
+        auto hostView = createView(devHost, v, extent);
+
+        // copy data to host
+        memcpy(queue, hostView, view);
+        wait(queue);
+
+        // check that content is a iota range
+        for(std::size_t i = 0; i < v.size(); i++)
+        {
+            CHECK(v[i] == static_cast<Elem>(i));
+        }
     }
 
     template<typename TAcc, typename TView, typename TQueue>
