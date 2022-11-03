@@ -91,6 +91,7 @@ jobs:
         exclude: './thirdParty'
 
   ci:
+    needs: clang-format
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     env: ${{ matrix.env }}
