@@ -80,6 +80,11 @@ namespace alpaka
             "Index type is not supported, consider using int or a larger type.");
 
     public:
+        AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt const&) = delete;
+        AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt&&) = delete;
+        auto operator=(AccGpuUniformCudaHipRt const&) -> AccGpuUniformCudaHipRt& = delete;
+        auto operator=(AccGpuUniformCudaHipRt&&) -> AccGpuUniformCudaHipRt& = delete;
+
         ALPAKA_FN_HOST_ACC AccGpuUniformCudaHipRt(Vec<TDim, TIdx> const& threadElemExtent)
             : WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent)
             , gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>()

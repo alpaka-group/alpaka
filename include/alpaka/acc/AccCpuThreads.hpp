@@ -87,6 +87,11 @@ namespace alpaka
         template<typename TDim2, typename TIdx2, typename TKernelFnObj, typename... TArgs>
         friend class ::alpaka::TaskKernelCpuThreads;
 
+        AccCpuThreads(AccCpuThreads const&) = delete;
+        AccCpuThreads(AccCpuThreads&&) = delete;
+        auto operator=(AccCpuThreads const&) -> AccCpuThreads& = delete;
+        auto operator=(AccCpuThreads&&) -> AccCpuThreads& = delete;
+
     private:
         template<typename TWorkDiv>
         ALPAKA_FN_HOST AccCpuThreads(TWorkDiv const& workDiv, std::size_t const& blockSharedMemDynSizeBytes)

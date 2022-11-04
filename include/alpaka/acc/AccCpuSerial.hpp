@@ -85,6 +85,11 @@ namespace alpaka
         template<typename TDim2, typename TIdx2, typename TKernelFnObj, typename... TArgs>
         friend class ::alpaka::TaskKernelCpuSerial;
 
+        AccCpuSerial(AccCpuSerial const&) = delete;
+        AccCpuSerial(AccCpuSerial&&) = delete;
+        auto operator=(AccCpuSerial const&) -> AccCpuSerial& = delete;
+        auto operator=(AccCpuSerial&&) -> AccCpuSerial& = delete;
+
     private:
         template<typename TWorkDiv>
         ALPAKA_FN_HOST AccCpuSerial(TWorkDiv const& workDiv, size_t const& blockSharedMemDynSizeBytes)

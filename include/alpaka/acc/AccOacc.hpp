@@ -98,6 +98,11 @@ namespace alpaka
         }
 
     public:
+        AccOacc(AccOacc const&) = delete;
+        AccOacc(AccOacc&&) = delete;
+        auto operator=(AccOacc const&) -> AccOacc& = delete;
+        auto operator=(AccOacc&&) -> AccOacc& = delete;
+
         CtxBlockOacc<TDim, TIdx>& m_blockShared;
     };
 

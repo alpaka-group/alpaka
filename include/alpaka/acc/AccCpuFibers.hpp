@@ -90,6 +90,11 @@ namespace alpaka
         template<typename TDim2, typename TIdx2, typename TKernelFnObj, typename... TArgs>
         friend class ::alpaka::TaskKernelCpuFibers;
 
+        AccCpuFibers(AccCpuFibers const&) = delete;
+        AccCpuFibers(AccCpuFibers&&) = delete;
+        auto operator=(AccCpuFibers const&) -> AccCpuFibers& = delete;
+        auto operator=(AccCpuFibers&&) -> AccCpuFibers& = delete;
+
     private:
         template<typename TWorkDiv>
         ALPAKA_FN_HOST AccCpuFibers(TWorkDiv const& workDiv, std::size_t const& blockSharedMemDynSizeBytes)
