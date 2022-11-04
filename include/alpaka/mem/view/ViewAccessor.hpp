@@ -221,13 +221,12 @@ namespace alpaka::experimental
                 using type = std::tuple<TAccessMode1, TAccessMode2, TAccessModes...>;
             };
 
-            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename... TAccessModes,
                 typename TViewForwardRef,
                 std::size_t... TPitchIs,
                 std::size_t... TExtentIs>
-            ALPAKA_FN_HOST_ACC auto buildViewAccessor(
+            ALPAKA_FN_HOST auto buildViewAccessor(
                 TViewForwardRef&& view,
                 std::index_sequence<TPitchIs...>,
                 std::index_sequence<TExtentIs...>)
@@ -259,7 +258,7 @@ namespace alpaka::experimental
         struct BuildAccessor<TView, std::enable_if_t<internal::IsView<TView>::value>>
         {
             template<typename... TAccessModes, typename TViewForwardRef>
-            ALPAKA_FN_HOST_ACC static auto buildAccessor(TViewForwardRef&& view)
+            ALPAKA_FN_HOST static auto buildAccessor(TViewForwardRef&& view)
             {
                 using Dim = Dim<std::decay_t<TView>>;
                 return internal::buildViewAccessor<TAccessModes...>(
