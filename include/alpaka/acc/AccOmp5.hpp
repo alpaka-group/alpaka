@@ -142,6 +142,11 @@ namespace alpaka
         template<typename TDim2, typename TIdx2, typename TKernelFnObj, typename... TArgs>
         friend class ::alpaka::TaskKernelOmp5;
 
+        AccOmp5(AccOmp5 const&) = delete;
+        AccOmp5(AccOmp5&&) = delete;
+        auto operator=(AccOmp5 const&) -> AccOmp5& = delete;
+        auto operator=(AccOmp5&&) -> AccOmp5& = delete;
+
     private:
         AccOmp5(
             Vec<TDim, TIdx> const& gridBlockExtent,
