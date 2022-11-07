@@ -115,6 +115,21 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
     }
 }
 
+TEMPLATE_LIST_TEST_CASE("getValidWorkDiv.1D.withIdx", "[workDiv]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Idx = alpaka::Idx<Acc>;
+    using Dim = alpaka::Dim<Acc>;
+    using Vec = alpaka::Vec<Dim, Idx>;
+    if constexpr(Dim::value == 1)
+    {
+        auto const dev = alpaka::getDevByIdx<Acc>(0u);
+        // test that we can call getValidWorkDiv with the Idx type directly instead of a Vec
+        auto const ref = alpaka::getValidWorkDiv<Acc>(dev, Vec{256}, Vec{13});
+        CHECK(alpaka::getValidWorkDiv<Acc>(dev, Idx{256}, Idx{13}) == ref);
+    }
+}
+
 TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
 {
     using Acc = TestType;

@@ -193,7 +193,7 @@ namespace alpaka
                 {
                     auto const it = std::min_element(
                         blockThreadExtent.begin(),
-                        blockThreadExtent.end() - 1, // TODO(bgruber): why omit the last element?
+                        blockThreadExtent.end() - 1, //! \todo why omit the last element?
                         [](TIdx const& a, TIdx const& b)
                         {
                             if(a == TIdx{1})
