@@ -36,25 +36,22 @@ namespace alpaka
 
     namespace detail
     {
-        //! \param maxDivisor The maximum divisor.
+        //! Finds the largest divisor where divident % divisor == 0
         //! \param dividend The dividend.
+        //! \param maxDivisor The maximum divisor.
         //! \return The biggest number that satisfies the following conditions:
         //!     1) dividend/ret==0
         //!     2) ret<=maxDivisor
         template<typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
-        ALPAKA_FN_HOST auto nextDivisorLowerOrEqual(T const& maxDivisor, T const& dividend) -> T
+        ALPAKA_FN_HOST auto nextDivisorLowerOrEqual(T const& dividend, T const& maxDivisor) -> T
         {
-            T divisor(maxDivisor);
-
             core::assertValueUnsigned(dividend);
             core::assertValueUnsigned(maxDivisor);
-            ALPAKA_ASSERT(dividend <= maxDivisor);
+            ALPAKA_ASSERT(dividend >= maxDivisor);
 
-            while((dividend % divisor) != 0)
-            {
+            T divisor = maxDivisor;
+            while(dividend % divisor != 0)
                 --divisor;
-            }
-
             return divisor;
         }
         //! \param val The value to find divisors of.
@@ -295,14 +292,14 @@ namespace alpaka
             {
                 for(typename TDim::value_type i(0u); i < TDim::value; ++i)
                 {
-                    blockThreadExtent[i] = detail::nextDivisorLowerOrEqual(blockThreadExtent[i], gridThreadExtent[i]);
+                    blockThreadExtent[i] = detail::nextDivisorLowerOrEqual(gridThreadExtent[i], blockThreadExtent[i]);
                 }
             }
             else
             {
                 for(typename TDim::value_type i(0u); i < TDim::value; ++i)
                 {
-                    blockThreadExtent[i] = detail::nextDivisorLowerOrEqual(blockThreadExtent[i], gridThreadExtent[i]);
+                    blockThreadExtent[i] = detail::nextDivisorLowerOrEqual(gridThreadExtent[i], blockThreadExtent[i]);
                 }
             }
         }
