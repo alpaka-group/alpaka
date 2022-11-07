@@ -22,12 +22,10 @@ namespace
     template<typename TAcc>
     auto getWorkDiv()
     {
-        using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
 
-        Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+        auto const dev = alpaka::getDevByIdx<TAcc>(0u);
         auto const gridThreadExtent = alpaka::Vec<Dim, Idx>::all(10);
         auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
         auto const workDiv = alpaka::getValidWorkDiv<TAcc>(
@@ -123,7 +121,7 @@ TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
     using Dev = alpaka::Dev<Acc>;
     using Pltf = alpaka::Pltf<Dev>;
 
-    Dev dev(alpaka::getDevByIdx<Pltf>(0u));
+    Dev dev = alpaka::getDevByIdx<Pltf>(0u);
     auto const workDiv = getWorkDiv<Acc>();
     // Test both overloads
     REQUIRE(alpaka::isValidWorkDiv(alpaka::getAccDevProps<Acc>(dev), workDiv));
