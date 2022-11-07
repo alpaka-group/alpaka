@@ -47,6 +47,76 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
     std::ignore = getWorkDiv<Acc>();
 }
 
+TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::test::TestAccs)
+{
+    using Acc = TestType;
+    using Idx = alpaka::Idx<Acc>;
+    using Dim = alpaka::Dim<Acc>;
+    using Vec = alpaka::Vec<Dim, Idx>;
+    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
+    if constexpr(Dim::value == 2)
+    {
+        auto const dev = alpaka::getDevByIdx<Acc>(0u);
+        auto props = alpaka::getAccDevProps<Acc>(dev);
+        props.m_gridBlockExtentMax = Vec{1024, 1024};
+        props.m_gridBlockCountMax = 1024 * 1024;
+        props.m_blockThreadExtentMax = Vec{256, 128};
+        props.m_blockThreadCountMax = 512;
+        props.m_threadElemExtentMax = Vec{8, 8};
+        props.m_threadElemCountMax = 16;
+
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                false,
+                alpaka::GridBlockExtentSubDivRestrictions::EqualExtent)
+            == WorkDiv{Vec{14, 28}, Vec{22, 22}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                false,
+                alpaka::GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
+            == WorkDiv{Vec{19, 19}, Vec{16, 32}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                false,
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)
+            == WorkDiv{Vec{75, 5}, Vec{4, 128}, Vec{1, 1}});
+
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                true,
+                alpaka::GridBlockExtentSubDivRestrictions::EqualExtent)
+            == WorkDiv{Vec{1, 2}, Vec{300, 300}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                true,
+                alpaka::GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
+            == WorkDiv{Vec{20, 20}, Vec{15, 30}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                true,
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)
+            == WorkDiv{Vec{75, 5}, Vec{4, 120}, Vec{1, 1}});
+    }
+}
+
 TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
