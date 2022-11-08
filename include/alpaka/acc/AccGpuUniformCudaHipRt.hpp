@@ -229,7 +229,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getAccName() -> std::string
             {
                 return std::string("AccGpu") + TApi::name + "Rt<" + std::to_string(TDim::value) + ","
-                    + core::demangled<TIdx> + ">";
+                       + core::demangled<TIdx> + ">";
             }
         };
 

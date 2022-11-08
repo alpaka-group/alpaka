@@ -31,7 +31,7 @@ namespace alpaka
             "This is not implemented"); // It might even be dangerous for ViewConst to store a reference to the wrapped
                                         // view, as this decouples the wrapped view's lifetime.
 
-        ALPAKA_FN_HOST_ACC ViewConst(const TView& view) : m_view(view)
+        ALPAKA_FN_HOST_ACC ViewConst(TView const& view) : m_view(view)
         {
         }
 

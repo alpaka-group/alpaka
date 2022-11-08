@@ -365,7 +365,7 @@ namespace alpaka
 
         if constexpr(Dim<TGridElemExtent>::value == 0)
         {
-            const auto zero = Vec<DimInt<0>, Idx<TAcc>>{};
+            auto const zero = Vec<DimInt<0>, Idx<TAcc>>{};
             ALPAKA_ASSERT(gridElemExtent == zero);
             ALPAKA_ASSERT(threadElemExtents == zero);
             return WorkDivMembers<DimInt<0>, Idx<TAcc>>{zero, zero, zero};

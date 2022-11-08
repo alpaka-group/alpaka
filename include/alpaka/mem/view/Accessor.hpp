@@ -120,7 +120,7 @@ namespace alpaka::experimental
         std::size_t TDim,
         typename... TPrevAccessModes>
     ALPAKA_FN_HOST_ACC auto accessWith(
-        const Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, std::tuple<TPrevAccessModes...>>& acc)
+        Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, std::tuple<TPrevAccessModes...>> const& acc)
     {
         static_assert(
             meta::Contains<std::tuple<TPrevAccessModes...>, TNewAccessMode>::value,
@@ -131,7 +131,7 @@ namespace alpaka::experimental
     //! Constrains an existing accessor to the specified access modes.
     // constraining accessor to the same access mode again just passes through
     template<typename TNewAccessMode, typename TMemoryHandle, typename TElem, typename TBufferIdx, std::size_t TDim>
-    ALPAKA_FN_HOST_ACC auto accessWith(const Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, TNewAccessMode>& acc)
+    ALPAKA_FN_HOST_ACC auto accessWith(Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, TNewAccessMode> const& acc)
     {
         return acc;
     }

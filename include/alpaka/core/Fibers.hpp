@@ -55,7 +55,7 @@ namespace alpaka
         template<>
         struct IsThisThread<boost::fibers::fiber>
         {
-            ALPAKA_FN_HOST static auto isThisThread(const boost::fibers::fiber& fiber) -> bool
+            ALPAKA_FN_HOST static auto isThisThread(boost::fibers::fiber const& fiber) -> bool
             {
                 return boost::this_fiber::get_id() == fiber.get_id();
             }
