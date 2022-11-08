@@ -157,7 +157,7 @@ TEMPLATE_LIST_TEST_CASE("viewPlainPtrOperatorTest", "[memView]", alpaka::test::T
 TEST_CASE("createView", "[memView]")
 {
     using Dev = alpaka::DevCpu;
-    const auto dev = alpaka::getDevByIdx<alpaka::PltfCpu>(0u);
+    auto const dev = alpaka::getDevByIdx<alpaka::PltfCpu>(0u);
 
     std::array<float, 4> a{{1, 2, 3, 4}};
 

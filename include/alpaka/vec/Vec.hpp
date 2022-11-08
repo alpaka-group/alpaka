@@ -153,7 +153,7 @@ namespace alpaka
             return m_data;
         }
 
-        ALPAKA_FN_HOST_ACC constexpr auto begin() const -> const TVal*
+        ALPAKA_FN_HOST_ACC constexpr auto begin() const -> TVal const*
         {
             return m_data;
         }
@@ -163,7 +163,7 @@ namespace alpaka
             return m_data + TDim::value;
         }
 
-        ALPAKA_FN_HOST_ACC constexpr auto end() const -> const TVal*
+        ALPAKA_FN_HOST_ACC constexpr auto end() const -> TVal const*
         {
             return m_data + TDim::value;
         }

@@ -173,10 +173,10 @@ auto main() -> int
 
     // Enqueue the kernel execution task
     {
-        const auto beginT = std::chrono::high_resolution_clock::now();
+        auto const beginT = std::chrono::high_resolution_clock::now();
         alpaka::enqueue(queue, taskKernel);
         alpaka::wait(queue); // wait in case we are using an asynchronous queue to time actual kernel runtime
-        const auto endT = std::chrono::high_resolution_clock::now();
+        auto const endT = std::chrono::high_resolution_clock::now();
         std::cout << "Time for kernel execution: " << std::chrono::duration<double>(endT - beginT).count() << 's'
                   << std::endl;
     }
@@ -186,7 +186,7 @@ auto main() -> int
         auto beginT = std::chrono::high_resolution_clock::now();
         alpaka::memcpy(queue, bufHostC, bufAccC);
         alpaka::wait(queue);
-        const auto endT = std::chrono::high_resolution_clock::now();
+        auto const endT = std::chrono::high_resolution_clock::now();
         std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT - beginT).count() << 's'
                   << std::endl;
     }

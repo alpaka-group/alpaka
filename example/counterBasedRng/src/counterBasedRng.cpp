@@ -57,7 +57,7 @@ private:
 
             constexpr auto Dim = alpaka::Dim<TAcc>::value;
 
-            const auto firstElem = threadFirstElemIdx[I];
+            auto const firstElem = threadFirstElemIdx[I];
             if constexpr(I < Dim - 1)
             {
                 for(; threadFirstElemIdx[I] < threadLastElemIdxClipped; ++threadFirstElemIdx[I])
@@ -74,7 +74,7 @@ private:
                 for(; threadFirstElemIdx[Dim - 1] < threadLastElemIdxClipped; ++threadFirstElemIdx[Dim - 1])
                 {
                     c[Dim - 1] = threadFirstElemIdx[Dim - 1];
-                    const auto random = Gen<TAcc>::generate(c, key);
+                    auto const random = Gen<TAcc>::generate(c, key);
                     // to make use of the whole random vector we would need to ensure numElement[0] % 4 == 0
                     dst[threadFirstElemIdx] = TElem(random[0]);
                 }
@@ -212,14 +212,14 @@ auto main() -> int
 
     // Copy the result from the device
     alpaka::memcpy(queueAcc, bufHostDev, bufAcc);
-    const auto numElements = extent.prod();
+    auto const numElements = extent.prod();
 
     // wait in case we are using an asynchronous queue to time actual kernel runtime
     alpaka::wait(queueHost);
     alpaka::wait(queueAcc);
 
     int falseResults = 0;
-    const int maxPrintFalseResults = extent[2] * 2;
+    int const maxPrintFalseResults = extent[2] * 2;
 
     auto aHost = alpaka::experimental::readAccess(bufHost);
     auto aAcc = alpaka::experimental::readAccess(bufHostDev);

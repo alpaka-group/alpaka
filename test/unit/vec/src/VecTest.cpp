@@ -360,7 +360,7 @@ TEST_CASE("structuredBindings", "[vec]")
 
     Vec vec{Idx{1}, Idx{2}};
 
-    const auto [y, x] = vec;
+    auto const [y, x] = vec;
     CHECK(y == 1);
     CHECK(x == 2);
 

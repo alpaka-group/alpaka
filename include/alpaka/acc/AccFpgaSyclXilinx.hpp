@@ -53,7 +53,7 @@ namespace alpaka::trait
         static auto getAccName() -> std::string
         {
             return "experimental::AccFpgaSyclXilinx<" + std::to_string(TDim::value) + ","
-                + core::demangled<TIdx> + ">";
+                   + core::demangled<TIdx> + ">";
         }
     };
 

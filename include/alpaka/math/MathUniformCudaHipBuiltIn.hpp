@@ -908,7 +908,7 @@ namespace alpaka::math
             {
                 // sin(z) = (exp(i * z) - exp(-i * z)) / 2i
                 return (exp(ctx, Complex<T>{0.0, 1.0} * arg) - exp(ctx, Complex<T>{0.0, -1.0} * arg))
-                    / Complex<T>{0.0, 2.0};
+                       / Complex<T>{0.0, 2.0};
             }
         };
 

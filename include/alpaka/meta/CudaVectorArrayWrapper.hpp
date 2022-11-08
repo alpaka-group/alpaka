@@ -140,7 +140,7 @@ namespace alpaka::meta
             this->w = *it++;
         }
         template<class Other>
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(const Other& o)
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
         {
             static_assert(std::tuple_size_v<Other> == size, "Can only convert between vectors of same size.");
             static_assert(
@@ -167,7 +167,7 @@ namespace alpaka::meta
             return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
         }
 
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr const value_type& operator[](int const k) const noexcept
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
         {
             assert(k >= 0 && k < 4);
             return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
@@ -187,7 +187,7 @@ namespace alpaka::meta
             this->z = *it++;
         }
         template<class Other>
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(const Other& o)
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
         {
             static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
             static_assert(
@@ -212,7 +212,7 @@ namespace alpaka::meta
             return k == 0 ? this->x : (k == 1 ? this->y : this->z);
         }
 
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr const value_type& operator[](int const k) const noexcept
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
         {
             assert(k >= 0 && k < 3);
             return k == 0 ? this->x : (k == 1 ? this->y : this->z);
@@ -231,7 +231,7 @@ namespace alpaka::meta
             this->y = *it++;
         }
         template<class Other>
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(const Other& o)
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
         {
             static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
             static_assert(
@@ -254,7 +254,7 @@ namespace alpaka::meta
             return k == 0 ? this->x : this->y;
         }
 
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr const value_type& operator[](int const k) const noexcept
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
         {
             assert(k >= 0 && k < 2);
             return k == 0 ? this->x : this->y;
@@ -272,7 +272,7 @@ namespace alpaka::meta
             this->x = *it;
         }
         template<class Other>
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(const Other& o)
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
         {
             static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
             static_assert(
@@ -293,7 +293,7 @@ namespace alpaka::meta
             return this->x;
         }
 
-        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr const value_type& operator[](
+        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](
             [[maybe_unused]] int const k) const noexcept
         {
             assert(k == 0);
