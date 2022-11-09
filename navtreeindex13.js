@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html#aa00ad0d7a9a4757c11fcf43fce795084":[3,0,0,17,5,1,0],
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html":[3,0,0,17,5,2],
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html#adad2a1df042dbc8fe4ea781cc5de4396":[3,0,0,17,5,2,0],
 "structalpaka_1_1test_1_1QueueTestFixture.html":[3,0,0,17,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a3b6e81acbeb48d026e72870260ea3f15":[3,0,0,18,105,0],
 "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01EventGenericThreads_3_01TDev_01_4_01_4.html":[3,0,0,18,106],
 "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01EventGenericThreads_3_01TDev_01_4_01_4.html#a456d4e26c5bdadcb416aea669219ca91":[3,0,0,18,106,0],
-"structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,18,107],
-"structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html#acad41b1bd26b0988a3dd4ecb8eabb6f5":[3,0,0,18,107,0]
+"structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,18,107]
 };

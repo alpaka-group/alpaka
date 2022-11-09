@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1detail_1_1AccOmp5BlockSharedMem.html#a3f3734ee7b3f9c42a2addb10daa238ba":[3,0,0,5,0,0],
 "structalpaka_1_1detail_1_1AtomicHierarchyConceptType.html":[3,0,0,5,1],
 "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html":[3,0,0,5,2],
 "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html#ad0de2696852faac31c34291bb8c916fb":[3,0,0,5,2,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1experimental_1_1trait_1_1internal_1_1IsView.html":[3,0,0,6,1,0,3],
 "structalpaka_1_1experimental_1_1trait_1_1internal_1_1IsView_3_01TView_00_01std_1_1void__t_3_01Id23c947c5515c558fff4de02fce6d8fd6.html":[3,0,0,6,1,0,4],
 "structalpaka_1_1hierarchy_1_1Blocks.html":[3,0,0,9,0],
-"structalpaka_1_1hierarchy_1_1Grids.html":[3,0,0,9,1],
-"structalpaka_1_1hierarchy_1_1Threads.html":[3,0,0,9,2]
+"structalpaka_1_1hierarchy_1_1Grids.html":[3,0,0,9,1]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1hierarchy_1_1Threads.html":[3,0,0,9,2],
 "structalpaka_1_1internal_1_1ViewAccessOps.html":[3,0,0,10,0],
 "structalpaka_1_1internal_1_1ViewAccessOps.html#a0d16898a5cf8841f722515d686d50260":[3,0,0,10,0,9],
 "structalpaka_1_1internal_1_1ViewAccessOps.html#a148af1ec449dc629b1609206f3ca6265":[3,0,0,10,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[3,0,0,13,11],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html":[3,0,0,13,12],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html#a2ac817ce7793e9f788fd2e0b01a285b4":[3,0,0,13,12,0],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesUnique.html":[3,0,0,13,13],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01std_1_1integer__sequence_3_01T_00_01Tvals_8_8_8_01_4_01_4.html":[3,0,0,13,14]
+"structalpaka_1_1meta_1_1IntegerSequenceValuesUnique.html":[3,0,0,13,13]
 };

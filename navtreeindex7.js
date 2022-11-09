@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"functions_func_l.html":[3,2,1,10],
 "functions_func_m.html":[3,2,1,11],
 "functions_func_n.html":[3,2,1,12],
 "functions_func_o.html":[3,2,1,13],
@@ -77,8 +78,8 @@ var NAVTREEINDEX7 =
 "idx_2Traits_8hpp.html":[4,0,0,0,11,4],
 "idx_2Traits_8hpp.html#a0163f6f6c406d381013f117fdbe7ef70":[4,0,0,0,11,4,5],
 "idx_2Traits_8hpp_source.html":[4,0,0,0,11,4],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "intrinsic_2Traits_8hpp.html":[4,0,0,0,12,4],
 "intrinsic_2Traits_8hpp.html#a2a62cce3174fe200218ab6bc06b134ed":[4,0,0,0,12,4,6],
 "intrinsic_2Traits_8hpp.html#a67995b6d001811d321496aab52684356":[4,0,0,0,12,4,4],
@@ -228,8 +229,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1cuda.html":[2,0,0,4],
 "namespacealpaka_1_1cuda_1_1detail.html":[2,0,0,4,0],
 "namespacealpaka_1_1cuda_1_1trait.html":[2,0,0,4,1],
-"namespacealpaka_1_1detail.html":[3,0,0,5],
 "namespacealpaka_1_1detail.html":[2,0,0,5],
+"namespacealpaka_1_1detail.html":[3,0,0,5],
 "namespacealpaka_1_1experimental.html":[3,0,0,6],
 "namespacealpaka_1_1experimental.html":[2,0,0,6],
 "namespacealpaka_1_1experimental_1_1internal.html":[2,0,0,6,0],
@@ -238,8 +239,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1experimental_1_1trait.html":[3,0,0,6,1],
 "namespacealpaka_1_1experimental_1_1trait_1_1internal.html":[2,0,0,6,1,0],
 "namespacealpaka_1_1experimental_1_1trait_1_1internal.html":[3,0,0,6,1,0],
-"namespacealpaka_1_1gb.html":[3,0,0,7],
 "namespacealpaka_1_1gb.html":[2,0,0,7],
+"namespacealpaka_1_1gb.html":[3,0,0,7],
 "namespacealpaka_1_1generic.html":[2,0,0,8],
 "namespacealpaka_1_1generic.html":[3,0,0,8],
 "namespacealpaka_1_1generic_1_1detail.html":[3,0,0,8,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1hierarchy.html":[2,0,0,9],
 "namespacealpaka_1_1internal.html":[3,0,0,10],
 "namespacealpaka_1_1internal.html":[2,0,0,10],
-"namespacealpaka_1_1math.html":[2,0,0,11],
-"namespacealpaka_1_1math.html":[3,0,0,11]
+"namespacealpaka_1_1math.html":[2,0,0,11]
 };

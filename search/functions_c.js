@@ -2,7 +2,7 @@ var searchData=
 [
   ['ndloop_4489',['ndLoop',['../structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html#abba6e57eacf766f7224ee1b9a6039b75',1,'alpaka::meta::detail::NdLoop&lt; std::index_sequence&lt;&gt; &gt;::ndLoop()'],['../structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4.html#a5207b416fc6b5f1e5b84bac60b6340e2',1,'alpaka::meta::detail::NdLoop&lt; std::index_sequence&lt; Tdim0, Tdims... &gt; &gt;::ndLoop()'],['../namespacealpaka_1_1meta.html#a045597af75fc88f57bf8c02e3ecc4444',1,'alpaka::meta::ndLoop()']]],
   ['ndloopincidx_4490',['ndLoopIncIdx',['../namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750',1,'alpaka::meta']]],
-  ['nextdivisorlowerorequal_4491',['nextDivisorLowerOrEqual',['../namespacealpaka_1_1detail.html#a50fc53e415bd36a86f7ec64a284618d7',1,'alpaka::detail']]],
+  ['nextdivisorlowerorequal_4491',['nextDivisorLowerOrEqual',['../namespacealpaka_1_1detail.html#a36eeeef4bfe30fe8892e2ca2c2aa682a',1,'alpaka::detail']]],
   ['nextnumber_4492',['nextNumber',['../classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8d2e74db05dac543b0b3ba4880cd3ae4',1,'alpaka::rand::engine::PhiloxSingle']]],
   ['nextpowerof2_4493',['nextPowerOf2',['../classalpaka_1_1AtomicStdLibLock.html#ac898400b0c10a88ec74410b703968b12',1,'alpaka::AtomicStdLibLock']]],
   ['nextvector_4494',['nextVector',['../classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9070c8635360989ce12058eab374830d',1,'alpaka::rand::engine::PhiloxVector']]],

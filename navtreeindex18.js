@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"vec_2Traits_8hpp.html#a56eac7d84a35e1a83a56dcfc6e73a78f":[4,0,0,0,25,0,4],
 "vec_2Traits_8hpp.html#a649f4c73ac22bcc093bb705aa6c65efb":[4,0,0,0,25,0,5],
 "vec_2Traits_8hpp.html#a734094d00febe551f0e85310a3faf1ec":[4,0,0,0,25,0,6],
 "vec_2Traits_8hpp.html#a7678d4f6ec00b41cfff96dfa7e6fabde":[4,0,0,0,25,0,8],

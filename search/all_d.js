@@ -12,7 +12,7 @@ var searchData=
   ['ndloop_3c_20std_3a_3aindex_5fsequence_3c_20tdim0_2c_20tdims_2e_2e_2e_20_3e_20_3e_1756',['NdLoop&lt; std::index_sequence&lt; Tdim0, Tdims... &gt; &gt;',['../structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4.html',1,'alpaka::meta::detail']]],
   ['ndloop_3c_20std_3a_3aindex_5fsequence_3c_3e_20_3e_1757',['NdLoop&lt; std::index_sequence&lt;&gt; &gt;',['../structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html',1,'alpaka::meta::detail']]],
   ['ndloopincidx_1758',['ndLoopIncIdx',['../namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750',1,'alpaka::meta']]],
-  ['nextdivisorlowerorequal_1759',['nextDivisorLowerOrEqual',['../namespacealpaka_1_1detail.html#a50fc53e415bd36a86f7ec64a284618d7',1,'alpaka::detail']]],
+  ['nextdivisorlowerorequal_1759',['nextDivisorLowerOrEqual',['../namespacealpaka_1_1detail.html#a36eeeef4bfe30fe8892e2ca2c2aa682a',1,'alpaka::detail']]],
   ['nextnumber_1760',['nextNumber',['../classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8d2e74db05dac543b0b3ba4880cd3ae4',1,'alpaka::rand::engine::PhiloxSingle']]],
   ['nextpowerof2_1761',['nextPowerOf2',['../classalpaka_1_1AtomicStdLibLock.html#ac898400b0c10a88ec74410b703968b12',1,'alpaka::AtomicStdLibLock']]],
   ['nextvector_1762',['nextVector',['../classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9070c8635360989ce12058eab374830d',1,'alpaka::rand::engine::PhiloxVector']]],

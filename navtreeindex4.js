@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1BufOmp5.html#afb719326f4580aa8462304aa4de9efbd":[3,0,0,65,1],
 "classalpaka_1_1BufUniformCudaHipRt.html":[3,0,0,66],
 "classalpaka_1_1BufUniformCudaHipRt.html#a1c4b73ee06fd8574ed4eccdb983b2c22":[3,0,0,66,3],
 "classalpaka_1_1BufUniformCudaHipRt.html#a2be17321b0c97550643d5cb706ab5256":[3,0,0,66,1],
@@ -181,13 +180,15 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1ViewSubView.html#aef754f6c2661b0cb5b386f83116be081":[3,0,0,139,2],
 "classalpaka_1_1ViewSubView.html#afdd2dfc473543716e7cf157dee9cce2f":[3,0,0,139,5],
 "classalpaka_1_1WorkDivMembers.html":[3,0,0,140],
+"classalpaka_1_1WorkDivMembers.html#a125eeb8043cb6abcf353878bdf567286":[3,0,0,140,8],
 "classalpaka_1_1WorkDivMembers.html#a3bb471668188b5b230d2e41f0c5255ea":[3,0,0,140,5],
 "classalpaka_1_1WorkDivMembers.html#a40aa8bde6d59476bc13936251358563d":[3,0,0,140,6],
 "classalpaka_1_1WorkDivMembers.html#a4907d4628832e373ca736c03a6b2df13":[3,0,0,140,0],
-"classalpaka_1_1WorkDivMembers.html#a4a009b8132b692bb8b55cfd2764bcd25":[3,0,0,140,8],
-"classalpaka_1_1WorkDivMembers.html#a505994091860f2d0572f50988808a95f":[3,0,0,140,9],
-"classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff":[3,0,0,140,10],
+"classalpaka_1_1WorkDivMembers.html#a4a009b8132b692bb8b55cfd2764bcd25":[3,0,0,140,10],
+"classalpaka_1_1WorkDivMembers.html#a505994091860f2d0572f50988808a95f":[3,0,0,140,11],
+"classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff":[3,0,0,140,12],
 "classalpaka_1_1WorkDivMembers.html#aa3e64e490520aa521d8714c5b64c84f8":[3,0,0,140,3],
+"classalpaka_1_1WorkDivMembers.html#aaa43d3a18bb7056403ff194e7915f8de":[3,0,0,140,9],
 "classalpaka_1_1WorkDivMembers.html#abecc96ddc3cabbabf9b0aa60cedea10f":[3,0,0,140,1],
 "classalpaka_1_1WorkDivMembers.html#ad6ac2ae27cb8b1b47cb4f42e10de151e":[3,0,0,140,7],
 "classalpaka_1_1WorkDivMembers.html#ad6c260bb1d8458e268599bf2d6add333":[3,0,0,140,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876":[3,0,0,2,1,7,4],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b":[3,0,0,2,1,7,5],
 "classalpaka_1_1core_1_1detail_1_1TaskPkg.html":[3,0,0,2,1,8],
-"classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a22efad2f8874363c677afb159a462948":[3,0,0,2,1,8,2],
-"classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a47a747dcb6498cf1fcec532eb92ccc2b":[3,0,0,2,1,8,0]
+"classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a22efad2f8874363c677afb159a462948":[3,0,0,2,1,8,2]
 };

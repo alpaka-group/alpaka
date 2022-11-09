@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01std_1_1integer__sequence_3_01T_00_01Tvals_8_8_8_01_4_01_4.html":[3,0,0,13,14],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01std_1_1integer__sequence_3_01T_00_01Tvals_8_8_8_01_4_01_4.html#a5c260701014e2734e9574ca9480db7df":[3,0,0,13,14,0],
 "structalpaka_1_1meta_1_1IntegralValuesInRange.html":[3,0,0,13,15],
 "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html":[3,0,0,13,17],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1test_1_1CreateVecWithIdx.html":[3,0,0,17,5],
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf.html":[3,0,0,17,5,0],
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf.html#ad7f31115da2c03025d4de193c4a54dac":[3,0,0,17,5,0,0],
-"structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html":[3,0,0,17,5,1],
-"structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html#aa00ad0d7a9a4757c11fcf43fce795084":[3,0,0,17,5,1,0]
+"structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html":[3,0,0,17,5,1]
 };

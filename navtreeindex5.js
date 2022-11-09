@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a47a747dcb6498cf1fcec532eb92ccc2b":[3,0,0,2,1,8,0],
 "classalpaka_1_1core_1_1detail_1_1TaskPkg.html#ad108b44ef7af665695198c503dc4cf5f":[3,0,0,2,1,8,1],
 "classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html":[3,0,0,2,1,9],
 "classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#a12ab5da3d377d9e96b5f32262a092f00":[3,0,0,2,1,9,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a33f9195aa02132cc7c5c873e27b455bb":[3,0,0,16,1,9,0],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918":[3,0,0,16,1,9,1],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a88177c4a758bd8080fea38ce6789e1d9":[3,0,0,16,1,9,6],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536":[3,0,0,16,1,9,2],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ac351480b3ffaa811d92407a0cbbfb52d":[3,0,0,16,1,9,3]
+"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536":[3,0,0,16,1,9,2]
 };

@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1WorkDivMembers.html',''
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classalpaka_1_1WorkDivMembers-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::WorkDivMembers&lt; TDim, TIdx &gt; Class Template Reference</div>  </div>
@@ -144,6 +145,13 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a505994091860f2d0572f50988808a95f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a736028e849adf823aef0a6972a6b3aff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff">m_threadElemExtent</a></td></tr>
 <tr class="separator:a736028e849adf823aef0a6972a6b3aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a125eeb8043cb6abcf353878bdf567286"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> friend auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1WorkDivMembers.html#a125eeb8043cb6abcf353878bdf567286">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a> const &amp;workDiv) -&gt; std::ostream &amp;</td></tr>
+<tr class="separator:a125eeb8043cb6abcf353878bdf567286"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa43d3a18bb7056403ff194e7915f8de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr friend auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1WorkDivMembers.html#aaa43d3a18bb7056403ff194e7915f8de">operator==</a> (<a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a> const &amp;a, <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a> const &amp;b) -&gt; bool</td></tr>
+<tr class="separator:aaa43d3a18bb7056403ff194e7915f8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TDim, typename TIdx&gt;<br />
@@ -408,6 +416,89 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a125eeb8043cb6abcf353878bdf567286"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a125eeb8043cb6abcf353878bdf567286">&#9670;&nbsp;</a></span>operator&lt;&lt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TIdx &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> friend auto operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>workDiv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::ostream&amp;
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00073">73</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aaa43d3a18bb7056403ff194e7915f8de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa43d3a18bb7056403ff194e7915f8de">&#9670;&nbsp;</a></span>operator==</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TIdx &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr friend auto operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; bool
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00067">67</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a4a009b8132b692bb8b55cfd2764bcd25"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a009b8132b692bb8b55cfd2764bcd25">&#9670;&nbsp;</a></span>m_blockThreadExtent</h2>
@@ -423,7 +514,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00069">69</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00082">82</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -441,7 +532,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00068">68</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00081">81</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -459,7 +550,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00070">70</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00083">83</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -472,7 +563,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 07:27:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 13:29:32 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

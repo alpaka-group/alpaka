@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1trait_1_1Popcount_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html#ac495028e2c0829b1284eff154f45dc6c":[3,0,0,18,493,0],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html#af8dd4a42af199bf52815315d91979967":[3,0,0,18,493,1],
 "structalpaka_1_1trait_1_1QueueType.html":[3,0,0,18,494],
 "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01Blocking_01_4.html":[3,0,0,18,495],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "traits_2Traits_8hpp_source.html":[4,0,0,0,24,0],
 "uniformCudaHip_2Copy_8hpp.html":[4,0,0,0,15,1,4,0],
 "uniformCudaHip_2Copy_8hpp_source.html":[4,0,0,0,15,1,4,0],
-"vec_2Traits_8hpp.html":[4,0,0,0,25,0],
-"vec_2Traits_8hpp.html#a56eac7d84a35e1a83a56dcfc6e73a78f":[4,0,0,0,25,0,4]
+"vec_2Traits_8hpp.html":[4,0,0,0,25,0]
 };
