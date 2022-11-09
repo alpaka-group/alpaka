@@ -50,7 +50,7 @@ namespace alpaka
     // define max gang/worker num because there is no standart way in OpenACC to
     // get this information
 #    ifndef ALPAKA_OACC_MAX_GANG_NUM
-    constexpr size_t oaccMaxGangNum = std::numeric_limits<unsigned int>::max();
+    constexpr size_t oaccMaxGangNum = 1;
 #    else
     constexpr size_t oaccMaxGangNum = ALPAKA_OACC_MAX_GANG_NUM;
 #    endif
@@ -121,8 +121,8 @@ namespace alpaka
                 auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(oaccMaxGangNum));
 
                 return {// m_multiProcessorCount
-                        static_cast<TIdx>(gridBlockCountMax),
-                        // m_gridBlockExtentMax
+                        static_cast<TIdx>(gridBlockCountMax), // TODO: standardize a way to return "unknown"
+                                                              // m_gridBlockExtentMax
                         Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax
                         std::numeric_limits<TIdx>::max(),
