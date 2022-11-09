@@ -86,7 +86,7 @@
   image: nvcr.io/nvidia/nvhpc:${ALPAKA_CI_NVHPC_VER}-devel-cuda${ALPAKA_CI_CUDA_VERSION}-ubuntu${ALPAKA_CI_UBUNTU_VER}
   extends: .base
   variables:
-    ALPAKA_CI_UBUNTU_VER: "20.04"
+    ALPAKA_CI_UBUNTU_VER: "22.04"
     ALPAKA_CI_STDLIB: libstdc++
     # gcc is used to compile the dependencies, NVHPC will be used to compile alpaka
     CC: gcc

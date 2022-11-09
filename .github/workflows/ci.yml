@@ -258,10 +258,10 @@ jobs:
           env: {CXX: icpx,    CC: icx,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.75.0, ALPAKA_CI_CMAKE_VER: 3.22.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-fiopenmp -fopenmp-targets=spir64 -Wno-source-uses-openmp", alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, OMP_TARGET_OFFLOAD: "DISABLED", alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF}
 
         ## NVHPC
-        - name: linux_nvhpc-21.9_release_oacc_multicore
+        - name: linux_nvhpc-22.9_release_oacc_multicore
         # # gcc is used to compile the dependencies, NVHPC will be used to compile alpaka
           os: ubuntu-20.04
-          env: {CXX: g++,   CC: gcc,    ALPAKA_CI_GCC_VER: 9, CMAKE_CXX_COMPILER: nvc++,     CMAKE_C_COMPILER: nvc,    ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "nvcr.io/nvidia/nvhpc:21.9-devel-cuda11.4-ubuntu20.04", ALPAKA_CI_ANALYSIS: OFF, alpaka_DEBUG: 0, alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, alpaka_DEBUG_OFFLOAD_ASSUME_HOST: ON, CMAKE_CXX_FLAGS: "-acc -ta=multicore", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
+          env: {CXX: g++,   CC: gcc,    ALPAKA_CI_GCC_VER: 9, CMAKE_CXX_COMPILER: nvc++,     CMAKE_C_COMPILER: nvc,    ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release,   ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "nvcr.io/nvidia/nvhpc:22.9-devel-cuda11.7-ubuntu22.04", ALPAKA_CI_ANALYSIS: OFF, alpaka_DEBUG: 0, alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, alpaka_DEBUG_OFFLOAD_ASSUME_HOST: ON, CMAKE_CXX_FLAGS: "-acc -ta=multicore", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
 
     steps:
     - name: check filter
