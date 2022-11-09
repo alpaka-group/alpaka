@@ -67,7 +67,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC friend constexpr auto operator==(WorkDivMembers const& a, WorkDivMembers const& b) -> bool
         {
             return a.m_gridBlockExtent == b.m_gridBlockExtent && a.m_blockThreadExtent == b.m_blockThreadExtent
-                && a.m_threadElemExtent == b.m_threadElemExtent;
+                   && a.m_threadElemExtent == b.m_threadElemExtent;
         }
 
         ALPAKA_FN_HOST friend auto operator<<(std::ostream& os, WorkDivMembers const& workDiv) -> std::ostream&
