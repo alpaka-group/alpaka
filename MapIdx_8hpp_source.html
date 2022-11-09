@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('MapIdx_8hpp_source.html',''); initResi
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">    &amp;&amp; !defined(TPR30645)</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keywordflow">for</span>(std::size_t a(0u); a &lt; lastIdx - 1; ++a)</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    <span class="keyword">const</span> <span class="keyword">auto</span> r = a + 1; <span class="comment">// NVHPC does sometimes not understand, that loops which do not start at zero</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    <span class="keyword">auto</span> <span class="keyword">const</span> r = a + 1; <span class="comment">// NVHPC does sometimes not understand, that loops which do not start at zero</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                                          <span class="comment">// can have zero iterations</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keywordflow">for</span>(std::size_t r(1u); r &lt; lastIdx; ++r)</div>
@@ -375,7 +375,7 @@ $(document).ready(function(){initNavTree('MapIdx_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="MapIdx_8hpp.html">MapIdx.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

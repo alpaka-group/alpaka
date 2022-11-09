@@ -182,15 +182,15 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="comment">// Assign placeholder accessors to this command group</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            detail::require(cgh, m_args);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> work_groups = <a class="code" href="classalpaka_1_1WorkDivMembers.html#a505994091860f2d0572f50988808a95f">WorkDivMembers&lt;TDim, TIdx&gt;::m_gridBlockExtent</a>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> group_items = <a class="code" href="classalpaka_1_1WorkDivMembers.html#a4a009b8132b692bb8b55cfd2764bcd25">WorkDivMembers&lt;TDim, TIdx&gt;::m_blockThreadExtent</a>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> item_elements = <a class="code" href="classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff">WorkDivMembers&lt;TDim, TIdx&gt;::m_threadElemExtent</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> work_groups = <a class="code" href="classalpaka_1_1WorkDivMembers.html#a505994091860f2d0572f50988808a95f">WorkDivMembers&lt;TDim, TIdx&gt;::m_gridBlockExtent</a>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> group_items = <a class="code" href="classalpaka_1_1WorkDivMembers.html#a4a009b8132b692bb8b55cfd2764bcd25">WorkDivMembers&lt;TDim, TIdx&gt;::m_blockThreadExtent</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> item_elements = <a class="code" href="classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff">WorkDivMembers&lt;TDim, TIdx&gt;::m_threadElemExtent</a>;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> global_size = get_global_size(work_groups, group_items);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> local_size = get_local_size(group_items);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> global_size = get_global_size(work_groups, group_items);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> local_size = get_local_size(group_items);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="comment">// allocate dynamic shared memory -- needs at least 1 byte to make the Xilinx Runtime happy</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> dyn_shared_mem_bytes = <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::max</a>(</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> dyn_shared_mem_bytes = <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::max</a>(</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                1ul,</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">core::apply</a>(</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    [&amp;](std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args) {</div>
@@ -267,7 +267,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="keyword">static</span> constexpr <span class="keyword">auto</span> is_sycl_kernel = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keyword">auto</span> get_global_size(<span class="keyword">const</span> Vec&lt;TDim, TIdx&gt;&amp; work_groups, <span class="keyword">const</span> Vec&lt;TDim, TIdx&gt;&amp; group_items)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keyword">auto</span> get_global_size(Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; work_groups, Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; group_items)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">if</span> constexpr(TDim::value == 1)</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                return sycl::range&lt;1&gt;{<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(work_groups[0] * group_items[0])};</div>
@@ -282,7 +282,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                    <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(work_groups[0] * group_items[0])};</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        }</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keyword">auto</span> get_local_size(<span class="keyword">const</span> Vec&lt;TDim, TIdx&gt;&amp; group_items)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keyword">auto</span> get_local_size(Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; group_items)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <span class="keywordflow">if</span> constexpr(TDim::value == 1)</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                return sycl::range&lt;1&gt;{<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(group_items[0])};</div>
@@ -369,7 +369,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGenericSycl_8hpp.html">TaskKernelGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

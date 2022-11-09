@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81">isComplete</a>(experimental::EventGenericSycl&lt;TDev&gt; <span class="keyword">const</span>&amp; event)</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> status</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> status</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                = <span class="keyword">event</span>.getNativeHandle().template get_info&lt;sycl::info::event::command_execution_status&gt;();</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> (status == sycl::info::event_command_status::complete);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
@@ -283,7 +283,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cb41fd9734833cacff31b3343158f46b.html">event</a></li><li class="navelem"><a class="el" href="EventGenericSycl_8hpp.html">EventGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

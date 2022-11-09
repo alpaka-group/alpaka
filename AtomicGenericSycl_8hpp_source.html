@@ -280,7 +280,7 @@ $(document).ready(function(){initNavTree('AtomicGenericSycl_8hpp_source.html',''
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="keywordflow">do</span></div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            {</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                assumed = old_val;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span> new_val = eval(old_val);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> new_val = eval(old_val);</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                old_val = ref.compare_exchange_strong(assumed, new_val);</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            } <span class="keywordflow">while</span>(assumed != old_val);</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
@@ -424,7 +424,7 @@ $(document).ready(function(){initNavTree('AtomicGenericSycl_8hpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="AtomicGenericSycl_8hpp.html">AtomicGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

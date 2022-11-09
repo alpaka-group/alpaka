@@ -175,8 +175,8 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp&gt;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> masterOpBlockThreads(CtxBlockOacc&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; acc, TOp&amp;&amp; op) -&gt; <span class="keywordtype">void</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span> slot = (acc.m_generation &amp; 1) &lt;&lt; 1;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <span class="keyword">const</span> <span class="keywordtype">int</span> workerNum = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(getWorkDiv&lt;Block, Threads&gt;(acc).prod());</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> slot = (acc.m_generation &amp; 1) &lt;&lt; 1;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <span class="keywordtype">int</span> <span class="keyword">const</span> workerNum = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(getWorkDiv&lt;Block, Threads&gt;(acc).prod());</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keywordtype">int</span> sum;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="comment">// Workaround to use an array in an atomic capture rather than</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <span class="comment">// using the data member m_syncCounter array directly.</span></div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                <span class="keywordflow">if</span>(sum == workerNum)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                {</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                    ++acc.m_generation;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    <span class="keyword">const</span> <span class="keywordtype">int</span> nextSlot = (acc.m_generation &amp; 1) &lt;&lt; 1;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    <span class="keywordtype">int</span> <span class="keyword">const</span> nextSlot = (acc.m_generation &amp; 1) &lt;&lt; 1;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    m_syncCounter[nextSlot] = 0;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                    m_syncCounter[nextSlot + 1] = 0;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                    op();</div>
@@ -346,7 +346,7 @@ $(document).ready(function(){initNavTree('CtxBlockOacc_8hpp_source.html',''); in
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2000100f133e487003d84c679be35c3d.html">ctx</a></li><li class="navelem"><a class="el" href="dir_d8068193f043ce6bc9f29f540068036e.html">block</a></li><li class="navelem"><a class="el" href="CtxBlockOacc_8hpp.html">CtxBlockOacc.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -135,19 +135,21 @@ $(document).ready(function(){initNavTree('SetKernel_8hpp_source.html',''); initR
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> idxThreadFirstElem = <a class="code" href="namespacealpaka.html#aff629c830b121793c4e70c68573a92f6">getIdxThreadFirstElem</a>(acc, gridThreadIdx, threadElemExtent);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keyword">auto</span> idx = mapIdxPitchBytes&lt;1u, Dim&lt;TAcc&gt;::value&gt;(idxThreadFirstElem, pitch)[0];</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            constexpr <span class="keyword">auto</span> lastDim = <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim&lt;TAcc&gt;::value</a> - 1;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> lastIdx = idx</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                + <a class="code" href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">std::min</a>(threadElemExtent[lastDim], <span class="keyword">static_cast&lt;</span><a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a><span class="keyword">&gt;</span>(extent[lastDim] - idxThreadFirstElem[lastDim]));</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">if</span>((idxThreadFirstElem &lt; extent).foldrAll(std::logical_and&lt;bool&gt;()))</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordflow">for</span>(; idx &lt; lastIdx; ++idx)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    *(dst + idx) = val;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    };</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> lastIdx = idx</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                                 + <a class="code" href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">std::min</a>(</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                                     threadElemExtent[lastDim],</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                     <span class="keyword">static_cast&lt;</span><a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a><span class="keyword">&gt;</span>(extent[lastDim] - idxThreadFirstElem[lastDim]));</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">if</span>((idxThreadFirstElem &lt; extent).foldrAll(std::logical_and&lt;bool&gt;()))</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">for</span>(; idx &lt; lastIdx; ++idx)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    *(dst + idx) = val;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    };</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType.html">alpaka::trait::IdxType</a></div><div class="ttdoc">The idx type trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00029">Traits.hpp:29</a></div></div>
@@ -169,7 +171,7 @@ $(document).ready(function(){initNavTree('SetKernel_8hpp_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="SetKernel_8hpp.html">SetKernel.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

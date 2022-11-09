@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('ViewAccessOps_8hpp_source.html',''); i
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keyword">auto</span> ptr = <span class="keyword">reinterpret_cast&lt;</span>uintptr_t<span class="keyword">&gt;</span>(<a class="code" href="structalpaka_1_1internal_1_1ViewAccessOps.html#aaf24a409a65b63053e6facb7fbe803a1">data</a>());</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">if</span> constexpr(TDim &gt; 0)</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span> pitchesInBytes = <a class="code" href="namespacealpaka.html#af6f776157c5223186419fd80a87d45c5">getPitchBytesVec</a>(*<span class="keyword">static_cast&lt;</span>TView const*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> pitchesInBytes = <a class="code" href="namespacealpaka.html#af6f776157c5223186419fd80a87d45c5">getPitchBytesVec</a>(*<span class="keyword">static_cast&lt;</span>TView const*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                <span class="keywordflow">for</span>(std::size_t i = 0u; i &lt; TDim; i++)</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                {</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    <span class="keyword">const</span> <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a> pitch = i + 1 &lt; TDim ? pitchesInBytes[i + 1] : <span class="keyword">static_cast&lt;</span><a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a><span class="keyword">&gt;</span>(<span class="keyword">sizeof</span>(value_type));</div>
@@ -274,7 +274,7 @@ $(document).ready(function(){initNavTree('ViewAccessOps_8hpp_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="ViewAccessOps_8hpp.html">ViewAccessOps.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -177,7 +177,7 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                old_end,</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                [](sycl::event ev) {</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keywordflow">return</span> ev.get_info&lt;sycl::info::event::command_execution_status&gt;()</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                        == sycl::info::event_command_status::complete;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                           == sycl::info::event_command_status::complete;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                });</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            m_dependencies.erase(new_end, old_end);</div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        {</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            std::shared_lock&lt;std::shared_mutex&gt; lock{m_mutex};</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">return</span> m_last_event.get_info&lt;sycl::info::event::command_execution_status&gt;()</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                == sycl::info::event_command_status::complete;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                   == sycl::info::event_command_status::complete;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">wait</a>() -&gt; <span class="keywordtype">void</span></div>
@@ -395,7 +395,7 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_35e231cfaf39d44c1525e8247564e585.html">queue</a></li><li class="navelem"><a class="el" href="dir_ec54f3aadbd242b6a6d8fbc8a48a4315.html">sycl</a></li><li class="navelem"><a class="el" href="QueueGenericSyclBase_8hpp.html">QueueGenericSyclBase.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

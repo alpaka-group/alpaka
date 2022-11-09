@@ -12,8 +12,8 @@ var view_2Accessor_8hpp =
     [ "BufferAccessor", "view_2Accessor_8hpp.html#a240177523f37bc7351981bf2161ac253", null ],
     [ "MemoryHandle", "view_2Accessor_8hpp.html#a08e1e73eded52aa45fca531a9bc5f392", null ],
     [ "access", "view_2Accessor_8hpp.html#a93fb8451a2e76e0223e7e8ea83afa3b3", null ],
-    [ "accessWith", "view_2Accessor_8hpp.html#aca5c7338845e3e4068a81441a9af4d83", null ],
-    [ "accessWith", "view_2Accessor_8hpp.html#a157d7e91f2956c787c46a0c70f55bf67", null ],
+    [ "accessWith", "view_2Accessor_8hpp.html#adfaca01260d70cc2e65b0a09eb32f9dc", null ],
+    [ "accessWith", "view_2Accessor_8hpp.html#a858dc42dbfc8c8bb53963211ac7e2a39", null ],
     [ "accessWith", "view_2Accessor_8hpp.html#a24c66f268d8a562935031770465dc9e3", null ],
     [ "readAccess", "view_2Accessor_8hpp.html#aa3aed160c6117a500f20b9dccd82f620", null ],
     [ "writeAccess", "view_2Accessor_8hpp.html#aec6092ee89ac7f26aff7d2ebf6076785", null ]

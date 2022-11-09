@@ -54,6 +54,6 @@ var searchData=
   ['front_3c_20list_3c_20head_2c_20tail_2e_2e_2e_20_3e_20_3e_1022',['Front&lt; List&lt; Head, Tail... &gt; &gt;',['../structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4.html',1,'alpaka::meta::detail']]],
   ['func_5f_1023',['func_',['../structalpaka_1_1ApiCudaRt_1_1HostFnAdaptor.html#a9a8f21cd85a36562ed0c79f41db908ce',1,'alpaka::ApiCudaRt::HostFnAdaptor']]],
   ['funcattributes_5ft_1024',['FuncAttributes_t',['../structalpaka_1_1ApiCudaRt.html#a8ccccc0d5b085bcbce0824184d0c1dcc',1,'alpaka::ApiCudaRt']]],
-  ['funcgetattributes_1025',['funcGetAttributes',['../structalpaka_1_1ApiCudaRt.html#a134e6b7637989aead863ee1942d06863',1,'alpaka::ApiCudaRt::funcGetAttributes(FuncAttributes_t *attr, const void *func)'],['../structalpaka_1_1ApiCudaRt.html#a24020049a7772325d299403fc464e0f6',1,'alpaka::ApiCudaRt::funcGetAttributes(FuncAttributes_t *attr, T *func)']]],
+  ['funcgetattributes_1025',['funcGetAttributes',['../structalpaka_1_1ApiCudaRt.html#a6fa2c1506e1b5c745539cc23453d2b87',1,'alpaka::ApiCudaRt::funcGetAttributes(FuncAttributes_t *attr, void const *func)'],['../structalpaka_1_1ApiCudaRt.html#a24020049a7772325d299403fc464e0f6',1,'alpaka::ApiCudaRt::funcGetAttributes(FuncAttributes_t *attr, T *func)']]],
   ['functional_2ehpp_1026',['Functional.hpp',['../Functional_8hpp.html',1,'']]]
 ];

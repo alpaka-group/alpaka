@@ -454,7 +454,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keywordflow">if</span> constexpr(<a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">Dim&lt;TGridElemExtent&gt;::value</a> == 0)</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        {</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> zero = <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;DimInt&lt;0&gt;</a>, <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx&lt;TAcc&gt;</a>&gt;{};</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> zero = <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;DimInt&lt;0&gt;</a>, <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx&lt;TAcc&gt;</a>&gt;{};</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            <a class="code" href="Assert_8hpp.html#a73eef5bdf73d2c61db1fced592d0ca16">ALPAKA_ASSERT</a>(gridElemExtent == zero);</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            <a class="code" href="Assert_8hpp.html#a73eef5bdf73d2c61db1fced592d0ca16">ALPAKA_ASSERT</a>(threadElemExtents == zero);</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers&lt;DimInt&lt;0&gt;</a>, <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx&lt;TAcc&gt;</a>&gt;{zero, zero, zero};</div>
@@ -570,7 +570,7 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_43271bcfd261ba185a35bd5280ac7ea9.html">workdiv</a></li><li class="navelem"><a class="el" href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

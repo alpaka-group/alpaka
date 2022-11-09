@@ -138,10 +138,10 @@ $(document).ready(function(){initNavTree('BlockSyncGenericSycl_8hpp_source.html'
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">syncBlockThreadsPredicate</a>(experimental::BlockSyncGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; blockSync, <span class="keywordtype">int</span> predicate)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            -&gt; <span class="keywordtype">int</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> group = blockSync.my_item.get_group();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> group = blockSync.my_item.get_group();</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            blockSync.my_item.barrier();</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> counter = (predicate != 0) ? 1 : 0;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> counter = (predicate != 0) ? 1 : 0;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> sycl::reduce_over_group(group, counter, sycl::plus&lt;&gt;{});</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    };</div>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('BlockSyncGenericSycl_8hpp_source.html'
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">syncBlockThreadsPredicate</a>(experimental::BlockSyncGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; blockSync, <span class="keywordtype">int</span> predicate)</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            -&gt; <span class="keywordtype">int</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> group = blockSync.my_item.get_group();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> group = blockSync.my_item.get_group();</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            blockSync.my_item.barrier();</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(sycl::all_of_group(group, <span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(predicate)));</div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('BlockSyncGenericSycl_8hpp_source.html'
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">syncBlockThreadsPredicate</a>(experimental::BlockSyncGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; blockSync, <span class="keywordtype">int</span> predicate)</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            -&gt; <span class="keywordtype">int</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> group = blockSync.my_item.get_group();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> group = blockSync.my_item.get_group();</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            blockSync.my_item.barrier();</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(sycl::any_of_group(group, <span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(predicate)));</div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('BlockSyncGenericSycl_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_0864fd1327d23bd6a262ac55462cb31e.html">block</a></li><li class="navelem"><a class="el" href="dir_4a38c3cb3ba3d4f90a31fd81ecb7e5f9.html">sync</a></li><li class="navelem"><a class="el" href="BlockSyncGenericSycl_8hpp.html">BlockSyncGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

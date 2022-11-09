@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('workdiv_2Traits_8hpp_source.html','');
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#a239e5efc07324b354b07afb3b7553050">   51</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#a239e5efc07324b354b07afb3b7553050">getWorkDiv</a>(TWorkDiv <span class="keyword">const</span>&amp; workDiv)</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            {</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keywordflow">return</span> alpaka::getWorkDiv&lt;origin::Grid, unit::Blocks&gt;(workDiv)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                    * alpaka::getWorkDiv&lt;origin::Block, unit::Threads&gt;(workDiv);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                       * alpaka::getWorkDiv&lt;origin::Block, unit::Threads&gt;(workDiv);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        };<span class="comment"></span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">        //! The work div grid element extent trait specialization.</span></div>
@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('workdiv_2Traits_8hpp_source.html','');
 <div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Elems_01_4.html#ae93fe5bc6218a3700d697e2b84bd7a99">   62</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Elems_01_4.html#ae93fe5bc6218a3700d697e2b84bd7a99">getWorkDiv</a>(TWorkDiv <span class="keyword">const</span>&amp; workDiv)</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keywordflow">return</span> alpaka::getWorkDiv&lt;origin::Grid, unit::Threads&gt;(workDiv)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    * alpaka::getWorkDiv&lt;origin::Thread, unit::Elems&gt;(workDiv);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                       * alpaka::getWorkDiv&lt;origin::Thread, unit::Elems&gt;(workDiv);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        };<span class="comment"></span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">        //! The work div block element extent trait specialization.</span></div>
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('workdiv_2Traits_8hpp_source.html','');
 <div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Elems_01_4.html#a25f129a825dc7a968bb8b7f8e78515bd">   73</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Elems_01_4.html#a25f129a825dc7a968bb8b7f8e78515bd">getWorkDiv</a>(TWorkDiv <span class="keyword">const</span>&amp; workDiv)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keywordflow">return</span> alpaka::getWorkDiv&lt;origin::Block, unit::Threads&gt;(workDiv)</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                    * alpaka::getWorkDiv&lt;origin::Thread, unit::Elems&gt;(workDiv);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                       * alpaka::getWorkDiv&lt;origin::Thread, unit::Elems&gt;(workDiv);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            }</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        };</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    } <span class="comment">// namespace trait</span></div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('workdiv_2Traits_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_43271bcfd261ba185a35bd5280ac7ea9.html">workdiv</a></li><li class="navelem"><a class="el" href="workdiv_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:04 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

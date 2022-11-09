@@ -269,7 +269,7 @@ $(document).ready(function(){initNavTree('DevGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    {</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5">getWarpSizes</a>(experimental::DevGenericSycl&lt;TPltf&gt; <span class="keyword">const</span>&amp; dev) -&gt; std::vector&lt;std::size_t&gt;</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> device = dev.getNativeHandle().first;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> device = dev.getNativeHandle().first;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keywordflow">return</span> device.template get_info&lt;sycl::info::device::sub_group_sizes&gt;();</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        }</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    };</div>
@@ -366,7 +366,7 @@ $(document).ready(function(){initNavTree('DevGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

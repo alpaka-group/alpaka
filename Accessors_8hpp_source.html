@@ -168,8 +168,8 @@ $(document).ready(function(){initNavTree('Accessors_8hpp_source.html',''); initR
 <div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#a2b9f7602081abd3a9e5f8d9001e87213">   79</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#a2b9f7602081abd3a9e5f8d9001e87213">getIdx</a>(<a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a> <span class="keyword">const</span>&amp; idx, TWorkDiv <span class="keyword">const</span>&amp; workDiv)</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            {</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                <span class="keywordflow">return</span> alpaka::getIdx&lt;origin::Grid, unit::Blocks&gt;(idx, workDiv)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    * getWorkDiv&lt;origin::Block, unit::Threads&gt;(workDiv)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                    + alpaka::getIdx&lt;origin::Block, unit::Threads&gt;(idx, workDiv);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                           * getWorkDiv&lt;origin::Block, unit::Threads&gt;(workDiv)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                       + alpaka::getIdx&lt;origin::Block, unit::Threads&gt;(idx, workDiv);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            }</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        };</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    } <span class="comment">// namespace trait</span><span class="comment"></span></div>
@@ -232,7 +232,7 @@ $(document).ready(function(){initNavTree('Accessors_8hpp_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="Accessors_8hpp.html">Accessors.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

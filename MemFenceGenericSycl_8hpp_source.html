@@ -156,19 +156,21 @@ $(document).ready(function(){initNavTree('MemFenceGenericSycl_8hpp_source.html',
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keyword">static</span> constexpr <span class="keyword">auto</span> space = experimental::detail::SyclFenceProps&lt;TMemScope&gt;::space;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="comment">// atomic_ref is already part of the SYCL spec but oneAPI has not caught up yet.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keyword">auto</span> dummy = (scope == sycl::memory_scope::work_group)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                ? sycl::ext::oneapi::</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    atomic_ref&lt;int, sycl::ext::oneapi::memory_order::relaxed, scope, space&gt;{fence.m_local_dummy[0]}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                : sycl::ext::oneapi::atomic_ref&lt;int, sycl::ext::oneapi::memory_order::relaxed, scope, space&gt;{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    fence.m_global_dummy[0]};</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> dummy_val = dummy.load();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            sycl::atomic_fence(sycl::memory_order::acq_rel, scope);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            dummy.store(dummy_val);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    };</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keyword">auto</span> dummy</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                = (scope == sycl::memory_scope::work_group)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                      ? sycl::ext::oneapi::</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                          atomic_ref&lt;int, sycl::ext::oneapi::memory_order::relaxed, scope, space&gt;{fence.m_local_dummy</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                                                                                                      [0]}</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                      : sycl::ext::oneapi::atomic_ref&lt;int, sycl::ext::oneapi::memory_order::relaxed, scope, space&gt;{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                          fence.m_global_dummy[0]};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> dummy_val = dummy.load();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            sycl::atomic_fence(sycl::memory_order::acq_rel, scope);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            dummy.store(dummy_val);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    };</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00134">AccCpuFibers.hpp:134</a></div></div>
@@ -180,7 +182,7 @@ $(document).ready(function(){initNavTree('MemFenceGenericSycl_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceGenericSycl_8hpp.html">MemFenceGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

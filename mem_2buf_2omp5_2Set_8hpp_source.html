@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2omp5_2Set_8hpp_source.html',
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keyword">using</span> ExtIdx = <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx&lt;TExtent&gt;</a>;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">using</span> Dim0 = <a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;0u&gt;</a>;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a> = <a class="code" href="classalpaka_1_1AccOmp5.html">AccOmp5&lt;Dim0, ExtIdx&gt;</a>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">auto</span> kernel = [] <a class="code" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a>(<span class="keyword">const</span> <a class="code" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a>&amp;, std::uint8_t b, std::uint8_t* mem)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">auto</span> kernel = [] <a class="code" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a>(<a class="code" href="namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a">Acc</a> <span class="keyword">const</span>&amp;, std::uint8_t b, std::uint8_t* mem)</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            {</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                <span class="comment">// for zero dimensional views, we just set the bytes of a single element</span></div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                <span class="keywordflow">for</span>(<span class="keyword">auto</span> i = 0u; i &lt; <span class="keyword">sizeof</span>(<a class="code" href="namespacealpaka.html#a807188d82118e5a640469d676853a195">Elem&lt;TView&gt;</a>); i++)</div>
@@ -251,7 +251,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2omp5_2Set_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_7f059d0868492c7d09d9464b52bc41e5.html">omp5</a></li><li class="navelem"><a class="el" href="mem_2buf_2omp5_2Set_8hpp.html">Set.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

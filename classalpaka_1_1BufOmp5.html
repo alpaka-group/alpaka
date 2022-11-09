@@ -99,12 +99,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a284ff79d4b1335635a3aa10b761377db"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufOmp5.html#a284ff79d4b1335635a3aa10b761377db">BufOmp5</a> (<a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> const &amp;dev, TElem *const pMem, TExtent const &amp;extent)</td></tr>
 <tr class="memdesc:a284ff79d4b1335635a3aa10b761377db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classalpaka_1_1BufOmp5.html#a284ff79d4b1335635a3aa10b761377db">More...</a><br /></td></tr>
 <tr class="separator:a284ff79d4b1335635a3aa10b761377db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01d04e791f899baf3770fe03e4101054"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufOmp5.html#a01d04e791f899baf3770fe03e4101054">extentElements</a> () const -&gt; const <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; &amp;</td></tr>
-<tr class="separator:a01d04e791f899baf3770fe03e4101054"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb719326f4580aa8462304aa4de9efbd"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufOmp5.html#afb719326f4580aa8462304aa4de9efbd">extentElements</a> () const -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;</td></tr>
+<tr class="separator:afb719326f4580aa8462304aa4de9efbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a837b459de284775b03130ce3e219a92c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufOmp5.html#a837b459de284775b03130ce3e219a92c">operator*</a> () -&gt; <a class="el" href="classalpaka_1_1detail_1_1BufOmp5Impl.html">detail::BufOmp5Impl</a>&lt; TElem, TDim, TIdx &gt; &amp;</td></tr>
 <tr class="separator:a837b459de284775b03130ce3e219a92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa99329196cddda9b03bde8dfe9e7ccc2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufOmp5.html#aa99329196cddda9b03bde8dfe9e7ccc2">operator*</a> () const -&gt; const <a class="el" href="classalpaka_1_1detail_1_1BufOmp5Impl.html">detail::BufOmp5Impl</a>&lt; TElem, TDim, TIdx &gt; &amp;</td></tr>
-<tr class="separator:aa99329196cddda9b03bde8dfe9e7ccc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c90f496a99f6dd9d2c45a503d5fd9d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufOmp5.html#ab2c90f496a99f6dd9d2c45a503d5fd9d">operator*</a> () const -&gt; <a class="el" href="classalpaka_1_1detail_1_1BufOmp5Impl.html">detail::BufOmp5Impl</a>&lt; TElem, TDim, TIdx &gt; const &amp;</td></tr>
+<tr class="separator:ab2c90f496a99f6dd9d2c45a503d5fd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TElem, typename TDim, typename TIdx&gt;<br />
@@ -164,8 +164,8 @@ template&lt;typename TExtent &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a01d04e791f899baf3770fe03e4101054"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01d04e791f899baf3770fe03e4101054">&#9670;&nbsp;</a></span>extentElements()</h2>
+<a id="afb719326f4580aa8462304aa4de9efbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb719326f4580aa8462304aa4de9efbd">&#9670;&nbsp;</a></span>extentElements()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -179,7 +179,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
           <td class="memname">auto <a class="el" href="classalpaka_1_1BufOmp5.html">alpaka::BufOmp5</a>&lt; TElem, TDim, TIdx &gt;::extentElements </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; const <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TIdx&gt;&amp;
+          <td> const -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TIdx&gt; const&amp;
         </td>
         </tr>
       </table>
@@ -224,8 +224,8 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
 
 </div>
 </div>
-<a id="aa99329196cddda9b03bde8dfe9e7ccc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa99329196cddda9b03bde8dfe9e7ccc2">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/2]</span></h2>
+<a id="ab2c90f496a99f6dd9d2c45a503d5fd9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2c90f496a99f6dd9d2c45a503d5fd9d">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -239,7 +239,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
           <td class="memname">auto <a class="el" href="classalpaka_1_1BufOmp5.html">alpaka::BufOmp5</a>&lt; TElem, TDim, TIdx &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; const <a class="el" href="classalpaka_1_1detail_1_1BufOmp5Impl.html">detail::BufOmp5Impl</a>&lt;TElem, TDim, TIdx&gt;&amp;
+          <td> const -&gt; <a class="el" href="classalpaka_1_1detail_1_1BufOmp5Impl.html">detail::BufOmp5Impl</a>&lt;TElem, TDim, TIdx&gt; const&amp;
         </td>
         </tr>
       </table>
@@ -264,7 +264,7 @@ template&lt;typename TElem , typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1BufOmp5.html">BufOmp5</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:07 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Common_8hpp_source.htm
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        constexpr <span class="keyword">auto</span> dim = Dim&lt;TExtent&gt;::value;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span> width = <a class="code" href="namespacealpaka.html#aeeb5b4689cf4dca8de2d9016a74d10e8">getWidth</a>(ext) * multiplier;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> width = <a class="code" href="namespacealpaka.html#aeeb5b4689cf4dca8de2d9016a74d10e8">getWidth</a>(ext) * multiplier;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">if</span> constexpr(dim == 1)</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            return sycl::range&lt;1&gt;{width};</div>
@@ -155,7 +155,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Common_8hpp_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="mem_2buf_2sycl_2Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('Array_8hpp_source.html',''); initResiz
 <div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structalpaka_1_1test_1_1Array.html#a04628f2285009616a68d1498cfe7e9ec">   20</a></span>&#160;        TType <a class="code" href="structalpaka_1_1test_1_1Array.html#a04628f2285009616a68d1498cfe7e9ec">m_data</a>[TSize];</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T_Idx&gt;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structalpaka_1_1test_1_1Array.html#a497b6cac032fe839f122e0a6211d0e69">   23</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1test_1_1Array.html#a497b6cac032fe839f122e0a6211d0e69">operator[]</a>(<span class="keyword">const</span> T_Idx idx) <span class="keyword">const</span> -&gt; <span class="keyword">const</span> TType&amp;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structalpaka_1_1test_1_1Array.html#aeeded059f5b3a0e3420e95ab214ee2be">   23</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1test_1_1Array.html#aeeded059f5b3a0e3420e95ab214ee2be">operator[]</a>(<span class="keyword">const</span> T_Idx idx) <span class="keyword">const</span> -&gt; TType <span class="keyword">const</span>&amp;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1test_1_1Array.html#a04628f2285009616a68d1498cfe7e9ec">m_data</a>[idx];</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div>
@@ -123,9 +123,9 @@ $(document).ready(function(){initNavTree('Array_8hpp_source.html',''); initResiz
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;} <span class="comment">// namespace alpaka::test</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="astructalpaka_1_1test_1_1Array_html_aeeded059f5b3a0e3420e95ab214ee2be"><div class="ttname"><a href="structalpaka_1_1test_1_1Array.html#aeeded059f5b3a0e3420e95ab214ee2be">alpaka::test::Array::operator[]</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC auto operator[](const T_Idx idx) const -&gt; TType const &amp;</div><div class="ttdef"><b>Definition:</b> <a href="Array_8hpp_source.html#l00023">Array.hpp:23</a></div></div>
 <div class="ttc" id="astructalpaka_1_1test_1_1Array_html_a04628f2285009616a68d1498cfe7e9ec"><div class="ttname"><a href="structalpaka_1_1test_1_1Array.html#a04628f2285009616a68d1498cfe7e9ec">alpaka::test::Array::m_data</a></div><div class="ttdeci">TType m_data[TSize]</div><div class="ttdef"><b>Definition:</b> <a href="Array_8hpp_source.html#l00020">Array.hpp:20</a></div></div>
 <div class="ttc" id="astructalpaka_1_1test_1_1Array_html_a6cf2b8d9e5fbbb2ab22f6bb12e97893c"><div class="ttname"><a href="structalpaka_1_1test_1_1Array.html#a6cf2b8d9e5fbbb2ab22f6bb12e97893c">alpaka::test::Array::operator[]</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC auto operator[](const TIdx idx) -&gt; TType &amp;</div><div class="ttdef"><b>Definition:</b> <a href="Array_8hpp_source.html#l00029">Array.hpp:29</a></div></div>
-<div class="ttc" id="astructalpaka_1_1test_1_1Array_html_a497b6cac032fe839f122e0a6211d0e69"><div class="ttname"><a href="structalpaka_1_1test_1_1Array.html#a497b6cac032fe839f122e0a6211d0e69">alpaka::test::Array::operator[]</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC auto operator[](const T_Idx idx) const -&gt; const TType &amp;</div><div class="ttdef"><b>Definition:</b> <a href="Array_8hpp_source.html#l00023">Array.hpp:23</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html"><div class="ttname"><a href="namespacealpaka_1_1test.html">alpaka::test</a></div><div class="ttdoc">The test specifics.</div><div class="ttdef"><b>Definition:</b> <a href="TestAccs_8hpp_source.html#l00030">TestAccs.hpp:30</a></div></div>
 <div class="ttc" id="astructalpaka_1_1test_1_1Array_html"><div class="ttname"><a href="structalpaka_1_1test_1_1Array.html">alpaka::test::Array</a></div><div class="ttdef"><b>Definition:</b> <a href="Array_8hpp_source.html#l00018">Array.hpp:18</a></div></div>
 <div class="ttc" id="aalpaka_8hpp_html"><div class="ttname"><a href="alpaka_8hpp.html">alpaka.hpp</a></div></div>
@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('Array_8hpp_source.html',''); initResiz
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="Array_8hpp.html">Array.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

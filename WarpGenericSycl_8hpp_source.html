@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1warp.html#aa9fddbe593ae1d26989838411072a2ad">getSize</a>(experimental::warp::WarpGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; warp) -&gt; std::int32_t</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> sub_group = warp.m_item.get_sub_group();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> sub_group = warp.m_item.get_sub_group();</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="comment">// SYCL sub-groups are always 1D</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(sub_group.get_local_linear_range());</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="comment">// SYCL has no way of querying this. Since sub-group functions have to be executed in convergent code</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="comment">// regions anyway we return the full mask.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> sub_group = warp.m_item.get_sub_group();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> sub_group = warp.m_item.get_sub_group();</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> sycl::ext::oneapi::group_ballot(sub_group, <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    };</div>
@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1warp.html#a0b2d83334bcd2540baca4256ab378672">all</a>(experimental::warp::WarpGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; warp, std::int32_t predicate) -&gt; std::int32_t</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> sub_group = warp.m_item.get_sub_group();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> sub_group = warp.m_item.get_sub_group();</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(sycl::all_of_group(sub_group, <span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(predicate)));</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    };</div>
@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1warp.html#a5388b6f43f46df541ea8a2eb72ccee70">any</a>(experimental::warp::WarpGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; warp, std::int32_t predicate) -&gt; std::int32_t</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> sub_group = warp.m_item.get_sub_group();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> sub_group = warp.m_item.get_sub_group();</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>std::int32_t<span class="keyword">&gt;</span>(sycl::any_of_group(sub_group, <span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(predicate)));</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    };</div>
@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    {</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1warp.html#a0d88e1c2faaf38a4e14ea0d763402d32">ballot</a>(experimental::warp::WarpGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; warp, std::int32_t predicate)</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> sub_group = warp.m_item.get_sub_group();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> sub_group = warp.m_item.get_sub_group();</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> sycl::ext::oneapi::group_ballot(sub_group, <span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(predicate));</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    };</div>
@@ -192,16 +192,16 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">               Example: If we assume a sub-group size of 32 and a width of 16 we will receive two subdivisions:</span></div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">               The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">               first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> actual_group = warp.m_item.get_sub_group();</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> actual_item_id = actual_group.get_local_linear_id();</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> actual_group = warp.m_item.get_sub_group();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> actual_item_id = actual_group.get_local_linear_id();</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> assumed_group_id = actual_item_id / width;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> assumed_item_id = actual_item_id % width;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> assumed_group_id = actual_item_id / width;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> assumed_item_id = actual_item_id % width;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> assumed_src_id = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(srcLane % width);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> actual_src_id = assumed_src_id + assumed_group_id * width;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> assumed_src_id = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(srcLane % width);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> actual_src_id = assumed_src_id + assumed_group_id * width;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> src = sycl::id&lt;1&gt;{actual_src_id};</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> src = sycl::id&lt;1&gt;{actual_src_id};</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">return</span> sycl::select_from_group(actual_group, value, src);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
@@ -223,7 +223,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7d123124934e174b4626b90ed7337338.html">warp</a></li><li class="navelem"><a class="el" href="WarpGenericSycl_8hpp.html">WarpGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

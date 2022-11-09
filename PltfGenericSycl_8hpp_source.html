@@ -251,8 +251,8 @@ $(document).ready(function(){initNavTree('PltfGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;Backend version: &quot;</span> &lt;&lt; device.get_info&lt;sycl::info::device::backend_version&gt;() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;Aspects: &quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> aspects = device.get_info&lt;sycl::info::device::aspects&gt;();</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; asp : aspects)</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> aspects = device.get_info&lt;sycl::info::device::aspects&gt;();</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span> <span class="keyword">const</span>&amp; asp : aspects)</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            {</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                <span class="keywordflow">switch</span>(asp)</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                {</div>
@@ -333,9 +333,9 @@ $(document).ready(function(){initNavTree('PltfGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            std::cout &lt;&lt; dims &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;Maximum number of work items:\n&quot;</span>;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> wi_1D = device.get_info&lt;sycl::info::device::max_work_item_sizes&lt;1&gt;&gt;();</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> wi_2D = device.get_info&lt;sycl::info::device::max_work_item_sizes&lt;2&gt;&gt;();</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> wi_3D = device.get_info&lt;sycl::info::device::max_work_item_sizes&lt;3&gt;&gt;();</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> wi_1D = device.get_info&lt;sycl::info::device::max_work_item_sizes&lt;1&gt;&gt;();</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> wi_2D = device.get_info&lt;sycl::info::device::max_work_item_sizes&lt;2&gt;&gt;();</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> wi_3D = device.get_info&lt;sycl::info::device::max_work_item_sizes&lt;3&gt;&gt;();</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;\t* 1D: (&quot;</span> &lt;&lt; wi_1D.get(0) &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;\t* 2D: (&quot;</span> &lt;&lt; wi_2D.get(0) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; wi_2D.get(1) &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;\t* 3D: (&quot;</span> &lt;&lt; wi_3D.get(0) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; wi_3D.get(1) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; wi_3D.get(2) &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
@@ -478,16 +478,16 @@ $(document).ready(function(){initNavTree('PltfGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            <span class="keywordflow">if</span>(device.has_aspect(sycl::aspect::fp16))</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;            {</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span> fp16_conf = device.get_info&lt;sycl::info::device::half_fp_config&gt;();</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> fp16_conf = device.get_info&lt;sycl::info::device::half_fp_config&gt;();</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                print_fp_config(<span class="stringliteral">&quot;Half&quot;</span>, fp16_conf);</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            }</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span> fp32_conf = device.get_info&lt;sycl::info::device::single_fp_config&gt;();</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> fp32_conf = device.get_info&lt;sycl::info::device::single_fp_config&gt;();</div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            print_fp_config(<span class="stringliteral">&quot;Single&quot;</span>, fp32_conf);</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            <span class="keywordflow">if</span>(device.has_aspect(sycl::aspect::fp64))</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            {</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                <span class="keyword">const</span> <span class="keyword">auto</span> fp64_conf = device.get_info&lt;sycl::info::device::double_fp_config&gt;();</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> fp64_conf = device.get_info&lt;sycl::info::device::double_fp_config&gt;();</div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;                print_fp_config(<span class="stringliteral">&quot;Double&quot;</span>, fp64_conf);</div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            }</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
@@ -793,7 +793,7 @@ $(document).ready(function(){initNavTree('PltfGenericSycl_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_3da4cf0d8582bc897be6864cae72e9ae.html">pltf</a></li><li class="navelem"><a class="el" href="PltfGenericSycl_8hpp.html">PltfGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 9 2022 05:42:06 for alpaka by
+    <li class="footer">Generated on Wed Nov 9 2022 07:27:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
