@@ -82,7 +82,7 @@
     - cuda
     - intel
 
-.base_oacc_nvhpc:
+.base_nvhpc:
   image: nvcr.io/nvidia/nvhpc:${ALPAKA_CI_NVHPC_VER}-devel-cuda${ALPAKA_CI_CUDA_VERSION}-ubuntu${ALPAKA_CI_UBUNTU_VER}
   extends: .base
   variables:
@@ -100,10 +100,23 @@
     alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "OFF"
     alpaka_ACC_GPU_CUDA_ENABLE: "OFF"
     alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
-    alpaka_ACC_ANY_BT_OACC_ENABLE: "ON"
     alpaka_OFFLOAD_MAX_BLOCK_SIZE: 256
     alpaka_DEBUG_OFFLOAD_ASSUME_HOST: "OFF"
+  tags:
+    - cuda
+    - intel
+
+.base_oacc_nvhpc:
+  extends: .base_nvhpc
+  variables:
+    alpaka_ACC_ANY_BT_OACC_ENABLE: "ON"
     CMAKE_CXX_FLAGS: "-acc -ta=tesla"
+
+.base_omp5_nvhpc:
+  extends: .base_nvhpc
+  variables:
+    alpaka_ACC_ANY_BT_OMP5_ENABLE: "ON"
+    CMAKE_CXX_FLAGS: "-ta=tesla --diag_suppress=186 -Wc,--pending_instantiations=256"
   tags:
     - cuda
     - intel
