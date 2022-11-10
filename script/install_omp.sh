@@ -17,5 +17,10 @@ source ./script/set.sh
 if [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     brew install libomp
+    if [ -z "${CMAKE_CXX_FLAGS+x}" ]
+    then
+        export CMAKE_CXX_FLAGS=
+    fi
+    export CMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS -Xpreprocessor -fopenmp"
 fi
 
