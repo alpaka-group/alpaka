@@ -124,7 +124,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a240177523f37bc7351981bf2161ac253"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TElem , std::size_t TDim, typename TAccessModes  = ReadWriteAccess, typename TIdx  = Idx&lt;TAcc&gt;&gt; </td></tr>
-<tr class="memitem:a240177523f37bc7351981bf2161ac253"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a240177523f37bc7351981bf2161ac253">BufferAccessor</a> = <a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; <a class="el" href="namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392">MemoryHandle</a>&lt; decltype(<a class="el" href="namespacealpaka_1_1experimental.html#a24c66f268d8a562935031770465dc9e3">accessWith</a>&lt; TAccessModes &gt;(core::declval&lt; <a class="el" href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">Buf</a>&lt; TAcc, TElem, <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDim &gt;, TIdx &gt; &gt;()))&gt;, TElem, TIdx, TDim, TAccessModes &gt;</td></tr>
+<tr class="memitem:a240177523f37bc7351981bf2161ac253"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a240177523f37bc7351981bf2161ac253">BufferAccessor</a> = <a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; <a class="el" href="namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392">MemoryHandle</a>&lt; decltype(<a class="el" href="namespacealpaka_1_1experimental.html#abee9fe23d3cf47c26d97ab1012c5e0ce">accessWith</a>&lt; TAccessModes &gt;(core::declval&lt; <a class="el" href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">Buf</a>&lt; TAcc, TElem, <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDim &gt;, TIdx &gt; &gt;()))&gt;, TElem, TIdx, TDim, TAccessModes &gt;</td></tr>
 <tr class="memdesc:a240177523f37bc7351981bf2161ac253"><td class="mdescLeft">&#160;</td><td class="mdescRight">An alias for an accessor accessing a buffer on the given accelerator.  <a href="namespacealpaka_1_1experimental.html#a240177523f37bc7351981bf2161ac253">More...</a><br /></td></tr>
 <tr class="separator:a240177523f37bc7351981bf2161ac253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08e1e73eded52aa45fca531a9bc5f392"><td class="memTemplParams" colspan="2">template&lt;typename Accessor &gt; </td></tr>
@@ -134,30 +134,30 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a93fb8451a2e76e0223e7e8ea83afa3b3"><td class="memTemplParams" colspan="2">template&lt;typename TMemoryObjectOrAccessor &gt; </td></tr>
-<tr class="memitem:a93fb8451a2e76e0223e7e8ea83afa3b3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a93fb8451a2e76e0223e7e8ea83afa3b3">access</a> (TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)</td></tr>
-<tr class="memdesc:a93fb8451a2e76e0223e7e8ea83afa3b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a read-write accessor for the given memory object (view, buffer, ...) or accessor.  <a href="namespacealpaka_1_1experimental.html#a93fb8451a2e76e0223e7e8ea83afa3b3">More...</a><br /></td></tr>
-<tr class="separator:a93fb8451a2e76e0223e7e8ea83afa3b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfaca01260d70cc2e65b0a09eb32f9dc"><td class="memTemplParams" colspan="2">template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , typename TBufferIdx , std::size_t TDim, typename... TPrevAccessModes&gt; </td></tr>
-<tr class="memitem:adfaca01260d70cc2e65b0a09eb32f9dc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#adfaca01260d70cc2e65b0a09eb32f9dc">accessWith</a> (<a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; TMemoryHandle, TElem, TBufferIdx, TDim, std::tuple&lt; TPrevAccessModes... &gt;&gt; const &amp;acc)</td></tr>
-<tr class="memdesc:adfaca01260d70cc2e65b0a09eb32f9dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrains an existing accessor with multiple access modes to the specified access modes.  <a href="namespacealpaka_1_1experimental.html#adfaca01260d70cc2e65b0a09eb32f9dc">More...</a><br /></td></tr>
-<tr class="separator:adfaca01260d70cc2e65b0a09eb32f9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a858dc42dbfc8c8bb53963211ac7e2a39"><td class="memTemplParams" colspan="2">template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , typename TBufferIdx , std::size_t TDim&gt; </td></tr>
-<tr class="memitem:a858dc42dbfc8c8bb53963211ac7e2a39"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a858dc42dbfc8c8bb53963211ac7e2a39">accessWith</a> (<a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; TMemoryHandle, TElem, TBufferIdx, TDim, TNewAccessMode &gt; const &amp;acc)</td></tr>
-<tr class="memdesc:a858dc42dbfc8c8bb53963211ac7e2a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrains an existing accessor to the specified access modes.  <a href="namespacealpaka_1_1experimental.html#a858dc42dbfc8c8bb53963211ac7e2a39">More...</a><br /></td></tr>
-<tr class="separator:a858dc42dbfc8c8bb53963211ac7e2a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24c66f268d8a562935031770465dc9e3"><td class="memTemplParams" colspan="2">template&lt;typename... TAccessModes, typename TMemoryObject , typename  = std::enable_if_t&lt;!internal::IsAccessor&lt;std::decay_t&lt;TMemoryObject&gt;&gt;::value&gt;&gt; </td></tr>
-<tr class="memitem:a24c66f268d8a562935031770465dc9e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a24c66f268d8a562935031770465dc9e3">accessWith</a> (TMemoryObject &amp;&amp;memoryObject)</td></tr>
-<tr class="memdesc:a24c66f268d8a562935031770465dc9e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an accessor for the given memory object using the specified access modes. Memory objects are e.g. alpaka views and buffers.  <a href="namespacealpaka_1_1experimental.html#a24c66f268d8a562935031770465dc9e3">More...</a><br /></td></tr>
-<tr class="separator:a24c66f268d8a562935031770465dc9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3aed160c6117a500f20b9dccd82f620"><td class="memTemplParams" colspan="2">template&lt;typename TMemoryObjectOrAccessor &gt; </td></tr>
-<tr class="memitem:aa3aed160c6117a500f20b9dccd82f620"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#aa3aed160c6117a500f20b9dccd82f620">readAccess</a> (TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)</td></tr>
-<tr class="memdesc:aa3aed160c6117a500f20b9dccd82f620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a read-only accessor for the given memory object (view, buffer, ...) or accessor.  <a href="namespacealpaka_1_1experimental.html#aa3aed160c6117a500f20b9dccd82f620">More...</a><br /></td></tr>
-<tr class="separator:aa3aed160c6117a500f20b9dccd82f620"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec6092ee89ac7f26aff7d2ebf6076785"><td class="memTemplParams" colspan="2">template&lt;typename TMemoryObjectOrAccessor &gt; </td></tr>
-<tr class="memitem:aec6092ee89ac7f26aff7d2ebf6076785"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#aec6092ee89ac7f26aff7d2ebf6076785">writeAccess</a> (TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)</td></tr>
-<tr class="memdesc:aec6092ee89ac7f26aff7d2ebf6076785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a write-only accessor for the given memory object (view, buffer, ...) or accessor.  <a href="namespacealpaka_1_1experimental.html#aec6092ee89ac7f26aff7d2ebf6076785">More...</a><br /></td></tr>
-<tr class="separator:aec6092ee89ac7f26aff7d2ebf6076785"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b57c8ba5596d332f3ae4b883d52b94c"><td class="memTemplParams" colspan="2">template&lt;typename TMemoryObjectOrAccessor &gt; </td></tr>
+<tr class="memitem:a3b57c8ba5596d332f3ae4b883d52b94c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a3b57c8ba5596d332f3ae4b883d52b94c">access</a> (TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)</td></tr>
+<tr class="memdesc:a3b57c8ba5596d332f3ae4b883d52b94c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a read-write accessor for the given memory object (view, buffer, ...) or accessor.  <a href="namespacealpaka_1_1experimental.html#a3b57c8ba5596d332f3ae4b883d52b94c">More...</a><br /></td></tr>
+<tr class="separator:a3b57c8ba5596d332f3ae4b883d52b94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6872c08fb04ca8ce6a0eeb83714ebae"><td class="memTemplParams" colspan="2">template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , typename TBufferIdx , std::size_t TDim, typename... TPrevAccessModes&gt; </td></tr>
+<tr class="memitem:aa6872c08fb04ca8ce6a0eeb83714ebae"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#aa6872c08fb04ca8ce6a0eeb83714ebae">accessWith</a> (<a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; TMemoryHandle, TElem, TBufferIdx, TDim, std::tuple&lt; TPrevAccessModes... &gt;&gt; const &amp;acc)</td></tr>
+<tr class="memdesc:aa6872c08fb04ca8ce6a0eeb83714ebae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrains an existing accessor with multiple access modes to the specified access modes.  <a href="namespacealpaka_1_1experimental.html#aa6872c08fb04ca8ce6a0eeb83714ebae">More...</a><br /></td></tr>
+<tr class="separator:aa6872c08fb04ca8ce6a0eeb83714ebae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41a033069dc75b3c7ee2d84596ee5eb6"><td class="memTemplParams" colspan="2">template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , typename TBufferIdx , std::size_t TDim&gt; </td></tr>
+<tr class="memitem:a41a033069dc75b3c7ee2d84596ee5eb6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a41a033069dc75b3c7ee2d84596ee5eb6">accessWith</a> (<a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; TMemoryHandle, TElem, TBufferIdx, TDim, TNewAccessMode &gt; const &amp;acc)</td></tr>
+<tr class="memdesc:a41a033069dc75b3c7ee2d84596ee5eb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrains an existing accessor to the specified access modes.  <a href="namespacealpaka_1_1experimental.html#a41a033069dc75b3c7ee2d84596ee5eb6">More...</a><br /></td></tr>
+<tr class="separator:a41a033069dc75b3c7ee2d84596ee5eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee9fe23d3cf47c26d97ab1012c5e0ce"><td class="memTemplParams" colspan="2">template&lt;typename... TAccessModes, typename TMemoryObject , typename  = std::enable_if_t&lt;!internal::IsAccessor&lt;std::decay_t&lt;TMemoryObject&gt;&gt;::value&gt;&gt; </td></tr>
+<tr class="memitem:abee9fe23d3cf47c26d97ab1012c5e0ce"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#abee9fe23d3cf47c26d97ab1012c5e0ce">accessWith</a> (TMemoryObject &amp;&amp;memoryObject)</td></tr>
+<tr class="memdesc:abee9fe23d3cf47c26d97ab1012c5e0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an accessor for the given memory object using the specified access modes. Memory objects are e.g. alpaka views and buffers.  <a href="namespacealpaka_1_1experimental.html#abee9fe23d3cf47c26d97ab1012c5e0ce">More...</a><br /></td></tr>
+<tr class="separator:abee9fe23d3cf47c26d97ab1012c5e0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43c57a168832256d1f7a8ce40b7e5d3d"><td class="memTemplParams" colspan="2">template&lt;typename TMemoryObjectOrAccessor &gt; </td></tr>
+<tr class="memitem:a43c57a168832256d1f7a8ce40b7e5d3d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a43c57a168832256d1f7a8ce40b7e5d3d">readAccess</a> (TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)</td></tr>
+<tr class="memdesc:a43c57a168832256d1f7a8ce40b7e5d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a read-only accessor for the given memory object (view, buffer, ...) or accessor.  <a href="namespacealpaka_1_1experimental.html#a43c57a168832256d1f7a8ce40b7e5d3d">More...</a><br /></td></tr>
+<tr class="separator:a43c57a168832256d1f7a8ce40b7e5d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78415d356f90b581b9ff79e3756ec846"><td class="memTemplParams" colspan="2">template&lt;typename TMemoryObjectOrAccessor &gt; </td></tr>
+<tr class="memitem:a78415d356f90b581b9ff79e3756ec846"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1experimental.html#a78415d356f90b581b9ff79e3756ec846">writeAccess</a> (TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)</td></tr>
+<tr class="memdesc:a78415d356f90b581b9ff79e3756ec846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a write-only accessor for the given memory object (view, buffer, ...) or accessor.  <a href="namespacealpaka_1_1experimental.html#a78415d356f90b581b9ff79e3756ec846">More...</a><br /></td></tr>
+<tr class="separator:a78415d356f90b581b9ff79e3756ec846"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a240177523f37bc7351981bf2161ac253"></a>
@@ -169,7 +169,7 @@ Functions</h2></td></tr>
 template&lt;typename TAcc , typename TElem , std::size_t TDim, typename TAccessModes  = ReadWriteAccess, typename TIdx  = Idx&lt;TAcc&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1experimental.html#a240177523f37bc7351981bf2161ac253">alpaka::experimental::BufferAccessor</a> = typedef <a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; <a class="el" href="namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392">MemoryHandle</a>&lt;decltype(<a class="el" href="namespacealpaka_1_1experimental.html#a24c66f268d8a562935031770465dc9e3">accessWith</a>&lt;TAccessModes&gt;(core::declval&lt;<a class="el" href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">Buf</a>&lt;TAcc, TElem, <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt;TDim&gt;, TIdx&gt; &gt;()))&gt;, TElem, TIdx, TDim, TAccessModes&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1experimental.html#a240177523f37bc7351981bf2161ac253">alpaka::experimental::BufferAccessor</a> = typedef <a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; <a class="el" href="namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392">MemoryHandle</a>&lt;decltype(<a class="el" href="namespacealpaka_1_1experimental.html#abee9fe23d3cf47c26d97ab1012c5e0ce">accessWith</a>&lt;TAccessModes&gt;(core::declval&lt;<a class="el" href="namespacealpaka.html#ac9381e9159626b8969f257249c4c9386">Buf</a>&lt;TAcc, TElem, <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt;TDim&gt;, TIdx&gt; &gt;()))&gt;, TElem, TIdx, TDim, TAccessModes&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -201,8 +201,8 @@ template&lt;typename Accessor &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a93fb8451a2e76e0223e7e8ea83afa3b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93fb8451a2e76e0223e7e8ea83afa3b3">&#9670;&nbsp;</a></span>access()</h2>
+<a id="a3b57c8ba5596d332f3ae4b883d52b94c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b57c8ba5596d332f3ae4b883d52b94c">&#9670;&nbsp;</a></span>access()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +210,7 @@ template&lt;typename Accessor &gt; </div>
 template&lt;typename TMemoryObjectOrAccessor &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::experimental::access </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::experimental::access </td>
           <td>(</td>
           <td class="paramtype">TMemoryObjectOrAccessor &amp;&amp;&#160;</td>
           <td class="paramname"><em>viewOrAccessor</em></td><td>)</td>
@@ -225,8 +225,8 @@ template&lt;typename TMemoryObjectOrAccessor &gt; </div>
 
 </div>
 </div>
-<a id="adfaca01260d70cc2e65b0a09eb32f9dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfaca01260d70cc2e65b0a09eb32f9dc">&#9670;&nbsp;</a></span>accessWith() <span class="overload">[1/3]</span></h2>
+<a id="aa6872c08fb04ca8ce6a0eeb83714ebae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6872c08fb04ca8ce6a0eeb83714ebae">&#9670;&nbsp;</a></span>accessWith() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,7 +234,7 @@ template&lt;typename TMemoryObjectOrAccessor &gt; </div>
 template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , typename TBufferIdx , std::size_t TDim, typename... TPrevAccessModes&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::experimental::accessWith </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::experimental::accessWith </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; TMemoryHandle, TElem, TBufferIdx, TDim, std::tuple&lt; TPrevAccessModes... &gt;&gt; const &amp;&#160;</td>
           <td class="paramname"><em>acc</em></td><td>)</td>
@@ -249,8 +249,8 @@ template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , 
 
 </div>
 </div>
-<a id="a858dc42dbfc8c8bb53963211ac7e2a39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a858dc42dbfc8c8bb53963211ac7e2a39">&#9670;&nbsp;</a></span>accessWith() <span class="overload">[2/3]</span></h2>
+<a id="a41a033069dc75b3c7ee2d84596ee5eb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41a033069dc75b3c7ee2d84596ee5eb6">&#9670;&nbsp;</a></span>accessWith() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,7 +258,7 @@ template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , 
 template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , typename TBufferIdx , std::size_t TDim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::experimental::accessWith </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::experimental::accessWith </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structalpaka_1_1experimental_1_1Accessor.html">Accessor</a>&lt; TMemoryHandle, TElem, TBufferIdx, TDim, TNewAccessMode &gt; const &amp;&#160;</td>
           <td class="paramname"><em>acc</em></td><td>)</td>
@@ -273,8 +273,8 @@ template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , 
 
 </div>
 </div>
-<a id="a24c66f268d8a562935031770465dc9e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24c66f268d8a562935031770465dc9e3">&#9670;&nbsp;</a></span>accessWith() <span class="overload">[3/3]</span></h2>
+<a id="abee9fe23d3cf47c26d97ab1012c5e0ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abee9fe23d3cf47c26d97ab1012c5e0ce">&#9670;&nbsp;</a></span>accessWith() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +282,7 @@ template&lt;typename TNewAccessMode , typename TMemoryHandle , typename TElem , 
 template&lt;typename... TAccessModes, typename TMemoryObject , typename  = std::enable_if_t&lt;!internal::IsAccessor&lt;std::decay_t&lt;TMemoryObject&gt;&gt;::value&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::experimental::accessWith </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::experimental::accessWith </td>
           <td>(</td>
           <td class="paramtype">TMemoryObject &amp;&amp;&#160;</td>
           <td class="paramname"><em>memoryObject</em></td><td>)</td>
@@ -297,8 +297,8 @@ template&lt;typename... TAccessModes, typename TMemoryObject , typename  = std::
 
 </div>
 </div>
-<a id="aa3aed160c6117a500f20b9dccd82f620"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3aed160c6117a500f20b9dccd82f620">&#9670;&nbsp;</a></span>readAccess()</h2>
+<a id="a43c57a168832256d1f7a8ce40b7e5d3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43c57a168832256d1f7a8ce40b7e5d3d">&#9670;&nbsp;</a></span>readAccess()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -306,7 +306,7 @@ template&lt;typename... TAccessModes, typename TMemoryObject , typename  = std::
 template&lt;typename TMemoryObjectOrAccessor &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::experimental::readAccess </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::experimental::readAccess </td>
           <td>(</td>
           <td class="paramtype">TMemoryObjectOrAccessor &amp;&amp;&#160;</td>
           <td class="paramname"><em>viewOrAccessor</em></td><td>)</td>
@@ -321,8 +321,8 @@ template&lt;typename TMemoryObjectOrAccessor &gt; </div>
 
 </div>
 </div>
-<a id="aec6092ee89ac7f26aff7d2ebf6076785"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec6092ee89ac7f26aff7d2ebf6076785">&#9670;&nbsp;</a></span>writeAccess()</h2>
+<a id="a78415d356f90b581b9ff79e3756ec846"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78415d356f90b581b9ff79e3756ec846">&#9670;&nbsp;</a></span>writeAccess()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,7 +330,7 @@ template&lt;typename TMemoryObjectOrAccessor &gt; </div>
 template&lt;typename TMemoryObjectOrAccessor &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::experimental::writeAccess </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::experimental::writeAccess </td>
           <td>(</td>
           <td class="paramtype">TMemoryObjectOrAccessor &amp;&amp;&#160;</td>
           <td class="paramname"><em>viewOrAccessor</em></td><td>)</td>
@@ -351,7 +351,7 @@ template&lt;typename TMemoryObjectOrAccessor &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1experimental.html">experimental</a></li>
-    <li class="footer">Generated on Fri Nov 11 2022 00:16:22 for alpaka by
+    <li class="footer">Generated on Fri Nov 11 2022 12:51:30 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

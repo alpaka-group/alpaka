@@ -11,10 +11,10 @@ var view_2Accessor_8hpp =
     [ "WriteAccess", "structalpaka_1_1experimental_1_1WriteAccess.html", null ],
     [ "BufferAccessor", "view_2Accessor_8hpp.html#a240177523f37bc7351981bf2161ac253", null ],
     [ "MemoryHandle", "view_2Accessor_8hpp.html#a08e1e73eded52aa45fca531a9bc5f392", null ],
-    [ "access", "view_2Accessor_8hpp.html#a93fb8451a2e76e0223e7e8ea83afa3b3", null ],
-    [ "accessWith", "view_2Accessor_8hpp.html#adfaca01260d70cc2e65b0a09eb32f9dc", null ],
-    [ "accessWith", "view_2Accessor_8hpp.html#a858dc42dbfc8c8bb53963211ac7e2a39", null ],
-    [ "accessWith", "view_2Accessor_8hpp.html#a24c66f268d8a562935031770465dc9e3", null ],
-    [ "readAccess", "view_2Accessor_8hpp.html#aa3aed160c6117a500f20b9dccd82f620", null ],
-    [ "writeAccess", "view_2Accessor_8hpp.html#aec6092ee89ac7f26aff7d2ebf6076785", null ]
+    [ "access", "view_2Accessor_8hpp.html#a3b57c8ba5596d332f3ae4b883d52b94c", null ],
+    [ "accessWith", "view_2Accessor_8hpp.html#aa6872c08fb04ca8ce6a0eeb83714ebae", null ],
+    [ "accessWith", "view_2Accessor_8hpp.html#a41a033069dc75b3c7ee2d84596ee5eb6", null ],
+    [ "accessWith", "view_2Accessor_8hpp.html#abee9fe23d3cf47c26d97ab1012c5e0ce", null ],
+    [ "readAccess", "view_2Accessor_8hpp.html#a43c57a168832256d1f7a8ce40b7e5d3d", null ],
+    [ "writeAccess", "view_2Accessor_8hpp.html#a78415d356f90b581b9ff79e3756ec846", null ]
 ];

@@ -16,5 +16,5 @@ var ViewAccessor_8hpp =
     [ "IsView< TView, std::void_t< Idx< TView >, Dim< TView >, decltype(getPtrNative(std::declval< TView >())), decltype(getPitchBytes< 0 >(std::declval< TView >())), decltype(getExtent< 0 >(std::declval< TView >()))> >", "structalpaka_1_1experimental_1_1trait_1_1internal_1_1IsView_3_01TView_00_01std_1_1void__t_3_01Id23c947c5515c558fff4de02fce6d8fd6.html", null ],
     [ "AccessReturnType", "ViewAccessor_8hpp.html#a53efa02be0ad8740272f27d01eb14f71", null ],
     [ "asBytePtr", "ViewAccessor_8hpp.html#a2c4f53b4ce6a0eff4909b0543b4186fe", null ],
-    [ "buildViewAccessor", "ViewAccessor_8hpp.html#a8c98b0fa57594458cc0ed181660e188b", null ]
+    [ "buildViewAccessor", "ViewAccessor_8hpp.html#a02771669bd1c51d6612e9eab856ba4cb", null ]
 ];

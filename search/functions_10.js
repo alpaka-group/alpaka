@@ -1,7 +1,7 @@
 var searchData=
 [
   ['randomdevice_4549',['RandomDevice',['../classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#a6e701c8045acf4e05c500ebbd3b81412',1,'alpaka::rand::engine::cpu::RandomDevice::RandomDevice()=default'],['../classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#abca9e4105cfc326cda28cc182c6fa064',1,'alpaka::rand::engine::cpu::RandomDevice::RandomDevice(std::uint32_t const &amp;, std::uint32_t const &amp;=0, std::uint32_t const &amp;=0)']]],
-  ['readaccess_4550',['readAccess',['../namespacealpaka_1_1experimental.html#aa3aed160c6117a500f20b9dccd82f620',1,'alpaka::experimental']]],
+  ['readaccess_4550',['readAccess',['../namespacealpaka_1_1experimental.html#a43c57a168832256d1f7a8ce40b7e5d3d',1,'alpaka::experimental']]],
   ['real_4551',['real',['../classalpaka_1_1Complex.html#a5f542b5e4190a925f888e7ebc7b555c4',1,'alpaka::Complex::real() const'],['../classalpaka_1_1Complex.html#a62963bae19f037083f00ac4a10328f42',1,'alpaka::Complex::real(T value)']]],
   ['registercleanup_4552',['registerCleanup',['../classalpaka_1_1detail_1_1QueueRegistry.html#a2927a8b007a9dead0f71c0e4cb48e3a6',1,'alpaka::detail::QueueRegistry::registerCleanup()'],['../classalpaka_1_1DevCpu.html#a832f88212a47e0bf1173a1fde3cd46fc',1,'alpaka::DevCpu::registerCleanup()'],['../classalpaka_1_1DevOmp5.html#a9187c397da94708c84822fdd009358ee',1,'alpaka::DevOmp5::registerCleanup()']]],
   ['registerqueue_4553',['registerQueue',['../classalpaka_1_1detail_1_1QueueRegistry.html#a29fdf8b3b24cf5a07d190322225d5919',1,'alpaka::detail::QueueRegistry::registerQueue()'],['../classalpaka_1_1DevCpu.html#a8a2518241a95dcf51ae5adea401ef7a4',1,'alpaka::DevCpu::registerQueue()'],['../classalpaka_1_1DevOmp5.html#a2dceb0d440486fbc6703a5a1af006d28',1,'alpaka::DevOmp5::registerQueue()']]],

@@ -11,7 +11,7 @@ var searchData=
   ['randuniformcudahiprand_2ehpp_2005',['RandUniformCudaHipRand.hpp',['../RandUniformCudaHipRand_8hpp.html',1,'']]],
   ['rangebuilder_2006',['RangeBuilder',['../structutility_1_1tuple_1_1RangeBuilder.html',1,'utility::tuple']]],
   ['rangebuilder_3c_20min_2c_20min_2c_20is_2e_2e_2e_20_3e_2007',['RangeBuilder&lt; MIN, MIN, Is... &gt;',['../structutility_1_1tuple_1_1RangeBuilder_3_01MIN_00_01MIN_00_01Is_8_8_8_01_4.html',1,'utility::tuple']]],
-  ['readaccess_2008',['ReadAccess',['../structalpaka_1_1experimental_1_1ReadAccess.html',1,'alpaka::experimental::ReadAccess'],['../namespacealpaka_1_1experimental.html#aa3aed160c6117a500f20b9dccd82f620',1,'alpaka::experimental::readAccess(TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)']]],
+  ['readaccess_2008',['ReadAccess',['../structalpaka_1_1experimental_1_1ReadAccess.html',1,'alpaka::experimental::ReadAccess'],['../namespacealpaka_1_1experimental.html#a43c57a168832256d1f7a8ce40b7e5d3d',1,'alpaka::experimental::readAccess(TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)']]],
   ['readme_2emd_2009',['README.md',['../README_8md.html',1,'']]],
   ['readwriteaccess_2010',['ReadWriteAccess',['../structalpaka_1_1experimental_1_1ReadWriteAccess.html',1,'alpaka::experimental']]],
   ['real_2011',['real',['../classalpaka_1_1Complex.html#a5f542b5e4190a925f888e7ebc7b555c4',1,'alpaka::Complex::real() const'],['../classalpaka_1_1Complex.html#a62963bae19f037083f00ac4a10328f42',1,'alpaka::Complex::real(T value)']]],

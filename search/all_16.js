@@ -31,7 +31,7 @@ var searchData=
   ['workdivmembers_3c_20dim_2c_20idx_20_3e_2414',['WorkDivMembers&lt; Dim, Idx &gt;',['../classalpaka_1_1WorkDivMembers.html',1,'alpaka']]],
   ['workdivuniformcudahipbuiltin_2415',['WorkDivUniformCudaHipBuiltIn',['../classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html',1,'alpaka::WorkDivUniformCudaHipBuiltIn&lt; TDim, TIdx &gt;'],['../classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html#a797880b0a7bdaa8e2d9e146dc4e5d8c1',1,'alpaka::WorkDivUniformCudaHipBuiltIn::WorkDivUniformCudaHipBuiltIn()']]],
   ['workdivuniformcudahipbuiltin_2ehpp_2416',['WorkDivUniformCudaHipBuiltIn.hpp',['../WorkDivUniformCudaHipBuiltIn_8hpp.html',1,'']]],
-  ['writeaccess_2417',['WriteAccess',['../structalpaka_1_1experimental_1_1WriteAccess.html',1,'alpaka::experimental::WriteAccess'],['../namespacealpaka_1_1experimental.html#aec6092ee89ac7f26aff7d2ebf6076785',1,'alpaka::experimental::writeAccess(TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)']]],
+  ['writeaccess_2417',['WriteAccess',['../structalpaka_1_1experimental_1_1WriteAccess.html',1,'alpaka::experimental::WriteAccess'],['../namespacealpaka_1_1experimental.html#a78415d356f90b581b9ff79e3756ec846',1,'alpaka::experimental::writeAccess(TMemoryObjectOrAccessor &amp;&amp;viewOrAccessor)']]],
   ['writeenabledaccs_2418',['writeEnabledAccs',['../namespacealpaka_1_1test.html#af491ce4563849a712e3a22fcc3f7a2cc',1,'alpaka::test']]],
   ['writeonlyproxy_2419',['WriteOnlyProxy',['../structalpaka_1_1experimental_1_1internal_1_1WriteOnlyProxy.html',1,'alpaka::experimental::internal::WriteOnlyProxy&lt; T &gt;'],['../structalpaka_1_1experimental_1_1internal_1_1WriteOnlyProxy.html#aa9836eba7aad71195549301f6cf16392',1,'alpaka::experimental::internal::WriteOnlyProxy::WriteOnlyProxy()']]]
 ];

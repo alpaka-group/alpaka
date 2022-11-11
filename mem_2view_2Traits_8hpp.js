@@ -20,7 +20,7 @@ var mem_2view_2Traits_8hpp =
     [ "createView", "mem_2view_2Traits_8hpp.html#a0580041d23c64bdc559cf814a5789c40", null ],
     [ "createView", "mem_2view_2Traits_8hpp.html#adc3e9f88cfcde81a2ac9dd27cdaae903", null ],
     [ "createView", "mem_2view_2Traits_8hpp.html#a57b70a30fda25553ded3fe93739b0c95", null ],
-    [ "getPitchBytes", "mem_2view_2Traits_8hpp.html#ad6365b89c5be8dd8917954798cc7fc21", null ],
+    [ "getPitchBytes", "mem_2view_2Traits_8hpp.html#acdc0b05e890e9bee36dcb3d229f00efb", null ],
     [ "getPitchBytesVec", "mem_2view_2Traits_8hpp.html#af6f776157c5223186419fd80a87d45c5", null ],
     [ "getPitchBytesVecEnd", "mem_2view_2Traits_8hpp.html#a5f9c92013b75ef4c056051ce4fb100da", null ],
     [ "getPtrDev", "mem_2view_2Traits_8hpp.html#a420138ddf5280874ce5578b2ba294547", null ],
