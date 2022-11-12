@@ -29,7 +29,6 @@
 #    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/mem/fence/MemFenceOmp2Threads.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
-#    include <alpaka/time/TimeOmp.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
@@ -79,7 +78,6 @@ namespace alpaka
         public IntrinsicCpu,
         public MemFenceOmp2Threads,
         public rand::RandStdLib,
-        public TimeOmp,
         public warp::WarpSingleThread,
         public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
     {
@@ -118,7 +116,6 @@ namespace alpaka
             , BlockSyncBarrierOmp()
             , MemFenceOmp2Threads()
             , rand::RandStdLib()
-            , TimeOmp()
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {
         }

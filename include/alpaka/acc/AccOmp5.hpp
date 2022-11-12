@@ -37,7 +37,6 @@
 #    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/mem/fence/MemFenceOmp5.hpp>
 #    include <alpaka/rand/RandDefault.hpp>
-#    include <alpaka/time/TimeOmp.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
@@ -129,7 +128,6 @@ namespace alpaka
                                    // fallback
         , public MemFenceOmp5
         , public rand::RandDefault
-        , public TimeOmp
         , public warp::WarpSingleThread
         , public concepts::Implements<ConceptAcc, AccOmp5<TDim, TIdx>>
     {
@@ -171,7 +169,6 @@ namespace alpaka
             , BlockSyncBarrierOmp()
             , MemFenceOmp5()
             , rand::RandDefault()
-            , TimeOmp()
         {
         }
     };

@@ -25,7 +25,6 @@
 #    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/mem/fence/MemFenceCpuSerial.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
-#    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
@@ -72,7 +71,6 @@ namespace alpaka
         public IntrinsicCpu,
         public MemFenceCpuSerial,
         public rand::RandStdLib,
-        public TimeStdLib,
         public warp::WarpSingleThread,
         public concepts::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>
     {
@@ -107,7 +105,6 @@ namespace alpaka
             , BlockSyncNoOp()
             , MemFenceCpuSerial()
             , rand::RandStdLib()
-            , TimeStdLib()
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {
         }
