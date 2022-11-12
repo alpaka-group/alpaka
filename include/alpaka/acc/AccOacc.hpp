@@ -23,7 +23,6 @@
 #    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/mem/fence/MemFenceOacc.hpp>
 #    include <alpaka/rand/RandDefault.hpp>
-#    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
 
 // Specialized traits.
@@ -68,7 +67,6 @@ namespace alpaka
         , public math::MathStdLib
         , public MemFenceOacc
         , public rand::RandDefault
-        , public TimeStdLib
         , public warp::WarpSingleThread
         ,
           // NVHPC calls a builtin in the STL implementation, which fails in OpenACC offload, using fallback
@@ -92,7 +90,6 @@ namespace alpaka
             , math::MathStdLib()
             , MemFenceOacc()
             , rand::RandDefault()
-            , TimeStdLib()
             , m_blockShared(blockShared)
         {
         }

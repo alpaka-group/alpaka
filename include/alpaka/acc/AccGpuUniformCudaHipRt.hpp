@@ -24,7 +24,6 @@
 #    include <alpaka/math/MathUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/rand/RandUniformCudaHipRand.hpp>
-#    include <alpaka/time/TimeUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/warp/WarpUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/workdiv/WorkDivUniformCudaHipBuiltIn.hpp>
 
@@ -71,7 +70,6 @@ namespace alpaka
         public IntrinsicUniformCudaHipBuiltIn,
         public MemFenceUniformCudaHipBuiltIn,
         public rand::RandUniformCudaHipRand<TApi>,
-        public TimeUniformCudaHipBuiltIn,
         public warp::WarpUniformCudaHipBuiltIn,
         public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
     {
@@ -100,7 +98,6 @@ namespace alpaka
             , BlockSyncUniformCudaHipBuiltIn()
             , MemFenceUniformCudaHipBuiltIn()
             , rand::RandUniformCudaHipRand<TApi>()
-            , TimeUniformCudaHipBuiltIn()
         {
         }
     };

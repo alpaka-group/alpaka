@@ -241,8 +241,6 @@
 #include <alpaka/queue/QueueOaccBlocking.hpp>
 #include <alpaka/queue/QueueOmp5Blocking.hpp>
 #include <alpaka/queue/Traits.hpp>
-// time
-#include <alpaka/time/Traits.hpp>
 // traits
 #include <alpaka/traits/Traits.hpp>
 // wait
