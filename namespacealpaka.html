@@ -323,8 +323,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptTime.html">ConceptTime</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptWorkDiv.html">ConceptWorkDiv</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a></td></tr>
@@ -454,15 +452,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1TaskKernelOmp5.html">TaskKernelOmp5</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The OpenMP 5.0 accelerator execution task.  <a href="classalpaka_1_1TaskKernelOmp5.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1TimeOmp.html">TimeOmp</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The OpenMP accelerator time implementation.  <a href="classalpaka_1_1TimeOmp.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1TimeStdLib.html">TimeStdLib</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU fibers accelerator time implementation.  <a href="classalpaka_1_1TimeStdLib.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1TimeUniformCudaHipBuiltIn.html">TimeUniformCudaHipBuiltIn</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator time implementation.  <a href="classalpaka_1_1TimeUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html">Vec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A n-dimensional vector.  <a href="classalpaka_1_1Vec.html#details">More...</a><br /></td></tr>
@@ -681,9 +670,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a56eac7d84a35e1a83a56dcfc6e73a78f"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TVec &gt; </td></tr>
 <tr class="memitem:a56eac7d84a35e1a83a56dcfc6e73a78f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a56eac7d84a35e1a83a56dcfc6e73a78f">castVec</a> (TVec const &amp;vec)</td></tr>
 <tr class="separator:a56eac7d84a35e1a83a56dcfc6e73a78f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6029d42c64be25e3a39d6a7d47f208de"><td class="memTemplParams" colspan="2">template&lt;typename TTime &gt; </td></tr>
-<tr class="memitem:a6029d42c64be25e3a39d6a7d47f208de"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6029d42c64be25e3a39d6a7d47f208de">clock</a> (TTime const &amp;time) -&gt; std::uint64_t</td></tr>
-<tr class="separator:a6029d42c64be25e3a39d6a7d47f208de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a649f4c73ac22bcc093bb705aa6c65efb"><td class="memTemplParams" colspan="2">template&lt;typename TVecL , typename TVecR &gt; </td></tr>
 <tr class="memitem:a649f4c73ac22bcc093bb705aa6c65efb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a649f4c73ac22bcc093bb705aa6c65efb">concatVec</a> (TVecL const &amp;vecL, TVecR const &amp;vecR)</td></tr>
 <tr class="separator:a649f4c73ac22bcc093bb705aa6c65efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3091,42 +3077,6 @@ template&lt;typename TVal , typename TVec &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The casted vector. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00086">86</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a6029d42c64be25e3a39d6a7d47f208de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6029d42c64be25e3a39d6a7d47f208de">&#9670;&nbsp;</a></span>clock()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TTime &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::clock </td>
-          <td>(</td>
-          <td class="paramtype">TTime const &amp;&#160;</td>
-          <td class="paramname"><em>time</em></td><td>)</td>
-          <td> -&gt; std::uint64_t
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>A counter that is increasing every clock cycle.</dd></dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TTime</td><td>The time implementation type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">time</td><td>The time implementation. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="time_2Traits_8hpp_source.html#l00036">36</a> of file <a class="el" href="time_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8345,7 +8295,7 @@ template&lt;typename T , typename U &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Nov 11 2022 12:51:30 for alpaka by
+    <li class="footer">Generated on Mon Nov 14 2022 13:49:17 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

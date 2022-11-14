@@ -104,9 +104,8 @@ $(document).ready(function(){initNavTree('classalpaka_1_1AccCpuFibers.html','');
  <div class="center">
   <img src="classalpaka_1_1AccCpuFibers.png" usemap="#alpaka::AccCpuFibers_3C_20TDim_2C_20TIdx_20_3E_map" alt=""/>
   <map id="alpaka::AccCpuFibers_3C_20TDim_2C_20TIdx_20_3E_map" name="alpaka::AccCpuFibers_3C_20TDim_2C_20TIdx_20_3E_map">
-<area href="structalpaka_1_1concepts_1_1Implements.html" alt="alpaka::concepts::Implements&lt; ConceptAcc, AccCpuFibers&lt; TDim, TIdx &gt; &gt;" shape="rect" coords="452,728,894,752"/>
-<area href="classalpaka_1_1warp_1_1WarpSingleThread.html" title="The single-threaded warp to emulate it on CPUs." alt="alpaka::warp::WarpSingleThread" shape="rect" coords="452,672,894,696"/>
-<area href="classalpaka_1_1TimeStdLib.html" title="The CPU fibers accelerator time implementation." alt="alpaka::TimeStdLib" shape="rect" coords="452,616,894,640"/>
+<area href="structalpaka_1_1concepts_1_1Implements.html" alt="alpaka::concepts::Implements&lt; ConceptAcc, AccCpuFibers&lt; TDim, TIdx &gt; &gt;" shape="rect" coords="452,672,894,696"/>
+<area href="classalpaka_1_1warp_1_1WarpSingleThread.html" title="The single-threaded warp to emulate it on CPUs." alt="alpaka::warp::WarpSingleThread" shape="rect" coords="452,616,894,640"/>
 <area href="classalpaka_1_1rand_1_1TinyMersenneTwister.html" title="&quot;Tiny&quot; state mersenne twister implementation" alt="alpaka::rand::TinyMersenneTwister" shape="rect" coords="452,560,894,584"/>
 <area href="classalpaka_1_1MemFenceCpu.html" title="The default CPU memory fence." alt="alpaka::MemFenceCpu" shape="rect" coords="452,504,894,528"/>
 <area href="classalpaka_1_1IntrinsicCpu.html" title="The CPU intrinsic." alt="alpaka::IntrinsicCpu" shape="rect" coords="452,448,894,472"/>
@@ -240,7 +239,7 @@ class alpaka::AccCpuFibers&lt; TDim, TIdx &gt;</h3>
 <p>The CPU fibers accelerator. </p>
 <p>This accelerator allows parallel kernel execution on a CPU device. It uses boost::fibers to implement the cooperative parallelism. By using fibers the shared memory can reside in the closest memory/cache available. Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccCpuFibers_8hpp_source.html#l00064">64</a> of file <a class="el" href="AccCpuFibers_8hpp_source.html">AccCpuFibers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccCpuFibers_8hpp_source.html#l00063">63</a> of file <a class="el" href="AccCpuFibers_8hpp_source.html">AccCpuFibers.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac81a4bcfad204d678c1db4ad0dce8ee6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac81a4bcfad204d678c1db4ad0dce8ee6">&#9670;&nbsp;</a></span>AccCpuFibers() <span class="overload">[1/2]</span></h2>
@@ -380,7 +379,7 @@ template&lt;typename TDim2 , typename TIdx2 , typename TKernelFnObj , typename..
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="AccCpuFibers_8hpp_source.html#l00086">86</a> of file <a class="el" href="AccCpuFibers_8hpp_source.html">AccCpuFibers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccCpuFibers_8hpp_source.html#l00084">84</a> of file <a class="el" href="AccCpuFibers_8hpp_source.html">AccCpuFibers.hpp</a>.</p>
 
 </div>
 </div>
@@ -393,7 +392,7 @@ template&lt;typename TDim2 , typename TIdx2 , typename TKernelFnObj , typename..
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1AccCpuFibers.html">AccCpuFibers</a></li>
-    <li class="footer">Generated on Fri Nov 11 2022 12:51:30 for alpaka by
+    <li class="footer">Generated on Mon Nov 14 2022 13:49:17 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

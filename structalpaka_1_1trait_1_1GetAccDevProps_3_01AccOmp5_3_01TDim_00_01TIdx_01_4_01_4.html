@@ -107,7 +107,7 @@ struct alpaka::trait::GetAccDevProps&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;</h3>
 
 <p>The OpenMP 5.0 accelerator device properties get trait specialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00189">189</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00186">186</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae9693a65739f4553a441f82e2f7d26ff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9693a65739f4553a441f82e2f7d26ff">&#9670;&nbsp;</a></span>getAccDevProps()</h2>
@@ -137,7 +137,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </div><div class="memdoc">
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>for a later OpenMP (or when compilers work with a GPU target): fix max block size for target On CPU we would want gridBlockCountMax = ::omp_get_max_threads() / blockThreadCountMax but this would lead to only one block running on GPU, or too small blocks (see ALPAKA_OFFLOAD_MAX_BLOCK_SIZE). OpenMP 5.0 may actually mandate, that ::omp_get_max_threads() == max_teams * threads_per_team , however with the maximum grid size (i.e. max_teams) being INT_MAX this may not work. We actually want to set gridBlockCountMax = ::omp_get_max_teams() but there is no function ::omp_get_max_teams(). Instead we set ::omp_get_max_threads() again, to have a number which does not kill CPUs and is reasonable (::omp_get_max_threads() seems to return the block size) for GPUs. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00191">191</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccOmp5_8hpp_source.html#l00188">188</a> of file <a class="el" href="AccOmp5_8hpp_source.html">AccOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -150,7 +150,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1trait.html">trait</a></li><li class="navelem"><a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html">GetAccDevProps&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;</a></li>
-    <li class="footer">Generated on Fri Nov 11 2022 12:51:32 for alpaka by
+    <li class="footer">Generated on Mon Nov 14 2022 13:49:18 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

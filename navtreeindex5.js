@@ -1,14 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a47a747dcb6498cf1fcec532eb92ccc2b":[3,0,0,2,1,8,0],
-"classalpaka_1_1core_1_1detail_1_1TaskPkg.html#ad108b44ef7af665695198c503dc4cf5f":[3,0,0,2,1,8,1],
-"classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html":[3,0,0,2,1,9],
-"classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#a12ab5da3d377d9e96b5f32262a092f00":[3,0,0,2,1,9,1],
-"classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#adf757b614ab9608ee11fb7f4c486b4c6":[3,0,0,2,1,9,0],
-"classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#ae820fc9231c3b74996702a4c374a48b3":[3,0,0,2,1,9,2],
-"classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html":[3,0,0,2,1,10],
-"classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a222a9cd9a349e58eef008696761a0d33":[3,0,0,2,1,10,2],
-"classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a3e77d42f1c9cf36a78641790770a27f1":[3,0,0,2,1,10,0],
 "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a5d3d1573ed3ef4ebf26ce46b451fd6c9":[3,0,0,2,1,10,3],
 "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#af4e0653f1eb58ddb338a7ff2dbaeeaee":[3,0,0,2,1,10,1],
 "classalpaka_1_1core_1_1threads_1_1BarrierThread.html":[3,0,0,2,2,1],
@@ -249,5 +240,14 @@ var NAVTREEINDEX5 =
 "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a33f9195aa02132cc7c5c873e27b455bb":[3,0,0,16,1,9,0],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918":[3,0,0,16,1,9,1],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a88177c4a758bd8080fea38ce6789e1d9":[3,0,0,16,1,9,6],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536":[3,0,0,16,1,9,2]
+"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536":[3,0,0,16,1,9,2],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ac351480b3ffaa811d92407a0cbbfb52d":[3,0,0,16,1,9,3],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html":[3,0,0,16,1,11],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html":[3,0,0,16,1,14],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a0fab2dd85d39350c937b291ef3c26c58":[3,0,0,16,1,14,0],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a437984ee349279f6c5fb89f40673e08a":[3,0,0,16,1,14,9],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a685c4d8e3a6e4dcff73df9cab13d6e25":[3,0,0,16,1,14,7],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9070c8635360989ce12058eab374830d":[3,0,0,16,1,14,6],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#aa0c54c757be8abff54fee5f6f3aa6b30":[3,0,0,16,1,14,1],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#abccc88d68d3d709f164907a1ef4e7464":[3,0,0,16,1,14,2]
 };

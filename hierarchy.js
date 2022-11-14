@@ -48,7 +48,6 @@ var hierarchy =
     [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, std::enable_if_t<!ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std4d6cb00252914bb9a01c7d9b43bde14a.html", null ],
     [ "alpaka::concepts::Implements< TConcept, TBase >", "structalpaka_1_1concepts_1_1Implements.html", null ],
     [ "alpaka::concepts::ImplementsConcept< TConcept, TDerived >", "structalpaka_1_1concepts_1_1ImplementsConcept.html", null ],
-    [ "alpaka::ConceptTime", "structalpaka_1_1ConceptTime.html", null ],
     [ "alpaka::ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],
     [ "alpaka::core::CallbackThread", "classalpaka_1_1core_1_1CallbackThread.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", null ],
@@ -559,10 +558,6 @@ var hierarchy =
     [ "alpaka::trait::BufType< DevUniformCudaHipRt< TApi >, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1BufType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4.html", null ],
     [ "alpaka::trait::CastVec< TVal, TVec, TSfinae >", "structalpaka_1_1trait_1_1CastVec.html", null ],
     [ "alpaka::trait::CastVec< TValNew, Vec< TDim, TVal > >", "structalpaka_1_1trait_1_1CastVec_3_01TValNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
-    [ "alpaka::trait::Clock< TTime, TSfinae >", "structalpaka_1_1trait_1_1Clock.html", null ],
-    [ "alpaka::trait::Clock< TimeOmp >", "structalpaka_1_1trait_1_1Clock_3_01TimeOmp_01_4.html", null ],
-    [ "alpaka::trait::Clock< TimeStdLib >", "structalpaka_1_1trait_1_1Clock_3_01TimeStdLib_01_4.html", null ],
-    [ "alpaka::trait::Clock< TimeUniformCudaHipBuiltIn >", "structalpaka_1_1trait_1_1Clock_3_01TimeUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::trait::ConcatVec< TVecL, TVecR, TSfinae >", "structalpaka_1_1trait_1_1ConcatVec.html", null ],
     [ "alpaka::trait::ConcatVec< Vec< TDimL, TVal >, Vec< TDimR, TVal > >", "structalpaka_1_1trait_1_1ConcatVec_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4.html", null ],
     [ "alpaka::trait::CreateStaticDevMemView< TDev, TSfinae >", "structalpaka_1_1trait_1_1CreateStaticDevMemView.html", null ],
@@ -1707,25 +1702,6 @@ var hierarchy =
     ] ],
     [ "alpaka::concepts::Implements< ConceptRand, UniformReal< TResult > >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::rand::UniformReal< TResult, TSfinae >", "classalpaka_1_1rand_1_1UniformReal.html", null ]
-    ] ],
-    [ "alpaka::concepts::Implements< ConceptTime, TimeOmp >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::TimeOmp", "classalpaka_1_1TimeOmp.html", [
-        [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
-        [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
-        [ "alpaka::AccOmp5< TDim, TIdx >", "classalpaka_1_1AccOmp5.html", null ]
-      ] ]
-    ] ],
-    [ "alpaka::concepts::Implements< ConceptTime, TimeStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::TimeStdLib", "classalpaka_1_1TimeStdLib.html", [
-        [ "alpaka::AccCpuFibers< TDim, TIdx >", "classalpaka_1_1AccCpuFibers.html", null ],
-        [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ],
-        [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
-      ] ]
-    ] ],
-    [ "alpaka::concepts::Implements< ConceptTime, TimeUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::TimeUniformCudaHipBuiltIn", "classalpaka_1_1TimeUniformCudaHipBuiltIn.html", [
-        [ "alpaka::AccGpuUniformCudaHipRt< TApi, TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
-      ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptWarp, WarpSingleThread >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::warp::WarpSingleThread", "classalpaka_1_1warp_1_1WarpSingleThread.html", [
