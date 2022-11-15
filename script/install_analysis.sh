@@ -26,6 +26,11 @@ then
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install shellcheck
     shellcheck --version
 
+    #-------------------------------------------------------------------------------
+    # Install clang-tidy
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install clang-tidy
+    clang-tidy --version
+
 elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     #-------------------------------------------------------------------------------
@@ -37,5 +42,10 @@ then
     # Install shellcheck
     brew install shellcheck
     shellcheck --version
+
+    #-------------------------------------------------------------------------------
+    # Install clang-tidy
+    brew install clang-tidy
+    clang-tidy --version
 
 fi

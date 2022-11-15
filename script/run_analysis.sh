@@ -27,4 +27,8 @@ then
     #-------------------------------------------------------------------------------
     # check shell script with shellcheck
     find . -type f -name "*.sh" -exec shellcheck {} \;
+
+    #-------------------------------------------------------------------------------
+    # clang-tidy
+    run-clang-tidy -header-filter='(tests|include/alpaka|examples)' '^(?!.*'$PWD').*$'
 fi
