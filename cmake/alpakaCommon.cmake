@@ -200,7 +200,7 @@ else()
                                                           "$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:GNU>,$<COMPILE_LANGUAGE:CUDA>>:SHELL:-Xcompiler -Og>"
                                                           "$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang,AppleClang,IntelLLVM>>:SHELL:-O0>"
                                                           "$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:SHELL:/Od>")
-    
+
     target_link_options(alpaka INTERFACE "$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:GNU>>:SHELL:-Og>"
                                          "$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang,AppleClang,IntelLLVM>>:SHELL:-O0>")
 endif()
@@ -358,7 +358,7 @@ endif()
 if(alpaka_ACC_GPU_CUDA_ENABLE)
     # Save the user-defined host compiler (if any)
     set(_alpaka_CUDA_HOST_COMPILER ${CMAKE_CUDA_HOST_COMPILER})
-    
+
     check_language(CUDA)
 
     if(CMAKE_CUDA_COMPILER)
@@ -619,9 +619,9 @@ if(alpaka_ACC_SYCL_ENABLE)
         list(JOIN alpaka_SYCL_TARGETS "," alpaka_SYCL_TARGETS_CONCAT)
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl-targets=${alpaka_SYCL_TARGETS_CONCAT}")
         target_link_options(alpaka INTERFACE "-fsycl-targets=${alpaka_SYCL_TARGETS_CONCAT}")
-        
+
         #-----------------------------------------------------------------------------------------------------------------
-        # Determine actual hardware to compile for 
+        # Determine actual hardware to compile for
         if(alpaka_SYCL_ONEAPI_CPU)
             set(alpaka_SYCL_ONEAPI_CPU_ISA "avx2" CACHE STRING "Intel ISA to compile for")
             set_property(CACHE alpaka_SYCL_ONEAPI_CPU_ISA PROPERTY STRINGS "sse4.2;avx;avx2;avx512")
@@ -663,7 +663,7 @@ if(alpaka_ACC_SYCL_ENABLE)
                         PROPERTY STRINGS "intel_gpu_pvc;intel_gpu_acm_g12;intel_gpu_acm_g11;intel_gpu_acm_g10;intel_gpu_dg1;intel_gpu_adl_n;intel_gpu_adl_p;intel_gpu_rpl_s;intel_gpu_adl_s;intel_gpu_rkl;intel_gpu_tgllp;intel_gpu_icllp;intel_gpu_cml;intel_gpu_aml;intel_gpu_whl;intel_gpu_glk;intel_gpu_apl;intel_gpu_cfl;intel_gpu_kbl;intel_gpu_skl;intel_gpu_bdw")
             # If the user has given us a list turn all ';' into ',' to pacify the Intel OpenCL compiler.
             string(REPLACE ";" "," alpaka_SYCL_ONEAPI_GPU_DEVICES "${alpaka_SYCL_ONEAPI_GPU_DEVICES}")
-            
+
             target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU")
         endif()
 
@@ -781,7 +781,7 @@ if(TARGET alpaka)
 
     # the alpaka library itself
     # SYSTEM voids showing warnings produced by alpaka when used in user applications.
-    if(BUILD_TESTING)
+    if(BUILD_TESTING OR alpaka_BUILD_BENCHMARK)
         target_include_directories(alpaka INTERFACE ${_alpaka_INCLUDE_DIRECTORY})
     else()
         target_include_directories(alpaka SYSTEM INTERFACE ${_alpaka_INCLUDE_DIRECTORY})

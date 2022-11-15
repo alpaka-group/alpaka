@@ -41,6 +41,7 @@ option(alpaka_BUILD_BENCHMARKS "Build the benchmarks" OFF)
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     option(alpaka_ENABLE_WERROR "Treat all warnings as errors." OFF)
     option(BUILD_TESTING "Build the testing tree." OFF)
+    option(alpaka_BUILD_BENCHMARK "Build the benchmarks." OFF)
     include(CTest)
 endif()
 
@@ -48,7 +49,7 @@ option(alpaka_INSTALL_TEST_HEADER "Install headers of the namespace alpaka::test
 
 include(CMakeDependentOption)
 cmake_dependent_option(alpaka_CHECK_HEADERS "Check all alpaka headers as part of the tests whether they can be compiled standalone." OFF BUILD_TESTING OFF)
-cmake_dependent_option(alpaka_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON BUILD_TESTING OFF)
+cmake_dependent_option(alpaka_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON "BUILD_TESTING OR alpaka_BUILD_BENCHMARK" OFF)
 
 ################################################################################
 # Internal variables.
@@ -154,7 +155,7 @@ if(alpaka_BUILD_BENCHMARKS)
 endif()
 
 # Only build the tests if alpaka is the top-level project and BUILD_TESTING is ON
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND (BUILD_TESTING OR alpaka_BUILD_BENCHMARK))
     add_subdirectory("test/")
 endif()
 
