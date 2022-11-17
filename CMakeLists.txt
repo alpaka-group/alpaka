@@ -15,6 +15,8 @@ cmake_minimum_required(VERSION 3.18)
 
 cmake_policy(SET CMP0091 NEW)
 
+#cmake_policy(SET CMP0077 OLD)
+
 include(CMakePrintHelpers)
 
 #-------------------------------------------------------------------------------
@@ -81,10 +83,13 @@ set(_alpaka_INCLUDE_DIRECTORY "${_alpaka_ROOT_DIR}/include")
 set(_alpaka_SUFFIXED_INCLUDE_DIR "${_alpaka_INCLUDE_DIRECTORY}/alpaka")
 
 # the sequential accelerator is required for the tests and examples
-if(NOT DEFINED alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE AND (alpaka_BUILD_EXAMPLES OR BUILD_TESTING))
-  option(alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE "enable alpaka serial accelerator" ON)
+if(alpaka_BUILD_EXAMPLES OR BUILD_TESTING)
+  if (NOT DEFINED alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE)
+    option(alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE "enable alpaka serial accelerator" ON)
+  elseif(NOT alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE)
+    message(FATAL_ERROR "Serial backend must be enabled for tests and examples: delete CMakeCache.txt and rerun CMake command")
+  endif()
 endif()
-
 include(${_alpaka_ROOT_DIR}/cmake/alpakaCommon.cmake)
 
 # Add all the source and include files in all recursive subdirectories and group them accordingly.
