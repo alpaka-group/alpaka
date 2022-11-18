@@ -119,8 +119,8 @@
     alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "OFF"
     alpaka_ACC_GPU_HIP_ENABLE: "ON"
     alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: "OFF"
-    # compile for VEGA64 GPU
-    GPU_TARGETS: gfx900
+    # CI_GPU_ARCH architecture of the hosted GPU is provided by the CI
+    GPU_TARGETS: ${CI_GPU_ARCH}
   extends: .base
 
 .base_hip_compile_only:
