@@ -1,9 +1,7 @@
 var CartesianProduct_8hpp =
 [
-    [ "CartesianProductImpl", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl.html", null ],
     [ "CartesianProductImpl< TList >", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_01_4" ],
     [ "CartesianProductImpl< TList, Head< Ts... >, Tail... >", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_00_01Head_3_01Ts_8_8_8_01_4_00_01Tail_8_8_8_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_00_01Head_3_01Ts_8_8_8_01_4_00_01Tail_8_8_8_01_4" ],
-    [ "CartesianProductImplHelper", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper.html", null ],
     [ "CartesianProductImplHelper< TList< TList<> >, Ts... >", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01TList_3_4_01_4_00_01Ts_8_8_8_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01TList_3_4_01_4_00_01Ts_8_8_8_01_4" ],
     [ "CartesianProductImplHelper< TList< Ts... > >", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_01_4" ],
     [ "CartesianProductImplHelper< TList< Ts... >, TList<>, Rests... >", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01TList_3_4_00_01Rests_8_8_8_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01TList_3_4_00_01Rests_8_8_8_01_4" ],

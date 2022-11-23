@@ -7,6 +7,6 @@ var structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01
     [ "TaskSetCpu", "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a4bd56bad399d093202a68d800e5c8f36", null ],
     [ "operator()", "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a47ea101f698bbf2ce12d6932d0f7ca96", null ],
     [ "printDebug", "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a359971b851afc61779e15fdeb48157c1", null ],
-    [ "m_byte", "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a828a237566ff3278e8db284b3ac4869f", null ],
+    [ "m_byte", "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a384899b0626f1b9527dec25ebe88bfaa", null ],
     [ "m_dstMemNative", "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#ae25761cd7b8b6eac056b0a86c06ae58a", null ]
 ];

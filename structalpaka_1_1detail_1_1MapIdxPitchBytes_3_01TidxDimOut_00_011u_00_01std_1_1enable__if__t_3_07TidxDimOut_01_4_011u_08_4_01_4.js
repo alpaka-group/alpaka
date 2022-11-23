@@ -1,0 +1,4 @@
+var structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_07TidxDimOut_01_4_011u_08_4_01_4 =
+[
+    [ "mapIdxPitchBytes", "structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_07TidxDimOut_01_4_011u_08_4_01_4.html#a61bfcf912c8632868d4a6864dac96b15", null ]
+];

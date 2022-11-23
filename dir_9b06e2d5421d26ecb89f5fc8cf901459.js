@@ -4,12 +4,10 @@ var dir_9b06e2d5421d26ecb89f5fc8cf901459 =
     [ "CartesianProduct.hpp", "CartesianProduct_8hpp.html", "CartesianProduct_8hpp" ],
     [ "Concatenate.hpp", "Concatenate_8hpp.html", "Concatenate_8hpp" ],
     [ "CudaVectorArrayWrapper.hpp", "CudaVectorArrayWrapper_8hpp.html", [
-      [ "CudaVectorArrayWrapper", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper.html", null ],
       [ "CudaVectorArrayWrapper< TScalar, 1 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4" ],
       [ "CudaVectorArrayWrapper< TScalar, 2 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4" ],
       [ "CudaVectorArrayWrapper< TScalar, 3 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4" ],
       [ "CudaVectorArrayWrapper< TScalar, 4 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4" ],
-      [ "CudaVectorArrayTypeTraits", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits.html", null ],
       [ "CudaVectorArrayTypeTraits< double, 1 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_011_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_011_01_4" ],
       [ "CudaVectorArrayTypeTraits< double, 2 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_012_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_012_01_4" ],
       [ "CudaVectorArrayTypeTraits< double, 3 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_013_01_4.html", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_013_01_4" ],
@@ -39,7 +37,6 @@ var dir_9b06e2d5421d26ecb89f5fc8cf901459 =
       [ "min", "structalpaka_1_1meta_1_1min.html", "structalpaka_1_1meta_1_1min" ]
     ] ],
     [ "InheritFromList.hpp", "InheritFromList_8hpp.html", [
-      [ "InheritFromList", "classalpaka_1_1meta_1_1InheritFromList.html", null ],
       [ "InheritFromList< TList< TBases... > >", "classalpaka_1_1meta_1_1InheritFromList_3_01TList_3_01TBases_8_8_8_01_4_01_4.html", null ]
     ] ],
     [ "IntegerSequence.hpp", "IntegerSequence_8hpp.html", "IntegerSequence_8hpp" ],

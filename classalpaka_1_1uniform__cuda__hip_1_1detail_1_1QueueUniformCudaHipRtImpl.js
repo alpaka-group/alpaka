@@ -6,5 +6,5 @@ var classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl =
     [ "getNativeHandle", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a0afa600871acf0da0241dd9da7aefc03", null ],
     [ "operator=", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a291ed8660abeb9328ae685a8bf52b66b", null ],
     [ "m_callbackThread", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a8d442ed45a4bee71074db8511baedd08", null ],
-    [ "m_dev", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#a5a531360d044968bb22616fc3d66f700", null ]
+    [ "m_dev", "classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#aa33ed58b1a61a106a845928e7fef9c48", null ]
 ];

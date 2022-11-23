@@ -9,5 +9,7 @@ var namespacealpaka_1_1experimental_1_1internal =
     [ "IsAccessor< Accessor< TMemoryHandle, TElem, TBufferIdx, Dim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor_3_01Accessor_3_01TMemoryHandle_00_01TElem2ee6a853bae07489e14aef9da67a07b3.html", null ],
     [ "MemoryHandle", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle.html", null ],
     [ "MemoryHandle< Accessor< TMemoryHandle, TElem, TBufferIdx, TDim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle_3_01Accessor_3_01TMemoryHandle_00_01TEld2199dd1bfe1d6b8c7c32bc0d080b289.html", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle_3_01Accessor_3_01TMemoryHandle_00_01TEld2199dd1bfe1d6b8c7c32bc0d080b289" ],
-    [ "WriteOnlyProxy", "structalpaka_1_1experimental_1_1internal_1_1WriteOnlyProxy.html", "structalpaka_1_1experimental_1_1internal_1_1WriteOnlyProxy" ]
+    [ "WriteOnlyProxy", "structalpaka_1_1experimental_1_1internal_1_1WriteOnlyProxy.html", "structalpaka_1_1experimental_1_1internal_1_1WriteOnlyProxy" ],
+    [ "AccessReturnType", "namespacealpaka_1_1experimental_1_1internal.html#a53efa02be0ad8740272f27d01eb14f71", null ],
+    [ "asBytePtr", "namespacealpaka_1_1experimental_1_1internal.html#a2c4f53b4ce6a0eff4909b0543b4186fe", null ]
 ];

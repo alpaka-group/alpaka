@@ -1,24 +1,26 @@
 /*
-@licstart  The following is the entire license notice for the
-JavaScript code in this file.
+ @licstart  The following is the entire license notice for the JavaScript code in this file.
 
-Copyright (C) 1997-2019 by Dimitri van Heesch
+ The MIT License (MIT)
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of version 2 of the GNU General Public License as published by
-the Free Software Foundation
+ Copyright (C) 1997-2020 by Dimitri van Heesch
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ and associated documentation files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
 
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
 
-@licend  The above is the entire license notice
-for the JavaScript code in this file
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ @licend  The above is the entire license notice for the JavaScript code in this file
 */
 var NAVTREE =
 [
@@ -62,7 +64,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-".html",
+"",
 "CpuSyclIntel_8hpp.html",
 "MultiplyAndSplit64to32_8hpp.html#a27924e14b2e5aa8a3213f77c3bd70ef8",
 "TestIdxs_8hpp.html",
@@ -70,17 +72,18 @@ var NAVTREEINDEX =
 "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a5d3d1573ed3ef4ebf26ce46b451fd6c9",
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ad77e028e95da99728da753ce67db2f98",
 "functions_func_v.html",
-"namespacealpaka_1_1meta_1_1detail.html",
-"structalpaka_1_1ApiCudaRt.html#a04a1fe1867415cf73187e7d843201418",
-"structalpaka_1_1detail_1_1CheckFnReturnType.html#a3b12bd01f5d05073814dc4f6a76c6365",
-"structalpaka_1_1internal_1_1ViewAccessOps.html#ab03075f295ed5a62f5702601baa1bb8a",
-"structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html",
-"structalpaka_1_1test_1_1VerifyBytesSetKernel.html#abffe82a1285f7a9804185461fd6aabfc",
-"structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html",
-"structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01T9dbb58e551c44567a74899d54e5680a4.html#a0d41f049e37d105f941e9fa49be832a3",
-"structalpaka_1_1trait_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TI1d297e90c6baf5572a528bbc508c5d3c.html#aaf66e9f0861d45147620bb8c92691079",
-"structalpaka_1_1trait_1_1QueueType_3_01TPltf_00_01TProperty_00_01std_1_1enable__if__t_3_01concep4997b00340242a10601911982a8dde4e.html#aa23feefde678fdb362e542e3e9ec9a32",
-"view_2Accessor_8hpp.html#abee9fe23d3cf47c26d97ab1012c5e0ce"
+"namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165",
+"namespacealpaka_1_1math.html#ad930065450fd0fecfbbb289e36d3923e",
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic.html",
+"structalpaka_1_1ConceptMemFence.html",
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a19a403f873730fe1ae516423d997274c",
+"structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_00_01Complex_3_01U_01_4_01_4.html#aa3d7645249edd4dd72be6ad130bd6b3d",
+"structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandUniformCudaHipRand_3_0df518e9b654bd428d7301d740b48ae2e.html",
+"structalpaka_1_1trait_1_1BufAlloc_3_01TElem_00_01DimInt_3_011u_01_4_00_01TIdx_00_01DevOmp5_01_4.html",
+"structalpaka_1_1trait_1_1ElemType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a7b3d82d3f3b38db043ecdb70186449c6",
+"structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01BufCpu_3_01TElem_00_01TDim_00_01TI93b2f6c3ac1d26767aa4dd7ae3cd4b2b.html#a4920469132bdef8d4d82332cdcafb0c9",
+"structalpaka_1_1trait_1_1IsComplete_3_01EventGenericThreads_3_01TDev_01_4_01_4.html",
+"structalpaka_1_1trait_1_1detail_1_1EmulationBase.html#a6e166a7f5b10af4ae4a8e87b63ce3996"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

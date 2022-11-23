@@ -12,7 +12,6 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "BarrierThread.hpp", "BarrierThread_8hpp.html", [
       [ "BarrierThread", "classalpaka_1_1core_1_1threads_1_1BarrierThread.html", "classalpaka_1_1core_1_1threads_1_1BarrierThread" ],
       [ "BarrierThreadWithPredicate", "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html", "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate" ],
-      [ "AtomicOp", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html", null ],
       [ "AtomicOp< BlockAnd >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4" ],
       [ "AtomicOp< BlockCount >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockCount_01_4" ],
       [ "AtomicOp< BlockOr >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01BlockOr_01_4" ]

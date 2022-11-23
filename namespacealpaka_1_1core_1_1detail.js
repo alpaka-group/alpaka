@@ -10,5 +10,7 @@ var namespacealpaka_1_1core_1_1detail =
     [ "ScopeLogStdOut", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut" ],
     [ "TaskPkg", "classalpaka_1_1core_1_1detail_1_1TaskPkg.html", "classalpaka_1_1core_1_1detail_1_1TaskPkg" ],
     [ "TaskPkg< TPromise, TFnObj, void >", "classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html", "classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4" ],
-    [ "ThreadSafeQueue", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue" ]
+    [ "ThreadSafeQueue", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue" ],
+    [ "apply_impl", "namespacealpaka_1_1core_1_1detail.html#aaed5eba1aa1870e218d10a93430c3f80", null ],
+    [ "invokeBothReturnFirst", "namespacealpaka_1_1core_1_1detail.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec", null ]
 ];

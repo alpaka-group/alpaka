@@ -20,5 +20,6 @@ var namespacealpaka_1_1test_1_1trait =
     [ "IsEventHostManualTriggerSupported< DevCpu >", "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCpu_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCpu_01_4" ],
     [ "IsEventHostManualTriggerSupported< DevCudaRt >", "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCudaRt_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCudaRt_01_4" ],
     [ "IsEventHostManualTriggerSupported< DevOmp5 >", "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevOmp5_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevOmp5_01_4" ],
-    [ "IteratorView", "classalpaka_1_1test_1_1trait_1_1IteratorView.html", "classalpaka_1_1test_1_1trait_1_1IteratorView" ]
+    [ "IteratorView", "classalpaka_1_1test_1_1trait_1_1IteratorView.html", "classalpaka_1_1test_1_1trait_1_1IteratorView" ],
+    [ "MimicConst", "namespacealpaka_1_1test_1_1trait.html#a07bf83614dc7e964550ca100bc5c97af", null ]
 ];

@@ -1,5 +1,9 @@
 var namespacealpaka_1_1math_1_1trait =
 [
+    [ "detail", "namespacealpaka_1_1math_1_1trait_1_1detail.html", [
+      [ "rsqrt", "namespacealpaka_1_1math_1_1trait_1_1detail.html#ac8d278f3b7abe6452d9758c73ad0fd50", null ],
+      [ "sincos", "namespacealpaka_1_1math_1_1trait_1_1detail.html#aa9c34631f3c434a4d15abc468badb395", null ]
+    ] ],
     [ "Abs", "structalpaka_1_1math_1_1trait_1_1Abs.html", "structalpaka_1_1math_1_1trait_1_1Abs" ],
     [ "Abs< AbsUniformCudaHipBuiltIn, Complex< T > >", "structalpaka_1_1math_1_1trait_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html", "structalpaka_1_1math_1_1trait_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4" ],
     [ "Abs< AbsUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_signed_v< TArg > > >", "structalpaka_1_1math_1_1trait_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__8758fe8df23a9f12745165492a7e6f38.html", "structalpaka_1_1math_1_1trait_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__8758fe8df23a9f12745165492a7e6f38" ],

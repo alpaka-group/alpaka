@@ -1,6 +1,5 @@
 var view_2Accessor_8hpp =
 [
-    [ "Accessor", "structalpaka_1_1experimental_1_1Accessor.html", null ],
     [ "IsAccessor", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor.html", null ],
     [ "IsAccessor< Accessor< TMemoryHandle, TElem, TBufferIdx, Dim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor_3_01Accessor_3_01TMemoryHandle_00_01TElem2ee6a853bae07489e14aef9da67a07b3.html", null ],
     [ "MemoryHandle", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle.html", null ],

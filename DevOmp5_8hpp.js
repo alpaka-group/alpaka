@@ -1,11 +1,9 @@
 var DevOmp5_8hpp =
 [
-    [ "BufOmp5", "classalpaka_1_1BufOmp5.html", "classalpaka_1_1BufOmp5" ],
     [ "DevOmp5", "classalpaka_1_1DevOmp5.html", "classalpaka_1_1DevOmp5" ],
     [ "DevOmp5Impl", "classalpaka_1_1omp5_1_1detail_1_1DevOmp5Impl.html", "classalpaka_1_1omp5_1_1detail_1_1DevOmp5Impl" ],
     [ "BufType< DevOmp5, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1BufType_3_01DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1BufType_3_01DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
     [ "CurrentThreadWaitFor< DevOmp5 >", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01DevOmp5_01_4.html", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01DevOmp5_01_4" ],
-    [ "GetDevByIdx", "structalpaka_1_1trait_1_1GetDevByIdx.html", null ],
     [ "GetFreeMemBytes< DevOmp5 >", "structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevOmp5_01_4.html", "structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevOmp5_01_4" ],
     [ "GetMemBytes< DevOmp5 >", "structalpaka_1_1trait_1_1GetMemBytes_3_01DevOmp5_01_4.html", "structalpaka_1_1trait_1_1GetMemBytes_3_01DevOmp5_01_4" ],
     [ "GetName< DevOmp5 >", "structalpaka_1_1trait_1_1GetName_3_01DevOmp5_01_4.html", "structalpaka_1_1trait_1_1GetName_3_01DevOmp5_01_4" ],

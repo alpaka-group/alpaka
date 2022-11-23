@@ -10,5 +10,6 @@ var namespacealpaka_1_1core_1_1vectorization =
     [ "GetVectorizationSizeElems< std::uint16_t >", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint16__t_01_4.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint16__t_01_4" ],
     [ "GetVectorizationSizeElems< std::uint32_t >", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint32__t_01_4.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint32__t_01_4" ],
     [ "GetVectorizationSizeElems< std::uint64_t >", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint64__t_01_4.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint64__t_01_4" ],
-    [ "GetVectorizationSizeElems< std::uint8_t >", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint8__t_01_4.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint8__t_01_4" ]
+    [ "GetVectorizationSizeElems< std::uint8_t >", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint8__t_01_4.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1uint8__t_01_4" ],
+    [ "defaultAlignment", "namespacealpaka_1_1core_1_1vectorization.html#a2d12f7e6f724f279a7baf91a5d3b40be", null ]
 ];

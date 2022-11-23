@@ -17,5 +17,15 @@ var namespaceutility_1_1tuple =
     [ "StaticIf", "structutility_1_1tuple_1_1StaticIf.html", null ],
     [ "StaticIf< true, T >", "structutility_1_1tuple_1_1StaticIf_3_01true_00_01T_01_4.html", "structutility_1_1tuple_1_1StaticIf_3_01true_00_01T_01_4" ],
     [ "Tuple", "structutility_1_1tuple_1_1Tuple.html", null ],
-    [ "Tuple< T, Ts... >", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4" ]
+    [ "Tuple< T, Ts... >", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4" ],
+    [ "append", "namespaceutility_1_1tuple.html#aeb1d9564d8270778d3b964c1bbc97345", null ],
+    [ "append", "namespaceutility_1_1tuple.html#a962fd93fb21129491975d3c4807fdad1", null ],
+    [ "append_base", "namespaceutility_1_1tuple.html#a446670118f4f4b05503c4e0b41dae565", null ],
+    [ "append_base", "namespaceutility_1_1tuple.html#ae5bb1d6f355eb022f06581fb8d02b3a1", null ],
+    [ "get", "namespaceutility_1_1tuple.html#a28c1a718ac5e0c3408f897c0e09f8f9e", null ],
+    [ "get", "namespaceutility_1_1tuple.html#aaa371df6dbdac3425299793816b9b3b1", null ],
+    [ "get", "namespaceutility_1_1tuple.html#a98ba901e530d524e6ebd5f453a426a59", null ],
+    [ "get", "namespaceutility_1_1tuple.html#a6a613e9357348e15a35549f50be236ec", null ],
+    [ "make_tuple", "namespaceutility_1_1tuple.html#aa68638ef30be12f1bcc6ef5da635c744", null ],
+    [ "size", "namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc", null ]
 ];

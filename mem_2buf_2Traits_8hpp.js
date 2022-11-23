@@ -1,9 +1,5 @@
 var mem_2buf_2Traits_8hpp =
 [
-    [ "AsyncBufAlloc", "structalpaka_1_1trait_1_1AsyncBufAlloc.html", null ],
-    [ "BufAlloc", "structalpaka_1_1trait_1_1BufAlloc.html", null ],
-    [ "BufAllocMapped", "structalpaka_1_1trait_1_1BufAllocMapped.html", null ],
-    [ "BufType", "structalpaka_1_1trait_1_1BufType.html", null ],
     [ "HasAsyncBufSupport", "structalpaka_1_1trait_1_1HasAsyncBufSupport.html", null ],
     [ "HasMappedBufSupport", "structalpaka_1_1trait_1_1HasMappedBufSupport.html", null ],
     [ "Buf", "mem_2buf_2Traits_8hpp.html#ac9381e9159626b8969f257249c4c9386", null ],

@@ -1,8 +1,6 @@
 var acc_2Traits_8hpp =
 [
     [ "ConceptAcc", "structalpaka_1_1ConceptAcc.html", null ],
-    [ "AccType", "structalpaka_1_1trait_1_1AccType.html", null ],
-    [ "GetAccDevProps", "structalpaka_1_1trait_1_1GetAccDevProps.html", null ],
     [ "GetAccName", "structalpaka_1_1trait_1_1GetAccName.html", "structalpaka_1_1trait_1_1GetAccName" ],
     [ "QueueType< TAcc, TProperty, std::enable_if_t< concepts::ImplementsConcept< ConceptAcc, TAcc >::value > >", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245.html", "structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245" ],
     [ "Acc", "acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a", null ],

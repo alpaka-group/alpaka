@@ -15,8 +15,6 @@ var Tag_8hpp =
     [ "TagGpuSyclIntel", "structalpaka_1_1TagGpuSyclIntel.html", "structalpaka_1_1TagGpuSyclIntel" ],
     [ "TagOacc", "structalpaka_1_1TagOacc.html", "structalpaka_1_1TagOacc" ],
     [ "TagOmp5", "structalpaka_1_1TagOmp5.html", "structalpaka_1_1TagOmp5" ],
-    [ "AccToTag", "structalpaka_1_1trait_1_1AccToTag.html", null ],
-    [ "TagToAcc", "structalpaka_1_1trait_1_1TagToAcc.html", null ],
     [ "CREATE_ACC_TAG", "Tag_8hpp.html#ab81964c6c549b86595784601aa5181d5", null ],
     [ "AccToTagType", "Tag_8hpp.html#a503e1b034d84e42b00504644b8623948", null ],
     [ "TagToAccType", "Tag_8hpp.html#a24b5d6fa444921ebd3bb7eb7a688ff80", null ],

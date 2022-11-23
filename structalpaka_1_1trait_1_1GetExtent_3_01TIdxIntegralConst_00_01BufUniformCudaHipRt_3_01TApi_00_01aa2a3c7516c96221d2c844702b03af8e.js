@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01BufUniformCudaHipRt_3_01TApi_00_01aa2a3c7516c96221d2c844702b03af8e =
+[
+    [ "getExtent", "structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01BufUniformCudaHipRt_3_01TApi_00_01aa2a3c7516c96221d2c844702b03af8e.html#ada9e0a0ade79e9c04da34abd2256cc11", null ]
+];

@@ -1,7 +1,6 @@
 var dir_2176bdc4abbfee27816f3bddb372b87e =
 [
     [ "QueueUniformCudaHipRt.hpp", "QueueUniformCudaHipRt_8hpp.html", [
-      [ "EventUniformCudaHipRt", "classalpaka_1_1EventUniformCudaHipRt.html", "classalpaka_1_1EventUniformCudaHipRt" ],
       [ "CurrentThreadWaitFor< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCua280d42de413239aa7c4c871e7563177.html", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCua280d42de413239aa7c4c871e7563177" ],
       [ "DevType< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1trait_1_1DevType_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4" ],
       [ "Empty< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking > >", "structalpaka_1_1trait_1_1Empty_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4.html", "structalpaka_1_1trait_1_1Empty_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01TApi_00_01TBlocking_01_4_01_4" ],

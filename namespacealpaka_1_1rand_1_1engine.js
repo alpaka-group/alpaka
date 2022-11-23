@@ -14,5 +14,6 @@ var namespacealpaka_1_1rand_1_1engine =
     [ "PhiloxStatelessVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html", null ],
     [ "PhiloxStateSingle", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle" ],
     [ "PhiloxStateVector", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector" ],
-    [ "PhiloxVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector" ]
+    [ "PhiloxVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector" ],
+    [ "createDefault", "namespacealpaka_1_1rand_1_1engine.html#a05557b7b8f9ce17f7433d8da47645dd7", null ]
 ];

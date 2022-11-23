@@ -1,9 +1,7 @@
 var DevCpu_8hpp =
 [
-    [ "BufCpu", "classalpaka_1_1BufCpu.html", "classalpaka_1_1BufCpu" ],
     [ "DevCpu", "classalpaka_1_1DevCpu.html", "classalpaka_1_1DevCpu" ],
     [ "BufType< DevCpu, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
-    [ "GetDevByIdx", "structalpaka_1_1trait_1_1GetDevByIdx.html", null ],
     [ "GetFreeMemBytes< DevCpu >", "structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevCpu_01_4" ],
     [ "GetMemBytes< DevCpu >", "structalpaka_1_1trait_1_1GetMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetMemBytes_3_01DevCpu_01_4" ],
     [ "GetName< DevCpu >", "structalpaka_1_1trait_1_1GetName_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetName_3_01DevCpu_01_4" ],

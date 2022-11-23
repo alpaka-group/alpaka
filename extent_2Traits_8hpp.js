@@ -2,7 +2,6 @@ var extent_2Traits_8hpp =
 [
     [ "GetExtent", "structalpaka_1_1trait_1_1GetExtent.html", "structalpaka_1_1trait_1_1GetExtent" ],
     [ "GetExtent< DimInt< 0u >, TExtent, std::enable_if_t< std::is_integral_v< TExtent > > >", "structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01std_1_1enable__if__t8ae055d17de43fa35a9b5ed8c0f49d62.html", "structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01std_1_1enable__if__t8ae055d17de43fa35a9b5ed8c0f49d62" ],
-    [ "SetExtent", "structalpaka_1_1trait_1_1SetExtent.html", null ],
     [ "SetExtent< DimInt< 0u >, TExtent, TExtentVal, std::enable_if_t< std::is_integral_v< TExtent > > >", "structalpaka_1_1trait_1_1SetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01TExtentVal_00_01std_facedfa1430724d82bb31796dc77ff45.html", "structalpaka_1_1trait_1_1SetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01TExtentVal_00_01std_facedfa1430724d82bb31796dc77ff45" ],
     [ "getDepth", "extent_2Traits_8hpp.html#adc7ce3a8fdcd51cedd24a21b5df8e773", null ],
     [ "getExtent", "extent_2Traits_8hpp.html#a2fb86f3938fa9423296e522fb77cf639", null ],

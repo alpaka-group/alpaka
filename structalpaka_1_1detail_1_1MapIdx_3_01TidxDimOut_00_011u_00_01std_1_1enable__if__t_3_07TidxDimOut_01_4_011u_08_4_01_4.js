@@ -1,0 +1,4 @@
+var structalpaka_1_1detail_1_1MapIdx_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_07TidxDimOut_01_4_011u_08_4_01_4 =
+[
+    [ "mapIdx", "structalpaka_1_1detail_1_1MapIdx_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_07TidxDimOut_01_4_011u_08_4_01_4.html#aba86c643b73705d3c066e0f2861c8d18", null ]
+];
