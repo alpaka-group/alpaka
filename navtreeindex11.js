@@ -1,6 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1ConceptMemFence.html":[3,0,0,79],
 "structalpaka_1_1ConceptPltf.html":[3,0,0,80],
 "structalpaka_1_1ConceptWorkDiv.html":[3,0,0,81],
 "structalpaka_1_1OffloadBuiltInSharedMemAlloc.html":[3,0,0,98],
@@ -249,5 +248,6 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1detail_1_1TaskSetCpu.html":[3,0,0,4,60],
 "structalpaka_1_1detail_1_1TaskSetCpu.html#a0ad53771fd9d360cc5f2adc64371e5d2":[3,0,0,4,60,1],
 "structalpaka_1_1detail_1_1TaskSetCpu.html#a2457cb1a7a844b68d910afeb9e32208d":[3,0,0,4,60,0],
-"structalpaka_1_1detail_1_1TaskSetCpuBase.html":[3,0,0,4,63]
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html":[3,0,0,4,63],
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a19a403f873730fe1ae516423d997274c":[3,0,0,4,63,10]
 };

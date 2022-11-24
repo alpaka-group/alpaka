@@ -1,6 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"structalpaka_1_1trait_1_1detail_1_1EmulationBase.html#a6e166a7f5b10af4ae4a8e87b63ce3996":[3,0,0,17,0,13,1],
 "structalpaka_1_1trait_1_1detail_1_1EmulationBase.html#ad3c642482c315b2d52111f97113f17e8":[3,0,0,17,0,13,0],
 "structalpaka_1_1warp_1_1ConceptWarp.html":[3,0,0,19,1],
 "structalpaka_1_1warp_1_1trait_1_1Activemask.html":[3,0,0,19,0,0],
@@ -146,5 +145,6 @@ var NAVTREEINDEX19 =
 "warp_2Traits_8hpp_source.html":[4,0,0,0,26,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,27,0],
 "workdiv_2Traits_8hpp.html#a2a811570d2074f237f89c9910b82b44c":[4,0,0,0,27,0,4],
-"workdiv_2Traits_8hpp_source.html":[4,0,0,0,27,0]
+"workdiv_2Traits_8hpp_source.html":[4,0,0,0,27,0],
+"":[2,0,2]
 };
