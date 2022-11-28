@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2022 Jan Stephan, Luca Ferragina
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -146,10 +146,7 @@ namespace alpaka::trait
     {
         using type = std::conditional_t<std::is_scalar_v<T>, T, typename T::element_type>;
     };
-} // namespace alpaka::trait
 
-namespace alpaka::trait
-{
     //! The SYCL vectors' extent get trait specialization.
     template<typename TExtent>
     struct GetExtent<DimInt<Dim<TExtent>::value>, TExtent, std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>

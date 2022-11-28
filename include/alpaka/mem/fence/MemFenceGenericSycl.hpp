@@ -32,6 +32,13 @@ namespace alpaka
             static constexpr auto scope = sycl::memory_scope::device;
             static constexpr auto space = sycl::access::address_space::global_space;
         };
+
+        template<>
+        struct SyclFenceProps<alpaka::memory_scope::Grid>
+        {
+            static constexpr auto scope = sycl::memory_scope::device;
+            static constexpr auto space = sycl::access::address_space::global_space;
+        };
     } // namespace detail
 
     //! The SYCL memory fence.
