@@ -1,4 +1,4 @@
-/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Luca Ferragina
  * SPDX-License-Identifier: ISC
  */
 
@@ -75,7 +75,11 @@ auto main() -> int
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     // using Acc = alpaka::AccCpuSerial<Dim, Idx>;
-    using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
+    // using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
+
+    using Acc = alpaka::AccGpuSyclIntel<Dim, Idx>;
+    using Pltf = alpaka::Pltf<Acc>;
+    using DevAcc = alpaka::Dev<Acc>;
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
     // Defines the synchronization behavior of a queue
@@ -136,7 +140,7 @@ auto main() -> int
     }
 
     // Allocate 3 buffers on the accelerator
-    using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;
+    using BufAcc = alpaka::Buf<DevAcc, Data, Dim, Idx>;
     BufAcc bufAccA(alpaka::allocBuf<Data, Idx>(devAcc, extent));
     BufAcc bufAccB(alpaka::allocBuf<Data, Idx>(devAcc, extent));
     BufAcc bufAccC(alpaka::allocBuf<Data, Idx>(devAcc, extent));
