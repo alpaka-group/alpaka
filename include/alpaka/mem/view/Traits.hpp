@@ -449,7 +449,7 @@ namespace alpaka
     template<typename TDev, typename TContainer>
     auto createView(TDev const& dev, TContainer& con)
     {
-        return createView(dev, std::data(con), getExtent(con));
+        return createView(dev, std::data(con), getExtentVec(con));
     }
 
     //! Creates a view to a contiguous container of device-accessible memory.
