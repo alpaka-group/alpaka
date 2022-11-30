@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,404],
 "structalpaka_1_1trait_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a81dc8016c02175786e7d3427e019151d":[3,0,0,17,404,0],
 "structalpaka_1_1trait_1_1IdxType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,405],
 "structalpaka_1_1trait_1_1IdxType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a493c43b1c6280063f0da1b4303763695":[3,0,0,17,405,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4.html#a4c4435d7ec2f7764e0ea50e741ddda61":[3,0,0,17,525,0],
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4.html":[3,0,0,17,526],
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4.html#a999ec859bc1dedb7373b96c83cec2904":[3,0,0,17,526,0],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,527],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html#af278791942abe5689696801217b57855":[3,0,0,17,527,0]
+"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,527]
 };
