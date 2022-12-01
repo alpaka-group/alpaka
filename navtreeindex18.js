@@ -1,5 +1,11 @@
 var NAVTREEINDEX18 =
 {
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html#a3aaabe62af8db9b4cee2aa1ecdab3d6e":[3,0,0,17,401,0],
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,402],
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#a03c217844854a9cf34579a1c5892b146":[3,0,0,17,402,0],
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,403],
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#ac18d0322e15f407bc40bc7a28103dee6":[3,0,0,17,403,0],
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,404],
 "structalpaka_1_1trait_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a81dc8016c02175786e7d3427e019151d":[3,0,0,17,404,0],
 "structalpaka_1_1trait_1_1IdxType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,405],
 "structalpaka_1_1trait_1_1IdxType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a493c43b1c6280063f0da1b4303763695":[3,0,0,17,405,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX18 =
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html":[3,0,0,17,523],
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html#a7ead02912b48e2afb52be28df209c5b1":[3,0,0,17,523,0],
 "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierOmp_01_4.html":[3,0,0,17,524],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierOmp_01_4.html#adac07c4aafb67d08c1472897d69dc698":[3,0,0,17,524,0],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4.html":[3,0,0,17,525],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierThread_3_01TIdx_01_4_01_4.html#a4c4435d7ec2f7764e0ea50e741ddda61":[3,0,0,17,525,0],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4.html":[3,0,0,17,526],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncNoOp_01_4.html#a999ec859bc1dedb7373b96c83cec2904":[3,0,0,17,526,0],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,527],
-"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html#af278791942abe5689696801217b57855":[3,0,0,17,527,0]
+"structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierOmp_01_4.html#adac07c4aafb67d08c1472897d69dc698":[3,0,0,17,524,0]
 };

@@ -1,5 +1,11 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfCpu_01_4.html":[3,0,0,17,292],
+"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfCpu_01_4.html#a6f3f42afa41c50c37671dd221208477b":[3,0,0,17,292,0],
+"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfOmp5_01_4.html":[3,0,0,17,293],
+"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfOmp5_01_4.html#aad4f032636e825ea829a4e975a9b4c60":[3,0,0,17,293,0],
+"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,17,294],
+"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html#ad3d85651a4cee8686a3de39bbee8bf10":[3,0,0,17,294,0],
 "structalpaka_1_1trait_1_1GetDevCount.html":[3,0,0,17,295],
 "structalpaka_1_1trait_1_1GetDevCount_3_01PltfCpu_01_4.html":[3,0,0,17,296],
 "structalpaka_1_1trait_1_1GetDevCount_3_01PltfCpu_01_4.html#a1eb0c0401944643e063268ef160415e1":[3,0,0,17,296,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX17 =
 "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PltfCpu_01_4.html":[3,0,0,17,398],
 "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,17,399],
 "structalpaka_1_1trait_1_1IdxType.html":[3,0,0,17,400],
-"structalpaka_1_1trait_1_1IdxType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,401],
-"structalpaka_1_1trait_1_1IdxType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html#a3aaabe62af8db9b4cee2aa1ecdab3d6e":[3,0,0,17,401,0],
-"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,402],
-"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#a03c217844854a9cf34579a1c5892b146":[3,0,0,17,402,0],
-"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,403],
-"structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#ac18d0322e15f407bc40bc7a28103dee6":[3,0,0,17,403,0],
-"structalpaka_1_1trait_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,404]
+"structalpaka_1_1trait_1_1IdxType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,401]
 };

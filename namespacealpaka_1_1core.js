@@ -12,5 +12,8 @@ var namespacealpaka_1_1core =
     [ "assertGreaterThan", "namespacealpaka_1_1core.html#acb5609c51166b4271e202d6efaca6a3f", null ],
     [ "assertValueUnsigned", "namespacealpaka_1_1core.html#abeb3178f2d72ab3a833e280a30c88479", null ],
     [ "clipCast", "namespacealpaka_1_1core.html#aba50ad750855be306239699abe49ba28", null ],
+    [ "divCeil", "namespacealpaka_1_1core.html#a89a7ccb060549404a2a0b21e6a7061ee", null ],
+    [ "intPow", "namespacealpaka_1_1core.html#ab614807b48a014710f03374291017ec1", null ],
+    [ "nthRootFloor", "namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6", null ],
     [ "demangled", "namespacealpaka_1_1core.html#a02c3471af40bf64c77e9d599f0007954", null ]
 ];

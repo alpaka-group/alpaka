@@ -47,6 +47,6 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "UniformCudaHip.hpp", "UniformCudaHip_8hpp.html", "UniformCudaHip_8hpp" ],
     [ "Unreachable.hpp", "Unreachable_8hpp.html", "Unreachable_8hpp" ],
     [ "Unroll.hpp", "Unroll_8hpp.html", "Unroll_8hpp" ],
-    [ "Utility.hpp", "Utility_8hpp.html", null ],
+    [ "Utility.hpp", "Utility_8hpp.html", "Utility_8hpp" ],
     [ "Vectorize.hpp", "Vectorize_8hpp.html", "Vectorize_8hpp" ]
 ];

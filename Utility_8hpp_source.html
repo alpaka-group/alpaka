@@ -118,17 +118,57 @@ $(document).ready(function(){initNavTree('Utility_8hpp_source.html',''); initRes
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">using</span> std::declval;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">    /// Returns the ceiling of a / b, as integer.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Integral&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core.html#a89a7ccb060549404a2a0b21e6a7061ee">   35</a></span>&#160;    [[nodiscard]] <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1core.html#a89a7ccb060549404a2a0b21e6a7061ee">divCeil</a>(Integral a, Integral b) -&gt; Integral</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">return</span> (a + b - 1) / b;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">    /// Computes the nth power of base, in integers.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Integral&gt;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core.html#ab614807b48a014710f03374291017ec1">   42</a></span>&#160;    [[nodiscard]] <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1core.html#ab614807b48a014710f03374291017ec1">intPow</a>(Integral base, Integral n) -&gt; Integral</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">if</span>(n == 0)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">auto</span> r = base;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">for</span>(Integral i = 1; i &lt; n; i++)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            r *= base;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> r;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    /// Computes the floor of the nth root of value, in integers.</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Integral&gt;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6">   54</a></span>&#160;    [[nodiscard]] <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6">nthRootFloor</a>(Integral value, Integral n) -&gt; Integral</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="comment">// adapted from: https://en.wikipedia.org/wiki/Integer_square_root</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        Integral L = 0;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        Integral R = value + 1;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">while</span>(L != R - 1)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            Integral <span class="keyword">const</span> M = (L + R) / 2;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">if</span>(<a class="code" href="namespacealpaka_1_1core.html#ab614807b48a014710f03374291017ec1">intPow</a>(M, n) &lt;= value)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                L = M;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                R = M;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">return</span> L;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
 <div class="ttc" id="acore_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="acore_2Common_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00036">Common.hpp:36</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1core_html"><div class="ttname"><a href="namespacealpaka_1_1core.html">alpaka::core</a></div><div class="ttdef"><b>Definition:</b> <a href="Align_8hpp_source.html#l00017">Align.hpp:18</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1core_html_a89a7ccb060549404a2a0b21e6a7061ee"><div class="ttname"><a href="namespacealpaka_1_1core.html#a89a7ccb060549404a2a0b21e6a7061ee">alpaka::core::divCeil</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC auto divCeil(Integral a, Integral b) -&gt; Integral</div><div class="ttdoc">Returns the ceiling of a / b, as integer.</div><div class="ttdef"><b>Definition:</b> <a href="Utility_8hpp_source.html#l00035">Utility.hpp:35</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1core_html_aac2bb0a1f1b3265e73de447928aacde6"><div class="ttname"><a href="namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6">alpaka::core::nthRootFloor</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC auto nthRootFloor(Integral value, Integral n) -&gt; Integral</div><div class="ttdoc">Computes the floor of the nth root of value, in integers.</div><div class="ttdef"><b>Definition:</b> <a href="Utility_8hpp_source.html#l00054">Utility.hpp:54</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1core_html_ab614807b48a014710f03374291017ec1"><div class="ttname"><a href="namespacealpaka_1_1core.html#ab614807b48a014710f03374291017ec1">alpaka::core::intPow</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC auto intPow(Integral base, Integral n) -&gt; Integral</div><div class="ttdoc">Computes the nth power of base, in integers.</div><div class="ttdef"><b>Definition:</b> <a href="Utility_8hpp_source.html#l00042">Utility.hpp:42</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Utility_8hpp.html">Utility.hpp</a></li>
-    <li class="footer">Generated on Wed Nov 30 2022 22:22:06 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Dec 1 2022 09:36:00 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,11 @@
 var NAVTREEINDEX9 =
 {
+"namespacealpaka_1_1math.html#a045df51ed6fc5148ed36a88333597e28":[2,0,0,11,145],
+"namespacealpaka_1_1math.html#a0bfcb19c7b03355f2da81452c3507665":[2,0,0,11,122],
+"namespacealpaka_1_1math.html#a158e580fff64a969502abc640d51ea45":[2,0,0,11,136],
+"namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a":[2,0,0,11,134],
+"namespacealpaka_1_1math.html#a203339f78df48ceb4f44d82ba2c11924":[2,0,0,11,143],
+"namespacealpaka_1_1math.html#a2963260c4f112f7c2bd30c2ad43fd44f":[2,0,0,11,115],
 "namespacealpaka_1_1math.html#a2a8c69be37b50a9af624374878e95abd":[2,0,0,11,126],
 "namespacealpaka_1_1math.html#a32a005a4c29788b7c85a6796676a9cb6":[2,0,0,11,113],
 "namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df":[2,0,0,11,124],
@@ -186,8 +192,8 @@ var NAVTREEINDEX9 =
 "namespacemembers_e.html":[2,1,0,4],
 "namespacemembers_enum.html":[2,1,4],
 "namespacemembers_f.html":[2,1,0,5],
-"namespacemembers_func.html":[2,1,1,0],
 "namespacemembers_func.html":[2,1,1],
+"namespacemembers_func.html":[2,1,1,0],
 "namespacemembers_func_b.html":[2,1,1,1],
 "namespacemembers_func_c.html":[2,1,1,2],
 "namespacemembers_func_d.html":[2,1,1,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX9 =
 "offset_2Traits_8hpp.html#a3f52e0b422b1c94d37ce259fc671ad8e":[4,0,0,0,17,0,6],
 "offset_2Traits_8hpp.html#a42ad0da49e9edcf34619f6a61505373e":[4,0,0,0,17,0,7],
 "offset_2Traits_8hpp.html#a48ccf4bbc8805a239f9296f4ed995598":[4,0,0,0,17,0,8],
-"offset_2Traits_8hpp.html#a4ab29380ee728427c2c29fcefccfcce4":[4,0,0,0,17,0,3],
-"offset_2Traits_8hpp.html#a60a51cbc574fd2141b8716abe68e5ec0":[4,0,0,0,17,0,10],
-"offset_2Traits_8hpp.html#aa9094d40cfed2a7f9d3814132da9191b":[4,0,0,0,17,0,5],
-"offset_2Traits_8hpp.html#ae988c26c08c6d6f9a6df5b9e1b96d493":[4,0,0,0,17,0,9],
-"offset_2Traits_8hpp_source.html":[4,0,0,0,17,0],
-"omp5_2Copy_8hpp.html":[4,0,0,0,15,1,2,0],
-"omp5_2Copy_8hpp_source.html":[4,0,0,0,15,1,2,0]
+"offset_2Traits_8hpp.html#a4ab29380ee728427c2c29fcefccfcce4":[4,0,0,0,17,0,3]
 };

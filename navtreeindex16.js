@@ -1,5 +1,11 @@
 var NAVTREEINDEX16 =
 {
+"structalpaka_1_1trait_1_1DimType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,151],
+"structalpaka_1_1trait_1_1DimType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a875dc4a9a63730446663e8f31e553b3a":[3,0,0,17,151,0],
+"structalpaka_1_1trait_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,152],
+"structalpaka_1_1trait_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#a78111cc0599818cb351f90f10591b3eb":[3,0,0,17,152,0],
+"structalpaka_1_1trait_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,153],
+"structalpaka_1_1trait_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#a26044d38b189c113f699963c5ff75bea":[3,0,0,17,153,0],
 "structalpaka_1_1trait_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,160],
 "structalpaka_1_1trait_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#adcd0f304dd6e84e7bd527ffefc332041":[3,0,0,17,160,0],
 "structalpaka_1_1trait_1_1DimType_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,161],
@@ -243,11 +249,5 @@ var NAVTREEINDEX16 =
 "structalpaka_1_1trait_1_1GetAccName_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,17,273],
 "structalpaka_1_1trait_1_1GetAccName_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#a7d4a30c5947bd5549abf8905c72c3892":[3,0,0,17,273,0],
 "structalpaka_1_1trait_1_1GetDev.html":[3,0,0,17,274],
-"structalpaka_1_1trait_1_1GetDevByIdx.html":[3,0,0,17,291],
-"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfCpu_01_4.html":[3,0,0,17,292],
-"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfCpu_01_4.html#a6f3f42afa41c50c37671dd221208477b":[3,0,0,17,292,0],
-"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfOmp5_01_4.html":[3,0,0,17,293],
-"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfOmp5_01_4.html#aad4f032636e825ea829a4e975a9b4c60":[3,0,0,17,293,0],
-"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,17,294],
-"structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html#ad3d85651a4cee8686a3de39bbee8bf10":[3,0,0,17,294,0]
+"structalpaka_1_1trait_1_1GetDevByIdx.html":[3,0,0,17,291]
 };
