@@ -82,7 +82,7 @@ set(_alpaka_SUFFIXED_INCLUDE_DIR "${_alpaka_INCLUDE_DIRECTORY}/alpaka")
 
 # the sequential accelerator is required for the tests and examples
 if(alpaka_BUILD_EXAMPLES OR BUILD_TESTING)
-  if (NOT alpaka_ACC_GPU_CUDA_ONLY_MODE OR alpaka_ACC_GPU_HIP_ONLY_MODE)
+  if (NOT (alpaka_ACC_GPU_CUDA_ONLY_MODE OR alpaka_ACC_GPU_HIP_ONLY_MODE))
     if (NOT DEFINED alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE)
       option(alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE "enable alpaka serial accelerator" ON)
     elseif(NOT alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE)
