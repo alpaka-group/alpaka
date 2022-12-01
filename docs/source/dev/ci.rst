@@ -8,6 +8,14 @@ GitHub Actions
 
 The configuration of ``GitHub Actions`` can be found in the ``.github/workflows/`` folder. This CI uses unmodified containers from ``Docker Hub`` and sets up the environment during the test job. A caching mechanism speeds up the job times. The scripts for setting up the environment, building alpaka and running test are located in the ``script/`` folder.
 
+clang-format
+++++++++++++
+
+The first CI job run is clang-format, which will verify the formatting of your changeset.
+Only of this check passes, will the remainder of the GitHub CI continue.
+In case of a formatting failure, a patch file is attached as an artifact to the GitHub action run.
+You can apply this patch file to your changeset to fix the formatting.
+
 GitLab CI
 ---------
 

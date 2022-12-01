@@ -89,8 +89,17 @@ jobs:
       with:
         clangFormatVersion: 14
         exclude: './thirdParty'
+        inplace: True
+    - run: |
+        git diff --exit-code > format.patch
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: format.patch
+        path: format.patch
 
   ci:
+    needs: clang-format
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     env: ${{ matrix.env }}
