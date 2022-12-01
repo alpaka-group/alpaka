@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html":[3,0,0,2,1,10],
 "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a222a9cd9a349e58eef008696761a0d33":[3,0,0,2,1,10,2],
 "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a3e77d42f1c9cf36a78641790770a27f1":[3,0,0,2,1,10,0],
 "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a5d3d1573ed3ef4ebf26ce46b451fd6c9":[3,0,0,2,1,10,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa58d3ff81a4b3d02dd866feb24bae6f4":[3,0,0,15,1,8,0],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad7242abe7b99cfdc1133f107f51d83f2":[3,0,0,15,1,8,1],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad97963fa706facfccd8adeee4a0e007e":[3,0,0,15,1,8,9],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html":[3,0,0,15,1,9],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a0558695f80d12211a57e42f4decf7d98":[3,0,0,15,1,9,5]
+"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html":[3,0,0,15,1,9]
 };
