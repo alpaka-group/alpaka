@@ -76,7 +76,8 @@ namespace alpaka
                             if(auto s = pool.lock())
                                 static_cast<void>(s->takeDetachHandle()); // let returned shared_ptr destroy itself
                         });
-                    m_workerThread->detach(std::move(m_workerThread));
+                    auto* wt = m_workerThread.get();
+                    wt->detach(std::move(m_workerThread));
                 }
 
                 void enqueue(EventGenericThreads<TDev>& ev) final
