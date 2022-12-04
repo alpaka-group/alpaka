@@ -309,10 +309,10 @@ namespace alpaka::core
                     m_bDetachedFlag = true;
                 else
                 {
-                    {
-                        std::lock_guard<TMutex> lock(this->m_mtxWakeup);
-                        m_bDetachedFlag = true;
-                    }
+                    std::lock_guard<TMutex> lock(this->m_mtxWakeup);
+                    m_bDetachedFlag = true;
+                    // we need to notify during the lock, because setting m_bDetachedFlag to true, allows another
+                    // thread to delete this and thus destroy m_cvWakeup.
                     this->m_cvWakeup.notify_one();
                 }
             }
@@ -355,7 +355,8 @@ namespace alpaka::core
                             if(self)
                             {
                                 // Pool was detached and is idle, stop and delete
-                                lock.unlock();
+                                lock.unlock(); // TODO(bgruber): I guess we unlock here so the mutex is not locked when
+                                               // the dtor of self runs, which also tries to lock?
                                 return;
                             }
 
