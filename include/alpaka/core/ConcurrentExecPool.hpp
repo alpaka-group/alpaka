@@ -33,41 +33,37 @@ namespace alpaka::core
     namespace detail
     {
         template<typename T>
-        class ThreadSafeQueue : private std::queue<T>
+        struct ThreadSafeQueue
         {
-        public:
             ThreadSafeQueue() = default;
-            //! \return If the queue is empty.
+
             [[nodiscard]] auto empty() const -> bool
             {
-                return std::queue<T>::empty();
+                return m_queue.empty();
             }
-            //! Pushes the given value onto the back of the queue.
-            auto push(T&& t) -> void
-            {
-                std::lock_guard<std::mutex> lk(m_Mutex);
 
-                std::queue<T>::push(std::forward<T>(t));
+            //! Pushes the given value onto the back of the queue.
+            void push(T&& t)
+            {
+                std::lock_guard<std::mutex> lk(m_mutex);
+                m_queue.push(std::move(t));
             }
+
             //! Pops the given value from the front of the queue.
             auto pop(T& t) -> bool
             {
-                std::lock_guard<std::mutex> lk(m_Mutex);
+                std::lock_guard<std::mutex> lk(m_mutex);
 
-                if(std::queue<T>::empty())
-                {
+                if(m_queue.empty())
                     return false;
-                }
-                else
-                {
-                    t = std::move(std::queue<T>::front());
-                    std::queue<T>::pop();
-                    return true;
-                }
+                t = std::move(m_queue.front());
+                m_queue.pop();
+                return true;
             }
 
         private:
-            std::mutex m_Mutex;
+            std::queue<T> m_queue;
+            std::mutex m_mutex;
         };
 
         //! ITaskPkg.
