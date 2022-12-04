@@ -72,13 +72,12 @@ namespace alpaka::core
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
-        class ITaskPkg
+        struct ITaskPkg
         {
-        public:
             virtual ~ITaskPkg() = default;
 
             //! Runs this task.
-            auto runTask() noexcept -> void
+            void runTask() noexcept
             {
                 try
                 {
@@ -86,60 +85,42 @@ namespace alpaka::core
                 }
                 catch(...)
                 {
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+// Workaround: Clang can not support this when natively compiling device code.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     setException(std::current_exception());
 #endif
                 }
             }
 
-        private:
-            //! The execution function.
-            virtual auto run() -> void = 0;
-
-        public:
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+// Workaround: Clang can not support this when natively compiling device code.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             //! Sets an exception.
             virtual auto setException(std::exception_ptr const& exceptPtr) -> void = 0;
 #endif
+
+        protected:
+            //! The execution function.
+            virtual auto run() -> void = 0;
         };
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
 
-        template<
-            template<typename TFnObjReturn>
-            class TPromise,
-            typename TFnObj,
-            typename TFnObjReturn = decltype(std::declval<TFnObj>()())>
-        class TaskPkg;
-
-        //! TaskPkg with return type.
-        //!
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TFnObj The type of the function to execute.
-        //! \tparam TFnObjReturn The return type of the TFnObj. Used for class specialization.
-        template<template<typename TFnObjReturn> class TPromise, typename TFnObj, typename TFnObjReturn>
-        class TaskPkg final : public ITaskPkg
+        template<template<typename> class TPromise, typename TFnObj>
+        struct TaskPkg final : ITaskPkg
         {
-        public:
+            using TFnObjReturn = decltype(std::declval<TFnObj>()());
+
             TaskPkg(TFnObj&& func) : m_Promise(), m_FnObj(std::move(func))
             {
             }
 
-        private:
-            //! The execution function.
-            auto run() -> void final
-            {
-                m_Promise.set_value(this->m_FnObj());
-            }
-
-        public:
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             //! Sets an exception.
-            auto setException(std::exception_ptr const& exceptPtr) -> void final
+            void setException(std::exception_ptr const& exceptPtr) final
             {
                 m_Promise.set_exception(exceptPtr);
             }
@@ -147,43 +128,18 @@ namespace alpaka::core
             TPromise<TFnObjReturn> m_Promise;
 
         private:
-            // NOTE: To avoid invalid memory accesses to memory of a different thread
-            // `std::remove_reference` enforces the function object to be copied.
-            std::remove_reference_t<TFnObj> m_FnObj;
-        };
-
-        //! TaskPkg without return type.
-        //!
-        //! \tparam TPromise The promise type returned by the task.
-        //! \tparam TFnObj The type of the function to execute.
-        template<template<typename TFnObjReturn> class TPromise, typename TFnObj>
-        class TaskPkg<TPromise, TFnObj, void> final : public ITaskPkg
-        {
-        public:
-            TaskPkg(TFnObj&& func) : m_Promise(), m_FnObj(std::move(func))
-            {
-            }
-
-        private:
             //! The execution function.
-            auto run() -> void final
+            void run() final
             {
-                this->m_FnObj();
-                m_Promise.set_value();
+                if constexpr(std::is_void_v<TFnObjReturn>)
+                {
+                    this->m_FnObj();
+                    m_Promise.set_value();
+                }
+                else
+                    m_Promise.set_value(this->m_FnObj());
             }
 
-        public:
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-            //! Sets an exception.
-            auto setException(std::exception_ptr const& exceptPtr) -> void final
-            {
-                m_Promise.set_exception(exceptPtr);
-            }
-#endif
-            TPromise<void> m_Promise;
-
-        private:
             // NOTE: To avoid invalid memory accesses to memory of a different thread
             // `std::remove_reference` enforces the function object to be copied.
             std::remove_reference_t<TFnObj> m_FnObj;
