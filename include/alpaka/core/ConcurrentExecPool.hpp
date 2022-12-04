@@ -186,17 +186,14 @@ namespace alpaka::core
             typename TIdx,
             typename TConcurrentExec,
             template<typename TFnObjReturn>
-            class TPromise,
+            typename TPromise,
             typename TYield,
             typename TMutex = void,
             typename TCondVar = void,
             bool TisYielding = true>
-        class ConcurrentExecPool final
+        struct ConcurrentExecPool final
             : std::conditional_t<TisYielding, Empty, ConcurrentExecPoolMutexAndCond<TMutex, TCondVar>>
         {
-            // using Type = ConcurrentExecPool<TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding>;
-
-        public:
             //! Creates a concurrent executors pool with a specific number of concurrent executors and a maximum
             //! number of queued tasks.
             //!
@@ -214,11 +211,10 @@ namespace alpaka::core
                 m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
                 // Create all concurrent executors.
-                for(TIdx concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
-                {
+                for(TIdx i = 0; i < concurrentExecutionCount; ++i)
                     m_vConcurrentExecs.emplace_back([this]() { concurrentExecFn(); });
-                }
             }
+
             ConcurrentExecPool(ConcurrentExecPool const&) = delete;
             auto operator=(ConcurrentExecPool const&) -> ConcurrentExecPool& = delete;
 
@@ -226,35 +222,28 @@ namespace alpaka::core
             //! Signals a std::runtime_error exception to any other tasks that was not able to run.
             ~ConcurrentExecPool()
             {
+                // Signal that concurrent executors should not perform any new work
                 if constexpr(TisYielding)
-                {
-                    // Signal that concurrent executors should not perform any new work
                     m_bShutdownFlag.store(true);
-                }
                 else
                 {
                     {
                         std::unique_lock<TMutex> lock(this->m_mtxWakeup);
-
-                        // Signal that concurrent executors should not perform any new work
                         m_bShutdownFlag = true;
                     }
-
                     this->m_cvWakeup.notify_all();
                 }
 
                 joinAllConcurrentExecs();
 
-                auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
-
                 // Signal to each incomplete task that it will not complete due to pool destruction.
-                while(popTask(currentTaskPackage))
+                while(auto task = popTask())
                 {
-                    auto const except(
-                        std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
+                    auto const except
+                        = std::runtime_error("Could not perform task before ConcurrentExecPool destruction");
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    currentTaskPackage->setException(std::make_exception_ptr(except));
+                    task->setException(std::make_exception_ptr(except));
 #endif
                 }
             }
@@ -301,6 +290,7 @@ namespace alpaka::core
 
                 return future;
             }
+
             //! \return The number of concurrent executors available.
             [[nodiscard]] auto getConcurrentExecutionCount() const -> TIdx
             {
@@ -345,59 +335,38 @@ namespace alpaka::core
                 {
                     if constexpr(TisYielding)
                     {
-                        auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
-
-                        // Use popTask so we only ever have one reference to the ITaskPkg
-                        if(popTask(currentTaskPackage))
-                        {
-                            currentTaskPackage->runTask();
-                        }
+                        if(auto task = popTask())
+                            task->runTask();
                         else
                         {
-                            auto self = takeDetachHandle();
-                            if(self)
-                            {
-                                // Pool was detached and is idle, stop and delete
-                                return;
-                            }
+                            if(takeDetachHandle())
+                                return; // Pool was detached and is idle, stop and delete
                             TYield::yield();
                         }
                     }
                     else
                     {
-                        // enter anonymous scope to limit lifetime of `currentTaskPackage`: destroy before entering
-                        // wait
+                        if(auto task = popTask())
+                            task->runTask();
+
+                        std::unique_lock<TMutex> lock(this->m_mtxWakeup);
+                        if(m_qTasks.empty())
                         {
-                            auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
-
-                            // Use popTask so we only ever have one reference to the ITaskPkg
-                            if(popTask(currentTaskPackage))
+                            auto self = takeDetachHandle();
+                            if(self)
                             {
-                                currentTaskPackage->runTask();
+                                // Pool was detached and is idle, stop and delete
+                                lock.unlock();
+                                return;
                             }
-                        }
-                        {
-                            std::unique_lock<TMutex> lock(this->m_mtxWakeup);
-                            if(m_qTasks.empty())
-                            {
-                                auto self = takeDetachHandle();
-                                if(self)
-                                {
-                                    // Pool was detached and is idle, stop and delete
-                                    lock.unlock();
-                                    return;
-                                }
 
-                                // If the shutdown flag has been set since the last check, return now.
-                                if(m_bShutdownFlag)
-                                {
-                                    return;
-                                }
+                            // If the shutdown flag has been set since the last check, return now.
+                            if(m_bShutdownFlag)
+                                return;
 
-                                this->m_cvWakeup.wait(
-                                    lock,
-                                    [this]() { return ((!m_qTasks.empty()) || m_bShutdownFlag || m_bDetachedFlag); });
-                            }
+                            this->m_cvWakeup.wait(
+                                lock,
+                                [this] { return !m_qTasks.empty() || m_bShutdownFlag || m_bDetachedFlag; });
                         }
                     }
                 }
@@ -408,20 +377,21 @@ namespace alpaka::core
             {
                 for(auto&& concurrentExec : m_vConcurrentExecs)
                 {
-                    if(!isThisThread(concurrentExec))
-                        concurrentExec.join();
-                    else
+                    if(isThisThread(concurrentExec))
                         concurrentExec.detach();
+                    else
+                        concurrentExec.join();
                 }
             }
+
             //! Pops a task from the queue.
-            auto popTask(std::shared_ptr<ITaskPkg>& out) -> bool
+            auto popTask() -> std::shared_ptr<ITaskPkg>
             {
+                std::shared_ptr<ITaskPkg> out;
                 if(m_qTasks.pop(out))
-                {
-                    return true;
-                }
-                return false;
+                    return out;
+                else
+                    return nullptr;
             }
 
         private:
