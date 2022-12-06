@@ -119,14 +119,6 @@ then
     export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
     export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
 
-    # Install driver for runtime execution.
-    if [ -n "${GITLAB_CI+x}" ]
-    then
-        latestDriverPackage=$(sudo apt search nvidia-compute-utils 2>/dev/null| grep ^nvidia | sort | tail -n 1 | cut -d"/" -f1)
-        sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install $latestDriverPackage
-        export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
-    fi
-
     if [ "${CMAKE_CUDA_COMPILER}" == "clang++" ]
     then
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install g++-multilib
