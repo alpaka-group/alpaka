@@ -1,6 +1,5 @@
 var NAVTREEINDEX0 =
 {
-"":[2,0,2],
 "AccCpuFibers_8hpp.html":[4,0,0,0,0,0],
 "AccCpuFibers_8hpp_source.html":[4,0,0,0,0,0],
 "AccCpuOmp2Blocks_8hpp.html":[4,0,0,0,0,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "CpuOmp2Threads_8hpp.html":[4,0,0,0,21,4],
 "CpuOmp2Threads_8hpp_source.html":[4,0,0,0,21,4],
 "CpuSerial_8hpp.html":[4,0,0,0,21,5],
-"CpuSerial_8hpp_source.html":[4,0,0,0,21,5]
+"CpuSerial_8hpp_source.html":[4,0,0,0,21,5],
+"CpuSyclIntel_8hpp.html":[4,0,0,0,21,6]
 };
