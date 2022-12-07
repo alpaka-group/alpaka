@@ -1,6 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"structalpaka_1_1detail_1_1TaskSetCpuBase.html#aa09740cbb36ae3cb0956a28568a07596":[3,0,0,4,63,3],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#af3077f62b288305b8c9d4a6227b279f5":[3,0,0,4,63,1],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#afd44d2cf9e9b5295172be8d008f0898c":[3,0,0,4,63,8],
 "structalpaka_1_1detail_1_1TaskSetCpu_3_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,61],
@@ -249,5 +248,6 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1math_1_1trait_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1en50b040d364538463ab513b6a6896668a.html#ac463c8a0d65f9e5630103970f01ad5b2":[3,0,0,10,0,55,0],
 "structalpaka_1_1math_1_1trait_1_1Log.html":[3,0,0,10,0,56],
 "structalpaka_1_1math_1_1trait_1_1Log.html#a757426c9cff1dbd55228b0c32bf5ec75":[3,0,0,10,0,56,0],
-"structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,10,0,57]
+"structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,10,0,57],
+"structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a757b540eff33c8f58c48238ae19567c0":[3,0,0,10,0,57,0]
 };

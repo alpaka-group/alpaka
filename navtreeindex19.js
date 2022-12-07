@@ -1,6 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"structalpaka_1_1warp_1_1trait_1_1All.html":[3,0,0,19,0,3],
 "structalpaka_1_1warp_1_1trait_1_1All_3_01WarpSingleThread_01_4.html":[3,0,0,19,0,4],
 "structalpaka_1_1warp_1_1trait_1_1All_3_01WarpSingleThread_01_4.html#a094257d87058a0c219d5d88e93f24c5f":[3,0,0,19,0,4,0],
 "structalpaka_1_1warp_1_1trait_1_1All_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,19,0,5],
@@ -138,5 +137,6 @@ var NAVTREEINDEX19 =
 "warp_2Traits_8hpp_source.html":[4,0,0,0,26,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,27,0],
 "workdiv_2Traits_8hpp.html#a2a811570d2074f237f89c9910b82b44c":[4,0,0,0,27,0,4],
-"workdiv_2Traits_8hpp_source.html":[4,0,0,0,27,0]
+"workdiv_2Traits_8hpp_source.html":[4,0,0,0,27,0],
+"":[2,0,2]
 };
