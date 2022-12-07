@@ -49,8 +49,8 @@
 #    include "SYCLStream2020.h"
 #elif defined(OMP)
 #    include "OMPStream.h"
-#elif defined(CUPLA)
-#    include "CUPLAStream.h"
+#elif defined(ALPAKA)
+#    include "AlpakaStream.h"
 #endif
 
 // Default size of 2^25
@@ -246,10 +246,6 @@ void run()
     // Use the CUDA implementation
     stream = new CUDAStream<T>(ARRAY_SIZE, deviceIndex);
 
-#elif defined(CUPLA)
-    // Use the CUPLA implementation
-    stream = new CUPLAStream<T>(ARRAY_SIZE, deviceIndex);
-
 #elif defined(HIP)
     // Use the HIP implementation
     stream = new HIPStream<T>(ARRAY_SIZE, deviceIndex);
@@ -301,6 +297,10 @@ void run()
 #elif defined(OMP)
     // Use the OpenMP implementation
     stream = new OMPStream<T>(ARRAY_SIZE, deviceIndex);
+
+#elif defined(ALPAKA)
+    // Use the alpaka implementation
+    stream = new AlpakaStream<T>(ARRAY_SIZE, deviceIndex);
 
 #endif
 
