@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 // Array values
 #define startA (0.1)
@@ -16,12 +16,13 @@
 #define startC (0.0)
 #define startScalar (0.4)
 
-template <class T>
+template<class T>
 class Stream
 {
-  public:
-
-    virtual ~Stream(){}
+public:
+    virtual ~Stream()
+    {
+    }
 
     // Kernels
     // These must be blocking calls
@@ -35,12 +36,10 @@ class Stream
     // Copy memory between host and device
     virtual void init_arrays(T initA, T initB, T initC) = 0;
     virtual void read_arrays(std::vector<T>& a, std::vector<T>& b, std::vector<T>& c) = 0;
-
 };
 
 
 // Implementation specific device functions
 void listDevices(void);
-std::string getDeviceName(const int);
-std::string getDeviceDriver(const int);
-
+std::string getDeviceName(int const);
+std::string getDeviceDriver(int const);
