@@ -8,39 +8,38 @@
 #pragma once
 
 #include <iostream>
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
 // CUDA runtime
-#include <cuda_to_cupla.hpp>
-
 #include "Stream.h"
+
+#include <cuda_to_cupla.hpp>
 
 #define IMPLEMENTATION_STRING "CUPLA"
 
 #define TBSIZE 1024
 #define DOT_NUM_BLOCKS 256
 
-template <class T>
+template<class T>
 class CUPLAStream : public Stream<T>
 {
-  protected:
+protected:
     // Size of arrays
     int array_size;
 
     // Host array for partial sums for dot kernel
-    T *sums;
+    T* sums;
 
     // Device side pointers to arrays
-    T *d_a;
-    T *d_b;
-    T *d_c;
-    T *d_sum;
+    T* d_a;
+    T* d_b;
+    T* d_c;
+    T* d_sum;
 
 
-  public:
-
-    CUPLAStream(const int, const int);
+public:
+    CUPLAStream(int const, int const);
     ~CUPLAStream();
 
     virtual void copy() override;
@@ -52,5 +51,4 @@ class CUPLAStream : public Stream<T>
 
     virtual void init_arrays(T initA, T initB, T initC) override;
     virtual void read_arrays(std::vector<T>& a, std::vector<T>& b, std::vector<T>& c) override;
-
 };
