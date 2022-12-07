@@ -1,6 +1,5 @@
 var Tag_8hpp =
 [
-    [ "TagCpuFibers", "structalpaka_1_1TagCpuFibers.html", "structalpaka_1_1TagCpuFibers" ],
     [ "TagCpuOmp2Blocks", "structalpaka_1_1TagCpuOmp2Blocks.html", "structalpaka_1_1TagCpuOmp2Blocks" ],
     [ "TagCpuOmp2Threads", "structalpaka_1_1TagCpuOmp2Threads.html", "structalpaka_1_1TagCpuOmp2Threads" ],
     [ "TagCpuSerial", "structalpaka_1_1TagCpuSerial.html", "structalpaka_1_1TagCpuSerial" ],

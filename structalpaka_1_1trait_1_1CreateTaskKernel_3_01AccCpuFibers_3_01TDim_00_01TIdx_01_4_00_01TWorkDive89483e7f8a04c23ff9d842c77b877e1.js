@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_00_01TWorkDive89483e7f8a04c23ff9d842c77b877e1 =
-[
-    [ "createTaskKernel", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_00_01TWorkDive89483e7f8a04c23ff9d842c77b877e1.html#adeb698583d8fe5b52eb4e096da805fc0", null ]
-];

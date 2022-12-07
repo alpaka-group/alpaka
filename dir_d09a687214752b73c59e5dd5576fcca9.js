@@ -15,12 +15,6 @@ var dir_d09a687214752b73c59e5dd5576fcca9 =
       [ "GetIdx< bt::IdxBtOmp< TDim, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1trait_1_1GetIdx_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html", "structalpaka_1_1trait_1_1GetIdx_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4" ],
       [ "IdxType< bt::IdxBtOmp< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
-    [ "IdxBtRefFiberIdMap.hpp", "IdxBtRefFiberIdMap_8hpp.html", [
-      [ "IdxBtRefFiberIdMap", "classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html", "classalpaka_1_1bt_1_1IdxBtRefFiberIdMap" ],
-      [ "DimType< bt::IdxBtRefFiberIdMap< TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetIdx< bt::IdxBtRefFiberIdMap< TDim, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1trait_1_1GetIdx_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_00_01origina1463aa339351c51569ec040f2d11f91.html", "structalpaka_1_1trait_1_1GetIdx_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_00_01origina1463aa339351c51569ec040f2d11f91" ],
-      [ "IdxType< bt::IdxBtRefFiberIdMap< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4" ]
-    ] ],
     [ "IdxBtRefThreadIdMap.hpp", "IdxBtRefThreadIdMap_8hpp.html", [
       [ "IdxBtRefThreadIdMap", "classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html", "classalpaka_1_1bt_1_1IdxBtRefThreadIdMap" ],
       [ "DimType< bt::IdxBtRefThreadIdMap< TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4" ],

@@ -1,7 +1,6 @@
 var TestAccs_8hpp =
 [
     [ "StreamOutAccName", "structalpaka_1_1test_1_1detail_1_1StreamOutAccName.html", "structalpaka_1_1test_1_1detail_1_1StreamOutAccName" ],
-    [ "AccCpuFibersIfAvailableElseInt", "TestAccs_8hpp.html#acefd9676d90cf53d754d3d25f92b9573", null ],
     [ "AccCpuOmp2BlocksIfAvailableElseInt", "TestAccs_8hpp.html#a7b225e7486ad769712f62e0b6954eef8", null ],
     [ "AccCpuOmp2ThreadsIfAvailableElseInt", "TestAccs_8hpp.html#a7d67bfce90d9a2ab277bf358e13a86c0", null ],
     [ "AccCpuSerialIfAvailableElseInt", "TestAccs_8hpp.html#aa770229d63fe70864e122b54ccf7425f", null ],
@@ -17,7 +16,7 @@ var TestAccs_8hpp =
     [ "AccOmp5IfAvailableElseInt", "TestAccs_8hpp.html#a92d63910ae754717cbf6e942f7939e3e", null ],
     [ "ApplyEnabledAccs", "TestAccs_8hpp.html#a500c90b7587f9c4bc775f8bffde773ba", null ],
     [ "EnabledAccs", "TestAccs_8hpp.html#a61f6b665ee46c5d41d00ac18855df6e1", null ],
-    [ "EnabledAccsElseInt", "TestAccs_8hpp.html#ad12ee2f89b76795fd465d73abfe4c985", null ],
+    [ "EnabledAccsElseInt", "TestAccs_8hpp.html#ad9a9e8b323bd7f5efc67c1b0fa7253c8", null ],
     [ "InstantiatedEnabledAccs", "TestAccs_8hpp.html#ae3d5270239c3fdbcb3480c1cdb4fb996", null ],
     [ "TestAccs", "TestAccs_8hpp.html#ac981ce6a8a742c033eb0e664cc0de959", null ],
     [ "TestDimIdxTuples", "TestAccs_8hpp.html#acec753ca9c8880ea12b959467bb511e7", null ],

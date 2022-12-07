@@ -1,13 +1,5 @@
 var dir_ddf4b6b668da48004ea34c8205023599 =
 [
-    [ "TaskKernelCpuFibers.hpp", "TaskKernelCpuFibers_8hpp.html", [
-      [ "TaskKernelCpuFibers", "classalpaka_1_1TaskKernelCpuFibers.html", "classalpaka_1_1TaskKernelCpuFibers" ],
-      [ "AccType< TaskKernelCpuFibers< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1AccType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1AccType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
-      [ "DevType< TaskKernelCpuFibers< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
-      [ "DimType< TaskKernelCpuFibers< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
-      [ "IdxType< TaskKernelCpuFibers< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
-      [ "PltfType< TaskKernelCpuFibers< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuFibers_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ]
-    ] ],
     [ "TaskKernelCpuOmp2Blocks.hpp", "TaskKernelCpuOmp2Blocks_8hpp.html", "TaskKernelCpuOmp2Blocks_8hpp" ],
     [ "TaskKernelCpuOmp2Threads.hpp", "TaskKernelCpuOmp2Threads_8hpp.html", [
       [ "TaskKernelCpuOmp2Threads", "classalpaka_1_1TaskKernelCpuOmp2Threads.html", "classalpaka_1_1TaskKernelCpuOmp2Threads" ],

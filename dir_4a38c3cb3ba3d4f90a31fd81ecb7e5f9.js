@@ -1,10 +1,5 @@
 var dir_4a38c3cb3ba3d4f90a31fd81ecb7e5f9 =
 [
-    [ "BlockSyncBarrierFiber.hpp", "BlockSyncBarrierFiber_8hpp.html", [
-      [ "BlockSyncBarrierFiber", "classalpaka_1_1BlockSyncBarrierFiber.html", "classalpaka_1_1BlockSyncBarrierFiber" ],
-      [ "SyncBlockThreads< BlockSyncBarrierFiber< TIdx > >", "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1SyncBlockThreads_3_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4" ],
-      [ "SyncBlockThreadsPredicate< TOp, BlockSyncBarrierFiber< TIdx > >", "structalpaka_1_1trait_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4" ]
-    ] ],
     [ "BlockSyncBarrierOacc.hpp", "BlockSyncBarrierOacc_8hpp.html", null ],
     [ "BlockSyncBarrierOmp.hpp", "BlockSyncBarrierOmp_8hpp.html", [
       [ "BlockSyncBarrierOmp", "classalpaka_1_1BlockSyncBarrierOmp.html", "classalpaka_1_1BlockSyncBarrierOmp" ],

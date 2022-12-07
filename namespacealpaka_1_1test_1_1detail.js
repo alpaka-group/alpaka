@@ -1,7 +1,6 @@
 var namespacealpaka_1_1test_1_1detail =
 [
     [ "StreamOutAccName", "structalpaka_1_1test_1_1detail_1_1StreamOutAccName.html", "structalpaka_1_1test_1_1detail_1_1StreamOutAccName" ],
-    [ "AccCpuFibersIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#acefd9676d90cf53d754d3d25f92b9573", null ],
     [ "AccCpuOmp2BlocksIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#a7b225e7486ad769712f62e0b6954eef8", null ],
     [ "AccCpuOmp2ThreadsIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#a7d67bfce90d9a2ab277bf358e13a86c0", null ],
     [ "AccCpuSerialIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#aa770229d63fe70864e122b54ccf7425f", null ],
@@ -16,7 +15,7 @@ var namespacealpaka_1_1test_1_1detail =
     [ "AccOaccIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#a6a583f11623f05d780bf1858c15fe88c", null ],
     [ "AccOmp5IfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#a92d63910ae754717cbf6e942f7939e3e", null ],
     [ "ApplyEnabledAccs", "namespacealpaka_1_1test_1_1detail.html#a500c90b7587f9c4bc775f8bffde773ba", null ],
-    [ "EnabledAccsElseInt", "namespacealpaka_1_1test_1_1detail.html#ad12ee2f89b76795fd465d73abfe4c985", null ],
+    [ "EnabledAccsElseInt", "namespacealpaka_1_1test_1_1detail.html#ad9a9e8b323bd7f5efc67c1b0fa7253c8", null ],
     [ "InstantiatedEnabledAccs", "namespacealpaka_1_1test_1_1detail.html#ae3d5270239c3fdbcb3480c1cdb4fb996", null ],
     [ "TestDimIdxTuples", "namespacealpaka_1_1test_1_1detail.html#acec753ca9c8880ea12b959467bb511e7", null ]
 ];

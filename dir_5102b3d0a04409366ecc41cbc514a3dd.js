@@ -1,18 +1,5 @@
 var dir_5102b3d0a04409366ecc41cbc514a3dd =
 [
-    [ "AccCpuFibers.hpp", "AccCpuFibers_8hpp.html", [
-      [ "AccCpuFibers", "classalpaka_1_1AccCpuFibers.html", "classalpaka_1_1AccCpuFibers" ],
-      [ "AccToTag< alpaka::AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "AccType< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1AccType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "CreateTaskKernel< AccCpuFibers< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_00_01TWorkDive89483e7f8a04c23ff9d842c77b877e1.html", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_00_01TWorkDive89483e7f8a04c23ff9d842c77b877e1" ],
-      [ "DevType< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "DimType< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccDevProps< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccName< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "IdxType< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "TagToAcc< alpaka::TagCpuFibers, TDim, TIdx >", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuFibers_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuFibers_00_01TDim_00_01TIdx_01_4" ]
-    ] ],
     [ "AccCpuOmp2Blocks.hpp", "AccCpuOmp2Blocks_8hpp.html", [
       [ "AccCpuOmp2Blocks", "classalpaka_1_1AccCpuOmp2Blocks.html", "classalpaka_1_1AccCpuOmp2Blocks" ],
       [ "AccToTag< alpaka::AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4" ],
