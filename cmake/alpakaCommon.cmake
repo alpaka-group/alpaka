@@ -191,7 +191,7 @@ endif()
 # Compiler settings.
 
 if(MSVC)
-    # CUDA\v9.2\include\crt/host_runtime.h(265): warning C4505: '__cudaUnregisterBinaryUtil': unreferenced local function has been removed
+    # warning C4505: '__cudaUnregisterBinaryUtil': unreferenced local function has been removed
     if(alpaka_ACC_GPU_CUDA_ONLY_MODE)
         target_compile_options(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/wd4505>)
     endif()
