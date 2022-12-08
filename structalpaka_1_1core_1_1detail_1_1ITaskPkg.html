@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::core::detail::ITaskPkg Class Reference</title>
+<title>alpaka: alpaka::core::detail::ITaskPkg Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('classalpaka_1_1core_1_1detail_1_1ITaskPkg.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structalpaka_1_1core_1_1detail_1_1ITaskPkg.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,14 +85,15 @@ $(document).ready(function(){initNavTree('classalpaka_1_1core_1_1detail_1_1ITask
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg-members.html">List of all members</a>  </div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="structalpaka_1_1core_1_1detail_1_1ITaskPkg-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::core::detail::ITaskPkg Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">alpaka::core::detail::ITaskPkg Struct Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html" title="ITaskPkg.">ITaskPkg</a>.  
- <a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#details">More...</a></p>
+<p><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html" title="ITaskPkg.">ITaskPkg</a>.  
+ <a href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -101,28 +102,33 @@ $(document).ready(function(){initNavTree('classalpaka_1_1core_1_1detail_1_1ITask
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
  <div class="center">
-  <img src="classalpaka_1_1core_1_1detail_1_1ITaskPkg.png" usemap="#alpaka::core::detail::ITaskPkg_map" alt=""/>
+  <img src="structalpaka_1_1core_1_1detail_1_1ITaskPkg.png" usemap="#alpaka::core::detail::ITaskPkg_map" alt=""/>
   <map id="alpaka::core::detail::ITaskPkg_map" name="alpaka::core::detail::ITaskPkg_map">
-<area href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html" title="TaskPkg with return type." alt="alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, TFnObjReturn &gt;" shape="rect" coords="0,56,385,80"/>
-<area href="classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html" title="TaskPkg without return type." alt="alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, void &gt;" shape="rect" coords="395,56,780,80"/>
+<area href="structalpaka_1_1core_1_1detail_1_1TaskPkg.html" alt="alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj &gt;" shape="rect" coords="0,56,297,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a42025baac7befc45bf4a0c6362f5e050"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a42025baac7befc45bf4a0c6362f5e050">~ITaskPkg</a> ()=default</td></tr>
+<tr class="memitem:a42025baac7befc45bf4a0c6362f5e050"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a42025baac7befc45bf4a0c6362f5e050">~ITaskPkg</a> ()=default</td></tr>
 <tr class="separator:a42025baac7befc45bf4a0c6362f5e050"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60e339b89dc58f8a79669ed3458cff9c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a60e339b89dc58f8a79669ed3458cff9c">runTask</a> () noexcept -&gt; void</td></tr>
-<tr class="memdesc:a60e339b89dc58f8a79669ed3458cff9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this task.  <a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a60e339b89dc58f8a79669ed3458cff9c">More...</a><br /></td></tr>
-<tr class="separator:a60e339b89dc58f8a79669ed3458cff9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afba4bb23cab652a79d1b0f4e2120cd29"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#afba4bb23cab652a79d1b0f4e2120cd29">setException</a> (std::exception_ptr const &amp;exceptPtr) -&gt; void=0</td></tr>
-<tr class="memdesc:afba4bb23cab652a79d1b0f4e2120cd29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an exception.  <a href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#afba4bb23cab652a79d1b0f4e2120cd29">More...</a><br /></td></tr>
+<tr class="memitem:a8cdc0ed95590d08d0a5201447b73931f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a8cdc0ed95590d08d0a5201447b73931f">runTask</a> () noexcept</td></tr>
+<tr class="memdesc:a8cdc0ed95590d08d0a5201447b73931f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this task.  <a href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a8cdc0ed95590d08d0a5201447b73931f">More...</a><br /></td></tr>
+<tr class="separator:a8cdc0ed95590d08d0a5201447b73931f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afba4bb23cab652a79d1b0f4e2120cd29"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#afba4bb23cab652a79d1b0f4e2120cd29">setException</a> (std::exception_ptr const &amp;exceptPtr) -&gt; void=0</td></tr>
+<tr class="memdesc:afba4bb23cab652a79d1b0f4e2120cd29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an exception.  <a href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#afba4bb23cab652a79d1b0f4e2120cd29">More...</a><br /></td></tr>
 <tr class="separator:afba4bb23cab652a79d1b0f4e2120cd29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a2aaf2b2bf6243831b83064b480761850"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a2aaf2b2bf6243831b83064b480761850">run</a> () -&gt; void=0</td></tr>
+<tr class="memdesc:a2aaf2b2bf6243831b83064b480761850"><td class="mdescLeft">&#160;</td><td class="mdescRight">The execution function.  <a href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a2aaf2b2bf6243831b83064b480761850">More...</a><br /></td></tr>
+<tr class="separator:a2aaf2b2bf6243831b83064b480761850"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html" title="ITaskPkg.">ITaskPkg</a>. </p>
+<div class="textblock"><p><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html" title="ITaskPkg.">ITaskPkg</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00079">79</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00075">75</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a42025baac7befc45bf4a0c6362f5e050"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a42025baac7befc45bf4a0c6362f5e050">&#9670;&nbsp;</a></span>~ITaskPkg()</h2>
@@ -150,8 +156,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a60e339b89dc58f8a79669ed3458cff9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60e339b89dc58f8a79669ed3458cff9c">&#9670;&nbsp;</a></span>runTask()</h2>
+<a id="a2aaf2b2bf6243831b83064b480761850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aaf2b2bf6243831b83064b480761850">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,11 +166,37 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto alpaka::core::detail::ITaskPkg::runTask </td>
+          <td class="memname">virtual auto alpaka::core::detail::ITaskPkg::run </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> -&gt; void
-            </td>
+          <td> -&gt;  void</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The execution function. </p>
+
+</div>
+</div>
+<a id="a8cdc0ed95590d08d0a5201447b73931f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cdc0ed95590d08d0a5201447b73931f">&#9670;&nbsp;</a></span>runTask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void alpaka::core::detail::ITaskPkg::runTask </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -176,7 +208,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Runs this task. </p>
 
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00085">85</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00080">80</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -206,11 +238,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Sets an exception. </p>
 
-<p>Implemented in <a class="el" href="classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#a12ab5da3d377d9e96b5f32262a092f00">alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, void &gt;</a>, and <a class="el" href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html#ad108b44ef7af665695198c503dc4cf5f">alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, TFnObjReturn &gt;</a>.</p>
+<p>Implemented in <a class="el" href="structalpaka_1_1core_1_1detail_1_1TaskPkg.html#a8dfe2b242669b4ece5ab92f40e6bb2f2">alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj &gt;</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/alpaka/alpaka/include/alpaka/core/<a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a></li>
 </ul>
 </div><!-- contents -->
@@ -218,8 +250,8 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ITaskPkg.html">ITaskPkg</a></li>
-    <li class="footer">Generated on Wed Dec 7 2022 17:48:01 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html">ITaskPkg</a></li>
+    <li class="footer">Generated on Thu Dec 8 2022 10:50:31 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

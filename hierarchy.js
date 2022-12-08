@@ -51,13 +51,13 @@ var hierarchy =
     [ "alpaka::core::CallbackThread", "classalpaka_1_1core_1_1CallbackThread.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", null ],
     [ "alpaka::core::detail::AssertValueUnsigned< TArg >", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html", null ],
-    [ "alpaka::core::detail::ConcurrentExecPool< TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding >", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html", null ],
-    [ "alpaka::core::detail::ConcurrentExecPool< TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false >", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html", null ],
-    [ "alpaka::core::detail::ITaskPkg", "classalpaka_1_1core_1_1detail_1_1ITaskPkg.html", [
-      [ "alpaka::core::detail::TaskPkg< TPromise, TFnObj, TFnObjReturn >", "classalpaka_1_1core_1_1detail_1_1TaskPkg.html", null ],
-      [ "alpaka::core::detail::TaskPkg< TPromise, TFnObj, void >", "classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html", null ]
+    [ "alpaka::core::detail::ConcurrentExecPoolMutexAndCond< TMutex, TCondVar >", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPoolMutexAndCond.html", null ],
+    [ "alpaka::core::detail::Empty", "structalpaka_1_1core_1_1detail_1_1Empty.html", null ],
+    [ "alpaka::core::detail::ITaskPkg", "structalpaka_1_1core_1_1detail_1_1ITaskPkg.html", [
+      [ "alpaka::core::detail::TaskPkg< TPromise, TFnObj >", "structalpaka_1_1core_1_1detail_1_1TaskPkg.html", null ]
     ] ],
     [ "alpaka::core::detail::ScopeLogStdOut", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html", null ],
+    [ "alpaka::core::detail::ThreadSafeQueue< T >", "structalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", null ],
     [ "alpaka::core::threads::BarrierThread< TIdx >", "classalpaka_1_1core_1_1threads_1_1BarrierThread.html", null ],
     [ "alpaka::core::threads::BarrierThreadWithPredicate< TIdx >", "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html", null ],
     [ "alpaka::core::threads::detail::AtomicOp< TOp >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html", null ],
@@ -1804,6 +1804,7 @@ var hierarchy =
       [ "alpaka::trait::HasAsyncBufSupport< TDim, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ]
     ] ],
     [ "std::conditional_t", null, [
+      [ "alpaka::core::detail::ConcurrentExecPool< TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding >", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html", null ],
       [ "alpaka::meta::detail::UniqueHelper< TList< Ts... >, U, Us... >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html", null ]
     ] ],
     [ "std::enable_shared_from_this", null, [
@@ -1826,10 +1827,6 @@ var hierarchy =
       [ "alpaka::core::detail::RoundUpToPowerOfTwoHelper< N, false >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html", null ],
       [ "std::tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
       [ "std::tuple_size< alpaka::meta::CudaVectorArrayWrapper< T, N > >", "structstd_1_1tuple__size_3_01alpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ]
-    ] ],
-    [ "std::queue< T >", null, [
-      [ "alpaka::core::detail::ThreadSafeQueue< std::shared_ptr< alpaka::core::detail::ITaskPkg > >", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", null ],
-      [ "alpaka::core::detail::ThreadSafeQueue< T >", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", null ]
     ] ],
     [ "std::true_type", null, [
       [ "alpaka::experimental::internal::IsAccessor< Accessor< TMemoryHandle, TElem, TBufferIdx, Dim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor_3_01Accessor_3_01TMemoryHandle_00_01TElem2ee6a853bae07489e14aef9da67a07b3.html", null ],
@@ -1889,6 +1886,7 @@ var hierarchy =
     [ "TDim::value", null, [
       [ "alpaka::trait::HasAsyncBufSupport< TDim, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ]
     ] ],
+    [ "alpaka::core::detail::ThreadSafeQueue< std::shared_ptr< alpaka::core::detail::ITaskPkg > >", "structalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", null ],
     [ "TINYMT32_T", "structTINYMT32__T.html", null ],
     [ "utility::tuple::Tuple< Ts... >", "structutility_1_1tuple_1_1Tuple.html", null ],
     [ "utility::tuple::concat_tuple< typename, typename >", "structutility_1_1tuple_1_1concat__tuple.html", null ],
