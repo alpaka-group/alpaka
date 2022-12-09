@@ -26,6 +26,14 @@ if(BUILD_TESTING)
         # still appears in NVHPC 20.7
         add_compile_definitions($<$<CXX_COMPILER_ID:PGI>:__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1>)
         add_subdirectory(catch2)
+
+        # hide Catch2 cmake variables by default in cmake gui
+        get_cmake_property(variables VARIABLES)
+        foreach (var ${variables})
+            if (var MATCHES "^CATCH_")
+                mark_as_advanced(${var})
+            endif()
+        endforeach()
     else()
         find_package(Catch2 3.1.1 CONFIG REQUIRED)
         message(STATUS "Catch2: Found version ${Catch2_VERSION}")
