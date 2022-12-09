@@ -398,10 +398,10 @@ $(document).ready(function(){initNavTree('ConcurrentExecPool_8hpp_source.html','
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                    m_bDetachedFlag = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                {</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                    {</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                        std::lock_guard&lt;TMutex&gt; lock(this-&gt;m_mtxWakeup);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                        m_bDetachedFlag = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    }</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                    std::lock_guard&lt;TMutex&gt; lock(this-&gt;m_mtxWakeup);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                    m_bDetachedFlag = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    <span class="comment">// we need to notify during the lock, because setting m_bDetachedFlag to true, allows another</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    <span class="comment">// thread to delete this and thus destroy m_cvWakeup.</span></div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                    this-&gt;m_cvWakeup.notify_one();</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                }</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            }</div>
@@ -444,54 +444,55 @@ $(document).ready(function(){initNavTree('ConcurrentExecPool_8hpp_source.html','
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                            <span class="keywordflow">if</span>(<span class="keyword">self</span>)</div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;                            {</div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                                <span class="comment">// Pool was detached and is idle, stop and delete</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;                                lock.unlock();</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                            }</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                            <span class="comment">// If the shutdown flag has been set since the last check, return now.</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                            <span class="keywordflow">if</span>(m_bShutdownFlag)</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                            this-&gt;m_cvWakeup.wait(</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                                lock,</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                                [<span class="keyword">this</span>] { <span class="keywordflow">return</span> !m_qTasks.empty() || m_bShutdownFlag || m_bDetachedFlag; });</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                        }</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                    }</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;            }</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment">            //! Joins all concurrent executors.</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment"></span>            <span class="keywordtype">void</span> joinAllConcurrentExecs()</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            {</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp;&amp; concurrentExec : m_vConcurrentExecs)</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                {</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                    <span class="keywordflow">if</span>(<a class="code" href="namespacealpaka.html#a00807567e743f0ad969ff20f5e48a179">isThisThread</a>(concurrentExec))</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                        concurrentExec.detach();</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                        concurrentExec.join();</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                }</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;            }</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">            //! Pops a task from the queue.</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment"></span>            <span class="keyword">auto</span> popTask() -&gt; std::shared_ptr&lt;ITaskPkg&gt;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            {</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                std::shared_ptr&lt;ITaskPkg&gt; out;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                <span class="keywordflow">if</span>(m_qTasks.pop(out))</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            }</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            std::vector&lt;TConcurrentExec&gt; m_vConcurrentExecs;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            ThreadSafeQueue&lt;std::shared_ptr&lt;ITaskPkg&gt;&gt; m_qTasks;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            std::atomic&lt;std::uint32_t&gt; m_numActiveTasks = 0u;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            std::atomic&lt;bool&gt; m_bShutdownFlag = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            std::atomic&lt;bool&gt; m_bDetachedFlag = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            std::shared_ptr&lt;ConcurrentExecPool&gt; m_self = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        };</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    } <span class="comment">// namespace detail</span></div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;                                lock.unlock(); <span class="comment">// TODO(bgruber): I guess we unlock here so the mutex is not locked when</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                                               <span class="comment">// the dtor of self runs, which also tries to lock?</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                            }</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                            <span class="comment">// If the shutdown flag has been set since the last check, return now.</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                            <span class="keywordflow">if</span>(m_bShutdownFlag)</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                            this-&gt;m_cvWakeup.wait(</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                                lock,</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                                [<span class="keyword">this</span>] { <span class="keywordflow">return</span> !m_qTasks.empty() || m_bShutdownFlag || m_bDetachedFlag; });</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                        }</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                    }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            }</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">            //! Joins all concurrent executors.</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment"></span>            <span class="keywordtype">void</span> joinAllConcurrentExecs()</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            {</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp;&amp; concurrentExec : m_vConcurrentExecs)</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                {</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                    <span class="keywordflow">if</span>(<a class="code" href="namespacealpaka.html#a00807567e743f0ad969ff20f5e48a179">isThisThread</a>(concurrentExec))</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                        concurrentExec.detach();</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                        concurrentExec.join();</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                }</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            }</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">            //! Pops a task from the queue.</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="comment"></span>            <span class="keyword">auto</span> popTask() -&gt; std::shared_ptr&lt;ITaskPkg&gt;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            {</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                std::shared_ptr&lt;ITaskPkg&gt; out;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                <span class="keywordflow">if</span>(m_qTasks.pop(out))</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;            }</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            std::vector&lt;TConcurrentExec&gt; m_vConcurrentExecs;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;            ThreadSafeQueue&lt;std::shared_ptr&lt;ITaskPkg&gt;&gt; m_qTasks;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            std::atomic&lt;std::uint32_t&gt; m_numActiveTasks = 0u;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            std::atomic&lt;bool&gt; m_bShutdownFlag = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            std::atomic&lt;bool&gt; m_bDetachedFlag = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            std::shared_ptr&lt;ConcurrentExecPool&gt; m_self = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        };</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    } <span class="comment">// namespace detail</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aThreadTraits_8hpp_html"><div class="ttname"><a href="ThreadTraits_8hpp.html">ThreadTraits.hpp</a></div></div>
 <div class="ttc" id="acore_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
@@ -534,7 +535,7 @@ $(document).ready(function(){initNavTree('ConcurrentExecPool_8hpp_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="ConcurrentExecPool_8hpp.html">ConcurrentExecPool.hpp</a></li>
-    <li class="footer">Generated on Thu Dec 8 2022 10:50:30 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Dec 9 2022 10:15:29 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
