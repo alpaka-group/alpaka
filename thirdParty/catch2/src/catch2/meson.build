@@ -1,6 +1,6 @@
 #              Copyright Catch2 Authors
 # Distributed under the Boost Software License, Version 1.0.
-#   (See accompanying file LICENSE_1_0.txt or copy at
+#   (See accompanying file LICENSE.txt or copy at
 #        https://www.boost.org/LICENSE_1_0.txt)
 
 # SPDX-License-Identifier: BSL-1.0
@@ -72,6 +72,7 @@ internal_headers = [
   'internal/catch_case_sensitive.hpp',
   'internal/catch_clara.hpp',
   'internal/catch_commandline.hpp',
+  'internal/catch_compare_traits.hpp',
   'internal/catch_compiler_capabilities.hpp',
   'internal/catch_config_android_logwrite.hpp',
   'internal/catch_config_counter.hpp',
@@ -90,16 +91,19 @@ internal_headers = [
   'internal/catch_exception_translator_registry.hpp',
   'internal/catch_fatal_condition_handler.hpp',
   'internal/catch_floating_point_helpers.hpp',
+  'internal/catch_getenv.hpp',
   'internal/catch_istream.hpp',
   'internal/catch_lazy_expr.hpp',
   'internal/catch_leak_detector.hpp',
   'internal/catch_list.hpp',
+  'internal/catch_logical_traits.hpp',
   'internal/catch_message_info.hpp',
   'internal/catch_meta.hpp',
   'internal/catch_move_and_forward.hpp',
   'internal/catch_noncopyable.hpp',
   'internal/catch_optional.hpp',
   'internal/catch_output_redirect.hpp',
+  'internal/catch_parse_numbers.hpp',
   'internal/catch_platform.hpp',
   'internal/catch_polyfills.hpp',
   'internal/catch_preprocessor.hpp',
@@ -201,12 +205,14 @@ internal_sources = files(
   'internal/catch_exception_translator_registry.cpp',
   'internal/catch_fatal_condition_handler.cpp',
   'internal/catch_floating_point_helpers.cpp',
+  'internal/catch_getenv.cpp',
   'internal/catch_istream.cpp',
   'internal/catch_lazy_expr.cpp',
   'internal/catch_leak_detector.cpp',
   'internal/catch_list.cpp',
   'internal/catch_message_info.cpp',
   'internal/catch_output_redirect.cpp',
+  'internal/catch_parse_numbers.cpp',
   'internal/catch_polyfills.cpp',
   'internal/catch_random_number_generator.cpp',
   'internal/catch_random_seed_generation.cpp',
@@ -226,6 +232,7 @@ internal_sources = files(
   'internal/catch_test_case_info_hasher.cpp',
   'internal/catch_test_case_registry_impl.cpp',
   'internal/catch_test_case_tracker.cpp',
+  'internal/catch_test_failure_exception.cpp',
   'internal/catch_test_registry.cpp',
   'internal/catch_test_spec_parser.cpp',
   'internal/catch_textflow.cpp',
