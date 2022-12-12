@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2023 Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -24,13 +24,13 @@ namespace alpaka::experimental
 {
     namespace detail
     {
-        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by
-        // the linker anyway.
+        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
+        // linker anyway.
 #    if BOOST_COMP_CLANG
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wweak-vtables"
-        struct IntelGpuSelector : sycl::device_selector
 #    endif
+        struct IntelGpuSelector : sycl::device_selector
         {
             auto operator()(sycl::device const& dev) const -> int override
             {
@@ -46,13 +46,7 @@ namespace alpaka::experimental
     } // namespace detail
 
     //! The SYCL device manager.
-    class PltfGpuSyclIntel : public PltfGenericSycl
-    {
-    public:
-        PltfGpuSyclIntel() = delete;
-
-        using selector = detail::IntelGpuSelector;
-    };
+    using PltfGpuSyclIntel = PltfGenericSycl<detail::IntelGpuSelector>;
 } // namespace alpaka::experimental
 
 namespace alpaka::trait

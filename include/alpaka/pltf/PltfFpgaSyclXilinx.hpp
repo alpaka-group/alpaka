@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2023 Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -45,13 +45,7 @@ namespace alpaka::experimental
     } // namespace detail
 
     //! The SYCL device manager.
-    class PltfFpgaSyclXilinx : public PltfGenericSycl
-    {
-    public:
-        PltfFpgaSyclXilinx() = delete;
-
-        using selector = detail::XilinxFpgaSelector;
-    };
+    using PltfFgpaSyclIntel = PltfGenericSycl<detail::XilinxFpgaSelector>;
 } // namespace alpaka::experimental
 
 namespace alpaka::trait
