@@ -1,4 +1,4 @@
-linux_clang-9_cuda-10.1_debug:
+linux_clang-9_cuda-10.1_debug_compile_only:
   extends: .base_cuda_clang_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
@@ -10,9 +10,8 @@ linux_clang-9_cuda-10.1_debug:
     alpaka_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
-  stage: stageCompile0
 
-linux_clang-10_cuda-10.1_release:
+linux_clang-10_cuda-10.1_release_compile_only:
   extends: .base_cuda_clang_compile_only
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
@@ -24,7 +23,6 @@ linux_clang-10_cuda-10.1_release:
     alpaka_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
-  stage: stageCompile1
 
 linux_clang-11_cuda-10.1_debug:
   extends: .base_cuda_clang
@@ -38,7 +36,6 @@ linux_clang-11_cuda-10.1_debug:
     alpaka_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
-  stage: stageRun1
 
 linux_clang-14_cuda-10.1_release:
   extends: .base_cuda_clang
@@ -51,4 +48,3 @@ linux_clang-14_cuda-10.1_release:
     alpaka_ACC_GPU_CUDA_ENABLE: "ON"
     CMAKE_CUDA_COMPILER: clang++
     alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
-  stage: stageRun0
