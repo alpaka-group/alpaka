@@ -363,7 +363,7 @@ $(document).ready(function(){initNavTree('BufUniformCudaHipRt_8hpp_source.html',
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span>&amp; dev = <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(queue);</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(TApi::setDevice(dev.getNativeHandle()));</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                <span class="keywordtype">void</span>* memPtr;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                <span class="keywordtype">void</span>* memPtr = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(TApi::mallocAsync(</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                    &amp;memPtr,</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                    <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(width) * <span class="keyword">sizeof</span>(TElem),</div>
@@ -405,7 +405,7 @@ $(document).ready(function(){initNavTree('BufUniformCudaHipRt_8hpp_source.html',
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                <span class="comment">// Allocate CUDA/HIP page-locked memory on the host, mapped into the CUDA/HIP address space and</span></div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                <span class="comment">// accessible to all CUDA/HIP devices.</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                TElem* memPtr;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                TElem* memPtr = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(TApi::hostMalloc(</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                    <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>**<span class="keyword">&gt;</span>(&amp;memPtr),</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                    <span class="keyword">sizeof</span>(TElem) * <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka.html#aedb2f08496dfc99d68cbe99a43eb1f2e">getExtentProduct</a>(extent)),</div>
@@ -554,7 +554,7 @@ $(document).ready(function(){initNavTree('BufUniformCudaHipRt_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufUniformCudaHipRt_8hpp.html">BufUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Mon Dec 12 2022 07:26:22 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Dec 13 2022 08:34:15 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
