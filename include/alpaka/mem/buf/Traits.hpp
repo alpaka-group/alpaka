@@ -90,16 +90,16 @@ namespace alpaka
         return trait::AsyncBufAlloc<TElem, Dim<TExtent>, TIdx, alpaka::Dev<TQueue>>::allocAsyncBuf(queue, extent);
     }
 
+    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
+       figure out that the template parameters are attached to a C++17 inline variable. */
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdocumentation"
+#endif
     //! Checks if the given device can allocate a stream-ordered memory buffer of the given dimensionality.
     //!
     //! \tparam TDev The type of device to allocate the buffer on.
     //! \tparam TDim The dimensionality of the buffer to allocate.
-    /* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because these
-    /  clang versions incorrectly warn about a missing 'extern'. */
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wmissing-variable-declarations"
-#endif
     template<typename TDev, typename TDim>
     constexpr inline bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
 #if BOOST_COMP_CLANG
@@ -149,15 +149,15 @@ namespace alpaka
         return trait::BufAllocMapped<TPltf, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
     }
 
+    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
+       figure out that the template parameters are attached to a C++17 inline variable. */
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdocumentation"
+#endif
     //! Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.
     //!
     //! \tparam TPltf The platform from which the buffer is accessible.
-    /* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because these
-    /  clang versions incorrectly warn about a missing 'extern'. */
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wmissing-variable-declarations"
-#endif
     template<typename TPltf>
     constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPltf>::value;
 #if BOOST_COMP_CLANG

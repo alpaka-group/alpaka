@@ -25,13 +25,8 @@ then
     : "${ALPAKA_CI_CUDA_DIR?'ALPAKA_CI_CUDA_DIR must be specified'}"
     : "${CMAKE_CUDA_COMPILER?'CMAKE_CUDA_COMPILER must be specified'}"
 
-    # Ubuntu 18.04 requires some extra keys for verification
-    if [[ "$(cat /etc/os-release)" == *"18.04"* ]]
-    then
-        travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install dirmngr gpg-agent
-        travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
-        travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
-    elif [[ "$(cat /etc/os-release)" == *"20.04"* ]]
+    # Ubuntu requires some extra keys for verification
+    if [[ "$(cat /etc/os-release)" == *"20.04"* ]]
     then
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install dirmngr gpg-agent gnupg2
         travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
@@ -39,22 +34,7 @@ then
     fi
 
     # Set the correct CUDA downloads
-    if [ "${ALPAKA_CI_CUDA_VERSION}" == "10.0" ]
-    then
-        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-10-0-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"-10.0.130-410.48_1.0-1_amd64
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "10.1" ]
-    then
-        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-10-1-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"-10.1.243-418.87.00_1.0-1_amd64.deb
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "10.2" ]
-    then
-        ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-10-2-local
-        ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"-10.2.89-440.33.01_1.0-1_amd64.deb
-        ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.0" ]
+    if [ "${ALPAKA_CI_CUDA_VERSION}" == "11.0" ]
     then
         ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu2004-11-0-local
         ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.0.3-450.51.06-1_amd64.deb
@@ -90,7 +70,7 @@ then
         ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_11.6.1-510.47.03-1_amd64.deb
         ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.6.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     else
-        echo CUDA versions other than 10.0, 10.1, 10.2, 11.0, 11.1, 11.2, 11.3, 11.4, 11.5 and 11.6 are not currently supported on linux!
+        echo CUDA versions other than 11.0, 11.1, 11.2, 11.3, 11.4, 11.5 and 11.6 are not currently supported on linux!
     fi
     if [ -z "$(ls -A ${ALPAKA_CI_CUDA_DIR})" ]
     then
@@ -104,12 +84,8 @@ then
     # Install CUDA
     # Currently we do not install CUDA fully: sudo apt-get --quiet -y install cuda
     # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
-    if (( "${ALPAKA_CUDA_VER_MAJOR}" >= 11 ))
-    then
-      sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" libcurand-"${ALPAKA_CI_CUDA_VERSION}" libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}"
-    else
-      sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-core-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-"${ALPAKA_CI_CUDA_VERSION}" cuda-curand-dev-"${ALPAKA_CI_CUDA_VERSION}"
-    fi
+    sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-compiler-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CI_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CI_CUDA_VERSION}" libcurand-"${ALPAKA_CI_CUDA_VERSION}" libcurand-dev-"${ALPAKA_CI_CUDA_VERSION}"
+    
     sudo ln -s /usr/local/cuda-"${ALPAKA_CI_CUDA_VERSION}" /usr/local/cuda
     export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
     export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
@@ -124,19 +100,7 @@ then
     sudo dpkg --purge "${ALPAKA_CUDA_PKG_DEB_NAME}"
 elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
-    if [ "${ALPAKA_CI_CUDA_VERSION}" == "10.0" ]
-    then
-        ALPAKA_CUDA_PKG_FILE_NAME=cuda_10.0.130_411.31_win10
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "10.1" ]
-    then
-        ALPAKA_CUDA_PKG_FILE_NAME=cuda_10.1.243_426.00_win10.exe
-        ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "10.2" ]
-    then
-        ALPAKA_CUDA_PKG_FILE_NAME=cuda_10.2.89_441.22_win10.exe
-        ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-    elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.0" ]
+    if [ "${ALPAKA_CI_CUDA_VERSION}" == "11.0" ]
     then
         ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.0.3_451.82_win10.exe
         ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/11.0.3/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
@@ -165,7 +129,7 @@ then
         ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.6.1_511.65_windows.exe
         ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.6.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     else
-        echo CUDA versions other than 10.0, 10.1, 10.2, 11.0, 11.1, 11.2, 11.3, 11.4, 11.5 and 11.6 are not currently supported on Windows!
+        echo CUDA versions other than 11.0, 11.1, 11.2, 11.3, 11.4, 11.5 and 11.6 are not currently supported on Windows!
     fi
 
     curl -L -o cuda_installer.exe ${ALPAKA_CUDA_PKG_FILE_PATH}

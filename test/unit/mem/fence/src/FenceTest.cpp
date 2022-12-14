@@ -21,17 +21,8 @@ struct IsSingleThreaded : public std::false_type
 {
 };
 
-/* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because these
-/  clang versions incorrectly warn about a missing 'extern'. */
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wmissing-variable-declarations"
-#endif
 template<typename TAcc>
 inline constexpr bool isSingleThreaded = IsSingleThreaded<TAcc>::value;
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
 template<typename TDim, typename TIdx>
