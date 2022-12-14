@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017-2019 Benjamin Worpitz
+# Copyright 2022 Benjamin Worpitz, Simeon Ehrig
 #
 # This file is part of alpaka.
 #
@@ -18,6 +18,16 @@ source ./script/set.sh
 : ${ALPAKA_CI_INSTALL_CUDA?"ALPAKA_CI_INSTALL_CUDA must be specified"}
 : ${ALPAKA_CI_INSTALL_HIP?"ALPAKA_CI_INSTALL_HIP must be specified"}
 : ${ALPAKA_CI_INSTALL_TBB?"ALPAKA_CI_INSTALL_TBB must be specified"}
+
+# the agc-manager only exists in the agc-container
+# set alias to false, so each time if we ask the agc-manager if a software is installed, it will
+# return false and the installation of software will be triggered
+if ! command -v agc-manager --help &> /dev/null
+then
+    echo '#!/bin/bash' > /usr/bin/agc-manager
+    echo 'exit 1' >> /usr/bin/agc-manager
+    chmod +x /usr/bin/agc-manager
+fi
 
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then

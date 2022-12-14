@@ -14,6 +14,7 @@ source ./script/travis_retry.sh
 source ./script/set.sh
 
 : "${BOOST_ROOT?'BOOST_ROOT must be specified'}"
+: "${ALPAKA_BOOST_VERSION?'ALPAKA_BOOST_VERSION must be specified'}"
 : "${ALPAKA_CI_BOOST_LIB_DIR?'ALPAKA_CI_BOOST_LIB_DIR must be specified'}"
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
@@ -27,6 +28,17 @@ if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     : "${ALPAKA_CI_CL_VER?'ALPAKA_CI_CL_VER must be specified'}"
 fi
+
+if [ "${CXX}" != "icpc" ] && [ "${ALPAKA_CI_STDLIB}" != "libc++" ]
+then
+    if agc-manager -e boost@${ALPAKA_BOOST_VERSION} ; then
+        export BOOST_ROOT=$(agc-manager -b boost@${ALPAKA_BOOST_VERSION})
+        export ALPAKA_CI_BOOST_LIB_DIR=${BOOST_ROOT}
+        return
+    fi
+fi
+
+ALPAKA_CI_BOOST_BRANCH="boost-${ALPAKA_BOOST_VERSION}"
 
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then

@@ -1,7 +1,6 @@
 .base:
   variables:
     alpaka_DEBUG: 0
-    ALPAKA_CI_BOOST_BRANCH: "boost-${ALPAKA_BOOST_VERSION}"
     BOOST_LIBRARYDIR: "/opt/boost/${ALPAKA_BOOST_VERSION}/lib"
     ALPAKA_CI_OS_NAME: "Linux"
     # $CI_CPUS is defined by the HZDR gitlab CI
@@ -117,7 +116,7 @@
   tags:
     - cuda
     - intel
-    
+
 .basecfg_hip:
   image: rocm/dev-ubuntu-${ALPAKA_CI_UBUNTU_VER}:${ALPAKA_CI_HIP_VERSION}
   variables:

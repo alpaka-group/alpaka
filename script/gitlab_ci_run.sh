@@ -12,6 +12,7 @@
 
 source ./script/set.sh
 
+# TODO(sehrig): remove me
 if [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ];
 then
     apt-get -y --quiet update || echo "ignore any errors"
