@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan, Simeon Ehrig
 #
 # This file is part of alpaka.
 #
@@ -14,20 +14,13 @@ source ./script/set.sh
 
 #-------------------------------------------------------------------------------
 # gcc
+# TODO(sehrig): remove me, if the job generator is used
 if [ ! -z "${ALPAKA_CI_GCC_VER+x}" ]
 then
     ALPAKA_CI_GCC_VER_SEMANTIC=( ${ALPAKA_CI_GCC_VER//./ } )
     export ALPAKA_CI_GCC_VER_MAJOR="${ALPAKA_CI_GCC_VER_SEMANTIC[0]}"
     echo ALPAKA_CI_GCC_VER_MAJOR: "${ALPAKA_CI_GCC_VER_MAJOR}"
 fi
-
-#-------------------------------------------------------------------------------
-# Boost.
-echo $ALPAKA_CI_BOOST_BRANCH
-ALPAKA_CI_BOOST_BRANCH_MAJOR=${ALPAKA_CI_BOOST_BRANCH:6:1}
-echo ALPAKA_CI_BOOST_BRANCH_MAJOR: "${ALPAKA_CI_BOOST_BRANCH_MAJOR}"
-ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
-echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 export ALPAKA_CI_INSTALL_ATOMIC="OFF"
 # If the variable is not set, the backend will most probably be used by default so we install Boost.Atomic

@@ -13,6 +13,8 @@
 source ./script/set.sh
 source ./script/docker_retry.sh
 
+ALPAKA_CI_BOOST_BRANCH="boost-${ALPAKA_BOOST_VERSION}"
+
 # runtime and compile time options
 ALPAKA_DOCKER_ENV_LIST=()
 ALPAKA_DOCKER_ENV_LIST+=("--env" "CC=${CC}")

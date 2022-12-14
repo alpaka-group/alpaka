@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2021 Rene Widera
+# Copyright 2022 Rene Widera, Simeon Ehrig
 #
 # This file is part of alpaka.
 #
@@ -15,19 +15,23 @@ source ./script/travis_retry.sh
 source ./script/set.sh
 
 : "${ALPAKA_CI_HIP_ROOT_DIR?'ALPAKA_CI_HIP_ROOT_DIR must be specified'}"
+: "${ALPAKA_CI_HIP_VERSION?'ALPAKA_CI_HIP_VERSION must be specified'}"
 
-travis_retry apt-get -y --quiet update
-travis_retry apt-get -y --quiet install wget gnupg2
-# AMD container keys are outdated and must be updated
-wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
-travis_retry apt-get -y --quiet update
+if agc-manager -e rocm@${ALPAKA_CI_HIP_VERSION} ; then
+    export ROCM_PATH=$(agc-manager -b rocm@${ALPAKA_CI_HIP_VERSION})
+else
+    travis_retry apt-get -y --quiet update
+    travis_retry apt-get -y --quiet install wget gnupg2
+    # AMD container keys are outdated and must be updated
+    wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
+    travis_retry apt-get -y --quiet update
 
-# AMD container are not shipped with rocrand/hiprand
-travis_retry sudo apt-get -y --quiet install rocrand
-
+    # AMD container are not shipped with rocrand/hiprand
+    travis_retry sudo apt-get -y --quiet install rocrand
+    export ROCM_PATH=/opt/rocm
+fi
 # ROCM_PATH required by HIP tools
-export ROCM_PATH=/opt/rocm
-export HIP_PATH=/opt/rocm/hip
+export HIP_PATH=${ROCM_PATH}/hip
 
 export HIP_LIB_PATH=${HIP_PATH}/lib
 
