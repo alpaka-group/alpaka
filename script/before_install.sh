@@ -19,15 +19,6 @@ then
     ALPAKA_CI_GCC_VER_SEMANTIC=( ${ALPAKA_CI_GCC_VER//./ } )
     export ALPAKA_CI_GCC_VER_MAJOR="${ALPAKA_CI_GCC_VER_SEMANTIC[0]}"
     echo ALPAKA_CI_GCC_VER_MAJOR: "${ALPAKA_CI_GCC_VER_MAJOR}"
-
-    if [[ "$(cat /etc/os-release)" == *"20.04"* ]]
-    then
-        if (( "${ALPAKA_CI_GCC_VER_MAJOR}" <= 6 ))
-        then
-            echo "Ubuntu 20.04 does not provide gcc-6 and older anymore."
-            exit 1
-        fi
-    fi
 fi
 
 #-------------------------------------------------------------------------------

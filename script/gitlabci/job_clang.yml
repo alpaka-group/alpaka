@@ -1,0 +1,21 @@
+linux_clang-11_release:
+  extends: .base_clang
+  variables:
+    ALPAKA_CI_CLANG_VER: 11
+    ALPAKA_CI_STDLIB: libstdc++
+    CMAKE_BUILD_TYPE: Release
+    ALPAKA_BOOST_VERSION: 1.75.0
+    ALPAKA_CI_CMAKE_VER: 3.19.8
+    CMAKE_CXX_EXTENSIONS: "OFF"
+
+linux_clang-14_release_asan:
+  extends: .base_clang
+  variables:
+    ALPAKA_CI_CLANG_VER: 14
+    ALPAKA_CI_STDLIB: libstdc++ # Don't change until https://github.com/alpaka-group/alpaka/issues/1753 is resolved.
+    CMAKE_BUILD_TYPE: Release
+    ALPAKA_BOOST_VERSION: 1.80.0
+    ALPAKA_CI_CMAKE_VER: 3.23.5
+    alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: "OFF"
+    ALPAKA_CI_SANITIZERS: ASan
+ 

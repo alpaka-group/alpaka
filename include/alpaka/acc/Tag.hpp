@@ -55,16 +55,6 @@ namespace alpaka
         using TagToAccType = typename TagToAcc<TTag, TDim, TIdx>::type;
     } // namespace trait
 
-
-/** \todo: Remove the following pragmas once support for clang 6 is removed. They are necessary because
-        these /  clang versions incorrectly warn about a missing 'extern'. */
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wmissing-variable-declarations"
-#endif
     template<typename TAcc, typename... TTag>
     inline constexpr bool accMatchesTags = (std::is_same_v<alpaka::trait::AccToTagType<TAcc>, TTag> || ...);
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
 } // namespace alpaka

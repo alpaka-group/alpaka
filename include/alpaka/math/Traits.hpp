@@ -22,12 +22,6 @@ namespace alpaka::math
 {
     namespace constants
     {
-        /* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because
-        these /  clang versions incorrectly warn about a missing 'extern'. */
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wmissing-variable-declarations"
-#endif
 #ifdef __cpp_lib_math_constants
         inline constexpr double e = std::numbers::e;
         inline constexpr double log2e = std::numbers::log2e;
@@ -136,9 +130,6 @@ namespace alpaka::math
         inline constexpr float sqrt2_v<float> = M_SQRT2f;
 #    endif
 
-#endif
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic pop
 #endif
     } // namespace constants
 
