@@ -1,6 +1,7 @@
 # HIP
 linux_hip5.3_clang_debug_hip_only:
   extends: .base_hip
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-rocm5.3:3.0
   variables:
     ALPAKA_CI_HIP_VERSION: "5.3"
     ALPAKA_CI_CLANG_VER: 15
@@ -12,6 +13,7 @@ linux_hip5.3_clang_debug_hip_only:
 
 linux_hip5.3_clang_release_hip_only:
   extends: .base_hip
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-rocm5.3:3.0
   variables:
     ALPAKA_CI_HIP_VERSION: "5.3"
     ALPAKA_CI_CLANG_VER: 15

@@ -29,6 +29,11 @@ then
     : "${ALPAKA_CI_CL_VER?'ALPAKA_CI_CL_VER must be specified'}"
 fi
 
+if [ -z ${ALPAKA_CI_STDLIB+x} ]
+then
+    ALPAKA_CI_STDLIB=""
+fi
+
 if [ "${CXX}" != "icpc" ] && [ "${ALPAKA_CI_STDLIB}" != "libc++" ]
 then
     if agc-manager -e boost@${ALPAKA_BOOST_VERSION} ; then

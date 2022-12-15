@@ -1,6 +1,7 @@
 # nvcc + g++
 linux_nvcc-11.1_gcc-7_debug_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda111-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.1"
@@ -12,6 +13,7 @@ linux_nvcc-11.1_gcc-7_debug_compile_only:
 
 linux_nvcc-11.1_gcc-8_release_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda111-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.1"
@@ -21,6 +23,7 @@ linux_nvcc-11.1_gcc-8_release_compile_only:
 
 linux_nvcc-11.1_gcc-9_release:
   extends: .base_cuda_gcc
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda111-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.1"
@@ -33,6 +36,7 @@ linux_nvcc-11.1_gcc-9_release:
 # nvcc + clang
 linux_nvcc-11.1_clang-8_release_compile_only:
   extends: .base_cuda_clang_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda111:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.1"
@@ -43,6 +47,7 @@ linux_nvcc-11.1_clang-8_release_compile_only:
 
 linux_nvcc-11.1_clang-9_debug_compile_only:
   extends: .base_cuda_clang_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda111:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.1"
@@ -54,6 +59,7 @@ linux_nvcc-11.1_clang-9_debug_compile_only:
 
 linux_nvcc-11.1_clang-10_release:
   extends: .base_cuda_clang
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda111:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.1"
@@ -65,6 +71,7 @@ linux_nvcc-11.1_clang-10_release:
 # clang++ as CUDA compiler
 linux_clang-14_cuda-11.1_release_compile_only:
   extends: .base_cuda_clang_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda111:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.1"

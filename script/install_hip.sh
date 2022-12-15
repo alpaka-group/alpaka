@@ -46,7 +46,7 @@ sudo update-alternatives --install /usr/bin/c++ c++ ${ROCM_PATH}/llvm/bin/clang+
 export LD_LIBRARY_PATH=${ROCM_PATH}/lib64:${ROCM_PATH}/hiprand/lib:${LD_LIBRARY_PATH}:${ROCM_PATH}/llvm/lib
 export CMAKE_PREFIX_PATH=${ROCM_PATH}:${ROCM_PATH}/hiprand:${CMAKE_PREFIX_PATH:-}
 
-if [ -n "$CI_GPUS" ] ; then
+if ! [ -z ${CI_GPUS+x} ] && [ -n "$CI_GPUS" ] ; then
     # select randomly a device if multiple exists
     # CI_GPUS is provided by the gitlab CI runner
     HIP_SELECTED_DEVICE_ID=$((RANDOM%CI_GPUS))
@@ -56,7 +56,7 @@ else
     echo "No GPU device selected because environment variable CI_GPUS is not set."
 fi
 
-if [ -z "$CI_GPU_ARCH" ] ; then
+if [ -z ${CI_GPU_ARCH+x} ] ; then
     # In case the runner is not providing a GPU architecture e.g. a CPU runner set the architecture
     # to Radeon VII or MI50/60.
     export GPU_TARGETS="gfx906"

@@ -1,6 +1,7 @@
 # HIP
 linux_hip5.2_clang_debug_hip_only:
   extends: .base_hip
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-rocm5.2:3.0
   variables:
     ALPAKA_CI_HIP_VERSION: "5.2"
     ALPAKA_CI_CLANG_VER: 14
@@ -11,6 +12,7 @@ linux_hip5.2_clang_debug_hip_only:
 
 linux_hip5.2_clang_release_hip_only_compile_only:
   extends: .base_hip_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-rocm5.2:3.0
   variables:
     ALPAKA_CI_HIP_VERSION: "5.2"
     ALPAKA_CI_CLANG_VER: 14
@@ -21,6 +23,7 @@ linux_hip5.2_clang_release_hip_only_compile_only:
 
 linux_hip5.2.3_clang_debug_hip_only_compile_only:
   extends: .base_hip_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-rocm5.2:3.0
   variables:
     ALPAKA_CI_HIP_VERSION: "5.2.3"
     ALPAKA_CI_CLANG_VER: 14
