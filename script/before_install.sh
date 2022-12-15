@@ -12,6 +12,13 @@
 
 source ./script/set.sh
 
+# because of the strict abort conditions, a variable needs to be defined, if we read from
+# this statement avoids additional checks later in the scripts
+if [ -z "${LD_LIBRARY_PATH+x}" ]
+then
+    export LD_LIBRARY_PATH=""
+fi
+
 #-------------------------------------------------------------------------------
 # gcc
 # TODO(sehrig): remove me, if the job generator is used

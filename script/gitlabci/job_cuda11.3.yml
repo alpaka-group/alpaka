@@ -1,6 +1,7 @@
 # nvcc + g++
 linux_nvcc-11.3_gcc-7_debug_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda113-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.3"
@@ -12,6 +13,7 @@ linux_nvcc-11.3_gcc-7_debug_compile_only:
 
 linux_nvcc-11.3_gcc-8_release_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda113-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.3"
@@ -21,6 +23,7 @@ linux_nvcc-11.3_gcc-8_release_compile_only:
 
 linux_nvcc-11.3_gcc-9_release:
   extends: .base_cuda_gcc
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda113-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.3"

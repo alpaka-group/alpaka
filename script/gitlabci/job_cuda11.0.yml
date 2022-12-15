@@ -1,6 +1,7 @@
 # nvcc + g++
 linux_nvcc-11.0_gcc-7_debug_separable_compilation_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -12,6 +13,7 @@ linux_nvcc-11.0_gcc-7_debug_separable_compilation_compile_only:
 
 linux_nvcc-11.0_gcc-7_release_extended_lambda_off_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -24,6 +26,7 @@ linux_nvcc-11.0_gcc-7_release_extended_lambda_off_compile_only:
 
 linux_nvcc-11.0_gcc-7_debug_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -35,6 +38,7 @@ linux_nvcc-11.0_gcc-7_debug_compile_only:
 
 linux_nvcc-11.0_gcc-8_release_compile_only:
   extends: .base_cuda_gcc_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -45,6 +49,7 @@ linux_nvcc-11.0_gcc-8_release_compile_only:
 
 linux_nvcc-11.0_gcc-9_release:
   extends: .base_cuda_gcc
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110-gcc:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -55,6 +60,7 @@ linux_nvcc-11.0_gcc-9_release:
 # nvcc + clang
 linux_nvcc-11.0_clang-8_release_compile_only:
   extends: .base_cuda_clang_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -66,6 +72,7 @@ linux_nvcc-11.0_clang-8_release_compile_only:
 
 linux_nvcc-11.0_clang-9_debug_compile_only:
   extends: .base_cuda_clang_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -78,6 +85,7 @@ linux_nvcc-11.0_clang-9_debug_compile_only:
 # clang++ as CUDA compiler
 linux_clang-12_cuda-11.0_release_compile_only:
   extends: .base_cuda_clang_compile_only
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"
@@ -90,6 +98,7 @@ linux_clang-12_cuda-11.0_release_compile_only:
 
 linux_clang-14_cuda-11.0_debug:
   extends: .base_cuda_clang
+  image: registry.hzdr.de/crp/alpaka-group-container/alpaka-ci-ubuntu20.04-cuda110:3.0
   variables:
     ALPAKA_CI_UBUNTU_VER: "20.04"
     ALPAKA_CI_CUDA_VERSION: "11.0"

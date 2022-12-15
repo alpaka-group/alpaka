@@ -12,6 +12,14 @@
 
 source ./script/set.sh
 
+# inside the agc-container, the user is root and does not require sudo
+# to compatibility to other container, fake the missing sudo command
+if ! command -v sudo &> /dev/null
+then
+    cp ${CI_PROJECT_DIR}/script/gitlabci/fake_sudo.sh /usr/bin/sudo
+    chmod +x /usr/bin/sudo
+fi
+
 # TODO(sehrig): remove me
 if [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ];
 then
@@ -20,6 +28,7 @@ then
     # AMD container keys are outdated and must be updated
     wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
 fi
+
 
 source ./script/before_install.sh
 source ./script/install.sh

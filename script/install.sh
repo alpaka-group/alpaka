@@ -22,11 +22,27 @@ source ./script/set.sh
 # the agc-manager only exists in the agc-container
 # set alias to false, so each time if we ask the agc-manager if a software is installed, it will
 # return false and the installation of software will be triggered
-if ! command -v agc-manager --help &> /dev/null
+if [ "$ALPAKA_CI_OS_NAME" != "Linux" ] || ! [command -v agc-manager --help &> /dev/null]
 then
-    echo '#!/bin/bash' > /usr/bin/agc-manager
-    echo 'exit 1' >> /usr/bin/agc-manager
-    chmod +x /usr/bin/agc-manager
+    echo '#!/bin/bash' > agc-manager
+    echo 'exit 1' >> agc-manager
+
+    if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
+    then
+        sudo chmod +x agc-manager
+        sudo mv agc-manager /usr/bin/agc-manager
+    elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
+    then
+        chmod +x agc-manager
+        mv agc-manager /usr/bin
+    elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
+    then
+        sudo chmod +x agc-manager
+        sudo mv agc-manager /usr/local/bin
+    else
+        echo "unknown operation system: ${ALPAKA_CI_OS_NAME}"
+        exit 1
+    fi
 fi
 
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
