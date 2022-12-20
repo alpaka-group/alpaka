@@ -64,7 +64,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
+"AccCpuOmp2Blocks_8hpp.html",
 "CpuTbbBlocks_8hpp_source.html",
 "OffloadUseBuiltInSharedMem_8hpp_source.html",
 "TypeListOps_8hpp.html",

@@ -178,18 +178,18 @@ $(document).ready(function(){initNavTree('mem_2buf_2Traits_8hpp_source.html','')
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1trait_1_1AsyncBufAlloc.html">trait::AsyncBufAlloc&lt;TElem, Dim&lt;TExtent&gt;</a>, TIdx, <a class="code" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">alpaka::Dev&lt;TQueue&gt;</a>&gt;<a class="code" href="namespacealpaka.html#ad3079297a886e6434a3ab3750585d033">::allocAsyncBuf</a>(queue, extent);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">    //! Checks if the given device can allocate a stream-ordered memory buffer of the given dimensionality.</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">    //! \tparam TDev The type of device to allocate the buffer on.</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">    //! \tparam TDim The dimensionality of the buffer to allocate.</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment"></span>    <span class="comment">/* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because these</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">    /  clang versions incorrectly warn about a missing &#39;extern&#39;. */</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#if BOOST_COMP_CLANG</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#    pragma clang diagnostic push</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#    pragma clang diagnostic ignored &quot;-Wmissing-variable-declarations&quot;</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">/* TODO: Remove this pragma block once support for clang versions &lt;= 13 is removed. These versions are unable to</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">       figure out that the template parameters are attached to a C++17 inline variable. */</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#if BOOST_COMP_CLANG</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#    pragma clang diagnostic push</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#    pragma clang diagnostic ignored &quot;-Wdocumentation&quot;</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span><span class="comment"></span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">    //! Checks if the given device can allocate a stream-ordered memory buffer of the given dimensionality.</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">    //! \tparam TDev The type of device to allocate the buffer on.</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">    //! \tparam TDim The dimensionality of the buffer to allocate.</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keyword">typename</span> TDim&gt;</div>
 <div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce">  104</a></span>&#160;    constexpr <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce">hasAsyncBufSupport</a> = <a class="code" href="structalpaka_1_1trait_1_1HasAsyncBufSupport.html">trait::HasAsyncBufSupport&lt;TDim, TDev&gt;::value</a>;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#if BOOST_COMP_CLANG</span></div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#    pragma clang diagnostic pop</span></div>
@@ -237,17 +237,17 @@ $(document).ready(function(){initNavTree('mem_2buf_2Traits_8hpp_source.html','')
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    {</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1trait_1_1BufAllocMapped.html">trait::BufAllocMapped&lt;TPltf, TElem, Dim&lt;TExtent&gt;</a>, TIdx&gt;<a class="code" href="namespacealpaka.html#abe5f57f02a15d022db5d66e4e4da55ef">::allocMappedBuf</a>(host, extent);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">    //! Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">    //! \tparam TPltf The platform from which the buffer is accessible.</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment"></span>    <span class="comment">/* TODO: Remove the following pragmas once support for clang 6 is removed. They are necessary because these</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">    /  clang versions incorrectly warn about a missing &#39;extern&#39;. */</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#if BOOST_COMP_CLANG</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#    pragma clang diagnostic push</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">#    pragma clang diagnostic ignored &quot;-Wmissing-variable-declarations&quot;</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPltf&gt;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">/* TODO: Remove this pragma block once support for clang versions &lt;= 13 is removed. These versions are unable to</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">       figure out that the template parameters are attached to a C++17 inline variable. */</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#if BOOST_COMP_CLANG</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#    pragma clang diagnostic push</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#    pragma clang diagnostic ignored &quot;-Wdocumentation&quot;</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#endif</span><span class="comment"></span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    //! Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">    //! \tparam TPltf The platform from which the buffer is accessible.</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPltf&gt;</div>
 <div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb">  162</a></span>&#160;    constexpr <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb">hasMappedBufSupport</a> = <a class="code" href="structalpaka_1_1trait_1_1HasMappedBufSupport.html">trait::HasMappedBufSupport&lt;TPltf&gt;::value</a>;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#if BOOST_COMP_CLANG</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#    pragma clang diagnostic pop</span></div>
@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2Traits_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Mon Dec 19 2022 14:49:48 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Dec 20 2022 09:56:33 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
