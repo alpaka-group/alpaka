@@ -137,7 +137,8 @@ namespace alpaka::rand
             template<typename TEngine>
             ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
             {
-                constexpr T sigma = 1., mu = 0.;
+                constexpr auto sigma = T{1};
+                constexpr auto mu = T{0};
                 if(math::isnan(*m_acc, m_cache))
                 {
                     UniformReal<T> uni;

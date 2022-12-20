@@ -67,7 +67,7 @@ namespace alpaka
                 {
                     auto getMax()
                     {
-                        return Complex<TData>{10.0, 10.0};
+                        return Complex<TData>{TData{10}, TData{10}};
                     }
 
                     auto getLowest()
@@ -140,13 +140,13 @@ namespace alpaka
                             args(0).arg[k] = max;
                             for(size_t i = 1; i < TArgs::capacity; ++i)
                             {
-                                args(i).arg[k] = rngWrapper.getNumber(dist, eng) + static_cast<TData>(1);
+                                args(i).arg[k] = rngWrapper.getNumber(dist, eng) + TData{1};
                             }
                             break;
 
                         case Range::PositiveAndZero:
                             matchedSwitch = true;
-                            args(0).arg[k] = 0.0;
+                            args(0).arg[k] = TData{0};
                             args(1).arg[k] = max;
                             for(size_t i = 2; i < TArgs::capacity; ++i)
                             {
@@ -174,7 +174,7 @@ namespace alpaka
 
                         case Range::Unrestricted:
                             matchedSwitch = true;
-                            args(0).arg[k] = 0.0;
+                            args(0).arg[k] = TData{0};
                             args(1).arg[k] = max;
                             args(2).arg[k] = low;
                             for(size_t i = 3; i < TArgs::capacity; ++i)
@@ -188,7 +188,7 @@ namespace alpaka
 
                         case Range::Anything:
                             matchedSwitch = true;
-                            args(0).arg[k] = 0.0;
+                            args(0).arg[k] = TData{0};
                             args(1).arg[k] = std::numeric_limits<TData>::quiet_NaN();
                             args(2).arg[k] = std::numeric_limits<TData>::signaling_NaN();
                             args(3).arg[k] = std::numeric_limits<TData>::infinity();

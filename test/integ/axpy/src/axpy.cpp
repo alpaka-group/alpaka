@@ -124,7 +124,7 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
     std::random_device rd{};
     auto const seed = rd();
     std::default_random_engine eng{seed};
-    std::uniform_real_distribution<Val> dist(0.0, 1.0);
+    std::uniform_real_distribution<Val> dist(Val{0}, Val{1});
     std::cout << "using seed: " << seed << "\n";
     // Initialize the host input vectors
     for(Idx i(0); i < numElements; ++i)
