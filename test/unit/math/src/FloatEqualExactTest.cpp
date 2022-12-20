@@ -43,7 +43,7 @@ TEMPLATE_LIST_TEST_CASE("floatEqualExactTest", "[math]", alpaka::test::TestAccs)
     // In case REQUIRE were ever somehow modified to silence the warning by itself.
     bool testValue = false;
 
-    float floatValue = -1.0;
+    float floatValue = -1.0f;
     testValue = alpaka::math::floatEqualExactNoWarning(floatValue, -1.0f);
     REQUIRE(testValue);
 
