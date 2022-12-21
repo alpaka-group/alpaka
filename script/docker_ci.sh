@@ -188,5 +188,9 @@ if [ ! -z "${CMAKE_INSTALL_PREFIX+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}")
 fi
+if [ ! -z "${alpaka_USE_MDSPAN+x}" ]
+then
+    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_USE_MDSPAN=${alpaka_USE_MDSPAN}")
+fi
 
 docker_retry docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash -c "source ./script/install.sh && ./script/run.sh"
