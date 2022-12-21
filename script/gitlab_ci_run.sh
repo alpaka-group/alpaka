@@ -20,16 +20,6 @@ then
     chmod +x /usr/bin/sudo
 fi
 
-# TODO(sehrig): remove me
-if [ "${alpaka_ACC_GPU_HIP_ENABLE}" == "ON" ];
-then
-    apt-get -y --quiet update || echo "ignore any errors"
-    apt-get -y --quiet install wget gnupg2
-    # AMD container keys are outdated and must be updated
-    wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
-fi
-
-
 source ./script/before_install.sh
 source ./script/install.sh
 source ./script/run.sh

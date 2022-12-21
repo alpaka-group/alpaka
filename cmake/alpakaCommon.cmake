@@ -554,8 +554,8 @@ endif()
 if(alpaka_ACC_GPU_HIP_ENABLE)
 
     # supported HIP version range
-    set(_alpaka_HIP_MIN_VER 4.0)
-    set(_alpaka_HIP_MAX_VER 5.0)
+    set(_alpaka_HIP_MIN_VER 5.0)
+    set(_alpaka_HIP_MAX_VER 5.3)
     find_package(hip "${_alpaka_HIP_MAX_VER}")
     if(NOT TARGET hip)
         message(STATUS "Could not find HIP v${_alpaka_HIP_MAX_VER}. Now searching for HIP v${_alpaka_HIP_MIN_VER}")
