@@ -107,36 +107,12 @@ else
         sudo dpkg --purge "${ALPAKA_CUDA_PKG_DEB_NAME}"
     elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
-        if [ "${ALPAKA_CI_CUDA_VERSION}" == "11.0" ]
-        then
-            ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.0.3_451.82_win10.exe
-            ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/11.0.3/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.1" ]
-        then
-            ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.1.1_456.81_win10.exe
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.1.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.2" ]
-        then
-            ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.2.2_461.33_win10.exe
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.3" ]
-        then
-            ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.3.1_465.89_win10.exe
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.3.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.4" ]
-        then
-            ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.4.4_472.50_windows.exe
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.4.4/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.5" ]
-        then
-            ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.5.2_496.13_windows.exe
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.5.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "11.6" ]
+        if [ "${ALPAKA_CI_CUDA_VERSION}" == "11.6" ]
         then
             ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.6.1_511.65_windows.exe
             ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/11.6.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
         else
-            echo CUDA versions other than 11.0, 11.1, 11.2, 11.3, 11.4, 11.5 and 11.6 are not currently supported on Windows!
+            echo CUDA versions other than 11.6 are not currently supported on Windows!
         fi
 
         curl -L -o cuda_installer.exe ${ALPAKA_CUDA_PKG_FILE_PATH}

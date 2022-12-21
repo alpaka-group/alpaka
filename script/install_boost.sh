@@ -66,13 +66,7 @@ fi
 # Set the toolset based on the compiler
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
-    if [ "$ALPAKA_CI_CL_VER" = "2017" ]
-    then
-        TOOLSET="msvc-14.1"
-    elif [ "$ALPAKA_CI_CL_VER" = "2019" ]
-    then
-        TOOLSET="msvc-14.2"
-    elif [ "$ALPAKA_CI_CL_VER" = "2022" ]
+    if [ "$ALPAKA_CI_CL_VER" = "2022" ]
     then
         TOOLSET="msvc-14.3"
     fi
