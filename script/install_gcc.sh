@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2022 Benjamin Worpitz, Simeon Ehrig
+# Copyright 2022 Benjamin Worpitz, Simeon Ehrig, Jan Stephan
 #
 # This file is part of alpaka.
 #
@@ -20,7 +20,8 @@ source ./script/set.sh
 
 if ! agc-manager -e gcc@${ALPAKA_CI_GCC_VER}
 then
-    travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/ppa # Contains gcc 10.4 (Ubuntu 20.04)
+    travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test # Contains gcc 11 (Ubuntu 20.04)
     travis_retry sudo apt-get -y --quiet update
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install g++-"${ALPAKA_CI_GCC_VER}"
 fi

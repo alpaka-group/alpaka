@@ -173,8 +173,8 @@ endif()
 
 #-------------------------------------------------------------------------------
 # Check supported compilers.
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.0)
-    message(FATAL_ERROR "Clang versions < 6.0 are not supported!")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+    message(FATAL_ERROR "Clang versions < 9 are not supported!")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
@@ -417,6 +417,13 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
         if(CMAKE_CUDA_COMPILER_ID STREQUAL "Clang")
             message(STATUS "clang is used as CUDA compiler")
 
+            if(CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 14.0)
+                # clang-14 is the first version to fully support CUDA 11.x
+                message(FATAL_ERROR "clang as CUDA compiler requires at least clang-14.")
+            else()
+                message(WARNING "If you are using CUDA 11.3 please note of the following issue: https://github.com/alpaka-group/alpaka/issues/1857")
+            endif()
+
             if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
                 message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
             endif()
@@ -424,16 +431,7 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
                 message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 5!")
             endif()
 
-            # libstdc++ since version 7 when GNU extensions are enabled (e.g. -std=gnu++11)
-            # uses `__CUDACC__` to avoid defining overloads using non-standard `__float128`.
-            # This is fixed in clang-11: https://github.com/llvm/llvm-project/commit/8e20516540444618ad32dd11e835c05804053697
-            if(CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.0)
-                target_compile_definitions(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:__CUDACC__>)
-            endif()
-
-            if(CMAKE_CUDA_COMPILER_VERSION GREATER_EQUAL 11.0)
-                target_compile_options(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Wno-unknown-cuda-version>)
-            endif()
+            target_compile_options(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Wno-unknown-cuda-version>)
 
             # This flag silences the warning produced by the Dummy.cpp files:
             # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
@@ -501,17 +499,9 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
                     alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fopenmp>)
 
                     # See https://github.com/alpaka-group/alpaka/issues/1755
-                    if((${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang") AND
-                       (${CMAKE_CXX_COMPILER_ID} VERSION_GREATER_EQUAL 13.1.6) AND
-                       (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 14.0.0))
-                       message(STATUS "Xcode 13.4 detected. Force-setting OpenMP to version 4.5.")
-                       alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fopenmp-version=45>)
-                    endif()
-
                     if((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang") AND
-                       (${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL 13) AND
-                       (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 14))
-                       message(STATUS "clang 13 detected. Force-setting OpenMP to version 4.5.")
+                       (${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL 13))
+                       message(STATUS "clang >= 13 detected. Force-setting OpenMP to version 4.5.")
                        alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fopenmp-version=45>)
                     endif()
                 else()
@@ -542,8 +532,7 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             endif()
         endif()
 
-        target_link_libraries(alpaka INTERFACE CUDA::cudart)
-        target_include_directories(alpaka SYSTEM INTERFACE ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+        target_link_libraries(alpaka INTERFACE CUDA::cudart CUDA::curand)
     else()
         message(FATAL_ERROR "Optional alpaka dependency CUDA could not be found!")
     endif()
