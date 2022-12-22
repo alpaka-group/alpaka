@@ -1,11 +1,22 @@
-"""Generate GitLab-CI test jobs yaml for the vikunja CI."""
+"""Copyright 2023 Simeon Ehrig
+
+This file is part of alpaka.
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+Generate GitLab-CI test jobs yaml for the vikunja CI."""
+
 import argparse
-import sys, os
+import sys, os, random
 from typing import List, Dict, Tuple
 from collections import OrderedDict
 
 import alpaka_job_coverage as ajc
 from alpaka_job_coverage.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_job_coverage.util import filter_job_list, reorder_job_list
 
 from versions import (
@@ -17,6 +28,7 @@ from alpaka_filter import alpaka_post_filter
 from custom_job import add_custom_jobs
 from reorder_jobs import reorder_jobs
 from generate_job_yaml import generate_job_yaml_list, write_job_yaml
+from job_type_selection import set_job_type
 from verify import verify
 
 
@@ -88,19 +100,19 @@ if __name__ == "__main__":
     parameters[BOOST] = get_sw_tuple_list(BOOST)
     parameters[UBUNTU] = get_sw_tuple_list(UBUNTU)
     parameters[CXX_STANDARD] = get_sw_tuple_list(CXX_STANDARD)
+    parameters[BUILD_TYPE] = get_sw_tuple_list(BUILD_TYPE)
+    parameters[TEST_TYPE] = get_sw_tuple_list(TEST_TYPE)
 
-    # TODO: uncomment me, if not all entries in parameter are empty
-    # job_matrix: List[Dict[str, Tuple[str, str]]] = ajc.create_job_list(
-    #    parameters=parameters,
-    #    post_filter=alpaka_post_filter,
-    #    pair_size=2,
-    # )
-    job_matrix: List[Dict[str, Tuple[str, str]]] = []
+    job_matrix: List[Dict[str, Tuple[str, str]]] = ajc.create_job_list(
+        parameters=parameters,
+        post_filter=alpaka_post_filter,
+        pair_size=2,
+    )
+
+    set_job_type(job_matrix)
 
     if args.print_combinations or args.all:
         print(f"number of combinations before reorder: {len(job_matrix)}")
-
-    # TODO: add function here to decide, if job only compiles or also execute the tests
 
     ajc.shuffle_job_matrix(job_matrix)
     reorder_jobs(job_matrix)
@@ -118,7 +130,10 @@ if __name__ == "__main__":
     job_matrix_yaml = generate_job_yaml_list(
         job_matrix=job_matrix, container_version=args.version
     )
+
     add_custom_jobs(job_matrix_yaml, args.version)
+    # shuffle jobs to better utilize the special runner
+    random.Random(42).shuffle(job_matrix_yaml)
 
     filter_regix = args.filter
     reorder_regix = args.reorder
