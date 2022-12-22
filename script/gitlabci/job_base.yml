@@ -117,34 +117,6 @@
     - cuda
     - intel
 
-.basecfg_hip:
-  image: rocm/dev-ubuntu-${ALPAKA_CI_UBUNTU_VER}:${ALPAKA_CI_HIP_VERSION}
-  variables:
-    ALPAKA_CI_UBUNTU_VER: "20.04"
-    CC: clang
-    CXX: clang++
-    alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: "OFF"
-    alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "OFF"
-    alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "OFF"
-    alpaka_ACC_GPU_HIP_ENABLE: "ON"
-    # CI_GPU_ARCH architecture of the hosted GPU is provided by the CI
-    GPU_TARGETS: ${CI_GPU_ARCH}
-  extends: .base
-
-.base_hip_compile_only:
-  extends: .basecfg_hip
-  variables:
-    ALPAKA_CI_RUN_TESTS: "OFF"
-  tags:
-    - cpuonly
-    - x86_64
-
-.base_hip:
-  extends: .basecfg_hip
-  tags:
-    - amd
-    - rocm
-
 # -------- clang ---------
 
 .basecfg_clang:
