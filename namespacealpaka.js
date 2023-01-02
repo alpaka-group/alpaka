@@ -338,6 +338,7 @@ var namespacealpaka =
     [ "syncBlockThreadsPredicate", "namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee", null ],
     [ "tan", "namespacealpaka.html#a8a99b95a420e342af1d31e69cfd75aee", null ],
     [ "tanh", "namespacealpaka.html#a20aaf879faf604ffbe737ad73edf5744", null ],
+    [ "toArray", "namespacealpaka.html#a63c859c606d0495e06f07eaaedec8b43", null ],
     [ "Vec", "namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74", null ],
     [ "ViewConst", "namespacealpaka.html#a2be994b379106bbd50e768e825321768", null ],
     [ "wait", "namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806", null ],

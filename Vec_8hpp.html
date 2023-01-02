@@ -203,6 +203,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ab564786b8330a1fc3848753d31316938"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TOffsets &gt; </td></tr>
 <tr class="memitem:ab564786b8330a1fc3848753d31316938"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab564786b8330a1fc3848753d31316938">alpaka::getOffsetVecEnd</a> (TOffsets const &amp;offsets={}) -&gt; Vec&lt; TDim, Idx&lt; TOffsets &gt;&gt;</td></tr>
 <tr class="separator:ab564786b8330a1fc3848753d31316938"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63c859c606d0495e06f07eaaedec8b43"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:a63c859c606d0495e06f07eaaedec8b43"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a63c859c606d0495e06f07eaaedec8b43">alpaka::toArray</a> (Vec&lt; TDim, TVal &gt; const &amp;v) -&gt; std::array&lt; TVal, TDim::value &gt;</td></tr>
+<tr class="memdesc:a63c859c606d0495e06f07eaaedec8b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> to a std::array.  <a href="namespacealpaka.html#a63c859c606d0495e06f07eaaedec8b43">More...</a><br /></td></tr>
+<tr class="separator:a63c859c606d0495e06f07eaaedec8b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplParams" colspan="2">template&lt;typename TFirstIndex , typename... TRestIndices&gt; </td></tr>
 <tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">alpaka::Vec</a> (TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</td></tr>
 <tr class="separator:ab339d2982f7e28701dd0c359855ffa74"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,7 +217,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7056b9f7cd8b764aedbfcd44587c0438.html">vec</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Thu Dec 22 2022 09:20:33 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 2 2023 11:14:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
