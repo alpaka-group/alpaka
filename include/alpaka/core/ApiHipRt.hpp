@@ -263,8 +263,14 @@ namespace alpaka
 
         static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
         {
+            // hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.
+#    if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 4, 0)
+            // Wrap the host function using the proper calling convention.
+            return ::hipLaunchHostFunc(stream, HostFnAdaptor::hostFunction, new HostFnAdaptor{fn, userData});
+#    else
             // Emulate hipLaunchHostFunc using hipStreamAddCallback with a callback adaptor.
             return ::hipStreamAddCallback(stream, HostFnAdaptor::streamCallback, new HostFnAdaptor{fn, userData}, 0);
+#    endif
         }
 
         static inline Error_t malloc(void** devPtr, size_t size)
