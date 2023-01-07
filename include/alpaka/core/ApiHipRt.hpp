@@ -183,10 +183,15 @@ namespace alpaka
             return ::hipFree(devPtr);
         }
 
-        static inline Error_t freeAsync(void* /* devPtr */, Stream_t /* stream */)
+        static inline Error_t freeAsync([[maybe_unused]] void* devPtr, [[maybe_unused]] Stream_t stream)
         {
+            // hipFreeAsync is implemented only in ROCm 5.2.0 and later.
+#    if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 2, 0)
+            return ::hipFreeAsync(devPtr, stream);
+#    else
             // Not implemented.
             return errorUnknown;
+#    endif
         }
 
         static inline Error_t funcGetAttributes(FuncAttributes_t* attr, void const* func)
@@ -283,10 +288,18 @@ namespace alpaka
             return ::hipMalloc3D(pitchedDevPtr, extent);
         }
 
-        static inline Error_t mallocAsync(void** /* devPtr */, size_t /* size */, Stream_t /* stream */)
+        static inline Error_t mallocAsync(
+            [[maybe_unused]] void** devPtr,
+            [[maybe_unused]] size_t size,
+            [[maybe_unused]] Stream_t stream)
         {
+            // hipMallocAsync is implemented only in ROCm 5.2.0 and later.
+#    if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 2, 0)
+            return ::hipMallocAsync(devPtr, size, stream);
+#    else
             // Not implemented.
             return errorUnknown;
+#    endif
         }
 
         static inline Error_t mallocPitch(void** devPtr, size_t* pitch, size_t width, size_t height)
