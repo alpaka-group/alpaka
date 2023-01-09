@@ -18,13 +18,24 @@ from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-
 
 # TODO: only an example
 sw_versions: Dict[str, List[str]] = {
-    #     GCC: ["7", "8", "9", "10", "11"],
-    #     CLANG: ["7", "8", "9", "10", "11", "12", "13", "14", "15"],
-    #     NVCC: ["11.0", "11.1", "11.2", "11.3", "11.4", "11.5", "11.6"],
+    GCC: ["9", "10", "11", "12"],
+    CLANG: ["9", "10", "11", "12", "13", "14", "15"],
+    NVCC: [
+        "11.0",
+        "11.1",
+        "11.2",
+        "11.3",
+        "11.4",
+        "11.5",
+        "11.6",
+        "11.7",
+        "11.8",
+        "12.0",
+    ],
     HIPCC: ["5.0", "5.1", "5.2", "5.3"],
     BACKENDS: [
         #         ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
-        #         ALPAKA_ACC_GPU_CUDA_ENABLE,
+        ALPAKA_ACC_GPU_CUDA_ENABLE,
         ALPAKA_ACC_GPU_HIP_ENABLE,
     ],
     UBUNTU: ["20.04"],
@@ -34,7 +45,7 @@ sw_versions: Dict[str, List[str]] = {
     BUILD_TYPE: BUILD_TYPES,
     # use only TEST_COMPILE_ONLY, because TEST_RUNTIME will be set manually depend on some
     # conditions later
-    TEST_TYPE: [TEST_COMPILE_ONLY],
+    JOB_EXECUTION_TYPE: [JOB_EXECUTION_COMPILE_ONLY],
 }
 
 
@@ -76,6 +87,10 @@ def get_backend_matrix() -> List[List[Tuple[str, str]]]:
     if HIPCC in sw_versions:
         for rocm_version in sw_versions[HIPCC]:
             combination_matrix.append([(ALPAKA_ACC_GPU_HIP_ENABLE, rocm_version)])
+
+    if NVCC in sw_versions:
+        for cuda_version in sw_versions[NVCC]:
+            combination_matrix.append([(ALPAKA_ACC_GPU_CUDA_ENABLE, cuda_version)])
 
     return combination_matrix
 

@@ -52,3 +52,5 @@ then
         fi
     fi
 fi
+
+echo "ALPAKA_CI_CMAKE_DIR: ${ALPAKA_CI_CMAKE_DIR}"
