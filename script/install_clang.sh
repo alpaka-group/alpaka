@@ -37,6 +37,9 @@ then
     then
         # llvm-symbolizer is required for meaningful output. This is part of the llvm base package which we don't install by default.
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install llvm-${ALPAKA_CI_CLANG_VER}
+
+        # The sanitizer libraries are part of libclang-rt-${ALPAKA_CI_CLANG_VER}-dev
+        travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libclang-rt-${ALPAKA_CI_CLANG_VER}-dev
     fi
 
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
