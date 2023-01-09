@@ -27,8 +27,14 @@ from versions import (
 from alpaka_filter import alpaka_post_filter
 from custom_job import add_custom_jobs
 from reorder_jobs import reorder_jobs
-from generate_job_yaml import generate_job_yaml_list, write_job_yaml
-from job_type_selection import set_job_type
+from generate_job_yaml import (
+    generate_job_yaml_list,
+    write_job_yaml,
+    distribute_to_waves,
+    JOB_COMPILE_ONLY,
+    JOB_UNKNOWN,
+)
+from job_modifier import add_job_parameters
 from verify import verify
 
 
@@ -95,13 +101,26 @@ if __name__ == "__main__":
     enable_clang_cuda = True
     parameters[HOST_COMPILER] = get_compiler_versions(clang_cuda=enable_clang_cuda)
     parameters[DEVICE_COMPILER] = get_compiler_versions(clang_cuda=enable_clang_cuda)
+    # TODO(SimeonEhrig): remove GCC and Clang from DEVICE_COMPILER to disable CPU accelerator
+    # Backends
+    parameters[DEVICE_COMPILER] = list(
+        filter(
+            lambda compiler: compiler[NAME] != GCC and compiler[NAME] != CLANG,
+            parameters[DEVICE_COMPILER],
+        )
+    )
+
+    # TODO(SimeonEhrig): remove Clang 15 as CUDA compiler until issue #1906 is solved
+    parameters[HOST_COMPILER].remove((CLANG_CUDA, "15"))
+    parameters[DEVICE_COMPILER].remove((CLANG_CUDA, "15"))
+
     parameters[BACKENDS] = get_backend_matrix()
     parameters[CMAKE] = get_sw_tuple_list(CMAKE)
     parameters[BOOST] = get_sw_tuple_list(BOOST)
     parameters[UBUNTU] = get_sw_tuple_list(UBUNTU)
     parameters[CXX_STANDARD] = get_sw_tuple_list(CXX_STANDARD)
     parameters[BUILD_TYPE] = get_sw_tuple_list(BUILD_TYPE)
-    parameters[TEST_TYPE] = get_sw_tuple_list(TEST_TYPE)
+    parameters[JOB_EXECUTION_TYPE] = get_sw_tuple_list(JOB_EXECUTION_TYPE)
 
     job_matrix: List[Dict[str, Tuple[str, str]]] = ajc.create_job_list(
         parameters=parameters,
@@ -109,7 +128,7 @@ if __name__ == "__main__":
         pair_size=2,
     )
 
-    set_job_type(job_matrix)
+    add_job_parameters(job_matrix)
 
     if args.print_combinations or args.all:
         print(f"number of combinations before reorder: {len(job_matrix)}")
@@ -160,7 +179,14 @@ if __name__ == "__main__":
     if reorder_regix:
         job_matrix_yaml = reorder_job_list(job_matrix_yaml, reorder_regix)
 
-    wave_job_matrix = ajc.distribute_to_waves(job_matrix_yaml, 10)
+    # wave_job_matrix = ajc.distribute_to_waves(job_matrix_yaml, 10)
+    wave_job_matrix = distribute_to_waves(job_matrix_yaml, {JOB_COMPILE_ONLY: 20})
+
+    if wave_job_matrix[JOB_UNKNOWN]:
+        print('\033[33mWARNING: Generator distribute jobs of type "JOB_UNKNOWN"\033[m')
+        for wave in wave_job_matrix[JOB_UNKNOWN]:
+            for job in wave:
+                print(job)
 
     write_job_yaml(
         job_matrix=wave_job_matrix,
