@@ -272,225 +272,238 @@ $(document).ready(function(){initNavTree('ApiHipRt_8hpp_source.html',''); initRe
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            return ::hipFree(devPtr);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t freeAsync(<span class="keywordtype">void</span>* <span class="comment">/* devPtr */</span>, Stream_t <span class="comment">/* stream */</span>)</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t freeAsync([[maybe_unused]] <span class="keywordtype">void</span>* devPtr, [[maybe_unused]] Stream_t stream)</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        {</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="comment">// Not implemented.</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keywordflow">return</span> errorUnknown;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t funcGetAttributes(FuncAttributes_t* attr, <span class="keywordtype">void</span> <span class="keyword">const</span>* func)</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        {</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            return ::hipFuncGetAttributes(attr, func);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="comment">// hipFreeAsync is implemented only in ROCm 5.2.0 and later.</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#    if BOOST_LANG_HIP &gt;= BOOST_VERSION_NUMBER(5, 2, 0)</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            return ::hipFreeAsync(devPtr, stream);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="comment">// Not implemented.</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            <span class="keywordflow">return</span> errorUnknown;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t funcGetAttributes(FuncAttributes_t* attr, T* func)</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            return ::hipFuncGetAttributes(attr, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> const*<span class="keyword">&gt;</span>(func));</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getDeviceCount(<span class="keywordtype">int</span>* count)</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t funcGetAttributes(FuncAttributes_t* attr, <span class="keywordtype">void</span> <span class="keyword">const</span>* func)</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            return ::hipFuncGetAttributes(attr, func);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t funcGetAttributes(FuncAttributes_t* attr, T* func)</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            return ::hipGetDeviceCount(count);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            return ::hipFuncGetAttributes(attr, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> const*<span class="keyword">&gt;</span>(func));</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getDeviceProperties(DeviceProp_t* prop, <span class="keywordtype">int</span> device)</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getDeviceCount(<span class="keywordtype">int</span>* count)</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            return ::hipGetDeviceProperties(prop, device);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            return ::hipGetDeviceCount(count);</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        }</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">char</span> <span class="keyword">const</span>* getErrorName(Error_t error)</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getDeviceProperties(DeviceProp_t* prop, <span class="keywordtype">int</span> device)</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            return ::hipGetErrorName(error);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            return ::hipGetDeviceProperties(prop, device);</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">char</span> <span class="keyword">const</span>* getErrorString(Error_t error)</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">char</span> <span class="keyword">const</span>* getErrorName(Error_t error)</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            return ::hipGetErrorString(error);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            return ::hipGetErrorName(error);</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        }</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getLastError()</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">char</span> <span class="keyword">const</span>* getErrorString(Error_t error)</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            return ::hipGetLastError();</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            return ::hipGetErrorString(error);</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getSymbolAddress(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">void</span> <span class="keyword">const</span>* symbol)</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getLastError()</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        {</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            return ::hipGetSymbolAddress(devPtr, symbol);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            return ::hipGetLastError();</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        }</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getSymbolAddress(<span class="keywordtype">void</span>** devPtr, <span class="keyword">const</span> T&amp; symbol)</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        {</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            return ::hipGetSymbolAddress(devPtr, symbol);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostGetDevicePointer(<span class="keywordtype">void</span>** pDevice, <span class="keywordtype">void</span>* pHost, Flag_t flags)</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getSymbolAddress(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">void</span> <span class="keyword">const</span>* symbol)</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            return ::hipGetSymbolAddress(devPtr, symbol);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        }</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t getSymbolAddress(<span class="keywordtype">void</span>** devPtr, <span class="keyword">const</span> T&amp; symbol)</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            return ::hipHostGetDevicePointer(pDevice, pHost, flags);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            return ::hipGetSymbolAddress(devPtr, symbol);</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        }</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostFree(<span class="keywordtype">void</span>* ptr)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostGetDevicePointer(<span class="keywordtype">void</span>** pDevice, <span class="keywordtype">void</span>* pHost, Flag_t flags)</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        {</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            return ::hipHostFree(ptr);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            return ::hipHostGetDevicePointer(pDevice, pHost, flags);</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        }</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostMalloc(<span class="keywordtype">void</span>** ptr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, Flag_t flags)</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostFree(<span class="keywordtype">void</span>* ptr)</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        {</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            return ::hipHostMalloc(ptr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, flags);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            return ::hipHostFree(ptr);</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostRegister(<span class="keywordtype">void</span>* ptr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, Flag_t flags)</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostMalloc(<span class="keywordtype">void</span>** ptr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, Flag_t flags)</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        {</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            return ::hipHostRegister(ptr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, flags);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            return ::hipHostMalloc(ptr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, flags);</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        }</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostUnregister(<span class="keywordtype">void</span>* ptr)</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostRegister(<span class="keywordtype">void</span>* ptr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, Flag_t flags)</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        {</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            return ::hipHostUnregister(ptr);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            return ::hipHostRegister(ptr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, flags);</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        }</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t launchHostFunc(Stream_t stream, HostFn_t fn, <span class="keywordtype">void</span>* userData)</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostUnregister(<span class="keywordtype">void</span>* ptr)</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        {</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="comment">// hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="preprocessor">#    if BOOST_LANG_HIP &gt;= BOOST_VERSION_NUMBER(5, 4, 0)</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            <span class="comment">// Wrap the host function using the proper calling convention.</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            return ::hipLaunchHostFunc(stream, HostFnAdaptor::hostFunction, <span class="keyword">new</span> HostFnAdaptor{fn, userData});</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="comment">// Emulate hipLaunchHostFunc using hipStreamAddCallback with a callback adaptor.</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            return ::hipStreamAddCallback(stream, HostFnAdaptor::streamCallback, <span class="keyword">new</span> HostFnAdaptor{fn, userData}, 0);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        }</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t <a class="code" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">malloc</a>(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>)</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        {</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            return ::hipMalloc(devPtr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            return ::hipHostUnregister(ptr);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        }</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t launchHostFunc(Stream_t stream, HostFn_t fn, <span class="keywordtype">void</span>* userData)</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        {</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="comment">// hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="preprocessor">#    if BOOST_LANG_HIP &gt;= BOOST_VERSION_NUMBER(5, 4, 0)</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <span class="comment">// Wrap the host function using the proper calling convention.</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            return ::hipLaunchHostFunc(stream, HostFnAdaptor::hostFunction, <span class="keyword">new</span> HostFnAdaptor{fn, userData});</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="comment">// Emulate hipLaunchHostFunc using hipStreamAddCallback with a callback adaptor.</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            return ::hipStreamAddCallback(stream, HostFnAdaptor::streamCallback, <span class="keyword">new</span> HostFnAdaptor{fn, userData}, 0);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        }</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t malloc3D(PitchedPtr_t* pitchedDevPtr, Extent_t extent)</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t <a class="code" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">malloc</a>(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>)</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        {</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            return ::hipMalloc3D(pitchedDevPtr, extent);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            return ::hipMalloc(devPtr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t mallocAsync(<span class="keywordtype">void</span>** <span class="comment">/* devPtr */</span>, <span class="keywordtype">size_t</span> <span class="comment">/* size */</span>, Stream_t <span class="comment">/* stream */</span>)</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t malloc3D(PitchedPtr_t* pitchedDevPtr, Extent_t extent)</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        {</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            <span class="comment">// Not implemented.</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="keywordflow">return</span> errorUnknown;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        }</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t mallocPitch(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">size_t</span>* pitch, <span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height)</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        {</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            return ::hipMallocPitch(devPtr, pitch, width, height);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        }</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memGetInfo(<span class="keywordtype">size_t</span>* <a class="code" href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">free</a>, <span class="keywordtype">size_t</span>* total)</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        {</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            return ::hipMemGetInfo(<a class="code" href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">free</a>, total);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        }</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">memcpy</a>(<span class="keywordtype">void</span>* dst, <span class="keywordtype">void</span> <span class="keyword">const</span>* src, <span class="keywordtype">size_t</span> count, MemcpyKind_t kind)</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        {</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            return ::hipMemcpy(dst, src, count, kind);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        }</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memcpy2DAsync(</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            <span class="keywordtype">void</span>* dst,</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            <span class="keywordtype">size_t</span> dpitch,</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            <span class="keywordtype">void</span> <span class="keyword">const</span>* src,</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <span class="keywordtype">size_t</span> spitch,</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <span class="keywordtype">size_t</span> width,</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;            <span class="keywordtype">size_t</span> height,</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            MemcpyKind_t kind,</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            Stream_t stream)</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            return ::hipMalloc3D(pitchedDevPtr, extent);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        }</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t mallocAsync(</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            [[maybe_unused]] <span class="keywordtype">void</span>** devPtr,</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            [[maybe_unused]] <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>,</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            [[maybe_unused]] Stream_t stream)</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        {</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <span class="comment">// hipMallocAsync is implemented only in ROCm 5.2.0 and later.</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor">#    if BOOST_LANG_HIP &gt;= BOOST_VERSION_NUMBER(5, 2, 0)</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            return ::hipMallocAsync(devPtr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, stream);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            <span class="comment">// Not implemented.</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            <span class="keywordflow">return</span> errorUnknown;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t mallocPitch(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">size_t</span>* pitch, <span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height)</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        {</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            return ::hipMallocPitch(devPtr, pitch, width, height);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        }</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memGetInfo(<span class="keywordtype">size_t</span>* <a class="code" href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">free</a>, <span class="keywordtype">size_t</span>* total)</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        {</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            return ::hipMemGetInfo(<a class="code" href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">free</a>, total);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        }</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">memcpy</a>(<span class="keywordtype">void</span>* dst, <span class="keywordtype">void</span> <span class="keyword">const</span>* src, <span class="keywordtype">size_t</span> count, MemcpyKind_t kind)</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            return ::hipMemcpy2DAsync(dst, dpitch, src, spitch, width, height, kind, stream);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            return ::hipMemcpy(dst, src, count, kind);</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        }</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memcpy3DAsync(Memcpy3DParms_t <span class="keyword">const</span>* p, Stream_t stream)</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        {</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;            return ::hipMemcpy3DAsync(p, stream);</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        }</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memcpyAsync(<span class="keywordtype">void</span>* dst, <span class="keywordtype">void</span> <span class="keyword">const</span>* src, <span class="keywordtype">size_t</span> count, MemcpyKind_t kind, Stream_t stream)</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        {</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            return ::hipMemcpyAsync(dst, src, count, kind, stream);</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        }</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memset2DAsync(</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            <span class="keywordtype">void</span>* devPtr,</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <span class="keywordtype">size_t</span> pitch,</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            <span class="keywordtype">int</span> value,</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            <span class="keywordtype">size_t</span> width,</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            <span class="keywordtype">size_t</span> height,</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;            Stream_t stream)</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        {</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            return ::hipMemset2DAsync(devPtr, pitch, value, width, height, stream);</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        }</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memset3DAsync(PitchedPtr_t pitchedDevPtr, <span class="keywordtype">int</span> value, Extent_t extent, Stream_t stream)</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        {</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            return ::hipMemset3DAsync(pitchedDevPtr, value, extent, stream);</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        }</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memsetAsync(<span class="keywordtype">void</span>* devPtr, <span class="keywordtype">int</span> value, <span class="keywordtype">size_t</span> count, Stream_t stream)</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        {</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            return ::hipMemsetAsync(devPtr, value, count, stream);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        }</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t setDevice(<span class="keywordtype">int</span> device)</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        {</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;            return ::hipSetDevice(device);</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        }</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamCreate(Stream_t* pStream)</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        {</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            return ::hipStreamCreate(pStream);</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        }</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160; </div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamCreateWithFlags(Stream_t* pStream, Flag_t flags)</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        {</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            return ::hipStreamCreateWithFlags(pStream, flags);</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        }</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamDestroy(Stream_t stream)</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        {</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            return ::hipStreamDestroy(stream);</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        }</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; </div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamQuery(Stream_t stream)</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        {</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            return ::hipStreamQuery(stream);</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        }</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamSynchronize(Stream_t stream)</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        {</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;            return ::hipStreamSynchronize(stream);</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        }</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamWaitEvent(Stream_t stream, Event_t event, Flag_t flags)</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        {</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            return ::hipStreamWaitEvent(stream, event, flags);</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        }</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> PitchedPtr_t makePitchedPtr(<span class="keywordtype">void</span>* d, <span class="keywordtype">size_t</span> p, <span class="keywordtype">size_t</span> xsz, <span class="keywordtype">size_t</span> ysz)</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        {</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;            return ::make_hipPitchedPtr(d, p, xsz, ysz);</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        }</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Pos_t makePos(<span class="keywordtype">size_t</span> x, <span class="keywordtype">size_t</span> y, <span class="keywordtype">size_t</span> z)</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        {</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            return ::make_hipPos(x, y, z);</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        }</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Extent_t makeExtent(<span class="keywordtype">size_t</span> w, <span class="keywordtype">size_t</span> h, <span class="keywordtype">size_t</span> d)</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        {</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            return ::make_hipExtent(w, h, d);</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        }</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    };</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memcpy2DAsync(</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            <span class="keywordtype">void</span>* dst,</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;            <span class="keywordtype">size_t</span> dpitch,</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            <span class="keywordtype">void</span> <span class="keyword">const</span>* src,</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <span class="keywordtype">size_t</span> spitch,</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;            <span class="keywordtype">size_t</span> width,</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            <span class="keywordtype">size_t</span> height,</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            MemcpyKind_t kind,</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;            Stream_t stream)</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        {</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            return ::hipMemcpy2DAsync(dst, dpitch, src, spitch, width, height, kind, stream);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        }</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memcpy3DAsync(Memcpy3DParms_t <span class="keyword">const</span>* p, Stream_t stream)</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        {</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            return ::hipMemcpy3DAsync(p, stream);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        }</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memcpyAsync(<span class="keywordtype">void</span>* dst, <span class="keywordtype">void</span> <span class="keyword">const</span>* src, <span class="keywordtype">size_t</span> count, MemcpyKind_t kind, Stream_t stream)</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        {</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            return ::hipMemcpyAsync(dst, src, count, kind, stream);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        }</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memset2DAsync(</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            <span class="keywordtype">void</span>* devPtr,</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;            <span class="keywordtype">size_t</span> pitch,</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;            <span class="keywordtype">int</span> value,</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            <span class="keywordtype">size_t</span> width,</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            <span class="keywordtype">size_t</span> height,</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            Stream_t stream)</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        {</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            return ::hipMemset2DAsync(devPtr, pitch, value, width, height, stream);</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        }</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160; </div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memset3DAsync(PitchedPtr_t pitchedDevPtr, <span class="keywordtype">int</span> value, Extent_t extent, Stream_t stream)</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        {</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            return ::hipMemset3DAsync(pitchedDevPtr, value, extent, stream);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        }</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t memsetAsync(<span class="keywordtype">void</span>* devPtr, <span class="keywordtype">int</span> value, <span class="keywordtype">size_t</span> count, Stream_t stream)</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        {</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            return ::hipMemsetAsync(devPtr, value, count, stream);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        }</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t setDevice(<span class="keywordtype">int</span> device)</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        {</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            return ::hipSetDevice(device);</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        }</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamCreate(Stream_t* pStream)</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        {</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            return ::hipStreamCreate(pStream);</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamCreateWithFlags(Stream_t* pStream, Flag_t flags)</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        {</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            return ::hipStreamCreateWithFlags(pStream, flags);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        }</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamDestroy(Stream_t stream)</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        {</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            return ::hipStreamDestroy(stream);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        }</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; </div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamQuery(Stream_t stream)</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;            return ::hipStreamQuery(stream);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        }</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamSynchronize(Stream_t stream)</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        {</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;            return ::hipStreamSynchronize(stream);</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        }</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t streamWaitEvent(Stream_t stream, Event_t event, Flag_t flags)</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        {</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            return ::hipStreamWaitEvent(stream, event, flags);</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        }</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> PitchedPtr_t makePitchedPtr(<span class="keywordtype">void</span>* d, <span class="keywordtype">size_t</span> p, <span class="keywordtype">size_t</span> xsz, <span class="keywordtype">size_t</span> ysz)</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        {</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            return ::make_hipPitchedPtr(d, p, xsz, ysz);</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        }</div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ALPAKA_ACC_GPU_HIP_ENABLED</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Pos_t makePos(<span class="keywordtype">size_t</span> x, <span class="keywordtype">size_t</span> y, <span class="keywordtype">size_t</span> z)</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        {</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            return ::make_hipPos(x, y, z);</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        }</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Extent_t makeExtent(<span class="keywordtype">size_t</span> w, <span class="keywordtype">size_t</span> h, <span class="keywordtype">size_t</span> d)</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        {</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;            return ::make_hipExtent(w, h, d);</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        }</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    };</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ALPAKA_ACC_GPU_HIP_ENABLED</span></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html_ad408333b834a21cc5c4a0c1ddc47387f"><div class="ttname"><a href="BoostPredef_8hpp.html#ad408333b834a21cc5c4a0c1ddc47387f">BOOST_LANG_HIP</a></div><div class="ttdeci">#define BOOST_LANG_HIP</div><div class="ttdef"><b>Definition:</b> <a href="BoostPredef_8hpp_source.html#l00033">BoostPredef.hpp:33</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00051">AccCpuOmp2Blocks.hpp:52</a></div></div>
@@ -504,7 +517,7 @@ $(document).ready(function(){initNavTree('ApiHipRt_8hpp_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="ApiHipRt_8hpp.html">ApiHipRt.hpp</a></li>
-    <li class="footer">Generated on Wed Jan 11 2023 17:30:22 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jan 11 2023 22:42:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
