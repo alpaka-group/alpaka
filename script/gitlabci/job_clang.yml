@@ -17,13 +17,15 @@ linux_clang-14_debug:
     ALPAKA_BOOST_VERSION: 1.80.0
     ALPAKA_CI_CMAKE_VER: 3.23.5
  
-linux_clang-15_release_asan:
+linux_clang-15_relwithdebinfo_asan_c++20:
   extends: .base_clang
   variables:
     ALPAKA_CI_CLANG_VER: 15
     ALPAKA_CI_STDLIB: libstdc++ # Don't change until https://github.com/alpaka-group/alpaka/issues/1753 is resolved.
-    CMAKE_BUILD_TYPE: Release
+    CMAKE_BUILD_TYPE: RelWithDebInfo
     ALPAKA_BOOST_VERSION: 1.81.0
     ALPAKA_CI_CMAKE_VER: 3.25.1
     alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: "OFF"
+    alpaka_CXX_STANDARD: 20
+    CMAKE_CXX_EXTENSIONS: "OFF"
     ALPAKA_CI_SANITIZERS: ASan
