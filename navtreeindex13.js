@@ -1,6 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"structalpaka_1_1math_1_1trait_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1ena458c21f6af3f10eb3a804c65359a703b.html#af19a7697045b467edb5be41cb7c07dae":[3,0,0,10,0,60,0],
 "structalpaka_1_1math_1_1trait_1_1Max.html":[3,0,0,10,0,61],
 "structalpaka_1_1math_1_1trait_1_1Max.html#a006b5e698beefedbda09c4b0ac0cb9c3":[3,0,0,10,0,61,0],
 "structalpaka_1_1math_1_1trait_1_1Max_3_01MaxStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_00543fab9790b54ab09ffbcb17955e989.html":[3,0,0,10,0,62],
@@ -249,5 +248,6 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1meta_1_1min.html":[3,0,0,12,25],
 "structalpaka_1_1meta_1_1min.html#a5e8fcd9566ec00f27e2431a23631fc86":[3,0,0,12,25,0],
 "structalpaka_1_1omp_1_1Schedule.html":[3,0,0,13,0],
-"structalpaka_1_1omp_1_1Schedule.html#a050d3f2bb222571788ae0e749b8348e3":[3,0,0,13,0,2]
+"structalpaka_1_1omp_1_1Schedule.html#a050d3f2bb222571788ae0e749b8348e3":[3,0,0,13,0,2],
+"structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474a":[3,0,0,13,0,0]
 };
