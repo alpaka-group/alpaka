@@ -347,5 +347,9 @@ var namespacealpaka =
     [ "BlockSharedDynMemberAllocKiB", "namespacealpaka.html#a28aba9f9b9c76167878d4d304943d54b", null ],
     [ "hasAsyncBufSupport", "namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce", null ],
     [ "hasMappedBufSupport", "namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb", null ],
-    [ "is_decayed_v", "namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de", null ]
+    [ "is_decayed_v", "namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de", null ],
+    [ "isAccelerator", "namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd", null ],
+    [ "isDevice", "namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf", null ],
+    [ "isPlatform", "namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4", null ],
+    [ "isQueue", "namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa", null ]
 ];

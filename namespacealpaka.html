@@ -1234,6 +1234,22 @@ Variables</h2></td></tr>
 <tr class="memitem:abd223e5dfb4b62614c25046db2a1d1de"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de">is_decayed_v</a> = std::is_same_v&lt;std::decay_t&lt; T &gt;, std::decay_t&lt; U &gt;&gt;</td></tr>
 <tr class="memdesc:abd223e5dfb4b62614c25046db2a1d1de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a decaying wrapper around std::is_same. Example: is_decayed_v&lt;volatile float, float&gt; returns true.  <a href="namespacealpaka.html#abd223e5dfb4b62614c25046db2a1d1de">More...</a><br /></td></tr>
 <tr class="separator:abd223e5dfb4b62614c25046db2a1d1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd">isAccelerator</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptAcc.html">ConceptAcc</a>, TAcc&gt;::value</td></tr>
+<tr class="memdesc:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TAcc is an accelerator, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptAcc.html">ConceptAcc</a> concept.  <a href="namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd">More...</a><br /></td></tr>
+<tr class="separator:a28ea3e39a125aaf90a97b1f75d91f0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">isDevice</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptDev, TDev&gt;::value</td></tr>
+<tr class="memdesc:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TDev is a device, i.e. if it implements the ConceptDev concept.  <a href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">More...</a><br /></td></tr>
+<tr class="separator:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
+<tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">isPlatform</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a>, TPltf&gt;::value</td></tr>
+<tr class="memdesc:a87d64705ec25ad0c9a25a218118c0ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TPltf is a platform, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a> concept.  <a href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">More...</a><br /></td></tr>
+<tr class="separator:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b01aa67d992572f8812a47813269bfa"><td class="memTemplParams" colspan="2">template&lt;typename TQueue &gt; </td></tr>
+<tr class="memitem:a8b01aa67d992572f8812a47813269bfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">isQueue</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptQueue, TQueue&gt;::value</td></tr>
+<tr class="memdesc:a8b01aa67d992572f8812a47813269bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.  <a href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">More...</a><br /></td></tr>
+<tr class="separator:a8b01aa67d992572f8812a47813269bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The alpaka accelerator library. </p>
@@ -1255,7 +1271,7 @@ template&lt;typename T &gt; </div>
 
 <p>The accelerator type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00058">58</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00063">63</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1625,7 +1641,7 @@ template&lt;typename T &gt; </div>
 
 <p>The platform type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00050">50</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00054">54</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1670,7 +1686,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00069">69</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00073">73</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4057,7 +4073,7 @@ template&lt;typename TQueue &gt; </div>
 <dl class="section warning"><dt>Warning</dt><dd>This function is allowed to return false negatives. An empty queue can reported as non empty because the status information are not fully propagated by the used alpaka backend. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>true queue is empty else false. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00057">57</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00061">61</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4093,7 +4109,7 @@ template&lt;typename TQueue , typename TTask &gt; </div>
 <p>Queues the given task in the given queue. </p>
 <p>Special Handling for events: If the event has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. </p>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00046">46</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00050">50</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4379,7 +4395,7 @@ template&lt;typename TAcc , typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The acceleration properties on the given device. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00062">62</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00067">67</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4408,7 +4424,7 @@ template&lt;typename TAcc &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00077">77</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4516,7 +4532,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device this object is bound to. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00063">63</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00067">67</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4539,7 +4555,7 @@ template&lt;typename TPltf &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device identified by its index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00061">61</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00065">65</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4561,7 +4577,7 @@ template&lt;typename TPltf &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device identified by its index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00054">54</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00058">58</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4584,7 +4600,7 @@ template&lt;typename TPltf &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>All the devices available on this accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00068">68</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4773,7 +4789,7 @@ template&lt;typename TDev &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The free memory on the device in Bytes.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Do not use this query if getMemBytes returned 0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00088">88</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00092">92</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4982,7 +4998,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The memory on the device in Bytes. Returns 0 if querying memory is not supported. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00079">79</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00083">83</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5006,7 +5022,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00071">71</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00075">75</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5579,7 +5595,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The supported warp sizes on the device in number of threads. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00095">95</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00099">99</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -7467,7 +7483,7 @@ template&lt;typename TDev &gt; </div>
 
 <p>Resets the device. What this method does is dependent on the accelerator. </p>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00103">103</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00107">107</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8497,13 +8513,125 @@ template&lt;typename T , typename U &gt; </div>
 
 </div>
 </div>
+<a id="a28ea3e39a125aaf90a97b1f75d91f0dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28ea3e39a125aaf90a97b1f75d91f0dd">&#9670;&nbsp;</a></span>isAccelerator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool alpaka::isAccelerator = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptAcc.html">ConceptAcc</a>, TAcc&gt;::value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if TAcc is an accelerator, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptAcc.html">ConceptAcc</a> concept. </p>
+
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00035">35</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ac46c96dc95e8410d4ae3ef85e79d8dbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac46c96dc95e8410d4ae3ef85e79d8dbf">&#9670;&nbsp;</a></span>isDevice</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDev &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool alpaka::isDevice = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptDev, TDev&gt;::value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if TDev is a device, i.e. if it implements the ConceptDev concept. </p>
+
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00063">63</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a87d64705ec25ad0c9a25a218118c0ad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87d64705ec25ad0c9a25a218118c0ad4">&#9670;&nbsp;</a></span>isPlatform</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TPltf &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool alpaka::isPlatform = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a>, TPltf&gt;::value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if TPltf is a platform, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a> concept. </p>
+
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00028">28</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a8b01aa67d992572f8812a47813269bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b01aa67d992572f8812a47813269bfa">&#9670;&nbsp;</a></span>isQueue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TQueue &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool alpaka::isQueue = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptQueue, TQueue&gt;::value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if TQueue is a queue, i.e. if it implements the ConceptQueue concept. </p>
+
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00025">25</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Mon Jan 16 2023 13:35:30 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 16 2023 18:44:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

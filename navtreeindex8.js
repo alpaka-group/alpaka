@@ -1,10 +1,14 @@
 var NAVTREEINDEX8 =
 {
+"namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d":[2,0,0,176],
+"namespacealpaka.html#a8017c63890cc9f65edf18a7f345c905f":[2,0,0,182],
+"namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52":[2,0,0,141],
 "namespacealpaka.html#a807188d82118e5a640469d676853a195":[2,0,0,148],
 "namespacealpaka.html#a81b181b1d464d5bb03ae781c22750ca3":[2,0,0,288],
 "namespacealpaka.html#a82ab813db2a56a22210f6f99538e3e42":[2,0,0,241],
 "namespacealpaka.html#a864a91f6b0565f1d0ecf2e3e23e3b868":[2,0,0,237],
 "namespacealpaka.html#a86d7a0737b745fb6b3befa1115654941":[2,0,0,305],
+"namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4":[2,0,0,346],
 "namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676":[2,0,0,186],
 "namespacealpaka.html#a8a11334697bff8a6fb14559535908633":[2,0,0,161],
 "namespacealpaka.html#a8a1c027320c9d7a10df1ae7bc87fcb46":[2,0,0,277],
@@ -13,6 +17,7 @@ var NAVTREEINDEX8 =
 "namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1":[2,0,0,330],
 "namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa":[2,0,0,153],
 "namespacealpaka.html#a8b0054207293a75e2187ebcd2dc1c7fd":[2,0,0,221],
+"namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa":[2,0,0,347],
 "namespacealpaka.html#a8c3580b7a262d20a172b62cb8b6153c5":[2,0,0,207],
 "namespacealpaka.html#a8c8f447bfbfe23aa289be0aca09ac17e":[2,0,0,293],
 "namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103":[2,0,0,145],
@@ -50,6 +55,7 @@ var NAVTREEINDEX8 =
 "namespacealpaka.html#ac0a97122a5ef2138ad90ac4ed10d66ad":[2,0,0,322],
 "namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd":[2,0,0,259],
 "namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d":[2,0,0,138],
+"namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf":[2,0,0,345],
 "namespacealpaka.html#ac486a72c51166125fb227c7af1884209":[2,0,0,147],
 "namespacealpaka.html#ac49b3c4b09c8a7455e8f88faa51484df":[2,0,0,226],
 "namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1":[2,0,0,339],
@@ -243,11 +249,5 @@ var NAVTREEINDEX8 =
 "namespacealpaka_1_1meta.html":[2,0,0,13],
 "namespacealpaka_1_1meta.html#a045597af75fc88f57bf8c02e3ecc4444":[2,0,0,13,46],
 "namespacealpaka_1_1meta.html#a0cef95a955740a85417c93cee0a99d0e":[2,0,0,13,43],
-"namespacealpaka_1_1meta.html#a0f3c6777dcdb44614e8c23dfe07c99d0":[2,0,0,13,38],
-"namespacealpaka_1_1meta.html#a232409af86c4d12e27e83406c7d6f6ca":[2,0,0,13,36],
-"namespacealpaka_1_1meta.html#a2977de255e74797d3699121598066dd2":[2,0,0,13,32],
-"namespacealpaka_1_1meta.html#a39137cbb1dfdb86f90c978f4cc59398e":[2,0,0,13,29],
-"namespacealpaka_1_1meta.html#a3e58a91d9729169b90e61f495df98ebe":[2,0,0,13,34],
-"namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c":[2,0,0,13,42],
-"namespacealpaka_1_1meta.html#a4d6e5b453ca068f43742cf89a32593dd":[2,0,0,13,41]
+"namespacealpaka_1_1meta.html#a0f3c6777dcdb44614e8c23dfe07c99d0":[2,0,0,13,38]
 };

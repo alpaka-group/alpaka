@@ -6,5 +6,6 @@ var pltf_2Traits_8hpp =
     [ "Pltf", "pltf_2Traits_8hpp.html#a6b83bc07c7ca78824c9b5026f951cff4", null ],
     [ "getDevByIdx", "pltf_2Traits_8hpp.html#adefd54a5e3f0577ffd0cc800c40bb511", null ],
     [ "getDevCount", "pltf_2Traits_8hpp.html#a2560032208d908207e4a5a4455a2acb2", null ],
-    [ "getDevs", "pltf_2Traits_8hpp.html#a23384b2db813a3657d3278247d095ad6", null ]
+    [ "getDevs", "pltf_2Traits_8hpp.html#a23384b2db813a3657d3278247d095ad6", null ],
+    [ "isPlatform", "pltf_2Traits_8hpp.html#a87d64705ec25ad0c9a25a218118c0ad4", null ]
 ];

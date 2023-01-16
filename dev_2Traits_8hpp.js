@@ -7,5 +7,6 @@ var dev_2Traits_8hpp =
     [ "getMemBytes", "dev_2Traits_8hpp.html#a69d68a30000dc80ea5a1c09139f2b789", null ],
     [ "getName", "dev_2Traits_8hpp.html#a2f6580f456ad2faecf55eaadfe145cc6", null ],
     [ "getWarpSizes", "dev_2Traits_8hpp.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5", null ],
-    [ "reset", "dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943", null ]
+    [ "reset", "dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943", null ],
+    [ "isDevice", "dev_2Traits_8hpp.html#ac46c96dc95e8410d4ae3ef85e79d8dbf", null ]
 ];

@@ -94,6 +94,7 @@ var NAVTREEINDEX3 =
 "WorkDivUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,27,4],
 "WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,27,4],
 "acc_2Traits_8hpp.html":[4,0,0,0,0,17],
+"acc_2Traits_8hpp.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[4,0,0,0,0,17,6],
 "acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,17,4],
 "acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,17,5],
 "acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a":[4,0,0,0,0,17,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1Complex.html#ac12a6d3142984d8a7954241baecff7d4":[3,0,0,64,15],
 "classalpaka_1_1Complex.html#ac1c798706c93a380ed5f29433728e86f":[3,0,0,64,5],
 "classalpaka_1_1DevCpu.html":[3,0,0,80],
-"classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e":[3,0,0,80,3],
-"classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482":[3,0,0,80,2]
+"classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e":[3,0,0,80,3]
 };
