@@ -29,6 +29,7 @@ generate:
     paths:
       - jobs.yml
     expire_in: 1 week
+  interruptible: true
 
 run-tests:
   stage: run-test-jobs
