@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('PltfCpuSyclIntel_8hpp_source.html','')
 <div class="title">PltfCpuSyclIntel.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="PltfCpuSyclIntel_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jan Stephan</span></div>
+<a href="PltfCpuSyclIntel_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of Alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -134,26 +134,20 @@ $(document).ready(function(){initNavTree('PltfCpuSyclIntel_8hpp_source.html','')
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    } <span class="comment">// namespace detail</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">    //! The SYCL device manager.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment"></span>    <span class="keyword">class </span>PltfCpuSyclIntel : <span class="keyword">public</span> PltfGenericSycl</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        PltfCpuSyclIntel() = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">using</span> selector = detail::IntelCpuSelector;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    };</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;} <span class="comment">// namespace alpaka::experimental</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{<span class="comment"></span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">    //! The SYCL device manager device type trait specialization.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">struct </span>DevType&lt;experimental::PltfCpuSyclIntel&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">using</span> type = experimental::DevGenericSycl&lt;experimental::PltfCpuSyclIntel&gt;; <span class="comment">// = DevCpuSyclIntel</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    };</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment"></span>    <span class="keyword">using</span> PltfCpuSyclIntel = PltfGenericSycl&lt;detail::IntelCpuSelector&gt;;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;} <span class="comment">// namespace alpaka::experimental</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">    //! The SYCL device manager device type trait specialization.</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">struct </span>DevType&lt;experimental::PltfCpuSyclIntel&gt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">using</span> type = experimental::DevGenericSycl&lt;experimental::PltfCpuSyclIntel&gt;; <span class="comment">// = DevCpuSyclIntel</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    };</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aDevGenericSycl_8hpp_html"><div class="ttname"><a href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aPltfGenericSycl_8hpp_html"><div class="ttname"><a href="PltfGenericSycl_8hpp.html">PltfGenericSycl.hpp</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -165,7 +159,7 @@ $(document).ready(function(){initNavTree('PltfCpuSyclIntel_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_3da4cf0d8582bc897be6864cae72e9ae.html">pltf</a></li><li class="navelem"><a class="el" href="PltfCpuSyclIntel_8hpp.html">PltfCpuSyclIntel.hpp</a></li>
-    <li class="footer">Generated on Tue Jan 17 2023 08:34:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jan 17 2023 09:06:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
