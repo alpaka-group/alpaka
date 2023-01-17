@@ -296,6 +296,7 @@ def create_job(
         "source ./script/gitlab_ci_run.sh",
     ]
     job_yaml["tags"] = job_tags(job)
+    job_yaml["interruptible"] = True
 
     return {job_name: job_yaml}
 
