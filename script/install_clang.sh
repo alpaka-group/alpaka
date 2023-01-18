@@ -18,6 +18,12 @@ source ./script/set.sh
 : "${ALPAKA_CI_STDLIB?'ALPAKA_CI_STDLIB must be specified'}"
 : "${CXX?'CXX must be specified'}"
 
+#TODO(SimeonEhrig): remove this statement, if ppa's are fixed in alpaka-group-container
+if [[ -f "/etc/apt/sources.list.d/llvm.list" ]];
+then
+    sudo rm /etc/apt/sources.list.d/llvm.list
+fi
+
 if ! agc-manager -e clang@${ALPAKA_CI_CLANG_VER}
 then
     # Install from LLVM repository (if available); otherwise install LLVM from official Ubuntu repositories
@@ -25,8 +31,8 @@ then
     wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 
     # focal = 20.04; jammy = 22.04
-    if { [ "${ALPAKA_CI_UBUNTU_NAME}" == "focal" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 9 ]; } || \
-    { [ "${ALPAKA_CI_UBUNTU_NAME}" == "jammy" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 13 ]; }
+    if { [ "${ALPAKA_CI_UBUNTU_NAME}" == "focal" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 13 ]; } || \
+    { [ "${ALPAKA_CI_UBUNTU_NAME}" == "jammy" ] && [ "${ALPAKA_CI_CLANG_VER}" -ge 15 ]; }
     then
         sudo add-apt-repository "deb http://apt.llvm.org/${ALPAKA_CI_UBUNTU_NAME}/ llvm-toolchain-${ALPAKA_CI_UBUNTU_NAME}-$ALPAKA_CI_CLANG_VER main"
     fi
