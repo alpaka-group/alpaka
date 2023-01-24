@@ -23,18 +23,29 @@ generate:
   script:
     - apk update && apk add python3~=3.10 py3-pip
     - pip3 install -r script/job_generator/requirements.txt
-    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION}
-    - cat jobs.yml
+    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --compile-only -o compile_only.yml
+    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --runtime-only -o runtime.yml
+    - cat compile_only.yml
+    - cat runtime.yml
   artifacts:
     paths:
-      - jobs.yml
+      - compile_only.yml
+      - runtime.yml
     expire_in: 1 week
   interruptible: true
 
-run-tests:
+run-compile-only-test:
   stage: run-test-jobs
   trigger:
     include:
-      - artifact: jobs.yml
+      - artifact: compile_only.yml
+        job: generate
+    strategy: depend
+
+run-runtime-test:
+  stage: run-test-jobs
+  trigger:
+    include:
+      - artifact: runtime.yml
         job: generate
     strategy: depend

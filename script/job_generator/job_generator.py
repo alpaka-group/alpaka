@@ -32,7 +32,9 @@ from generate_job_yaml import (
     write_job_yaml,
     distribute_to_waves,
     JOB_COMPILE_ONLY,
+    JOB_RUNTIME,
     JOB_UNKNOWN,
+    WAVE_GROUP_NAMES,
 )
 from job_modifier import add_job_parameters
 from verify import verify
@@ -88,6 +90,14 @@ def get_args() -> argparse.Namespace:
         help="Orders jobs by their names. Expects a string consisting of one or more Python regex. "
         'The regex are separated by whitespaces. For example, the regex "^NVCC ^GCC" has the '
         "behavior that all NVCC jobs are executed first and then all GCC jobs.",
+    )
+
+    parser.add_argument(
+        "--compile-only", action="store_true", help="Generate only compile only jobs."
+    )
+
+    parser.add_argument(
+        "--runtime-only", action="store_true", help="Generate only runtime jobs."
     )
 
     return parser.parse_args()
@@ -187,6 +197,18 @@ if __name__ == "__main__":
         for wave in wave_job_matrix[JOB_UNKNOWN]:
             for job in wave:
                 print(job)
+
+    if args.compile_only:
+        wave_job_matrix = {JOB_COMPILE_ONLY: wave_job_matrix[JOB_COMPILE_ONLY]}
+        for wave_name in WAVE_GROUP_NAMES:
+            if not wave_name in wave_job_matrix:
+                wave_job_matrix[wave_name] = []
+
+    if args.runtime_only:
+        wave_job_matrix = {JOB_RUNTIME: wave_job_matrix[JOB_RUNTIME]}
+        for wave_name in WAVE_GROUP_NAMES:
+            if not wave_name in wave_job_matrix:
+                wave_job_matrix[wave_name] = []
 
     write_job_yaml(
         job_matrix=wave_job_matrix,
