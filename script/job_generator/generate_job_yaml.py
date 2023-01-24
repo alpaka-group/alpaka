@@ -467,6 +467,27 @@ def write_job_yaml(
         path (str): Path of the GitLab-CI yaml file.
     """
     with open(path, "w", encoding="utf-8") as output_file:
+        # If there is no CI job, create a dummy job.
+        # This can happen if the filter filters out all jobs.
+        number_of_jobs = 0
+        for wave_name in WAVE_GROUP_NAMES:
+            number_of_jobs += len(job_matrix[wave_name])
+
+        if number_of_jobs == 0:
+            yaml.dump(
+                {
+                    "dummy-job": {
+                        "image": "alpine:latest",
+                        "interruptible": True,
+                        "script": [
+                            'echo "This is a dummy job so that the CI does not fail."'
+                        ],
+                    }
+                },
+                output_file,
+            )
+            return
+
         stages: Dict[str, List[str]] = {"stages": []}
 
         for wave_name in WAVE_GROUP_NAMES:
