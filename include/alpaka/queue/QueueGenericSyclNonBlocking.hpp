@@ -11,7 +11,7 @@
 #    include <memory>
 #    include <utility>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     template<typename TDev>
     using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TDev, false>;

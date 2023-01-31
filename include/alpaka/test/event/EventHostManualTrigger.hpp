@@ -724,7 +724,7 @@ namespace alpaka
         class EventHostManualTriggerSycl
         {
         public:
-            EventHostManualTriggerSycl(experimental::DevGenericSycl<TPltf> const&)
+            EventHostManualTriggerSycl(DevGenericSycl<TPltf> const&)
             {
             }
 
@@ -736,15 +736,15 @@ namespace alpaka
         namespace trait
         {
             template<typename TPltf>
-            struct EventHostManualTriggerType<experimental::DevGenericSycl<TPltf>>
+            struct EventHostManualTriggerType<DevGenericSycl<TPltf>>
             {
                 using type = alpaka::test::EventHostManualTriggerSycl<TPltf>;
             };
 
             template<typename TPltf>
-            struct IsEventHostManualTriggerSupported<experimental::DevGenericSycl<TPltf>>
+            struct IsEventHostManualTriggerSupported<DevGenericSycl<TPltf>>
             {
-                ALPAKA_FN_HOST static auto isSupported(experimental::DevGenericSycl<TPltf> const&) -> bool
+                ALPAKA_FN_HOST static auto isSupported(DevGenericSycl<TPltf> const&) -> bool
                 {
                     return false;
                 }
@@ -755,24 +755,20 @@ namespace alpaka
     namespace trait
     {
         template<typename TPltf>
-        struct Enqueue<
-            experimental::QueueGenericSyclBlocking<experimental::DevGenericSycl<TPltf>>,
-            test::EventHostManualTriggerSycl<TPltf>>
+        struct Enqueue<QueueGenericSyclBlocking<DevGenericSycl<TPltf>>, test::EventHostManualTriggerSycl<TPltf>>
         {
             ALPAKA_FN_HOST static auto enqueue(
-                experimental::QueueGenericSyclBlocking<experimental::DevGenericSycl<TPltf>>& queue,
+                QueueGenericSyclBlocking<DevGenericSycl<TPltf>>& queue,
                 test::EventHostManualTriggerSycl<TPltf>& event) -> void
             {
             }
         };
 
         template<typename TPltf>
-        struct Enqueue<
-            experimental::QueueGenericSyclNonBlocking<experimental::DevGenericSycl<TPltf>>,
-            test::EventHostManualTriggerSycl<TPltf>>
+        struct Enqueue<QueueGenericSyclNonBlocking<DevGenericSycl<TPltf>>, test::EventHostManualTriggerSycl<TPltf>>
         {
             ALPAKA_FN_HOST static auto enqueue(
-                experimental::QueueGenericSyclNonBlocking<experimental::DevGenericSycl<TPltf>>& queue,
+                QueueGenericSyclNonBlocking<DevGenericSycl<TPltf>>& queue,
                 test::EventHostManualTriggerSycl<TPltf>& event) -> void
             {
             }

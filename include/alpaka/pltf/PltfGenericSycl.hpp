@@ -24,7 +24,7 @@
 #    include <stdexcept>
 #    include <vector>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The SYCL device manager.
     template<typename TSelector>
@@ -127,31 +127,31 @@ namespace alpaka::experimental
 #        pragma clang diagnostic pop
 #    endif
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL platform device count get trait specialization.
     template<typename TSelector>
-    struct GetDevCount<alpaka::experimental::PltfGenericSycl<TSelector>>
+    struct GetDevCount<alpaka::PltfGenericSycl<TSelector>>
     {
         static auto getDevCount() -> std::size_t
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-            return alpaka::experimental::PltfGenericSycl<TSelector>::syclDevices().size();
+            return alpaka::PltfGenericSycl<TSelector>::syclDevices().size();
         }
     };
 
     //! The SYCL platform device get trait specialization.
     template<typename TSelector>
-    struct GetDevByIdx<alpaka::experimental::PltfGenericSycl<TSelector>>
+    struct GetDevByIdx<alpaka::PltfGenericSycl<TSelector>>
     {
         static auto getDevByIdx(std::size_t const& devIdx)
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-            using SyclPltf = alpaka::experimental::PltfGenericSycl<TSelector>;
+            using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
 
             auto const dev_num = getDevCount<SyclPltf>();
 

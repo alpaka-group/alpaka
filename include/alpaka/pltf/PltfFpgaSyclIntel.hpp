@@ -13,7 +13,7 @@
 #    include <CL/sycl.hpp>
 #    include <sycl/ext/intel/fpga_extensions.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The SYCL device manager.
 #    ifdef ALPAKA_FPGA_EMULATION
@@ -21,15 +21,15 @@ namespace alpaka::experimental
 #    else
     using PltfFpgaSyclIntel = PltfGenericSycl<sycl::ext::intel::fpga_selector>;
 #    endif
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
-    struct DevType<experimental::PltfFpgaSyclIntel>
+    struct DevType<PltfFpgaSyclIntel>
     {
-        using type = experimental::DevGenericSycl<experimental::PltfFpgaSyclIntel>; // = DevFpgaSyclIntel
+        using type = DevGenericSycl<PltfFpgaSyclIntel>; // = DevFpgaSyclIntel
     };
 } // namespace alpaka::trait
 

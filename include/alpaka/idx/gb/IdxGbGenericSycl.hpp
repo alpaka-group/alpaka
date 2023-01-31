@@ -14,7 +14,7 @@
 
 #    include <CL/sycl.hpp>
 
-namespace alpaka::experimental::gb
+namespace alpaka::gb
 {
     //! The SYCL accelerator ND index provider.
     template<typename TDim, typename TIdx>
@@ -29,24 +29,24 @@ namespace alpaka::experimental::gb
 
         sycl::nd_item<TDim::value> my_item;
     };
-} // namespace alpaka::experimental::gb
+} // namespace alpaka::gb
 
 namespace alpaka::trait
 {
     //! The SYCL accelerator index dimension get trait specialization.
     template<typename TDim, typename TIdx>
-    struct DimType<experimental::gb::IdxGbGenericSycl<TDim, TIdx>>
+    struct DimType<gb::IdxGbGenericSycl<TDim, TIdx>>
     {
         using type = TDim;
     };
 
     //! The SYCL accelerator grid block index get trait specialization.
     template<typename TDim, typename TIdx>
-    struct GetIdx<experimental::gb::IdxGbGenericSycl<TDim, TIdx>, origin::Grid, unit::Blocks>
+    struct GetIdx<gb::IdxGbGenericSycl<TDim, TIdx>, origin::Grid, unit::Blocks>
     {
         //! \return The index of the current block in the grid.
         template<typename TWorkDiv>
-        static auto getIdx(experimental::gb::IdxGbGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&)
+        static auto getIdx(gb::IdxGbGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&)
         {
             if constexpr(TDim::value == 1)
                 return Vec<TDim, TIdx>(static_cast<TIdx>(idx.my_item.get_group(0)));
@@ -68,7 +68,7 @@ namespace alpaka::trait
 
     //! The SYCL accelerator grid block index idx type trait specialization.
     template<typename TDim, typename TIdx>
-    struct IdxType<experimental::gb::IdxGbGenericSycl<TDim, TIdx>>
+    struct IdxType<gb::IdxGbGenericSycl<TDim, TIdx>>
     {
         using type = TIdx;
     };

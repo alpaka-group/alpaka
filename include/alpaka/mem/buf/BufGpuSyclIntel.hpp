@@ -10,7 +10,7 @@
 #    include <alpaka/dev/DevGpuSyclIntel.hpp>
 #    include <alpaka/mem/buf/BufGenericSycl.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx>
     using BufGpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, DevGpuSyclIntel>;

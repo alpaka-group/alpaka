@@ -24,7 +24,7 @@
 #    include <utility>
 
 // SYCL vector types trait specializations.
-namespace alpaka::experimental
+namespace alpaka
 {
     namespace detail
     {
@@ -129,20 +129,20 @@ namespace alpaka::experimental
               sycl::half16>
     {
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! SYCL's types get trait specialization.
     template<typename T>
-    struct DimType<T, std::enable_if_t<experimental::IsSyclBuiltInType<T>::value>>
+    struct DimType<T, std::enable_if_t<IsSyclBuiltInType<T>::value>>
     {
         using type = std::conditional_t<std::is_scalar_v<T>, DimInt<std::size_t{1}>, DimInt<T::size()>>;
     };
 
     //! The SYCL vectors' elem type trait specialization.
     template<typename T>
-    struct ElemType<T, std::enable_if_t<experimental::IsSyclBuiltInType<T>::value>>
+    struct ElemType<T, std::enable_if_t<IsSyclBuiltInType<T>::value>>
     {
         using type = std::conditional_t<std::is_scalar_v<T>, T, typename T::element_type>;
     };
@@ -152,10 +152,7 @@ namespace alpaka::trait
 {
     //! The SYCL vectors' extent get trait specialization.
     template<typename TExtent>
-    struct GetExtent<
-        DimInt<Dim<TExtent>::value>,
-        TExtent,
-        std::enable_if_t<experimental::IsSyclBuiltInType<TExtent>::value>>
+    struct GetExtent<DimInt<Dim<TExtent>::value>, TExtent, std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
     {
         static auto getExtent(TExtent const& extent)
         {
@@ -176,7 +173,7 @@ namespace alpaka::trait
         DimInt<Dim<TExtent>::value>,
         TExtent,
         TExtentVal,
-        std::enable_if_t<experimental::IsSyclBuiltInType<TExtent>::value>>
+        std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
     {
         static auto setExtent(TExtent const& extent, TExtentVal const& extentVal)
         {
@@ -193,10 +190,7 @@ namespace alpaka::trait
 
     //! The SYCL vectors' offset get trait specialization.
     template<typename TOffsets>
-    struct GetOffset<
-        DimInt<Dim<TOffsets>::value>,
-        TOffsets,
-        std::enable_if_t<experimental::IsSyclBuiltInType<TOffsets>::value>>
+    struct GetOffset<DimInt<Dim<TOffsets>::value>, TOffsets, std::enable_if_t<IsSyclBuiltInType<TOffsets>::value>>
     {
         static auto getOffset(TOffsets const& offsets)
         {
@@ -217,7 +211,7 @@ namespace alpaka::trait
         DimInt<Dim<TOffsets>::value>,
         TOffsets,
         TOffset,
-        std::enable_if_t<experimental::IsSyclBuiltInType<TOffsets>::value>>
+        std::enable_if_t<IsSyclBuiltInType<TOffsets>::value>>
     {
         static auto setOffset(TOffsets const& offsets, TOffset const& offset)
         {
@@ -234,7 +228,7 @@ namespace alpaka::trait
 
     //! The SYCL vectors' idx type trait specialization.
     template<typename TIdx>
-    struct IdxType<TIdx, std::enable_if_t<experimental::IsSyclBuiltInType<TIdx>::value>>
+    struct IdxType<TIdx, std::enable_if_t<IsSyclBuiltInType<TIdx>::value>>
     {
         using type = std::size_t;
     };

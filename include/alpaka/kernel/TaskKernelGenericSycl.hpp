@@ -30,7 +30,7 @@
 #    include <type_traits>
 #    include <utility>
 
-namespace alpaka::experimental::detail
+namespace alpaka::detail
 {
     template<typename TAcc, typename TKernelFnObj, typename... TArgs>
     struct kernel
@@ -48,7 +48,9 @@ namespace alpaka::experimental::detail
     template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
     inline auto require(
         sycl::handler& cgh,
-        Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes> acc,
+        experimental::
+            Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
+                acc,
         special)
     {
         cgh.require(acc.m_accessor);
@@ -64,9 +66,9 @@ namespace alpaka::experimental::detail
     {
         core::apply([&](auto&&... ps) { (require(cgh, std::forward<decltype(ps)>(ps), special{}), ...); }, args);
     }
-} // namespace alpaka::experimental::detail
+} // namespace alpaka::detail
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The SYCL accelerator execution task.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
@@ -207,41 +209,41 @@ namespace alpaka::experimental
         TKernelFnObj m_kernelFnObj;
         core::Tuple<std::decay_t<TArgs>...> m_args;
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL execution task accelerator type trait specialization.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    struct AccType<experimental::TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+    struct AccType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
     {
         using type = TAcc;
     };
 
     //! The SYCL execution task device type trait specialization.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    struct DevType<experimental::TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+    struct DevType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
     {
         using type = typename DevType<TAcc>::type;
     };
 
     //! The SYCL execution task platform type trait specialization.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    struct PltfType<experimental::TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+    struct PltfType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
     {
         using type = typename PltfType<TAcc>::type;
     };
 
     //! The SYCL execution task dimension getter trait specialization.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    struct DimType<experimental::TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+    struct DimType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
     {
         using type = TDim;
     };
 
     //! The SYCL execution task idx type trait specialization.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    struct IdxType<experimental::TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+    struct IdxType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
     {
         using type = TIdx;
     };

@@ -14,7 +14,7 @@
 
 #    include <string>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     namespace detail
     {
@@ -41,15 +41,15 @@ namespace alpaka::experimental
 
     //! The SYCL device manager.
     using PltfFgpaSyclIntel = PltfGenericSycl<detail::XilinxFpgaSelector>;
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
-    struct DevType<experimental::PltfFpgaSyclXilinx>
+    struct DevType<PltfFpgaSyclXilinx>
     {
-        using type = experimental::DevGenericSycl<experimental::PltfFpgaSyclXilinx>; // = DevFpgaSyclXilinx
+        using type = DevGenericSycl<PltfFpgaSyclXilinx>; // = DevFpgaSyclXilinx
     };
 } // namespace alpaka::trait
 

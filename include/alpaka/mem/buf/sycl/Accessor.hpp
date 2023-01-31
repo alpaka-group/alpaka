@@ -15,7 +15,7 @@
 #    include <cstddef>
 #    include <utility>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx, typename TDev>
     class BufGenericSycl;
@@ -26,10 +26,10 @@ namespace alpaka::experimental
         inline constexpr auto sycl_access_mode = sycl::access_mode::read_write;
 
         template<>
-        inline constexpr auto sycl_access_mode<ReadAccess> = sycl::access_mode::read;
+        inline constexpr auto sycl_access_mode<experimental::ReadAccess> = sycl::access_mode::read;
 
         template<>
-        inline constexpr auto sycl_access_mode<WriteAccess> = sycl::access_mode::write;
+        inline constexpr auto sycl_access_mode<experimental::WriteAccess> = sycl::access_mode::write;
 
         template<typename TElem, int TDim, typename... TAlpakaAccessModes>
         using SyclAccessor = sycl::accessor<
@@ -41,7 +41,8 @@ namespace alpaka::experimental
     } // namespace detail
 
     template<typename TElem, typename TIdx, typename TAccessModes>
-    struct Accessor<detail::SyclAccessor<TElem, 1, TAccessModes>, TElem, TIdx, std::size_t{1}, TAccessModes>
+    struct experimental::
+        Accessor<detail::SyclAccessor<TElem, 1, TAccessModes>, TElem, TIdx, std::size_t{1}, TAccessModes>
     {
         static constexpr auto sycl_access_mode = detail::sycl_access_mode<TAccessModes>;
         using SyclAccessor = detail::SyclAccessor<TElem, 1, TAccessModes>;
@@ -78,7 +79,8 @@ namespace alpaka::experimental
     };
 
     template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
-    struct Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
+    struct experimental::
+        Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
     {
         static constexpr auto sycl_access_mode = detail::sycl_access_mode<TAccessModes>;
         using SyclAccessor = detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>;
@@ -111,7 +113,7 @@ namespace alpaka::experimental
         VecType extents;
     };
 
-    namespace trait
+    namespace experimental::trait
     {
         namespace internal
         {
@@ -127,13 +129,13 @@ namespace alpaka::experimental
             template<typename... TAccessModes>
             static auto buildAccessor(BufGenericSycl<TElem, TDim, TIdx, TDev>& buffer)
             {
-                using SyclAccessor = experimental::detail::SyclAccessor<TElem, TDim::value, TAccessModes...>;
+                using SyclAccessor = detail::SyclAccessor<TElem, TDim::value, TAccessModes...>;
                 return Accessor<SyclAccessor, TElem, TIdx, TDim::value, TAccessModes...>{
                     SyclAccessor{buffer.m_buffer},
                     buffer.m_extentElements};
             }
         };
-    } // namespace trait
-} // namespace alpaka::experimental
+    } // namespace experimental::trait
+} // namespace alpaka
 
 #endif

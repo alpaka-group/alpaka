@@ -10,11 +10,11 @@
 #    include <alpaka/dev/DevFpgaSyclXilinx.hpp>
 #    include <alpaka/mem/buf/BufGenericSycl.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The SYCL memory buffer.
     template<typename TElem, typename TDim, typename TIdx>
     using BufFpgaSyclXilinx = BufGenericSycl<TElem, TDim, TIdx, DevFpgaSyclXilinx>;
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 #endif
