@@ -9,7 +9,7 @@
 #    include <alpaka/dev/DevCpuSyclIntel.hpp>
 #    include <alpaka/queue/QueueGenericSyclNonBlocking.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     using QueueCpuSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevCpuSyclIntel>;
 }

@@ -9,7 +9,7 @@
 #    include <alpaka/dev/DevGenericSycl.hpp>
 #    include <alpaka/pltf/PltfGpuSyclIntel.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     using DevGpuSyclIntel = DevGenericSycl<PltfGpuSyclIntel>;
 }

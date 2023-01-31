@@ -24,7 +24,7 @@
 #    include <string>
 #    include <utility>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The Intel GPU SYCL accelerator.
     //!
@@ -37,34 +37,34 @@ namespace alpaka::experimental
     public:
         using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The Intel GPU SYCL accelerator name trait specialization.
     template<typename TDim, typename TIdx>
-    struct GetAccName<experimental::AccGpuSyclIntel<TDim, TIdx>>
+    struct GetAccName<AccGpuSyclIntel<TDim, TIdx>>
     {
         static auto getAccName() -> std::string
         {
-            return "experimental::AccGpuSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
+            return "AccGpuSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
         }
     };
 
     //! The Intel GPU SYCL accelerator device type trait specialization.
     template<typename TDim, typename TIdx>
-    struct DevType<experimental::AccGpuSyclIntel<TDim, TIdx>>
+    struct DevType<AccGpuSyclIntel<TDim, TIdx>>
     {
-        using type = experimental::DevGpuSyclIntel;
+        using type = DevGpuSyclIntel;
     };
 
     //! The Intel GPU SYCL accelerator execution task type trait specialization.
     template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    struct CreateTaskKernel<experimental::AccGpuSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+    struct CreateTaskKernel<AccGpuSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
     {
         static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         {
-            return experimental::TaskKernelGpuSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
+            return TaskKernelGpuSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
                 workDiv,
                 kernelFnObj,
                 std::forward<TArgs>(args)...};
@@ -73,13 +73,13 @@ namespace alpaka::trait
 
     //! The Intel GPU SYCL execution task platform type trait specialization.
     template<typename TDim, typename TIdx>
-    struct PltfType<experimental::AccGpuSyclIntel<TDim, TIdx>>
+    struct PltfType<AccGpuSyclIntel<TDim, TIdx>>
     {
-        using type = experimental::PltfGpuSyclIntel;
+        using type = PltfGpuSyclIntel;
     };
 
     template<typename TDim, typename TIdx>
-    struct AccToTag<alpaka::experimental::AccGpuSyclIntel<TDim, TIdx>>
+    struct AccToTag<alpaka::AccGpuSyclIntel<TDim, TIdx>>
     {
         using type = alpaka::TagGpuSyclIntel;
     };
@@ -87,7 +87,7 @@ namespace alpaka::trait
     template<typename TDim, typename TIdx>
     struct TagToAcc<alpaka::TagGpuSyclIntel, TDim, TIdx>
     {
-        using type = alpaka::experimental::AccGpuSyclIntel<TDim, TIdx>;
+        using type = alpaka::AccGpuSyclIntel<TDim, TIdx>;
     };
 } // namespace alpaka::trait
 

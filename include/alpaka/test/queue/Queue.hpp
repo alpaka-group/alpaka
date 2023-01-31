@@ -108,23 +108,23 @@ namespace alpaka::test
 #        ifdef ALPAKA_SYCL_ONEAPI_CPU
         //! The default queue type trait specialization for the Intel CPU device.
         template<>
-        struct DefaultQueueType<alpaka::experimental::DevCpuSyclIntel>
+        struct DefaultQueueType<alpaka::DevCpuSyclIntel>
         {
 #            if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = alpaka::experimental::QueueCpuSyclIntelBlocking;
+            using type = alpaka::QueueCpuSyclIntelBlocking;
 #            else
-            using type = alpaka::experimental::QueueCpuSyclIntelNonBlocking;
+            using type = alpaka::QueueCpuSyclIntelNonBlocking;
 #            endif
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueCpuSyclIntelBlocking>
+        struct IsBlockingQueue<alpaka::QueueCpuSyclIntelBlocking>
         {
             static constexpr auto value = true;
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueCpuSyclIntelNonBlocking>
+        struct IsBlockingQueue<alpaka::QueueCpuSyclIntelNonBlocking>
         {
             static constexpr auto value = false;
         };
@@ -132,23 +132,23 @@ namespace alpaka::test
 #        ifdef ALPAKA_SYCL_ONEAPI_FPGA
         //! The default queue type trait specialization for the Intel SYCL device.
         template<>
-        struct DefaultQueueType<alpaka::experimental::DevFpgaSyclIntel>
+        struct DefaultQueueType<alpaka::DevFpgaSyclIntel>
         {
 #            if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = alpaka::experimental::QueueFpgaSyclIntelBlocking;
+            using type = alpaka::QueueFpgaSyclIntelBlocking;
 #            else
-            using type = alpaka::experimental::QueueFpgaSyclIntelNonBlocking;
+            using type = alpaka::QueueFpgaSyclIntelNonBlocking;
 #            endif
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueFpgaSyclIntelBlocking>
+        struct IsBlockingQueue<alpaka::QueueFpgaSyclIntelBlocking>
         {
             static constexpr auto value = true;
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueFpgaSyclIntelNonBlocking>
+        struct IsBlockingQueue<alpaka::QueueFpgaSyclIntelNonBlocking>
         {
             static constexpr auto value = false;
         };
@@ -156,23 +156,23 @@ namespace alpaka::test
 #        ifdef ALPAKA_SYCL_ONEAPI_GPU
         //! The default queue type trait specialization for the Intel CPU device.
         template<>
-        struct DefaultQueueType<alpaka::experimental::DevGpuSyclIntel>
+        struct DefaultQueueType<alpaka::DevGpuSyclIntel>
         {
 #            if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = alpaka::experimental::QueueGpuSyclIntelBlocking;
+            using type = alpaka::QueueGpuSyclIntelBlocking;
 #            else
-            using type = alpaka::experimental::QueueGpuSyclIntelNonBlocking;
+            using type = alpaka::QueueGpuSyclIntelNonBlocking;
 #            endif
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueGpuSyclIntelBlocking>
+        struct IsBlockingQueue<alpaka::QueueGpuSyclIntelBlocking>
         {
             static constexpr auto value = true;
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueGpuSyclIntelNonBlocking>
+        struct IsBlockingQueue<alpaka::QueueGpuSyclIntelNonBlocking>
         {
             static constexpr auto value = false;
         };
@@ -181,23 +181,23 @@ namespace alpaka::test
 #    ifdef ALPAKA_SYCL_BACKEND_XILINX
         //! The default queue type trait specialization for the Xilinx SYCL device.
         template<>
-        struct DefaultQueueType<alpaka::experimental::DevFpgaSyclXilinx>
+        struct DefaultQueueType<alpaka::DevFpgaSyclXilinx>
         {
 #        if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = alpaka::experimental::QueueFpgaSyclXilinxBlocking;
+            using type = alpaka::QueueFpgaSyclXilinxBlocking;
 #        else
-            using type = alpaka::experimental::QueueFpgaSyclXilinxNonBlocking;
+            using type = alpaka::QueueFpgaSyclXilinxNonBlocking;
 #        endif
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueFpgaSyclXilinxBlocking>
+        struct IsBlockingQueue<alpaka::QueueFpgaSyclXilinxBlocking>
         {
             static constexpr auto value = true;
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::experimental::QueueFpgaSyclXilinxNonBlocking>
+        struct IsBlockingQueue<alpaka::QueueFpgaSyclXilinxNonBlocking>
         {
             static constexpr auto value = false;
         };
@@ -235,24 +235,24 @@ namespace alpaka::test
 #    ifdef ALPAKA_SYCL_BACKEND_ONEAPI
 #        ifdef ALPAKA_SYCL_ONEAPI_CPU
         ,
-        std::tuple<alpaka::experimental::DevCpuSyclIntel, alpaka::experimental::QueueCpuSyclIntelBlocking>,
-        std::tuple<alpaka::experimental::DevCpuSyclIntel, alpaka::experimental::QueueCpuSyclIntelNonBlocking>
+        std::tuple<alpaka::DevCpuSyclIntel, alpaka::QueueCpuSyclIntelBlocking>,
+        std::tuple<alpaka::DevCpuSyclIntel, alpaka::QueueCpuSyclIntelNonBlocking>
 #        endif
 #        ifdef ALPAKA_SYCL_ONEAPI_FPGA
         ,
-        std::tuple<alpaka::experimental::DevFpgaSyclIntel, alpaka::experimental::QueueFpgaSyclIntelBlocking>,
-        std::tuple<alpaka::experimental::DevFpgaSyclIntel, alpaka::experimental::QueueFpgaSyclIntelNonBlocking>
+        std::tuple<alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelBlocking>,
+        std::tuple<alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelNonBlocking>
 #        endif
 #        ifdef ALPAKA_SYCL_ONEAPI_GPU
         ,
-        std::tuple<alpaka::experimental::DevGpuSyclIntel, alpaka::experimental::QueueGpuSyclIntelBlocking>,
-        std::tuple<alpaka::experimental::DevGpuSyclIntel, alpaka::experimental::QueueGpuSyclIntelNonBlocking>
+        std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelBlocking>,
+        std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelNonBlocking>
 #        endif
 #    endif
 #    if defined(ALPAKA_SYCL_BACKEND_XILINX)
         ,
-        std::tuple<alpaka::experimental::DevFpgaSyclXilinx, alpaka::experimental::QueueFpgaSyclXilinxBlocking>,
-        std::tuple<alpaka::experimental::DevFpgaSyclXilinx, alpaka::experimental::QueueFpgaSyclXilinxNonBlocking>
+        std::tuple<alpaka::DevFpgaSyclXilinx, alpaka::QueueFpgaSyclXilinxBlocking>,
+        std::tuple<alpaka::DevFpgaSyclXilinx, alpaka::QueueFpgaSyclXilinxNonBlocking>
 #    endif
 #endif
         >;

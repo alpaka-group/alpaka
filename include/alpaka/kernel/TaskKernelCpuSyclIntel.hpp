@@ -8,7 +8,7 @@
 
 #    include <alpaka/kernel/TaskKernelGenericSycl.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     template<typename TDim, typename TIdx>
     class AccCpuSyclIntel;
@@ -16,6 +16,6 @@ namespace alpaka::experimental
     template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     using TaskKernelCpuSyclIntel
         = TaskKernelGenericSycl<AccCpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 #endif

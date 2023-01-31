@@ -14,7 +14,7 @@
 
 #    include <cstddef>
 
-namespace alpaka::experimental::detail
+namespace alpaka::detail
 {
     template<typename TExtent>
     inline auto make_sycl_range(TExtent const& ext, std::size_t multiplier = 1)
@@ -43,6 +43,6 @@ namespace alpaka::experimental::detail
         else
             return sycl::id<3>{getOffsetX(view), getOffsetY(view), getOffsetZ(view)};
     }
-} // namespace alpaka::experimental::detail
+} // namespace alpaka::detail
 
 #endif

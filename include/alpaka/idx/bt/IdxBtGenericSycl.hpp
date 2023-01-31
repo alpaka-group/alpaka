@@ -14,7 +14,7 @@
 
 #    include <CL/sycl.hpp>
 
-namespace alpaka::experimental::bt
+namespace alpaka::bt
 {
     //! The SYCL accelerator ND index provider.
     template<typename TDim, typename TIdx>
@@ -29,25 +29,24 @@ namespace alpaka::experimental::bt
 
         sycl::nd_item<TDim::value> my_item;
     };
-} // namespace alpaka::experimental::bt
+} // namespace alpaka::bt
 
 namespace alpaka::trait
 {
     //! The SYCL accelerator index dimension get trait specialization.
     template<typename TDim, typename TIdx>
-    struct DimType<experimental::bt::IdxBtGenericSycl<TDim, TIdx>>
+    struct DimType<bt::IdxBtGenericSycl<TDim, TIdx>>
     {
         using type = TDim;
     };
 
     //! The SYCL accelerator block thread index get trait specialization.
     template<typename TDim, typename TIdx>
-    struct GetIdx<experimental::bt::IdxBtGenericSycl<TDim, TIdx>, origin::Block, unit::Threads>
+    struct GetIdx<bt::IdxBtGenericSycl<TDim, TIdx>, origin::Block, unit::Threads>
     {
         //! \return The index of the current thread in the block.
         template<typename TWorkDiv>
-        static auto getIdx(experimental::bt::IdxBtGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&)
-            -> Vec<TDim, TIdx>
+        static auto getIdx(bt::IdxBtGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&) -> Vec<TDim, TIdx>
         {
             if constexpr(TDim::value == 1)
                 return Vec<TDim, TIdx>{static_cast<TIdx>(idx.my_item.get_local_id(0))};
@@ -69,7 +68,7 @@ namespace alpaka::trait
 
     //! The SYCL accelerator block thread index idx type trait specialization.
     template<typename TDim, typename TIdx>
-    struct IdxType<experimental::bt::IdxBtGenericSycl<TDim, TIdx>>
+    struct IdxType<bt::IdxBtGenericSycl<TDim, TIdx>>
     {
         using type = TIdx;
     };

@@ -24,7 +24,7 @@
 #    include <string>
 #    include <utility>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The Intel FPGA SYCL accelerator.
     //!
@@ -37,34 +37,34 @@ namespace alpaka::experimental
     public:
         using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The Intel FPGA SYCL accelerator name trait specialization.
     template<typename TDim, typename TIdx>
-    struct GetAccName<experimental::AccFpgaSyclIntel<TDim, TIdx>>
+    struct GetAccName<AccFpgaSyclIntel<TDim, TIdx>>
     {
         ALPAKA_FN_HOST static auto getAccName() -> std::string
         {
-            return "experimental::AccFpgaSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
+            return "AccFpgaSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
         }
     };
 
     //! The Intel FPGA SYCL accelerator device type trait specialization.
     template<typename TDim, typename TIdx>
-    struct DevType<experimental::AccFpgaSyclIntel<TDim, TIdx>>
+    struct DevType<AccFpgaSyclIntel<TDim, TIdx>>
     {
-        using type = experimental::DevFpgaSyclIntel;
+        using type = DevFpgaSyclIntel;
     };
 
     //! The Intel FPGA SYCL accelerator execution task type trait specialization.
     template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    struct CreateTaskKernel<experimental::AccFpgaSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+    struct CreateTaskKernel<AccFpgaSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
     {
         static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
         {
-            return experimental::TaskKernelFpgaSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
+            return TaskKernelFpgaSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
                 workDiv,
                 kernelFnObj,
                 std::forward<TArgs>(args)...};
@@ -73,13 +73,13 @@ namespace alpaka::trait
 
     //! The Intel FPGA SYCL execution task platform type trait specialization.
     template<typename TDim, typename TIdx>
-    struct PltfType<experimental::AccFpgaSyclIntel<TDim, TIdx>>
+    struct PltfType<AccFpgaSyclIntel<TDim, TIdx>>
     {
-        using type = experimental::PltfFpgaSyclIntel;
+        using type = PltfFpgaSyclIntel;
     };
 
     template<typename TDim, typename TIdx>
-    struct AccToTag<alpaka::experimental::AccFpgaSyclIntel<TDim, TIdx>>
+    struct AccToTag<alpaka::AccFpgaSyclIntel<TDim, TIdx>>
     {
         using type = alpaka::TagFpgaSyclIntel;
     };
@@ -87,7 +87,7 @@ namespace alpaka::trait
     template<typename TDim, typename TIdx>
     struct TagToAcc<alpaka::TagFpgaSyclIntel, TDim, TIdx>
     {
-        using type = alpaka::experimental::AccFpgaSyclIntel<TDim, TIdx>;
+        using type = alpaka::AccFpgaSyclIntel<TDim, TIdx>;
     };
 } // namespace alpaka::trait
 

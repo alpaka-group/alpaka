@@ -12,7 +12,7 @@
 
 #    include <CL/sycl.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The SYCL accelerator work division.
     template<typename TDim, typename TIdx>
@@ -30,30 +30,30 @@ namespace alpaka::experimental
         Vec<TDim, TIdx> const& m_threadElemExtent;
         sycl::nd_item<TDim::value> my_item;
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL accelerator work division dimension get trait specialization.
     template<typename TDim, typename TIdx>
-    struct DimType<experimental::WorkDivGenericSycl<TDim, TIdx>>
+    struct DimType<WorkDivGenericSycl<TDim, TIdx>>
     {
         using type = TDim;
     };
 
     //! The SYCL accelerator work division idx type trait specialization.
     template<typename TDim, typename TIdx>
-    struct IdxType<experimental::WorkDivGenericSycl<TDim, TIdx>>
+    struct IdxType<WorkDivGenericSycl<TDim, TIdx>>
     {
         using type = TIdx;
     };
 
     //! The SYCL accelerator work division grid block extent trait specialization.
     template<typename TDim, typename TIdx>
-    struct GetWorkDiv<experimental::WorkDivGenericSycl<TDim, TIdx>, origin::Grid, unit::Blocks>
+    struct GetWorkDiv<WorkDivGenericSycl<TDim, TIdx>, origin::Grid, unit::Blocks>
     {
         //! \return The number of blocks in each dimension of the grid.
-        static auto getWorkDiv(experimental::WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
+        static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
         {
             if constexpr(TDim::value == 1)
                 return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.my_item.get_group_range(0))};
@@ -75,10 +75,10 @@ namespace alpaka::trait
 
     //! The SYCL accelerator work division block thread extent trait specialization.
     template<typename TDim, typename TIdx>
-    struct GetWorkDiv<experimental::WorkDivGenericSycl<TDim, TIdx>, origin::Block, unit::Threads>
+    struct GetWorkDiv<WorkDivGenericSycl<TDim, TIdx>, origin::Block, unit::Threads>
     {
         //! \return The number of threads in each dimension of a block.
-        static auto getWorkDiv(experimental::WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
+        static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
         {
             if constexpr(TDim::value == 1)
                 return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.my_item.get_local_range(0))};
@@ -100,10 +100,10 @@ namespace alpaka::trait
 
     //! The SYCL accelerator work division thread element extent trait specialization.
     template<typename TDim, typename TIdx>
-    struct GetWorkDiv<experimental::WorkDivGenericSycl<TDim, TIdx>, origin::Thread, unit::Elems>
+    struct GetWorkDiv<WorkDivGenericSycl<TDim, TIdx>, origin::Thread, unit::Elems>
     {
         //! \return The number of blocks in each dimension of the grid.
-        static auto getWorkDiv(experimental::WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
+        static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
         {
             return workDiv.m_threadElemExtent;
         }

@@ -22,7 +22,7 @@
 #    include <utility>
 #    include <vector>
 
-namespace alpaka::experimental::detail
+namespace alpaka::detail
 {
     template<typename T, typename = void>
     inline constexpr auto is_sycl_task = false;
@@ -191,9 +191,9 @@ namespace alpaka::experimental::detail
         TDev m_dev;
         std::shared_ptr<detail::QueueGenericSyclImpl> m_impl;
     };
-} // namespace alpaka::experimental::detail
+} // namespace alpaka::detail
 
-namespace alpaka::experimental
+namespace alpaka
 {
     template<typename TDev>
     class EventGenericSycl;
@@ -203,16 +203,16 @@ namespace alpaka::trait
 {
     //! The SYCL blocking queue device type trait specialization.
     template<typename TDev, bool TBlocking>
-    struct DevType<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>>
+    struct DevType<detail::QueueGenericSyclBase<TDev, TBlocking>>
     {
         using type = TDev;
     };
 
     //! The SYCL blocking queue device get trait specialization.
     template<typename TDev, bool TBlocking>
-    struct GetDev<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>>
+    struct GetDev<detail::QueueGenericSyclBase<TDev, TBlocking>>
     {
-        static auto getDev(experimental::detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
+        static auto getDev(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
             return queue.m_dev;
@@ -221,17 +221,16 @@ namespace alpaka::trait
 
     //! The SYCL blocking queue event type trait specialization.
     template<typename TDev, bool TBlocking>
-    struct EventType<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>>
+    struct EventType<detail::QueueGenericSyclBase<TDev, TBlocking>>
     {
-        using type = experimental::EventGenericSycl<TDev>;
+        using type = EventGenericSycl<TDev>;
     };
 
     //! The SYCL blocking queue enqueue trait specialization.
     template<typename TDev, bool TBlocking, typename TTask>
-    struct Enqueue<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>, TTask>
+    struct Enqueue<detail::QueueGenericSyclBase<TDev, TBlocking>, TTask>
     {
-        static auto enqueue(experimental::detail::QueueGenericSyclBase<TDev, TBlocking>& queue, TTask const& task)
-            -> void
+        static auto enqueue(detail::QueueGenericSyclBase<TDev, TBlocking>& queue, TTask const& task) -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
             queue.m_impl->template enqueue<TBlocking>(task);
@@ -240,9 +239,9 @@ namespace alpaka::trait
 
     //! The SYCL blocking queue test trait specialization.
     template<typename TDev, bool TBlocking>
-    struct Empty<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>>
+    struct Empty<detail::QueueGenericSyclBase<TDev, TBlocking>>
     {
-        static auto empty(experimental::detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> bool
+        static auto empty(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> bool
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
             return queue.m_impl->empty();
@@ -254,10 +253,9 @@ namespace alpaka::trait
     //! Blocks execution of the calling thread until the queue has finished processing all previously requested
     //! tasks (kernels, data copies, ...)
     template<typename TDev, bool TBlocking>
-    struct CurrentThreadWaitFor<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>>
+    struct CurrentThreadWaitFor<detail::QueueGenericSyclBase<TDev, TBlocking>>
     {
-        static auto currentThreadWaitFor(experimental::detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
-            -> void
+        static auto currentThreadWaitFor(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
             queue.m_impl->wait();
@@ -266,10 +264,9 @@ namespace alpaka::trait
 
     //! The SYCL queue native handle trait specialization.
     template<typename TDev, bool TBlocking>
-    struct NativeHandle<experimental::detail::QueueGenericSyclBase<TDev, TBlocking>>
+    struct NativeHandle<detail::QueueGenericSyclBase<TDev, TBlocking>>
     {
-        [[nodiscard]] static auto getNativeHandle(
-            experimental::detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
+        [[nodiscard]] static auto getNativeHandle(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
         {
             return queue.getNativeHandle();
         }

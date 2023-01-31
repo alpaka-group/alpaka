@@ -32,14 +32,14 @@ namespace alpaka
     using ExampleDefaultAcc = alpaka::AccCpuSerial<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI)
 #    if defined(ALPAKA_SYCL_ONEAPI_CPU)
-    using ExampleDefaultAcc = alpaka::experimental::AccCpuSyclIntel<TDim, TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuSyclIntel<TDim, TIdx>;
 #    elif defined(ALPAKA_SYCL_ONEAPI_FPGA)
-    using ExampleDefaultAcc = alpaka::experimental::AccFpgaSyclIntel<TDim, TIdx>;
+    using ExampleDefaultAcc = alpaka::AccFpgaSyclIntel<TDim, TIdx>;
 #    elif defined(ALPAKA_SYCL_ONEAPI_GPU)
-    using ExampleDefaultAcc = alpaka::experimental::AccGpuSyclIntel<TDim, TIdx>;
+    using ExampleDefaultAcc = alpaka::AccGpuSyclIntel<TDim, TIdx>;
 #    endif
 #elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-    using ExampleDefaultAcc = alpaka::experimental::AccFpgaSyclXilinx<TDim, TIdx>;
+    using ExampleDefaultAcc = alpaka::AccFpgaSyclXilinx<TDim, TIdx>;
 #else
     class ExampleDefaultAcc;
 #    warning "No supported backend selected."

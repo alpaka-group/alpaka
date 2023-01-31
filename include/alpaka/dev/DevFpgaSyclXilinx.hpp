@@ -9,7 +9,7 @@
 #    include <alpaka/dev/DevGenericSycl.hpp>
 #    include <alpaka/pltf/PltfFpgaSyclXilinx.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     using DevFpgaSyclXilinx = DevGenericSycl<PltfFpgaSyclXilinx>;
 }

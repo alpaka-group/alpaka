@@ -13,40 +13,40 @@
 
 #    include <cstdint>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     //! The SYCL intrinsic.
     class IntrinsicGenericSycl : public concepts::Implements<ConceptIntrinsic, IntrinsicGenericSycl>
     {
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     template<>
-    struct Popcount<experimental::IntrinsicGenericSycl>
+    struct Popcount<IntrinsicGenericSycl>
     {
-        static auto popcount(experimental::IntrinsicGenericSycl const&, std::uint32_t value) -> std::int32_t
+        static auto popcount(IntrinsicGenericSycl const&, std::uint32_t value) -> std::int32_t
         {
             return static_cast<std::int32_t>(sycl::popcount(value));
         }
 
-        static auto popcount(experimental::IntrinsicGenericSycl const&, std::uint64_t value) -> std::int32_t
+        static auto popcount(IntrinsicGenericSycl const&, std::uint64_t value) -> std::int32_t
         {
             return static_cast<std::int32_t>(sycl::popcount(value));
         }
     };
 
     template<>
-    struct Ffs<experimental::IntrinsicGenericSycl>
+    struct Ffs<IntrinsicGenericSycl>
     {
-        static auto ffs(experimental::IntrinsicGenericSycl const&, std::int32_t value) -> std::int32_t
+        static auto ffs(IntrinsicGenericSycl const&, std::int32_t value) -> std::int32_t
         {
             // There is no FFS operation in SYCL but we can emulate it using popcount.
             return (value == 0) ? 0 : sycl::popcount(value ^ ~(-value));
         }
 
-        static auto ffs(experimental::IntrinsicGenericSycl const&, std::int64_t value) -> std::int32_t
+        static auto ffs(IntrinsicGenericSycl const&, std::int64_t value) -> std::int32_t
         {
             // There is no FFS operation in SYCL but we can emulate it using popcount.
             return (value == 0l) ? 0 : static_cast<std::int32_t>(sycl::popcount(value ^ ~(-value)));

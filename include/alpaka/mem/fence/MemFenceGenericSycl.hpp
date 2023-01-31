@@ -10,7 +10,7 @@
 
 #    include <CL/sycl.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     namespace detail
     {
@@ -49,17 +49,17 @@ namespace alpaka::experimental
         sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> m_global_dummy;
         sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> m_local_dummy;
     };
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 namespace alpaka::trait
 {
     template<typename TMemScope>
-    struct MemFence<experimental::MemFenceGenericSycl, TMemScope>
+    struct MemFence<MemFenceGenericSycl, TMemScope>
     {
-        static auto mem_fence(experimental::MemFenceGenericSycl const& fence, TMemScope const&)
+        static auto mem_fence(MemFenceGenericSycl const& fence, TMemScope const&)
         {
-            static constexpr auto scope = experimental::detail::SyclFenceProps<TMemScope>::scope;
-            static constexpr auto space = experimental::detail::SyclFenceProps<TMemScope>::space;
+            static constexpr auto scope = detail::SyclFenceProps<TMemScope>::scope;
+            static constexpr auto space = detail::SyclFenceProps<TMemScope>::space;
 
             // atomic_ref is already part of the SYCL spec but oneAPI has not caught up yet.
             auto dummy

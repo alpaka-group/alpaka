@@ -9,7 +9,7 @@
 #    include <alpaka/dev/DevGpuSyclIntel.hpp>
 #    include <alpaka/queue/QueueGenericSyclNonBlocking.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     using QueueGpuSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevGpuSyclIntel>;
 }

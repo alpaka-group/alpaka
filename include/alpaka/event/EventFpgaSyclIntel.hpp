@@ -9,9 +9,9 @@
 #    include <alpaka/dev/DevFpgaSyclIntel.hpp>
 #    include <alpaka/event/EventGenericSycl.hpp>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     using EventFpgaSyclIntel = EventGenericSycl<DevFpgaSyclIntel>;
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 #endif

@@ -11,10 +11,10 @@
 #    include <memory>
 #    include <utility>
 
-namespace alpaka::experimental
+namespace alpaka
 {
     template<typename TDev>
     using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TDev, true>;
-} // namespace alpaka::experimental
+} // namespace alpaka
 
 #endif

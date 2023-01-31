@@ -22,7 +22,7 @@
 #    include <memory>
 #    include <type_traits>
 
-namespace alpaka::experimental::detail
+namespace alpaka::detail
 {
     template<typename TElem, std::size_t TDim>
     using SrcAccessor = sycl::
@@ -61,14 +61,14 @@ namespace alpaka::experimental::detail
         TDst m_dst;
         static constexpr auto is_sycl_task = true;
     };
-} // namespace alpaka::experimental::detail
+} // namespace alpaka::detail
 
 // Trait specializations for CreateTaskMemcpy.
 namespace alpaka::trait
 {
     //! The SYCL host-to-device memory copy trait specialization.
     template<typename TDim, typename TPltf>
-    struct CreateTaskMemcpy<TDim, experimental::DevGenericSycl<TPltf>, DevCpu>
+    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltf>, DevCpu>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
         static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
@@ -78,12 +78,12 @@ namespace alpaka::trait
             constexpr auto copy_dim = static_cast<int>(Dim<TExtent>::value);
             using ElemType = Elem<std::remove_const_t<TViewSrc>>;
             using SrcType = ElemType const*;
-            using DstType = alpaka::experimental::detail::DstAccessor<ElemType, copy_dim>;
+            using DstType = alpaka::detail::DstAccessor<ElemType, copy_dim>;
 
-            auto const range = experimental::detail::make_sycl_range(ext);
-            auto const offset = experimental::detail::make_sycl_offset(viewDst);
+            auto const range = detail::make_sycl_range(ext);
+            auto const offset = detail::make_sycl_offset(viewDst);
 
-            return experimental::detail::TaskCopySycl<SrcType, DstType, experimental::detail::Direction::h2d>{
+            return detail::TaskCopySycl<SrcType, DstType, detail::Direction::h2d>{
                 getPtrNative(viewSrc),
                 DstType{viewDst.m_buffer, range, offset}};
         }
@@ -91,7 +91,7 @@ namespace alpaka::trait
 
     //! The SYCL device-to-host memory copy trait specialization.
     template<typename TDim, typename TPltf>
-    struct CreateTaskMemcpy<TDim, DevCpu, experimental::DevGenericSycl<TPltf>>
+    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TPltf>>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
         static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
@@ -100,15 +100,15 @@ namespace alpaka::trait
 
             constexpr auto copy_dim = static_cast<int>(Dim<TExtent>::value);
             using ElemType = Elem<std::remove_const_t<TViewSrc>>;
-            using SrcType = alpaka::experimental::detail::SrcAccessor<ElemType, copy_dim>;
+            using SrcType = alpaka::detail::SrcAccessor<ElemType, copy_dim>;
             using DstType = ElemType*;
 
-            auto const range = experimental::detail::make_sycl_range(ext);
-            auto const offset = experimental::detail::make_sycl_offset(viewSrc);
+            auto const range = detail::make_sycl_range(ext);
+            auto const offset = detail::make_sycl_offset(viewSrc);
 
             auto view_src = const_cast<TViewSrc&>(viewSrc);
 
-            return experimental::detail::TaskCopySycl<SrcType, DstType, experimental::detail::Direction::d2h>{
+            return detail::TaskCopySycl<SrcType, DstType, detail::Direction::d2h>{
                 SrcType{view_src.m_buffer, range, offset},
                 getPtrNative(viewDst)};
         }
@@ -116,7 +116,7 @@ namespace alpaka::trait
 
     //! The SYCL device-to-device memory copy trait specialization.
     template<typename TDim, typename TPltfDst, typename TPltfSrc>
-    struct CreateTaskMemcpy<TDim, experimental::DevGenericSycl<TPltfDst>, experimental::DevGenericSycl<TPltfSrc>>
+    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltfDst>, DevGenericSycl<TPltfSrc>>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
         static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
@@ -125,16 +125,16 @@ namespace alpaka::trait
 
             constexpr auto copy_dim = static_cast<int>(Dim<TExtent>::value);
             using ElemType = Elem<std::remove_const_t<TViewSrc>>;
-            using SrcType = alpaka::experimental::detail::SrcAccessor<ElemType, copy_dim>;
-            using DstType = alpaka::experimental::detail::DstAccessor<ElemType, copy_dim>;
+            using SrcType = alpaka::detail::SrcAccessor<ElemType, copy_dim>;
+            using DstType = alpaka::detail::DstAccessor<ElemType, copy_dim>;
 
-            auto const range = experimental::detail::make_sycl_range(ext);
-            auto const offset_src = experimental::detail::make_sycl_offset(viewSrc);
-            auto const offset_dst = experimental::detail::make_sycl_offset(viewDst);
+            auto const range = detail::make_sycl_range(ext);
+            auto const offset_src = detail::make_sycl_offset(viewSrc);
+            auto const offset_dst = detail::make_sycl_offset(viewDst);
 
             auto view_src = const_cast<TViewSrc&>(viewSrc);
 
-            return experimental::detail::TaskCopySycl<SrcType, DstType, experimental::detail::Direction::d2d>{
+            return detail::TaskCopySycl<SrcType, DstType, detail::Direction::d2d>{
                 SrcType{view_src.m_buffer, range, offset_src},
                 DstType{viewDst.m_buffer, range, offset_dst}};
         }
