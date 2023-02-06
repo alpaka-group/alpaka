@@ -29,12 +29,12 @@ namespace Catch {
         struct GeneratorTracker : TestCaseTracking::TrackerBase, IGeneratorTracker {
             GeneratorBasePtr m_generator;
 
-            GeneratorTracker( TestCaseTracking::NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-            :   TrackerBase( nameAndLocation, ctx, parent )
+            GeneratorTracker( TestCaseTracking::NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent )
+            :   TrackerBase( CATCH_MOVE(nameAndLocation), ctx, parent )
             {}
             ~GeneratorTracker() override;
 
-            static GeneratorTracker& acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
+            static GeneratorTracker* acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocationRef nameAndLocation ) {
                 GeneratorTracker* tracker;
 
                 ITracker& currentTracker = ctx.currentTracker();
@@ -61,18 +61,14 @@ namespace Catch {
                     assert( childTracker->isGeneratorTracker() );
                     tracker = static_cast<GeneratorTracker*>( childTracker );
                 } else {
-                    auto newTracker =
-                        Catch::Detail::make_unique<GeneratorTracker>(
-                            nameAndLocation, ctx, &currentTracker );
-                    tracker = newTracker.get();
-                    currentTracker.addChild( CATCH_MOVE(newTracker) );
+                    return nullptr;
                 }
 
                 if( !tracker->isComplete() ) {
                     tracker->open();
                 }
 
-                return *tracker;
+                return tracker;
             }
 
             // TrackerBase interface
@@ -141,6 +137,7 @@ namespace Catch {
                 // has a side-effect, where it consumes generator's current
                 // value, but we do not want to invoke the side-effect if
                 // this generator is still waiting for any child to start.
+                assert( m_generator && "Tracker without generator" );
                 if ( should_wait_for_child ||
                      ( m_runState == CompletedSuccessfully &&
                        m_generator->countedNext() ) ) {
@@ -229,7 +226,7 @@ namespace Catch {
         uint64_t testRuns = 0;
         do {
             m_trackerContext.startCycle();
-            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(testInfo.name, testInfo.lineInfo));
+            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocationRef(testInfo.name, testInfo.lineInfo));
 
             m_reporter->testCasePartialStarting(testInfo, testRuns);
 
@@ -270,6 +267,9 @@ namespace Catch {
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
             m_lastAssertionPassed = true;
+        } else if (result.getResultType() == ResultWas::ExplicitSkip) {
+            m_totals.assertions.skipped++;
+            m_lastAssertionPassed = true;
         } else if (!result.succeeded()) {
             m_lastAssertionPassed = false;
             if (result.isOk()) {
@@ -297,12 +297,17 @@ namespace Catch {
         m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}"_sr;
     }
 
-    bool RunContext::sectionStarted(SectionInfo const & sectionInfo, Counts & assertions) {
-        ITracker& sectionTracker = SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(sectionInfo.name, sectionInfo.lineInfo));
+    bool RunContext::sectionStarted(StringRef sectionName, SourceLineInfo const& sectionLineInfo, Counts & assertions) {
+        ITracker& sectionTracker =
+            SectionTracker::acquire( m_trackerContext,
+                                     TestCaseTracking::NameAndLocationRef(
+                                         sectionName, sectionLineInfo ) );
+
         if (!sectionTracker.isOpen())
             return false;
         m_activeSections.push_back(&sectionTracker);
 
+        SectionInfo sectionInfo( sectionLineInfo, static_cast<std::string>(sectionName) );
         m_lastAssertionInfo.lineInfo = sectionInfo.lineInfo;
 
         m_reporter->sectionStarting(sectionInfo);
@@ -311,12 +316,37 @@ namespace Catch {
 
         return true;
     }
-    auto RunContext::acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
+    IGeneratorTracker*
+    RunContext::acquireGeneratorTracker( StringRef generatorName,
+                                         SourceLineInfo const& lineInfo ) {
         using namespace Generators;
-        GeneratorTracker& tracker = GeneratorTracker::acquire(m_trackerContext,
-                                                              TestCaseTracking::NameAndLocation( static_cast<std::string>(generatorName), lineInfo ) );
+        GeneratorTracker* tracker = GeneratorTracker::acquire(
+            m_trackerContext,
+            TestCaseTracking::NameAndLocationRef(
+                 generatorName, lineInfo ) );
         m_lastAssertionInfo.lineInfo = lineInfo;
         return tracker;
+    }
+
+    IGeneratorTracker* RunContext::createGeneratorTracker(
+        StringRef generatorName,
+        SourceLineInfo lineInfo,
+        Generators::GeneratorBasePtr&& generator ) {
+
+        auto nameAndLoc = TestCaseTracking::NameAndLocation( static_cast<std::string>( generatorName ), lineInfo );
+        auto& currentTracker = m_trackerContext.currentTracker();
+        assert(
+            currentTracker.nameAndLocation() != nameAndLoc &&
+            "Trying to create tracker for a genreator that already has one" );
+
+        auto newTracker = Catch::Detail::make_unique<Generators::GeneratorTracker>(
+            CATCH_MOVE(nameAndLoc), m_trackerContext, &currentTracker );
+        auto ret = newTracker.get();
+        currentTracker.addChild( CATCH_MOVE( newTracker ) );
+
+        ret->setGenerator( CATCH_MOVE( generator ) );
+        ret->open();
+        return ret;
     }
 
     bool RunContext::testForMissingAssertions(Counts& assertions) {
@@ -331,7 +361,7 @@ namespace Catch {
         return true;
     }
 
-    void RunContext::sectionEnded(SectionEndInfo const & endInfo) {
+    void RunContext::sectionEnded(SectionEndInfo&& endInfo) {
         Counts assertions = m_totals.assertions - endInfo.prevAssertions;
         bool missingAssertions = testForMissingAssertions(assertions);
 
@@ -340,19 +370,20 @@ namespace Catch {
             m_activeSections.pop_back();
         }
 
-        m_reporter->sectionEnded(SectionStats(endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions));
+        m_reporter->sectionEnded(SectionStats(CATCH_MOVE(endInfo.sectionInfo), assertions, endInfo.durationInSeconds, missingAssertions));
         m_messages.clear();
         m_messageScopes.clear();
     }
 
-    void RunContext::sectionEndedEarly(SectionEndInfo const & endInfo) {
-        if (m_unfinishedSections.empty())
+    void RunContext::sectionEndedEarly(SectionEndInfo&& endInfo) {
+        if ( m_unfinishedSections.empty() ) {
             m_activeSections.back()->fail();
-        else
+        } else {
             m_activeSections.back()->close();
+        }
         m_activeSections.pop_back();
 
-        m_unfinishedSections.push_back(endInfo);
+        m_unfinishedSections.push_back(CATCH_MOVE(endInfo));
     }
 
     void RunContext::benchmarkPreparing( StringRef name ) {
@@ -376,8 +407,8 @@ namespace Catch {
         m_messages.erase(std::remove(m_messages.begin(), m_messages.end(), message), m_messages.end());
     }
 
-    void RunContext::emplaceUnscopedMessage( MessageBuilder const& builder ) {
-        m_messageScopes.emplace_back( builder );
+    void RunContext::emplaceUnscopedMessage( MessageBuilder&& builder ) {
+        m_messageScopes.emplace_back( CATCH_MOVE(builder) );
     }
 
     std::string RunContext::getCurrentTestName() const {
@@ -402,7 +433,7 @@ namespace Catch {
         // Instead, fake a result data.
         AssertionResultData tempResult( ResultWas::FatalErrorCondition, { false } );
         tempResult.message = static_cast<std::string>(message);
-        AssertionResult result(m_lastAssertionInfo, tempResult);
+        AssertionResult result(m_lastAssertionInfo, CATCH_MOVE(tempResult));
 
         assertionEnded(result);
 
@@ -414,7 +445,7 @@ namespace Catch {
 
         Counts assertions;
         assertions.failed = 1;
-        SectionStats testCaseSectionStats(testCaseSection, assertions, 0, false);
+        SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, 0, false);
         m_reporter->sectionEnded(testCaseSectionStats);
 
         auto const& testInfo = m_activeTestCase->getTestCaseInfo();
@@ -475,6 +506,8 @@ namespace Catch {
             duration = timer.getElapsedSeconds();
         } CATCH_CATCH_ANON (TestFailureException&) {
             // This just means the test was aborted due to failure
+        } CATCH_CATCH_ANON (TestSkipException&) {
+            // This just means the test was explicitly skipped
         } CATCH_CATCH_ALL {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
@@ -491,7 +524,7 @@ namespace Catch {
         m_messages.clear();
         m_messageScopes.clear();
 
-        SectionStats testCaseSectionStats(testCaseSection, assertions, duration, missingAssertions);
+        SectionStats testCaseSectionStats(CATCH_MOVE(testCaseSection), assertions, duration, missingAssertions);
         m_reporter->sectionEnded(testCaseSectionStats);
     }
 
@@ -515,7 +548,7 @@ namespace Catch {
              itEnd = m_unfinishedSections.rend();
              it != itEnd;
              ++it)
-            sectionEnded(*it);
+            sectionEnded(CATCH_MOVE(*it));
         m_unfinishedSections.clear();
     }
 
@@ -551,7 +584,7 @@ namespace Catch {
         m_lastAssertionInfo = info;
         AssertionResultData data( resultType, LazyExpression( negated ) );
 
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
 
         assertionEnded( assertionResult );
@@ -569,10 +602,16 @@ namespace Catch {
 
         AssertionResultData data( resultType, LazyExpression( false ) );
         data.message = static_cast<std::string>(message);
-        AssertionResult assertionResult{ m_lastAssertionInfo, data };
+        AssertionResult assertionResult{ m_lastAssertionInfo,
+                                         CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
-        if( !assertionResult.isOk() )
+        if ( !assertionResult.isOk() ) {
             populateReaction( reaction );
+        } else if ( resultType == ResultWas::ExplicitSkip ) {
+            // TODO: Need to handle this explicitly, as ExplicitSkip is
+            // considered "OK"
+            reaction.shouldSkip = true;
+        }
     }
     void RunContext::handleUnexpectedExceptionNotThrown(
             AssertionInfo const& info,
@@ -590,7 +629,7 @@ namespace Catch {
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = message;
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE(data) };
         assertionEnded( assertionResult );
         populateReaction( reaction );
     }
@@ -607,7 +646,7 @@ namespace Catch {
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
     }
     void RunContext::handleNonExpr(
@@ -618,7 +657,7 @@ namespace Catch {
         m_lastAssertionInfo = info;
 
         AssertionResultData data( resultType, LazyExpression( false ) );
-        AssertionResult assertionResult{ info, data };
+        AssertionResult assertionResult{ info, CATCH_MOVE( data ) };
         assertionEnded( assertionResult );
 
         if( !assertionResult.isOk() )

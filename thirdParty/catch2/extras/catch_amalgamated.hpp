@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.2.1
-//  Generated: 2022-12-09 23:01:14.526666
+//  Catch v3.3.1
+//  Generated: 2023-01-29 22:55:03.856079
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -372,9 +372,14 @@ namespace Catch {
 #endif
 
 #if defined(__CUDACC__) && !defined(__clang__)
+#  ifdef __NVCC_DIAG_PRAGMA_SUPPORT__
+// New pragmas introduced in CUDA 11.5+
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "nv_diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "nv_diagnostic pop" )
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "nv_diag_suppress 177" )
+#  else
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "diag_suppress 177" )
+#  endif
 #endif
 
 // clang-cl defines _MSC_VER as well as __clang__, which could cause the
@@ -492,8 +497,14 @@ namespace Catch {
 // Visual C++
 #if defined(_MSC_VER)
 
-#  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
-#  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
+// We want to defer to nvcc-specific warning suppression if we are compiled
+// with nvcc masquerading for MSVC.
+#    if !defined( __CUDACC__ )
+#        define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+            __pragma( warning( push ) )
+#        define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
+            __pragma( warning( pop ) )
+#    endif
 
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
@@ -850,6 +861,7 @@ namespace Catch {
         std::uint64_t passed = 0;
         std::uint64_t failed = 0;
         std::uint64_t failedButOk = 0;
+        std::uint64_t skipped = 0;
     };
 
     struct Totals {
@@ -916,6 +928,8 @@ namespace Catch {
         Ok = 0,
         Info = 1,
         Warning = 2,
+        // TODO: Should explicit skip be considered "not OK" (cf. isOk)? I.e., should it have the failure bit?
+        ExplicitSkip = 4,
 
         FailureBit = 0x10,
 
@@ -1025,7 +1039,7 @@ namespace Catch {
     class AssertionResult {
     public:
         AssertionResult() = delete;
-        AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
+        AssertionResult( AssertionInfo const& info, AssertionResultData&& data );
 
         bool isOk() const;
         bool succeeded() const;
@@ -1061,116 +1075,6 @@ namespace Catch {
 #include <string>
 #include <chrono>
 
-
-namespace Catch {
-
-    class AssertionResult;
-    struct AssertionInfo;
-    struct SectionInfo;
-    struct SectionEndInfo;
-    struct MessageInfo;
-    struct MessageBuilder;
-    struct Counts;
-    struct AssertionReaction;
-    struct SourceLineInfo;
-
-    class ITransientExpression;
-    class IGeneratorTracker;
-
-    struct BenchmarkInfo;
-    template <typename Duration = std::chrono::duration<double, std::nano>>
-    struct BenchmarkStats;
-
-    class IResultCapture {
-    public:
-        virtual ~IResultCapture();
-
-        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
-                                        Counts& assertions ) = 0;
-        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
-        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
-
-        virtual auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
-
-        virtual void benchmarkPreparing( StringRef name ) = 0;
-        virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
-        virtual void benchmarkEnded( BenchmarkStats<> const& stats ) = 0;
-        virtual void benchmarkFailed( StringRef error ) = 0;
-
-        virtual void pushScopedMessage( MessageInfo const& message ) = 0;
-        virtual void popScopedMessage( MessageInfo const& message ) = 0;
-
-        virtual void emplaceUnscopedMessage( MessageBuilder const& builder ) = 0;
-
-        virtual void handleFatalErrorCondition( StringRef message ) = 0;
-
-        virtual void handleExpr
-                (   AssertionInfo const& info,
-                    ITransientExpression const& expr,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleMessage
-                (   AssertionInfo const& info,
-                    ResultWas::OfType resultType,
-                    StringRef message,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleUnexpectedExceptionNotThrown
-                (   AssertionInfo const& info,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleUnexpectedInflightException
-                (   AssertionInfo const& info,
-                    std::string const& message,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleIncomplete
-                (   AssertionInfo const& info ) = 0;
-        virtual void handleNonExpr
-                (   AssertionInfo const &info,
-                    ResultWas::OfType resultType,
-                    AssertionReaction &reaction ) = 0;
-
-
-
-        virtual bool lastAssertionPassed() = 0;
-        virtual void assertionPassed() = 0;
-
-        // Deprecated, do not use:
-        virtual std::string getCurrentTestName() const = 0;
-        virtual const AssertionResult* getLastResult() const = 0;
-        virtual void exceptionEarlyReported() = 0;
-    };
-
-    IResultCapture& getResultCapture();
-}
-
-#endif // CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
-
-#include <string>
-
-namespace Catch {
-
-    struct MessageInfo {
-        MessageInfo(    StringRef _macroName,
-                        SourceLineInfo const& _lineInfo,
-                        ResultWas::OfType _type );
-
-        StringRef macroName;
-        std::string message;
-        SourceLineInfo lineInfo;
-        ResultWas::OfType type;
-        unsigned int sequence;
-
-        bool operator == (MessageInfo const& other) const {
-            return sequence == other.sequence;
-        }
-        bool operator < (MessageInfo const& other) const {
-            return sequence < other.sequence;
-        }
-    private:
-        static unsigned int globalCount;
-    };
-
-} // end namespace Catch
-
-#endif // CATCH_MESSAGE_INFO_HPP_INCLUDED
 
 
 #ifndef CATCH_UNIQUE_PTR_HPP_INCLUDED
@@ -1284,6 +1188,129 @@ namespace Detail {
 
 #endif // CATCH_UNIQUE_PTR_HPP_INCLUDED
 
+namespace Catch {
+
+    class AssertionResult;
+    struct AssertionInfo;
+    struct SectionInfo;
+    struct SectionEndInfo;
+    struct MessageInfo;
+    struct MessageBuilder;
+    struct Counts;
+    struct AssertionReaction;
+    struct SourceLineInfo;
+
+    class ITransientExpression;
+    class IGeneratorTracker;
+
+    struct BenchmarkInfo;
+    template <typename Duration = std::chrono::duration<double, std::nano>>
+    struct BenchmarkStats;
+
+    namespace Generators {
+        class GeneratorUntypedBase;
+        using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
+    }
+
+
+    class IResultCapture {
+    public:
+        virtual ~IResultCapture();
+
+        virtual bool sectionStarted( StringRef sectionName,
+                                     SourceLineInfo const& sectionLineInfo,
+                                     Counts& assertions ) = 0;
+        virtual void sectionEnded( SectionEndInfo&& endInfo ) = 0;
+        virtual void sectionEndedEarly( SectionEndInfo&& endInfo ) = 0;
+
+        virtual IGeneratorTracker*
+        acquireGeneratorTracker( StringRef generatorName,
+                                 SourceLineInfo const& lineInfo ) = 0;
+        virtual IGeneratorTracker*
+        createGeneratorTracker( StringRef generatorName,
+                                SourceLineInfo lineInfo,
+                                Generators::GeneratorBasePtr&& generator ) = 0;
+
+        virtual void benchmarkPreparing( StringRef name ) = 0;
+        virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
+        virtual void benchmarkEnded( BenchmarkStats<> const& stats ) = 0;
+        virtual void benchmarkFailed( StringRef error ) = 0;
+
+        virtual void pushScopedMessage( MessageInfo const& message ) = 0;
+        virtual void popScopedMessage( MessageInfo const& message ) = 0;
+
+        virtual void emplaceUnscopedMessage( MessageBuilder&& builder ) = 0;
+
+        virtual void handleFatalErrorCondition( StringRef message ) = 0;
+
+        virtual void handleExpr
+                (   AssertionInfo const& info,
+                    ITransientExpression const& expr,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleMessage
+                (   AssertionInfo const& info,
+                    ResultWas::OfType resultType,
+                    StringRef message,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleUnexpectedExceptionNotThrown
+                (   AssertionInfo const& info,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleUnexpectedInflightException
+                (   AssertionInfo const& info,
+                    std::string const& message,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleIncomplete
+                (   AssertionInfo const& info ) = 0;
+        virtual void handleNonExpr
+                (   AssertionInfo const &info,
+                    ResultWas::OfType resultType,
+                    AssertionReaction &reaction ) = 0;
+
+
+
+        virtual bool lastAssertionPassed() = 0;
+        virtual void assertionPassed() = 0;
+
+        // Deprecated, do not use:
+        virtual std::string getCurrentTestName() const = 0;
+        virtual const AssertionResult* getLastResult() const = 0;
+        virtual void exceptionEarlyReported() = 0;
+    };
+
+    IResultCapture& getResultCapture();
+}
+
+#endif // CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
+
+#include <string>
+
+namespace Catch {
+
+    struct MessageInfo {
+        MessageInfo(    StringRef _macroName,
+                        SourceLineInfo const& _lineInfo,
+                        ResultWas::OfType _type );
+
+        StringRef macroName;
+        std::string message;
+        SourceLineInfo lineInfo;
+        ResultWas::OfType type;
+        unsigned int sequence;
+
+        bool operator == (MessageInfo const& other) const {
+            return sequence == other.sequence;
+        }
+        bool operator < (MessageInfo const& other) const {
+            return sequence < other.sequence;
+        }
+    private:
+        static unsigned int globalCount;
+    };
+
+} // end namespace Catch
+
+#endif // CATCH_MESSAGE_INFO_HPP_INCLUDED
+
 
 // Adapted from donated nonius code.
 
@@ -1393,7 +1420,7 @@ namespace Catch {
     };
 
     struct SectionStats {
-        SectionStats(   SectionInfo const& _sectionInfo,
+        SectionStats(   SectionInfo&& _sectionInfo,
                         Counts const& _assertions,
                         double _durationInSeconds,
                         bool _missingAssertions );
@@ -1557,7 +1584,12 @@ namespace Catch {
          */
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 
-        //! Called with test cases that are skipped due to the test run aborting
+        /**
+         * Called with test cases that are skipped due to the test run aborting.
+         * NOT called for test cases that are explicitly skipped using the `SKIP` macro.
+         *
+         * Deprecated - will be removed in the next major release.
+         */
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
         //! Called if a fatal error (signal/structured exception) occured
@@ -1747,6 +1779,9 @@ namespace Catch {
      * Also handles `CATCH_CONFIG_DISABLE_EXCEPTIONS` for callers.
      */
     [[noreturn]] void throw_test_failure_exception();
+
+    //! Used to signal that the remainder of a test should be skipped
+    struct TestSkipException{};
 
 } // namespace Catch
 
@@ -2657,7 +2692,7 @@ namespace Catch {
                     });
 
                     BenchmarkInfo info {
-                        name,
+                        CATCH_MOVE(name),
                         plan.estimated_duration.count(),
                         plan.iterations_per_sample,
                         cfg->benchmarkSamples(),
@@ -2673,7 +2708,7 @@ namespace Catch {
                     });
 
                     auto analysis = Detail::analyse(*cfg, env, samples.begin(), samples.end());
-                    BenchmarkStats<FloatDuration<Clock>> stats{ info, analysis.samples, analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
+                    BenchmarkStats<FloatDuration<Clock>> stats{ CATCH_MOVE(info), CATCH_MOVE(analysis.samples), analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
                     getResultCapture().benchmarkEnded(stats);
                 } CATCH_CATCH_ANON (TestFailureException) {
                     getResultCapture().benchmarkFailed("Benchmark failed due to failed assertion"_sr);
@@ -4058,6 +4093,7 @@ namespace Catch {
 
             Error = BrightRed,
             Success = Green,
+            Skip = LightGrey,
 
             OriginalExpression = Cyan,
             ReconstructedExpression = BrightYellow,
@@ -4424,11 +4460,10 @@ namespace Catch {
                         ResultWas::OfType type ):
             m_info(macroName, lineInfo, type) {}
 
-
         template<typename T>
-        MessageBuilder& operator << ( T const& value ) {
+        MessageBuilder&& operator << ( T const& value ) && {
             m_stream << value;
-            return *this;
+            return CATCH_MOVE(*this);
         }
 
         MessageInfo m_info;
@@ -4436,7 +4471,7 @@ namespace Catch {
 
     class ScopedMessage {
     public:
-        explicit ScopedMessage( MessageBuilder const& builder );
+        explicit ScopedMessage( MessageBuilder&& builder );
         ScopedMessage( ScopedMessage& duplicate ) = delete;
         ScopedMessage( ScopedMessage&& old ) noexcept;
         ~ScopedMessage();
@@ -5811,6 +5846,7 @@ namespace Catch {
     struct AssertionReaction {
         bool shouldDebugBreak = false;
         bool shouldThrow = false;
+        bool shouldSkip = false;
     };
 
     class AssertionHandler {
@@ -6035,6 +6071,9 @@ namespace Catch {
     class Section : Detail::NonCopyable {
     public:
         Section( SectionInfo&& info );
+        Section( SourceLineInfo const& _lineInfo,
+                 StringRef _name,
+                 const char* const = nullptr );
         ~Section();
 
         // This indicates whether the section should be executed or not
@@ -6053,7 +6092,7 @@ namespace Catch {
 #define INTERNAL_CATCH_SECTION( ... ) \
     CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
     CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-    if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) ) \
+    if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::Section( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) ) \
     CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #define INTERNAL_CATCH_DYNAMIC_SECTION( ... ) \
@@ -6183,7 +6222,7 @@ struct AutoReg : Detail::NonCopyable {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
+        namespace{ const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         static void TestName()
     #define INTERNAL_CATCH_TESTCASE( ... ) \
@@ -6194,7 +6233,7 @@ struct AutoReg : Detail::NonCopyable {
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &QualifiedMethod ), CATCH_INTERNAL_LINEINFO, "&" #QualifiedMethod, Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
+        namespace{ const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &QualifiedMethod ), CATCH_INTERNAL_LINEINFO, "&" #QualifiedMethod, Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6206,7 +6245,7 @@ struct AutoReg : Detail::NonCopyable {
             struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName) { \
                 void test(); \
             }; \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( Catch::makeTestInvoker( &TestName::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
+            const Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( Catch::makeTestInvoker( &TestName::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
         } \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         void TestName::test()
@@ -6260,6 +6299,7 @@ struct AutoReg : Detail::NonCopyable {
   #define CATCH_FAIL( ... ) INTERNAL_CATCH_MSG( "CATCH_FAIL", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, __VA_ARGS__ )
   #define CATCH_FAIL_CHECK( ... ) INTERNAL_CATCH_MSG( "CATCH_FAIL_CHECK", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
   #define CATCH_SUCCEED( ... ) INTERNAL_CATCH_MSG( "CATCH_SUCCEED", Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
+  #define CATCH_SKIP( ... ) INTERNAL_CATCH_MSG( "SKIP", Catch::ResultWas::ExplicitSkip, Catch::ResultDisposition::Normal, __VA_ARGS__ )
 
 
   #if !defined(CATCH_CONFIG_RUNTIME_STATIC_REQUIRE)
@@ -6313,6 +6353,7 @@ struct AutoReg : Detail::NonCopyable {
   #define CATCH_FAIL( ... ) (void)(0)
   #define CATCH_FAIL_CHECK( ... ) (void)(0)
   #define CATCH_SUCCEED( ... ) (void)(0)
+  #define CATCH_SKIP( ... ) (void)(0)
 
   #define CATCH_STATIC_REQUIRE( ... )       (void)(0)
   #define CATCH_STATIC_REQUIRE_FALSE( ... ) (void)(0)
@@ -6357,6 +6398,7 @@ struct AutoReg : Detail::NonCopyable {
   #define FAIL( ... ) INTERNAL_CATCH_MSG( "FAIL", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, __VA_ARGS__ )
   #define FAIL_CHECK( ... ) INTERNAL_CATCH_MSG( "FAIL_CHECK", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
   #define SUCCEED( ... ) INTERNAL_CATCH_MSG( "SUCCEED", Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
+  #define SKIP( ... ) INTERNAL_CATCH_MSG( "SKIP", Catch::ResultWas::ExplicitSkip, Catch::ResultDisposition::Normal, __VA_ARGS__ )
 
 
   #if !defined(CATCH_CONFIG_RUNTIME_STATIC_REQUIRE)
@@ -6409,6 +6451,7 @@ struct AutoReg : Detail::NonCopyable {
   #define FAIL( ... ) (void)(0)
   #define FAIL_CHECK( ... ) (void)(0)
   #define SUCCEED( ... ) (void)(0)
+  #define SKIP( ... ) (void)(0)
 
   #define STATIC_REQUIRE( ... )       (void)(0)
   #define STATIC_REQUIRE_FALSE( ... ) (void)(0)
@@ -7098,6 +7141,7 @@ struct AutoReg : Detail::NonCopyable {
 
 
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -7357,7 +7401,7 @@ namespace Catch {
 #define CATCH_VERSION_MACROS_HPP_INCLUDED
 
 #define CATCH_VERSION_MAJOR 3
-#define CATCH_VERSION_MINOR 2
+#define CATCH_VERSION_MINOR 3
 #define CATCH_VERSION_PATCH 1
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
@@ -7682,21 +7726,28 @@ namespace Detail {
         return makeGenerators( value( T( CATCH_FORWARD( val ) ) ), CATCH_FORWARD( moreGenerators )... );
     }
 
-    auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
+    IGeneratorTracker* acquireGeneratorTracker( StringRef generatorName,
+                                                SourceLineInfo const& lineInfo );
+    IGeneratorTracker* createGeneratorTracker( StringRef generatorName,
+                                               SourceLineInfo lineInfo,
+                                               GeneratorBasePtr&& generator );
 
     template<typename L>
-    // Note: The type after -> is weird, because VS2015 cannot parse
-    //       the expression used in the typedef inside, when it is in
-    //       return type. Yeah.
-    auto generate( StringRef generatorName, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(std::declval<decltype(generatorExpression())>().get()) {
+    auto generate( StringRef generatorName, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
         using UnderlyingType = typename decltype(generatorExpression())::type;
 
-        IGeneratorTracker& tracker = acquireGeneratorTracker( generatorName, lineInfo );
-        if (!tracker.hasGenerator()) {
-            tracker.setGenerator(Catch::Detail::make_unique<Generators<UnderlyingType>>(generatorExpression()));
+        IGeneratorTracker* tracker = acquireGeneratorTracker( generatorName, lineInfo );
+        // Creation of tracker is delayed after generator creation, so
+        // that constructing generator can fail without breaking everything.
+        if (!tracker) {
+            tracker = createGeneratorTracker(
+                generatorName,
+                lineInfo,
+                Catch::Detail::make_unique<Generators<UnderlyingType>>(
+                    generatorExpression() ) );
         }
 
-        auto const& generator = static_cast<IGenerator<UnderlyingType> const&>( *tracker.getGenerator() );
+        auto const& generator = static_cast<IGenerator<UnderlyingType> const&>( *tracker->getGenerator() );
         return generator.get();
     }
 
@@ -8515,7 +8566,10 @@ namespace Catch {
     #if defined(__i386__) || defined(__x86_64__)
         #define CATCH_TRAP() __asm__("int $3\n" : : ) /* NOLINT */
     #elif defined(__aarch64__)
-        #define CATCH_TRAP()  __asm__(".inst 0xd43e0000")
+        #define CATCH_TRAP() __asm__(".inst 0xd43e0000")
+    #elif defined(__POWERPC__)
+        #define CATCH_TRAP() __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
+        : : : "memory","r0","r3","r4" ) /* NOLINT */
     #endif
 
 #elif defined(CATCH_PLATFORM_IPHONE)
@@ -9143,10 +9197,40 @@ namespace TestCaseTracking {
         std::string name;
         SourceLineInfo location;
 
-        NameAndLocation( std::string const& _name, SourceLineInfo const& _location );
+        NameAndLocation( std::string&& _name, SourceLineInfo const& _location );
         friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
             return lhs.name == rhs.name
                 && lhs.location == rhs.location;
+        }
+        friend bool operator!=(NameAndLocation const& lhs,
+                               NameAndLocation const& rhs) {
+            return !( lhs == rhs );
+        }
+    };
+
+    /**
+     * This is a variant of `NameAndLocation` that does not own the name string
+     *
+     * This avoids extra allocations when trying to locate a tracker by its
+     * name and location, as long as we make sure that trackers only keep
+     * around the owning variant.
+     */
+    struct NameAndLocationRef {
+        StringRef name;
+        SourceLineInfo location;
+
+        constexpr NameAndLocationRef( StringRef name_,
+                                      SourceLineInfo location_ ):
+            name( name_ ), location( location_ ) {}
+
+        friend bool operator==( NameAndLocation const& lhs,
+                                NameAndLocationRef rhs ) {
+            return StringRef( lhs.name ) == rhs.name &&
+                   lhs.location == rhs.location;
+        }
+        friend bool operator==( NameAndLocationRef lhs,
+                                NameAndLocation const& rhs ) {
+            return rhs == lhs;
         }
     };
 
@@ -9174,8 +9258,8 @@ namespace TestCaseTracking {
         CycleState m_runState = NotStarted;
 
     public:
-        ITracker( NameAndLocation const& nameAndLoc, ITracker* parent ):
-            m_nameAndLocation( nameAndLoc ),
+        ITracker( NameAndLocation&& nameAndLoc, ITracker* parent ):
+            m_nameAndLocation( CATCH_MOVE(nameAndLoc) ),
             m_parent( parent )
         {}
 
@@ -9214,7 +9298,7 @@ namespace TestCaseTracking {
          *
          * Returns nullptr if not found.
          */
-        ITracker* findChild( NameAndLocation const& nameAndLocation );
+        ITracker* findChild( NameAndLocationRef nameAndLocation );
         //! Have any children been added?
         bool hasChildren() const {
             return !m_children.empty();
@@ -9271,7 +9355,7 @@ namespace TestCaseTracking {
         TrackerContext& m_ctx;
 
     public:
-        TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        TrackerBase( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
         bool isComplete() const override;
 
@@ -9289,13 +9373,13 @@ namespace TestCaseTracking {
         std::vector<StringRef> m_filters;
         std::string m_trimmed_name;
     public:
-        SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
         bool isSectionTracker() const override;
 
         bool isComplete() const override;
 
-        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation );
+        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef nameAndLocation );
 
         void tryOpen();
 
@@ -9365,12 +9449,21 @@ namespace Catch {
                     ResultWas::OfType resultType,
                     AssertionReaction &reaction ) override;
 
-        bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
+        bool sectionStarted( StringRef sectionName,
+                             SourceLineInfo const& sectionLineInfo,
+                             Counts& assertions ) override;
 
-        void sectionEnded( SectionEndInfo const& endInfo ) override;
-        void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
+        void sectionEnded( SectionEndInfo&& endInfo ) override;
+        void sectionEndedEarly( SectionEndInfo&& endInfo ) override;
 
-        auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& override;
+        IGeneratorTracker*
+        acquireGeneratorTracker( StringRef generatorName,
+                                 SourceLineInfo const& lineInfo ) override;
+        IGeneratorTracker* createGeneratorTracker(
+            StringRef generatorName,
+            SourceLineInfo lineInfo,
+            Generators::GeneratorBasePtr&& generator ) override;
+
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& info ) override;
@@ -9380,7 +9473,7 @@ namespace Catch {
         void pushScopedMessage( MessageInfo const& message ) override;
         void popScopedMessage( MessageInfo const& message ) override;
 
-        void emplaceUnscopedMessage( MessageBuilder const& builder ) override;
+        void emplaceUnscopedMessage( MessageBuilder&& builder ) override;
 
         std::string getCurrentTestName() const override;
 
@@ -9568,6 +9661,7 @@ namespace Catch {
 #define CATCH_STRING_MANIP_HPP_INCLUDED
 
 
+#include <cstdint>
 #include <string>
 #include <iosfwd>
 #include <vector>
@@ -10960,6 +11054,32 @@ public:
 //! Creates a matcher that checks whether a std derived exception has the provided message
 ExceptionMessageMatcher Message(std::string const& message);
 
+template <typename StringMatcherType>
+class ExceptionMessageMatchesMatcher final
+    : public MatcherBase<std::exception> {
+    StringMatcherType m_matcher;
+
+public:
+    ExceptionMessageMatchesMatcher( StringMatcherType matcher ):
+        m_matcher( CATCH_MOVE( matcher ) ) {}
+
+    bool match( std::exception const& ex ) const override {
+        return m_matcher.match( ex.what() );
+    }
+
+    std::string describe() const override {
+        return " matches \"" + m_matcher.describe() + '"';
+    }
+};
+
+//! Creates a matcher that checks whether a message from an std derived
+//! exception matches a provided matcher
+template <typename StringMatcherType>
+ExceptionMessageMatchesMatcher<StringMatcherType>
+MessageMatches( StringMatcherType&& matcher ) {
+    return { CATCH_FORWARD( matcher ) };
+}
+
 } // namespace Matchers
 } // namespace Catch
 
@@ -11245,6 +11365,136 @@ namespace Catch {
 }
 
 #endif // CATCH_MATCHERS_QUANTIFIERS_HPP_INCLUDED
+
+
+#ifndef CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
+#define CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
+
+#include <algorithm>
+#include <utility>
+
+namespace Catch {
+    namespace Matchers {
+
+        /**
+         * Matcher for checking that an element contains the same
+         * elements in the same order
+         */
+        template <typename TargetRangeLike, typename Equality>
+        class RangeEqualsMatcher final : public MatcherGenericBase {
+            TargetRangeLike m_desired;
+            Equality m_predicate;
+
+        public:
+            template <typename TargetRangeLike2, typename Equality2>
+            RangeEqualsMatcher( TargetRangeLike2&& range,
+                                Equality2&& predicate ):
+                m_desired( CATCH_FORWARD( range ) ),
+                m_predicate( CATCH_FORWARD( predicate ) ) {}
+
+            template <typename RangeLike>
+            bool match( RangeLike&& rng ) const {
+                using std::begin;
+                using std::end;
+                return std::equal( begin(m_desired),
+                                   end(m_desired),
+                                   begin(rng),
+                                   end(rng),
+                                   m_predicate );
+            }
+
+            std::string describe() const override {
+                return "elements are " + Catch::Detail::stringify( m_desired );
+            }
+        };
+
+        /**
+         * Matcher for checking that an element contains the same
+         * elements (but not necessarily in the same order)
+         */
+        template <typename TargetRangeLike, typename Equality>
+        class UnorderedRangeEqualsMatcher final : public MatcherGenericBase {
+            TargetRangeLike m_desired;
+            Equality m_predicate;
+
+        public:
+            template <typename TargetRangeLike2, typename Equality2>
+            UnorderedRangeEqualsMatcher( TargetRangeLike2&& range,
+                                         Equality2&& predicate ):
+                m_desired( CATCH_FORWARD( range ) ),
+                m_predicate( CATCH_FORWARD( predicate ) ) {}
+
+            template <typename RangeLike>
+            bool match( RangeLike&& rng ) const {
+                using std::begin;
+                using std::end;
+                return std::is_permutation( begin( m_desired ),
+                                            end( m_desired ),
+                                            begin( rng ),
+                                            end( rng ),
+                                            m_predicate );
+            }
+
+            std::string describe() const override {
+                return "unordered elements are " +
+                       ::Catch::Detail::stringify( m_desired );
+            }
+        };
+
+        /**
+         * Creates a matcher that checks if all elements in a range are equal
+         * to all elements in another range.
+         *
+         * Uses `std::equal_to` to do the comparison
+         */
+        template <typename RangeLike>
+        std::enable_if_t<!Detail::is_matcher<RangeLike>::value,
+                         RangeEqualsMatcher<RangeLike, std::equal_to<>>>
+        RangeEquals( RangeLike&& range ) {
+            return { CATCH_FORWARD( range ), std::equal_to<>{} };
+        }
+
+        /**
+         * Creates a matcher that checks if all elements in a range are equal
+         * to all elements in another range.
+         *
+         * Uses to provided predicate `predicate` to do the comparisons
+         */
+        template <typename RangeLike, typename Equality>
+        RangeEqualsMatcher<RangeLike, Equality>
+        RangeEquals( RangeLike&& range, Equality&& predicate ) {
+            return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };
+        }
+
+        /**
+         * Creates a matcher that checks if all elements in a range are equal
+         * to all elements in another range, in some permutation
+         *
+         * Uses `std::equal_to` to do the comparison
+         */
+        template <typename RangeLike>
+        std::enable_if_t<
+            !Detail::is_matcher<RangeLike>::value,
+            UnorderedRangeEqualsMatcher<RangeLike, std::equal_to<>>>
+        UnorderedRangeEquals( RangeLike&& range ) {
+            return { CATCH_FORWARD( range ), std::equal_to<>{} };
+        }
+
+        /**
+         * Creates a matcher that checks if all elements in a range are equal
+         * to all elements in another range, in some permuation.
+         *
+         * Uses to provided predicate `predicate` to do the comparisons
+         */
+        template <typename RangeLike, typename Equality>
+        UnorderedRangeEqualsMatcher<RangeLike, Equality>
+        UnorderedRangeEquals( RangeLike&& range, Equality&& predicate ) {
+            return { CATCH_FORWARD( range ), CATCH_FORWARD( predicate ) };
+        }
+    } // namespace Matchers
+} // namespace Catch
+
+#endif // CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 
 
 #ifndef CATCH_MATCHERS_STRING_HPP_INCLUDED
@@ -12346,7 +12596,7 @@ namespace Catch {
 
         void writeRun( TestRunNode const& groupNode );
 
-        void writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes);
+        void writeTestFile(StringRef filename, std::vector<TestCaseNode const*> const& testCaseNodes);
 
         void writeTestCase(TestCaseNode const& testCaseNode);
 

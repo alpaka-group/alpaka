@@ -5,11 +5,12 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_VERSION_MACROS_HPP_INCLUDED
-#define CATCH_VERSION_MACROS_HPP_INCLUDED
 
-#define CATCH_VERSION_MAJOR 3
-#define CATCH_VERSION_MINOR 3
-#define CATCH_VERSION_PATCH 1
+#include <catch2/catch_test_macros.hpp>
 
-#endif // CATCH_VERSION_MACROS_HPP_INCLUDED
+TEST_CASE( "this test case is being skipped" ) { SKIP(); }
+
+TEST_CASE( "all sections in this test case are being skipped" ) {
+    SECTION( "A" ) { SKIP(); }
+    SECTION( "B" ) { SKIP(); }
+}

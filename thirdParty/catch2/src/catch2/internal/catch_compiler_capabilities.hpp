@@ -61,9 +61,14 @@
 #endif
 
 #if defined(__CUDACC__) && !defined(__clang__)
+#  ifdef __NVCC_DIAG_PRAGMA_SUPPORT__
+// New pragmas introduced in CUDA 11.5+
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "nv_diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "nv_diagnostic pop" )
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "nv_diag_suppress 177" )
+#  else
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "diag_suppress 177" )
+#  endif
 #endif
 
 // clang-cl defines _MSC_VER as well as __clang__, which could cause the
@@ -181,8 +186,14 @@
 // Visual C++
 #if defined(_MSC_VER)
 
-#  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
-#  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
+// We want to defer to nvcc-specific warning suppression if we are compiled
+// with nvcc masquerading for MSVC.
+#    if !defined( __CUDACC__ )
+#        define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+            __pragma( warning( push ) )
+#        define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
+            __pragma( warning( pop ) )
+#    endif
 
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
