@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+# Copyright 2023 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
 #
 # This file is part of alpaka.
 #
@@ -41,10 +41,13 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 option(alpaka_BUILD_EXAMPLES "Build the examples" OFF)
 
-option(BUILD_TESTING "Build the testing tree." OFF)
+# Enable the test infrastructure only if alpaka is the top-level project
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    option(BUILD_TESTING "Build the testing tree." OFF)
+    include(CTest)
+endif()
 
 option(alpaka_INSTALL_TEST_HEADER "Install headers of the namespace alpaka::test. Attention, headers are not designed for production code, see documentation." OFF)
-include(CTest)
 
 include(CMakeDependentOption)
 cmake_dependent_option(alpaka_CHECK_HEADERS "Check all alpaka headers as part of the tests whether they can be compiled standalone." OFF BUILD_TESTING OFF)
@@ -131,7 +134,7 @@ endif()
 # These flags are set in cmake/alpakaCommon.cmake but are visible in this scope
 # since alpakaCommon.cmake is included.
 
-if(NOT ${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     if(alpaka_ACC_GPU_HIP_ENABLE)
         # export HIPCC flags to parent scope in case alpaka is another project's subdirectory
         set(HIP_HIPCC_FLAGS ${HIP_HIPCC_FLAGS} PARENT_SCOPE)
@@ -148,7 +151,9 @@ add_subdirectory(thirdParty)
 if(alpaka_BUILD_EXAMPLES)
     add_subdirectory("example/")
 endif()
-if(BUILD_TESTING)
+
+# Only build the tests if alpaka is the top-level project and BUILD_TESTING is ON
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
     add_subdirectory("test/")
 endif()
 
@@ -156,7 +161,7 @@ endif()
 # Installation.
 
 # Do not install if alpaka is used as a CMake subdirectory
-if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CMakePackageConfigHelpers)
     include(GNUInstallDirs)
 
