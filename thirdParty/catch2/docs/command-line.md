@@ -148,7 +148,7 @@ validity, and throw an error if they are wrong._
 > Support for passing arguments to reporters through the `-r`, `--reporter` flag was introduced in Catch2 3.0.1
 
 There are multiple built-in reporters, you can see what they do by using the
-[`--list-reporter`](command-line.md#listing-available-tests-tags-or-reporters)
+[`--list-reporters`](command-line.md#listing-available-tests-tags-or-reporters)
 flag. If you need a reporter providing custom format outside of the already
 provided ones, look at the ["write your own reporter" part of the reporter
 documentation](reporters.md#writing-your-own-reporter).
@@ -561,10 +561,10 @@ processes, as is done with the [Bazel test sharding](https://docs.bazel.build/ve
 
 > Introduced in Catch2 3.0.1.
 
-By default, Catch2 test binaries return non-0 exit code if no tests were
-run, e.g. if the binary was compiled with no tests, or the provided test
-spec matched no tests. This flag overrides that, so a test run with no
-tests still returns 0.
+By default, Catch2 test binaries return non-0 exit code if no tests were run,
+e.g. if the binary was compiled with no tests, the provided test spec matched no
+tests, or all tests [were skipped at runtime](skipping-passing-failing.md#top). This flag
+overrides that, so a test run with no tests still returns 0.
 
 ## Output verbosity
 ```
