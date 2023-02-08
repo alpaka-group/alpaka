@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Benjamin Worpitz, Jan Stephan
+# Copyright 2023 Benjamin Worpitz, Jan Stephan
 #
 # This file exemplifies usage of alpaka.
 #
@@ -19,7 +19,7 @@
 ################################################################################
 # Required CMake version.
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.22)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
