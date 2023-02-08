@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Erik Zenker, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+# Copyright 2023 Erik Zenker, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
 #
 # This file exemplifies usage of alpaka.
 #
@@ -16,7 +16,7 @@
 # IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.22)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 project(babelstream LANGUAGES CXX)

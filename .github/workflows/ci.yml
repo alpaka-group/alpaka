@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+# Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
 #
 # This file is part of alpaka.
 #
@@ -28,7 +28,7 @@ concurrency:
 # alpaka_CI                                     : {GITHUB}
 # ALPAKA_CI_DOCKER_BASE_IMAGE_NAME              : {ubuntu:20.04, ubuntu:22.04}
 # ALPAKA_BOOST_VERSION                          : {1.74.0, 1.75.0, 1.76.0, 1.77.0, 1.78.0, 1.79.0}
-# ALPAKA_CI_CMAKE_VER                           : {3.18.6, 3.19.8, 3.20.6, 3.21.7, 3.22.6, 3.23.5, 3.24.3, 3.25.1}
+# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.3, 3.25.2}
 # ALPAKA_CI_XCODE_VER                           : {13.2.1, 14.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
@@ -154,13 +154,13 @@ jobs:
         # gcc 7 ASan introduced 'stack-use-after-scope' which is triggered by GOMP_parallel
         - name: linux_gcc-9_debug
           os: ubuntu-20.04
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 9,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_EXTENSIONS: OFF}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 9,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.74.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_EXTENSIONS: OFF}
         - name: linux_gcc-10_release
           os: ubuntu-20.04
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.19.8, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.23.5, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
         - name: linux_gcc-11_release_oacc
           os: ubuntu-20.04
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.21.7, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-foffload=disable", alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, ACC_DEVICE_TYPE: "host", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-foffload=disable", alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, ACC_DEVICE_TYPE: "host", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
         - name: linux_gcc-11_debug
           os: ubuntu-20.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
@@ -172,7 +172,7 @@ jobs:
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", alpaka_CXX_STANDARD: 20, alpaka_USE_MDSPAN: "FETCH"}
         - name: linux_gcc-12_release_oacc_c++20
           os: ubuntu-22.04
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0, ALPAKA_CI_CMAKE_VER: 3.25.1, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", CMAKE_CXX_FLAGS: "-foffload=disable", alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, ACC_DEVICE_TYPE: "host", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON, alpaka_CXX_STANDARD: 20}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0, ALPAKA_CI_CMAKE_VER: 3.25.2, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", CMAKE_CXX_FLAGS: "-foffload=disable", alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, ACC_DEVICE_TYPE: "host", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON, alpaka_CXX_STANDARD: 20}
         - name: linux_gcc-12_debug_omp5
           os: ubuntu-22.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", alpaka_DEBUG: 2, alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, CMAKE_CXX_FLAGS: "-foffload=disable", OMP_TARGET_OFFLOAD: "DISABLED", alpaka_OFFLOAD_MAX_BLOCK_SIZE: 2, alpaka_CHECK_HEADERS: ON}
@@ -180,14 +180,14 @@ jobs:
         # clang++
         - name: linux_clang-9_debug
           os: ubuntu-20.04
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 9,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.6, OMP_NUM_THREADS: 1, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 9,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.74.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 1, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
         - name: linux_clang-10_release
           os: ubuntu-20.04
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 10,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.19.8, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 10,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.23.5, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
         # clang-11 tested in GitLab CI
         - name: linux_clang-12_release
           os: ubuntu-20.04
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 12,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.21.7, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 12,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
         - name: linux_clang-13_debug_omp5
           os: ubuntu-22.04
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu -Wno-openmp-mapping", alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, CMAKE_EXE_LINKER_FLAGS: "-fopenmp", alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF}
@@ -213,7 +213,7 @@ jobs:
         # most since at least 22.3: Loop in Vec::operator+(..) is wrongly
         # eliminated by optimizer at -O3 in matMulTest
           os: ubuntu-20.04
-          env: {CXX: g++,   CC: gcc,    ALPAKA_CI_GCC_VER: 9, CMAKE_CXX_COMPILER: nvc++,     CMAKE_C_COMPILER: nvc,    ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: RelWithDebInfo,   ALPAKA_BOOST_VERSION: 1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "nvcr.io/nvidia/nvhpc:22.9-devel-cuda11.7-ubuntu20.04", ALPAKA_CI_ANALYSIS: OFF, alpaka_DEBUG: 0, alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, alpaka_DEBUG_OFFLOAD_ASSUME_HOST: ON, CMAKE_CXX_FLAGS: "-acc -ta=multicore --diag_suppress=186", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
+          env: {CXX: g++,   CC: gcc,    ALPAKA_CI_GCC_VER: 9, CMAKE_CXX_COMPILER: nvc++,     CMAKE_C_COMPILER: nvc,    ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: RelWithDebInfo,   ALPAKA_BOOST_VERSION: 1.74.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "nvcr.io/nvidia/nvhpc:22.9-devel-cuda11.7-ubuntu20.04", ALPAKA_CI_ANALYSIS: OFF, alpaka_DEBUG: 0, alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, alpaka_DEBUG_OFFLOAD_ASSUME_HOST: ON, CMAKE_CXX_FLAGS: "-acc -ta=multicore --diag_suppress=186", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
 
     steps:
     - name: check filter

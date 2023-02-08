@@ -1,4 +1,4 @@
-"""Copyright 2023 Simeon Ehrig
+"""Copyright 2023 Simeon Ehrig, Jan Stephan
 
 This file is part of alpaka.
 
@@ -39,7 +39,7 @@ sw_versions: Dict[str, List[str]] = {
         ALPAKA_ACC_GPU_HIP_ENABLE,
     ],
     UBUNTU: ["20.04"],
-    CMAKE: ["3.18.6", "3.19.8", "3.20.6", "3.21.6", "3.22.3", "3.23.2"],
+    CMAKE: ["3.22.6", "3.23.5", "3.24.3", "3.25.2"],
     BOOST: ["1.74.0", "1.75.0", "1.76.0", "1.77.0", "1.78.0", "1.79.0", "1.80.0"],
     CXX_STANDARD: ["17", "20"],
     BUILD_TYPE: BUILD_TYPES,

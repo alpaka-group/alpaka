@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Benjamin Worpitz, Jan Stephan
+# Copyright 2023 Benjamin Worpitz, Jan Stephan
 #
 # This file is part of alpaka.
 #
@@ -12,7 +12,7 @@
 # Required CMake version.
 ################################################################################
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.22)
 
 project("alpakaIntegTest" LANGUAGES CXX)
 

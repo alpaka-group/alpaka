@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+# Copyright 2023 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
 #
 # This file is part of alpaka.
 #
@@ -11,7 +11,7 @@
 ################################################################################
 # Required CMake version
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.22)
 
 cmake_policy(SET CMP0091 NEW)
 
