@@ -30,7 +30,7 @@
 #            pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
 #        endif
 
-#        if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 2, 0)
+#        if HIP_VERSION >= 50200000
 #            include <hiprand/hiprand_kernel.h>
 #        else
 #            include <hiprand_kernel.h>

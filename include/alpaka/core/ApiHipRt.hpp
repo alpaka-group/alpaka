@@ -11,9 +11,9 @@
 
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
-#    include <alpaka/core/BoostPredef.hpp>
-
+#    include <boost/predef.h>
 #    include <hip/hip_runtime_api.h>
+#    include <hip/hip_version.h>
 
 namespace alpaka
 {
@@ -21,7 +21,7 @@ namespace alpaka
     {
         // Names
         static constexpr char name[] = "Hip";
-        static constexpr auto version = BOOST_LANG_HIP;
+        static constexpr auto version = BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0);
 
         // Types
         using DeviceAttr_t = ::hipDeviceAttribute_t;
@@ -83,7 +83,7 @@ namespace alpaka
         static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::hipDeviceAttributeMaxThreadsPerBlock;
         static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::hipDeviceAttributeMultiprocessorCount;
 
-#    if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(4, 5, 0)
+#    if HIP_VERSION >= 40500000
         static constexpr Limit_t limitPrintfFifoSize = ::hipLimitPrintfFifoSize;
 #    else
         static constexpr Limit_t limitPrintfFifoSize
@@ -122,7 +122,7 @@ namespace alpaka
 
         static inline Error_t deviceGetLimit(size_t* pValue, Limit_t limit)
         {
-#    if BOOST_LANG_HIP < BOOST_VERSION_NUMBER(4, 5, 0)
+#    if HIP_VERSION < 40500000
             if(limit == limitPrintfFifoSize)
             {
                 // Implemented only in ROCm 4.5.0 and later.
@@ -186,7 +186,7 @@ namespace alpaka
         static inline Error_t freeAsync([[maybe_unused]] void* devPtr, [[maybe_unused]] Stream_t stream)
         {
             // hipFreeAsync is implemented only in ROCm 5.2.0 and later.
-#    if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 2, 0)
+#    if HIP_VERSION >= 50200000
             return ::hipFreeAsync(devPtr, stream);
 #    else
             // Not implemented.
@@ -236,7 +236,7 @@ namespace alpaka
         }
 
         template<class T>
-        static inline Error_t getSymbolAddress(void** devPtr, const T& symbol)
+        static inline Error_t getSymbolAddress(void** devPtr, T const& symbol)
         {
             return ::hipGetSymbolAddress(devPtr, symbol);
         }
@@ -269,7 +269,7 @@ namespace alpaka
         static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
         {
             // hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.
-#    if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 4, 0)
+#    if HIP_VERSION >= 50400000
             // Wrap the host function using the proper calling convention.
             return ::hipLaunchHostFunc(stream, HostFnAdaptor::hostFunction, new HostFnAdaptor{fn, userData});
 #    else
@@ -294,7 +294,7 @@ namespace alpaka
             [[maybe_unused]] Stream_t stream)
         {
             // hipMallocAsync is implemented only in ROCm 5.2.0 and later.
-#    if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 2, 0)
+#    if HIP_VERSION >= 50200000
             return ::hipMallocAsync(devPtr, size, stream);
 #    else
             // Not implemented.
