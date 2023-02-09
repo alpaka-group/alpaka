@@ -25,12 +25,20 @@
 #    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 #        include <alpaka/core/Hip.hpp>
 
-#        pragma clang diagnostic push
-#        pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic push
+#            pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
+#        endif
 
-#        include <hiprand_kernel.h>
+#        if BOOST_LANG_HIP >= BOOST_VERSION_NUMBER(5, 2, 0)
+#            include <hiprand/hiprand_kernel.h>
+#        else
+#            include <hiprand_kernel.h>
+#        endif
 
-#        pragma clang diagnostic pop
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic pop
+#        endif
 #    endif
 
 #    include <type_traits>
