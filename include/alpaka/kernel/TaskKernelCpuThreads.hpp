@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -154,12 +154,9 @@ namespace alpaka
                 std::ref(args)...);
             // Execute the block threads in parallel.
             meta::ndLoopIncIdx(blockThreadExtent, boundBlockThreadExecHost);
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#    if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             // Wait for the completion of the block thread kernels.
             for(auto& t : futuresInBlock)
                 t.wait();
-#    endif
             // Clean up.
             futuresInBlock.clear();
 
@@ -171,15 +168,9 @@ namespace alpaka
         //! The function executed for each block thread on the host.
         ALPAKA_FN_HOST static auto blockThreadExecHost(
             AccCpuThreads<TDim, TIdx>& acc,
-#    if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             std::vector<std::future<void>>& futuresInBlock,
             Vec<TDim, TIdx> const& blockThreadIdx,
             ThreadPool& threadPool,
-#    else
-            std::vector<std::future<void>>&,
-            Vec<TDim, TIdx> const& blockThreadIdx,
-            ThreadPool&,
-#    endif
             TKernelFnObj const& kernelFnObj,
             std::decay_t<TArgs> const&... args) -> void
         {
@@ -189,12 +180,7 @@ namespace alpaka
             auto boundBlockThreadExecAcc
                 = [&, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); };
             // Add the bound function to the block thread pool.
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#    if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             futuresInBlock.emplace_back(threadPool.enqueueTask(boundBlockThreadExecAcc));
-#    else
-            (void) boundBlockThreadExecAcc;
-#    endif
         }
         //! The thread entry point on the accelerator.
         ALPAKA_FN_HOST static auto blockThreadExecAcc(
