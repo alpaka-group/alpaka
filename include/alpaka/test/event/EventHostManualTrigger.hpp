@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -190,11 +190,7 @@ namespace alpaka::trait
     {
         //
         ALPAKA_FN_HOST static auto enqueue(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             QueueGenericThreadsNonBlocking<TDev>& queue,
-#else
-            QueueGenericThreadsNonBlocking<TDev>&,
-#endif
             test::EventHostManualTriggerCpu<TDev>& event) -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -215,9 +211,6 @@ namespace alpaka::trait
             // and re-enqueued which would lead to deadlocks.
             ++spEventImpl->m_enqueueCount;
 
-            // Workaround: Clang can not support this when natively compiling device code. See
-            // ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             auto const enqueueCount = spEventImpl->m_enqueueCount;
 
             // Enqueue a task that only resets the events flag if it is completed.
@@ -230,7 +223,6 @@ namespace alpaka::trait
                         [spEventImpl, enqueueCount]
                         { return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady; });
                 });
-#endif
         }
     };
 

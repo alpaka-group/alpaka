@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -146,26 +146,20 @@ namespace alpaka
 
                 ++spEventImpl->m_enqueueCount;
 
-                // Workaround: Clang can not support this when natively compiling device code. See
-                // ConcurrentExecPool.hpp.
-                if constexpr(!((BOOST_COMP_CLANG_CUDA != BOOST_VERSION_NUMBER_NOT_AVAILABLE)
-                               && (BOOST_ARCH_PTX != BOOST_VERSION_NUMBER_NOT_AVAILABLE)))
-                {
-                    auto const enqueueCount = spEventImpl->m_enqueueCount;
+                auto const enqueueCount = spEventImpl->m_enqueueCount;
 
-                    // Enqueue a task that only resets the events flag if it is completed.
-                    spEventImpl->m_future = queueImpl.m_workerThread->enqueueTask(
-                        [spEventImpl, enqueueCount]()
+                // Enqueue a task that only resets the events flag if it is completed.
+                spEventImpl->m_future = queueImpl.m_workerThread->enqueueTask(
+                    [spEventImpl, enqueueCount]()
+                    {
+                        std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
+
+                        // Nothing to do if it has been re-enqueued to a later position in the queue.
+                        if(enqueueCount == spEventImpl->m_enqueueCount)
                         {
-                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-
-                            // Nothing to do if it has been re-enqueued to a later position in the queue.
-                            if(enqueueCount == spEventImpl->m_enqueueCount)
-                            {
-                                spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
-                            }
-                        });
-                }
+                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+                        }
+                    });
             }
         };
         //! The CPU non-blocking device queue enqueue trait specialization.
@@ -293,11 +287,7 @@ namespace alpaka
             EventGenericThreads<TDev>>
         {
             ALPAKA_FN_HOST static auto waiterWaitFor(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>& queueImpl,
-#else
-                alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>&,
-#endif
                 EventGenericThreads<TDev> const& event) -> void
             {
                 // Copy the shared pointer of the event implementation.
@@ -309,8 +299,6 @@ namespace alpaka
 
                 if(!spEventImpl->isReady())
                 {
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                     // Enqueue a task that waits for the given event.
@@ -320,7 +308,6 @@ namespace alpaka
                             std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
                             spEventImpl->wait(enqueueCount, lk2);
                         });
-#endif
                 }
             }
         };

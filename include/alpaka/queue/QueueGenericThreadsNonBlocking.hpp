@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Jeffrey Kelling
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Jeffrey Kelling
  *
  * This file is part of alpaka.
  *
@@ -21,6 +21,7 @@
 #include <memory>
 #include <mutex>
 #include <thread>
+#include <tuple>
 #include <type_traits>
 
 namespace alpaka
@@ -74,7 +75,7 @@ namespace alpaka
                         [pool = std::weak_ptr<ThreadPool>(m_workerThread)]() noexcept
                         {
                             if(auto s = pool.lock())
-                                static_cast<void>(s->takeDetachHandle()); // let returned shared_ptr destroy itself
+                                std::ignore = s->takeDetachHandle(); // let returned shared_ptr destroy itself
                         });
                     auto* wt = m_workerThread.get();
                     wt->detach(std::move(m_workerThread));
@@ -156,15 +157,9 @@ namespace alpaka
         template<typename TDev, typename TTask>
         struct Enqueue<QueueGenericThreadsNonBlocking<TDev>, TTask>
         {
-            ALPAKA_FN_HOST static auto enqueue(
-                [[maybe_unused]] QueueGenericThreadsNonBlocking<TDev>& queue,
-                [[maybe_unused]] TTask const& task) -> void
+            ALPAKA_FN_HOST static auto enqueue(QueueGenericThreadsNonBlocking<TDev>& queue, TTask const& task) -> void
             {
-                // Workaround: Clang can not support this when natively compiling device code. See
-                // ConcurrentExecPool.hpp.
-                if constexpr(!((BOOST_COMP_CLANG_CUDA != BOOST_VERSION_NUMBER_NOT_AVAILABLE)
-                               && (BOOST_ARCH_PTX != BOOST_VERSION_NUMBER_NOT_AVAILABLE)))
-                    queue.m_spQueueImpl->m_workerThread->enqueueTask(task);
+                queue.m_spQueueImpl->m_workerThread->enqueueTask(task);
             }
         };
         //! The CPU non-blocking device queue test trait specialization.

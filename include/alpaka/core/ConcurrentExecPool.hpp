@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Jeffrey Kelling
+/* Copyright 2023 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Jeffrey Kelling
  *
  * This file is part of alpaka.
  *
@@ -85,18 +85,12 @@ namespace alpaka::core
                 }
                 catch(...)
                 {
-// Workaround: Clang can not support this when natively compiling device code.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     setException(std::current_exception());
-#endif
                 }
             }
 
-// Workaround: Clang can not support this when natively compiling device code.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             //! Sets an exception.
             virtual auto setException(std::exception_ptr const& exceptPtr) -> void = 0;
-#endif
 
         protected:
             //! The execution function.
@@ -117,14 +111,11 @@ namespace alpaka::core
             {
             }
 
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
             //! Sets an exception.
             void setException(std::exception_ptr const& exceptPtr) final
             {
                 m_Promise.set_exception(exceptPtr);
             }
-#endif
             TPromise<TFnObjReturn> m_Promise;
 
         private:
@@ -240,10 +231,7 @@ namespace alpaka::core
                 {
                     auto const except
                         = std::runtime_error("Could not perform task before ConcurrentExecPool destruction");
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     task->setException(std::make_exception_ptr(except));
-#endif
                 }
             }
 
