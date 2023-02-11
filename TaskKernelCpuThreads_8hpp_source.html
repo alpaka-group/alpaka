@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="title">TaskKernelCpuThreads.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="TaskKernelCpuThreads_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber</span></div>
+<a href="TaskKernelCpuThreads_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -243,131 +243,116 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                std::ref(args)...);</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="comment">// Execute the block threads in parallel.</span></div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            <a class="code" href="namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750">meta::ndLoopIncIdx</a>(blockThreadExtent, boundBlockThreadExecHost);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#    if !(BOOST_COMP_CLANG_CUDA &amp;&amp; BOOST_ARCH_PTX)</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="comment">// Wait for the completion of the block thread kernels.</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; t : futuresInBlock)</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                t.wait();</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="comment">// Clean up.</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            futuresInBlock.clear();</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            acc.m_threadToIndexMap.clear();</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            <span class="comment">// After a block has been processed, the shared memory has to be deleted.</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            <a class="code" href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">freeSharedVars</a>(acc);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        }<span class="comment"></span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">        //! The function executed for each block thread on the host.</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> blockThreadExecHost(</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            AccCpuThreads&lt;TDim, TIdx&gt;&amp; acc,</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;#    <span class="keywordflow">if</span> !(<a class="code" href="BoostPredef_8hpp.html#ad345fa3025032124d8928ff3264b054a">BOOST_COMP_CLANG_CUDA</a> &amp;&amp; BOOST_ARCH_PTX)</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            std::vector&lt;std::future&lt;void&gt;&gt;&amp; futuresInBlock,</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; blockThreadIdx,</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            ThreadPool&amp; threadPool,</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;#    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            std::vector&lt;std::future&lt;void&gt;&gt;&amp;,</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; blockThreadIdx,</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            ThreadPool&amp;,</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;#    endif</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj,</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="comment">// Bind the arguments to the accelerator block thread execution function.</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="comment">// The blockThreadIdx is required to be copied in because the variable will get changed for the next</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="comment">// iteration/thread.</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keyword">auto</span> boundBlockThreadExecAcc</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                = [&amp;, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); };</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="comment">// Add the bound function to the block thread pool.</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">#    if !(BOOST_COMP_CLANG_CUDA &amp;&amp; BOOST_ARCH_PTX)</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            futuresInBlock.emplace_back(threadPool.enqueueTask(boundBlockThreadExecAcc));</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            (void) boundBlockThreadExecAcc;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        }<span class="comment"></span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">        //! The thread entry point on the accelerator.</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> blockThreadExecAcc(</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            AccCpuThreads&lt;TDim, TIdx&gt;&amp; acc,</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; blockThreadIdx,</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj,</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            <span class="comment">// We have to store the thread data before the kernel is calling any of the methods of this class depending</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <span class="comment">// on them.</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> threadId(std::this_thread::get_id());</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <span class="comment">// Wait for the completion of the block thread kernels.</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; t : futuresInBlock)</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                t.wait();</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="comment">// Clean up.</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            futuresInBlock.clear();</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            acc.m_threadToIndexMap.clear();</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="comment">// After a block has been processed, the shared memory has to be deleted.</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <a class="code" href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">freeSharedVars</a>(acc);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }<span class="comment"></span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">        //! The function executed for each block thread on the host.</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> blockThreadExecHost(</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            AccCpuThreads&lt;TDim, TIdx&gt;&amp; acc,</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            std::vector&lt;std::future&lt;void&gt;&gt;&amp; futuresInBlock,</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; blockThreadIdx,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            ThreadPool&amp; threadPool,</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj,</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="comment">// Bind the arguments to the accelerator block thread execution function.</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="comment">// The blockThreadIdx is required to be copied in because the variable will get changed for the next</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="comment">// iteration/thread.</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keyword">auto</span> boundBlockThreadExecAcc</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                = [&amp;, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); };</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="comment">// Add the bound function to the block thread pool.</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            futuresInBlock.emplace_back(threadPool.enqueueTask(boundBlockThreadExecAcc));</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }<span class="comment"></span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">        //! The thread entry point on the accelerator.</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> blockThreadExecAcc(</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            AccCpuThreads&lt;TDim, TIdx&gt;&amp; acc,</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; blockThreadIdx,</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="comment">// We have to store the thread data before the kernel is calling any of the methods of this class depending</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            <span class="comment">// on them.</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> threadId(std::this_thread::get_id());</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            <span class="comment">// Set the master thread id.</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keywordflow">if</span>(blockThreadIdx.sum() == 0)</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                acc.m_idMasterThread = threadId;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                <span class="comment">// The insertion of elements has to be done one thread at a time.</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                std::lock_guard&lt;std::mutex&gt; lock(acc.m_mtxMapInsert);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                <span class="comment">// Save the thread id, and index.</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                acc.m_threadToIndexMap.emplace(threadId, blockThreadIdx);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            }</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="comment">// Set the master thread id.</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordflow">if</span>(blockThreadIdx.sum() == 0)</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            {</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                acc.m_idMasterThread = threadId;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="comment">// Sync all threads so that the maps with thread id&#39;s are complete and not changed after here.</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <a class="code" href="namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1">syncBlockThreads</a>(acc);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="comment">// Execute the kernel itself.</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            kernelFnObj(<span class="keyword">const_cast&lt;</span>AccCpuThreads&lt;TDim, TIdx&gt; const&amp;<span class="keyword">&gt;</span>(acc), args...);</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                <span class="comment">// The insertion of elements has to be done one thread at a time.</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                std::lock_guard&lt;std::mutex&gt; lock(acc.m_mtxMapInsert);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="comment">// Save the thread id, and index.</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                acc.m_threadToIndexMap.emplace(threadId, blockThreadIdx);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            }</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            <span class="comment">// Sync all threads so that the maps with thread id&#39;s are complete and not changed after here.</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <a class="code" href="namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1">syncBlockThreads</a>(acc);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="comment">// Execute the kernel itself.</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            kernelFnObj(<span class="keyword">const_cast&lt;</span>AccCpuThreads&lt;TDim, TIdx&gt; const&amp;<span class="keyword">&gt;</span>(acc), args...);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <span class="comment">// We have to sync all threads here because if a thread would finish before all threads have been started,</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            <span class="comment">// a new thread could get the recycled (then duplicate) thread id!</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            <a class="code" href="namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1">syncBlockThreads</a>(acc);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        TKernelFnObj m_kernelFnObj;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        std::tuple&lt;std::decay_t&lt;TArgs&gt;...&gt; m_args;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    };</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">        //! The CPU threads execution task accelerator type trait specialization.</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00243"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  243</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1AccType.html">AccType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="comment">// We have to sync all threads here because if a thread would finish before all threads have been started,</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <span class="comment">// a new thread could get the recycled (then duplicate) thread id!</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <a class="code" href="namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1">syncBlockThreads</a>(acc);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        TKernelFnObj m_kernelFnObj;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        std::tuple&lt;std::decay_t&lt;TArgs&gt;...&gt; m_args;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    };</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">        //! The CPU threads execution task accelerator type trait specialization.</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00229"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  229</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1AccType.html">AccType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        {</div>
+<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a024a9bd41dd4c039c485c5ffd4d9348b">  231</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccCpuThreads.html">type</a> = <a class="code" href="classalpaka_1_1AccCpuThreads.html">AccCpuThreads&lt;TDim, TIdx&gt;</a>;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        };</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">        //! The CPU threads execution task device type trait specialization.</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  236</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DevType.html">DevType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        {</div>
+<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a685b2e33995ecc8e6ddb0de2a3555b28">  238</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1DevCpu.html">type</a> = <a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        };</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">        //! The CPU threads execution task dimension getter trait specialization.</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00243"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  243</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DimType.html">DimType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        {</div>
-<div class="line"><a name="l00245"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a024a9bd41dd4c039c485c5ffd4d9348b">  245</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccCpuThreads.html">type</a> = <a class="code" href="classalpaka_1_1AccCpuThreads.html">AccCpuThreads&lt;TDim, TIdx&gt;</a>;</div>
+<div class="line"><a name="l00245"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a0191fc7f7faca35aafbd1634f8fc5c8c">  245</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a0191fc7f7faca35aafbd1634f8fc5c8c">type</a> = TDim;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        };</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">        //! The CPU threads execution task device type trait specialization.</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">        //! The CPU threads execution task platform type trait specialization.</span></div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00250"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  250</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DevType.html">DevType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
+<div class="line"><a name="l00250"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  250</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1PltfType.html">PltfType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        {</div>
-<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DevType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a685b2e33995ecc8e6ddb0de2a3555b28">  252</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1DevCpu.html">type</a> = <a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a>;</div>
+<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a47c814a2482a739f1ac86cfcc6de63d6">  252</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1PltfCpu.html">type</a> = <a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>;</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        };</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">        //! The CPU threads execution task dimension getter trait specialization.</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">        //! The CPU threads execution task idx type trait specialization.</span></div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  257</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DimType.html">DimType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
+<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  257</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        {</div>
-<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a0191fc7f7faca35aafbd1634f8fc5c8c">  259</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a0191fc7f7faca35aafbd1634f8fc5c8c">type</a> = TDim;</div>
+<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#aca916dfadad9f8d52eb0d324673bc494">  259</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">type</a> = <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>;</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        };</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">        //! The CPU threads execution task platform type trait specialization.</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00264"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  264</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1PltfType.html">PltfType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        {</div>
-<div class="line"><a name="l00266"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a47c814a2482a739f1ac86cfcc6de63d6">  266</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1PltfCpu.html">type</a> = <a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        };</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">        //! The CPU threads execution task idx type trait specialization.</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html">  271</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>&lt;<a class="code" href="classalpaka_1_1TaskKernelCpuThreads.html">TaskKernelCpuThreads</a>&lt;TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>, TKernelFnObj, TArgs...&gt;&gt;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        {</div>
-<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#aca916dfadad9f8d52eb0d324673bc494">  273</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">type</a> = <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        };</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAccCpuThreads_8hpp_html"><div class="ttname"><a href="AccCpuThreads_8hpp.html">AccCpuThreads.hpp</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
-<div class="ttc" id="aBoostPredef_8hpp_html_ad345fa3025032124d8928ff3264b054a"><div class="ttname"><a href="BoostPredef_8hpp.html#ad345fa3025032124d8928ff3264b054a">BOOST_COMP_CLANG_CUDA</a></div><div class="ttdeci">#define BOOST_COMP_CLANG_CUDA</div><div class="ttdef"><b>Definition:</b> <a href="BoostPredef_8hpp_source.html#l00062">BoostPredef.hpp:62</a></div></div>
 <div class="ttc" id="aConcurrentExecPool_8hpp_html"><div class="ttname"><a href="ConcurrentExecPool_8hpp.html">ConcurrentExecPool.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac556c317f934c69c8c8c083c5068f681"><div class="ttname"><a href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00058">Debug.hpp:58</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html"><div class="ttname"><a href="Decay_8hpp.html">Decay.hpp</a></div></div>
@@ -396,10 +381,10 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div class="ttc" id="anamespacealpaka_html_aee3fb80b82e8f3e9601195afb0b8c34c"><div class="ttname"><a href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim</a></div><div class="ttdeci">typename trait::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_af573b85c5c94948f067a60c24d76065e"><div class="ttname"><a href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">alpaka::freeSharedVars</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_ACC auto freeSharedVars(TBlockSharedMemSt &amp;blockSharedMemSt) -&gt; void</div><div class="ttdoc">Frees all memory used by block shared variables.</div><div class="ttdef"><b>Definition:</b> <a href="block_2shared_2st_2Traits_8hpp_source.html#l00059">Traits.hpp:59</a></div></div>
 <div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="astructalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html"><div class="ttname"><a href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a></div><div class="ttdoc">ConcurrentExecPool using yield or a condition variable to wait for new work.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00193">ConcurrentExecPool.hpp:195</a></div></div>
+<div class="ttc" id="astructalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_html"><div class="ttname"><a href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a></div><div class="ttdoc">ConcurrentExecPool using yield or a condition variable to wait for new work.</div><div class="ttdef"><b>Definition:</b> <a href="ConcurrentExecPool_8hpp_source.html#l00184">ConcurrentExecPool.hpp:186</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1AccType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1AccType.html">alpaka::trait::AccType</a></div><div class="ttdoc">The accelerator type trait.</div><div class="ttdef"><b>Definition:</b> <a href="acc_2Traits_8hpp_source.html#l00042">Traits.hpp:42</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1DevType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1DevType.html">alpaka::trait::DevType</a></div><div class="ttdoc">The device type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00026">Traits.hpp:26</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4_html_a0191fc7f7faca35aafbd1634f8fc5c8c"><div class="ttname"><a href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a0191fc7f7faca35aafbd1634f8fc5c8c">alpaka::trait::DimType&lt; TaskKernelCpuThreads&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;::type</a></div><div class="ttdeci">TDim type</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelCpuThreads_8hpp_source.html#l00259">TaskKernelCpuThreads.hpp:259</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4_html_a0191fc7f7faca35aafbd1634f8fc5c8c"><div class="ttname"><a href="structalpaka_1_1trait_1_1DimType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a0191fc7f7faca35aafbd1634f8fc5c8c">alpaka::trait::DimType&lt; TaskKernelCpuThreads&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;::type</a></div><div class="ttdeci">TDim type</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelCpuThreads_8hpp_source.html#l00245">TaskKernelCpuThreads.hpp:245</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1DimType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1DimType.html">alpaka::trait::DimType</a></div><div class="ttdoc">The dimension getter type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00019">Traits.hpp:19</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType.html">alpaka::trait::IdxType</a></div><div class="ttdoc">The idx type trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00029">Traits.hpp:29</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1PltfType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1PltfType.html">alpaka::trait::PltfType</a></div><div class="ttdoc">The platform type trait.</div><div class="ttdef"><b>Definition:</b> <a href="pltf_2Traits_8hpp_source.html#l00035">Traits.hpp:35</a></div></div>
@@ -410,7 +395,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuThreads_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuThreads_8hpp.html">TaskKernelCpuThreads.hpp</a></li>
-    <li class="footer">Generated on Fri Feb 10 2023 12:10:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Feb 11 2023 01:11:50 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
