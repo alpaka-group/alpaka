@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+
 # stage description
 # generate
 #  creates the actual test jobs via python script

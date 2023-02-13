@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+
 # nvcc + g++
 linux_nvcc-11.0_gcc-9_debug_separable_compilation_compile_only:
   extends: .base_cuda_gcc_compile_only

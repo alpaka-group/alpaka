@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+
 linux_clang-14_debug_analysis:
   extends: .base_clang
   variables:

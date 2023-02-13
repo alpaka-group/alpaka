@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MPL-2.0
 
 # NVHPC 21.11 (which has CUDA 11.5 bundled) doesn't work with a CUDA 12 GPU driver.
 
