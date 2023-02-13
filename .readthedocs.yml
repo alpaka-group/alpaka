@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+
 # Default [] (epub, pdf, htmlzip)
 # Note: PDF/epub/htmlzip output is not supported when using MkDocs
 formats: []
