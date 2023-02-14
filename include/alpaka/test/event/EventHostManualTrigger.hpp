@@ -366,16 +366,13 @@ namespace alpaka::test
         {
             ALPAKA_FN_HOST static auto isSupported(DevCudaRt const& dev) -> bool
             {
+#    if CUDA_VERSION < 11070
                 int result = 0;
-                cuDeviceGetAttribute(
-                    &result,
-#    if CUDA_VERSION >= 12000
-                    CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS_V1,
-#    else
-                    CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS,
-#    endif
-                    dev.getNativeHandle());
+                cuDeviceGetAttribute(&result, CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS, dev.getNativeHandle());
                 return result != 0;
+#    else
+                return true; // Always enabled as of CUDA 11.7
+#    endif
             }
         };
     } // namespace trait
@@ -383,6 +380,24 @@ namespace alpaka::test
 
 namespace alpaka::trait
 {
+    namespace detail
+    {
+        // TODO: Replace with cuStreamWaitValue32 once support for CUDA < 12 is dropped.
+        inline auto streamWaitValue(CUstream stream, CUdeviceptr addr, cuuint32_t value, unsigned int flags)
+            -> CUresult
+        {
+            // NVIDIA introduced a new stream memory ops API with CUDA 11.7 (called v2). The corresponding CUDA
+            // functions were suffixed with `_v2`. With CUDA 12.0 v1 of the API was removed and the `_v2` removed
+            // from the new functions. So CUDA <= 11.6 and CUDA >= 12.0 share the same function signature but
+            // internally do different things.
+#    if(CUDA_VERSION < 11070) || (CUDA_VERSION >= 12000)
+            return cuStreamWaitValue32(stream, addr, value, flags);
+#    else
+            return cuStreamWaitValue32_v2(stream, addr, value, flags);
+#    endif
+        }
+    } // namespace detail
+
     //! The CPU device event device get trait specialization.
     template<>
     struct GetDev<test::EventHostManualTriggerCuda>
@@ -432,7 +447,7 @@ namespace alpaka::trait
             //   on host updates may hang. This includes synchronization between the host and
             //   the device build upon value-based CUDA queue synchronization APIs such as
             //   cuStreamWaitValue32() and cuStreamWriteValue32().
-            ALPAKA_CUDA_DRV_CHECK(cuStreamWaitValue32(
+            ALPAKA_CUDA_DRV_CHECK(detail::streamWaitValue(
                 static_cast<CUstream>(queue.getNativeHandle()),
                 reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                 0x01010101u,
@@ -464,7 +479,7 @@ namespace alpaka::trait
             //   on host updates may hang. This includes synchronization between the host and
             //   the device build upon value-based CUDA queue synchronization APIs such as
             //   cuStreamWaitValue32() and cuStreamWriteValue32().
-            ALPAKA_CUDA_DRV_CHECK(cuStreamWaitValue32(
+            ALPAKA_CUDA_DRV_CHECK(detail::streamWaitValue(
                 static_cast<CUstream>(queue.getNativeHandle()),
                 reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                 0x01010101u,
@@ -657,14 +672,14 @@ namespace alpaka::trait
             }
         }
     };
+
     template<>
     struct Enqueue<QueueHipRtBlocking, test::EventHostManualTriggerHip>
     {
         using TApi = alpaka::ApiHipRt;
 
-        ALPAKA_FN_HOST static auto enqueue(
-            [[maybe_unused]] QueueHipRtBlocking& queue,
-            test::EventHostManualTriggerHip& event) -> void
+        ALPAKA_FN_HOST static auto enqueue(QueueHipRtBlocking& /* queue */, test::EventHostManualTriggerHip& event)
+            -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -686,13 +701,7 @@ namespace alpaka::trait
             //   on host updates may hang. This includes synchronization between the host and
             //   the device build upon value-based HIP queue synchronization APIs such as
             //   cuStreamWaitValue32() and cuStreamWriteValue32().
-#    if BOOST_COMP_NVCC
-            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipCUResultTohipError(cuStreamWaitValue32(
-                static_cast<CUstream>(queue.getNativeHandle()),
-                reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
-                0x01010101u,
-                CU_STREAM_WAIT_VALUE_GEQ)));
-#    else
+
             // workaround for missing cuStreamWaitValue32 in HIP
             std::uint32_t hmem = 0;
             do
@@ -701,8 +710,6 @@ namespace alpaka::trait
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     hipMemcpy(&hmem, event.m_spEventImpl->m_devMem, sizeof(std::uint32_t), hipMemcpyDefault));
             } while(hmem < 0x01010101u);
-
-#    endif
         }
     };
 } // namespace alpaka::trait
