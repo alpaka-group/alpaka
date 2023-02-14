@@ -109,7 +109,7 @@ Macros</h2></td></tr>
 <tr class="separator:a30cf38ce8c63908b355f69eb893da575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a195bd41eac945cee512865b6ef73f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></td></tr>
 <tr class="separator:a4a195bd41eac945cee512865b6ef73f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abecbcba04c4231d227406ebb0020330b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a>&#160;&#160;&#160;inline</td></tr>
+<tr class="memitem:abecbcba04c4231d227406ebb0020330b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a>&#160;&#160;&#160;[[gnu::always_inline]] inline</td></tr>
 <tr class="memdesc:abecbcba04c4231d227406ebb0020330b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro defining the inline function attribute.  <a href="core_2Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">More...</a><br /></td></tr>
 <tr class="separator:abecbcba04c4231d227406ebb0020330b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8d02f0c4379afabdb7f4ee2e8f7954c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></td></tr>
@@ -139,7 +139,7 @@ Macros</h2></td></tr>
 <p>Example: ALPAKA_DEVICE_VOLATILE float* ptr;</p>
 <p>This is useful for pointers, (shared) variables and shared memory which are used in combination with the <a class="el" href="namespacealpaka.html#a8a1c027320c9d7a10df1ae7bc87fcb46" title="Issues memory fence instructions.">alpaka::mem_fence()</a> function. It ensures that memory annotated with this macro will always be written directly to memory (and not to a register or cache because of compiler optimizations). </p>
 
-<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00172">172</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00177">177</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -221,14 +221,14 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ALPAKA_FN_INLINE&#160;&#160;&#160;inline</td>
+          <td class="memname">#define ALPAKA_FN_INLINE&#160;&#160;&#160;[[gnu::always_inline]] inline</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Macro defining the inline function attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00085">85</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00089">89</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -277,12 +277,12 @@ Macros</h2></td></tr>
 <div class="line">}</div>
 <div class="ttc" id="aclassalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec</a></div><div class="ttdoc">A n-dimensional vector.</div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00080">Vec.hpp:81</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1ViewPlainPtr_html"><div class="ttname"><a href="classalpaka_1_1ViewPlainPtr.html">alpaka::ViewPlainPtr</a></div><div class="ttdoc">The memory view to wrap plain pointers.</div><div class="ttdef"><b>Definition:</b> <a href="ViewPlainPtr_8hpp_source.html#l00027">ViewPlainPtr.hpp:28</a></div></div>
-<div class="ttc" id="acore_2Common_8hpp_html_a9d25bd4d9704008351191d42e112af2a"><div class="ttname"><a href="core_2Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_CONSTANT</div><div class="ttdoc">This macro defines a variable lying in constant accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00157">Common.hpp:157</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html_a9d25bd4d9704008351191d42e112af2a"><div class="ttname"><a href="core_2Common_8hpp.html#a9d25bd4d9704008351191d42e112af2a">ALPAKA_STATIC_ACC_MEM_CONSTANT</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_CONSTANT</div><div class="ttdoc">This macro defines a variable lying in constant accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00162">Common.hpp:162</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a4764e4542b9f8f9bfe0d317f4aefd165"><div class="ttname"><a href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDstFwd &amp;&amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory from a part of viewSrc to viewDst, described by extent. Possibly copies between differe...</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00243">Traits.hpp:243</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_adedb8c0a11a3096bccbd7d37481798b0"><div class="ttname"><a href="namespacealpaka.html#adedb8c0a11a3096bccbd7d37481798b0">alpaka::createStaticDevMemView</a></div><div class="ttdeci">auto createStaticDevMemView(TElem *pMem, TDev const &amp;dev, TExtent const &amp;extent)</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00405">Traits.hpp:405</a></div></div>
 </div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00157">157</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00162">162</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -311,10 +311,10 @@ Macros</h2></td></tr>
 <div class="line">    <a class="code" href="classalpaka_1_1ViewPlainPtr.html">alpaka::ViewPlainPtr&lt;DevHost, int, alpaka::DimInt&lt;1u&gt;</a>, <span class="keywordtype">size_t</span>&gt; bufHost(&amp;initialValue, devHost, extent);</div>
 <div class="line">    <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">alpaka::memcpy</a>(queue, viewGlobalMemUninitialized, bufHost, extent);</div>
 <div class="line">}</div>
-<div class="ttc" id="acore_2Common_8hpp_html_a95bebbbf9aab1a18a278359a85a41125"><div class="ttname"><a href="core_2Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_GLOBAL</div><div class="ttdoc">This macro defines a variable lying in global accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00121">Common.hpp:121</a></div></div>
+<div class="ttc" id="acore_2Common_8hpp_html_a95bebbbf9aab1a18a278359a85a41125"><div class="ttname"><a href="core_2Common_8hpp.html#a95bebbbf9aab1a18a278359a85a41125">ALPAKA_STATIC_ACC_MEM_GLOBAL</a></div><div class="ttdeci">#define ALPAKA_STATIC_ACC_MEM_GLOBAL</div><div class="ttdoc">This macro defines a variable lying in global accelerator device memory.</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00126">Common.hpp:126</a></div></div>
 </div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00121">121</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00126">126</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -324,7 +324,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="core_2Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Sat Feb 11 2023 01:11:51 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Feb 14 2023 10:31:36 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
