@@ -91,10 +91,6 @@ def job_image(job: Dict[str, Tuple[str, str]], container_version: float) -> str:
     if (
         ALPAKA_ACC_GPU_CUDA_ENABLE in job
         and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF
-        # TODO(SimeonEhrig) workaround until container version 3.1
-        # container version 3.1 allows to ask, which images are available
-        and pk_version.parse(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION])
-        < pk_version.parse("11.7")
     ):
         # Cast cuda version shape. E.g. from 11.0 to 110
         container_url += "-cuda" + str(
