@@ -89,95 +89,90 @@ $(document).ready(function(){initNavTree('IdxGbUniformCudaHipBuiltIn_8hpp_source
 <div class="contents">
 <a href="IdxGbUniformCudaHipBuiltIn_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Matthias Werner, Jan Stephan, Andrea Bocci, Bernhard</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Manfred Gruber</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * This Source Code Form is subject to the terms of the Mozilla Public</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * License, v. 2.0. If a copy of the MPL was not distributed with this</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> * file, You can obtain one at http://mozilla.org/MPL/2.0/.</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Positioning_8hpp.html">alpaka/core/Positioning.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="idx_2Traits_8hpp.html">alpaka/idx/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Vec_8hpp.html">alpaka/vec/Vec.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Backend specific includes.</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Cuda_8hpp.html">alpaka/core/Cuda.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Hip_8hpp.html">alpaka/core/Hip.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">namespace </span>gb</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">        //! The CUDA/HIP accelerator ND index provider.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">   34</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">IdxGbUniformCudaHipBuiltIn</a></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptIdxGb, IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        };</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    } <span class="comment">// namespace gb</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#    if !defined(ALPAKA_HOST_ONLY)</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; !BOOST_LANG_CUDA</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) &amp;&amp; !BOOST_LANG_HIP</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">        //! The GPU CUDA/HIP accelerator index dimension get trait specialization.</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html">   54</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DimType.html">DimType</a>&lt;gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a7c01fa1f422bb9f05349b8cb8536c59c">   56</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a7c01fa1f422bb9f05349b8cb8536c59c">type</a> = TDim;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        };</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">        //! The GPU CUDA/HIP accelerator grid block index get trait specialization.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html">   61</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1GetIdx.html">GetIdx</a>&lt;gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;, origin::Grid, unit::Blocks&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {<span class="comment"></span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">            //! \return The index of the current block in the grid.</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TWorkDiv&gt;</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html#a3218c89b1930ec2ec913adfff0c40fae">   65</a></span>&#160;            __device__ <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html#a3218c89b1930ec2ec913adfff0c40fae">getIdx</a>(<a class="code" href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;</a> <span class="keyword">const</span>&amp; <span class="comment">/* idx */</span>, TWorkDiv <span class="keyword">const</span>&amp;)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TDim, TIdx&gt;</a></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keywordflow">return</span> castVec&lt;TIdx&gt;(getOffsetVecEnd&lt;TDim&gt;(blockIdx));</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#        else</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keywordflow">return</span> getOffsetVecEnd&lt;TDim&gt;(<a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;std::integral_constant&lt;typename TDim::value_type, 3&gt;, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>&gt;(</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(hipBlockIdx_z),</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                    <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(hipBlockIdx_y),</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(hipBlockIdx_x)));</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        };</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">        //! The GPU CUDA/HIP accelerator grid block index idx type trait specialization.</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html">   81</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>&lt;gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a4ed480be781ffb4d9e61054d7a7b91b1">   83</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">type</a> = <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        };</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Positioning_8hpp.html">alpaka/core/Positioning.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="idx_2Traits_8hpp.html">alpaka/idx/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Vec_8hpp.html">alpaka/vec/Vec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Backend specific includes.</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Cuda_8hpp.html">alpaka/core/Cuda.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#        include &lt;<a class="code" href="Hip_8hpp.html">alpaka/core/Hip.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">namespace </span>gb</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">        //! The CUDA/HIP accelerator ND index provider.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">   29</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">IdxGbUniformCudaHipBuiltIn</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptIdxGb, IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        };</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    } <span class="comment">// namespace gb</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#    if !defined(ALPAKA_HOST_ONLY)</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; !BOOST_LANG_CUDA</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) &amp;&amp; !BOOST_LANG_HIP</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">        //! The GPU CUDA/HIP accelerator index dimension get trait specialization.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html">   49</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DimType.html">DimType</a>&lt;gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a7c01fa1f422bb9f05349b8cb8536c59c">   51</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a7c01fa1f422bb9f05349b8cb8536c59c">type</a> = TDim;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        };</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">        //! The GPU CUDA/HIP accelerator grid block index get trait specialization.</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html">   56</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1GetIdx.html">GetIdx</a>&lt;gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;, origin::Grid, unit::Blocks&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {<span class="comment"></span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">            //! \return The index of the current block in the grid.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TWorkDiv&gt;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html#a3218c89b1930ec2ec913adfff0c40fae">   60</a></span>&#160;            __device__ <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html#a3218c89b1930ec2ec913adfff0c40fae">getIdx</a>(<a class="code" href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;</a> <span class="keyword">const</span>&amp; <span class="comment">/* idx */</span>, TWorkDiv <span class="keyword">const</span>&amp;)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TDim, TIdx&gt;</a></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keywordflow">return</span> castVec&lt;TIdx&gt;(getOffsetVecEnd&lt;TDim&gt;(blockIdx));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#        else</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keywordflow">return</span> getOffsetVecEnd&lt;TDim&gt;(<a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;std::integral_constant&lt;typename TDim::value_type, 3&gt;, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>&gt;(</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(hipBlockIdx_z),</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(hipBlockIdx_y),</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    <span class="keyword">static_cast&lt;</span><a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a><span class="keyword">&gt;</span>(hipBlockIdx_x)));</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        };</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">        //! The GPU CUDA/HIP accelerator grid block index idx type trait specialization.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html">   76</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>&lt;gb::IdxGbUniformCudaHipBuiltIn&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a4ed480be781ffb4d9e61054d7a7b91b1">   78</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">type</a> = <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        };</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aCuda_8hpp_html"><div class="ttname"><a href="Cuda_8hpp.html">Cuda.hpp</a></div></div>
@@ -185,23 +180,23 @@ $(document).ready(function(){initNavTree('IdxGbUniformCudaHipBuiltIn_8hpp_source
 <div class="ttc" id="aPositioning_8hpp_html"><div class="ttname"><a href="Positioning_8hpp.html">Positioning.hpp</a></div></div>
 <div class="ttc" id="aVec_8hpp_html"><div class="ttname"><a href="Vec_8hpp.html">Vec.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec&lt; TDim, TIdx &gt;</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn_html"><div class="ttname"><a href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">alpaka::gb::IdxGbUniformCudaHipBuiltIn</a></div><div class="ttdoc">The CUDA/HIP accelerator ND index provider.</div><div class="ttdef"><b>Definition:</b> <a href="IdxGbUniformCudaHipBuiltIn_8hpp_source.html#l00034">IdxGbUniformCudaHipBuiltIn.hpp:36</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn_html"><div class="ttname"><a href="classalpaka_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html">alpaka::gb::IdxGbUniformCudaHipBuiltIn</a></div><div class="ttdoc">The CUDA/HIP accelerator ND index provider.</div><div class="ttdef"><b>Definition:</b> <a href="IdxGbUniformCudaHipBuiltIn_8hpp_source.html#l00029">IdxGbUniformCudaHipBuiltIn.hpp:31</a></div></div>
 <div class="ttc" id="aidx_2Traits_8hpp_html"><div class="ttname"><a href="idx_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00051">AccCpuOmp2Blocks.hpp:52</a></div></div>
-<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00019">Concepts.hpp:20</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4_html_a7c01fa1f422bb9f05349b8cb8536c59c"><div class="ttname"><a href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a7c01fa1f422bb9f05349b8cb8536c59c">alpaka::trait::DimType&lt; gb::IdxGbUniformCudaHipBuiltIn&lt; TDim, TIdx &gt; &gt;::type</a></div><div class="ttdeci">TDim type</div><div class="ttdef"><b>Definition:</b> <a href="IdxGbUniformCudaHipBuiltIn_8hpp_source.html#l00056">IdxGbUniformCudaHipBuiltIn.hpp:56</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1DimType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1DimType.html">alpaka::trait::DimType</a></div><div class="ttdoc">The dimension getter type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00019">Traits.hpp:19</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446_html_a3218c89b1930ec2ec913adfff0c40fae"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html#a3218c89b1930ec2ec913adfff0c40fae">alpaka::trait::GetIdx&lt; gb::IdxGbUniformCudaHipBuiltIn&lt; TDim, TIdx &gt;, origin::Grid, unit::Blocks &gt;::getIdx</a></div><div class="ttdeci">static __device__ auto getIdx(gb::IdxGbUniformCudaHipBuiltIn&lt; TDim, TIdx &gt; const &amp;, TWorkDiv const &amp;) -&gt; Vec&lt; TDim, TIdx &gt;</div><div class="ttdef"><b>Definition:</b> <a href="IdxGbUniformCudaHipBuiltIn_8hpp_source.html#l00065">IdxGbUniformCudaHipBuiltIn.hpp:65</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1GetIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetIdx.html">alpaka::trait::GetIdx</a></div><div class="ttdoc">The index get trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00046">Traits.hpp:46</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType.html">alpaka::trait::IdxType</a></div><div class="ttdoc">The idx type trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00029">Traits.hpp:29</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1TIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1TIdx.html">alpaka::trait::TIdx</a></div><div class="ttdoc">The ViewPlainPtr memory pitch get trait specialization.</div><div class="ttdef"><b>Definition:</b> <a href="ViewPlainPtr_8hpp_source.html#l00142">ViewPlainPtr.hpp:146</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
+<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00014">Concepts.hpp:15</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4_html_a7c01fa1f422bb9f05349b8cb8536c59c"><div class="ttname"><a href="structalpaka_1_1trait_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a7c01fa1f422bb9f05349b8cb8536c59c">alpaka::trait::DimType&lt; gb::IdxGbUniformCudaHipBuiltIn&lt; TDim, TIdx &gt; &gt;::type</a></div><div class="ttdeci">TDim type</div><div class="ttdef"><b>Definition:</b> <a href="IdxGbUniformCudaHipBuiltIn_8hpp_source.html#l00051">IdxGbUniformCudaHipBuiltIn.hpp:51</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1DimType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1DimType.html">alpaka::trait::DimType</a></div><div class="ttdoc">The dimension getter type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00014">Traits.hpp:14</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446_html_a3218c89b1930ec2ec913adfff0c40fae"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetIdx_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00_6826ad33c6092c584816cbc7a86e2446.html#a3218c89b1930ec2ec913adfff0c40fae">alpaka::trait::GetIdx&lt; gb::IdxGbUniformCudaHipBuiltIn&lt; TDim, TIdx &gt;, origin::Grid, unit::Blocks &gt;::getIdx</a></div><div class="ttdeci">static __device__ auto getIdx(gb::IdxGbUniformCudaHipBuiltIn&lt; TDim, TIdx &gt; const &amp;, TWorkDiv const &amp;) -&gt; Vec&lt; TDim, TIdx &gt;</div><div class="ttdef"><b>Definition:</b> <a href="IdxGbUniformCudaHipBuiltIn_8hpp_source.html#l00060">IdxGbUniformCudaHipBuiltIn.hpp:60</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1GetIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetIdx.html">alpaka::trait::GetIdx</a></div><div class="ttdoc">The index get trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00041">Traits.hpp:41</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType.html">alpaka::trait::IdxType</a></div><div class="ttdoc">The idx type trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1TIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1TIdx.html">alpaka::trait::TIdx</a></div><div class="ttdoc">The ViewPlainPtr memory pitch get trait specialization.</div><div class="ttdef"><b>Definition:</b> <a href="ViewPlainPtr_8hpp_source.html#l00137">ViewPlainPtr.hpp:141</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="dir_820f4fd4051d8a4d65c2fe0dda35bb00.html">gb</a></li><li class="navelem"><a class="el" href="IdxGbUniformCudaHipBuiltIn_8hpp.html">IdxGbUniformCudaHipBuiltIn.hpp</a></li>
-    <li class="footer">Generated on Tue Feb 14 2023 14:56:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 15 2023 09:12:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

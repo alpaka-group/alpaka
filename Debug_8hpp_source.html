@@ -88,101 +88,96 @@ $(document).ready(function(){initNavTree('Debug_8hpp_source.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <a href="Debug_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Bernhard Manfred Gruber</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * This Source Code Form is subject to the terms of the Mozilla Public</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License, v. 2.0. If a copy of the MPL was not distributed with this</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * file, You can obtain one at http://mozilla.org/MPL/2.0/.</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">//! The no debug level.</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#a47f20425304365ddf7b5bd4426987a8e">   19</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_DEBUG_DISABLED 0</span><span class="comment"></span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">//! The minimal debug level.</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#a6a8e5f5a48b0bff7946528ab4e3e9f62">   21</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_DEBUG_MINIMAL 1</span><span class="comment"></span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//! The full debug level.</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806">   23</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_DEBUG_FULL 2</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">//! The no debug level.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#a47f20425304365ddf7b5bd4426987a8e">   14</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_DEBUG_DISABLED 0</span><span class="comment"></span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//! The minimal debug level.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#a6a8e5f5a48b0bff7946528ab4e3e9f62">   16</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_DEBUG_MINIMAL 1</span><span class="comment"></span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//! The full debug level.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806">   18</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_DEBUG_FULL 2</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef ALPAKA_DEBUG</span><span class="comment"></span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//! Set the minimum log level if it is not defined.</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#a7f84384a17e301a636770e17c2951383">   22</a></span>&#160;<span class="comment"></span><span class="preprocessor">#    define ALPAKA_DEBUG ALPAKA_DEBUG_DISABLED</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef ALPAKA_DEBUG</span><span class="comment"></span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//! Set the minimum log level if it is not defined.</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#a7f84384a17e301a636770e17c2951383">   27</a></span>&#160;<span class="comment"></span><span class="preprocessor">#    define ALPAKA_DEBUG ALPAKA_DEBUG_DISABLED</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1core_1_1detail.html">alpaka::core::detail</a></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{<span class="comment"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">    //! Scope logger.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">   33</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a> final</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731">   36</a></span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731">ScopeLogStdOut</a>(std::string sScope) : m_sScope(std::move(sScope))</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;[+] &quot;</span> &lt;&lt; m_sScope &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ac22379fd59ece45d58ea828bcd0a7fd1">   40</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ac22379fd59ece45d58ea828bcd0a7fd1">ScopeLogStdOut</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1">   41</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1">ScopeLogStdOut</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp;&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b">   42</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a> <span class="keyword">const</span>&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876">   43</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp;&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp; = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d">   44</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d">~ScopeLogStdOut</a>()</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;[-] &quot;</span> &lt;&lt; m_sScope &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1core_1_1detail.html">alpaka::core::detail</a></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">    //! Scope logger.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">   28</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a> final</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731">   31</a></span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731">ScopeLogStdOut</a>(std::string sScope) : m_sScope(std::move(sScope))</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;[+] &quot;</span> &lt;&lt; m_sScope &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ac22379fd59ece45d58ea828bcd0a7fd1">   35</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ac22379fd59ece45d58ea828bcd0a7fd1">ScopeLogStdOut</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a> <span class="keyword">const</span>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1">   36</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1">ScopeLogStdOut</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp;&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b">   37</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a> <span class="keyword">const</span>&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp; = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876">   38</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876">operator=</a>(<a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp;&amp;) -&gt; <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a>&amp; = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d">   39</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d">~ScopeLogStdOut</a>()</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;[-] &quot;</span> &lt;&lt; m_sScope &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        std::string <span class="keyword">const</span> m_sScope;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    };</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;} <span class="comment">// namespace alpaka::core::detail</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        std::string <span class="keyword">const</span> m_sScope;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    };</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;} <span class="comment">// namespace alpaka::core::detail</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(__func__)</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">   58</a></span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// Define ALPAKA_DEBUG_FULL_LOG_SCOPE.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_FULL_LOG_SCOPE ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(__func__)</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">   65</a></span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_FULL_LOG_SCOPE</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">// Define ALPAKA_DEBUG_BREAK.</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#        define ALPAKA_DEBUG_BREAK ::__builtin_trap()</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#    elif BOOST_COMP_MSVC</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#        define ALPAKA_DEBUG_BREAK ::__debugbreak()</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#    else</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#        define ALPAKA_DEBUG_BREAK</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">//#error debug-break for current compiler not implemented!</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03">   79</a></span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_BREAK</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// Define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(__func__)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">   53</a></span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Define ALPAKA_DEBUG_FULL_LOG_SCOPE.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_FULL_LOG_SCOPE ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(__func__)</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">   60</a></span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_FULL_LOG_SCOPE</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// Define ALPAKA_DEBUG_BREAK.</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#        define ALPAKA_DEBUG_BREAK ::__builtin_trap()</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#    elif BOOST_COMP_MSVC</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#        define ALPAKA_DEBUG_BREAK ::__debugbreak()</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#    else</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#        define ALPAKA_DEBUG_BREAK</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">//#error debug-break for current compiler not implemented!</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03">   74</a></span>&#160;<span class="preprocessor">#    define ALPAKA_DEBUG_BREAK</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">alpaka::core::detail::ScopeLogStdOut</a></div><div class="ttdoc">Scope logger.</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00033">Debug.hpp:34</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_a120fc939ffc77abe24125d3293255731"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731">alpaka::core::detail::ScopeLogStdOut::ScopeLogStdOut</a></div><div class="ttdeci">ScopeLogStdOut(std::string sScope)</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00036">Debug.hpp:36</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">alpaka::core::detail::ScopeLogStdOut</a></div><div class="ttdoc">Scope logger.</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00028">Debug.hpp:29</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_a120fc939ffc77abe24125d3293255731"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731">alpaka::core::detail::ScopeLogStdOut::ScopeLogStdOut</a></div><div class="ttdeci">ScopeLogStdOut(std::string sScope)</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00031">Debug.hpp:31</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_a4a56bfe414a77d0f840f6da1c49736f1"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1">alpaka::core::detail::ScopeLogStdOut::ScopeLogStdOut</a></div><div class="ttdeci">ScopeLogStdOut(ScopeLogStdOut &amp;&amp;)=delete</div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_a4d0ef25dcb48661ecfe10ed5ac695b3d"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d">alpaka::core::detail::ScopeLogStdOut::~ScopeLogStdOut</a></div><div class="ttdeci">~ScopeLogStdOut()</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00044">Debug.hpp:44</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_a4d0ef25dcb48661ecfe10ed5ac695b3d"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d">alpaka::core::detail::ScopeLogStdOut::~ScopeLogStdOut</a></div><div class="ttdeci">~ScopeLogStdOut()</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00039">Debug.hpp:39</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_ac22379fd59ece45d58ea828bcd0a7fd1"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ac22379fd59ece45d58ea828bcd0a7fd1">alpaka::core::detail::ScopeLogStdOut::ScopeLogStdOut</a></div><div class="ttdeci">ScopeLogStdOut(ScopeLogStdOut const &amp;)=delete</div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_ae317369900766b2040f364de73c79876"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ae317369900766b2040f364de73c79876">alpaka::core::detail::ScopeLogStdOut::operator=</a></div><div class="ttdeci">auto operator=(ScopeLogStdOut &amp;&amp;) -&gt; ScopeLogStdOut &amp;=delete</div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1detail_1_1ScopeLogStdOut_html_af73a98c4321d12f7725057965b10595b"><div class="ttname"><a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#af73a98c4321d12f7725057965b10595b">alpaka::core::detail::ScopeLogStdOut::operator=</a></div><div class="ttdeci">auto operator=(ScopeLogStdOut const &amp;) -&gt; ScopeLogStdOut &amp;=delete</div></div>
-<div class="ttc" id="anamespacealpaka_1_1core_1_1detail_html"><div class="ttname"><a href="namespacealpaka_1_1core_1_1detail.html">alpaka::core::detail</a></div><div class="ttdoc">Defines implementation details that should not be used directly by the user.</div><div class="ttdef"><b>Definition:</b> <a href="Align_8hpp_source.html#l00025">Align.hpp:26</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1core_1_1detail_html"><div class="ttname"><a href="namespacealpaka_1_1core_1_1detail.html">alpaka::core::detail</a></div><div class="ttdoc">Defines implementation details that should not be used directly by the user.</div><div class="ttdef"><b>Definition:</b> <a href="Align_8hpp_source.html#l00020">Align.hpp:21</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Debug_8hpp.html">Debug.hpp</a></li>
-    <li class="footer">Generated on Tue Feb 14 2023 14:56:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 15 2023 09:12:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -88,34 +88,29 @@ $(document).ready(function(){initNavTree('EventCpu_8hpp_source.html',''); initRe
 </div><!--header-->
 <div class="contents">
 <a href="EventCpu_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2020 Jeffrey Kelling, Bernhard Manfred Gruber</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * This Source Code Form is subject to the terms of the Mozilla Public</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License, v. 2.0. If a copy of the MPL was not distributed with this</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * file, You can obtain one at http://mozilla.org/MPL/2.0/.</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="DevCpu_8hpp.html">alpaka/dev/DevCpu.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="EventGenericThreads_8hpp.html">alpaka/event/EventGenericThreads.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="DevCpu_8hpp.html">alpaka/dev/DevCpu.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="EventGenericThreads_8hpp.html">alpaka/event/EventGenericThreads.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="namespacealpaka.html#acc8723b925f6ddf8b27631b71a7c22c6">   17</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1EventGenericThreads.html">EventCpu</a> = <a class="code" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads&lt;DevCpu&gt;</a>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="namespacealpaka.html#acc8723b925f6ddf8b27631b71a7c22c6">   12</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1EventGenericThreads.html">EventCpu</a> = <a class="code" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads&lt;DevCpu&gt;</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
 <div class="ttc" id="aEventGenericThreads_8hpp_html"><div class="ttname"><a href="EventGenericThreads_8hpp.html">EventGenericThreads.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1EventGenericThreads_html"><div class="ttname"><a href="classalpaka_1_1EventGenericThreads.html">alpaka::EventGenericThreads</a></div><div class="ttdoc">The CPU device event.</div><div class="ttdef"><b>Definition:</b> <a href="EventGenericThreads_8hpp_source.html#l00076">EventGenericThreads.hpp:79</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00051">AccCpuOmp2Blocks.hpp:52</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1EventGenericThreads_html"><div class="ttname"><a href="classalpaka_1_1EventGenericThreads.html">alpaka::EventGenericThreads</a></div><div class="ttdoc">The CPU device event.</div><div class="ttdef"><b>Definition:</b> <a href="EventGenericThreads_8hpp_source.html#l00071">EventGenericThreads.hpp:74</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cb41fd9734833cacff31b3343158f46b.html">event</a></li><li class="navelem"><a class="el" href="EventCpu_8hpp.html">EventCpu.hpp</a></li>
-    <li class="footer">Generated on Tue Feb 14 2023 14:56:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 15 2023 09:12:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

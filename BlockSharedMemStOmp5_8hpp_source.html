@@ -88,96 +88,91 @@ $(document).ready(function(){initNavTree('BlockSharedMemStOmp5_8hpp_source.html'
 </div><!--header-->
 <div class="contents">
 <a href="BlockSharedMemStOmp5_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Erik Zenker, René Widera, Bernhard Manfred Gruber</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of Alpaka.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * This Source Code Form is subject to the terms of the Mozilla Public</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License, v. 2.0. If a copy of the MPL was not distributed with this</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * file, You can obtain one at http://mozilla.org/MPL/2.0/.</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    if _OPENMP &lt; 201307</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#    if _OPENMP &lt; 201307</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="block_2shared_2st_2Traits_8hpp.html">alpaka/block/shared/st/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BlockSharedMemStMemberImpl_8hpp.html">alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    include &lt;omp.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="block_2shared_2st_2Traits_8hpp.html">alpaka/block/shared/st/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="BlockSharedMemStMemberImpl_8hpp.html">alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    include &lt;cstdint&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#    include &lt;type_traits&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#    include &lt;omp.h&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#    include &lt;cstdint&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#    include &lt;type_traits&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{<span class="comment"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">    //! The OpenMP 5 block shared memory allocator.</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classalpaka_1_1BlockSharedMemStOmp5.html">   29</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        : <span class="keyword">public</span> <a class="code" href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html">detail::BlockSharedMemStMemberImpl</a>&lt;4&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        , <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptBlockSharedSt, BlockSharedMemStOmp5&gt;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">using</span> <a class="code" href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8">BlockSharedMemStMemberImpl&lt;4&gt;::BlockSharedMemStMemberImpl</a>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    };</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="keywordtype">size_t</span> TuniqueId&gt;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html">   40</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DeclareSharedVar.html">DeclareSharedVar</a>&lt;T, TuniqueId, <a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a>&gt;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#adce7b223703ce191392c49540726bbb3">   42</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#adce7b223703ce191392c49540726bbb3">declareVar</a>(<a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a> <span class="keyword">const</span>&amp; smem) -&gt; T&amp;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keyword">auto</span>* data = smem.template getVarPtr&lt;T&gt;(TuniqueId);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">if</span>(!data)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#    pragma omp barrier</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#    pragma omp single</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                        smem.template alloc&lt;T&gt;(TuniqueId);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    <span class="comment">// lookup for the data chunk allocated by the master thread</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                    data = smem.template getLatestVarPtr&lt;T&gt;();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">return</span> *data;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        };</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html">   62</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1FreeSharedVars.html">FreeSharedVars</a>&lt;<a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a>&gt;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html#aa9367ef8f5a413e5c105ef8cb4729cca">   64</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html#aa9367ef8f5a413e5c105ef8cb4729cca">freeVars</a>(<a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a> <span class="keyword">const</span>&amp;) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="comment">// shared memory block data will be reused</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        };</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aAssert_8hpp_html_acf9112f00b5f6352f9c046236fb9255e"><div class="ttname"><a href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a></div><div class="ttdeci">#define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00029">Assert.hpp:29</a></div></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">    //! The OpenMP 5 block shared memory allocator.</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classalpaka_1_1BlockSharedMemStOmp5.html">   24</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        : <span class="keyword">public</span> <a class="code" href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html">detail::BlockSharedMemStMemberImpl</a>&lt;4&gt;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        , <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptBlockSharedSt, BlockSharedMemStOmp5&gt;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">using</span> <a class="code" href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8">BlockSharedMemStMemberImpl&lt;4&gt;::BlockSharedMemStMemberImpl</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    };</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="keywordtype">size_t</span> TuniqueId&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html">   35</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1DeclareSharedVar.html">DeclareSharedVar</a>&lt;T, TuniqueId, <a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a>&gt;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#adce7b223703ce191392c49540726bbb3">   37</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#adce7b223703ce191392c49540726bbb3">declareVar</a>(<a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a> <span class="keyword">const</span>&amp; smem) -&gt; T&amp;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="keyword">auto</span>* data = smem.template getVarPtr&lt;T&gt;(TuniqueId);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keywordflow">if</span>(!data)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#    pragma omp barrier</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#    pragma omp single</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                        smem.template alloc&lt;T&gt;(TuniqueId);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    <span class="comment">// lookup for the data chunk allocated by the master thread</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    data = smem.template getLatestVarPtr&lt;T&gt;();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keywordflow">return</span> *data;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        };</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html">   57</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1FreeSharedVars.html">FreeSharedVars</a>&lt;<a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a>&gt;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html#aa9367ef8f5a413e5c105ef8cb4729cca">   59</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html#aa9367ef8f5a413e5c105ef8cb4729cca">freeVars</a>(<a class="code" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a> <span class="keyword">const</span>&amp;) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="comment">// shared memory block data will be reused</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        };</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aAssert_8hpp_html_acf9112f00b5f6352f9c046236fb9255e"><div class="ttname"><a href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a></div><div class="ttdeci">#define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00024">Assert.hpp:24</a></div></div>
 <div class="ttc" id="aBlockSharedMemStMemberImpl_8hpp_html"><div class="ttname"><a href="BlockSharedMemStMemberImpl_8hpp.html">BlockSharedMemStMemberImpl.hpp</a></div></div>
 <div class="ttc" id="ablock_2shared_2st_2Traits_8hpp_html"><div class="ttname"><a href="block_2shared_2st_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1BlockSharedMemStOmp5_html"><div class="ttname"><a href="classalpaka_1_1BlockSharedMemStOmp5.html">alpaka::BlockSharedMemStOmp5</a></div><div class="ttdoc">The OpenMP 5 block shared memory allocator.</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStOmp5_8hpp_source.html#l00029">BlockSharedMemStOmp5.hpp:32</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1detail_1_1BlockSharedMemStMemberImpl_html"><div class="ttname"><a href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html">alpaka::detail::BlockSharedMemStMemberImpl</a></div><div class="ttdoc">Implementation of static block shared memory provider.</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStMemberImpl_8hpp_source.html#l00028">BlockSharedMemStMemberImpl.hpp:29</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1detail_1_1BlockSharedMemStMemberImpl_html_ac83c1f1f6ab6c9353b5abbc94ab374d8"><div class="ttname"><a href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8">alpaka::detail::BlockSharedMemStMemberImpl&lt; 4 &gt;::BlockSharedMemStMemberImpl</a></div><div class="ttdeci">BlockSharedMemStMemberImpl(std::uint8_t *mem, std::size_t capacity)</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStMemberImpl_8hpp_source.html#l00043">BlockSharedMemStMemberImpl.hpp:43</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00051">AccCpuOmp2Blocks.hpp:52</a></div></div>
-<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00019">Concepts.hpp:20</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4_html_adce7b223703ce191392c49540726bbb3"><div class="ttname"><a href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#adce7b223703ce191392c49540726bbb3">alpaka::trait::DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStOmp5 &gt;::declareVar</a></div><div class="ttdeci">static auto declareVar(BlockSharedMemStOmp5 const &amp;smem) -&gt; T &amp;</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStOmp5_8hpp_source.html#l00042">BlockSharedMemStOmp5.hpp:42</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1DeclareSharedVar_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1DeclareSharedVar.html">alpaka::trait::DeclareSharedVar</a></div><div class="ttdoc">The block shared static memory variable allocation operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="block_2shared_2st_2Traits_8hpp_source.html#l00028">Traits.hpp:28</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4_html_aa9367ef8f5a413e5c105ef8cb4729cca"><div class="ttname"><a href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html#aa9367ef8f5a413e5c105ef8cb4729cca">alpaka::trait::FreeSharedVars&lt; BlockSharedMemStOmp5 &gt;::freeVars</a></div><div class="ttdeci">static auto freeVars(BlockSharedMemStOmp5 const &amp;) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStOmp5_8hpp_source.html#l00064">BlockSharedMemStOmp5.hpp:64</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1FreeSharedVars_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1FreeSharedVars.html">alpaka::trait::FreeSharedVars</a></div><div class="ttdoc">The block shared static memory free operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="block_2shared_2st_2Traits_8hpp_source.html#l00031">Traits.hpp:31</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1BlockSharedMemStOmp5_html"><div class="ttname"><a href="classalpaka_1_1BlockSharedMemStOmp5.html">alpaka::BlockSharedMemStOmp5</a></div><div class="ttdoc">The OpenMP 5 block shared memory allocator.</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStOmp5_8hpp_source.html#l00024">BlockSharedMemStOmp5.hpp:27</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1detail_1_1BlockSharedMemStMemberImpl_html"><div class="ttname"><a href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html">alpaka::detail::BlockSharedMemStMemberImpl</a></div><div class="ttdoc">Implementation of static block shared memory provider.</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStMemberImpl_8hpp_source.html#l00023">BlockSharedMemStMemberImpl.hpp:24</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1detail_1_1BlockSharedMemStMemberImpl_html_ac83c1f1f6ab6c9353b5abbc94ab374d8"><div class="ttname"><a href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8">alpaka::detail::BlockSharedMemStMemberImpl&lt; 4 &gt;::BlockSharedMemStMemberImpl</a></div><div class="ttdeci">BlockSharedMemStMemberImpl(std::uint8_t *mem, std::size_t capacity)</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStMemberImpl_8hpp_source.html#l00038">BlockSharedMemStMemberImpl.hpp:38</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
+<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00014">Concepts.hpp:15</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4_html_adce7b223703ce191392c49540726bbb3"><div class="ttname"><a href="structalpaka_1_1trait_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#adce7b223703ce191392c49540726bbb3">alpaka::trait::DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStOmp5 &gt;::declareVar</a></div><div class="ttdeci">static auto declareVar(BlockSharedMemStOmp5 const &amp;smem) -&gt; T &amp;</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStOmp5_8hpp_source.html#l00037">BlockSharedMemStOmp5.hpp:37</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1DeclareSharedVar_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1DeclareSharedVar.html">alpaka::trait::DeclareSharedVar</a></div><div class="ttdoc">The block shared static memory variable allocation operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="block_2shared_2st_2Traits_8hpp_source.html#l00023">Traits.hpp:23</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4_html_aa9367ef8f5a413e5c105ef8cb4729cca"><div class="ttname"><a href="structalpaka_1_1trait_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html#aa9367ef8f5a413e5c105ef8cb4729cca">alpaka::trait::FreeSharedVars&lt; BlockSharedMemStOmp5 &gt;::freeVars</a></div><div class="ttdeci">static auto freeVars(BlockSharedMemStOmp5 const &amp;) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStOmp5_8hpp_source.html#l00059">BlockSharedMemStOmp5.hpp:59</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1FreeSharedVars_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1FreeSharedVars.html">alpaka::trait::FreeSharedVars</a></div><div class="ttdoc">The block shared static memory free operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="block_2shared_2st_2Traits_8hpp_source.html#l00026">Traits.hpp:26</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_0864fd1327d23bd6a262ac55462cb31e.html">block</a></li><li class="navelem"><a class="el" href="dir_80053b06cd80a729c5eaac439ea18035.html">shared</a></li><li class="navelem"><a class="el" href="dir_7be937b0b17efdbd2f169f14f5c2db8e.html">st</a></li><li class="navelem"><a class="el" href="BlockSharedMemStOmp5_8hpp.html">BlockSharedMemStOmp5.hpp</a></li>
-    <li class="footer">Generated on Tue Feb 14 2023 14:56:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 15 2023 09:12:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

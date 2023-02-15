@@ -88,60 +88,55 @@ $(document).ready(function(){initNavTree('AccGpuCudaRt_8hpp_source.html',''); in
 </div><!--header-->
 <div class="contents">
 <a href="AccGpuCudaRt_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Andrea Bocci</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * This Source Code Form is subject to the terms of the Mozilla Public</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License, v. 2.0. If a copy of the MPL was not distributed with this</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * file, You can obtain one at http://mozilla.org/MPL/2.0/.</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AccGpuUniformCudaHipRt_8hpp.html">alpaka/acc/AccGpuUniformCudaHipRt.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Tag_8hpp.html">alpaka/acc/Tag.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="ApiCudaRt_8hpp.html">alpaka/core/ApiCudaRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="AccGpuUniformCudaHipRt_8hpp.html">alpaka/acc/AccGpuUniformCudaHipRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Tag_8hpp.html">alpaka/acc/Tag.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="ApiCudaRt_8hpp.html">alpaka/core/ApiCudaRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d">   16</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuCudaRt</a> = <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt&lt;ApiCudaRt, TDim, TIdx&gt;</a>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d">   21</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuCudaRt</a> = <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt&lt;ApiCudaRt, TDim, TIdx&gt;</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">   26</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1AccToTag.html">AccToTag</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::<a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuCudaRt</a>&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#a213c8b5a459dab8c9e5365525d68a6f5">   28</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1TagGpuCudaRt.html">type</a> = <a class="code" href="structalpaka_1_1TagGpuCudaRt.html">alpaka::TagGpuCudaRt</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        };</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagGpuCudaRt_00_01TDim_00_01TIdx_01_4.html">   32</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1TagToAcc.html">TagToAcc</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::<a class="code" href="structalpaka_1_1TagGpuCudaRt.html">TagGpuCudaRt</a>, TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        {</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagGpuCudaRt_00_01TDim_00_01TIdx_01_4.html#a85f83143fadf52f95e03e30b1a9246e2">   34</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">type</a> = <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">alpaka::AccGpuCudaRt&lt;TDim, TIdx&gt;</a>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        };</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">   21</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1AccToTag.html">AccToTag</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::<a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuCudaRt</a>&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        {</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#a213c8b5a459dab8c9e5365525d68a6f5">   23</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1TagGpuCudaRt.html">type</a> = <a class="code" href="structalpaka_1_1TagGpuCudaRt.html">alpaka::TagGpuCudaRt</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        };</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagGpuCudaRt_00_01TDim_00_01TIdx_01_4.html">   27</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1TagToAcc.html">TagToAcc</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::<a class="code" href="structalpaka_1_1TagGpuCudaRt.html">TagGpuCudaRt</a>, TDim, <a class="code" href="structalpaka_1_1trait_1_1TIdx.html">TIdx</a>&gt;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagGpuCudaRt_00_01TDim_00_01TIdx_01_4.html#a85f83143fadf52f95e03e30b1a9246e2">   29</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">type</a> = <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">alpaka::AccGpuCudaRt&lt;TDim, TIdx&gt;</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        };</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
 <div class="ttc" id="aAccGpuUniformCudaHipRt_8hpp_html"><div class="ttname"><a href="AccGpuUniformCudaHipRt_8hpp.html">AccGpuUniformCudaHipRt.hpp</a></div></div>
 <div class="ttc" id="aApiCudaRt_8hpp_html"><div class="ttname"><a href="ApiCudaRt_8hpp.html">ApiCudaRt.hpp</a></div></div>
 <div class="ttc" id="aTag_8hpp_html"><div class="ttname"><a href="Tag_8hpp.html">Tag.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1AccGpuUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1AccGpuUniformCudaHipRt.html">alpaka::AccGpuUniformCudaHipRt</a></div><div class="ttdoc">The GPU CUDA accelerator.</div><div class="ttdef"><b>Definition:</b> <a href="AccGpuUniformCudaHipRt_8hpp_source.html#l00057">AccGpuUniformCudaHipRt.hpp:75</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00051">AccCpuOmp2Blocks.hpp:52</a></div></div>
-<div class="ttc" id="astructalpaka_1_1TagGpuCudaRt_html"><div class="ttname"><a href="structalpaka_1_1TagGpuCudaRt.html">alpaka::TagGpuCudaRt</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00037">Tag.hpp:37</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1AccToTag_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1AccToTag.html">alpaka::trait::AccToTag</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00046">Tag.hpp:46</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1TIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1TIdx.html">alpaka::trait::TIdx</a></div><div class="ttdoc">The ViewPlainPtr memory pitch get trait specialization.</div><div class="ttdef"><b>Definition:</b> <a href="ViewPlainPtr_8hpp_source.html#l00142">ViewPlainPtr.hpp:146</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1TagToAcc_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1TagToAcc.html">alpaka::trait::TagToAcc</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00052">Tag.hpp:52</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1AccGpuUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1AccGpuUniformCudaHipRt.html">alpaka::AccGpuUniformCudaHipRt</a></div><div class="ttdoc">The GPU CUDA accelerator.</div><div class="ttdef"><b>Definition:</b> <a href="AccGpuUniformCudaHipRt_8hpp_source.html#l00052">AccGpuUniformCudaHipRt.hpp:70</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
+<div class="ttc" id="astructalpaka_1_1TagGpuCudaRt_html"><div class="ttname"><a href="structalpaka_1_1TagGpuCudaRt.html">alpaka::TagGpuCudaRt</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00032">Tag.hpp:32</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1AccToTag_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1AccToTag.html">alpaka::trait::AccToTag</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00041">Tag.hpp:41</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1TIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1TIdx.html">alpaka::trait::TIdx</a></div><div class="ttdoc">The ViewPlainPtr memory pitch get trait specialization.</div><div class="ttdef"><b>Definition:</b> <a href="ViewPlainPtr_8hpp_source.html#l00137">ViewPlainPtr.hpp:141</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1TagToAcc_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1TagToAcc.html">alpaka::trait::TagToAcc</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00047">Tag.hpp:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGpuCudaRt_8hpp.html">AccGpuCudaRt.hpp</a></li>
-    <li class="footer">Generated on Tue Feb 14 2023 14:56:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 15 2023 09:12:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

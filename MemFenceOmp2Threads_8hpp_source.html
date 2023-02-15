@@ -88,89 +88,84 @@ $(document).ready(function(){initNavTree('MemFenceOmp2Threads_8hpp_source.html',
 </div><!--header-->
 <div class="contents">
 <a href="MemFenceOmp2Threads_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jan Stephan, Bernhard Manfred Gruber</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * This Source Code Form is subject to the terms of the Mozilla Public</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License, v. 2.0. If a copy of the MPL was not distributed with this</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * file, You can obtain one at http://mozilla.org/MPL/2.0/.</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    if _OPENMP &lt; 200203</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="mem_2fence_2Traits_8hpp.html">alpaka/mem/fence/Traits.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{<span class="comment"></span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">    //! The CPU OpenMP 2.0 block memory fence.</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classalpaka_1_1MemFenceOmp2Threads.html">   24</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1MemFenceOmp2Threads.html">MemFenceOmp2Threads</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptMemFence, MemFenceOmp2Threads&gt;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    };</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TMemScope&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html">   31</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1MemFence.html">MemFence</a>&lt;<a class="code" href="classalpaka_1_1MemFenceOmp2Threads.html">MemFenceOmp2Threads</a>, TMemScope&gt;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html#ac99cdd03baa52f7033d32c6b4806bbbf">   33</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html#ac99cdd03baa52f7033d32c6b4806bbbf">mem_fence</a>(<a class="code" href="classalpaka_1_1MemFenceOmp2Threads.html">MemFenceOmp2Threads</a> <span class="keyword">const</span>&amp;, TMemScope <span class="keyword">const</span>&amp;)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                <span class="comment">/*</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">                 * Intuitively, this pragma creates a fence on the block level.</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#    if _OPENMP &lt; 200203</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#        error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="Concepts_8hpp.html">alpaka/core/Concepts.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="mem_2fence_2Traits_8hpp.html">alpaka/mem/fence/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">    //! The CPU OpenMP 2.0 block memory fence.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classalpaka_1_1MemFenceOmp2Threads.html">   19</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1MemFenceOmp2Threads.html">MemFenceOmp2Threads</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptMemFence, MemFenceOmp2Threads&gt;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    };</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TMemScope&gt;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html">   26</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1MemFence.html">MemFence</a>&lt;<a class="code" href="classalpaka_1_1MemFenceOmp2Threads.html">MemFenceOmp2Threads</a>, TMemScope&gt;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html#ac99cdd03baa52f7033d32c6b4806bbbf">   28</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html#ac99cdd03baa52f7033d32c6b4806bbbf">mem_fence</a>(<a class="code" href="classalpaka_1_1MemFenceOmp2Threads.html">MemFenceOmp2Threads</a> <span class="keyword">const</span>&amp;, TMemScope <span class="keyword">const</span>&amp;)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <span class="comment">/*</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">                 * Intuitively, this pragma creates a fence on the block level.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">                 *</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">                 * Creating a block fence is enough for the whole device because the blocks are executed serially. By</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">                 * definition of fences, preceding blocks don&#39;t have a guarantee to see the results of this block&#39;s</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">                 * STORE operations (only that they will be ordered correctly); the following blocks see the results</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">                 * once they start. Consider the following code:</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">                 *</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">                 * Creating a block fence is enough for the whole device because the blocks are executed serially. By</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">                 * definition of fences, preceding blocks don&#39;t have a guarantee to see the results of this block&#39;s</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">                 * STORE operations (only that they will be ordered correctly); the following blocks see the results</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">                 * once they start. Consider the following code:</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">                 *</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">                 * int x = 1;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">                 * int y = 2;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">                 *</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">                 * void foo()</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">                 * {</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">                 *     x = 10;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">                 *     alpaka::mem_fence(acc, memory_scope::device);</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">                 *     y = 20;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">                 * }</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">                 *</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">                 * void bar()</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">                 * {</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">                 *     auto b = y;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">                 *     alpaka::mem_fence(acc, memory_scope::device);</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">                 *     auto a = x;</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">                 * }</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">                 *</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">                 * The following are all valid outcomes:</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">                 *   a == 1 &amp;&amp; b == 2</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">                 *   a == 10 &amp;&amp; b == 2</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">                 *   a == 10 &amp;&amp; b == 20</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">                 */</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#    pragma omp flush</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        };</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">                 * int x = 1;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">                 * int y = 2;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">                 *</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">                 * void foo()</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">                 * {</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">                 *     x = 10;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">                 *     alpaka::mem_fence(acc, memory_scope::device);</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">                 *     y = 20;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">                 * }</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">                 *</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">                 * void bar()</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">                 * {</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">                 *     auto b = y;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">                 *     alpaka::mem_fence(acc, memory_scope::device);</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">                 *     auto a = x;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">                 * }</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">                 *</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">                 * The following are all valid outcomes:</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">                 *   a == 1 &amp;&amp; b == 2</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">                 *   a == 10 &amp;&amp; b == 2</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">                 *   a == 10 &amp;&amp; b == 20</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">                 */</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#    pragma omp flush</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        };</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1MemFenceOmp2Threads_html"><div class="ttname"><a href="classalpaka_1_1MemFenceOmp2Threads.html">alpaka::MemFenceOmp2Threads</a></div><div class="ttdoc">The CPU OpenMP 2.0 block memory fence.</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceOmp2Threads_8hpp_source.html#l00024">MemFenceOmp2Threads.hpp:25</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1MemFenceOmp2Threads_html"><div class="ttname"><a href="classalpaka_1_1MemFenceOmp2Threads.html">alpaka::MemFenceOmp2Threads</a></div><div class="ttdoc">The CPU OpenMP 2.0 block memory fence.</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceOmp2Threads_8hpp_source.html#l00019">MemFenceOmp2Threads.hpp:20</a></div></div>
 <div class="ttc" id="amem_2fence_2Traits_8hpp_html"><div class="ttname"><a href="mem_2fence_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00051">AccCpuOmp2Blocks.hpp:52</a></div></div>
-<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00019">Concepts.hpp:20</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4_html_ac99cdd03baa52f7033d32c6b4806bbbf"><div class="ttname"><a href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html#ac99cdd03baa52f7033d32c6b4806bbbf">alpaka::trait::MemFence&lt; MemFenceOmp2Threads, TMemScope &gt;::mem_fence</a></div><div class="ttdeci">static auto mem_fence(MemFenceOmp2Threads const &amp;, TMemScope const &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceOmp2Threads_8hpp_source.html#l00033">MemFenceOmp2Threads.hpp:33</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1MemFence_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1MemFence.html">alpaka::trait::MemFence</a></div><div class="ttdoc">The mem_fence trait.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2fence_2Traits_8hpp_source.html#l00044">Traits.hpp:44</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
+<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00014">Concepts.hpp:15</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4_html_ac99cdd03baa52f7033d32c6b4806bbbf"><div class="ttname"><a href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html#ac99cdd03baa52f7033d32c6b4806bbbf">alpaka::trait::MemFence&lt; MemFenceOmp2Threads, TMemScope &gt;::mem_fence</a></div><div class="ttdeci">static auto mem_fence(MemFenceOmp2Threads const &amp;, TMemScope const &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceOmp2Threads_8hpp_source.html#l00028">MemFenceOmp2Threads.hpp:28</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1MemFence_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1MemFence.html">alpaka::trait::MemFence</a></div><div class="ttdoc">The mem_fence trait.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2fence_2Traits_8hpp_source.html#l00039">Traits.hpp:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceOmp2Threads_8hpp.html">MemFenceOmp2Threads.hpp</a></li>
-    <li class="footer">Generated on Tue Feb 14 2023 14:56:15 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 15 2023 09:12:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

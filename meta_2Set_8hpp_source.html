@@ -88,76 +88,71 @@ $(document).ready(function(){initNavTree('meta_2Set_8hpp_source.html',''); initR
 </div><!--header-->
 <div class="contents">
 <a href="meta_2Set_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * This file is part of alpaka.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * This Source Code Form is subject to the terms of the Mozilla Public</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * License, v. 2.0. If a copy of the MPL was not distributed with this</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * file, You can obtain one at http://mozilla.org/MPL/2.0/.</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1meta.html">alpaka::meta</a></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">        //! Empty dependent type.</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1Empty.html">   20</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1Empty.html">Empty</a></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        };</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">   25</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4.html">   27</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4.html#a7e550be92fa926c260131b63b6d4982c">   29</a></span>&#160;            <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        };</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="comment">// Based on code by Roland Bock: https://gist.github.com/rbock/ad8eedde80c060132a18</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="comment">// Linearly inherits from empty&lt;T&gt; and checks if it has already inherited from this type.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html">   34</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;T, Ts...&gt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;Ts...&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            , <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1Empty.html">Empty</a>&lt;T&gt;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a44f2a099fe34476669968ee70ccbd45d">   38</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">Base</a> = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;Ts...&gt;;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a9ad0b7f6928a1b9dde767f5bc8c481ba">   40</a></span>&#160;            <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = Base::value &amp;&amp; !std::is_base_of_v&lt;Empty&lt;T&gt;, <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">Base</a>&gt;;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        };</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    } <span class="comment">// namespace detail</span><span class="comment"></span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">    //! Trait that tells if the parameter pack contains only unique (no equal) types.</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1meta.html#a7007c16b361a3bbc1184a79223d884dc">   45</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSet</a> = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">detail::IsParameterPackSetImpl</a>&lt;Ts...&gt;;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TList&gt;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">   50</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">IsSetImpl</a>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>...&gt; <span class="keyword">class </span>TList, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html">   52</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">IsSetImpl</a>&lt;TList&lt;Ts...&gt;&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html#ac9ad34e2ffbc4acff836b04faa0f46cf">   54</a></span>&#160;            <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSet</a>&lt;Ts...&gt;::value;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        };</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    } <span class="comment">// namespace detail</span><span class="comment"></span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">    //! Trait that tells if the template contains only unique (no equal) types.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TList&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1meta.html#a232409af86c4d12e27e83406c7d6f6ca">   59</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">IsSet</a> = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">detail::IsSetImpl&lt;TList&gt;</a>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace alpaka::meta</span></div>
-<div class="ttc" id="anamespacealpaka_1_1meta_html"><div class="ttname"><a href="namespacealpaka_1_1meta.html">alpaka::meta</a></div><div class="ttdef"><b>Definition:</b> <a href="Apply_8hpp_source.html#l00012">Apply.hpp:13</a></div></div>
-<div class="ttc" id="astructalpaka_1_1meta_1_1detail_1_1Empty_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1detail_1_1Empty.html">alpaka::meta::detail::Empty</a></div><div class="ttdoc">Empty dependent type.</div><div class="ttdef"><b>Definition:</b> <a href="meta_2Set_8hpp_source.html#l00020">Set.hpp:21</a></div></div>
-<div class="ttc" id="astructalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">alpaka::meta::detail::IsParameterPackSetImpl</a></div><div class="ttdef"><b>Definition:</b> <a href="meta_2Set_8hpp_source.html#l00025">Set.hpp:25</a></div></div>
-<div class="ttc" id="astructalpaka_1_1meta_1_1detail_1_1IsSetImpl_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">alpaka::meta::detail::IsSetImpl</a></div><div class="ttdef"><b>Definition:</b> <a href="meta_2Set_8hpp_source.html#l00050">Set.hpp:50</a></div></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1meta.html">alpaka::meta</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">        //! Empty dependent type.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1Empty.html">   15</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1Empty.html">Empty</a></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        };</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">   20</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4.html">   22</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;&gt;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4.html#a7e550be92fa926c260131b63b6d4982c">   24</a></span>&#160;            <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        };</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="comment">// Based on code by Roland Bock: https://gist.github.com/rbock/ad8eedde80c060132a18</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="comment">// Linearly inherits from empty&lt;T&gt; and checks if it has already inherited from this type.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html">   29</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;T, Ts...&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;Ts...&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            , <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1Empty.html">Empty</a>&lt;T&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a44f2a099fe34476669968ee70ccbd45d">   33</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">Base</a> = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSetImpl</a>&lt;Ts...&gt;;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a9ad0b7f6928a1b9dde767f5bc8c481ba">   35</a></span>&#160;            <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = Base::value &amp;&amp; !std::is_base_of_v&lt;Empty&lt;T&gt;, <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">Base</a>&gt;;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        };</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    } <span class="comment">// namespace detail</span><span class="comment"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">    //! Trait that tells if the parameter pack contains only unique (no equal) types.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1meta.html#a7007c16b361a3bbc1184a79223d884dc">   40</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSet</a> = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">detail::IsParameterPackSetImpl</a>&lt;Ts...&gt;;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TList&gt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">   45</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">IsSetImpl</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>...&gt; <span class="keyword">class </span>TList, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html">   47</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">IsSetImpl</a>&lt;TList&lt;Ts...&gt;&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        {</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html#ac9ad34e2ffbc4acff836b04faa0f46cf">   49</a></span>&#160;            <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">IsParameterPackSet</a>&lt;Ts...&gt;::value;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        };</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    } <span class="comment">// namespace detail</span><span class="comment"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    //! Trait that tells if the template contains only unique (no equal) types.</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TList&gt;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1meta.html#a232409af86c4d12e27e83406c7d6f6ca">   54</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">IsSet</a> = <a class="code" href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">detail::IsSetImpl&lt;TList&gt;</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;} <span class="comment">// namespace alpaka::meta</span></div>
+<div class="ttc" id="anamespacealpaka_1_1meta_html"><div class="ttname"><a href="namespacealpaka_1_1meta.html">alpaka::meta</a></div><div class="ttdef"><b>Definition:</b> <a href="Apply_8hpp_source.html#l00007">Apply.hpp:8</a></div></div>
+<div class="ttc" id="astructalpaka_1_1meta_1_1detail_1_1Empty_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1detail_1_1Empty.html">alpaka::meta::detail::Empty</a></div><div class="ttdoc">Empty dependent type.</div><div class="ttdef"><b>Definition:</b> <a href="meta_2Set_8hpp_source.html#l00015">Set.hpp:16</a></div></div>
+<div class="ttc" id="astructalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">alpaka::meta::detail::IsParameterPackSetImpl</a></div><div class="ttdef"><b>Definition:</b> <a href="meta_2Set_8hpp_source.html#l00020">Set.hpp:20</a></div></div>
+<div class="ttc" id="astructalpaka_1_1meta_1_1detail_1_1IsSetImpl_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html">alpaka::meta::detail::IsSetImpl</a></div><div class="ttdef"><b>Definition:</b> <a href="meta_2Set_8hpp_source.html#l00045">Set.hpp:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_9b06e2d5421d26ecb89f5fc8cf901459.html">meta</a></li><li class="navelem"><a class="el" href="meta_2Set_8hpp.html">Set.hpp</a></li>
-    <li class="footer">Generated on Tue Feb 14 2023 14:56:15 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 15 2023 09:12:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
