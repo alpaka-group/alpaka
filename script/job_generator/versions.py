@@ -26,7 +26,7 @@ sw_versions: Dict[str, List[str]] = {
         "11.8",
         "12.0",
     ],
-    HIPCC: ["5.0", "5.1", "5.2", "5.3"],
+    HIPCC: ["5.0", "5.1", "5.2", "5.3", "5.4"],
     BACKENDS: [
         #         ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
         ALPAKA_ACC_GPU_CUDA_ENABLE,
