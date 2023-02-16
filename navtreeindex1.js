@@ -97,6 +97,7 @@ var NAVTREEINDEX1 =
 "EventHipRt_8hpp.html":[4,0,0,0,8,8],
 "EventHipRt_8hpp_source.html":[4,0,0,0,8,8],
 "EventHostManualTrigger_8hpp.html":[4,0,0,0,22,2,0],
+"EventHostManualTrigger_8hpp.html#a103c83a3115216746d6c45d9705310fe":[4,0,0,0,22,2,0,20],
 "EventHostManualTrigger_8hpp.html#a3c2ecb6f6c9f8485fc099e4a51aa6f09":[4,0,0,0,22,2,0,19],
 "EventHostManualTrigger_8hpp.html#a5751f63b161a4e0460c55f2f5c3d2a17":[4,0,0,0,22,2,0,18],
 "EventHostManualTrigger_8hpp_source.html":[4,0,0,0,22,2,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "NdLoop_8hpp.html#a85354683c329835d1fa3e4da7de4c750":[4,0,0,0,16,14,3],
 "NdLoop_8hpp_source.html":[4,0,0,0,16,14],
 "OffloadUseBuiltInSharedMem_8hpp.html":[4,0,0,0,2,0,2],
-"OffloadUseBuiltInSharedMem_8hpp.html#a9704eeb726b281f9fc3c3c9f0f52dad0":[4,0,0,0,2,0,2,3],
-"OffloadUseBuiltInSharedMem_8hpp_source.html":[4,0,0,0,2,0,2]
+"OffloadUseBuiltInSharedMem_8hpp.html#a9704eeb726b281f9fc3c3c9f0f52dad0":[4,0,0,0,2,0,2,3]
 };

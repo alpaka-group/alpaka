@@ -19,5 +19,6 @@ var EventHostManualTrigger_8hpp =
     [ "IsComplete< test::EventHostManualTriggerCpu< TDev > >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4" ],
     [ "IsComplete< test::EventHostManualTriggerCuda >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4" ],
     [ "EventHostManualTrigger", "EventHostManualTrigger_8hpp.html#a5751f63b161a4e0460c55f2f5c3d2a17", null ],
-    [ "isEventHostManualTriggerSupported", "EventHostManualTrigger_8hpp.html#a3c2ecb6f6c9f8485fc099e4a51aa6f09", null ]
+    [ "isEventHostManualTriggerSupported", "EventHostManualTrigger_8hpp.html#a3c2ecb6f6c9f8485fc099e4a51aa6f09", null ],
+    [ "streamWaitValue", "EventHostManualTrigger_8hpp.html#a103c83a3115216746d6c45d9705310fe", null ]
 ];
