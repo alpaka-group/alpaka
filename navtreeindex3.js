@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"Tuple_8hpp_source.html":[4,0,0,0,3,25],
 "TypeListOps_8hpp.html":[4,0,0,0,16,17],
 "TypeListOps_8hpp.html#aa022767003bdbdb48057be42318fa982":[4,0,0,0,16,17,4],
 "TypeListOps_8hpp_source.html":[4,0,0,0,16,17],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1Complex.html#abc36136d5484faba246d4e735398c704":[3,0,0,64,3],
 "classalpaka_1_1Complex.html#abf8ccacd45a8650fb2b1172bfe0a7d2f":[3,0,0,64,16],
 "classalpaka_1_1Complex.html#ac12a6d3142984d8a7954241baecff7d4":[3,0,0,64,15],
-"classalpaka_1_1Complex.html#ac1c798706c93a380ed5f29433728e86f":[3,0,0,64,5],
-"classalpaka_1_1DevCpu.html":[3,0,0,80]
+"classalpaka_1_1Complex.html#ac1c798706c93a380ed5f29433728e86f":[3,0,0,64,5]
 };
