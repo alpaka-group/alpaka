@@ -71,6 +71,7 @@
     <testCase name="convertToBits" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp">
+    <testCase name="Filter generator throws exception for empty generator" duration="{duration}"/>
     <testCase name="Generators internals/Single value" duration="{duration}"/>
     <testCase name="Generators internals/Preset values" duration="{duration}"/>
     <testCase name="Generators internals/Generator combinator" duration="{duration}"/>
@@ -1171,12 +1172,14 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Floating point matchers: double/ULPs" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Composed" duration="{duration}"/>
     <testCase name="Floating point matchers: double/Constructor validation" duration="{duration}"/>
+    <testCase name="Floating point matchers: double/IsNaN" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Relative" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Relative/Some subnormal values" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Margin" duration="{duration}"/>
     <testCase name="Floating point matchers: float/ULPs" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Composed" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Constructor validation" duration="{duration}"/>
+    <testCase name="Floating point matchers: float/IsNaN" duration="{duration}"/>
     <testCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" duration="{duration}"/>
     <testCase name="Matchers can be (AnyOf) composed with the || operator" duration="{duration}"/>
     <testCase name="Matchers can be composed with both &amp;&amp; and ||" duration="{duration}"/>
@@ -1427,6 +1430,9 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of RangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers (with same first elements)" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of RangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Ranges that need ADL begin/end" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/Check short-circuits on failure" duration="{duration}"/>
+    <testCase name="Usage of RangeEquals range matcher/Check short-circuiting behaviour/All elements are checked on success" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container matches empty container" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Empty container does not match non-empty container" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two equal 1-length non-empty containers" duration="{duration}"/>
@@ -1435,6 +1441,7 @@ at Matchers.tests.cpp:<line number>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Basic usage/Two non-equal-sized, non-empty containers" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two equal non-empty containers (close enough)" duration="{duration}"/>
     <testCase name="Usage of UnorderedRangeEquals range matcher/Custom predicate/Two non-equal non-empty containers (close enough)" duration="{duration}"/>
+    <testCase name="Usage of UnorderedRangeEquals range matcher/Ranges that need ADL begin/end" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Some with stdlib containers" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Type requires ADL found size free function" duration="{duration}"/>
     <testCase name="Usage of the SizeIs range matcher/Type has size member" duration="{duration}"/>
