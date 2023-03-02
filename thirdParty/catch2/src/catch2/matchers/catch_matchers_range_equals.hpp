@@ -8,8 +8,10 @@
 #ifndef CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 #define CATCH_MATCHERS_RANGE_EQUALS_HPP_INCLUDED
 
-#include <algorithm>
+#include <catch2/internal/catch_is_permutation.hpp>
 #include <catch2/matchers/catch_matchers_templated.hpp>
+
+#include <algorithm>
 #include <utility>
 
 namespace Catch {
@@ -33,13 +35,19 @@ namespace Catch {
 
             template <typename RangeLike>
             bool match( RangeLike&& rng ) const {
-                using std::begin;
-                using std::end;
-                return std::equal( begin(m_desired),
-                                   end(m_desired),
-                                   begin(rng),
-                                   end(rng),
-                                   m_predicate );
+                auto rng_start = begin( rng );
+                const auto rng_end = end( rng );
+                auto target_start = begin( m_desired );
+                const auto target_end = end( m_desired );
+
+                while (rng_start != rng_end && target_start != target_end) {
+                    if (!m_predicate(*rng_start, *target_start)) {
+                        return false;
+                    }
+                    ++rng_start;
+                    ++target_start;
+                }
+                return rng_start == rng_end && target_start == target_end;
             }
 
             std::string describe() const override {
@@ -67,11 +75,11 @@ namespace Catch {
             bool match( RangeLike&& rng ) const {
                 using std::begin;
                 using std::end;
-                return std::is_permutation( begin( m_desired ),
-                                            end( m_desired ),
-                                            begin( rng ),
-                                            end( rng ),
-                                            m_predicate );
+                return Catch::Detail::is_permutation( begin( m_desired ),
+                                                      end( m_desired ),
+                                                      begin( rng ),
+                                                      end( rng ),
+                                                      m_predicate );
             }
 
             std::string describe() const override {

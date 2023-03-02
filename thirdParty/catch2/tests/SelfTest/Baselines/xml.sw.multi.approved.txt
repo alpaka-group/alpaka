@@ -5025,6 +5025,17 @@ C
     </Expression>
     <OverallResult success="true" skips="0"/>
   </TestCase>
+  <TestCase name="Filter generator throws exception for empty generator" tags="[generators]" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+      <Original>
+        filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException
+      </Original>
+      <Expanded>
+        filter( []( int ) { return false; }, value( 3 ) ), Catch::GeneratorException
+      </Expanded>
+    </Expression>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
   <TestCase name="Floating point matchers: double" tags="[floating-point][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Section name="Relative" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -5275,6 +5286,17 @@ C
         </Expanded>
       </Expression>
       <OverallResults successes="6" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="IsNaN" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1., !IsNaN()
+        </Original>
+        <Expanded>
+          1.0 not is NaN
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -5552,6 +5574,17 @@ C
         </Expanded>
       </Expression>
       <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="IsNaN" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1., !IsNaN()
+        </Original>
+        <Expanded>
+          1.0 not is NaN
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
@@ -16645,6 +16678,117 @@ There is no extra whitespace here
       </Section>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
+    <Section name="Ranges that need ADL begin/end" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          needs_adl1, RangeEquals( needs_adl2 )
+        </Original>
+        <Expanded>
+          { 1, 2, 3, 4, 5 } elements are { 1, 2, 3, 4, 5 }
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          needs_adl1, RangeEquals( needs_adl3, []( int l, int r ) { return l + 1 == r; } )
+        </Original>
+        <Expanded>
+          { 1, 2, 3, 4, 5 } elements are { 2, 3, 4, 5, 6 }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Check short-circuiting behaviour" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Check short-circuits on failure" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1, !RangeEquals( arr )
+          </Original>
+          <Expanded>
+            { 1, 2, 3, 4 } not elements are { 1, 2, 4, 4 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1.m_derefed[0]
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1.m_derefed[1]
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1.m_derefed[2]
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            !(mocked1.m_derefed[3])
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Check short-circuiting behaviour" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="All elements are checked on success" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1, RangeEquals( arr )
+          </Original>
+          <Expanded>
+            { 1, 2, 3, 4 } elements are { 1, 2, 3, 4 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1.m_derefed[0]
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1.m_derefed[1]
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1.m_derefed[2]
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            mocked1.m_derefed[3]
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
   <TestCase name="Usage of UnorderedRangeEquals range matcher" tags="[matchers][quantifiers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
@@ -16766,6 +16910,17 @@ There is no extra whitespace here
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
       </Section>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Ranges that need ADL begin/end" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Original>
+          needs_adl1, UnorderedRangeEquals( needs_adl2 )
+        </Original>
+        <Expanded>
+          { 1, 2, 3, 4, 5 } unordered elements are { 1, 2, 3, 4, 5 }
+        </Expanded>
+      </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <OverallResult success="true" skips="0"/>
@@ -21047,6 +21202,6 @@ b1!
     </Section>
     <OverallResult success="true" skips="0"/>
   </TestCase>
-  <OverallResults successes="2033" failures="145" expectedFailures="32" skips="11"/>
-  <OverallResultsCases successes="308" failures="84" expectedFailures="11" skips="5"/>
+  <OverallResults successes="2049" failures="145" expectedFailures="32" skips="11"/>
+  <OverallResultsCases successes="309" failures="84" expectedFailures="11" skips="5"/>
 </Catch2TestRun>

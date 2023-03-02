@@ -24,8 +24,12 @@ namespace TestCaseTracking {
 
         NameAndLocation( std::string&& _name, SourceLineInfo const& _location );
         friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
-            return lhs.name == rhs.name
-                && lhs.location == rhs.location;
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
+            return lhs.name == rhs.name && lhs.location == rhs.location;
         }
         friend bool operator!=(NameAndLocation const& lhs,
                                NameAndLocation const& rhs) {
@@ -49,11 +53,16 @@ namespace TestCaseTracking {
             name( name_ ), location( location_ ) {}
 
         friend bool operator==( NameAndLocation const& lhs,
-                                NameAndLocationRef rhs ) {
+                                NameAndLocationRef const& rhs ) {
+            // This is a very cheap check that should have a very high hit rate.
+            // If we get to SourceLineInfo::operator==, we will redo it, but the
+            // cost of repeating is trivial at that point (we will be paying
+            // multiple strcmp/memcmps at that point).
+            if ( lhs.location.line != rhs.location.line ) { return false; }
             return StringRef( lhs.name ) == rhs.name &&
                    lhs.location == rhs.location;
         }
-        friend bool operator==( NameAndLocationRef lhs,
+        friend bool operator==( NameAndLocationRef const& lhs,
                                 NameAndLocation const& rhs ) {
             return rhs == lhs;
         }
@@ -105,7 +114,9 @@ namespace TestCaseTracking {
         //! Returns true if tracker run to completion (successfully or not)
         virtual bool isComplete() const = 0;
         //! Returns true if tracker run to completion succesfully
-        bool isSuccessfullyCompleted() const;
+        bool isSuccessfullyCompleted() const {
+            return m_runState == CompletedSuccessfully;
+        }
         //! Returns true if tracker has started but hasn't been completed
         bool isOpen() const;
         //! Returns true iff tracker has started
@@ -123,7 +134,7 @@ namespace TestCaseTracking {
          *
          * Returns nullptr if not found.
          */
-        ITracker* findChild( NameAndLocationRef nameAndLocation );
+        ITracker* findChild( NameAndLocationRef const& nameAndLocation );
         //! Have any children been added?
         bool hasChildren() const {
             return !m_children.empty();
@@ -164,13 +175,15 @@ namespace TestCaseTracking {
     public:
 
         ITracker& startRun();
-        void endRun();
 
-        void startCycle();
+        void startCycle() {
+            m_currentTracker = m_rootTracker.get();
+            m_runState = Executing;
+        }
         void completeCycle();
 
         bool completedCycle() const;
-        ITracker& currentTracker();
+        ITracker& currentTracker() { return *m_currentTracker; }
         void setCurrentTracker( ITracker* tracker );
     };
 
@@ -196,7 +209,11 @@ namespace TestCaseTracking {
 
     class SectionTracker : public TrackerBase {
         std::vector<StringRef> m_filters;
-        std::string m_trimmed_name;
+        // Note that lifetime-wise we piggy back off the name stored in the `ITracker` parent`.
+        // Currently it allocates owns the name, so this is safe. If it is later refactored
+        // to not own the name, the name still has to outlive the `ITracker` parent, so
+        // this should still be safe.
+        StringRef m_trimmed_name;
     public:
         SectionTracker( NameAndLocation&& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
@@ -204,14 +221,14 @@ namespace TestCaseTracking {
 
         bool isComplete() const override;
 
-        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef nameAndLocation );
+        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocationRef const& nameAndLocation );
 
         void tryOpen();
 
         void addInitialFilters( std::vector<std::string> const& filters );
         void addNextFilters( std::vector<StringRef> const& filters );
         //! Returns filters active in this tracker
-        std::vector<StringRef> const& getFilters() const;
+        std::vector<StringRef> const& getFilters() const { return m_filters; }
         //! Returns whitespace-trimmed name of the tracked section
         StringRef trimmedName() const;
     };
