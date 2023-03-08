@@ -69,6 +69,7 @@ namespace alpaka
         std::vector<Dev<Pltf<TPltf>>> devs;
 
         std::size_t const devCount(getDevCount<Pltf<TPltf>>());
+        devs.reserve(devCount);
         for(std::size_t devIdx(0); devIdx < devCount; ++devIdx)
         {
             devs.push_back(getDevByIdx<Pltf<TPltf>>(devIdx));
