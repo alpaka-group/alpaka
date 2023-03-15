@@ -197,9 +197,10 @@ struct DotKernel
         auto const [local_i] = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const [totalThreads] = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        tb_sum[local_i] = 0.0;
+        T thread_sum = 0;
         for(; i < arraySize; i += totalThreads)
-            tb_sum[local_i] += a[i] * b[i];
+            thread_sum += a[i] * b[i];
+        tb_sum[local_i] = thread_sum;
 
         auto const [blockDim] = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         for(int offset = blockDim / 2; offset > 0; offset /= 2)
