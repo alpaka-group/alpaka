@@ -151,6 +151,13 @@ ELSE()
         ENDIF()
         IF(alpaka_ACC_GPU_HIP_ENABLE)
             LIST(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-unused-command-line-argument")
+            IF(HIP_VERSION VERSION_LESS_EQUAL 5.3)
+                # avoid error:
+                #  rocrand/rocrand_common.h:73:6: error: "Disabled inline asm, because
+                #  the build target does not support it." [-Werror,-W#warnings]
+                #  #warning "Disabled inline asm, because the build target does not support it."
+                LIST(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-error=#warnings")
+            ENDIF()
         ENDIF()
 
         SET(IS_ICPX OFF)
