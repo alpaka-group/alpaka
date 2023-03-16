@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2022 Jan Stephan, Luca Ferragina
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -60,15 +60,10 @@ namespace alpaka::trait
         {
             static constexpr auto scope = detail::SyclFenceProps<TMemScope>::scope;
             static constexpr auto space = detail::SyclFenceProps<TMemScope>::space;
-
-            // atomic_ref is already part of the SYCL spec but oneAPI has not caught up yet.
             auto dummy
                 = (scope == sycl::memory_scope::work_group)
-                      ? sycl::ext::oneapi::
-                          atomic_ref<int, sycl::ext::oneapi::memory_order::relaxed, scope, space>{fence.m_local_dummy
-                                                                                                      [0]}
-                      : sycl::ext::oneapi::atomic_ref<int, sycl::ext::oneapi::memory_order::relaxed, scope, space>{
-                          fence.m_global_dummy[0]};
+                      ? sycl::atomic_ref<int, sycl::memory_order::relaxed, scope, space>{fence.m_local_dummy[0]}
+                      : sycl::atomic_ref<int, sycl::memory_order::relaxed, scope, space>{fence.m_global_dummy[0]};
             auto const dummy_val = dummy.load();
             sycl::atomic_fence(sycl::memory_order::acq_rel, scope);
             dummy.store(dummy_val);
