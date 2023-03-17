@@ -1,6 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1TagOacc.html#a9444ddace5f4ecbc77f61b2464c8d15f":[3,0,0,119,0],
 "structalpaka_1_1TagOmp5.html":[3,0,0,120],
 "structalpaka_1_1TagOmp5.html#af5a57d68395fbc10b7334a9bf954e44e":[3,0,0,120,0],
 "structalpaka_1_1ViewConst.html":[3,0,0,128],
@@ -249,5 +248,6 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a19a403f873730fe1ae516423d997274c":[3,0,0,4,63,10],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a34ba323ffb13ee2c43724c908b948f02":[3,0,0,4,63,4],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a499eb63a374358ce4b1d16b30646943f":[3,0,0,4,63,5],
-"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a6b03cd362ed68e5d5f0bf5ab6d85b25f":[3,0,0,4,63,6]
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a6b03cd362ed68e5d5f0bf5ab6d85b25f":[3,0,0,4,63,6],
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a77dd8c0c4571bc855f48f7d5bfc3a516":[3,0,0,4,63,2]
 };
