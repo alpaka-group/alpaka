@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('PltfFpgaSyclXilinx_8hpp_source.html','
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;string&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">namespace </span>detail</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
@@ -130,15 +130,15 @@ $(document).ready(function(){initNavTree('PltfFpgaSyclXilinx_8hpp_source.html','
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">    //! The SYCL device manager.</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span>    <span class="keyword">using</span> PltfFgpaSyclIntel = PltfGenericSycl&lt;detail::XilinxFpgaSelector&gt;;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace alpaka::experimental</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">    //! The SYCL device manager device type trait specialization.</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">struct </span>DevType&lt;experimental::PltfFpgaSyclXilinx&gt;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">struct </span>DevType&lt;PltfFpgaSyclXilinx&gt;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">using</span> type = experimental::DevGenericSycl&lt;experimental::PltfFpgaSyclXilinx&gt;; <span class="comment">// = DevFpgaSyclXilinx</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">using</span> type = DevGenericSycl&lt;PltfFpgaSyclXilinx&gt;; <span class="comment">// = DevFpgaSyclXilinx</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    };</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
@@ -146,15 +146,15 @@ $(document).ready(function(){initNavTree('PltfFpgaSyclXilinx_8hpp_source.html','
 <div class="ttc" id="aDevGenericSycl_8hpp_html"><div class="ttname"><a href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aPltfGenericSycl_8hpp_html"><div class="ttname"><a href="PltfGenericSycl_8hpp.html">PltfGenericSycl.hpp</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1experimental_html"><div class="ttname"><a href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div><div class="ttdef"><b>Definition:</b> <a href="view_2Accessor_8hpp_source.html#l00015">Accessor.hpp:16</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00118">AccCpuOmp2Blocks.hpp:119</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_3da4cf0d8582bc897be6864cae72e9ae.html">pltf</a></li><li class="navelem"><a class="el" href="PltfFpgaSyclXilinx_8hpp.html">PltfFpgaSyclXilinx.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 27 2023 09:59:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Mar 27 2023 15:24:58 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Common_8hpp_source.htm
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;cstddef&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>alpaka::experimental::detail</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1detail.html">alpaka::detail</a></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent&gt;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">inline</span> <span class="keyword">auto</span> make_sycl_range(TExtent <span class="keyword">const</span>&amp; ext, std::size_t multiplier = 1)</div>
@@ -132,11 +132,12 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Common_8hpp_source.htm
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">return</span> sycl::id&lt;3&gt;{<a class="code" href="namespacealpaka.html#a3edd539f49247b1802f567aa6c88b47e">getOffsetX</a>(view), <a class="code" href="namespacealpaka.html#aa9094d40cfed2a7f9d3814132da9191b">getOffsetY</a>(view), <a class="code" href="namespacealpaka.html#a3f52e0b422b1c94d37ce259fc671ad8e">getOffsetZ</a>(view)};</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace alpaka::experimental::detail</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace alpaka::detail</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="adim_2Traits_8hpp_html"><div class="ttname"><a href="dim_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aextent_2Traits_8hpp_html"><div class="ttname"><a href="extent_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1detail_html"><div class="ttname"><a href="namespacealpaka_1_1detail.html">alpaka::detail</a></div><div class="ttdef"><b>Definition:</b> <a href="AccGpuUniformCudaHipRt_8hpp_source.html#l00243">AccGpuUniformCudaHipRt.hpp:244</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a27ab73d92933109a6e66dea772fbfdbb"><div class="ttname"><a href="namespacealpaka.html#a27ab73d92933109a6e66dea772fbfdbb">alpaka::getHeight</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto getHeight(TExtent const &amp;extent=TExtent()) -&gt; Idx&lt; TExtent &gt;</div><div class="ttdef"><b>Definition:</b> <a href="extent_2Traits_8hpp_source.html#l00056">Traits.hpp:56</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a3edd539f49247b1802f567aa6c88b47e"><div class="ttname"><a href="namespacealpaka.html#a3edd539f49247b1802f567aa6c88b47e">alpaka::getOffsetX</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto getOffsetX(TOffsets const &amp;offsets=TOffsets()) -&gt; Idx&lt; TOffsets &gt;</div><div class="ttdef"><b>Definition:</b> <a href="offset_2Traits_8hpp_source.html#l00046">Traits.hpp:46</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a3f52e0b422b1c94d37ce259fc671ad8e"><div class="ttname"><a href="namespacealpaka.html#a3f52e0b422b1c94d37ce259fc671ad8e">alpaka::getOffsetZ</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto getOffsetZ(TOffsets const &amp;offsets=TOffsets()) -&gt; Idx&lt; TOffsets &gt;</div><div class="ttdef"><b>Definition:</b> <a href="offset_2Traits_8hpp_source.html#l00060">Traits.hpp:60</a></div></div>
@@ -150,7 +151,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Common_8hpp_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="mem_2buf_2sycl_2Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 27 2023 09:59:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Mar 27 2023 15:24:58 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

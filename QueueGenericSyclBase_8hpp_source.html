@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#    include &lt;utility&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#    include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>alpaka::experimental::detail</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1detail.html">alpaka::detail</a></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keywordtype">void</span>&gt;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> is_sycl_task = <span class="keyword">false</span>;</div>
@@ -280,9 +280,9 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        TDev m_dev;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        std::shared_ptr&lt;detail::QueueGenericSyclImpl&gt; m_impl;</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    };</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;} <span class="comment">// namespace alpaka::experimental::detail</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;} <span class="comment">// namespace alpaka::detail</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;{</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev&gt;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keyword">class </span>EventGenericSycl;</div>
@@ -292,16 +292,16 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">    //! The SYCL blocking queue device type trait specialization.</span></div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">struct </span>DevType&lt;experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">struct </span>DevType&lt;detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    {</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">using</span> type = TDev;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    };</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">    //! The SYCL blocking queue device get trait specialization.</span></div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">struct </span>GetDev&lt;experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">struct </span>GetDev&lt;detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue)</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a>(detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue)</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        {</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="keywordflow">return</span> queue.m_dev;</div>
@@ -310,69 +310,67 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">    //! The SYCL blocking queue event type trait specialization.</span></div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">struct </span>EventType&lt;experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">struct </span>EventType&lt;detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    {</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="keyword">using</span> type = experimental::EventGenericSycl&lt;TDev&gt;;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="keyword">using</span> type = EventGenericSycl&lt;TDev&gt;;</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    };</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">    //! The SYCL blocking queue enqueue trait specialization.</span></div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking, <span class="keyword">typename</span> TTask&gt;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keyword">struct </span>Enqueue&lt;experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;, TTask&gt;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keyword">struct </span>Enqueue&lt;detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;, TTask&gt;</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    {</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&amp; queue, TTask <span class="keyword">const</span>&amp; task)</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        {</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            queue.m_impl-&gt;template enqueue&lt;TBlocking&gt;(task);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        }</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    };</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">    //! The SYCL blocking queue test trait specialization.</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keyword">struct </span>Empty&lt;experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    {</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab2b5f410b7b40fd9e91a9c6478e2e085">empty</a>(experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue) -&gt; <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordflow">return</span> queue.m_impl-&gt;empty();</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    };</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">    //! The SYCL blocking queue thread wait trait specialization.</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">    //! Blocks execution of the calling thread until the queue has finished processing all previously requested</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">    //! tasks (kernels, data copies, ...)</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">struct </span>CurrentThreadWaitFor&lt;experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    {</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> currentThreadWaitFor(experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue)</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            queue.m_impl-&gt;wait();</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        }</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    };</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">    //! The SYCL queue native handle trait specialization.</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">NativeHandle</a>&lt;experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1NativeHandle.html#a5bd0a7077325fd9fd45c60c8133f9b3f">getNativeHandle</a>(</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            experimental::detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue)</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        {</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            <span class="keywordflow">return</span> queue.getNativeHandle();</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    };</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&amp; queue, TTask <span class="keyword">const</span>&amp; task) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            queue.m_impl-&gt;template enqueue&lt;TBlocking&gt;(task);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    };</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">    //! The SYCL blocking queue test trait specialization.</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">struct </span>Empty&lt;detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    {</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab2b5f410b7b40fd9e91a9c6478e2e085">empty</a>(detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue) -&gt; <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        {</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <span class="keywordflow">return</span> queue.m_impl-&gt;empty();</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        }</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    };</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">    //! The SYCL blocking queue thread wait trait specialization.</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">    //! Blocks execution of the calling thread until the queue has finished processing all previously requested</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">    //! tasks (kernels, data copies, ...)</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keyword">struct </span>CurrentThreadWaitFor&lt;detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> currentThreadWaitFor(detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            queue.m_impl-&gt;wait();</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        }</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    };</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">    //! The SYCL queue native handle trait specialization.</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDev, <span class="keywordtype">bool</span> TBlocking&gt;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">NativeHandle</a>&lt;detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt;&gt;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        [[nodiscard]] <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1NativeHandle.html#a5bd0a7077325fd9fd45c60c8133f9b3f">getNativeHandle</a>(detail::QueueGenericSyclBase&lt;TDev, TBlocking&gt; <span class="keyword">const</span>&amp; queue)</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        {</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="keywordflow">return</span> queue.getNativeHandle();</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    };</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aDebug_8hpp_html_ac556c317f934c69c8c8c083c5068f681"><div class="ttname"><a href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00053">Debug.hpp:53</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aevent_2Traits_8hpp_html"><div class="ttname"><a href="event_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1experimental_html"><div class="ttname"><a href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div><div class="ttdef"><b>Definition:</b> <a href="view_2Accessor_8hpp_source.html#l00015">Accessor.hpp:16</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1detail_html"><div class="ttname"><a href="namespacealpaka_1_1detail.html">alpaka::detail</a></div><div class="ttdef"><b>Definition:</b> <a href="AccGpuUniformCudaHipRt_8hpp_source.html#l00243">AccGpuUniformCudaHipRt.hpp:244</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html_a306087b4550df25e8368a6b8072c755e"><div class="ttname"><a href="namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e">alpaka::test::end</a></div><div class="ttdeci">ALPAKA_FN_HOST auto end(TView &amp;view) -&gt; Iterator&lt; TView &gt;</div><div class="ttdef"><b>Definition:</b> <a href="Iterator_8hpp_source.html#l00165">Iterator.hpp:165</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html_adbab173d7dd9ddda3603e4c57679c6b4"><div class="ttname"><a href="namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4">alpaka::test::begin</a></div><div class="ttdeci">ALPAKA_FN_HOST auto begin(TView &amp;view) -&gt; Iterator&lt; TView &gt;</div><div class="ttdef"><b>Definition:</b> <a href="Iterator_8hpp_source.html#l00159">Iterator.hpp:159</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00118">AccCpuOmp2Blocks.hpp:119</a></div></div>
+<div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a6ffccb70408f2e4ef54710801da312cf"><div class="ttname"><a href="namespacealpaka.html#a6ffccb70408f2e4ef54710801da312cf">alpaka::operator==</a></div><div class="ttdeci">constexpr ALPAKA_FN_HOST_ACC bool operator==(Complex&lt; T &gt; const &amp;lhs, Complex&lt; T &gt; const &amp;rhs)</div><div class="ttdoc">Equality of two complex numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Complex_8hpp_source.html#l00285">Complex.hpp:285</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a7e6b1402f1e49d215eec8772c4e29b60"><div class="ttname"><a href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">alpaka::NativeHandle</a></div><div class="ttdeci">decltype(getNativeHandle(std::declval&lt; TImpl &gt;())) NativeHandle</div><div class="ttdoc">Alias to the type of the native handle.</div><div class="ttdef"><b>Definition:</b> <a href="traits_2Traits_8hpp_source.html#l00036">Traits.hpp:36</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_aa4fe5980725182b3306caf3167053a75"><div class="ttname"><a href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">alpaka::getDev</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getDev(T const &amp;t)</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00062">Traits.hpp:62</a></div></div>
@@ -390,7 +388,7 @@ $(document).ready(function(){initNavTree('QueueGenericSyclBase_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_35e231cfaf39d44c1525e8247564e585.html">queue</a></li><li class="navelem"><a class="el" href="dir_ec54f3aadbd242b6a6d8fbc8a48a4315.html">sycl</a></li><li class="navelem"><a class="el" href="QueueGenericSyclBase_8hpp.html">QueueGenericSyclBase.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 27 2023 09:59:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Mar 27 2023 15:24:58 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

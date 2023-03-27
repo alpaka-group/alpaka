@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1DevCpu.html":[3,0,0,80],
 "classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e":[3,0,0,80,3],
 "classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482":[3,0,0,80,2],
 "classalpaka_1_1DevCpu.html#a3492d59ae31f40221aae144c0d0a945e":[3,0,0,80,4],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html":[3,0,0,7,0,1],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a0ffb025fb2c06caecd10b53cf99346cf":[3,0,0,7,0,1,3],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a1be03d77049a42eaf3dd6b7c989a0c37":[3,0,0,7,0,1,6],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a1db2100f72b696537eb19250adbb17c6":[3,0,0,7,0,1,5]
+"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a1db2100f72b696537eb19250adbb17c6":[3,0,0,7,0,1,5],
+"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a2fd8e0401d2078fca727f434a3a4393f":[3,0,0,7,0,1,4]
 };

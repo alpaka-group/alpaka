@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('AccFpgaSyclXilinx_8hpp_source.html',''
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#    include &lt;string&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#    include &lt;utility&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL accelerator.</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">    //!</span></div>
@@ -126,62 +126,61 @@ $(document).ready(function(){initNavTree('AccFpgaSyclXilinx_8hpp_source.html',''
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">using</span> AccGenericSycl&lt;TDim, TIdx&gt;::AccGenericSycl;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    };</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace alpaka::experimental</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL accelerator name trait specialization.</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">struct </span>GetAccName&lt;experimental::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">struct </span>GetAccName&lt;AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetAccName.html#a89be9c6144a1fd916731d19c5aa9d507">getAccName</a>() -&gt; std::string</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;experimental::AccFpgaSyclXilinx&lt;&quot;</span> + std::to_string(TDim::value) + <span class="stringliteral">&quot;,&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                   + core::demangled&lt;TIdx&gt; + <span class="stringliteral">&quot;&gt;&quot;</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    };</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL accelerator device type trait specialization.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">struct </span>DevType&lt;experimental::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">using</span> type = experimental::DevFpgaSyclXilinx;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    };</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL accelerator execution task type trait specialization.</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TWorkDiv, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">struct </span>CreateTaskKernel&lt;experimental::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;, TWorkDiv, TKernelFnObj, TArgs...&gt;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">createTaskKernel</a>(TWorkDiv <span class="keyword">const</span>&amp; workDiv, TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj, TArgs&amp;&amp;... args)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">return</span> experimental::TaskKernelFpgaSyclXilinx&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt;{</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                workDiv,</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                kernelFnObj,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                std::forward&lt;TArgs&gt;(args)...};</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    };</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL execution task platform type trait specialization.</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">struct </span>PltfType&lt;experimental::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keyword">using</span> type = experimental::PltfFpgaSyclXilinx;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">struct </span>AccToTag&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::experimental::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">using</span> type = <a class="code" href="structalpaka_1_1TagFpgaSyclXilinx.html">alpaka::TagFpgaSyclXilinx</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    };</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">struct </span>TagToAcc&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::TagFpgaSyclXilinx, TDim, TIdx&gt;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">using</span> type = alpaka::experimental::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    };</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;AccFpgaSyclXilinx&lt;&quot;</span> + std::to_string(TDim::value) + <span class="stringliteral">&quot;,&quot;</span> + core::demangled&lt;TIdx&gt; + <span class="stringliteral">&quot;&gt;&quot;</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    };</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL accelerator device type trait specialization.</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">struct </span>DevType&lt;AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keyword">using</span> type = DevFpgaSyclXilinx;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    };</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL accelerator execution task type trait specialization.</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TWorkDiv, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">struct </span>CreateTaskKernel&lt;AccFpgaSyclXilinx&lt;TDim, TIdx&gt;, TWorkDiv, TKernelFnObj, TArgs...&gt;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">createTaskKernel</a>(TWorkDiv <span class="keyword">const</span>&amp; workDiv, TKernelFnObj <span class="keyword">const</span>&amp; kernelFnObj, TArgs&amp;&amp;... args)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> TaskKernelFpgaSyclXilinx&lt;TDim, TIdx, TKernelFnObj, TArgs...&gt;{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                workDiv,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                kernelFnObj,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                std::forward&lt;TArgs&gt;(args)...};</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    };</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">    //! The Xilinx FPGA SYCL execution task platform type trait specialization.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">struct </span>PltfType&lt;AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keyword">using</span> type = PltfFpgaSyclXilinx;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    };</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">struct </span>AccToTag&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keyword">using</span> type = <a class="code" href="structalpaka_1_1TagFpgaSyclXilinx.html">alpaka::TagFpgaSyclXilinx</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    };</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">struct </span>TagToAcc&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::TagFpgaSyclXilinx, TDim, TIdx&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">using</span> type = alpaka::AccFpgaSyclXilinx&lt;TDim, TIdx&gt;;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    };</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAccGenericSycl_8hpp_html"><div class="ttname"><a href="AccGenericSycl_8hpp.html">AccGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aDemangleTypeNames_8hpp_html"><div class="ttname"><a href="DemangleTypeNames_8hpp.html">DemangleTypeNames.hpp</a></div></div>
@@ -193,7 +192,6 @@ $(document).ready(function(){initNavTree('AccFpgaSyclXilinx_8hpp_source.html',''
 <div class="ttc" id="aVec_8hpp_html"><div class="ttname"><a href="Vec_8hpp.html">Vec.hpp</a></div></div>
 <div class="ttc" id="adev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="akernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1experimental_html"><div class="ttname"><a href="namespacealpaka_1_1experimental.html">alpaka::experimental</a></div><div class="ttdef"><b>Definition:</b> <a href="view_2Accessor_8hpp_source.html#l00015">Accessor.hpp:16</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00118">AccCpuOmp2Blocks.hpp:119</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a64392e68c8cc7a290aec236751415cf3"><div class="ttname"><a href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdoc">Creates a kernel execution task.</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2Traits_8hpp_source.html#l00216">Traits.hpp:216</a></div></div>
@@ -206,7 +204,7 @@ $(document).ready(function(){initNavTree('AccFpgaSyclXilinx_8hpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccFpgaSyclXilinx_8hpp.html">AccFpgaSyclXilinx.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 27 2023 09:59:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Mar 27 2023 15:24:57 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

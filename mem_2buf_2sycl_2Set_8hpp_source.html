@@ -113,64 +113,63 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Set_8hpp_source.html',
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">namespace </span>experimental</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keyword">template</span>&lt;std::<span class="keywordtype">size_t</span> TDim&gt;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keyword">using</span> Accessor = sycl::accessor&lt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                std::byte,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                TDim,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                sycl::access_mode::write,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                sycl::target::global_buffer,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                sycl::access::placeholder::true_t&gt;;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">            //! The SYCL memory set trait.</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span>            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAccessor&gt;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keyword">struct </span>TaskSetSycl</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keyword">auto</span> operator()(sycl::handler&amp; cgh) <span class="keyword">const</span> -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    cgh.require(m_accessor);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                    cgh.fill(m_accessor, m_value);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                TAccessor m_accessor;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                std::byte m_value;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <span class="comment">// Distinguish from non-alpaka types (= host tasks)</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keyword">static</span> constexpr <span class="keyword">auto</span> is_sycl_task = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            };</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        } <span class="comment">// namespace detail</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    } <span class="comment">// namespace experimental</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">        //! The SYCL device memory set trait specialization.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TPltf&gt;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">struct </span>CreateTaskMemset&lt;TDim, experimental::DevGenericSycl&lt;TPltf&gt;&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewFwd&gt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac88495b5e4861e9f4a7081ccfbf47594">createTaskMemset</a>(TViewFwd&amp;&amp; view, std::uint8_t <span class="keyword">const</span>&amp; <span class="keywordtype">byte</span>, TExtent <span class="keyword">const</span>&amp; ext)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                constexpr <span class="keyword">auto</span> set_dim = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(Dim&lt;TExtent&gt;::value);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">using</span> TView = std::remove_reference_t&lt;TViewFwd&gt;;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keyword">using</span> ElemType = Elem&lt;TView&gt;;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keyword">using</span> DstType = alpaka::experimental::detail::Accessor&lt;set_dim&gt;;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="comment">// Reinterpret as byte buffer</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keyword">auto</span> buf = view.m_buffer.template reinterpret&lt;std::byte&gt;();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> byte_val = <span class="keyword">static_cast&lt;</span>std::byte<span class="keyword">&gt;</span>(byte);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> range = experimental::detail::make_sycl_range(ext, <span class="keyword">sizeof</span>(ElemType));</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">return</span> experimental::detail::TaskSetSycl&lt;DstType&gt;{DstType{buf, range}, byte_val};</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        };</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">template</span>&lt;std::<span class="keywordtype">size_t</span> TDim&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">using</span> Accessor = sycl::accessor&lt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            std::byte,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            TDim,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            sycl::access_mode::write,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            sycl::target::global_buffer,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            sycl::access::placeholder::true_t&gt;;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">        //! The SYCL memory set trait.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAccessor&gt;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">struct </span>TaskSetSycl</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keyword">auto</span> operator()(sycl::handler&amp; cgh) <span class="keyword">const</span> -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                cgh.require(m_accessor);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                cgh.fill(m_accessor, m_value);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            TAccessor m_accessor;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            std::byte m_value;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="comment">// Distinguish from non-alpaka types (= host tasks)</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keyword">static</span> constexpr <span class="keyword">auto</span> is_sycl_task = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        };</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    } <span class="comment">// namespace detail</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">        //! The SYCL device memory set trait specialization.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TPltf&gt;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">struct </span>CreateTaskMemset&lt;TDim, DevGenericSycl&lt;TPltf&gt;&gt;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewFwd&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac88495b5e4861e9f4a7081ccfbf47594">createTaskMemset</a>(TViewFwd&amp;&amp; view, std::uint8_t <span class="keyword">const</span>&amp; <span class="keywordtype">byte</span>, TExtent <span class="keyword">const</span>&amp; ext)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                constexpr <span class="keyword">auto</span> set_dim = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(Dim&lt;TExtent&gt;::value);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="keyword">using</span> TView = std::remove_reference_t&lt;TViewFwd&gt;;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">using</span> ElemType = Elem&lt;TView&gt;;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keyword">using</span> DstType = alpaka::detail::Accessor&lt;set_dim&gt;;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                <span class="comment">// Reinterpret as byte buffer</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keyword">auto</span> buf = view.m_buffer.template reinterpret&lt;std::byte&gt;();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> byte_val = <span class="keyword">static_cast&lt;</span>std::byte<span class="keyword">&gt;</span>(byte);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> range = detail::make_sycl_range(ext, <span class="keyword">sizeof</span>(ElemType));</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">return</span> detail::TaskSetSycl&lt;DstType&gt;{DstType{buf, range}, byte_val};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        };</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aDebug_8hpp_html"><div class="ttname"><a href="Debug_8hpp.html">Debug.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac65b6c44ec8afefe76a919847dd5ccec"><div class="ttname"><a href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_FULL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00060">Debug.hpp:60</a></div></div>
 <div class="ttc" id="aDevGenericSycl_8hpp_html"><div class="ttname"><a href="DevGenericSycl_8hpp.html">DevGenericSycl.hpp</a></div></div>
@@ -189,7 +188,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Set_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="mem_2buf_2sycl_2Set_8hpp.html">Set.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 27 2023 09:59:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Mar 27 2023 15:24:58 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

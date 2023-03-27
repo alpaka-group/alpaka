@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;type_traits&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//! The mathematical operation specifics.</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"></span><span class="keyword">namespace </span>alpaka::experimental::math</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"></span><span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1math.html">alpaka::math</a></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">    //! The SYCL abs.</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"></span>    <span class="keyword">class </span>AbsGenericSycl : <span class="keyword">public</span> concepts::Implements&lt;alpaka::math::ConceptMathAbs, AbsGenericSycl&gt;</div>
@@ -320,15 +320,15 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        , <span class="keyword">public</span> TruncGenericSycl</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    {</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    };</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;} <span class="comment">// namespace alpaka::experimental::math</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;} <span class="comment">// namespace alpaka::math</span></div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1math_1_1trait.html">alpaka::math::trait</a></div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">    //! The SYCL abs trait specialization.</span></div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">struct </span>Abs&lt;experimental::math::AbsGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">struct </span>Abs&lt;math::AbsGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    {</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Abs.html#a33abf0c968519ff1620619e9bcea10e3">operator()</a>(experimental::math::AbsGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Abs.html#a33abf0c968519ff1620619e9bcea10e3">operator()</a>(math::AbsGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        {</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;TArg&gt;)</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#ae53cdd5e2b8a9baf04d8fba5824989c9">sycl::abs</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
@@ -341,9 +341,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">    //! The SYCL acos trait specialization.</span></div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keyword">struct </span>Acos&lt;experimental::math::AcosGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keyword">struct </span>Acos&lt;math::AcosGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    {</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Acos.html#ad3c07bb73d0fca1580e287c649e1ff20">operator()</a>(experimental::math::AcosGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Acos.html#ad3c07bb73d0fca1580e287c649e1ff20">operator()</a>(math::AcosGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        {</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a74b758e5a567e91191849f4adf461b19">sycl::acos</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div>
@@ -351,9 +351,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">    //! The SYCL acosh trait specialization.</span></div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keyword">struct </span>Acosh&lt;experimental::math::AcoshGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keyword">struct </span>Acosh&lt;math::AcoshGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Acosh.html#aeffc4e1c1f3ff8f2a13d47c101d6202e">operator()</a>(experimental::math::AcoshGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Acosh.html#aeffc4e1c1f3ff8f2a13d47c101d6202e">operator()</a>(math::AcoshGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        {</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a21e0ed18c2175f678cfbb516ffe20664">sycl::acosh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        }</div>
@@ -361,9 +361,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">    //! The SYCL arg trait specialization.</span></div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArgument&gt;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">struct </span>Arg&lt;experimental::math::ArgGenericSycl, TArgument, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArgument&gt;&gt;&gt;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">struct </span>Arg&lt;math::ArgGenericSycl, TArgument, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArgument&gt;&gt;&gt;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    {</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Arg.html#ae139535b86adc4c80433d5728acf69cf">operator()</a>(experimental::math::ArgGenericSycl <span class="keyword">const</span>&amp;, TArgument <span class="keyword">const</span>&amp; argument)</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Arg.html#ae139535b86adc4c80433d5728acf69cf">operator()</a>(math::ArgGenericSycl <span class="keyword">const</span>&amp;, TArgument <span class="keyword">const</span>&amp; argument)</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;TArgument&gt;)</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ad930065450fd0fecfbbb289e36d3923e">sycl::atan2</a>(0.0, <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(argument));</div>
@@ -376,9 +376,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">    //! The SYCL asin trait specialization.</span></div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">struct </span>Asin&lt;experimental::math::AsinGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">struct </span>Asin&lt;math::AsinGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Asin.html#a4b835e309d5dde999913c5f179473339">operator()</a>(experimental::math::AsinGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Asin.html#a4b835e309d5dde999913c5f179473339">operator()</a>(math::AsinGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        {</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#aafe64279165070524d74c43ebf803d22">sycl::asin</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        }</div>
@@ -386,9 +386,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">    //! The SYCL asinh trait specialization.</span></div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keyword">struct </span>Asinh&lt;experimental::math::AsinhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keyword">struct </span>Asinh&lt;math::AsinhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    {</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Asinh.html#a4b0d6993e879ec76a940cd08451bcee5">operator()</a>(experimental::math::AsinhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Asinh.html#a4b0d6993e879ec76a940cd08451bcee5">operator()</a>(math::AsinhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        {</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a994d48e3cd27048203f4f159b01f60e5">sycl::asinh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        }</div>
@@ -396,9 +396,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">    //! The SYCL atan trait specialization.</span></div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keyword">struct </span>Atan&lt;experimental::math::AtanGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keyword">struct </span>Atan&lt;math::AtanGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    {</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Atan.html#adeba202a179037ca913d187503708cde">operator()</a>(experimental::math::AtanGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Atan.html#adeba202a179037ca913d187503708cde">operator()</a>(math::AtanGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        {</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a8017c63890cc9f65edf18a7f345c905f">sycl::atan</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        }</div>
@@ -406,9 +406,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">    //! The SYCL atanh trait specialization.</span></div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keyword">struct </span>Atanh&lt;experimental::math::AtanhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keyword">struct </span>Atanh&lt;math::AtanhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    {</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Atanh.html#aabf0c099449d6b11a6f12d862a07d505">operator()</a>(experimental::math::AtanhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Atanh.html#aabf0c099449d6b11a6f12d862a07d505">operator()</a>(math::AtanhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        {</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#ab3a54e749dd5b731d60b04977a30ac26">sycl::atanh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div>
@@ -417,12 +417,12 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">    //! The SYCL atan2 trait specialization.</span></div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Ty, <span class="keyword">typename</span> Tx&gt;</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keyword">struct </span>Atan2&lt;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        experimental::math::Atan2GenericSycl,</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        math::Atan2GenericSycl,</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        Ty,</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        Tx,</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        std::enable_if_t&lt;std::is_floating_point_v&lt;Ty&gt; &amp;&amp; std::is_floating_point_v&lt;Tx&gt;&gt;&gt;</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    {</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Atan2.html#ab10c04359f11fa0795482cea424608e1">operator()</a>(experimental::math::Atan2GenericSycl <span class="keyword">const</span>&amp;, Ty <span class="keyword">const</span>&amp; y, Tx <span class="keyword">const</span>&amp; x)</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Atan2.html#ab10c04359f11fa0795482cea424608e1">operator()</a>(math::Atan2GenericSycl <span class="keyword">const</span>&amp;, Ty <span class="keyword">const</span>&amp; y, Tx <span class="keyword">const</span>&amp; x)</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        {</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ad930065450fd0fecfbbb289e36d3923e">sycl::atan2</a>(y, x);</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        }</div>
@@ -430,9 +430,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment">    //! The SYCL cbrt trait specialization.</span></div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keyword">struct </span>Cbrt&lt;experimental::math::CbrtGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keyword">struct </span>Cbrt&lt;math::CbrtGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    {</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Cbrt.html#a032b51aca7ff14ea0c47bed45d203cf9">operator()</a>(experimental::math::CbrtGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Cbrt.html#a032b51aca7ff14ea0c47bed45d203cf9">operator()</a>(math::CbrtGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        {</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;TArg&gt;)</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ac912156a7f5e29a248953312eb8e2a0f">sycl::cbrt</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)); <span class="comment">// Mirror CUDA back-end and use double for ints</span></div>
@@ -445,9 +445,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="comment">    //! The SYCL ceil trait specialization.</span></div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keyword">struct </span>Ceil&lt;experimental::math::CeilGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keyword">struct </span>Ceil&lt;math::CeilGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    {</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Ceil.html#aa1cdc59639044a46f99c7c54b84e11ed">operator()</a>(experimental::math::CeilGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Ceil.html#aa1cdc59639044a46f99c7c54b84e11ed">operator()</a>(math::CeilGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        {</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#aa0a98ac2a832e07982ac7edc92e74c6f">sycl::ceil</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        }</div>
@@ -455,9 +455,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">    //! The SYCL conj trait specialization.</span></div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keyword">struct </span>Conj&lt;experimental::math::ConjGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keyword">struct </span>Conj&lt;math::ConjGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    {</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Conj.html#aa7a6e6bd417eeff7c77c444c2ad6d75f">operator()</a>(experimental::math::ConjGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Conj.html#aa7a6e6bd417eeff7c77c444c2ad6d75f">operator()</a>(math::ConjGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        {</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            <span class="keywordflow">return</span> Complex&lt;TArg&gt;{<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>, TArg{0.0}};</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        }</div>
@@ -465,9 +465,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">    //! The SYCL cos trait specialization.</span></div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <span class="keyword">struct </span>Cos&lt;experimental::math::CosGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <span class="keyword">struct </span>Cos&lt;math::CosGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    {</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Cos.html#a8722ac119e4dcea09a774317837e2346">operator()</a>(experimental::math::CosGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Cos.html#a8722ac119e4dcea09a774317837e2346">operator()</a>(math::CosGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        {</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a32ea951bb9c42fbe7032d6fe8625b183">sycl::cos</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        }</div>
@@ -475,9 +475,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">    //! The SYCL cos trait specialization.</span></div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keyword">struct </span>Cosh&lt;experimental::math::CoshGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keyword">struct </span>Cosh&lt;math::CoshGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    {</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Cosh.html#ad96aa21981c7c90803aac2239dff9d70">operator()</a>(experimental::math::CoshGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Cosh.html#ad96aa21981c7c90803aac2239dff9d70">operator()</a>(math::CoshGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        {</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a50dd29fbadfda153f800b302be043151">sycl::cosh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        }</div>
@@ -485,9 +485,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment">    //! The SYCL erf trait specialization.</span></div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keyword">struct </span>Erf&lt;experimental::math::ErfGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keyword">struct </span>Erf&lt;math::ErfGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    {</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Erf.html#a248ca12691d89b9c17fe65465f95d4b4">operator()</a>(experimental::math::ErfGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Erf.html#a248ca12691d89b9c17fe65465f95d4b4">operator()</a>(math::ErfGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        {</div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#afe42ba3b12d947bf40eee66c62a54d01">sycl::erf</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        }</div>
@@ -495,9 +495,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="comment">    //! The SYCL exp trait specialization.</span></div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keyword">struct </span>Exp&lt;experimental::math::ExpGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keyword">struct </span>Exp&lt;math::ExpGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    {</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Exp.html#a5398c6cb9f18e137f5587d34ccafdc64">operator()</a>(experimental::math::ExpGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Exp.html#a5398c6cb9f18e137f5587d34ccafdc64">operator()</a>(math::ExpGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        {</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#aec3fd0772955ff432f9180094b98ba60">sycl::exp</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        }</div>
@@ -505,9 +505,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="comment">    //! The SYCL floor trait specialization.</span></div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keyword">struct </span>Floor&lt;experimental::math::FloorGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keyword">struct </span>Floor&lt;math::FloorGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    {</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Floor.html#abdf781f1ad7ded7e40c9fda3aa636d4e">operator()</a>(experimental::math::FloorGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Floor.html#abdf781f1ad7ded7e40c9fda3aa636d4e">operator()</a>(math::FloorGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        {</div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a2a8c69be37b50a9af624374878e95abd">sycl::floor</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        }</div>
@@ -516,12 +516,12 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="comment">    //! The SYCL fmod trait specialization.</span></div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Tx, <span class="keyword">typename</span> Ty&gt;</div>
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keyword">struct </span>Fmod&lt;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        experimental::math::FmodGenericSycl,</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        math::FmodGenericSycl,</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        Tx,</div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        Ty,</div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        std::enable_if_t&lt;std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;&gt;&gt;</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    {</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Fmod.html#a75a73f02910ac04e6b9954db568c534a">operator()</a>(experimental::math::FmodGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Fmod.html#a75a73f02910ac04e6b9954db568c534a">operator()</a>(math::FmodGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        {</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a6f9cdd368f558546e5031ca7ac2edf89">sycl::fmod</a>(x, y);</div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        }</div>
@@ -529,9 +529,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="comment">    //! The SYCL isfinite trait specialization.</span></div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="keyword">struct </span>Isfinite&lt;experimental::math::IsfiniteGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="keyword">struct </span>Isfinite&lt;math::IsfiniteGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    {</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Isfinite.html#a0dbe9b9cfbf30ff61081840baaa7777b">operator()</a>(experimental::math::IsfiniteGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Isfinite.html#a0dbe9b9cfbf30ff61081840baaa7777b">operator()</a>(math::IsfiniteGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        {</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a3d1ddbc775ff478f6686d86b6a443785">sycl::isfinite</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        }</div>
@@ -539,9 +539,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;<span class="comment">    //! The SYCL isinf trait specialization.</span></div>
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keyword">struct </span>Isinf&lt;experimental::math::IsinfGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keyword">struct </span>Isinf&lt;math::IsinfGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    {</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Isinf.html#a005a5e8bde7e80b8d6600e08422aa452">operator()</a>(experimental::math::IsinfGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Isinf.html#a005a5e8bde7e80b8d6600e08422aa452">operator()</a>(math::IsinfGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        {</div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a9d7d883a65e97eda50c085d8126e3e83">sycl::isinf</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        }</div>
@@ -549,9 +549,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;<span class="comment">    //! The SYCL isnan trait specialization.</span></div>
 <div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="keyword">struct </span>Isnan&lt;experimental::math::IsnanGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="keyword">struct </span>Isnan&lt;math::IsnanGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    {</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Isnan.html#a5ae0d217e0b6aedfed4fb4dca4506067">operator()</a>(experimental::math::IsnanGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Isnan.html#a5ae0d217e0b6aedfed4fb4dca4506067">operator()</a>(math::IsnanGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        {</div>
 <div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ac70a72b94c69c350f82218ab4fce5554">sycl::isnan</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        }</div>
@@ -559,9 +559,9 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment">    //! The SYCL log trait specialization.</span></div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <span class="keyword">struct </span>Log&lt;experimental::math::LogGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <span class="keyword">struct </span>Log&lt;math::LogGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    {</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Log.html#a757426c9cff1dbd55228b0c32bf5ec75">operator()</a>(experimental::math::LogGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Log.html#a757426c9cff1dbd55228b0c32bf5ec75">operator()</a>(math::LogGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        {</div>
 <div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a512283aaade3fb1f8c8be26870c33cdf">sycl::log</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
 <div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div>
@@ -569,208 +569,197 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment">    //! The SYCL max trait specialization.</span></div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Tx, <span class="keyword">typename</span> Ty&gt;</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;    <span class="keyword">struct </span>Max&lt;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;        experimental::math::MaxGenericSycl,</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;        Tx,</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        Ty,</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        std::enable_if_t&lt;std::is_arithmetic_v&lt;Tx&gt; &amp;&amp; std::is_arithmetic_v&lt;Ty&gt;&gt;&gt;</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    {</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Max.html#a006b5e698beefedbda09c4b0ac0cb9c3">operator()</a>(experimental::math::MaxGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;        {</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">sycl::max</a>(x, y);</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;)</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;                <span class="keywordflow">return</span> sycl::fmax(x, y);</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;                (std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;                || (std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;) )</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;                <span class="keywordflow">return</span> sycl::fmax(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(x), <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(y)); <span class="comment">// mirror CUDA back-end</span></div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;                static_assert(!<span class="keyword">sizeof</span>(Tx), <span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        }</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;    };</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;<span class="comment">    //! The SYCL min trait specialization.</span></div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Tx, <span class="keyword">typename</span> Ty&gt;</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    <span class="keyword">struct </span>Min&lt;</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        experimental::math::MinGenericSycl,</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        Tx,</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        Ty,</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        std::enable_if_t&lt;std::is_arithmetic_v&lt;Tx&gt; &amp;&amp; std::is_arithmetic_v&lt;Ty&gt;&gt;&gt;</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;    {</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Min.html#a20b72f01c38bde1bcae7540b96a48fbd">operator()</a>(experimental::math::MinGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        {</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">sycl::min</a>(x, y);</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(std::is_floating_point_v&lt;Tx&gt; || std::is_floating_point_v&lt;Ty&gt;)</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;                <span class="keywordflow">return</span> sycl::fmin(x, y);</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;                (std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;                || (std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;) )</div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;                <span class="keywordflow">return</span> sycl::fmin(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(x), <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(y)); <span class="comment">// mirror CUDA back-end</span></div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;                static_assert(!<span class="keyword">sizeof</span>(Tx), <span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        }</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    };</div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;<span class="comment">    //! The SYCL pow trait specialization.</span></div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TBase, <span class="keyword">typename</span> TExp&gt;</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <span class="keyword">struct </span>Pow&lt;</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;        experimental::math::PowGenericSycl,</div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;        TBase,</div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;        TExp,</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        std::enable_if_t&lt;std::is_floating_point_v&lt;TBase&gt; &amp;&amp; std::is_floating_point_v&lt;TExp&gt;&gt;&gt;</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    {</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Pow.html#a85edb4eea2967c4f41be34c9a93baa2a">operator()</a>(experimental::math::PowGenericSycl <span class="keyword">const</span>&amp;, TBase <span class="keyword">const</span>&amp; base, TExp <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df">exp</a>)</div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;        {</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#aa42c7647b06666f0502bfc55cd08c41b">sycl::pow</a>(base, <a class="code" href="namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df">exp</a>);</div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;        }</div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    };</div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="comment">    //! The SYCL remainder trait specialization.</span></div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Tx, <span class="keyword">typename</span> Ty&gt;</div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;    <span class="keyword">struct </span>Remainder&lt;</div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        experimental::math::RemainderGenericSycl,</div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        Tx,</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        Ty,</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        std::enable_if_t&lt;std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;&gt;&gt;</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;    {</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Remainder.html#aa92ac41566e99ca97fee3f12a55a04fa">operator()</a>(experimental::math::RemainderGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;        {</div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ab54ec7868626e9207baaeb20acf5a54c">sycl::remainder</a>(x, y);</div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        }</div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    };</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="comment">    //! The SYCL round trait specialization.</span></div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;    <span class="keyword">struct </span>Round&lt;experimental::math::RoundGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    {</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Round.html#a719f1f61db7c0840f78f04200b569714">operator()</a>(experimental::math::RoundGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        {</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#afc342d9df0e36c8174ab47574599c5e2">sycl::round</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        }</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;    };</div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="comment">    //! The SYCL lround trait specialization.</span></div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;    <span class="keyword">struct </span>Lround&lt;experimental::math::RoundGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;    {</div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Lround.html#a20d7fba4ba7673af5c1ba96d140ec3b9">operator()</a>(experimental::math::RoundGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        {</div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afc342d9df0e36c8174ab47574599c5e2">sycl::round</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>));</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        }</div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    };</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="comment">    //! The SYCL llround trait specialization.</span></div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    <span class="keyword">struct </span>Llround&lt;experimental::math::RoundGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    {</div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Llround.html#a695a3cbe7bdc2907591630ac86d4d2a7">operator()</a>(experimental::math::RoundGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        {</div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afc342d9df0e36c8174ab47574599c5e2">sycl::round</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>));</div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        }</div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    };</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment">    //! The SYCL rsqrt trait specialization.</span></div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <span class="keyword">struct </span>Rsqrt&lt;experimental::math::RsqrtGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    {</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Rsqrt.html#a098d46f8e2585ac68c223460a994699a">operator()</a>(experimental::math::RsqrtGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;        {</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;            <span class="keywordflow">if</span>(std::is_floating_point_v&lt;TArg&gt;)</div>
-<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math_1_1trait_1_1detail.html#ac8d278f3b7abe6452d9758c73ad0fd50">sycl::rsqrt</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(std::is_integral_v&lt;TArg&gt;)</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math_1_1trait_1_1detail.html#ac8d278f3b7abe6452d9758c73ad0fd50">sycl::rsqrt</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)); <span class="comment">// mirror CUDA back-end and use double for ints</span></div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;                static_assert(!<span class="keyword">sizeof</span>(TArg), <span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        }</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;    };</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;<span class="comment">    //! The SYCL sin trait specialization.</span></div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;    <span class="keyword">struct </span>Sin&lt;experimental::math::SinGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;    {</div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Sin.html#ab68639bd72a028c224221a8307efbd0b">operator()</a>(experimental::math::SinGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        {</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a6039fd484be080c6a83c76514823ae98">sycl::sin</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        }</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    };</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;<span class="comment">    //! The SYCL sinh trait specialization.</span></div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    <span class="keyword">struct </span>Sinh&lt;experimental::math::SinhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    {</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Sinh.html#a88fcfb2a3ac1aaf7840a6a8de0437185">operator()</a>(experimental::math::SinhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        {</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a69990d4a1cf67fe4e44d899706c8306e">sycl::sinh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        }</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;    };</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;<span class="comment">    //! The SYCL sincos trait specialization.</span></div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    <span class="keyword">struct </span>SinCos&lt;experimental::math::SinCosGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    {</div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1SinCos.html#a6acc31ad5ff9fe500255d53a8606784e">operator()</a>(</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;            experimental::math::SinCosGenericSycl <span class="keyword">const</span>&amp;,</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;            TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>,</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;            TArg&amp; result_sin,</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;            TArg&amp; result_cos) -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        {</div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;            result_sin = <a class="code" href="namespacealpaka_1_1math_1_1trait_1_1detail.html#aa9c34631f3c434a4d15abc468badb395">sycl::sincos</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>, &amp;result_cos);</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;        }</div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;    };</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;<span class="comment">    //! The SYCL sqrt trait specialization.</span></div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keyword">struct </span>Sqrt&lt;experimental::math::SqrtGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    {</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Sqrt.html#af77153a4d14461b62de56cb5c03054b4">operator()</a>(experimental::math::SqrtGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        {</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_floating_point_v&lt;TArg&gt;)</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a1be00713914869c9b4bb154f7d00d60b">sycl::sqrt</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;TArg&gt;)</div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a1be00713914869c9b4bb154f7d00d60b">sycl::sqrt</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)); <span class="comment">// mirror CUDA back-end and use double for ints</span></div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;        }</div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    };</div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;<span class="comment">    //! The SYCL tan trait specialization.</span></div>
-<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keyword">struct </span>Tan&lt;experimental::math::TanGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    {</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Tan.html#ab10dfe9d85bd2ae48ff059e4d78e25dc">operator()</a>(experimental::math::TanGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        {</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a8a99b95a420e342af1d31e69cfd75aee">sycl::tan</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;        }</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;    };</div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;<span class="comment">    //! The SYCL tanh trait specialization.</span></div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;    <span class="keyword">struct </span>Tanh&lt;experimental::math::TanhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;    {</div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Tanh.html#adb0f4d06a7653f1855a7facfddcbcba6">operator()</a>(experimental::math::TanhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        {</div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a20aaf879faf604ffbe737ad73edf5744">sycl::tanh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        }</div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    };</div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;<span class="comment">    //! The SYCL trunc trait specialization.</span></div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;    <span class="keyword">struct </span>Trunc&lt;experimental::math::TruncGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;    {</div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Trunc.html#a7e126cff40e52afc7de71b43eb67a6a4">operator()</a>(experimental::math::TruncGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;        {</div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a870c86f26ec22dc2b10627f861c7120e">sycl::trunc</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;        }</div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;    };</div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;} <span class="comment">// namespace alpaka::math::trait</span></div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160; </div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;    <span class="keyword">struct </span>Max&lt;math::MaxGenericSycl, Tx, Ty, std::enable_if_t&lt;std::is_arithmetic_v&lt;Tx&gt; &amp;&amp; std::is_arithmetic_v&lt;Ty&gt;&gt;&gt;</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    {</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Max.html#a006b5e698beefedbda09c4b0ac0cb9c3">operator()</a>(math::MaxGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        {</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">sycl::max</a>(x, y);</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;)</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;                <span class="keywordflow">return</span> sycl::fmax(x, y);</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                (std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;                || (std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;) )</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;                <span class="keywordflow">return</span> sycl::fmax(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(x), <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(y)); <span class="comment">// mirror CUDA back-end</span></div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;                static_assert(!<span class="keyword">sizeof</span>(Tx), <span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        }</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;    };</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;<span class="comment">    //! The SYCL min trait specialization.</span></div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Tx, <span class="keyword">typename</span> Ty&gt;</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;    <span class="keyword">struct </span>Min&lt;math::MinGenericSycl, Tx, Ty, std::enable_if_t&lt;std::is_arithmetic_v&lt;Tx&gt; &amp;&amp; std::is_arithmetic_v&lt;Ty&gt;&gt;&gt;</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;    {</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Min.html#a20b72f01c38bde1bcae7540b96a48fbd">operator()</a>(math::MinGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        {</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">sycl::min</a>(x, y);</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(std::is_floating_point_v&lt;Tx&gt; || std::is_floating_point_v&lt;Ty&gt;)</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;                <span class="keywordflow">return</span> sycl::fmin(x, y);</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;                (std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_integral_v&lt;Ty&gt;)</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;                || (std::is_integral_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;) )</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;                <span class="keywordflow">return</span> sycl::fmin(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(x), <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(y)); <span class="comment">// mirror CUDA back-end</span></div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;                static_assert(!<span class="keyword">sizeof</span>(Tx), <span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        }</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    };</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;<span class="comment">    //! The SYCL pow trait specialization.</span></div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TBase, <span class="keyword">typename</span> TExp&gt;</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;    <span class="keyword">struct </span>Pow&lt;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        math::PowGenericSycl,</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        TBase,</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        TExp,</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        std::enable_if_t&lt;std::is_floating_point_v&lt;TBase&gt; &amp;&amp; std::is_floating_point_v&lt;TExp&gt;&gt;&gt;</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    {</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Pow.html#a85edb4eea2967c4f41be34c9a93baa2a">operator()</a>(math::PowGenericSycl <span class="keyword">const</span>&amp;, TBase <span class="keyword">const</span>&amp; base, TExp <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df">exp</a>)</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        {</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#aa42c7647b06666f0502bfc55cd08c41b">sycl::pow</a>(base, <a class="code" href="namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df">exp</a>);</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;        }</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;    };</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;<span class="comment">    //! The SYCL remainder trait specialization.</span></div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Tx, <span class="keyword">typename</span> Ty&gt;</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <span class="keyword">struct </span>Remainder&lt;</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;        math::RemainderGenericSycl,</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;        Tx,</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;        Ty,</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;        std::enable_if_t&lt;std::is_floating_point_v&lt;Tx&gt; &amp;&amp; std::is_floating_point_v&lt;Ty&gt;&gt;&gt;</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    {</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Remainder.html#aa92ac41566e99ca97fee3f12a55a04fa">operator()</a>(math::RemainderGenericSycl <span class="keyword">const</span>&amp;, Tx <span class="keyword">const</span>&amp; x, Ty <span class="keyword">const</span>&amp; y)</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        {</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#ab54ec7868626e9207baaeb20acf5a54c">sycl::remainder</a>(x, y);</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        }</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;    };</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;<span class="comment">    //! The SYCL round trait specialization.</span></div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    <span class="keyword">struct </span>Round&lt;math::RoundGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    {</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Round.html#a719f1f61db7c0840f78f04200b569714">operator()</a>(math::RoundGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        {</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#afc342d9df0e36c8174ab47574599c5e2">sycl::round</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;        }</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;    };</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;<span class="comment">    //! The SYCL lround trait specialization.</span></div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;    <span class="keyword">struct </span>Lround&lt;math::RoundGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;    {</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Lround.html#a20d7fba4ba7673af5c1ba96d140ec3b9">operator()</a>(math::RoundGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        {</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afc342d9df0e36c8174ab47574599c5e2">sycl::round</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>));</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;        }</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    };</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;<span class="comment">    //! The SYCL llround trait specialization.</span></div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;    <span class="keyword">struct </span>Llround&lt;math::RoundGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    {</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Llround.html#a695a3cbe7bdc2907591630ac86d4d2a7">operator()</a>(math::RoundGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        {</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afc342d9df0e36c8174ab47574599c5e2">sycl::round</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>));</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        }</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    };</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="comment">    //! The SYCL rsqrt trait specialization.</span></div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    <span class="keyword">struct </span>Rsqrt&lt;math::RsqrtGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;    {</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Rsqrt.html#a098d46f8e2585ac68c223460a994699a">operator()</a>(math::RsqrtGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        {</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;            <span class="keywordflow">if</span>(std::is_floating_point_v&lt;TArg&gt;)</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math_1_1trait_1_1detail.html#ac8d278f3b7abe6452d9758c73ad0fd50">sycl::rsqrt</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(std::is_integral_v&lt;TArg&gt;)</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math_1_1trait_1_1detail.html#ac8d278f3b7abe6452d9758c73ad0fd50">sycl::rsqrt</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)); <span class="comment">// mirror CUDA back-end and use double for ints</span></div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;                static_assert(!<span class="keyword">sizeof</span>(TArg), <span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;        }</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    };</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;<span class="comment">    //! The SYCL sin trait specialization.</span></div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    <span class="keyword">struct </span>Sin&lt;math::SinGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    {</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Sin.html#ab68639bd72a028c224221a8307efbd0b">operator()</a>(math::SinGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        {</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a6039fd484be080c6a83c76514823ae98">sycl::sin</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;        }</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;    };</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;<span class="comment">    //! The SYCL sinh trait specialization.</span></div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;    <span class="keyword">struct </span>Sinh&lt;math::SinhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;    {</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Sinh.html#a88fcfb2a3ac1aaf7840a6a8de0437185">operator()</a>(math::SinhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        {</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a69990d4a1cf67fe4e44d899706c8306e">sycl::sinh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;        }</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;    };</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;<span class="comment">    //! The SYCL sincos trait specialization.</span></div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;    <span class="keyword">struct </span>SinCos&lt;math::SinCosGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;    {</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1SinCos.html#a6acc31ad5ff9fe500255d53a8606784e">operator()</a>(math::SinCosGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>, TArg&amp; result_sin, TArg&amp; result_cos) -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        {</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;            result_sin = <a class="code" href="namespacealpaka_1_1math_1_1trait_1_1detail.html#aa9c34631f3c434a4d15abc468badb395">sycl::sincos</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>, &amp;result_cos);</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        }</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;    };</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;<span class="comment">    //! The SYCL sqrt trait specialization.</span></div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    <span class="keyword">struct </span>Sqrt&lt;math::SqrtGenericSycl, TArg, std::enable_if_t&lt;std::is_arithmetic_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    {</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Sqrt.html#af77153a4d14461b62de56cb5c03054b4">operator()</a>(math::SqrtGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        {</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;            <span class="keywordflow">if</span> constexpr(std::is_floating_point_v&lt;TArg&gt;)</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a1be00713914869c9b4bb154f7d00d60b">sycl::sqrt</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr(std::is_integral_v&lt;TArg&gt;)</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a1be00713914869c9b4bb154f7d00d60b">sycl::sqrt</a>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)); <span class="comment">// mirror CUDA back-end and use double for ints</span></div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;        }</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;    };</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;<span class="comment">    //! The SYCL tan trait specialization.</span></div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    <span class="keyword">struct </span>Tan&lt;math::TanGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    {</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Tan.html#ab10dfe9d85bd2ae48ff059e4d78e25dc">operator()</a>(math::TanGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        {</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a8a99b95a420e342af1d31e69cfd75aee">sycl::tan</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;        }</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;    };</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;<span class="comment">    //! The SYCL tanh trait specialization.</span></div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;    <span class="keyword">struct </span>Tanh&lt;math::TanhGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;    {</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Tanh.html#adb0f4d06a7653f1855a7facfddcbcba6">operator()</a>(math::TanhGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;        {</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a20aaf879faf604ffbe737ad73edf5744">sycl::tanh</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        }</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    };</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;<span class="comment">    //! The SYCL trunc trait specialization.</span></div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TArg&gt;</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;    <span class="keyword">struct </span>Trunc&lt;math::TruncGenericSycl, TArg, std::enable_if_t&lt;std::is_floating_point_v&lt;TArg&gt;&gt;&gt;</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;    {</div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1math_1_1trait_1_1Trunc.html#a7e126cff40e52afc7de71b43eb67a6a4">operator()</a>(math::TruncGenericSycl <span class="keyword">const</span>&amp;, TArg <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        {</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1math.html#a870c86f26ec22dc2b10627f861c7120e">sycl::trunc</a>(<a class="code" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>);</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        }</div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;    };</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;} <span class="comment">// namespace alpaka::math::trait</span></div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160; </div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aComplex_8hpp_html"><div class="ttname"><a href="Complex_8hpp.html">Complex.hpp</a></div></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="amath_2Traits_8hpp_html"><div class="ttname"><a href="math_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_1_1trait_1_1detail_html_aa9c34631f3c434a4d15abc468badb395"><div class="ttname"><a href="namespacealpaka_1_1math_1_1trait_1_1detail.html#aa9c34631f3c434a4d15abc468badb395">alpaka::math::trait::detail::sincos</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC auto sincos(TArg const &amp;arg, TArg &amp;result_sin, TArg &amp;result_cos)</div><div class="ttdoc">Fallback implementation when no better ADL match was found.</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l00708">Traits.hpp:708</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_1_1trait_1_1detail_html_ac8d278f3b7abe6452d9758c73ad0fd50"><div class="ttname"><a href="namespacealpaka_1_1math_1_1trait_1_1detail.html#ac8d278f3b7abe6452d9758c73ad0fd50">alpaka::math::trait::detail::rsqrt</a></div><div class="ttdeci">ALPAKA_FN_HOST_ACC auto rsqrt(TArg const &amp;arg)</div><div class="ttdoc">Fallback implementation when no better ADL match was found.</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l00657">Traits.hpp:657</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1math_1_1trait.html">alpaka::math::trait</a></div><div class="ttdoc">The math traits.</div><div class="ttdef"><b>Definition:</b> <a href="MathStdLib_8hpp_source.html#l00228">MathStdLib.hpp:229</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1math_html"><div class="ttname"><a href="namespacealpaka_1_1math.html">alpaka::math</a></div><div class="ttdef"><b>Definition:</b> <a href="FloatEqualExact_8hpp_source.html#l00013">FloatEqualExact.hpp:14</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_a1c8270a0ce32a1ee8f28e9184988e57a"><div class="ttname"><a href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">alpaka::math::max</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto max(T const &amp;max_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the larger of two arguments. NaNs are treated as missing data (between a NaN and a numeric va...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01121">Traits.hpp:1121</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_a2a8c69be37b50a9af624374878e95abd"><div class="ttname"><a href="namespacealpaka_1_1math.html#a2a8c69be37b50a9af624374878e95abd">alpaka::math::floor</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto floor(T const &amp;floor_ctx, TArg const &amp;arg)</div><div class="ttdoc">Computes the largest integer value not greater than arg.</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01028">Traits.hpp:1028</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_a37d8372a12156afd5d5147542c5b72df"><div class="ttname"><a href="namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df">alpaka::math::exp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto exp(T const &amp;exp_ctx, TArg const &amp;arg)</div><div class="ttdoc">Computes the e (Euler's number, 2.7182818) raised to the given power arg.</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01014">Traits.hpp:1014</a></div></div>
@@ -847,7 +836,7 @@ $(document).ready(function(){initNavTree('MathGenericSycl_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="MathGenericSycl_8hpp.html">MathGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 27 2023 09:59:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Mar 27 2023 15:24:58 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
