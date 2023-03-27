@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"classalpaka_1_1test_1_1KernelExecutionFixture.html#ad951ea78e45e01f32899ed598f289091":[3,0,0,16,8,1],
 "classalpaka_1_1test_1_1KernelExecutionFixture.html#adb153f13bb0abe25f5c2c8be21ded3ef":[3,0,0,16,8,8],
 "classalpaka_1_1test_1_1KernelExecutionFixture.html#ae1cc86d52037716538000934645aa6b1":[3,0,0,16,8,2],
 "classalpaka_1_1test_1_1KernelExecutionFixture.html#ae56da1b3a5effb5f77efbce4d8a4ba9f":[3,0,0,16,8,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "functions_vars_n.html":[3,2,2,8],
 "functions_vars_p.html":[3,2,2,9],
 "functions_vars_r.html":[3,2,2,10],
-"functions_vars_s.html":[3,2,2,11],
-"functions_vars_t.html":[3,2,2,12]
+"functions_vars_s.html":[3,2,2,11]
 };
