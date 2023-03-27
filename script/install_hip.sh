@@ -41,6 +41,13 @@ sudo update-alternatives --install /usr/bin/c++ c++ ${ROCM_PATH}/llvm/bin/clang+
 export LD_LIBRARY_PATH=${ROCM_PATH}/lib64:${ROCM_PATH}/hiprand/lib:${LD_LIBRARY_PATH}:${ROCM_PATH}/llvm/lib
 export CMAKE_PREFIX_PATH=${ROCM_PATH}:${ROCM_PATH}/hiprand:${CMAKE_PREFIX_PATH:-}
 
+if [[ "$CI_RUNNER_TAGS" =~ .*cpuonly.* ]] ; then
+    # In cases where the compile-only job is executed on a GPU runner but with different kinds of accelerators
+    # we need to reset the variables to avoid compiling for the wrong architecture and accelerator.
+    unset CI_GPUS
+    unset CI_GPU_ARCH
+fi
+
 if ! [ -z ${CI_GPUS+x} ] && [ -n "$CI_GPUS" ] ; then
     # select randomly a device if multiple exists
     # CI_GPUS is provided by the gitlab CI runner
