@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Andrea Bocci
+/* Copyright 2023 Jan Stephan, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -112,30 +112,6 @@ namespace alpaka
         SyclAccessor m_accessor;
         VecType extents;
     };
-
-    namespace experimental::trait
-    {
-        namespace internal
-        {
-            template<typename TElem, typename TDim, typename TIdx, typename TDev>
-            struct IsView<BufGenericSycl<TElem, TDim, TIdx, TDev>> : std::false_type
-            {
-            };
-        } // namespace internal
-
-        template<typename TElem, typename TDim, typename TIdx, typename TDev>
-        struct BuildAccessor<BufGenericSycl<TElem, TDim, TIdx, TDev>>
-        {
-            template<typename... TAccessModes>
-            static auto buildAccessor(BufGenericSycl<TElem, TDim, TIdx, TDev>& buffer)
-            {
-                using SyclAccessor = detail::SyclAccessor<TElem, TDim::value, TAccessModes...>;
-                return Accessor<SyclAccessor, TElem, TIdx, TDim::value, TAccessModes...>{
-                    SyclAccessor{buffer.m_buffer},
-                    buffer.m_extentElements};
-            }
-        };
-    } // namespace experimental::trait
 } // namespace alpaka
 
 #endif

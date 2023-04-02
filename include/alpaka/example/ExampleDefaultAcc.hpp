@@ -1,4 +1,4 @@
-/* Copyright 2023 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -24,8 +24,6 @@ namespace alpaka
     using ExampleDefaultAcc = alpaka::AccCpuOmp2Threads<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)
     using ExampleDefaultAcc = alpaka::AccCpuThreads<TDim, TIdx>;
-#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccCpuSerial<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI)
 #    if defined(ALPAKA_SYCL_ONEAPI_CPU)
     using ExampleDefaultAcc = alpaka::AccCpuSyclIntel<TDim, TIdx>;
@@ -34,6 +32,8 @@ namespace alpaka
 #    elif defined(ALPAKA_SYCL_ONEAPI_GPU)
     using ExampleDefaultAcc = alpaka::AccGpuSyclIntel<TDim, TIdx>;
 #    endif
+#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
+    using ExampleDefaultAcc = alpaka::AccCpuSerial<TDim, TIdx>;
 #else
     class ExampleDefaultAcc;
 #    warning "No supported backend selected."

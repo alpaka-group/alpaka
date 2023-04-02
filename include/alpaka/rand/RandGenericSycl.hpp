@@ -1,10 +1,5 @@
-/* Copyright 2022 Luca Ferragina
- *
- * This file is part of alpaka.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright 2023 Luca Ferragina, Aurora Perego
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
@@ -17,24 +12,27 @@
 #    include <alpaka/rand/Traits.hpp>
 
 // Backend specific imports.
-#    if defined(ALPAKA_ACC_SYCL_ENABLED)
-#        include <CL/sycl.hpp>
-#        include <oneapi/mkl/rng.hpp>
+#    include <CL/sycl.hpp>
+#    include <oneapi/mkl/rng.hpp>
 
-#        include <oneapi/dpl/random>
-#    endif
-
+#    include <oneapi/dpl/random>
 #    include <type_traits>
 
 namespace alpaka::rand
 {
     //! The SYCL rand implementation.
-    class RandGenericSycl : public concepts::Implements<ConceptRand, RandGenericSycl>
+    template<typename TDim>
+    class RandGenericSycl : public concepts::Implements<ConceptRand, RandGenericSycl<TDim>>
     {
+    public:
+        RandGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item{my_item}
+        {
+        }
+
+        sycl::nd_item<TDim::value> m_item;
     };
 
 #    if !defined(ALPAKA_HOST_ONLY)
-
     namespace distribution::sycl_rand
     {
         //! The SYCL random number floating point normal distribution.
@@ -53,6 +51,7 @@ namespace alpaka::rand
     namespace engine::sycl_rand
     {
         //! The SYCL linear congruential random number generator engine.
+        template<typename TDim>
         class Minstd
         {
         public:
@@ -60,9 +59,9 @@ namespace alpaka::rand
             // need to be overwritten with a valid object
             Minstd() = default;
 
-            Minstd(std::uint32_t const& seed, std::uint32_t const& subsequence = 0, std::uint32_t const& offset = 0)
+            Minstd(RandGenericSycl<TDim> rand, std::uint32_t const& seed)
             {
-                oneapi::dpl::minstd_rand engine(seed, offset);
+                oneapi::dpl::minstd_rand engine(seed, rand.m_item.get_global_linear_id());
                 rng_engine = engine;
             }
 
@@ -77,19 +76,20 @@ namespace alpaka::rand
             oneapi::dpl::minstd_rand rng_engine;
 
         public:
-            using result_type = decltype(rng_engine);
+            using result_type = float;
 
-            // ALPAKA_FN_HOST_ACC constexpr static result_type min()
-            // {
-            //     return std::numeric_limits<result_type>::min();
-            // }
-            // ALPAKA_FN_HOST_ACC constexpr static result_type max()
-            // {
-            //     return std::numeric_limits<result_type>::max();
-            // }
+            ALPAKA_FN_HOST_ACC static result_type min()
+            {
+                return std::numeric_limits<result_type>::min();
+            }
+            ALPAKA_FN_HOST_ACC static result_type max()
+            {
+                return std::numeric_limits<result_type>::max();
+            }
             result_type operator()()
             {
-                return rng_engine;
+                oneapi::dpl::uniform_real_distribution<float> distr;
+                return distr(rng_engine);
             }
         };
     } // namespace engine::sycl_rand
@@ -108,7 +108,7 @@ namespace alpaka::rand
                 oneapi::dpl::normal_distribution<float> distr;
 
                 // Generate float random number
-                return distr(engine);
+                return distr(engine.rng_engine);
             }
         };
 
@@ -124,7 +124,7 @@ namespace alpaka::rand
                 oneapi::dpl::normal_distribution<double> distr;
 
                 // Generate float random number
-                return distr(engine);
+                return distr(engine.rng_engine);
             }
         };
 
@@ -140,10 +140,7 @@ namespace alpaka::rand
                 oneapi::dpl::uniform_real_distribution<float> distr;
 
                 // Generate float random number
-                return distr(engine);
-                // NOTE: (1.0f - curand_uniform) does not work, because curand_uniform seems to return
-                // denormalized floats around 0.f. [0.f, 1.0f)
-                // return fUniformRand * static_cast<float>(fUniformRand != 1.0f);
+                return distr(engine.rng_engine);
             }
         };
 
@@ -159,10 +156,7 @@ namespace alpaka::rand
                 oneapi::dpl::uniform_real_distribution<double> distr;
 
                 // Generate float random number
-                return distr(engine);
-                // NOTE: (1.0f - curand_uniform_double) does not work, because curand_uniform_double seems to
-                // return denormalized floats around 0.f. [0.f, 1.0f)
-                // return fUniformRand * static_cast<double>(fUniformRand != 1.0);
+                return distr(engine.rng_engine);
             }
         };
 
@@ -178,7 +172,7 @@ namespace alpaka::rand
                 oneapi::dpl::uniform_int_distribution<unsigned int> distr;
 
                 // Generate float random number
-                return distr(engine);
+                return distr(engine.rng_engine);
             }
         };
     } // namespace distribution::sycl_rand
@@ -186,30 +180,30 @@ namespace alpaka::rand
     namespace distribution::trait
     {
         //! The SYCL random number float normal distribution get trait specialization.
-        template<typename T>
-        struct CreateNormalReal<RandGenericSycl, T, std::enable_if_t<std::is_floating_point_v<T>>>
+        template<typename TDim, typename T>
+        struct CreateNormalReal<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_floating_point_v<T>>>
         {
-            static auto createNormalReal(RandGenericSycl const& /*rand*/) -> sycl_rand::NormalReal<T>
+            static auto createNormalReal(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::NormalReal<T>
             {
                 return {};
             }
         };
 
         //! The SYCL random number float uniform distribution get trait specialization.
-        template<typename T>
-        struct CreateUniformReal<RandGenericSycl, T, std::enable_if_t<std::is_floating_point_v<T>>>
+        template<typename TDim, typename T>
+        struct CreateUniformReal<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_floating_point_v<T>>>
         {
-            static auto createUniformReal(RandGenericSycl const& /*rand*/) -> sycl_rand::UniformReal<T>
+            static auto createUniformReal(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::UniformReal<T>
             {
                 return {};
             }
         };
 
         //! The SYCL random number integer uniform distribution get trait specialization.
-        template<typename T>
-        struct CreateUniformUint<RandGenericSycl, T, std::enable_if_t<std::is_integral_v<T>>>
+        template<typename TDim, typename T>
+        struct CreateUniformUint<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_integral_v<T>>>
         {
-            static auto createUniformUint(RandGenericSycl const& /*rand*/) -> sycl_rand::UniformUint<T>
+            static auto createUniformUint(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::UniformUint<T>
             {
                 return {};
             }
@@ -219,16 +213,16 @@ namespace alpaka::rand
     namespace engine::trait
     {
         //! The SYCL random number default generator get trait specialization.
-        template<>
-        struct CreateDefault<RandGenericSycl>
+        template<typename TDim>
+        struct CreateDefault<RandGenericSycl<TDim>>
         {
             static auto createDefault(
-                RandGenericSycl const& /*rand*/,
+                RandGenericSycl<TDim> const& rand,
                 std::uint32_t const& seed = 0,
                 std::uint32_t const& subsequence = 0,
-                std::uint32_t const& offset = 0) -> sycl_rand::Minstd
+                std::uint32_t const& offset = 0) -> sycl_rand::Minstd<TDim>
             {
-                return {seed, subsequence, offset};
+                return {rand, seed};
             }
         };
     } // namespace engine::trait

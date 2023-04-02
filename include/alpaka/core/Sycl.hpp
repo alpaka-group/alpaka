@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Luca Ferragina
+/* Copyright 2022 Jan Stephan, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -13,6 +13,7 @@
 
 #include <array>
 #include <cstddef>
+#include <cstdio> // the #define printf(...) breaks <cstdio> if it is included afterwards
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -22,6 +23,25 @@
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 #    include <CL/sycl.hpp>
+
+// if SYCL is enabled with the AMD backend the printf will be killed because of missing compiler support
+#    ifdef __AMDGCN__
+#        define printf(...)
+#    else
+
+#        ifdef __SYCL_DEVICE_ONLY__
+using AlpakaFormat = char const* [[clang::opencl_constant]];
+#        else
+using AlpakaFormat = char const*;
+#        endif
+#        define printf(FORMAT, ...)                                                                                   \
+            do                                                                                                        \
+            {                                                                                                         \
+                static const auto format = AlpakaFormat{FORMAT};                                                      \
+                sycl::ext::oneapi::experimental::printf(format, ##__VA_ARGS__);                                       \
+            } while(false)
+
+#    endif
 
 // SYCL vector types trait specializations.
 namespace alpaka
