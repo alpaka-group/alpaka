@@ -1,5 +1,5 @@
 /* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
- *                Jan Stephan, Antonio Di Pilato, Luca Ferragina
+ *                Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -172,7 +172,6 @@
 #include "alpaka/meta/NdLoop.hpp"
 #include "alpaka/meta/NonZero.hpp"
 #include "alpaka/meta/Set.hpp"
-#include "alpaka/meta/SyclPrintf.hpp"
 #include "alpaka/meta/Transform.hpp"
 #include "alpaka/meta/TypeListOps.hpp"
 // offset

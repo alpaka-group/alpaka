@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -15,7 +15,6 @@
 #include "alpaka/intrinsic/IntrinsicGenericSycl.hpp"
 #include "alpaka/math/MathGenericSycl.hpp"
 #include "alpaka/mem/fence/MemFenceGenericSycl.hpp"
-#include "alpaka/meta/SyclPrintf.hpp"
 #include "alpaka/rand/RandGenericSycl.hpp"
 #include "alpaka/warp/WarpGenericSycl.hpp"
 #include "alpaka/workdiv/WorkDivGenericSycl.hpp"
@@ -58,7 +57,7 @@ namespace alpaka
         , public BlockSyncGenericSycl<TDim>
         , public IntrinsicGenericSycl
         , public MemFenceGenericSycl
-        , public rand::RandGenericSycl
+        , public rand::RandGenericSycl<TDim>
         , public warp::WarpGenericSycl<TDim>
     {
     public:
@@ -86,7 +85,7 @@ namespace alpaka
             , BlockSyncGenericSycl<TDim>{work_item}
             , IntrinsicGenericSycl{}
             , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
-            , rand::RandGenericSycl{}
+            , rand::RandGenericSycl<TDim>{work_item}
             , warp::WarpGenericSycl<TDim>{work_item}
             , cout{output_stream}
         {
@@ -111,6 +110,7 @@ namespace alpaka
             , BlockSyncGenericSycl<TDim>{work_item}
             , IntrinsicGenericSycl{}
             , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
+            , rand::RandGenericSycl<TDim>{work_item}
             , warp::WarpGenericSycl<TDim>{work_item}
         {
         }

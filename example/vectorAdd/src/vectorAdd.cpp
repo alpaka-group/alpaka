@@ -1,4 +1,5 @@
-/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Luca Ferragina
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Luca Ferragina,
+ *                Aurora Perego
  * SPDX-License-Identifier: ISC
  */
 
@@ -75,9 +76,7 @@ auto main() -> int
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     // using Acc = alpaka::AccCpuSerial<Dim, Idx>;
-    // using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
-
-    using Acc = alpaka::AccGpuSyclIntel<Dim, Idx>;
+    using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using Pltf = alpaka::Pltf<Acc>;
     using DevAcc = alpaka::Dev<Acc>;
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
