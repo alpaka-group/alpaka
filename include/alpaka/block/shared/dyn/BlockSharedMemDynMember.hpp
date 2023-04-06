@@ -1,4 +1,4 @@
-/* Copyright 2022 Jeffrey Kelling, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Jeffrey Kelling, Jan Stephan, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -19,7 +19,7 @@ namespace alpaka
     {
         //! "namespace" for static constexpr members that should be in BlockSharedMemDynMember
         //! but cannot be because having a static const member breaks GCC 10
-        //! OpenMP target and OpenACC: type not mappable.
+        //! OpenMP target: type not mappable.
         template<std::size_t TStaticAllocKiB>
         struct BlockSharedMemDynMemberStatic
         {

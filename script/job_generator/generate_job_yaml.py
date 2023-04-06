@@ -1,4 +1,4 @@
-"""Copyright 2023 Simeon Ehrig
+"""Copyright 2023 Simeon Ehrig, Jan Stephan
 SPDX-License-Identifier: MPL-2.0
 
 Create GitLab-CI job description written in yaml from the job matrix."""
@@ -164,7 +164,6 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     # versions.sw_versions[BACKENDS], therefore we have to set each backend explicit
     # Later, we can iterate over versions.sw_versions[BACKENDS] and check, if a Backend needs to be
     # enabled
-    variables["alpaka_ACC_ANY_BT_OACC_ENABLE"] = "OFF"
     variables[ALPAKA_ACC_ANY_BT_OMP5_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE] = "OFF"
@@ -293,7 +292,6 @@ def global_variables() -> Dict[str, str]:
     variables[ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE] = "ON"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE] = "ON"
     variables[ALPAKA_ACC_ANY_BT_OMP5_ENABLE] = "OFF"
-    variables["alpaka_ACC_ANY_BT_OACC_ENABLE"] = "OFF"
     variables[ALPAKA_ACC_GPU_CUDA_ENABLE] = "OFF"
     variables["alpaka_ACC_GPU_CUDA_ONLY_MODE"] = "OFF"
     variables[ALPAKA_ACC_GPU_HIP_ENABLE] = "OFF"

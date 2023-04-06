@@ -104,12 +104,6 @@
     - cuda
     - intel
 
-.base_oacc_nvhpc:
-  extends: .base_nvhpc
-  variables:
-    alpaka_ACC_ANY_BT_OACC_ENABLE: "ON"
-    CMAKE_CXX_FLAGS: "-acc -ta=tesla"
-
 .base_omp5_nvhpc:
   extends: .base_nvhpc
   variables:
@@ -137,7 +131,6 @@
     alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: "ON"
     alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: "ON"
     alpaka_ACC_ANY_BT_OMP5_ENABLE: "OFF"
-    alpaka_ACC_ANY_BT_OACC_ENABLE: "OFF"
     alpaka_ACC_GPU_CUDA_ENABLE: "OFF"
     alpaka_ACC_GPU_CUDA_ONLY_MODE: "OFF"
     alpaka_ACC_GPU_HIP_ENABLE: "OFF"

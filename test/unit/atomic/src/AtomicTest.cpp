@@ -1,5 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber,
- * Antonio Di Pilato
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Antonio Di Pilato
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -354,23 +353,6 @@ public:
         T /* operandOrig */) const -> void
     {
         // All other types are not supported by CUDA/HIP atomic operations.
-        ALPAKA_CHECK(*success, true);
-    }
-};
-
-#endif
-
-#if defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)
-
-template<typename TDim, typename TIdx, typename T>
-class AtomicTestKernel<alpaka::AccOacc<TDim, TIdx>, T, std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
-{
-public:
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccOacc<TDim, TIdx> const& /* acc */, bool* success, T /* operandOrig */)
-        const -> void
-    {
-        // All other types are not supported by OpenACC atomic operations.
         ALPAKA_CHECK(*success, true);
     }
 };

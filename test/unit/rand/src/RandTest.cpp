@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber,
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber,
  *                Sergei Bastrakov
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -61,7 +61,7 @@ public:
         genNumbers(acc, success, genDefault);
 
 #if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#    if !defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) && !defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)
+#    if !defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
         // TODO: These ifdefs are wrong: They will reduce the test to the
         // smallest common denominator from all enabled backends
         // std::random_device

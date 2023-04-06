@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, Jan Stephan
+/* Copyright 2023 Sergei Bastrakov, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -109,9 +109,9 @@ void testKernel()
     REQUIRE(fixture(kernelWithTrait));
 }
 
-// Disabling these tests for GCC + OMP5 & OACC because GCC does not like static
+// Disabling these tests for GCC + OMP5 because GCC does not like static
 // data members in mapped variables when offlading.
-#if !(BOOST_COMP_GNUC && (defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) || defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)))
+#if !(BOOST_COMP_GNUC && defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED))
 
 // Note: it turned out not possible to test all possible combinations as it causes several compilers to crash in CI.
 // However the following tests should cover all important cases

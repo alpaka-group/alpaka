@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+# Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -81,10 +81,6 @@ fi
 if [ ! -z "${alpaka_ACC_ANY_BT_OMP5_ENABLE+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ACC_ANY_BT_OMP5_ENABLE=${alpaka_ACC_ANY_BT_OMP5_ENABLE}")
-fi
-if [ ! -z "${alpaka_ACC_ANY_BT_OACC_ENABLE+x}" ]
-then
-    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ACC_ANY_BT_OACC_ENABLE=${alpaka_ACC_ANY_BT_OACC_ENABLE}")
 fi
 if [ ! -z "${alpaka_OFFLOAD_MAX_BLOCK_SIZE+x}" ]
 then

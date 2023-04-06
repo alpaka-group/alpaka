@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
  *                Jan Stephan, Antonio Di Pilato
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -23,7 +23,6 @@
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/acc/AccGpuHipRt.hpp>
 #include <alpaka/acc/AccGpuSyclIntel.hpp>
-#include <alpaka/acc/AccOacc.hpp>
 #include <alpaka/acc/AccOmp5.hpp>
 #include <alpaka/acc/Tag.hpp>
 #include <alpaka/acc/Traits.hpp>
@@ -103,7 +102,6 @@
 #include <alpaka/event/EventGenericSycl.hpp>
 #include <alpaka/event/EventGpuSyclIntel.hpp>
 #include <alpaka/event/EventHipRt.hpp>
-#include <alpaka/event/EventOacc.hpp>
 #include <alpaka/event/EventOmp5.hpp>
 #include <alpaka/event/Traits.hpp>
 // extent
@@ -133,7 +131,6 @@
 #include <alpaka/kernel/TaskKernelGpuCudaRt.hpp>
 #include <alpaka/kernel/TaskKernelGpuHipRt.hpp>
 #include <alpaka/kernel/TaskKernelGpuSyclIntel.hpp>
-#include <alpaka/kernel/TaskKernelOacc.hpp>
 #include <alpaka/kernel/TaskKernelOmp5.hpp>
 #include <alpaka/kernel/Traits.hpp>
 // math
@@ -153,13 +150,11 @@
 #include <alpaka/mem/buf/BufGenericSycl.hpp>
 #include <alpaka/mem/buf/BufGpuSyclIntel.hpp>
 #include <alpaka/mem/buf/BufHipRt.hpp>
-#include <alpaka/mem/buf/BufOacc.hpp>
 #include <alpaka/mem/buf/BufOmp5.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/mem/fence/MemFenceCpu.hpp>
 #include <alpaka/mem/fence/MemFenceCpuSerial.hpp>
 #include <alpaka/mem/fence/MemFenceGenericSycl.hpp>
-#include <alpaka/mem/fence/MemFenceOacc.hpp>
 #include <alpaka/mem/fence/MemFenceOmp2Blocks.hpp>
 #include <alpaka/mem/fence/MemFenceOmp2Threads.hpp>
 #include <alpaka/mem/fence/MemFenceOmp5.hpp>
@@ -201,7 +196,6 @@
 #include <alpaka/pltf/PltfFpgaSyclXilinx.hpp>
 #include <alpaka/pltf/PltfGpuSyclIntel.hpp>
 #include <alpaka/pltf/PltfHipRt.hpp>
-#include <alpaka/pltf/PltfOacc.hpp>
 #include <alpaka/pltf/PltfOmp5.hpp>
 #include <alpaka/pltf/Traits.hpp>
 // rand
@@ -228,7 +222,6 @@
 #include <alpaka/queue/QueueGpuSyclIntelNonBlocking.hpp>
 #include <alpaka/queue/QueueHipRtBlocking.hpp>
 #include <alpaka/queue/QueueHipRtNonBlocking.hpp>
-#include <alpaka/queue/QueueOaccBlocking.hpp>
 #include <alpaka/queue/QueueOmp5Blocking.hpp>
 #include <alpaka/queue/Traits.hpp>
 // traits

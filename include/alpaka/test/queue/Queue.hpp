@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -92,14 +92,6 @@ namespace alpaka::test
 #    else
             using type = QueueOmp5Blocking;
 #    endif
-        };
-#elif defined ALPAKA_ACC_ANY_BT_OACC_ENABLED
-
-        //! The default queue type trait specialization for the OMP4 device.
-        template<>
-        struct DefaultQueueType<DevOacc>
-        {
-            using type = QueueOaccBlocking;
         };
 #endif
 
@@ -226,10 +218,6 @@ namespace alpaka::test
         ,
         std::tuple<DevOmp5, QueueOmp5Blocking>,
         std::tuple<DevOmp5, QueueOmp5NonBlocking>
-#elif defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)
-        ,
-        std::tuple<DevOacc, QueueOaccBlocking>,
-        std::tuple<DevOacc, QueueOaccNonBlocking>
 #endif
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 #    ifdef ALPAKA_SYCL_BACKEND_ONEAPI

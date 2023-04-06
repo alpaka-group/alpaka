@@ -67,7 +67,6 @@ env:
   alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON
   alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON
   alpaka_ACC_ANY_BT_OMP5_ENABLE: OFF
-  alpaka_ACC_ANY_BT_OACC_ENABLE: OFF
   alpaka_ACC_GPU_CUDA_ENABLE: OFF
   alpaka_ACC_GPU_CUDA_ONLY_MODE: OFF
   alpaka_ACC_GPU_HIP_ENABLE: OFF
@@ -153,9 +152,6 @@ jobs:
         - name: linux_gcc-10_release
           os: ubuntu-20.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.23.5, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
-        - name: linux_gcc-11_release_oacc
-          os: ubuntu-20.04
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-foffload=disable", alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, ACC_DEVICE_TYPE: "host", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
         - name: linux_gcc-11_debug
           os: ubuntu-20.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
@@ -165,9 +161,6 @@ jobs:
         - name: linux_gcc-12_release_c++20
           os: ubuntu-22.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", alpaka_CXX_STANDARD: 20, alpaka_USE_MDSPAN: "FETCH"}
-        - name: linux_gcc-12_release_oacc_c++20
-          os: ubuntu-22.04
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0, ALPAKA_CI_CMAKE_VER: 3.25.2, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", CMAKE_CXX_FLAGS: "-foffload=disable", alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, ACC_DEVICE_TYPE: "host", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON, alpaka_CXX_STANDARD: 20}
         - name: linux_gcc-12_debug_omp5
           os: ubuntu-22.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", alpaka_DEBUG: 2, alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, CMAKE_CXX_FLAGS: "-foffload=disable", OMP_TARGET_OFFLOAD: "DISABLED", alpaka_OFFLOAD_MAX_BLOCK_SIZE: 2, alpaka_CHECK_HEADERS: ON}
@@ -201,15 +194,6 @@ jobs:
         # - name: linux_icpx_release_omp5
         #  os: ubuntu-20.04
         #  env: {CXX: icpx,    CC: icx,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.22.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-fiopenmp -fopenmp-targets=spir64 -Wno-source-uses-openmp", alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, OMP_TARGET_OFFLOAD: "DISABLED", alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF}
-
-        ## NVHPC
-        - name: linux_nvhpc-22.9_release_oacc_multicore
-        # # gcc is used to compile the dependencies, NVHPC will be used to compile alpaka
-        # have to build with -O2 (hence CMAKE_BUILD_TYPE=RelWithDebInfo) at
-        # most since at least 22.3: Loop in Vec::operator+(..) is wrongly
-        # eliminated by optimizer at -O3 in matMulTest
-          os: ubuntu-20.04
-          env: {CXX: g++,   CC: gcc,    ALPAKA_CI_GCC_VER: 9, CMAKE_CXX_COMPILER: nvc++,     CMAKE_C_COMPILER: nvc,    ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: RelWithDebInfo,   ALPAKA_BOOST_VERSION: 1.74.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "nvcr.io/nvidia/nvhpc:22.9-devel-cuda11.7-ubuntu20.04", ALPAKA_CI_ANALYSIS: OFF, alpaka_DEBUG: 0, alpaka_ACC_ANY_BT_OACC_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, alpaka_DEBUG_OFFLOAD_ASSUME_HOST: ON, CMAKE_CXX_FLAGS: "-acc -ta=multicore --diag_suppress=186", alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, alpaka_CHECK_HEADERS: ON}
 
     steps:
     - name: check filter

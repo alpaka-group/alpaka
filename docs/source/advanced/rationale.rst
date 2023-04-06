@@ -156,7 +156,6 @@ This can be seen in the source listing showing a simple AXPY computation with Op
    }
 
 Only one line of the function body, line 13, is the algorithm itself, while all surrounding lines represent the parallelization strategy.
-In *OpenACC* the parallelization and the algorithm are similarly combined.
 
 *CUDA*, *OpenCL* and other libraries allow, at least to some degree, to separate the algorithm from the parallelization strategy.
 They define the concept of a kernel representing the algorithm itself which is then parallelized depending on the underlying hardware.

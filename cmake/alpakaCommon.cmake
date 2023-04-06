@@ -1,5 +1,5 @@
 #
-# Copyright 2022 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci, Bernhard Manfred Gruber
+# Copyright 2023 Benjamin Worpitz, Erik Zenker, Axel Hübl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci, Bernhard Manfred Gruber
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -75,7 +75,6 @@ option(alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end
 option(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" OFF)
 option(alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" OFF)
 option(alpaka_ACC_ANY_BT_OMP5_ENABLE "Enable the OpenMP 5.0 CPU block and block thread back-end" OFF)
-option(alpaka_ACC_ANY_BT_OACC_ENABLE "Enable the OpenACC block and block thread back-end" OFF)
 option(alpaka_ACC_CPU_DISABLE_ATOMIC_REF "Disable boost::atomic_ref for CPU back-ends" OFF)
 option(alpaka_ACC_SYCL_ENABLE "Enable the SYCL back-end" OFF)
 
@@ -99,12 +98,6 @@ if((alpaka_ACC_GPU_CUDA_ONLY_MODE OR alpaka_ACC_GPU_HIP_ONLY_MODE)
         message(FATAL_ERROR "If alpaka_ACC_GPU_HIP_ONLY_MODE is enabled, only back-ends using HIP can be enabled!")
     endif()
     set(_alpaka_FOUND FALSE)
-elseif(alpaka_ACC_ANY_BT_OACC_ENABLE)
-    if((alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
-       alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
-       alpaka_ACC_ANY_BT_OMP5_ENABLE))
-       message(WARNING "If alpaka_ACC_ANY_BT_OACC_ENABLE is enabled no OpenMP backend can be enabled.")
-    endif()
 endif()
 
 # avoids CUDA+HIP conflict
@@ -149,7 +142,7 @@ if(NOT TARGET alpaka)
     add_library(alpaka::alpaka ALIAS alpaka)
 endif()
 
-set(alpaka_OFFLOAD_MAX_BLOCK_SIZE "256" CACHE STRING "Maximum number threads per block to be suggested by any target offloading backends ANY_BT_OMP5 and ANY_BT_OACC.")
+set(alpaka_OFFLOAD_MAX_BLOCK_SIZE "256" CACHE STRING "Maximum number threads per block to be suggested by any target offloading backends (ANY_BT_OMP5).")
 option(alpaka_DEBUG_OFFLOAD_ASSUME_HOST "Allow host-only contructs like assert in offload code in debug mode." ON)
 set(alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ, SYCL)")
 
@@ -370,14 +363,6 @@ if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR a
     else()
         message(FATAL_ERROR "Optional alpaka dependency OpenMP could not be found!")
     endif()
-endif()
-
-if(alpaka_ACC_ANY_BT_OACC_ENABLE)
-   find_package(OpenACC)
-   if(OpenACC_CXX_FOUND)
-      target_compile_options(alpaka INTERFACE ${OpenACC_CXX_OPTIONS})
-      target_link_options(alpaka INTERFACE ${OpenACC_CXX_OPTIONS})
-   endif()
 endif()
 
 #-------------------------------------------------------------------------------
@@ -761,10 +746,6 @@ if(alpaka_ACC_ANY_BT_OMP5_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_ANY_BT_OMP5_ENABLED")
     message(STATUS alpaka_ACC_ANY_BT_OMP5_ENABLED)
 endif()
-if(alpaka_ACC_ANY_BT_OACC_ENABLE)
-    target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_ANY_BT_OACC_ENABLED")
-    message(STATUS alpaka_ACC_ANY_BT_OACC_ENABLE)
-endif()
 if(alpaka_ACC_GPU_CUDA_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_GPU_CUDA_ENABLED")
     message(STATUS alpaka_ACC_GPU_CUDA_ENABLED)
@@ -920,8 +901,8 @@ if (NOT alpaka_USE_MDSPAN STREQUAL "OFF")
         set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
     endif ()
 
-    if ((alpaka_ACC_ANY_BT_OMP5_ENABLE OR alpaka_ACC_ANY_BT_OACC_ENABLE))
-        message(WARNING "std::mdspan is not yet compatible with alpaka's OpenMP5 and OpenAcc backends. Use of std::mdspan has been disabled.")
+    if (alpaka_ACC_ANY_BT_OMP5_ENABLE)
+        message(WARNING "std::mdspan is not yet compatible with alpaka's OpenMP5 back-end. Use of std::mdspan has been disabled.")
         set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
     endif ()
 
