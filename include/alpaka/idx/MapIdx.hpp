@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Jan Stephan, Jeffrey Kelling, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Jan Stephan, Jeffrey Kelling, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -56,8 +56,7 @@ namespace alpaka
 
                 // in-between
                 TElem hyperPlanesBefore = extent[lastIdx];
-#if BOOST_COMP_PGI && (defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) || defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED))            \
-    && !defined(TPR30645)
+#if BOOST_COMP_PGI && defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) && !defined(TPR30645)
                 for(std::size_t a(0u); a < lastIdx - 1; ++a)
                 {
                     auto const r = a + 1; // NVHPC does sometimes not understand, that loops which do not start at zero

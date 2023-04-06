@@ -56,7 +56,6 @@ Accelerator Back-ends
 | OpenMP 2.0+ threads    | OpenMP 2.0+                                             | Host CPU (multi core)  | sequential                         | parallel (preemptive multitasking)   |
 | OpenMP 5.0+            | OpenMP 5.0+                                             | Host CPU (multi core)  | parallel (undefined)               | parallel (preemptive multitasking)   |
 |                        |                                                         | GPU                    | parallel (undefined)               | parallel (lock-step within warps)    |
-| OpenACC (experimental) | OpenACC 2.0+                                            | Host CPU (multi core)  | parallel (undefined)               | parallel (preemptive multitasking)   |
 |                        |                                                         | GPU                    | parallel (undefined)               | parallel (lock-step within warps)    |
 | std::thread            | std::thread                                             | Host CPU (multi core)  | sequential                         | parallel (preemptive multitasking)   |
 | TBB                    | TBB 2.2+                                                | Host CPU (multi core)  | parallel (preemptive multitasking) | sequential (only 1 thread per block) |

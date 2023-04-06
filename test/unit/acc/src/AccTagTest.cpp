@@ -1,4 +1,4 @@
-/* Copyright 2022 Simeon Ehrig, Jan Stephan
+/* Copyright 2023 Simeon Ehrig, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -22,7 +22,6 @@ using TagList = std::tuple<
     alpaka::TagCpuOmp2Blocks,
     alpaka::TagCpuOmp2Threads,
     alpaka::TagOmp5,
-    alpaka::TagOacc,
     alpaka::TagGpuCudaRt,
     alpaka::TagGpuHipRt,
     alpaka::TagCpuSyclIntel,
@@ -30,13 +29,6 @@ using TagList = std::tuple<
     alpaka::TagFpgaSyclXilinx,
     alpaka::TagGpuSyclIntel>;
 
-// to many acc's triggers a compiler error in nvc++: error: excessive recursion at instantiation of class
-// looks like, that a buffer is not big enough
-#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
-using AccToTagMap = std::tuple<
-    std::pair<alpaka::test::detail::AccCpuSerialIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSerial>,
-    std::pair<alpaka::test::detail::AccOaccIfAvailableElseInt<Dim, Idx>, alpaka::TagOacc>>;
-#else
 using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccCpuSerialIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSerial>,
     std::pair<alpaka::test::detail::AccCpuThreadsIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuThreads>,
@@ -44,14 +36,12 @@ using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccCpuOmp2BlocksIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuOmp2Blocks>,
     std::pair<alpaka::test::detail::AccCpuOmp2ThreadsIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuOmp2Threads>,
     std::pair<alpaka::test::detail::AccOmp5IfAvailableElseInt<Dim, Idx>, alpaka::TagOmp5>,
-    std::pair<alpaka::test::detail::AccOaccIfAvailableElseInt<Dim, Idx>, alpaka::TagOacc>,
     std::pair<alpaka::test::detail::AccGpuCudaRtIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuCudaRt>,
     std::pair<alpaka::test::detail::AccGpuHipRtIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuHipRt>,
     std::pair<alpaka::test::detail::AccCpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSyclIntel>,
     std::pair<alpaka::test::detail::AccFpgaSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagFpgaSyclIntel>,
     std::pair<alpaka::test::detail::AccFpgaSyclXilinxIfAvailableElseInt<Dim, Idx>, alpaka::TagFpgaSyclXilinx>,
     std::pair<alpaka::test::detail::AccGpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclIntel>>;
-#endif
 
 using AccTagTestMatrix = alpaka::meta::CartesianProduct<std::tuple, AccToTagMap, TagList>;
 

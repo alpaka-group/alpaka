@@ -1,11 +1,10 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/dev/DevOacc.hpp>
 #include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #include <alpaka/mem/view/Traits.hpp>
@@ -196,22 +195,6 @@ namespace alpaka
         };
 #endif
 
-#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
-        //! The Oacc device CreateStaticDevMemView trait specialization.
-        template<>
-        struct CreateStaticDevMemView<DevOacc>
-        {
-            template<typename TElem, typename TExtent>
-            static auto createStaticDevMemView(TElem* pMem, DevOacc const& dev, TExtent const& extent)
-            {
-                return alpaka::ViewPlainPtr<DevOacc, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-                    dev.mapStatic(pMem, extent),
-                    dev,
-                    extent);
-            }
-        };
-#endif
-
         //! The CPU device CreateViewPlainPtr trait specialization.
         template<>
         struct CreateViewPlainPtr<DevCpu>
@@ -259,23 +242,6 @@ namespace alpaka
             static auto createViewPlainPtr(DevOmp5 const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
             {
                 return alpaka::ViewPlainPtr<DevOmp5, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-                    pMem,
-                    dev,
-                    extent,
-                    pitch);
-            }
-        };
-#endif
-
-#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
-        //! The Oacc device CreateViewPlainPtr trait specialization.
-        template<>
-        struct CreateViewPlainPtr<DevOacc>
-        {
-            template<typename TElem, typename TExtent, typename TPitch>
-            static auto createViewPlainPtr(DevOacc const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
-            {
-                return alpaka::ViewPlainPtr<DevOacc, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMem,
                     dev,
                     extent,

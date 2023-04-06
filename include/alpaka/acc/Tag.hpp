@@ -1,4 +1,4 @@
-/* Copyright 2022 Simeon Ehrig, Jan Stephan
+/* Copyright 2023 Simeon Ehrig, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -32,7 +32,6 @@ namespace alpaka
     CREATE_ACC_TAG(TagGpuCudaRt);
     CREATE_ACC_TAG(TagGpuHipRt);
     CREATE_ACC_TAG(TagGpuSyclIntel);
-    CREATE_ACC_TAG(TagOacc);
     CREATE_ACC_TAG(TagOmp5);
 
     namespace trait

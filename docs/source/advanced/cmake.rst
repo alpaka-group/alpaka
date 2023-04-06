@@ -169,8 +169,7 @@ alpaka_ACC_ANY_BT_OMP5_ENABLE
 alpaka_OFFLOAD_MAX_BLOCK_SIZE
   .. code-block::
 
-     Maximum number threads per block to be suggested by any target offloading backends
-     ANY_BT_OMP5 and ANY_BT_OACC.
+     Maximum number threads per block to be suggested by any target offloading backends (ANY_BT_OMP5).
 
 
 CMAKE_CXX_FLAGS
@@ -199,12 +198,6 @@ CMAKE_CXX_FLAGS
       At run time set the environment variable `OMP_TARGET_OFFLOAD=DISABLED`
       
     * nvptx: `-foffload=nvptx-none`
-      
-  * NVHPC
-    
-    * host: `-ta=host` or `-ta=multicore`
-      
-    * nvptx: `-ta=tesla`
 
 
 .. _cuda:
