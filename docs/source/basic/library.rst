@@ -80,8 +80,9 @@ A kernel is a special function object which has to conform to the following requ
 * it has to fulfill the ``std::is_trivially_copyable`` trait (has to be copyable via memcpy)
 * the ``operator()`` is the kernel entry point
   * it has to be an accelerator executable function
-  * it has to return ``void``.
-  * its first argument has to be the accelerator (templated for arbitrary accelerator back-ends).
+  * it has to return ``void``
+  * its first argument has to be the accelerator (templated for arbitrary accelerator back-ends)
+  * all other arguments must fulfill ``std::is_trivially_copyable``
 
 The following code snippet shows a basic example of a kernel function object.
 
@@ -152,9 +153,9 @@ atomic functions instead.
 The ``alpaka::mem_fence`` function can be used inside an alpaka kernel to issue a memory fence instruction. This
 guarantees the following **for the local thread**  and regardless of global or shared memory:
 
-  * All loads that occur before the fence will happen before all loads occuring after the fence, i.e. no *LoadLoad*
+  * All loads that occur before the fence will happen before all loads occurring after the fence, i.e. no *LoadLoad*
     reordering.
-  * All stores that occur before the fence will happen before all stores occuring after the fence, i.e. no *StoreStore*
+  * All stores that occur before the fence will happen before all stores occurring after the fence, i.e. no *StoreStore*
     reordering.
   * The order of stores will be visible to other threads inside the scope (but not necessarily their results).
 
