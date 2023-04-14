@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2023 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Antonio Di Pilato, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -32,6 +32,10 @@
 #    include <functional>
 #    include <stdexcept>
 #    include <type_traits>
+
+#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL || defined ALPAKA_CI
+#        include <cstdio>
+#    endif
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        include <iostream>
@@ -140,9 +144,11 @@ namespace alpaka
                     // The first team does some checks ...
                     if(t == 0)
                     {
-                        int const iNumTeams(::omp_get_num_teams());
-                        printf("%s omp_get_num_teams: %d\n", __func__, iNumTeams);
-                        printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
+                        auto const iNumTeams = ::omp_get_num_teams();
+                        char const* funcName
+                            = __func__; // fix for icpx complaining about directly using __func__ in printf
+                        std::printf("%s omp_get_num_teams: %d\n", funcName, iNumTeams);
+                        std::printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
                     }
 #    endif
                     AccOmp5<TDim, TIdx>
@@ -166,8 +172,10 @@ namespace alpaka
                         // The first thread does some checks in the first block executed.
                         if((::omp_get_thread_num() == 0) && (t == 0))
                         {
-                            int const numThreads = ::omp_get_num_threads();
-                            printf("%s omp_get_num_threads: %d\n", __func__, numThreads);
+                            auto const numThreads = ::omp_get_num_threads();
+                            char const* funcName
+                                = __func__; // fix for icpx complaining about directly using __func__ in printf
+                            std::printf("%s omp_get_num_threads: %d\n", funcName, numThreads);
                             if(numThreads != static_cast<int>(blockThreadCount))
                             {
                                 printf("ERROR: The OpenMP runtime did not use the number of threads that had been "
