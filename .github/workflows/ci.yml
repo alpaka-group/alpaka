@@ -197,9 +197,10 @@ jobs:
         - name: linux_icpx_release
           os: ubuntu-20.04
           env: {CXX: icpx,    CC: icx,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.22.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
-        - name: linux_icpx_release_omp5
-          os: ubuntu-20.04
-          env: {CXX: icpx,    CC: icx,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.22.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-fiopenmp -fopenmp-targets=spir64 -Wno-source-uses-openmp", alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, OMP_TARGET_OFFLOAD: "DISABLED", alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF}
+        # Failing with 'error: non-string-literal argument used in printf is not supported for spir64'
+        # - name: linux_icpx_release_omp5
+        #  os: ubuntu-20.04
+        #  env: {CXX: icpx,    CC: icx,                                 ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.75.0, ALPAKA_CI_CMAKE_VER: 3.22.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-fiopenmp -fopenmp-targets=spir64 -Wno-source-uses-openmp", alpaka_ACC_ANY_BT_OMP5_ENABLE: ON, alpaka_OFFLOAD_MAX_BLOCK_SIZE: 1, OMP_TARGET_OFFLOAD: "DISABLED", alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF}
 
         ## NVHPC
         - name: linux_nvhpc-22.9_release_oacc_multicore
