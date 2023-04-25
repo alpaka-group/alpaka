@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Jonas Schenke, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Benjamin Worpitz, Jonas Schenke, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: ISC
  */
 
@@ -20,7 +20,6 @@
 // - GpuCudaRt
 // - CpuThreads
 // - CpuOmp2Blocks
-// - Omp5
 // - CpuSerial
 //
 using Accelerator = CpuSerial;

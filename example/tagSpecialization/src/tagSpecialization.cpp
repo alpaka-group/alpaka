@@ -1,4 +1,4 @@
-/* Copyright 2022 Simeon Ehrig
+/* Copyright 2023 Simeon Ehrig, Jan Stephan
  * SPDX-License-Identifier: ISC
  */
 
@@ -92,7 +92,6 @@ auto main() -> int
     // - AccCpuFibers
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccOmp5
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     //

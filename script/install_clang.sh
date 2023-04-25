@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+# Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -55,15 +55,10 @@ then
         fi
     fi
 
-    if [ "${alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" = "ON" ] || [ "${alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" = "ON" ] || [ "${alpaka_ACC_ANY_BT_OMP5_ENABLE}" = "ON" ]
+    if [ "${alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" = "ON" ] || [ "${alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" = "ON" ]
     then
         LIBOMP_PACKAGE=libomp-${ALPAKA_CI_CLANG_VER}-dev
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install "${LIBOMP_PACKAGE}"
-        if [ "${alpaka_ACC_ANY_BT_OMP5_ENABLE}" = "ON" ]
-        then
-            travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install \
-                clang-tools-${ALPAKA_CI_CLANG_VER} llvm-${ALPAKA_CI_CLANG_VER}
-        fi
     fi
 
     sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-"${ALPAKA_CI_CLANG_VER}" 50

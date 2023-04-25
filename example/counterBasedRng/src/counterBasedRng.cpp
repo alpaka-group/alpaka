@@ -1,4 +1,4 @@
-/* Copyright 2022 Jeffrey Kelling
+/* Copyright 2023 Jeffrey Kelling, Jan Stephan
  * SPDX-License-Identifier: ISC
  */
 
@@ -117,7 +117,6 @@ auto main() -> int
     // - AccCpuFibers
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccOmp5
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     // using Acc = alpaka::AccCpuSerial<Dim, Idx>;

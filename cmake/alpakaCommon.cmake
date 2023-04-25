@@ -74,7 +74,6 @@ option(alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block threa
 option(alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" OFF)
 option(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" OFF)
 option(alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" OFF)
-option(alpaka_ACC_ANY_BT_OMP5_ENABLE "Enable the OpenMP 5.0 CPU block and block thread back-end" OFF)
 option(alpaka_ACC_CPU_DISABLE_ATOMIC_REF "Disable boost::atomic_ref for CPU back-ends" OFF)
 option(alpaka_ACC_SYCL_ENABLE "Enable the SYCL back-end" OFF)
 
@@ -89,7 +88,6 @@ if((alpaka_ACC_GPU_CUDA_ONLY_MODE OR alpaka_ACC_GPU_HIP_ONLY_MODE)
     alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE OR
     alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
     alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
-    alpaka_ACC_ANY_BT_OMP5_ENABLE OR
     alpaka_ACC_SYCL_ENABLE))
     if(alpaka_ACC_GPU_CUDA_ONLY_MODE)
         message(FATAL_ERROR "If alpaka_ACC_GPU_CUDA_ONLY_MODE is enabled, only back-ends using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA back-ends from being enabled.")
@@ -128,26 +126,10 @@ if(NOT TARGET alpaka)
 
     target_compile_features(alpaka INTERFACE cxx_std_${alpaka_CXX_STANDARD})
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "NVHPC" OR CMAKE_CXX_COMPILER_ID STREQUAL "PGI")
-        # Workaround for STL atomic issue: https://forums.developer.nvidia.com/t/support-for-atomic-in-libstdc-missing/135403/2
-        # still appears in NVHPC 20.7
-        target_compile_definitions(alpaka INTERFACE "__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1")
-        # reports many unused variables declared by catch test macros
-        target_compile_options(alpaka INTERFACE "--diag_suppress 177")
-        # prevent NVHPC from warning about unreachable code sections. TODO: Remove this line once the
-        # alpaka_UNUSED macro has been removed (dropping support for CUDA < 11.5).
-        target_compile_options(alpaka INTERFACE "--diag_suppress 111")
-    endif()
-
     add_library(alpaka::alpaka ALIAS alpaka)
 endif()
 
-set(alpaka_OFFLOAD_MAX_BLOCK_SIZE "256" CACHE STRING "Maximum number threads per block to be suggested by any target offloading backends (ANY_BT_OMP5).")
-option(alpaka_DEBUG_OFFLOAD_ASSUME_HOST "Allow host-only contructs like assert in offload code in debug mode." ON)
 set(alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ, SYCL)")
-
-set(alpaka_OFFLOAD_USE_BUILTIN_SHARED_MEM "OFF" CACHE STRING "Whether to use OMP5 built-in directives for block-shared memory and how to treat dynamic shared memory.")
-set_property(CACHE alpaka_OFFLOAD_USE_BUILTIN_SHARED_MEM PROPERTY STRINGS "OFF;DYN_FIXED;DYN_ALLOC")
 
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
@@ -325,44 +307,9 @@ endif()
 
 #-------------------------------------------------------------------------------
 # Find OpenMP.
-if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR alpaka_ACC_ANY_BT_OMP5_ENABLE)
-    find_package(OpenMP)
-
-    if(OpenMP_CXX_FOUND)
-        if(alpaka_ACC_ANY_BT_OMP5_ENABLED)
-            if(OpenMP_CXX_VERSION VERSION_LESS 5.0)
-                message(FATAL_ERROR "alpaka_ACC_ANY_BT_OMP5_ENABLE requires compiler support for OpenMP 5.0.")
-            endif()
-
-            if((${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang") AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 12.0.5))
-                message(FATAL_ERROR "The OpenMP 5.0 back-end requires Xcode 12.5 or later")
-            elseif((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang") AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 11.0))
-                message(FATAL_ERROR "The OpenMP 5.0 back-end requires clang 11.0 or later")
-            endif()
-        endif()
-
-        target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
-
-        # Clang versions support OpenMP 5.0 only when given the corresponding flag
-        if(alpaka_ACC_ANY_BT_OMP5_ENABLE)
-            if(alpaka_ACC_GPU_CUDA_ENABLE)
-                # See https://github.com/alpaka-group/alpaka/issues/1755
-                if((${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang") AND
-                   (${CMAKE_CXX_COMPILER_ID} VERSION_GREATER_EQUAL 13.1.6) AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 14.0.0))
-                    message(FATAL_ERROR "The OpenMP 5.0 back-end cannot be used together with both Xcode 13.4 and CUDA.")
-                endif()
-
-                if((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang") AND
-                   (${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL 13) AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 14.0.0))
-                    message(FATAL_ERROR "The OpenMP 5.0 back-end cannot be used together with both clang 13 and CUDA.")
-                endif()
-            endif()
-
-            target_link_options(alpaka INTERFACE $<$<CXX_COMPILER_ID:AppleClang,Clang>:-fopenmp-version=50>)
-        endif()
-    else()
-        message(FATAL_ERROR "Optional alpaka dependency OpenMP could not be found!")
-    endif()
+if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
+    find_package(OpenMP REQUIRED COMPONENTS CXX)
+    target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
 endif()
 
 #-------------------------------------------------------------------------------
@@ -406,9 +353,6 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
 
             if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
                 message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
-            endif()
-            if(alpaka_ACC_ANY_BT_OMP5_ENABLE)
-                message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 5!")
             endif()
 
             target_compile_options(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Wno-unknown-cuda-version>)
@@ -474,7 +418,7 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
                 alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xptxas=-v>)
             endif()
 
-            if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR alpaka_ACC_ANY_BT_OMP5_ENABLE)
+            if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
                 if(NOT MSVC)
                     alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fopenmp>)
 
@@ -742,10 +686,6 @@ if(alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED")
     message(STATUS alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
 endif()
-if(alpaka_ACC_ANY_BT_OMP5_ENABLE)
-    target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_ANY_BT_OMP5_ENABLED")
-    message(STATUS alpaka_ACC_ANY_BT_OMP5_ENABLED)
-endif()
 if(alpaka_ACC_GPU_CUDA_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_GPU_CUDA_ENABLED")
     message(STATUS alpaka_ACC_GPU_CUDA_ENABLED)
@@ -898,11 +838,6 @@ if (NOT alpaka_USE_MDSPAN STREQUAL "OFF")
         # this issue actually only occurs when the host compiler (not the CXX compiler) is clang, but cmake does not let us query the host compiler id
         # see: https://gitlab.kitware.com/cmake/cmake/-/issues/20901
         message(WARNING "std::mdspan does not work with nvcc and clang as host compiler. Use of std::mdspan has been disabled.")
-        set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
-    endif ()
-
-    if (alpaka_ACC_ANY_BT_OMP5_ENABLE)
-        message(WARNING "std::mdspan is not yet compatible with alpaka's OpenMP5 back-end. Use of std::mdspan has been disabled.")
         set(alpaka_USE_MDSPAN "OFF" CACHE STRING "Use std::mdspan with alpaka" FORCE)
     endif ()
 

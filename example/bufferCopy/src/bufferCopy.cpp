@@ -1,4 +1,4 @@
-/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Erik Zenker, Matthias Werner, Bernhard Manfred Gruber,
+/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Erik Zenker, Matthias Werner, Bernhard Manfred Gruber,
  *                Jan Stephan
  * SPDX-License-Identifier: ISC
  */
@@ -83,7 +83,6 @@ auto main() -> int
     // - AccCpuThreads
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccOmp5
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     // using Acc = alpaka::AccCpuSerial<Dim, Idx>;
@@ -101,7 +100,6 @@ auto main() -> int
     // - AccCpuThreads
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccOmp5
     // - AccCpuSerial
     using Host = alpaka::AccCpuSerial<Dim, Idx>;
     // Defines the synchronization behavior of a queue

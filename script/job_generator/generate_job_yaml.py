@@ -164,7 +164,6 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     # versions.sw_versions[BACKENDS], therefore we have to set each backend explicit
     # Later, we can iterate over versions.sw_versions[BACKENDS] and check, if a Backend needs to be
     # enabled
-    variables[ALPAKA_ACC_ANY_BT_OMP5_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE] = "OFF"
@@ -291,7 +290,6 @@ def global_variables() -> Dict[str, str]:
     variables[ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE] = "ON"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE] = "ON"
-    variables[ALPAKA_ACC_ANY_BT_OMP5_ENABLE] = "OFF"
     variables[ALPAKA_ACC_GPU_CUDA_ENABLE] = "OFF"
     variables["alpaka_ACC_GPU_CUDA_ONLY_MODE"] = "OFF"
     variables[ALPAKA_ACC_GPU_HIP_ENABLE] = "OFF"
@@ -413,8 +411,6 @@ def distribute_to_waves(
             sorted_groups[JOB_RUNTIME].append(job)
         elif job_name.startswith("linux_clang-cuda"):
             # sorted_groups[JOB_CLANG_CUDA_RUNTIME].append(job)
-            sorted_groups[JOB_RUNTIME].append(job)
-        elif job_name.startswith("linux_nvhpc"):
             sorted_groups[JOB_RUNTIME].append(job)
         else:
             sorted_groups[JOB_UNKNOWN].append(job)

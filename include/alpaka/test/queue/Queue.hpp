@@ -81,20 +81,6 @@ namespace alpaka::test
         };
 #endif
 
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-
-        //! The default queue type trait specialization for the Omp5 device.
-        template<>
-        struct DefaultQueueType<DevOmp5>
-        {
-#    if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = QueueOmp5Blocking;
-#    else
-            using type = QueueOmp5Blocking;
-#    endif
-        };
-#endif
-
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 #    ifdef ALPAKA_SYCL_BACKEND_ONEAPI
 #        ifdef ALPAKA_SYCL_ONEAPI_CPU
@@ -213,11 +199,6 @@ namespace alpaka::test
         ,
         std::tuple<DevHipRt, QueueHipRtBlocking>,
         std::tuple<DevHipRt, QueueHipRtNonBlocking>
-#endif
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        ,
-        std::tuple<DevOmp5, QueueOmp5Blocking>,
-        std::tuple<DevOmp5, QueueOmp5NonBlocking>
 #endif
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 #    ifdef ALPAKA_SYCL_BACKEND_ONEAPI

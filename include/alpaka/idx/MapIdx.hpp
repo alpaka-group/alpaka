@@ -56,15 +56,8 @@ namespace alpaka
 
                 // in-between
                 TElem hyperPlanesBefore = extent[lastIdx];
-#if BOOST_COMP_PGI && defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) && !defined(TPR30645)
-                for(std::size_t a(0u); a < lastIdx - 1; ++a)
-                {
-                    auto const r = a + 1; // NVHPC does sometimes not understand, that loops which do not start at zero
-                                          // can have zero iterations
-#else
                 for(std::size_t r(1u); r < lastIdx; ++r)
                 {
-#endif
                     std::size_t const d = lastIdx - r;
                     idxNd[d] = static_cast<TElem>(idx[0u] / hyperPlanesBefore % extent[d]);
                     hyperPlanesBefore *= extent[d];

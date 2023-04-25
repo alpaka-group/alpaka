@@ -1,4 +1,4 @@
-/* Copyright 2022 Jonas Schenke, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Jonas Schenke, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: ISC
  */
 
@@ -57,32 +57,6 @@ struct GetIterator<T, TBuf, alpaka::AccCpuOmp2Blocks<TArgs...>>
 {
     using Iterator = IteratorCpu<alpaka::AccCpuOmp2Blocks<TArgs...>, T, TBuf>;
 };
-#endif
-
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-#    ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
-//! OpenMP 5 defines
-//!
-//! Defines Host, Device, etc. for the OpenMP 5 accelerator.
-struct Omp5
-{
-    using Host = alpaka::AccCpuSerial<Dim, Extent>;
-    using Acc = alpaka::AccOmp5<Dim, Extent>;
-    using DevHost = alpaka::Dev<Host>;
-    using DevAcc = alpaka::Dev<Acc>;
-    using PltfHost = alpaka::Pltf<DevHost>;
-    using PltfAcc = alpaka::Pltf<DevAcc>;
-    using Stream = alpaka::QueueCpuBlocking;
-    using Event = alpaka::Event<Stream>;
-    using MaxBlockSize = alpaka::DimInt<1u>;
-};
-
-template<typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::AccOmp5<TArgs...>>
-{
-    using Iterator = IteratorCpu<alpaka::AccOmp5<TArgs...>, T, TBuf>;
-};
-#    endif
 #endif
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
