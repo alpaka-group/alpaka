@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -54,11 +54,6 @@ static auto testP2P(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& ext
 
 TEMPLATE_LIST_TEST_CASE("memP2PTest", "[memP2P]", alpaka::test::TestAccs)
 {
-#if defined(ALPAKA_CI) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(7, 2, 0)                                            \
-    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(8, 0, 0) && defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
-    std::cerr << "Currently, memP2P is not working with gcc7.2 / gcc7.3 on CI." << std::endl;
-    CHECK(true);
-#else
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
@@ -67,5 +62,4 @@ TEMPLATE_LIST_TEST_CASE("memP2PTest", "[memP2P]", alpaka::test::TestAccs)
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
     testP2P<Acc>(extent);
-#endif
 }

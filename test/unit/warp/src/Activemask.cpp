@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -73,10 +73,6 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
         }
         else
         {
-            // Work around gcc 7.5 trying and failing to offload for OpenMP 4.0
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 5, 0)) && defined ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-            return;
-#else
             using ExecutionFixture = alpaka::test::KernelExecutionFixture<Acc>;
             auto const gridBlockExtent = alpaka::Vec<Dim, Idx>::all(2);
             // Enforce one warp per thread block
@@ -88,7 +84,6 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
             ActivemaskMultipleThreadWarpTestKernel kernel;
             for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
                 REQUIRE(fixture(kernel, inactiveThreadIdx));
-#endif
         }
     }
 }

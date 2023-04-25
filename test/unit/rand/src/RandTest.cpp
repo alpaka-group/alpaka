@@ -61,7 +61,6 @@ public:
         genNumbers(acc, success, genDefault);
 
 #if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#    if !defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
         // TODO: These ifdefs are wrong: They will reduce the test to the
         // smallest common denominator from all enabled backends
         // std::random_device
@@ -71,7 +70,6 @@ public:
         // MersenneTwister
         auto genMersenneTwister = alpaka::rand::engine::createDefault(alpaka::rand::MersenneTwister{}, 12345u, 6789u);
         genNumbers(acc, success, genMersenneTwister);
-#    endif
 
         // TinyMersenneTwister
         auto genTinyMersenneTwister

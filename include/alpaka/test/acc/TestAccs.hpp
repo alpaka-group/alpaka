@@ -62,26 +62,6 @@ namespace alpaka::test
         template<typename TDim, typename TIdx>
         using AccCpuOmp2ThreadsIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED) && !defined(TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION)                         \
-    && !(BOOST_COMP_PGI && (defined TEST_UNIT_FENCE))                                                                 \
-    && !(                                                                                                             \
-        BOOST_COMP_GNUC                                                                                               \
-        && (((BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(11, 0, 0)) /* tests excluded because of GCC10 Omp5 target        \
-                                                                   symbol bug with multiple units */                  \
-             && (defined(TEST_UNIT_BLOCK_SHARED) || defined(TEST_UNIT_BLOCK_SYNC) || defined(TEST_UNIT_WARP)          \
-                 || defined(TEST_UNIT_INTRINSIC) || defined(TEST_UNIT_KERNEL) || defined(TEST_UNIT_MEM_VIEW)))        \
-            || defined(TEST_UNIT_MATH) /* because of static const members */                                          \
-            ))                                                                                                        \
-    && !(                                                                                                             \
-        !defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST)                                                                    \
-        && (defined(TEST_UNIT_ATOMIC) /* clang nvptx atomic ICEs */                                                   \
-            ))
-        template<typename TDim, typename TIdx>
-        using AccOmp5IfAvailableElseInt = AccOmp5<TDim, TIdx>;
-#else
-        template<typename TDim, typename TIdx>
-        using AccOmp5IfAvailableElseInt = int;
-#endif
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && (BOOST_LANG_CUDA || defined(ALPAKA_HOST_ONLY))
         template<typename TDim, typename TIdx>
         using AccGpuCudaRtIfAvailableElseInt = AccGpuCudaRt<TDim, TIdx>;
@@ -134,7 +114,6 @@ namespace alpaka::test
             AccCpuTbbIfAvailableElseInt<TDim, TIdx>,
             AccCpuOmp2BlocksIfAvailableElseInt<TDim, TIdx>,
             AccCpuOmp2ThreadsIfAvailableElseInt<TDim, TIdx>,
-            AccOmp5IfAvailableElseInt<TDim, TIdx>,
             AccGpuCudaRtIfAvailableElseInt<TDim, TIdx>,
             AccGpuHipRtIfAvailableElseInt<TDim, TIdx>,
             AccCpuSyclIntelIfAvailableElseInt<TDim, TIdx>,

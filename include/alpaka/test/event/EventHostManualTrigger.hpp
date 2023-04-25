@@ -108,13 +108,7 @@ namespace alpaka::test
         {
             using type = test::EventHostManualTriggerCpu<DevCpu>;
         };
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        template<>
-        struct EventHostManualTriggerType<DevOmp5>
-        {
-            using type = test::EventHostManualTriggerCpu<DevOmp5>;
-        };
-#endif
+
         //! The CPU event host manual trigger support get trait specialization.
         template<>
         struct IsEventHostManualTriggerSupported<DevCpu>
@@ -124,17 +118,6 @@ namespace alpaka::test
                 return true;
             }
         };
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        //! The Omp5 event host manual trigger support get trait specialization.
-        template<>
-        struct IsEventHostManualTriggerSupported<DevOmp5>
-        {
-            ALPAKA_FN_HOST static auto isSupported(DevOmp5 const&) -> bool
-            {
-                return true;
-            }
-        };
-#endif
     } // namespace trait
 } // namespace alpaka::test
 

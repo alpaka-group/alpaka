@@ -23,7 +23,6 @@
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/acc/AccGpuHipRt.hpp>
 #include <alpaka/acc/AccGpuSyclIntel.hpp>
-#include <alpaka/acc/AccOmp5.hpp>
 #include <alpaka/acc/Tag.hpp>
 #include <alpaka/acc/Traits.hpp>
 // atomic
@@ -39,14 +38,12 @@
 // dynamic
 #include <alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
-#include <alpaka/block/shared/dyn/BlockSharedMemDynOmp5BuiltIn.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
 #include <alpaka/block/shared/dyn/Traits.hpp>
 // static
 #include <alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp>
-#include <alpaka/block/shared/st/BlockSharedMemStOmp5BuiltIn.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
 #include <alpaka/block/shared/st/Traits.hpp>
 // sync
@@ -102,7 +99,6 @@
 #include <alpaka/event/EventGenericSycl.hpp>
 #include <alpaka/event/EventGpuSyclIntel.hpp>
 #include <alpaka/event/EventHipRt.hpp>
-#include <alpaka/event/EventOmp5.hpp>
 #include <alpaka/event/Traits.hpp>
 // extent
 #include <alpaka/extent/Traits.hpp>
@@ -131,7 +127,6 @@
 #include <alpaka/kernel/TaskKernelGpuCudaRt.hpp>
 #include <alpaka/kernel/TaskKernelGpuHipRt.hpp>
 #include <alpaka/kernel/TaskKernelGpuSyclIntel.hpp>
-#include <alpaka/kernel/TaskKernelOmp5.hpp>
 #include <alpaka/kernel/Traits.hpp>
 // math
 #include <alpaka/math/Complex.hpp>
@@ -150,14 +145,12 @@
 #include <alpaka/mem/buf/BufGenericSycl.hpp>
 #include <alpaka/mem/buf/BufGpuSyclIntel.hpp>
 #include <alpaka/mem/buf/BufHipRt.hpp>
-#include <alpaka/mem/buf/BufOmp5.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/mem/fence/MemFenceCpu.hpp>
 #include <alpaka/mem/fence/MemFenceCpuSerial.hpp>
 #include <alpaka/mem/fence/MemFenceGenericSycl.hpp>
 #include <alpaka/mem/fence/MemFenceOmp2Blocks.hpp>
 #include <alpaka/mem/fence/MemFenceOmp2Threads.hpp>
-#include <alpaka/mem/fence/MemFenceOmp5.hpp>
 #include <alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp>
 #include <alpaka/mem/fence/Traits.hpp>
 #include <alpaka/mem/view/Accessor.hpp>
@@ -196,7 +189,6 @@
 #include <alpaka/pltf/PltfFpgaSyclXilinx.hpp>
 #include <alpaka/pltf/PltfGpuSyclIntel.hpp>
 #include <alpaka/pltf/PltfHipRt.hpp>
-#include <alpaka/pltf/PltfOmp5.hpp>
 #include <alpaka/pltf/Traits.hpp>
 // rand
 #include <alpaka/rand/RandDefault.hpp>
@@ -222,7 +214,6 @@
 #include <alpaka/queue/QueueGpuSyclIntelNonBlocking.hpp>
 #include <alpaka/queue/QueueHipRtBlocking.hpp>
 #include <alpaka/queue/QueueHipRtNonBlocking.hpp>
-#include <alpaka/queue/QueueOmp5Blocking.hpp>
 #include <alpaka/queue/Traits.hpp>
 // traits
 #include <alpaka/traits/Traits.hpp>

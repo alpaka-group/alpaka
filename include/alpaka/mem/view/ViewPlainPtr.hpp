@@ -5,7 +5,6 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/mem/view/ViewAccessOps.hpp>
@@ -179,22 +178,6 @@ namespace alpaka
         };
 #endif
 
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        //! The Omp5 device CreateStaticDevMemView trait specialization.
-        template<>
-        struct CreateStaticDevMemView<DevOmp5>
-        {
-            template<typename TElem, typename TExtent>
-            static auto createStaticDevMemView(TElem* pMem, DevOmp5 const& dev, TExtent const& extent)
-            {
-                return alpaka::ViewPlainPtr<DevOmp5, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-                    dev.mapStatic(pMem, extent),
-                    dev,
-                    extent);
-            }
-        };
-#endif
-
         //! The CPU device CreateViewPlainPtr trait specialization.
         template<>
         struct CreateViewPlainPtr<DevCpu>
@@ -228,24 +211,6 @@ namespace alpaka
                         dev,
                         extent,
                         pitch);
-            }
-        };
-#endif
-
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-        //! The Omp5 device CreateViewPlainPtr trait specialization.
-        //! \todo What ist this for? Does this exist in OMP5?
-        template<>
-        struct CreateViewPlainPtr<DevOmp5>
-        {
-            template<typename TElem, typename TExtent, typename TPitch>
-            static auto createViewPlainPtr(DevOmp5 const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
-            {
-                return alpaka::ViewPlainPtr<DevOmp5, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-                    pMem,
-                    dev,
-                    extent,
-                    pitch);
             }
         };
 #endif

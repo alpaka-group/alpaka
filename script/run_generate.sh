@@ -84,7 +84,6 @@ cd build/
     "$(env2cmake alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE)" "$(env2cmake alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE)" \
     "$(env2cmake alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE)" \
     "$(env2cmake alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE)" "$(env2cmake alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)" \
-    "$(env2cmake alpaka_ACC_ANY_BT_OMP5_ENABLE)" \
     "$(env2cmake alpaka_OFFLOAD_MAX_BLOCK_SIZE)" "$(env2cmake alpaka_DEBUG_OFFLOAD_ASSUME_HOST)" \
     "$(env2cmake TBB_DIR)" \
     "$(env2cmake alpaka_ACC_GPU_CUDA_ENABLE)" "$(env2cmake alpaka_ACC_GPU_CUDA_ONLY_MODE)" "$(env2cmake CMAKE_CUDA_ARCHITECTURES)" "$(env2cmake CMAKE_CUDA_COMPILER)" "$(env2cmake CMAKE_CUDA_FLAGS)" \

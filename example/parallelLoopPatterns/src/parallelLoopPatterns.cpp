@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov
+/* Copyright 2023 Sergei Bastrakov, Jan Stephan
  * SPDX-License-Identifier: ISC
  */
 
@@ -414,7 +414,6 @@ auto main() -> int
     // - AccCpuFibers
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccOmp5
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     // using Acc = alpaka::AccCpuSerial<Dim, uint32_t>;

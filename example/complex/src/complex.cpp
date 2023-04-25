@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, Jan Stephan
+/* Copyright 2023 Sergei Bastrakov, Jan Stephan
  * SPDX-License-Identifier: ISC
  */
 
@@ -45,7 +45,6 @@ auto main() -> int
     // - AccCpuThreads
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccOmp5
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     //
