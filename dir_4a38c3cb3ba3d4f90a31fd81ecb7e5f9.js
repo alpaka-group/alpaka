@@ -1,6 +1,5 @@
 var dir_4a38c3cb3ba3d4f90a31fd81ecb7e5f9 =
 [
-    [ "BlockSyncBarrierOacc.hpp", "BlockSyncBarrierOacc_8hpp.html", null ],
     [ "BlockSyncBarrierOmp.hpp", "BlockSyncBarrierOmp_8hpp.html", [
       [ "BlockSyncBarrierOmp", "classalpaka_1_1BlockSyncBarrierOmp.html", "classalpaka_1_1BlockSyncBarrierOmp" ],
       [ "AtomicOp< BlockAnd >", "structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html", "structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4" ],

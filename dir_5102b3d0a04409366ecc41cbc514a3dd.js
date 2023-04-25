@@ -75,7 +75,6 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "IdxType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "PltfType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
-    [ "AccOacc.hpp", "AccOacc_8hpp.html", null ],
     [ "AccOmp5.hpp", "AccOmp5_8hpp.html", [
       [ "AccOmp5", "classalpaka_1_1AccOmp5.html", "classalpaka_1_1AccOmp5" ],
       [ "AccOmp5BlockSharedMem", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem.html", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem" ],

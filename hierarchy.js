@@ -480,7 +480,6 @@ var hierarchy =
     [ "alpaka::TagGpuCudaRt", "structalpaka_1_1TagGpuCudaRt.html", null ],
     [ "alpaka::TagGpuHipRt", "structalpaka_1_1TagGpuHipRt.html", null ],
     [ "alpaka::TagGpuSyclIntel", "structalpaka_1_1TagGpuSyclIntel.html", null ],
-    [ "alpaka::TagOacc", "structalpaka_1_1TagOacc.html", null ],
     [ "alpaka::TagOmp5", "structalpaka_1_1TagOmp5.html", null ],
     [ "alpaka::test::Array< TType, TSize >", "structalpaka_1_1test_1_1Array.html", null ],
     [ "alpaka::test::cpu::detail::EventHostManualTriggerCpuImpl< TDev >", "classalpaka_1_1test_1_1cpu_1_1detail_1_1EventHostManualTriggerCpuImpl.html", null ],

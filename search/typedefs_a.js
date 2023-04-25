@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['makeintegersequenceoffset_5100',['MakeIntegerSequenceOffset',['../namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b',1,'alpaka::meta']]],
-  ['memcpy3dparms_5ft_5101',['Memcpy3DParms_t',['../structalpaka_1_1ApiCudaRt.html#a26642307a4946dffdd78854cf71d5245',1,'alpaka::ApiCudaRt']]],
-  ['memcpykind_5ft_5102',['MemcpyKind_t',['../structalpaka_1_1ApiCudaRt.html#a7c5dc9512cded3a07ac915ae2ae74623',1,'alpaka::ApiCudaRt']]],
-  ['memoryhandle_5103',['MemoryHandle',['../namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392',1,'alpaka::experimental']]],
-  ['mimicconst_5104',['MimicConst',['../namespacealpaka_1_1test_1_1trait.html#a07bf83614dc7e964550ca100bc5c97af',1,'alpaka::test::trait']]]
+  ['makeintegersequenceoffset_5067',['MakeIntegerSequenceOffset',['../namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b',1,'alpaka::meta']]],
+  ['memcpy3dparms_5ft_5068',['Memcpy3DParms_t',['../structalpaka_1_1ApiCudaRt.html#a26642307a4946dffdd78854cf71d5245',1,'alpaka::ApiCudaRt']]],
+  ['memcpykind_5ft_5069',['MemcpyKind_t',['../structalpaka_1_1ApiCudaRt.html#a7c5dc9512cded3a07ac915ae2ae74623',1,'alpaka::ApiCudaRt']]],
+  ['memoryhandle_5070',['MemoryHandle',['../namespacealpaka_1_1experimental.html#a08e1e73eded52aa45fca531a9bc5f392',1,'alpaka::experimental']]],
+  ['mimicconst_5071',['MimicConst',['../namespacealpaka_1_1test_1_1trait.html#a07bf83614dc7e964550ca100bc5c97af',1,'alpaka::test::trait']]]
 ];

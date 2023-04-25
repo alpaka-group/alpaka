@@ -9,7 +9,6 @@ var dir_cb41fd9734833cacff31b3343158f46b =
     [ "EventGenericThreads.hpp", "EventGenericThreads_8hpp.html", "EventGenericThreads_8hpp" ],
     [ "EventGpuSyclIntel.hpp", "EventGpuSyclIntel_8hpp.html", null ],
     [ "EventHipRt.hpp", "EventHipRt_8hpp.html", null ],
-    [ "EventOacc.hpp", "EventOacc_8hpp.html", null ],
     [ "EventOmp5.hpp", "EventOmp5_8hpp.html", "EventOmp5_8hpp" ],
     [ "EventUniformCudaHipRt.hpp", "EventUniformCudaHipRt_8hpp.html", [
       [ "EventUniformCudaHipRt", "classalpaka_1_1EventUniformCudaHipRt.html", "classalpaka_1_1EventUniformCudaHipRt" ],

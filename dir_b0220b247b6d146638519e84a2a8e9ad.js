@@ -11,7 +11,6 @@ var dir_b0220b247b6d146638519e84a2a8e9ad =
       [ "MemFence< MemFenceCpuSerial, TMemScope >", "structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01TMemScope_01_4.html", "structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01TMemScope_01_4" ]
     ] ],
     [ "MemFenceGenericSycl.hpp", "MemFenceGenericSycl_8hpp.html", null ],
-    [ "MemFenceOacc.hpp", "MemFenceOacc_8hpp.html", null ],
     [ "MemFenceOmp2Blocks.hpp", "MemFenceOmp2Blocks_8hpp.html", [
       [ "MemFenceOmp2Blocks", "classalpaka_1_1MemFenceOmp2Blocks.html", null ],
       [ "MemFence< MemFenceOmp2Blocks, memory_scope::Block >", "structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Blocks_00_01memory__scope_1_1Block_01_4.html", "structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Blocks_00_01memory__scope_1_1Block_01_4" ],
