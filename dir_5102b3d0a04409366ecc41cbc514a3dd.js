@@ -75,20 +75,6 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "IdxType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "PltfType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
-    [ "AccOmp5.hpp", "AccOmp5_8hpp.html", [
-      [ "AccOmp5", "classalpaka_1_1AccOmp5.html", "classalpaka_1_1AccOmp5" ],
-      [ "AccOmp5BlockSharedMem", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem.html", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem" ],
-      [ "AccToTag< alpaka::AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "AccType< AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1AccType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1AccType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "CreateTaskKernel< AccOmp5< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_00_01TWorkDiv_00_03b55b84effed085ff89fcb14a2bf71c7.html", "structalpaka_1_1trait_1_1CreateTaskKernel_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_00_01TWorkDiv_00_03b55b84effed085ff89fcb14a2bf71c7" ],
-      [ "DevType< AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "DimType< AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccDevProps< AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccName< AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "IdxType< AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccOmp5< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "TagToAcc< alpaka::TagOmp5, TDim, TIdx >", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagOmp5_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagOmp5_00_01TDim_00_01TIdx_01_4" ]
-    ] ],
     [ "Tag.hpp", "Tag_8hpp.html", "Tag_8hpp" ],
     [ "Traits.hpp", "acc_2Traits_8hpp.html", "acc_2Traits_8hpp" ]
 ];

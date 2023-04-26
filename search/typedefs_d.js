@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['philoxresultcontainer_5074',['PhiloxResultContainer',['../namespacealpaka_1_1rand_1_1engine_1_1trait.html#aa2ed5f699aeba42d8a115eccc9072505',1,'alpaka::rand::engine::trait']]],
-  ['pitchedptr_5ft_5075',['PitchedPtr_t',['../structalpaka_1_1ApiCudaRt.html#a422a3fdd0aabb02eae6e856d32121a73',1,'alpaka::ApiCudaRt']]],
-  ['pltf_5076',['Pltf',['../structalpaka_1_1test_1_1QueueTestFixture.html#a31498dfa654e0b1798e8c371c1ff3f31',1,'alpaka::test::QueueTestFixture::Pltf()'],['../namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4',1,'alpaka::Pltf()']]],
-  ['pltfacc_5077',['PltfAcc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a9c757d80118c1c78819ecd255eb65df4',1,'alpaka::test::KernelExecutionFixture']]],
-  ['pltfcudart_5078',['PltfCudaRt',['../namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5',1,'alpaka']]],
-  ['pos_5ft_5079',['Pos_t',['../structalpaka_1_1ApiCudaRt.html#a7d5a8c5fe6ac24ca7bcdecc99a63340e',1,'alpaka::ApiCudaRt']]]
+  ['queue_4824',['Queue',['../structalpaka_1_1test_1_1QueueTestFixture.html#ab985951be3fd8592432a205192614ff5',1,'alpaka::test::QueueTestFixture::Queue()'],['../namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa',1,'alpaka::Queue()']]],
+  ['queueacc_4825',['QueueAcc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#ae56da1b3a5effb5f77efbce4d8a4ba9f',1,'alpaka::test::KernelExecutionFixture']]],
+  ['queuecpublocking_4826',['QueueCpuBlocking',['../namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42',1,'alpaka']]],
+  ['queuecpunonblocking_4827',['QueueCpuNonBlocking',['../namespacealpaka.html#a8a11334697bff8a6fb14559535908633',1,'alpaka']]],
+  ['queuecudartblocking_4828',['QueueCudaRtBlocking',['../namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f',1,'alpaka']]],
+  ['queuecudartnonblocking_4829',['QueueCudaRtNonBlocking',['../namespacealpaka.html#ab1b1d2362f1b9fc854fc0ba4008c85e4',1,'alpaka']]],
+  ['queueuniformcudahiprtblocking_4830',['QueueUniformCudaHipRtBlocking',['../namespacealpaka.html#a13646f485ddbe5f1809a3d24f77429eb',1,'alpaka']]],
+  ['queueuniformcudahiprtnonblocking_4831',['QueueUniformCudaHipRtNonBlocking',['../namespacealpaka.html#af493861b6c8c71c887690654c4943238',1,'alpaka']]]
 ];

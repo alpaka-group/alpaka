@@ -9,10 +9,8 @@ var dir_b55c73c2961c280bf97a43e56b19244f =
     [ "ViewConst.hpp", "ViewConst_8hpp.html", "ViewConst_8hpp" ],
     [ "ViewPlainPtr.hpp", "ViewPlainPtr_8hpp.html", [
       [ "CreateStaticDevMemView< DevCpu >", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevCpu_01_4" ],
-      [ "CreateStaticDevMemView< DevOmp5 >", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevOmp5_01_4.html", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevOmp5_01_4" ],
       [ "CreateStaticDevMemView< DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4" ],
       [ "CreateViewPlainPtr< DevCpu >", "structalpaka_1_1trait_1_1CreateViewPlainPtr_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1CreateViewPlainPtr_3_01DevCpu_01_4" ],
-      [ "CreateViewPlainPtr< DevOmp5 >", "structalpaka_1_1trait_1_1CreateViewPlainPtr_3_01DevOmp5_01_4.html", "structalpaka_1_1trait_1_1CreateViewPlainPtr_3_01DevOmp5_01_4" ],
       [ "CreateViewPlainPtr< DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1CreateViewPlainPtr_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1CreateViewPlainPtr_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4" ],
       [ "DevType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "DimType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],

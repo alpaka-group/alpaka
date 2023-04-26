@@ -109,18 +109,12 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">OpenMP 2.0+ threads   </td><td class="markdownTableBodyNone">OpenMP 2.0+   </td><td class="markdownTableBodyNone">Host CPU (multi core)   </td><td class="markdownTableBodyNone">sequential   </td><td class="markdownTableBodyNone">parallel (preemptive multitasking)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">OpenMP 5.0+   </td><td class="markdownTableBodyNone">OpenMP 5.0+   </td><td class="markdownTableBodyNone">Host CPU (multi core)   </td><td class="markdownTableBodyNone">parallel (undefined)   </td><td class="markdownTableBodyNone">parallel (preemptive multitasking)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">GPU   </td><td class="markdownTableBodyNone">parallel (undefined)   </td><td class="markdownTableBodyNone">parallel (lock-step within warps)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">GPU   </td><td class="markdownTableBodyNone">parallel (undefined)   </td><td class="markdownTableBodyNone">parallel (lock-step within warps)    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">std::thread   </td><td class="markdownTableBodyNone">std::thread   </td><td class="markdownTableBodyNone">Host CPU (multi core)   </td><td class="markdownTableBodyNone">sequential   </td><td class="markdownTableBodyNone">parallel (preemptive multitasking)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">TBB   </td><td class="markdownTableBodyNone">TBB 2.2+   </td><td class="markdownTableBodyNone">Host CPU (multi core)   </td><td class="markdownTableBodyNone">parallel (preemptive multitasking)   </td><td class="markdownTableBodyNone">sequential (only 1 thread per block)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">CUDA   </td><td class="markdownTableBodyNone">CUDA 9.0+   </td><td class="markdownTableBodyNone">NVIDIA GPUs   </td><td class="markdownTableBodyNone">parallel (undefined)   </td><td class="markdownTableBodyNone">parallel (lock-step within warps)    </td></tr>
+<td class="markdownTableBodyNone">TBB   </td><td class="markdownTableBodyNone">TBB 2.2+   </td><td class="markdownTableBodyNone">Host CPU (multi core)   </td><td class="markdownTableBodyNone">parallel (preemptive multitasking)   </td><td class="markdownTableBodyNone">sequential (only 1 thread per block)    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">CUDA   </td><td class="markdownTableBodyNone">CUDA 9.0+   </td><td class="markdownTableBodyNone">NVIDIA GPUs   </td><td class="markdownTableBodyNone">parallel (undefined)   </td><td class="markdownTableBodyNone">parallel (lock-step within warps)    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">HIP(clang)   </td><td class="markdownTableBodyNone"><a href="https://github.com/ROCm-Developer-Tools/HIP">HIP 5.0+</a>   </td><td class="markdownTableBodyNone">AMD GPUs   </td><td class="markdownTableBodyNone">parallel (undefined)   </td><td class="markdownTableBodyNone">parallel (lock-step within warps)   </td></tr>
 </table>
 <h1>Supported Compilers </h1>
@@ -146,12 +140,10 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">OpenMP 2.0+ threads   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">OpenMP 5.0 (CPU)   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:x:    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">std::thread   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">TBB   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TBB   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:   </td><td class="markdownTableBodyNone">:white_check_mark:    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">CUDA (nvcc)   </td><td class="markdownTableBodyNone">:white_check_mark: <br  />
  (CUDA 11.0 - 12.0)   </td><td class="markdownTableBodyNone">:white_check_mark: <br  />
  (CUDA 11.4 - 12.0)   </td><td class="markdownTableBodyNone">:white_check_mark: <br  />
@@ -162,9 +154,9 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
  (CUDA 11.7 - 12.0)   </td><td class="markdownTableBodyNone">:white_check_mark: <br  />
  (CUDA 11.8 - 12.0)   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark: <br  />
  (CUDA 12.0)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">CUDA (clang)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">CUDA (clang)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a href="https://alpaka.readthedocs.io/en/latest/install/HIP.html">HIP</a> (clang)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark: (HIP 5.0 - 5.2)   </td><td class="markdownTableBodyNone">:white_check_mark: (HIP 5.3 - 5.4)   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
 <p>Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.</p>
@@ -288,7 +280,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 25 2023 08:15:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Apr 26 2023 09:59:29 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

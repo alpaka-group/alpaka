@@ -39,8 +39,6 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
     [ "QueueGpuSyclIntelNonBlocking.hpp", "QueueGpuSyclIntelNonBlocking_8hpp.html", null ],
     [ "QueueHipRtBlocking.hpp", "QueueHipRtBlocking_8hpp.html", null ],
     [ "QueueHipRtNonBlocking.hpp", "QueueHipRtNonBlocking_8hpp.html", null ],
-    [ "QueueOmp5Blocking.hpp", "QueueOmp5Blocking_8hpp.html", null ],
-    [ "QueueOmp5NonBlocking.hpp", "QueueOmp5NonBlocking_8hpp.html", null ],
     [ "QueueUniformCudaHipRtBlocking.hpp", "QueueUniformCudaHipRtBlocking_8hpp.html", null ],
     [ "QueueUniformCudaHipRtNonBlocking.hpp", "QueueUniformCudaHipRtNonBlocking_8hpp.html", null ],
     [ "Traits.hpp", "queue_2Traits_8hpp.html", "queue_2Traits_8hpp" ]

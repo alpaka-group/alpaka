@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['offloadbuiltinsharedmem_5073',['OffloadBuiltInSharedMem',['../namespacealpaka.html#a9704eeb726b281f9fc3c3c9f0f52dad0',1,'alpaka']]]
+  ['philoxresultcontainer_4818',['PhiloxResultContainer',['../namespacealpaka_1_1rand_1_1engine_1_1trait.html#aa2ed5f699aeba42d8a115eccc9072505',1,'alpaka::rand::engine::trait']]],
+  ['pitchedptr_5ft_4819',['PitchedPtr_t',['../structalpaka_1_1ApiCudaRt.html#a422a3fdd0aabb02eae6e856d32121a73',1,'alpaka::ApiCudaRt']]],
+  ['pltf_4820',['Pltf',['../structalpaka_1_1test_1_1QueueTestFixture.html#a31498dfa654e0b1798e8c371c1ff3f31',1,'alpaka::test::QueueTestFixture::Pltf()'],['../namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4',1,'alpaka::Pltf()']]],
+  ['pltfacc_4821',['PltfAcc',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a9c757d80118c1c78819ecd255eb65df4',1,'alpaka::test::KernelExecutionFixture']]],
+  ['pltfcudart_4822',['PltfCudaRt',['../namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5',1,'alpaka']]],
+  ['pos_5ft_4823',['Pos_t',['../structalpaka_1_1ApiCudaRt.html#a7d5a8c5fe6ac24ca7bcdecc99a63340e',1,'alpaka::ApiCudaRt']]]
 ];

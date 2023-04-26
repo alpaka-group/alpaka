@@ -89,15 +89,7 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><dl class="reflist">
 <dt>Member <a class="el" href="namespacealpaka.html#a5543b86d23164032daa056ed21ba1484">alpaka::subDivideGridElems</a>  (<a class="el" href="classalpaka_1_1Vec.html">Vec&lt; TDim, TIdx &gt;</a> const &amp;gridElemExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec&lt; TDim, TIdx &gt;</a> const &amp;threadElemExtent, AccDevProps&lt; TDim, TIdx &gt; const &amp;accDevProps, bool blockThreadMustDivideGridThreadExtent=true, GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870" title="The block thread extent will not have any restrictions.">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; WorkDivMembers&lt; TDim, TIdx &gt;</dt>
-<dd><a class="anchor" id="_todo000005"></a>why omit the last element?  </dd>
-<dt>Class <a class="el" href="structalpaka_1_1trait_1_1BufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevOmp5_01_4.html">alpaka::trait::BufAlloc&lt; TElem, TDim, TIdx, DevOmp5 &gt;</a>  </dt>
-<dd><a class="anchor" id="_todo000003"></a>Add pitch  </dd>
-<dt>Class <a class="el" href="structalpaka_1_1trait_1_1CreateViewPlainPtr_3_01DevOmp5_01_4.html">alpaka::trait::CreateViewPlainPtr&lt; DevOmp5 &gt;</a>  </dt>
-<dd><a class="anchor" id="_todo000004"></a>What ist this for? Does this exist in OMP5?  </dd>
-<dt>Member <a class="el" href="structalpaka_1_1trait_1_1GetAccDevProps_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html#ae9693a65739f4553a441f82e2f7d26ff">alpaka::trait::GetAccDevProps&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;::getAccDevProps</a>  (<a class="el" href="classalpaka_1_1DevOmp5.html" title="The Omp5 device handle.">DevOmp5</a> const &amp;) -&gt; AccDevProps&lt; TDim, TIdx &gt;</dt>
-<dd><a class="anchor" id="_todo000001"></a>for a later OpenMP (or when compilers work with a GPU target): fix max block size for target On CPU we would want gridBlockCountMax = ::omp_get_max_threads() / blockThreadCountMax but this would lead to only one block running on GPU, or too small blocks (see ALPAKA_OFFLOAD_MAX_BLOCK_SIZE). OpenMP 5.0 may actually mandate, that ::omp_get_max_threads() == max_teams * threads_per_team , however with the maximum grid size (i.e. max_teams) being INT_MAX this may not work. We actually want to set gridBlockCountMax = ::omp_get_max_teams() but there is no function ::omp_get_max_teams(). Instead we set ::omp_get_max_threads() again, to have a number which does not kill CPUs and is reasonable (::omp_get_max_threads() seems to return the block size) for GPUs.  </dd>
-<dt>Member <a class="el" href="structalpaka_1_1trait_1_1GetMemBytes_3_01DevOmp5_01_4.html#a2b526d113a14a967b93c732848161eb4">alpaka::trait::GetMemBytes&lt; DevOmp5 &gt;::getMemBytes</a>  (<a class="el" href="classalpaka_1_1DevOmp5.html" title="The Omp5 device handle.">DevOmp5</a> const &amp;) -&gt; std::size_t</dt>
-<dd><a class="anchor" id="_todo000002"></a>query device .. somehow </dd>
+<dd><a class="anchor" id="_todo000001"></a>why omit the last element? </dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -105,7 +97,7 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 25 2023 08:15:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Apr 26 2023 09:59:27 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

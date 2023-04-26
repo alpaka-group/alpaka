@@ -135,16 +135,13 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aeb16620f53bc53a12138e5f2c6d0dfc8"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:aeb16620f53bc53a12138e5f2c6d0dfc8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1detail.html#aeb16620f53bc53a12138e5f2c6d0dfc8">AccGpuSyclIntelIfAvailableElseInt</a> = int</td></tr>
 <tr class="separator:aeb16620f53bc53a12138e5f2c6d0dfc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92d63910ae754717cbf6e942f7939e3e"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:a92d63910ae754717cbf6e942f7939e3e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1detail.html#a92d63910ae754717cbf6e942f7939e3e">AccOmp5IfAvailableElseInt</a> = <a class="el" href="classalpaka_1_1AccOmp5.html">AccOmp5</a>&lt; TDim, TIdx &gt;</td></tr>
-<tr class="separator:a92d63910ae754717cbf6e942f7939e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a500c90b7587f9c4bc775f8bffde773ba"><td class="memTemplParams" colspan="2">template&lt;typename TList &gt; </td></tr>
 <tr class="memitem:a500c90b7587f9c4bc775f8bffde773ba"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1detail.html#a500c90b7587f9c4bc775f8bffde773ba">ApplyEnabledAccs</a> = <a class="el" href="namespacealpaka_1_1meta.html#ad0cbe491078fbefb5d6c6908dd4d799e">meta::Apply</a>&lt; TList, <a class="el" href="namespacealpaka_1_1test.html#a61f6b665ee46c5d41d00ac18855df6e1">EnabledAccs</a> &gt;</td></tr>
 <tr class="separator:a500c90b7587f9c4bc775f8bffde773ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ed4a7587b1133ff47b4561acd40647d"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:a5ed4a7587b1133ff47b4561acd40647d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1detail.html#a5ed4a7587b1133ff47b4561acd40647d">EnabledAccsElseInt</a> = std::tuple&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aa770229d63fe70864e122b54ccf7425f">AccCpuSerialIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a58b6b496cf68afaacb30a4ff4738e66c">AccCpuThreadsIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a9519ed3d99e72b13ecb4cb56980477fa">AccCpuTbbIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7b225e7486ad769712f62e0b6954eef8">AccCpuOmp2BlocksIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7d67bfce90d9a2ab277bf358e13a86c0">AccCpuOmp2ThreadsIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a92d63910ae754717cbf6e942f7939e3e">AccOmp5IfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a75b9cedac0250a334c3485e6573570e7">AccGpuCudaRtIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a6307e82645d10131c083ac8cd81d8cb4">AccGpuHipRtIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#ac6caedddd740ae76a0b9ec17198efe92">AccCpuSyclIntelIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a4e83de5d41f298f8cc2676e7a842b023">AccFpgaSyclIntelIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a786c49fa7098aa986ff6a85a47ba7a59">AccFpgaSyclXilinxIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aeb16620f53bc53a12138e5f2c6d0dfc8">AccGpuSyclIntelIfAvailableElseInt</a>&lt; TDim, TIdx &gt; &gt;</td></tr>
-<tr class="memdesc:a5ed4a7587b1133ff47b4561acd40647d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector containing all available accelerators and int's.  <a href="namespacealpaka_1_1test_1_1detail.html#a5ed4a7587b1133ff47b4561acd40647d">More...</a><br /></td></tr>
-<tr class="separator:a5ed4a7587b1133ff47b4561acd40647d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0ddc83c2f8d6778391079d2a7ed64f2"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:aa0ddc83c2f8d6778391079d2a7ed64f2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1detail.html#aa0ddc83c2f8d6778391079d2a7ed64f2">EnabledAccsElseInt</a> = std::tuple&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aa770229d63fe70864e122b54ccf7425f">AccCpuSerialIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a58b6b496cf68afaacb30a4ff4738e66c">AccCpuThreadsIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a9519ed3d99e72b13ecb4cb56980477fa">AccCpuTbbIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7b225e7486ad769712f62e0b6954eef8">AccCpuOmp2BlocksIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7d67bfce90d9a2ab277bf358e13a86c0">AccCpuOmp2ThreadsIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a75b9cedac0250a334c3485e6573570e7">AccGpuCudaRtIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a6307e82645d10131c083ac8cd81d8cb4">AccGpuHipRtIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#ac6caedddd740ae76a0b9ec17198efe92">AccCpuSyclIntelIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a4e83de5d41f298f8cc2676e7a842b023">AccFpgaSyclIntelIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a786c49fa7098aa986ff6a85a47ba7a59">AccFpgaSyclXilinxIfAvailableElseInt</a>&lt; TDim, TIdx &gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aeb16620f53bc53a12138e5f2c6d0dfc8">AccGpuSyclIntelIfAvailableElseInt</a>&lt; TDim, TIdx &gt; &gt;</td></tr>
+<tr class="memdesc:aa0ddc83c2f8d6778391079d2a7ed64f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector containing all available accelerators and int's.  <a href="namespacealpaka_1_1test_1_1detail.html#aa0ddc83c2f8d6778391079d2a7ed64f2">More...</a><br /></td></tr>
+<tr class="separator:aa0ddc83c2f8d6778391079d2a7ed64f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3d5270239c3fdbcb3480c1cdb4fb996"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test_1_1detail.html#ae3d5270239c3fdbcb3480c1cdb4fb996">InstantiatedEnabledAccs</a> = <a class="el" href="namespacealpaka_1_1meta.html#a4d6e5b453ca068f43742cf89a32593dd">meta::Transform</a>&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#acec753ca9c8880ea12b959467bb511e7">TestDimIdxTuples</a>, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a500c90b7587f9c4bc775f8bffde773ba">ApplyEnabledAccs</a> &gt;</td></tr>
 <tr class="memdesc:ae3d5270239c3fdbcb3480c1cdb4fb996"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple containing std::tuple with fully instantiated accelerators.  <a href="namespacealpaka_1_1test_1_1detail.html#ae3d5270239c3fdbcb3480c1cdb4fb996">More...</a><br /></td></tr>
 <tr class="separator:ae3d5270239c3fdbcb3480c1cdb4fb996"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,7 +220,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00105">105</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00085">85</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -277,7 +274,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00112">112</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00092">92</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -295,7 +292,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00119">119</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00099">99</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -313,7 +310,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00090">90</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00070">70</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -331,7 +328,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00098">98</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00078">78</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -349,25 +346,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00126">126</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a92d63910ae754717cbf6e942f7939e3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92d63910ae754717cbf6e942f7939e3e">&#9670;&nbsp;</a></span>AccOmp5IfAvailableElseInt</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TDim , typename TIdx &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a92d63910ae754717cbf6e942f7939e3e">alpaka::test::detail::AccOmp5IfAvailableElseInt</a> = typedef <a class="el" href="classalpaka_1_1AccOmp5.html">AccOmp5</a>&lt;TDim, TIdx&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00080">80</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00106">106</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -385,12 +364,12 @@ template&lt;typename TList &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00189">189</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00168">168</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a5ed4a7587b1133ff47b4561acd40647d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ed4a7587b1133ff47b4561acd40647d">&#9670;&nbsp;</a></span>EnabledAccsElseInt</h2>
+<a id="aa0ddc83c2f8d6778391079d2a7ed64f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0ddc83c2f8d6778391079d2a7ed64f2">&#9670;&nbsp;</a></span>EnabledAccsElseInt</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -398,14 +377,14 @@ template&lt;typename TList &gt; </div>
 template&lt;typename TDim , typename TIdx &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a5ed4a7587b1133ff47b4561acd40647d">alpaka::test::detail::EnabledAccsElseInt</a> = typedef std::tuple&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aa770229d63fe70864e122b54ccf7425f">AccCpuSerialIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a58b6b496cf68afaacb30a4ff4738e66c">AccCpuThreadsIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a9519ed3d99e72b13ecb4cb56980477fa">AccCpuTbbIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7b225e7486ad769712f62e0b6954eef8">AccCpuOmp2BlocksIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7d67bfce90d9a2ab277bf358e13a86c0">AccCpuOmp2ThreadsIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a92d63910ae754717cbf6e942f7939e3e">AccOmp5IfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a75b9cedac0250a334c3485e6573570e7">AccGpuCudaRtIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a6307e82645d10131c083ac8cd81d8cb4">AccGpuHipRtIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#ac6caedddd740ae76a0b9ec17198efe92">AccCpuSyclIntelIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a4e83de5d41f298f8cc2676e7a842b023">AccFpgaSyclIntelIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a786c49fa7098aa986ff6a85a47ba7a59">AccFpgaSyclXilinxIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aeb16620f53bc53a12138e5f2c6d0dfc8">AccGpuSyclIntelIfAvailableElseInt</a>&lt;TDim, TIdx&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aa0ddc83c2f8d6778391079d2a7ed64f2">alpaka::test::detail::EnabledAccsElseInt</a> = typedef std::tuple&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aa770229d63fe70864e122b54ccf7425f">AccCpuSerialIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a58b6b496cf68afaacb30a4ff4738e66c">AccCpuThreadsIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a9519ed3d99e72b13ecb4cb56980477fa">AccCpuTbbIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7b225e7486ad769712f62e0b6954eef8">AccCpuOmp2BlocksIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a7d67bfce90d9a2ab277bf358e13a86c0">AccCpuOmp2ThreadsIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a75b9cedac0250a334c3485e6573570e7">AccGpuCudaRtIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a6307e82645d10131c083ac8cd81d8cb4">AccGpuHipRtIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#ac6caedddd740ae76a0b9ec17198efe92">AccCpuSyclIntelIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a4e83de5d41f298f8cc2676e7a842b023">AccFpgaSyclIntelIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#a786c49fa7098aa986ff6a85a47ba7a59">AccFpgaSyclXilinxIfAvailableElseInt</a>&lt;TDim, TIdx&gt;, <a class="el" href="namespacealpaka_1_1test_1_1detail.html#aeb16620f53bc53a12138e5f2c6d0dfc8">AccGpuSyclIntelIfAvailableElseInt</a>&lt;TDim, TIdx&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>A vector containing all available accelerators and int's. </p>
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00131">131</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00111">111</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -424,7 +403,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <p>A std::tuple containing std::tuple with fully instantiated accelerators. </p>
 <p>TestEnabledAccs = tuple&lt; tuple&lt;Acc1&lt;Dim1,Idx1&gt;, ..., AccN&lt;Dim1,Idx1&gt;&gt;, tuple&lt;Acc1&lt;Dim2,Idx1&gt;, ..., AccN&lt;Dim2,Idx1&gt;&gt;, ..., tuple&lt;Acc1&lt;DimN,IdxN&gt;, ..., AccN&lt;DimN,IdxN&gt;&gt;&gt; </p>
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00199">199</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00178">178</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -443,7 +422,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <p>A std::tuple holding multiple std::tuple consisting of a dimension and a idx type. </p>
 <p>TestDimIdxTuples = tuple&lt; tuple&lt;Dim1,Idx1&gt;, tuple&lt;Dim2,Idx1&gt;, tuple&lt;Dim3,Idx1&gt;, ..., tuple&lt;DimN,IdxN&gt;&gt; </p>
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00186">186</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00165">165</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -453,7 +432,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test.html">test</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Apr 25 2023 08:15:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Apr 26 2023 09:59:28 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

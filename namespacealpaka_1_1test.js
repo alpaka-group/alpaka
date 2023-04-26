@@ -28,7 +28,7 @@ var namespacealpaka_1_1test =
     [ "TestAccs", "namespacealpaka_1_1test.html#ac981ce6a8a742c033eb0e664cc0de959", null ],
     [ "TestDims", "namespacealpaka_1_1test.html#a5a34c17994a72cc9e63b68fdcb274870", null ],
     [ "TestIdxs", "namespacealpaka_1_1test.html#ac0f459f4608106cb91d1aebf5899600a", null ],
-    [ "TestQueues", "namespacealpaka_1_1test.html#a7ea69247bef1af1f509ffa0c7414ad9a", null ],
+    [ "TestQueues", "namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822", null ],
     [ "begin", "namespacealpaka_1_1test.html#adbab173d7dd9ddda3603e4c57679c6b4", null ],
     [ "end", "namespacealpaka_1_1test.html#a306087b4550df25e8368a6b8072c755e", null ],
     [ "iotaFillView", "namespacealpaka_1_1test.html#a2f2aac1d04ce746a78be008faa0266a7", null ],

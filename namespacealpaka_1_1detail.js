@@ -1,6 +1,5 @@
 var namespacealpaka_1_1detail =
 [
-    [ "AccOmp5BlockSharedMem", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem.html", "structalpaka_1_1detail_1_1AccOmp5BlockSharedMem" ],
     [ "AtomicHierarchyConceptType", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType.html", null ],
     [ "AtomicHierarchyConceptType< hierarchy::Blocks >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4" ],
     [ "AtomicHierarchyConceptType< hierarchy::Grids >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4" ],
@@ -8,7 +7,6 @@ var namespacealpaka_1_1detail =
     [ "BlockSharedMemDynMemberStatic", "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html", "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic" ],
     [ "BlockSharedMemStMemberImpl", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl" ],
     [ "BufCpuImpl", "classalpaka_1_1detail_1_1BufCpuImpl.html", "classalpaka_1_1detail_1_1BufCpuImpl" ],
-    [ "BufOmp5Impl", "classalpaka_1_1detail_1_1BufOmp5Impl.html", "classalpaka_1_1detail_1_1BufOmp5Impl" ],
     [ "CheckFnReturnType", "structalpaka_1_1detail_1_1CheckFnReturnType.html", "structalpaka_1_1detail_1_1CheckFnReturnType" ],
     [ "CheckFnReturnType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
     [ "CreateExtent", "structalpaka_1_1detail_1_1CreateExtent.html", "structalpaka_1_1detail_1_1CreateExtent" ],
@@ -52,9 +50,6 @@ var namespacealpaka_1_1detail =
     [ "TaskCopyCpu< DimInt< 0u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],
     [ "TaskCopyCpu< DimInt< 1u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],
     [ "TaskCopyCpuBase", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html", "structalpaka_1_1detail_1_1TaskCopyCpuBase" ],
-    [ "TaskCopyOmp5", "structalpaka_1_1detail_1_1TaskCopyOmp5.html", "structalpaka_1_1detail_1_1TaskCopyOmp5" ],
-    [ "TaskCopyOmp5< DimInt< 0u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyOmp5_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyOmp5_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],
-    [ "TaskCopyOmp5< DimInt< 1u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyOmp5_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyOmp5_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],
     [ "TaskCopyUniformCudaHip", "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip.html", null ],
     [ "TaskCopyUniformCudaHip< TApi, DimInt< 0u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],
     [ "TaskCopyUniformCudaHip< TApi, DimInt< 1u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],

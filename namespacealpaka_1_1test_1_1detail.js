@@ -12,9 +12,8 @@ var namespacealpaka_1_1test_1_1detail =
     [ "AccGpuCudaRtIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#a75b9cedac0250a334c3485e6573570e7", null ],
     [ "AccGpuHipRtIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#a6307e82645d10131c083ac8cd81d8cb4", null ],
     [ "AccGpuSyclIntelIfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#aeb16620f53bc53a12138e5f2c6d0dfc8", null ],
-    [ "AccOmp5IfAvailableElseInt", "namespacealpaka_1_1test_1_1detail.html#a92d63910ae754717cbf6e942f7939e3e", null ],
     [ "ApplyEnabledAccs", "namespacealpaka_1_1test_1_1detail.html#a500c90b7587f9c4bc775f8bffde773ba", null ],
-    [ "EnabledAccsElseInt", "namespacealpaka_1_1test_1_1detail.html#a5ed4a7587b1133ff47b4561acd40647d", null ],
+    [ "EnabledAccsElseInt", "namespacealpaka_1_1test_1_1detail.html#aa0ddc83c2f8d6778391079d2a7ed64f2", null ],
     [ "InstantiatedEnabledAccs", "namespacealpaka_1_1test_1_1detail.html#ae3d5270239c3fdbcb3480c1cdb4fb996", null ],
     [ "TestDimIdxTuples", "namespacealpaka_1_1test_1_1detail.html#acec753ca9c8880ea12b959467bb511e7", null ]
 ];
