@@ -21,7 +21,8 @@ variables:
 
 generate:
   stage: generator
-  image: alpine:latest
+  # fixed alpine version, because alpine 3.18 does not provide Python 3.10
+  image: alpine:3.17
   script:
     - apk update && apk add python3~=3.10 py3-pip
     - pip3 install -r script/job_generator/requirements.txt
