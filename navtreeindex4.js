@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584":[3,0,0,112,4],
 "classalpaka_1_1Vec.html#a6ac119f42a315031892a2290648f96ce":[3,0,0,112,7],
 "classalpaka_1_1Vec.html#a6d990088fb03ebaa8198be3025543790":[3,0,0,112,13],
 "classalpaka_1_1Vec.html#a715d74bf7082c7a9233ff4001ff03c2e":[3,0,0,112,24],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector.html#ab3f2810e66c8ba926692f196bed0863e":[3,0,0,14,7,0],
 "classalpaka_1_1rand_1_1RandDefault.html":[3,0,0,14,8],
 "classalpaka_1_1rand_1_1RandUniformCudaHipRand.html":[3,0,0,14,10],
-"classalpaka_1_1rand_1_1RandomDevice.html":[3,0,0,14,9],
-"classalpaka_1_1rand_1_1TinyMersenneTwister.html":[3,0,0,14,11]
+"classalpaka_1_1rand_1_1RandomDevice.html":[3,0,0,14,9]
 };
