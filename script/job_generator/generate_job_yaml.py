@@ -90,7 +90,7 @@ def job_image(job: Dict[str, Tuple[str, str]], container_version: float) -> str:
 
     if (
         ALPAKA_ACC_GPU_CUDA_ENABLE in job
-        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] !=OFF_VER
+        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER
     ):
         # Cast cuda version shape. E.g. from 11.0 to 110
         container_url += "-cuda" + str(
@@ -101,7 +101,7 @@ def job_image(job: Dict[str, Tuple[str, str]], container_version: float) -> str:
 
     if (
         ALPAKA_ACC_GPU_HIP_ENABLE in job
-        and job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION] !=OFF_VER
+        and job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION] != OFF_VER
     ):
         container_url += "-rocm" + job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION]
 
@@ -203,7 +203,7 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     # compiler)
     if (
         ALPAKA_ACC_GPU_CUDA_ENABLE in job
-        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] !=OFF_VER
+        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER
     ):
         variables[ALPAKA_ACC_GPU_CUDA_ENABLE] = "ON"
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
@@ -262,12 +262,12 @@ def job_tags(job: Dict[str, Tuple[str, str]]) -> List[str]:
 
     if (
         ALPAKA_ACC_GPU_CUDA_ENABLE in job
-        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] !=OFF_VER
+        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER
     ):
         return ["x86_64", "cuda"]
     if (
         ALPAKA_ACC_GPU_HIP_ENABLE in job
-        and job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION] !=OFF_VER
+        and job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION] != OFF_VER
     ):
         return ["x86_64", "rocm"]
 
@@ -384,7 +384,6 @@ def generate_job_yaml_list(
 def distribute_to_waves(
     job_matrix: List[Dict[str, Dict]], wave_size: Dict[str, int] = {}
 ) -> Dict[str, List[List[Dict[str, Dict]]]]:
-
     sorted_groups = {}
 
     for wave in WAVE_GROUP_NAMES:
