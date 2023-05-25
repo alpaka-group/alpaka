@@ -55,7 +55,7 @@ def add_job_parameters(job_matrix: List[Dict[str, Tuple[str, str]]]):
     for job in job_matrix:
         if (
             ALPAKA_ACC_GPU_CUDA_ENABLE in job
-            and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF
+            and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] !=OFF_VER
         ):
             v = version.parse(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION])
             if not v.major in latest_CUDA_SDK_minor_versions[job[HOST_COMPILER][NAME]]:
@@ -131,7 +131,7 @@ def add_job_parameters(job_matrix: List[Dict[str, Tuple[str, str]]]):
             missing_nvcc_versions.remove(job[DEVICE_COMPILER][VERSION])
         elif (
             ALPAKA_ACC_GPU_CUDA_ENABLE in job
-            and ALPAKA_ACC_GPU_CUDA_ENABLE[VERSION] != OFF
+            and ALPAKA_ACC_GPU_CUDA_ENABLE[VERSION] !=OFF_VER
         ):
             job[SM_LEVEL] = (SM_LEVEL, STANDARD_SM_LEVEL)
         else:
