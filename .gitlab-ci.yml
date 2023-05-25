@@ -21,10 +21,10 @@ variables:
 
 generate:
   stage: generator
-  # fixed alpine version, because alpine 3.18 does not provide Python 3.10
-  image: alpine:3.17
+  # update alpine version to use newer python version
+  image: alpine:3.18
   script:
-    - apk update && apk add python3~=3.10 py3-pip
+    - apk update && apk add python3~=3.11 py3-pip
     - pip3 install -r script/job_generator/requirements.txt
     - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --compile-only -o compile_only.yml
     - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --runtime-only -o runtime.yml

@@ -30,7 +30,7 @@ def alpaka_post_filter(row: List) -> bool:
     # disable all clang versions older than 14 as CUDA Compiler
     # https://github.com/alpaka-group/alpaka/issues/1857
     if row_check_backend_version(
-        row, ALPAKA_ACC_GPU_CUDA_ENABLE, "!=", OFF
+        row, ALPAKA_ACC_GPU_CUDA_ENABLE, "!=",OFF_VER
     ) and row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA):
         if row_check_version(row, DEVICE_COMPILER, "<", "14"):
             return False
