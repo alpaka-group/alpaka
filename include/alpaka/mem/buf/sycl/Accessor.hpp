@@ -4,16 +4,16 @@
 
 #pragma once
 
+#include "alpaka/dim/DimIntegralConst.hpp"
+#include "alpaka/mem/view/Accessor.hpp"
+#include "alpaka/mem/view/ViewAccessor.hpp"
+
+#include <cstddef>
+#include <utility>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/dim/DimIntegralConst.hpp"
-#    include "alpaka/mem/view/Accessor.hpp"
-#    include "alpaka/mem/view/ViewAccessor.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cstddef>
-#    include <utility>
 
 namespace alpaka
 {

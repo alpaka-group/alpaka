@@ -4,13 +4,13 @@
 
 #pragma once
 
+#include "alpaka/warp/Traits.hpp"
+
+#include <cstdint>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/warp/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cstdint>
 
 namespace alpaka::warp
 {

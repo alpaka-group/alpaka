@@ -4,31 +4,31 @@
 
 #pragma once
 
+#include "alpaka/acc/Traits.hpp"
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/STLTuple/STLTuple.hpp"
+#include "alpaka/core/Sycl.hpp"
+#include "alpaka/core/Tuple.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/mem/buf/sycl/Accessor.hpp"
+#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/queue/Traits.hpp"
+#include "alpaka/workdiv/WorkDivMembers.hpp"
+
+#include <cassert>
+#include <functional>
+#include <memory>
+#include <stdexcept>
+#include <tuple>
+#include <type_traits>
+#include <utility>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/acc/Traits.hpp"
-#    include "alpaka/core/BoostPredef.hpp"
-#    include "alpaka/core/STLTuple/STLTuple.hpp"
-#    include "alpaka/core/Sycl.hpp"
-#    include "alpaka/core/Tuple.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/dim/Traits.hpp"
-#    include "alpaka/idx/Traits.hpp"
-#    include "alpaka/kernel/Traits.hpp"
-#    include "alpaka/mem/buf/sycl/Accessor.hpp"
-#    include "alpaka/pltf/Traits.hpp"
-#    include "alpaka/queue/Traits.hpp"
-#    include "alpaka/workdiv/WorkDivMembers.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cassert>
-#    include <functional>
-#    include <memory>
-#    include <stdexcept>
-#    include <tuple>
-#    include <type_traits>
-#    include <utility>
 
 namespace alpaka::detail
 {

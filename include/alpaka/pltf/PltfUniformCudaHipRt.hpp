@@ -4,18 +4,18 @@
 
 #pragma once
 
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Cuda.hpp"
+#include "alpaka/core/Hip.hpp"
+#include "alpaka/dev/DevUniformCudaHipRt.hpp"
+#include "alpaka/dev/Traits.hpp"
+
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <tuple>
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/core/Cuda.hpp"
-#    include "alpaka/core/Hip.hpp"
-#    include "alpaka/dev/DevUniformCudaHipRt.hpp"
-#    include "alpaka/dev/Traits.hpp"
-
-#    include <iostream>
-#    include <sstream>
-#    include <stdexcept>
-#    include <tuple>
 
 namespace alpaka
 {

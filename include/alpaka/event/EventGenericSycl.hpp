@@ -4,20 +4,20 @@
 
 #pragma once
 
+#include "alpaka/core/Sycl.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/event/Traits.hpp"
+#include "alpaka/queue/QueueGenericSyclBlocking.hpp"
+#include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"
+#include "alpaka/wait/Traits.hpp"
+
+#include <functional>
+#include <memory>
+#include <stdexcept>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/core/Sycl.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/event/Traits.hpp"
-#    include "alpaka/queue/QueueGenericSyclBlocking.hpp"
-#    include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"
-#    include "alpaka/wait/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <functional>
-#    include <memory>
-#    include <stdexcept>
 
 namespace alpaka
 {

@@ -4,14 +4,14 @@
 
 #pragma once
 
+#include "alpaka/atomic/Op.hpp"
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Positioning.hpp"
+#include "alpaka/core/Utility.hpp"
+
+#include <type_traits>
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include "alpaka/atomic/Op.hpp"
-#    include "alpaka/core/BoostPredef.hpp"
-#    include "alpaka/core/Positioning.hpp"
-#    include "alpaka/core/Utility.hpp"
-
-#    include <type_traits>
 
 namespace alpaka
 {

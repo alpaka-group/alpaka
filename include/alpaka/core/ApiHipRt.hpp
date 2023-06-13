@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include <boost/predef.h>
+
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
-#    include <boost/predef.h>
 #    include <hip/hip_runtime_api.h>
 #    include <hip/hip_version.h>
 

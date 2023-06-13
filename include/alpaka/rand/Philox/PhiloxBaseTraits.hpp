@@ -4,14 +4,12 @@
 
 #pragma once
 
+#include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
 #include "alpaka/rand/Philox/PhiloxBaseCommon.hpp"
+#include "alpaka/rand/Philox/PhiloxBaseCudaArray.hpp"
 #include "alpaka/rand/Philox/PhiloxBaseStdArray.hpp"
 #include "alpaka/rand/Philox/PhiloxStateless.hpp"
 #include "alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp"
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#    include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
-#    include "alpaka/rand/Philox/PhiloxBaseCudaArray.hpp"
-#endif
 
 namespace alpaka::rand::engine::trait
 {

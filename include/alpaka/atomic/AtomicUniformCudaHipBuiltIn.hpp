@@ -4,17 +4,17 @@
 
 #pragma once
 
+#include "alpaka/atomic/AtomicUniformCudaHip.hpp"
+#include "alpaka/atomic/Op.hpp"
+#include "alpaka/atomic/Traits.hpp"
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Decay.hpp"
+#include "alpaka/core/Unreachable.hpp"
+
+#include <limits>
+#include <type_traits>
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include "alpaka/atomic/AtomicUniformCudaHip.hpp"
-#    include "alpaka/atomic/Op.hpp"
-#    include "alpaka/atomic/Traits.hpp"
-#    include "alpaka/core/BoostPredef.hpp"
-#    include "alpaka/core/Decay.hpp"
-#    include "alpaka/core/Unreachable.hpp"
-
-#    include <limits>
-#    include <type_traits>
 
 #    if !defined(ALPAKA_HOST_ONLY)
 
@@ -25,6 +25,7 @@
 #        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #        endif
+
 namespace alpaka
 {
     namespace trait

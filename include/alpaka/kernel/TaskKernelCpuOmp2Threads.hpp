@@ -4,36 +4,36 @@
 
 #pragma once
 
+// Specialized traits.
+#include "alpaka/acc/Traits.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/pltf/Traits.hpp"
+
+// Implementation details.
+#include "alpaka/acc/AccCpuOmp2Threads.hpp"
+#include "alpaka/core/Decay.hpp"
+#include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/meta/NdLoop.hpp"
+#include "alpaka/workdiv/WorkDivMembers.hpp"
+
+#include <functional>
+#include <stdexcept>
+#include <tuple>
+#include <type_traits>
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#    include <iostream>
+#endif
+
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
 
 #    if _OPENMP < 200203
 #        error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
 
-// Specialized traits.
-#    include "alpaka/acc/Traits.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/dim/Traits.hpp"
-#    include "alpaka/idx/Traits.hpp"
-#    include "alpaka/pltf/Traits.hpp"
-
-// Implementation details.
-#    include "alpaka/acc/AccCpuOmp2Threads.hpp"
-#    include "alpaka/core/Decay.hpp"
-#    include "alpaka/dev/DevCpu.hpp"
-#    include "alpaka/kernel/Traits.hpp"
-#    include "alpaka/meta/NdLoop.hpp"
-#    include "alpaka/workdiv/WorkDivMembers.hpp"
-
 #    include <omp.h>
-
-#    include <functional>
-#    include <stdexcept>
-#    include <tuple>
-#    include <type_traits>
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-#        include <iostream>
-#    endif
 
 namespace alpaka
 {

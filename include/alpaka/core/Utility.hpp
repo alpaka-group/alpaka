@@ -5,11 +5,8 @@
 
 #include "alpaka/core/Common.hpp"
 
-#if BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA || BOOST_COMP_HIP
-#    include <type_traits>
-#else
-#    include <utility>
-#endif
+#include <type_traits>
+#include <utility>
 
 namespace alpaka::core
 {

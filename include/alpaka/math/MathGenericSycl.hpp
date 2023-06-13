@@ -4,15 +4,15 @@
 
 #pragma once
 
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/math/Complex.hpp"
+#include "alpaka/math/Traits.hpp"
+
+#include <type_traits>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/math/Complex.hpp"
-#    include "alpaka/math/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <type_traits>
 
 //! The mathematical operation specifics.
 namespace alpaka::math

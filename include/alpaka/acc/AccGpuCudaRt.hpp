@@ -4,11 +4,11 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
+#include "alpaka/acc/Tag.hpp"
+#include "alpaka/core/ApiCudaRt.hpp"
 
-#    include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
-#    include "alpaka/acc/Tag.hpp"
-#    include "alpaka/core/ApiCudaRt.hpp"
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 namespace alpaka
 {

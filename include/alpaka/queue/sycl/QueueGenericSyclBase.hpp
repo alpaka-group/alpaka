@@ -4,23 +4,24 @@
 
 #pragma once
 
+
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/event/Traits.hpp"
+#include "alpaka/queue/Traits.hpp"
+#include "alpaka/wait/Traits.hpp"
+
+#include <algorithm>
+#include <exception>
+#include <memory>
+#include <mutex>
+#include <shared_mutex>
+#include <type_traits>
+#include <utility>
+#include <vector>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/event/Traits.hpp"
-#    include "alpaka/queue/Traits.hpp"
-#    include "alpaka/wait/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <algorithm>
-#    include <exception>
-#    include <memory>
-#    include <mutex>
-#    include <shared_mutex>
-#    include <type_traits>
-#    include <utility>
-#    include <vector>
 
 namespace alpaka::detail
 {

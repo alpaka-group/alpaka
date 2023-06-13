@@ -4,22 +4,22 @@
 
 #pragma once
 
+#include "alpaka/core/Sycl.hpp"
+#include "alpaka/dev/DevGenericSycl.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/dim/DimIntegralConst.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/mem/buf/BufCpu.hpp"
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/view/Accessor.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <memory>
+#include <type_traits>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/core/Sycl.hpp"
-#    include "alpaka/dev/DevGenericSycl.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/dim/DimIntegralConst.hpp"
-#    include "alpaka/dim/Traits.hpp"
-#    include "alpaka/mem/buf/BufCpu.hpp"
-#    include "alpaka/mem/buf/Traits.hpp"
-#    include "alpaka/mem/view/Accessor.hpp"
-#    include "alpaka/vec/Vec.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <memory>
-#    include <type_traits>
 
 namespace alpaka
 {

@@ -4,25 +4,25 @@
 
 #pragma once
 
+#include "alpaka/acc/AccGenericSycl.hpp"
+#include "alpaka/acc/Tag.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/core/Sycl.hpp"
+#include "alpaka/dev/DevFpgaSyclIntel.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/pltf/PltfFpgaSyclIntel.hpp"
+#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <string>
+#include <utility>
+
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
-#    include "alpaka/acc/AccGenericSycl.hpp"
-#    include "alpaka/acc/Tag.hpp"
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/core/DemangleTypeNames.hpp"
-#    include "alpaka/core/Sycl.hpp"
-#    include "alpaka/dev/DevFpgaSyclIntel.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"
-#    include "alpaka/kernel/Traits.hpp"
-#    include "alpaka/pltf/PltfFpgaSyclIntel.hpp"
-#    include "alpaka/pltf/Traits.hpp"
-#    include "alpaka/vec/Vec.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <string>
-#    include <utility>
 
 namespace alpaka
 {

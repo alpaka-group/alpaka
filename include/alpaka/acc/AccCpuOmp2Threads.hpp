@@ -4,46 +4,46 @@
 
 #pragma once
 
+// Base classes.
+#include "alpaka/atomic/AtomicCpu.hpp"
+#include "alpaka/atomic/AtomicHierarchy.hpp"
+#include "alpaka/atomic/AtomicOmpBuiltIn.hpp"
+#include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"
+#include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"
+#include "alpaka/block/sync/BlockSyncBarrierOmp.hpp"
+#include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/idx/bt/IdxBtOmp.hpp"
+#include "alpaka/idx/gb/IdxGbRef.hpp"
+#include "alpaka/intrinsic/IntrinsicCpu.hpp"
+#include "alpaka/math/MathStdLib.hpp"
+#include "alpaka/mem/fence/MemFenceOmp2Threads.hpp"
+#include "alpaka/rand/RandStdLib.hpp"
+#include "alpaka/warp/WarpSingleThread.hpp"
+#include "alpaka/workdiv/WorkDivMembers.hpp"
+
+// Specialized traits.
+#include "alpaka/acc/Traits.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/pltf/Traits.hpp"
+
+// Implementation details.
+#include "alpaka/acc/Tag.hpp"
+#include "alpaka/core/ClipCast.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/dev/DevCpu.hpp"
+
+#include <limits>
+#include <typeinfo>
+
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
 
 #    if _OPENMP < 200203
 #        error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
 
-// Base classes.
-#    include "alpaka/atomic/AtomicCpu.hpp"
-#    include "alpaka/atomic/AtomicHierarchy.hpp"
-#    include "alpaka/atomic/AtomicOmpBuiltIn.hpp"
-#    include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"
-#    include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"
-#    include "alpaka/block/sync/BlockSyncBarrierOmp.hpp"
-#    include "alpaka/core/DemangleTypeNames.hpp"
-#    include "alpaka/idx/bt/IdxBtOmp.hpp"
-#    include "alpaka/idx/gb/IdxGbRef.hpp"
-#    include "alpaka/intrinsic/IntrinsicCpu.hpp"
-#    include "alpaka/math/MathStdLib.hpp"
-#    include "alpaka/mem/fence/MemFenceOmp2Threads.hpp"
-#    include "alpaka/rand/RandStdLib.hpp"
-#    include "alpaka/warp/WarpSingleThread.hpp"
-#    include "alpaka/workdiv/WorkDivMembers.hpp"
-
-// Specialized traits.
-#    include "alpaka/acc/Traits.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/idx/Traits.hpp"
-#    include "alpaka/kernel/Traits.hpp"
-#    include "alpaka/pltf/Traits.hpp"
-
-// Implementation details.
-#    include "alpaka/acc/Tag.hpp"
-#    include "alpaka/core/ClipCast.hpp"
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/dev/DevCpu.hpp"
-
 #    include <omp.h>
-
-#    include <limits>
-#    include <typeinfo>
 
 namespace alpaka
 {
