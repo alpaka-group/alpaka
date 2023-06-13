@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Luca Ferragina, Aurora Perego
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -34,12 +34,22 @@ using AlpakaFormat = char const* [[clang::opencl_constant]];
 #        else
 using AlpakaFormat = char const*;
 #        endif
+
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic push
+#            pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#        endif
+
 #        define printf(FORMAT, ...)                                                                                   \
             do                                                                                                        \
             {                                                                                                         \
-                static const auto format = AlpakaFormat{FORMAT};                                                      \
+                static auto const format = AlpakaFormat{FORMAT};                                                      \
                 sycl::ext::oneapi::experimental::printf(format, ##__VA_ARGS__);                                       \
             } while(false)
+
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic pop
+#        endif
 
 #    endif
 

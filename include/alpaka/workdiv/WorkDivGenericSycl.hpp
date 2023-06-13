@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -18,6 +18,8 @@ namespace alpaka
     template<typename TDim, typename TIdx>
     class WorkDivGenericSycl : public concepts::Implements<ConceptWorkDiv, WorkDivGenericSycl<TDim, TIdx>>
     {
+        static_assert(TDim::value > 0, "The SYCL work division must have a dimension greater than zero.");
+
     public:
         using WorkDivBase = WorkDivGenericSycl;
 
@@ -55,7 +57,9 @@ namespace alpaka::trait
         //! \return The number of blocks in each dimension of the grid.
         static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
         {
-            if constexpr(TDim::value == 1)
+            if constexpr(TDim::value == 0)
+                return Vec<TDim, TIdx>{};
+            else if constexpr(TDim::value == 1)
                 return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.my_item.get_group_range(0))};
             else if constexpr(TDim::value == 2)
             {
@@ -80,7 +84,9 @@ namespace alpaka::trait
         //! \return The number of threads in each dimension of a block.
         static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
         {
-            if constexpr(TDim::value == 1)
+            if constexpr(TDim::value == 0)
+                return Vec<TDim, TIdx>{};
+            else if constexpr(TDim::value == 1)
                 return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.my_item.get_local_range(0))};
             else if constexpr(TDim::value == 2)
             {
@@ -102,7 +108,7 @@ namespace alpaka::trait
     template<typename TDim, typename TIdx>
     struct GetWorkDiv<WorkDivGenericSycl<TDim, TIdx>, origin::Thread, unit::Elems>
     {
-        //! \return The number of blocks in each dimension of the grid.
+        //! \return The number of elements in each dimension of the thread.
         static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
         {
             return workDiv.m_threadElemExtent;

@@ -60,6 +60,8 @@ namespace alpaka
         , public rand::RandGenericSycl<TDim>
         , public warp::WarpGenericSycl<TDim>
     {
+        static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
+
     public:
         AccGenericSycl(AccGenericSycl const&) = delete;
         AccGenericSycl(AccGenericSycl&&) = delete;

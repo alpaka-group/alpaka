@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -15,6 +15,8 @@
 using Elem = std::uint32_t;
 using Dim = alpaka::DimInt<2u>;
 using Idx = std::uint32_t;
+
+#if !defined(ALPAKA_ACC_SYCL_ENABLED)
 
 // These forward declarations are only necessary when you want to access those variables
 // from a different compilation unit and should be moved to a common header.
@@ -40,10 +42,13 @@ struct StaticDeviceMemoryTestKernel
     }
 };
 
+#endif // !defined(ALPAKA_ACC_SYCL_ENABLED)
+
 using TestAccs = alpaka::test::EnabledAccs<Dim, Idx>;
 
 TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAccs)
 {
+#if !defined(ALPAKA_ACC_SYCL_ENABLED)
     using Acc = TestType;
     using DevAcc = alpaka::Dev<Acc>;
 
@@ -75,7 +80,15 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
 
         REQUIRE(fixture(kernel, alpaka::getPtrNative(viewConstantMemUninitialized)));
     }
+
+#else // !defined(ALPAKA_ACC_SYCL_ENABLED)
+
+    WARN("The SYCL backend does not support global device variables.");
+
+#endif // !defined(ALPAKA_ACC_SYCL_ENABLED)
 }
+
+#if !defined(ALPAKA_ACC_SYCL_ENABLED)
 
 // These forward declarations are only necessary when you want to access those variables
 // from a different compilation unit and should be moved to a common header.
@@ -84,8 +97,11 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
 extern ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 
+#endif // !defined(ALPAKA_ACC_SYCL_ENABLED)
+
 TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", TestAccs)
 {
+#if !defined(ALPAKA_ACC_SYCL_ENABLED)
     using Acc = TestType;
     using DevAcc = alpaka::Dev<Acc>;
 
@@ -117,4 +133,10 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
 
         REQUIRE(fixture(kernel, alpaka::getPtrNative(viewGlobalMemUninitialized)));
     }
+
+#else // !defined(ALPAKA_ACC_SYCL_ENABLED)
+
+    WARN("The SYCL backend does not support global device constants.");
+
+#endif // !defined(ALPAKA_ACC_SYCL_ENABLED)
 }
