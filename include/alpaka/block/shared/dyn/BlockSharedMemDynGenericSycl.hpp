@@ -7,7 +7,7 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/block/shared/dyn/Traits.hpp>
+#    include "alpaka/block/shared/dyn/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

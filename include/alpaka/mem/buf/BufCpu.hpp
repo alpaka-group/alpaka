@@ -4,26 +4,26 @@
 
 #pragma once
 
-#include <alpaka/core/Vectorize.hpp>
-#include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/mem/buf/Traits.hpp>
-#include <alpaka/mem/view/ViewAccessOps.hpp>
-#include <alpaka/vec/Vec.hpp>
+#include "alpaka/core/Vectorize.hpp"
+#include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/view/ViewAccessOps.hpp"
+#include "alpaka/vec/Vec.hpp"
 
 // Backend specific includes.
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#    include <alpaka/core/ApiCudaRt.hpp>
-#    include <alpaka/core/Cuda.hpp>
+#    include "alpaka/core/ApiCudaRt.hpp"
+#    include "alpaka/core/Cuda.hpp"
 #endif
 
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#    include <alpaka/core/ApiHipRt.hpp>
-#    include <alpaka/core/Hip.hpp>
+#    include "alpaka/core/ApiHipRt.hpp"
+#    include "alpaka/core/Hip.hpp"
 #endif
 
-#include <alpaka/mem/alloc/AllocCpuAligned.hpp>
-#include <alpaka/meta/DependentFalseType.hpp>
+#include "alpaka/mem/alloc/AllocCpuAligned.hpp"
+#include "alpaka/meta/DependentFalseType.hpp"
 
 #include <functional>
 #include <memory>
@@ -311,5 +311,5 @@ namespace alpaka
     } // namespace trait
 } // namespace alpaka
 
-#include <alpaka/mem/buf/cpu/Copy.hpp>
-#include <alpaka/mem/buf/cpu/Set.hpp>
+#include "alpaka/mem/buf/cpu/Copy.hpp"
+#include "alpaka/mem/buf/cpu/Set.hpp"

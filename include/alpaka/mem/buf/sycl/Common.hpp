@@ -6,9 +6,9 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/extent/Traits.hpp>
-#    include <alpaka/offset/Traits.hpp>
+#    include "alpaka/dim/Traits.hpp"
+#    include "alpaka/extent/Traits.hpp"
+#    include "alpaka/offset/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

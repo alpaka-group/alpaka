@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/KernelExecutionFixture.hpp>
-#include <alpaka/test/mem/view/Iterator.hpp>
+#include "alpaka/alpaka.hpp"
+#include "alpaka/test/KernelExecutionFixture.hpp"
+#include "alpaka/test/mem/view/Iterator.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/core/STLTuple/STLTuple.hpp>
+#include "alpaka/core/STLTuple/STLTuple.hpp"
 
 #include <cstddef>
 #include <utility>

@@ -6,7 +6,7 @@
 
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 
-#    include <alpaka/core/Common.hpp>
+#    include "alpaka/core/Common.hpp"
 
 #    include <functional>
 #    include <initializer_list>

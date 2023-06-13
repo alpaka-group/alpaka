@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/dim/DimIntegralConst.hpp>
+#include "alpaka/dim/DimIntegralConst.hpp"
 
 #include <type_traits>
 

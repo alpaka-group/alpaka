@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/dim/DimIntegralConst.hpp>
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/dim/DimIntegralConst.hpp"
 
 #include <tuple>
 

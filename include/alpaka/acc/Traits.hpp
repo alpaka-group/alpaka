@@ -4,16 +4,16 @@
 
 #pragma once
 
-#include <alpaka/acc/AccDevProps.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/DemangleTypeNames.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/idx/Traits.hpp>
-#include <alpaka/kernel/Traits.hpp>
-#include <alpaka/pltf/Traits.hpp>
-#include <alpaka/queue/Traits.hpp>
+#include "alpaka/acc/AccDevProps.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/queue/Traits.hpp"
 
 #include <string>
 #include <type_traits>

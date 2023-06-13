@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp>
-#include <alpaka/block/shared/dyn/Traits.hpp>
-#include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Vectorize.hpp>
+#include "alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp"
+#include "alpaka/block/shared/dyn/Traits.hpp"
+#include "alpaka/core/Assert.hpp"
+#include "alpaka/core/Vectorize.hpp"
 
 #include <array>
 #include <cstdint>

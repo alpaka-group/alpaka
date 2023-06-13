@@ -6,7 +6,7 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/queue/sycl/QueueGenericSyclBase.hpp>
+#    include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"
 
 #    include <memory>
 #    include <utility>

@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/vec/Vec.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
 
 #include <utility>
 

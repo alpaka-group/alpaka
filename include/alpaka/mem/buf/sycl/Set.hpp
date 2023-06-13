@@ -6,15 +6,15 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/core/Debug.hpp>
-#    include <alpaka/core/Sycl.hpp>
-#    include <alpaka/dev/DevGenericSycl.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/dim/DimIntegralConst.hpp>
-#    include <alpaka/extent/Traits.hpp>
-#    include <alpaka/mem/buf/sycl/Common.hpp>
-#    include <alpaka/mem/view/Traits.hpp>
-#    include <alpaka/queue/Traits.hpp>
+#    include "alpaka/core/Debug.hpp"
+#    include "alpaka/core/Sycl.hpp"
+#    include "alpaka/dev/DevGenericSycl.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/dim/DimIntegralConst.hpp"
+#    include "alpaka/extent/Traits.hpp"
+#    include "alpaka/mem/buf/sycl/Common.hpp"
+#    include "alpaka/mem/view/Traits.hpp"
+#    include "alpaka/queue/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

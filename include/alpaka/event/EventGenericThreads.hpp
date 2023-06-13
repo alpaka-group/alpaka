@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Utility.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
-#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
-#include <alpaka/wait/Traits.hpp>
+#include "alpaka/core/Assert.hpp"
+#include "alpaka/core/Utility.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/event/Traits.hpp"
+#include "alpaka/queue/QueueGenericThreadsBlocking.hpp"
+#include "alpaka/queue/QueueGenericThreadsNonBlocking.hpp"
+#include "alpaka/wait/Traits.hpp"
 
 #include <condition_variable>
 #include <future>

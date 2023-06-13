@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/extent/Traits.hpp>
-#include <alpaka/idx/Traits.hpp>
-#include <alpaka/mem/view/Traits.hpp>
-#include <alpaka/mem/view/ViewAccessOps.hpp>
-#include <alpaka/offset/Traits.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/mem/view/Traits.hpp"
+#include "alpaka/mem/view/ViewAccessOps.hpp"
+#include "alpaka/offset/Traits.hpp"
 
 namespace alpaka
 {

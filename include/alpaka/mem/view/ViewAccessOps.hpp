@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/extent/Traits.hpp>
-#include <alpaka/mem/view/ViewAccessor.hpp>
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
+#include "alpaka/mem/view/ViewAccessor.hpp"
 
 #include <sstream>
 #include <type_traits>

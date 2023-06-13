@@ -7,20 +7,20 @@
 #ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
 
 // Specialized traits.
-#    include <alpaka/acc/Traits.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/idx/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
+#    include "alpaka/acc/Traits.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/dim/Traits.hpp"
+#    include "alpaka/idx/Traits.hpp"
+#    include "alpaka/pltf/Traits.hpp"
 
 // Implementation details.
-#    include <alpaka/acc/AccCpuTbbBlocks.hpp>
-#    include <alpaka/core/Decay.hpp>
-#    include <alpaka/dev/DevCpu.hpp>
-#    include <alpaka/idx/MapIdx.hpp>
-#    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/meta/NdLoop.hpp>
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
+#    include "alpaka/acc/AccCpuTbbBlocks.hpp"
+#    include "alpaka/core/Decay.hpp"
+#    include "alpaka/dev/DevCpu.hpp"
+#    include "alpaka/idx/MapIdx.hpp"
+#    include "alpaka/kernel/Traits.hpp"
+#    include "alpaka/meta/NdLoop.hpp"
+#    include "alpaka/workdiv/WorkDivMembers.hpp"
 
 #    include <functional>
 #    include <stdexcept>

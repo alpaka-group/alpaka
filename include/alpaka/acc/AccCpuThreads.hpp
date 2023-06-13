@@ -7,34 +7,34 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
 // Base classes.
-#    include <alpaka/atomic/AtomicCpu.hpp>
-#    include <alpaka/atomic/AtomicHierarchy.hpp>
-#    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
-#    include <alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp>
-#    include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
-#    include <alpaka/core/DemangleTypeNames.hpp>
-#    include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
-#    include <alpaka/idx/gb/IdxGbRef.hpp>
-#    include <alpaka/intrinsic/IntrinsicCpu.hpp>
-#    include <alpaka/math/MathStdLib.hpp>
-#    include <alpaka/mem/fence/MemFenceCpu.hpp>
-#    include <alpaka/rand/RandStdLib.hpp>
-#    include <alpaka/warp/WarpSingleThread.hpp>
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
+#    include "alpaka/atomic/AtomicCpu.hpp"
+#    include "alpaka/atomic/AtomicHierarchy.hpp"
+#    include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"
+#    include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"
+#    include "alpaka/block/sync/BlockSyncBarrierThread.hpp"
+#    include "alpaka/core/DemangleTypeNames.hpp"
+#    include "alpaka/idx/bt/IdxBtRefThreadIdMap.hpp"
+#    include "alpaka/idx/gb/IdxGbRef.hpp"
+#    include "alpaka/intrinsic/IntrinsicCpu.hpp"
+#    include "alpaka/math/MathStdLib.hpp"
+#    include "alpaka/mem/fence/MemFenceCpu.hpp"
+#    include "alpaka/rand/RandStdLib.hpp"
+#    include "alpaka/warp/WarpSingleThread.hpp"
+#    include "alpaka/workdiv/WorkDivMembers.hpp"
 
 // Specialized traits.
-#    include <alpaka/acc/Traits.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/idx/Traits.hpp>
-#    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
+#    include "alpaka/acc/Traits.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/idx/Traits.hpp"
+#    include "alpaka/kernel/Traits.hpp"
+#    include "alpaka/pltf/Traits.hpp"
 
 // Implementation details.
-#    include <alpaka/acc/Tag.hpp>
-#    include <alpaka/core/BoostPredef.hpp>
-#    include <alpaka/core/ClipCast.hpp>
-#    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/dev/DevCpu.hpp>
+#    include "alpaka/acc/Tag.hpp"
+#    include "alpaka/core/BoostPredef.hpp"
+#    include "alpaka/core/ClipCast.hpp"
+#    include "alpaka/core/Concepts.hpp"
+#    include "alpaka/dev/DevCpu.hpp"
 
 #    include <memory>
 #    include <thread>

@@ -7,10 +7,10 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/atomic/Op.hpp>
-#    include <alpaka/atomic/Traits.hpp>
-#    include <alpaka/core/Positioning.hpp>
-#    include <alpaka/meta/DependentFalseType.hpp>
+#    include "alpaka/atomic/Op.hpp"
+#    include "alpaka/atomic/Traits.hpp"
+#    include "alpaka/core/Positioning.hpp"
+#    include "alpaka/meta/DependentFalseType.hpp"
 
 #    include <CL/sycl.hpp>
 

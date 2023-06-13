@@ -8,9 +8,9 @@
 // This is no problem at some places but others explicitly rely on std::exception_ptr,
 // std::current_exception, std::make_exception_ptr, etc. which are not declared in device code.
 // Therefore, we can not even parse those parts when compiling device code.
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/ThreadTraits.hpp>
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/ThreadTraits.hpp"
 
 #include <atomic>
 #include <exception>

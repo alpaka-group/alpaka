@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/meta/IsArrayOrVector.hpp>
-#include <alpaka/rand/Philox/PhiloxSingle.hpp>
-#include <alpaka/rand/Philox/PhiloxVector.hpp>
-#include <alpaka/rand/Traits.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/meta/IsArrayOrVector.hpp"
+#include "alpaka/rand/Philox/PhiloxSingle.hpp"
+#include "alpaka/rand/Philox/PhiloxVector.hpp"
+#include "alpaka/rand/Traits.hpp"
 
 #include <cstdint>
 #include <limits>

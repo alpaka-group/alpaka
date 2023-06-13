@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/rand/Philox/MultiplyAndSplit64to32.hpp>
+#include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"
 
 #include <cstdint>
 #include <utility>

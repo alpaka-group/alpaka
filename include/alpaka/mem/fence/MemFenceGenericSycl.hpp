@@ -6,7 +6,7 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/mem/fence/Traits.hpp>
+#    include "alpaka/mem/fence/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

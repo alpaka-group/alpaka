@@ -6,10 +6,10 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/core/Sycl.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
+#    include "alpaka/core/Concepts.hpp"
+#    include "alpaka/core/Sycl.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/pltf/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/rand/TinyMT/Engine.hpp>
-#include <alpaka/rand/Traits.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/rand/TinyMT/Engine.hpp"
+#include "alpaka/rand/Traits.hpp"
 
 #include <cstdint>
 #include <limits>

@@ -6,9 +6,9 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/math/Complex.hpp>
-#    include <alpaka/math/Traits.hpp>
+#    include "alpaka/core/Concepts.hpp"
+#    include "alpaka/math/Complex.hpp"
+#    include "alpaka/math/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

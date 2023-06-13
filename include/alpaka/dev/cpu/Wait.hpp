@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/event/EventCpu.hpp>
-#include <alpaka/wait/Traits.hpp>
+#include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/event/EventCpu.hpp"
+#include "alpaka/wait/Traits.hpp"
 
 namespace alpaka
 {

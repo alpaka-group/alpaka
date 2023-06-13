@@ -6,19 +6,19 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/BoostPredef.hpp>
-#    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#    include <alpaka/rand/Traits.hpp>
+#    include "alpaka/core/BoostPredef.hpp"
+#    include "alpaka/core/Concepts.hpp"
+#    include "alpaka/dev/DevUniformCudaHipRt.hpp"
+#    include "alpaka/rand/Traits.hpp"
 
 // Backend specific imports.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#        include <alpaka/core/Cuda.hpp>
+#        include "alpaka/core/Cuda.hpp"
 
 #        include <curand_kernel.h>
 
 #    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#        include <alpaka/core/Hip.hpp>
+#        include "alpaka/core/Hip.hpp"
 
 #        if BOOST_COMP_CLANG
 #            pragma clang diagnostic push

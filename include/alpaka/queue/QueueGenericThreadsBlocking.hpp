@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/queue/Traits.hpp>
-#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
-#include <alpaka/wait/Traits.hpp>
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/event/Traits.hpp"
+#include "alpaka/queue/Traits.hpp"
+#include "alpaka/queue/cpu/IGenericThreadsQueue.hpp"
+#include "alpaka/wait/Traits.hpp"
 
 #include <atomic>
 #include <memory>
@@ -158,4 +158,4 @@ namespace alpaka
     } // namespace trait
 } // namespace alpaka
 
-#include <alpaka/event/EventGenericThreads.hpp>
+#include "alpaka/event/EventGenericThreads.hpp"

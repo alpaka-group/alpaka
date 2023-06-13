@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
+#include "alpaka/core/BoostPredef.hpp"
 
 #if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
 #    ifndef NOMINMAX

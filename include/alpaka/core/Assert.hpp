@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
+#include "alpaka/core/Common.hpp"
 
 #include <cassert>
 #include <type_traits>

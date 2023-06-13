@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>
+#include "alpaka/dim/Traits.hpp"
 
 #include <type_traits>
 

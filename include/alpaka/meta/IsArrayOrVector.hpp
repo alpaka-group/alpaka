@@ -5,7 +5,7 @@
 #pragma once
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#    include <alpaka/meta/CudaVectorArrayWrapper.hpp>
+#    include "alpaka/meta/CudaVectorArrayWrapper.hpp"
 #endif
 
 #include <functional>

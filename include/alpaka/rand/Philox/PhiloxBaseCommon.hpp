@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/rand/Philox/PhiloxStateless.hpp>
+#include "alpaka/rand/Philox/PhiloxStateless.hpp"
 
 #include <utility>
 

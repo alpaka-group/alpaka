@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/atomic/Traits.hpp>
-#include <alpaka/core/BoostPredef.hpp>
+#include "alpaka/atomic/Traits.hpp"
+#include "alpaka/core/BoostPredef.hpp"
 
 #if defined(ALPAKA_HAS_STD_ATOMIC_REF)
 #    include <atomic>

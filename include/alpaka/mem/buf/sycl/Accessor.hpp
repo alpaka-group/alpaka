@@ -6,9 +6,9 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/dim/DimIntegralConst.hpp>
-#    include <alpaka/mem/view/Accessor.hpp>
-#    include <alpaka/mem/view/ViewAccessor.hpp>
+#    include "alpaka/dim/DimIntegralConst.hpp"
+#    include "alpaka/mem/view/Accessor.hpp"
+#    include "alpaka/mem/view/ViewAccessor.hpp"
 
 #    include <CL/sycl.hpp>
 

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/rand/Philox/PhiloxBaseTraits.hpp>
+#include "alpaka/rand/Philox/PhiloxBaseTraits.hpp"
 
 #include <utility>
 

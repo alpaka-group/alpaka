@@ -6,17 +6,17 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/acc/Traits.hpp>
-#    include <alpaka/core/Common.hpp>
-#    include <alpaka/core/Sycl.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/mem/buf/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/queue/Properties.hpp>
-#    include <alpaka/queue/Traits.hpp>
-#    include <alpaka/queue/sycl/QueueGenericSyclBase.hpp>
-#    include <alpaka/traits/Traits.hpp>
-#    include <alpaka/wait/Traits.hpp>
+#    include "alpaka/acc/Traits.hpp"
+#    include "alpaka/core/Common.hpp"
+#    include "alpaka/core/Sycl.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/mem/buf/Traits.hpp"
+#    include "alpaka/pltf/Traits.hpp"
+#    include "alpaka/queue/Properties.hpp"
+#    include "alpaka/queue/Traits.hpp"
+#    include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"
+#    include "alpaka/traits/Traits.hpp"
+#    include "alpaka/wait/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/mem/view/Traits.hpp>
-#include <alpaka/pltf/PltfCpu.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/mem/view/Traits.hpp"
+#include "alpaka/pltf/PltfCpu.hpp"
 
 #include <vector>
 

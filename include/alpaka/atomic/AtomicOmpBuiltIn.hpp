@@ -6,9 +6,9 @@
 
 #ifdef _OPENMP
 
-#    include <alpaka/atomic/Op.hpp>
-#    include <alpaka/atomic/Traits.hpp>
-#    include <alpaka/core/BoostPredef.hpp>
+#    include "alpaka/atomic/Op.hpp"
+#    include "alpaka/atomic/Traits.hpp"
+#    include "alpaka/core/BoostPredef.hpp"
 
 namespace alpaka
 {

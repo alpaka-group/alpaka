@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/core/Unroll.hpp>
-#include <alpaka/rand/Philox/MultiplyAndSplit64to32.hpp>
-#include <alpaka/rand/Philox/PhiloxConstants.hpp>
+#include "alpaka/core/Unroll.hpp"
+#include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"
+#include "alpaka/rand/Philox/PhiloxConstants.hpp"
 
 #include <utility>
 

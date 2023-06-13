@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/core/Debug.hpp>
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Debug.hpp"
 
 // Boost.Uuid errors with VS2017 when intrin.h is not included
 #if defined(_MSC_VER) && _MSC_VER >= 1910

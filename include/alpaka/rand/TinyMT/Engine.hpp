@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/rand/TinyMT/tinymt32.h>
+#include "alpaka/rand/TinyMT/tinymt32.h"
 
 #include <cstdint>
 

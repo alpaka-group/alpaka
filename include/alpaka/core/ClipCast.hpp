@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/meta/Integral.hpp>
+#include "alpaka/meta/Integral.hpp"
 
 #include <algorithm>
 #include <limits>

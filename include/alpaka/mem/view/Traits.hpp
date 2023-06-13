@@ -4,17 +4,17 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unreachable.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/elem/Traits.hpp>
-#include <alpaka/extent/Traits.hpp>
-#include <alpaka/meta/Fold.hpp>
-#include <alpaka/meta/Integral.hpp>
-#include <alpaka/offset/Traits.hpp>
-#include <alpaka/queue/Traits.hpp>
-#include <alpaka/vec/Vec.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/Unreachable.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/elem/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
+#include "alpaka/meta/Fold.hpp"
+#include "alpaka/meta/Integral.hpp"
+#include "alpaka/offset/Traits.hpp"
+#include "alpaka/queue/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
 
 #include <array>
 #include <iosfwd>
