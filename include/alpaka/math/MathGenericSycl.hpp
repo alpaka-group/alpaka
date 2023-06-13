@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -279,7 +279,7 @@ namespace alpaka::math::trait
             if constexpr(std::is_integral_v<TArgument>)
                 return sycl::atan2(0.0, static_cast<double>(argument));
             else if constexpr(std::is_floating_point_v<TArgument>)
-                return sycl::atan2(TArgument{0.0}, argument);
+                return sycl::atan2(static_cast<TArgument>(0.0), argument);
             else
                 static_assert(!sizeof(TArgument), "Unsupported data type");
         }
@@ -333,9 +333,11 @@ namespace alpaka::math::trait
         Tx,
         std::enable_if_t<std::is_floating_point_v<Ty> && std::is_floating_point_v<Tx>>>
     {
+        using TCommon = std::common_type_t<Ty, Tx>;
+
         auto operator()(math::Atan2GenericSycl const&, Ty const& y, Tx const& x)
         {
-            return sycl::atan2(y, x);
+            return sycl::atan2(static_cast<TCommon>(y), static_cast<TCommon>(x));
         }
     };
 
@@ -432,9 +434,11 @@ namespace alpaka::math::trait
         Ty,
         std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
     {
+        using TCommon = std::common_type_t<Tx, Ty>;
+
         auto operator()(math::FmodGenericSycl const&, Tx const& x, Ty const& y)
         {
-            return sycl::fmod(x, y);
+            return sycl::fmod(static_cast<TCommon>(x), static_cast<TCommon>(y));
         }
     };
 
@@ -444,7 +448,7 @@ namespace alpaka::math::trait
     {
         auto operator()(math::IsfiniteGenericSycl const&, TArg const& arg)
         {
-            return sycl::isfinite(arg);
+            return static_cast<bool>(sycl::isfinite(arg));
         }
     };
 
@@ -454,7 +458,7 @@ namespace alpaka::math::trait
     {
         auto operator()(math::IsinfGenericSycl const&, TArg const& arg)
         {
-            return sycl::isinf(arg);
+            return static_cast<bool>(sycl::isinf(arg));
         }
     };
 
@@ -464,7 +468,7 @@ namespace alpaka::math::trait
     {
         auto operator()(math::IsnanGenericSycl const&, TArg const& arg)
         {
-            return sycl::isnan(arg);
+            return static_cast<bool>(sycl::isnan(arg));
         }
     };
 
@@ -482,18 +486,20 @@ namespace alpaka::math::trait
     template<typename Tx, typename Ty>
     struct Max<math::MaxGenericSycl, Tx, Ty, std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
     {
+        using TCommon = std::common_type_t<Tx, Ty>;
+
         auto operator()(math::MaxGenericSycl const&, Tx const& x, Ty const& y)
         {
             if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
-                return sycl::max(x, y);
+                return sycl::max(static_cast<TCommon>(x), static_cast<TCommon>(y));
             else if constexpr(std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>)
-                return sycl::fmax(x, y);
+                return sycl::fmax(static_cast<TCommon>(x), static_cast<TCommon>(y));
             else if constexpr(
                 (std::is_floating_point_v<Tx> && std::is_integral_v<Ty>)
                 || (std::is_integral_v<Tx> && std::is_floating_point_v<Ty>) )
                 return sycl::fmax(static_cast<double>(x), static_cast<double>(y)); // mirror CUDA back-end
             else
-                static_assert(!sizeof(Tx), "Unsupported data type");
+                static_assert(!sizeof(Tx), "Unsupported data types");
         }
     };
 
@@ -512,7 +518,7 @@ namespace alpaka::math::trait
                 || (std::is_integral_v<Tx> && std::is_floating_point_v<Ty>) )
                 return sycl::fmin(static_cast<double>(x), static_cast<double>(y)); // mirror CUDA back-end
             else
-                static_assert(!sizeof(Tx), "Unsupported data type");
+                static_assert(!sizeof(Tx), "Unsupported data types");
         }
     };
 
@@ -524,9 +530,11 @@ namespace alpaka::math::trait
         TExp,
         std::enable_if_t<std::is_floating_point_v<TBase> && std::is_floating_point_v<TExp>>>
     {
+        using TCommon = std::common_type_t<TBase, TExp>;
+
         auto operator()(math::PowGenericSycl const&, TBase const& base, TExp const& exp)
         {
-            return sycl::pow(base, exp);
+            return sycl::pow(static_cast<TCommon>(base), static_cast<TCommon>(exp));
         }
     };
 
@@ -538,9 +546,11 @@ namespace alpaka::math::trait
         Ty,
         std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
     {
+        using TCommon = std::common_type_t<Tx, Ty>;
+
         auto operator()(math::RemainderGenericSycl const&, Tx const& x, Ty const& y)
         {
-            return sycl::remainder(x, y);
+            return sycl::remainder(static_cast<TCommon>(x), static_cast<TCommon>(y));
         }
     };
 
@@ -580,9 +590,9 @@ namespace alpaka::math::trait
     {
         auto operator()(math::RsqrtGenericSycl const&, TArg const& arg)
         {
-            if(std::is_floating_point_v<TArg>)
+            if constexpr(std::is_floating_point_v<TArg>)
                 return sycl::rsqrt(arg);
-            else if(std::is_integral_v<TArg>)
+            else if constexpr(std::is_integral_v<TArg>)
                 return sycl::rsqrt(static_cast<double>(arg)); // mirror CUDA back-end and use double for ints
             else
                 static_assert(!sizeof(TArg), "Unsupported data type");

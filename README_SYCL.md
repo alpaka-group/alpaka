@@ -93,8 +93,12 @@ These can be used interchangeably (some restrictions apply - see below) with the
 ### Restrictions
 
 * The FPGA back-ends (both vendors) cannot be used together with the Intel CPU / GPU back-ends. This is because of the different compilation trajectory required for FPGAs and is unlikely to be fixed anytime soon. See [here](https://www.intel.com/content/www/us/en/develop/documentation/oneapi-programming-guide/top/programming-interface/fpga-flow/why-is-fpga-compilation-different.html) for an explanation.
-* The SYCL back-end currently does not support passing pointers as kernel parameters. Use alpaka's experimental accessors instead.
-* The SYCL back-end does not have device-side random number generation.
 * Similar to the CUDA and HIP back-ends the SYCL back-end only supports up to three kernel dimensions.
 * Some Intel GPUs do not support the `double` type for device code. alpaka will not check this.
+  You can enable software emulation for `double` precision types with
+  ```bash
+  export IGC_EnableDPEmulation=1
+  export OverrideDefaultFP64Settings=1
+  ```
+  See [Intel's FAQ](https://github.com/intel/compute-runtime/blob/master/opencl/doc/FAQ.md#feature-double-precision-emulation-fp64) for more information.
 * The FPGA back-end does not support atomics. alpaka will not check this.

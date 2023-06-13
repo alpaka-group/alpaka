@@ -1,4 +1,4 @@
-/* Copyright 2023 Luca Ferragina, Aurora Perego
+/* Copyright 2023 Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -13,9 +13,25 @@
 
 // Backend specific imports.
 #    include <CL/sycl.hpp>
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wcast-align"
+#        pragma clang diagnostic ignored "-Wcast-qual"
+#        pragma clang diagnostic ignored "-Wextra-semi"
+#        pragma clang diagnostic ignored "-Wfloat-equal"
+#        pragma clang diagnostic ignored "-Wold-style-cast"
+#        pragma clang diagnostic ignored "-Wreserved-identifier"
+#        pragma clang diagnostic ignored "-Wreserved-macro-identifier"
+#        pragma clang diagnostic ignored "-Wsign-compare"
+#        pragma clang diagnostic ignored "-Wundef"
+#    endif
 #    include <oneapi/mkl/rng.hpp>
 
 #    include <oneapi/dpl/random>
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
+
 #    include <type_traits>
 
 namespace alpaka::rand
@@ -219,8 +235,8 @@ namespace alpaka::rand
             static auto createDefault(
                 RandGenericSycl<TDim> const& rand,
                 std::uint32_t const& seed = 0,
-                std::uint32_t const& subsequence = 0,
-                std::uint32_t const& offset = 0) -> sycl_rand::Minstd<TDim>
+                std::uint32_t const& /* subsequence */ = 0,
+                std::uint32_t const& /* offset */ = 0) -> sycl_rand::Minstd<TDim>
             {
                 return {rand, seed};
             }

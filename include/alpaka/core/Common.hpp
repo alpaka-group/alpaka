@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -117,6 +117,8 @@
 #if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
     || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
+#elif defined(ALPAKA_ACC_SYCL_ENABLED)
+#    define ALPAKA_STATIC_ACC_MEM_GLOBAL _Pragma("GCC error \"The SYCL backend does not support global device variables.\""))
 #else
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL
 #endif
@@ -153,6 +155,8 @@
 #if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
     || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
+#elif defined(ALPAKA_ACC_SYCL_ENABLED)
+#    define ALPAKA_STATIC_ACC_MEM_CONSTANT _Pragma("GCC error \"The SYCL backend does not support global device constants.\""))
 #else
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT
 #endif
