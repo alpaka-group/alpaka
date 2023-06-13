@@ -4,38 +4,38 @@
 
 #pragma once
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
 // Base classes.
-#    include "alpaka/atomic/AtomicHierarchy.hpp"
-#    include "alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/core/DemangleTypeNames.hpp"
-#    include "alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/rand/RandUniformCudaHipRand.hpp"
-#    include "alpaka/warp/WarpUniformCudaHipBuiltIn.hpp"
-#    include "alpaka/workdiv/WorkDivUniformCudaHipBuiltIn.hpp"
+#include "alpaka/atomic/AtomicHierarchy.hpp"
+#include "alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp"
+#include "alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp"
+#include "alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp"
+#include "alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp"
+#include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp"
+#include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"
+#include "alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp"
+#include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"
+#include "alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp"
+#include "alpaka/rand/RandUniformCudaHipRand.hpp"
+#include "alpaka/warp/WarpUniformCudaHipBuiltIn.hpp"
+#include "alpaka/workdiv/WorkDivUniformCudaHipBuiltIn.hpp"
 
 // Specialized traits.
-#    include "alpaka/acc/Traits.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/idx/Traits.hpp"
-#    include "alpaka/kernel/Traits.hpp"
-#    include "alpaka/pltf/Traits.hpp"
+#include "alpaka/acc/Traits.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/pltf/Traits.hpp"
 
 // Implementation details.
-#    include "alpaka/core/ClipCast.hpp"
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/core/Cuda.hpp"
-#    include "alpaka/dev/DevUniformCudaHipRt.hpp"
+#include "alpaka/core/ClipCast.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Cuda.hpp"
+#include "alpaka/dev/DevUniformCudaHipRt.hpp"
 
-#    include <typeinfo>
+#include <typeinfo>
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 namespace alpaka
 {

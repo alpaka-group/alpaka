@@ -4,24 +4,24 @@
 
 #pragma once
 
+#include "alpaka/elem/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/meta/IntegerSequence.hpp"
+#include "alpaka/offset/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <array>
+#include <cstddef>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <type_traits>
+#include <utility>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/elem/Traits.hpp"
-#    include "alpaka/extent/Traits.hpp"
-#    include "alpaka/idx/Traits.hpp"
-#    include "alpaka/meta/IntegerSequence.hpp"
-#    include "alpaka/offset/Traits.hpp"
-#    include "alpaka/vec/Vec.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <array>
-#    include <cstddef>
-#    include <iostream>
-#    include <stdexcept>
-#    include <string>
-#    include <type_traits>
-#    include <utility>
 
 // SYCL vector types trait specializations.
 namespace alpaka

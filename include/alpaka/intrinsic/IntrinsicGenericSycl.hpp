@@ -4,14 +4,14 @@
 
 #pragma once
 
+#include "alpaka/intrinsic/IntrinsicFallback.hpp"
+#include "alpaka/intrinsic/Traits.hpp"
+
+#include <cstdint>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/intrinsic/IntrinsicFallback.hpp"
-#    include "alpaka/intrinsic/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cstdint>
 
 namespace alpaka
 {

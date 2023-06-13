@@ -109,6 +109,18 @@ Code that is not intended to be utilized by the user is hidden in the `detail` n
 Furthermore, for a CUDA-like experience when adopting alpaka we provide the library [*cupla*](https://github.com/alpaka-group/cupla).
 It enables a simple and straightforward way of porting existing CUDA applications to alpaka and thus to a variety of accelerators.
 
+### Single header
+
+The CI creates a single-header version of alpaka on each commit,
+which you can find on the [single-header branch](https://github.com/alpaka-group/alpaka/tree/single-header).
+
+This is especially useful, if you would like to play with alpaka on [Compiler explorer](https://godbolt.org/z/3KE13dcKv).
+Just include alpaka like
+```c++
+#include <https://raw.githubusercontent.com/alpaka-group/alpaka/single-header/include/alpaka/alpaka.hpp>
+```
+and enable the desired backend on the compiler's command line using the corresponding macro, e.g. via `-DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED`.
+
 Introduction
 ------------
 

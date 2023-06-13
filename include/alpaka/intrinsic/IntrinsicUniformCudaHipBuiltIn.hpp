@@ -4,11 +4,11 @@
 
 #pragma once
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/intrinsic/Traits.hpp"
 
-#    include "alpaka/core/BoostPredef.hpp"
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/intrinsic/Traits.hpp"
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 namespace alpaka
 {

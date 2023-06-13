@@ -4,12 +4,12 @@
 
 #pragma once
 
+#include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"
+
+#include <memory>
+#include <utility>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
-
-#    include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"
-
-#    include <memory>
-#    include <utility>
 
 namespace alpaka
 {

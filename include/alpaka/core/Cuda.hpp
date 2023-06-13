@@ -4,13 +4,13 @@
 
 #pragma once
 
+#include "alpaka/core/CudaHipCommon.hpp"
+
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-
-#    include "alpaka/core/CudaHipCommon.hpp"
-
-#    include <iostream>
-#    include <stdexcept>
-#    include <string>
 
 namespace alpaka::cuda::detail
 {

@@ -4,14 +4,14 @@
 
 #pragma once
 
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/mem/fence/Traits.hpp"
+
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 
 #    if _OPENMP < 200203
 #        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
-
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/mem/fence/Traits.hpp"
 
 namespace alpaka
 {

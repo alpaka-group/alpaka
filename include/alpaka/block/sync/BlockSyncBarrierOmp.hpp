@@ -4,10 +4,10 @@
 
 #pragma once
 
-#ifdef _OPENMP
+#include "alpaka/block/sync/Traits.hpp"
+#include "alpaka/core/Common.hpp"
 
-#    include "alpaka/block/sync/Traits.hpp"
-#    include "alpaka/core/Common.hpp"
+#ifdef _OPENMP
 
 namespace alpaka
 {

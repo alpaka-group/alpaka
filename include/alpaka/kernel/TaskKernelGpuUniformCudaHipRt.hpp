@@ -5,6 +5,33 @@
 
 #pragma once
 
+#include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
+#include "alpaka/acc/Traits.hpp"
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Cuda.hpp"
+#include "alpaka/core/Decay.hpp"
+#include "alpaka/core/DemangleTypeNames.hpp"
+#include "alpaka/core/Hip.hpp"
+#include "alpaka/core/RemoveRestrict.hpp"
+#include "alpaka/dev/DevUniformCudaHipRt.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"
+#include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"
+#include "alpaka/queue/Traits.hpp"
+#include "alpaka/workdiv/WorkDivHelpers.hpp"
+#include "alpaka/workdiv/WorkDivMembers.hpp"
+
+#include <stdexcept>
+#include <tuple>
+#include <type_traits>
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#    include <iostream>
+#endif
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 #    if !defined(ALPAKA_HOST_ONLY)
@@ -17,47 +44,6 @@
 
 #        if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
 #            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#        endif
-
-// Specialized traits.
-#        include "alpaka/acc/Traits.hpp"
-#        include "alpaka/dev/Traits.hpp"
-#        include "alpaka/dim/Traits.hpp"
-#        include "alpaka/idx/Traits.hpp"
-#        include "alpaka/pltf/Traits.hpp"
-#        include "alpaka/queue/Traits.hpp"
-
-// Backend specific includes.
-#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#            include "alpaka/core/Cuda.hpp"
-#        else
-#            include "alpaka/core/Hip.hpp"
-#        endif
-
-// Implementation details.
-#        include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
-#        include "alpaka/core/Decay.hpp"
-#        include "alpaka/core/DemangleTypeNames.hpp"
-#        include "alpaka/core/RemoveRestrict.hpp"
-#        include "alpaka/dev/DevUniformCudaHipRt.hpp"
-#        include "alpaka/kernel/Traits.hpp"
-#        include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"
-#        include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"
-#        include "alpaka/workdiv/WorkDivMembers.hpp"
-
-#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-#            include "alpaka/acc/Traits.hpp"
-#            include "alpaka/dev/Traits.hpp"
-#            include "alpaka/workdiv/WorkDivHelpers.hpp"
-#        endif
-
-#        include "alpaka/core/BoostPredef.hpp"
-
-#        include <stdexcept>
-#        include <tuple>
-#        include <type_traits>
-#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-#            include <iostream>
 #        endif
 
 namespace alpaka

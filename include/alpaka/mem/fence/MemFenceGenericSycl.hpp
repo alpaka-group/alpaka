@@ -4,9 +4,9 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_SYCL_ENABLED
+#include "alpaka/mem/fence/Traits.hpp"
 
-#    include "alpaka/mem/fence/Traits.hpp"
+#ifdef ALPAKA_ACC_SYCL_ENABLED
 
 #    include <CL/sycl.hpp>
 

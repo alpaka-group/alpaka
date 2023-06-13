@@ -2,16 +2,14 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-
 #pragma once
 
+#include "alpaka/block/shared/dyn/Traits.hpp"
+
+#include <cstddef>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
-
-#    include "alpaka/block/shared/dyn/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cstddef>
 
 namespace alpaka
 {

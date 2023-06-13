@@ -10,6 +10,8 @@
 #include <array>
 #include <mutex>
 
+#ifdef ALPAKA_DISABLE_ATOMIC_ATOMICREF
+
 namespace alpaka
 {
     //! The CPU threads accelerator atomic ops.
@@ -55,17 +57,17 @@ namespace alpaka
             constexpr size_t hashTableSize = THashTableSize == 0u ? 1u : nextPowerOf2(THashTableSize);
 
             size_t const hashedAddr = hash(ptr) & (hashTableSize - 1u);
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wexit-time-destructors"
-#endif
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wexit-time-destructors"
+#    endif
             static std::array<
                 std::mutex,
                 hashTableSize>
                 m_mtxAtomic; //!< The mutex protecting access for an atomic operation.
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
             return m_mtxAtomic[hashedAddr];
         }
     };
@@ -96,3 +98,5 @@ namespace alpaka
         };
     } // namespace trait
 } // namespace alpaka
+
+#endif

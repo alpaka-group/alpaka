@@ -4,17 +4,17 @@
 
 #pragma once
 
+#include "alpaka/elem/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/meta/Concatenate.hpp"
+#include "alpaka/meta/TypeListOps.hpp"
+#include "alpaka/offset/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <tuple>
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include "alpaka/elem/Traits.hpp"
-#    include "alpaka/extent/Traits.hpp"
-#    include "alpaka/idx/Traits.hpp"
-#    include "alpaka/meta/Concatenate.hpp"
-#    include "alpaka/meta/TypeListOps.hpp"
-#    include "alpaka/offset/Traits.hpp"
-#    include "alpaka/vec/Vec.hpp"
-
-#    include <tuple>
 
 #    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #        include <cuda.h>

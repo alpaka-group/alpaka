@@ -4,15 +4,15 @@
 
 #pragma once
 
+#include "alpaka/block/sync/Traits.hpp"
+#include "alpaka/core/BarrierThread.hpp"
+#include "alpaka/core/Common.hpp"
+
+#include <map>
+#include <mutex>
+#include <thread>
+
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
-
-#    include "alpaka/block/sync/Traits.hpp"
-#    include "alpaka/core/BarrierThread.hpp"
-#    include "alpaka/core/Common.hpp"
-
-#    include <map>
-#    include <mutex>
-#    include <thread>
 
 namespace alpaka
 {

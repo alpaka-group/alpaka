@@ -4,9 +4,9 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#include <boost/predef.h>
 
-#    include <boost/predef.h>
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 #    include <cuda_runtime_api.h>
 
 namespace alpaka
@@ -215,7 +215,7 @@ namespace alpaka
         }
 
         template<class T>
-        static inline Error_t getSymbolAddress(void** devPtr, const T& symbol)
+        static inline Error_t getSymbolAddress(void** devPtr, T const& symbol)
         {
             return ::cudaGetSymbolAddress(devPtr, symbol);
         }

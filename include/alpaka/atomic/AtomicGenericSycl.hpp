@@ -2,20 +2,19 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-
 #pragma once
+
+#include "alpaka/atomic/Op.hpp"
+#include "alpaka/atomic/Traits.hpp"
+#include "alpaka/core/Positioning.hpp"
+#include "alpaka/meta/DependentFalseType.hpp"
+
+#include <cstdint>
+#include <type_traits>
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/atomic/Op.hpp"
-#    include "alpaka/atomic/Traits.hpp"
-#    include "alpaka/core/Positioning.hpp"
-#    include "alpaka/meta/DependentFalseType.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cstdint>
-#    include <type_traits>
 
 namespace alpaka
 {

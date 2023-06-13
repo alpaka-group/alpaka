@@ -4,15 +4,15 @@
 
 #pragma once
 
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
+#include "alpaka/offset/Traits.hpp"
+
+#include <cstddef>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/dim/Traits.hpp"
-#    include "alpaka/extent/Traits.hpp"
-#    include "alpaka/offset/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cstddef>
 
 namespace alpaka::detail
 {

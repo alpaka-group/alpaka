@@ -4,16 +4,16 @@
 
 #pragma once
 
+#include "alpaka/core/Assert.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Positioning.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+
+#include <map>
+#include <thread>
+
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
-
-#    include "alpaka/core/Assert.hpp"
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/core/Positioning.hpp"
-#    include "alpaka/idx/Traits.hpp"
-#    include "alpaka/vec/Vec.hpp"
-
-#    include <map>
-#    include <thread>
 
 namespace alpaka
 {

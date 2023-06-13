@@ -4,15 +4,15 @@
 
 #pragma once
 
+#include "alpaka/dev/DevGenericSycl.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/pltf/PltfGenericSycl.hpp"
+
+#include <string>
+
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
 
-#    include "alpaka/dev/DevGenericSycl.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/pltf/PltfGenericSycl.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <string>
 
 namespace alpaka
 {

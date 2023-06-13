@@ -5,24 +5,17 @@
 
 #pragma once
 
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Cuda.hpp"
+#include "alpaka/core/Hip.hpp"
+
+#include <array>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+#include <type_traits>
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-#    include "alpaka/core/BoostPredef.hpp"
-
-// Backend specific includes.
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#        include "alpaka/core/Cuda.hpp"
-#    endif
-
-#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#        include "alpaka/core/Hip.hpp"
-#    endif
-
-#    include <array>
-#    include <stdexcept>
-#    include <string>
-#    include <tuple>
-#    include <type_traits>
 
 namespace alpaka::uniform_cuda_hip::detail
 {

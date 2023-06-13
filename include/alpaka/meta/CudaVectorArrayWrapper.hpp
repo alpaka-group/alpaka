@@ -4,14 +4,14 @@
 
 #pragma once
 
+#include "alpaka/core/Common.hpp"
+
+#include <functional>
+#include <initializer_list>
+#include <numeric>
+#include <type_traits>
+
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-
-#    include "alpaka/core/Common.hpp"
-
-#    include <functional>
-#    include <initializer_list>
-#    include <numeric>
-#    include <type_traits>
 
 namespace alpaka::meta
 {

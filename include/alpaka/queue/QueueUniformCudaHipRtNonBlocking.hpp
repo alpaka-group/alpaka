@@ -4,9 +4,9 @@
 
 #pragma once
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
 
-#    include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
 namespace alpaka
 {

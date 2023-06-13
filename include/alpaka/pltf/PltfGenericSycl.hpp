@@ -4,25 +4,25 @@
 
 #pragma once
 
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Sycl.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/pltf/Traits.hpp"
+
+#include <cstddef>
+#include <exception>
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#    include <iostream>
+#endif
+#include <mutex>
+#include <optional>
+#include <sstream>
+#include <stdexcept>
+#include <vector>
+
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include "alpaka/core/Concepts.hpp"
-#    include "alpaka/core/Sycl.hpp"
-#    include "alpaka/dev/Traits.hpp"
-#    include "alpaka/pltf/Traits.hpp"
-
 #    include <CL/sycl.hpp>
-
-#    include <cstddef>
-#    include <exception>
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-#        include <iostream>
-#    endif
-#    include <mutex>
-#    include <optional>
-#    include <sstream>
-#    include <stdexcept>
-#    include <vector>
 
 namespace alpaka
 {

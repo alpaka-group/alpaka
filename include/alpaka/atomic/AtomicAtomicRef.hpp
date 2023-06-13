@@ -7,26 +7,26 @@
 #include "alpaka/atomic/Traits.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 
-#if defined(ALPAKA_HAS_STD_ATOMIC_REF)
-#    include <atomic>
-#else
-#    include <boost/atomic.hpp>
-#endif
-
 #include <array>
+#include <atomic>
 #include <type_traits>
+
+#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
+#    ifndef ALPAKA_HAS_STD_ATOMIC_REF
+#        include <boost/atomic.hpp>
+#    endif
 
 namespace alpaka
 {
     namespace detail
     {
-#if defined(ALPAKA_HAS_STD_ATOMIC_REF)
+#    if defined(ALPAKA_HAS_STD_ATOMIC_REF)
         template<typename T>
         using atomic_ref = std::atomic_ref<T>;
-#else
+#    else
         template<typename T>
         using atomic_ref = boost::atomic_ref<T>;
-#endif
+#    endif
     } // namespace detail
     //! The atomic ops based on atomic_ref for CPU accelerators.
     //
@@ -225,3 +225,5 @@ namespace alpaka
         };
     } // namespace trait
 } // namespace alpaka
+
+#endif

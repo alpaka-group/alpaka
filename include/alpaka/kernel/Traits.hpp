@@ -13,9 +13,7 @@
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-#    include "alpaka/workdiv/Traits.hpp"
-#endif
+#include "alpaka/workdiv/Traits.hpp"
 
 #include <type_traits>
 
