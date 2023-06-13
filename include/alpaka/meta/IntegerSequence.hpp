@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/meta/Set.hpp>
+#include "alpaka/meta/Set.hpp"
 
 #include <cstddef>
 #include <type_traits>

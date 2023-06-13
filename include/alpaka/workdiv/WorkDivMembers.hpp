@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/idx/Traits.hpp>
-#include <alpaka/vec/Vec.hpp>
-#include <alpaka/workdiv/Traits.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+#include "alpaka/workdiv/Traits.hpp"
 
 #include <iosfwd>
 

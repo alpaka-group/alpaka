@@ -6,15 +6,15 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/core/Sycl.hpp>
-#    include <alpaka/dev/DevGenericSycl.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/dim/DimIntegralConst.hpp>
-#    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/mem/buf/BufCpu.hpp>
-#    include <alpaka/mem/buf/Traits.hpp>
-#    include <alpaka/mem/view/Accessor.hpp>
-#    include <alpaka/vec/Vec.hpp>
+#    include "alpaka/core/Sycl.hpp"
+#    include "alpaka/dev/DevGenericSycl.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/dim/DimIntegralConst.hpp"
+#    include "alpaka/dim/Traits.hpp"
+#    include "alpaka/mem/buf/BufCpu.hpp"
+#    include "alpaka/mem/buf/Traits.hpp"
+#    include "alpaka/mem/view/Accessor.hpp"
+#    include "alpaka/vec/Vec.hpp"
 
 #    include <CL/sycl.hpp>
 
@@ -231,8 +231,8 @@ namespace alpaka::trait
     };
 } // namespace alpaka::trait
 
-#    include <alpaka/mem/buf/sycl/Accessor.hpp>
-#    include <alpaka/mem/buf/sycl/Copy.hpp>
-#    include <alpaka/mem/buf/sycl/Set.hpp>
+#    include "alpaka/mem/buf/sycl/Accessor.hpp"
+#    include "alpaka/mem/buf/sycl/Copy.hpp"
+#    include "alpaka/mem/buf/sycl/Set.hpp"
 
 #endif

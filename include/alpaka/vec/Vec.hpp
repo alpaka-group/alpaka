@@ -5,20 +5,20 @@
 
 #pragma once
 
-#include <alpaka/core/Align.hpp>
-#include <alpaka/core/Assert.hpp>
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unreachable.hpp>
-#include <alpaka/dim/DimIntegralConst.hpp>
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/extent/Traits.hpp>
-#include <alpaka/idx/Traits.hpp>
-#include <alpaka/meta/Fold.hpp>
-#include <alpaka/meta/Functional.hpp>
-#include <alpaka/meta/IntegerSequence.hpp>
-#include <alpaka/offset/Traits.hpp>
-#include <alpaka/vec/Traits.hpp>
+#include "alpaka/core/Align.hpp"
+#include "alpaka/core/Assert.hpp"
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/Unreachable.hpp"
+#include "alpaka/dim/DimIntegralConst.hpp"
+#include "alpaka/dim/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/meta/Fold.hpp"
+#include "alpaka/meta/Functional.hpp"
+#include "alpaka/meta/IntegerSequence.hpp"
+#include "alpaka/offset/Traits.hpp"
+#include "alpaka/vec/Traits.hpp"
 
 #include <algorithm>
 #include <cstdint>

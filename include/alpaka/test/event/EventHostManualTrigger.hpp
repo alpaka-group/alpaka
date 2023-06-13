@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/alpaka.hpp>
+#include "alpaka/alpaka.hpp"
 
 #include <condition_variable>
 #include <mutex>
@@ -226,7 +226,7 @@ namespace alpaka::trait
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#    include <alpaka/core/BoostPredef.hpp>
+#    include "alpaka/core/BoostPredef.hpp"
 
 #    include <cuda.h>
 
@@ -234,7 +234,7 @@ namespace alpaka::trait
 #        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #    endif
 
-#    include <alpaka/core/Cuda.hpp>
+#    include "alpaka/core/Cuda.hpp"
 
 
 namespace alpaka::test
@@ -465,7 +465,7 @@ namespace alpaka::trait
 #        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #    endif
 
-#    include <alpaka/core/Hip.hpp>
+#    include "alpaka/core/Hip.hpp"
 
 namespace alpaka::test
 {

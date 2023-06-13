@@ -7,8 +7,8 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/block/shared/st/Traits.hpp>
-#    include <alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp>
+#    include "alpaka/block/shared/st/Traits.hpp"
+#    include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"
 
 #    include <CL/sycl.hpp>
 

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/meta/Concatenate.hpp>
+#include "alpaka/meta/Concatenate.hpp"
 
 namespace alpaka::meta
 {

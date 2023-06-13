@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/math/Traits.hpp>
-#include <alpaka/rand/RandPhilox.hpp>
-#include <alpaka/rand/Traits.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/math/Traits.hpp"
+#include "alpaka/rand/RandPhilox.hpp"
+#include "alpaka/rand/Traits.hpp"
 
 #include <algorithm>
 #include <limits>

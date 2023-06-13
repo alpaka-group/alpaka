@@ -6,8 +6,8 @@
 
 #ifdef _OPENMP
 
-#    include <alpaka/block/sync/Traits.hpp>
-#    include <alpaka/core/Common.hpp>
+#    include "alpaka/block/sync/Traits.hpp"
+#    include "alpaka/core/Common.hpp"
 
 namespace alpaka
 {

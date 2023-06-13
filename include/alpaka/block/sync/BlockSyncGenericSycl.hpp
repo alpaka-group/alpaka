@@ -6,7 +6,7 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/block/sync/Traits.hpp>
+#    include "alpaka/block/sync/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

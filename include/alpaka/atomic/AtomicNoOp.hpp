@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/atomic/Traits.hpp>
+#include "alpaka/atomic/Traits.hpp"
 
 namespace alpaka
 {

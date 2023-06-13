@@ -6,9 +6,9 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/idx/Traits.hpp>
-#    include <alpaka/vec/Vec.hpp>
-#    include <alpaka/workdiv/Traits.hpp>
+#    include "alpaka/idx/Traits.hpp"
+#    include "alpaka/vec/Vec.hpp"
+#    include "alpaka/workdiv/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

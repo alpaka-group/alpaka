@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
+#include "alpaka/core/BoostPredef.hpp"
 
 //! Before CUDA 11.5 nvcc is unable to correctly identify return statements in 'if constexpr' branches. It will issue
 //! a false warning about a missing return statement unless it is told that the following code section is unreachable.

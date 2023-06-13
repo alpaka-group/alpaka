@@ -7,9 +7,9 @@
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
-#    include <alpaka/dev/DevGenericSycl.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/pltf/PltfGenericSycl.hpp>
+#    include "alpaka/dev/DevGenericSycl.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/pltf/PltfGenericSycl.hpp"
 
 #    include <CL/sycl.hpp>
 

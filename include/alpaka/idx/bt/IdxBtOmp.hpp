@@ -6,13 +6,13 @@
 
 #ifdef _OPENMP
 
-#    include <alpaka/core/Assert.hpp>
-#    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/core/Positioning.hpp>
-#    include <alpaka/idx/MapIdx.hpp>
-#    include <alpaka/idx/Traits.hpp>
-#    include <alpaka/vec/Vec.hpp>
-#    include <alpaka/workdiv/Traits.hpp>
+#    include "alpaka/core/Assert.hpp"
+#    include "alpaka/core/Concepts.hpp"
+#    include "alpaka/core/Positioning.hpp"
+#    include "alpaka/idx/MapIdx.hpp"
+#    include "alpaka/idx/Traits.hpp"
+#    include "alpaka/vec/Vec.hpp"
+#    include "alpaka/workdiv/Traits.hpp"
 
 #    include <omp.h>
 

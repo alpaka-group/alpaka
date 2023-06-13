@@ -7,7 +7,7 @@
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
 
-#    include <alpaka/kernel/TaskKernelGenericSycl.hpp>
+#    include "alpaka/kernel/TaskKernelGenericSycl.hpp"
 
 namespace alpaka
 {

@@ -7,16 +7,16 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/Assert.hpp>
-#    include <alpaka/core/Cuda.hpp>
-#    include <alpaka/core/Hip.hpp>
-#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/dim/DimIntegralConst.hpp>
-#    include <alpaka/mem/buf/Traits.hpp>
-#    include <alpaka/mem/view/ViewAccessOps.hpp>
-#    include <alpaka/meta/DependentFalseType.hpp>
-#    include <alpaka/vec/Vec.hpp>
+#    include "alpaka/core/Assert.hpp"
+#    include "alpaka/core/Cuda.hpp"
+#    include "alpaka/core/Hip.hpp"
+#    include "alpaka/dev/DevUniformCudaHipRt.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/dim/DimIntegralConst.hpp"
+#    include "alpaka/mem/buf/Traits.hpp"
+#    include "alpaka/mem/view/ViewAccessOps.hpp"
+#    include "alpaka/meta/DependentFalseType.hpp"
+#    include "alpaka/vec/Vec.hpp"
 
 #    include <functional>
 #    include <memory>
@@ -377,7 +377,7 @@ namespace alpaka
     } // namespace trait
 } // namespace alpaka
 
-#    include <alpaka/mem/buf/uniformCudaHip/Copy.hpp>
-#    include <alpaka/mem/buf/uniformCudaHip/Set.hpp>
+#    include "alpaka/mem/buf/uniformCudaHip/Copy.hpp"
+#    include "alpaka/mem/buf/uniformCudaHip/Set.hpp"
 
 #endif

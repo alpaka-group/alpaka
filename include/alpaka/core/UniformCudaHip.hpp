@@ -7,15 +7,15 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/BoostPredef.hpp>
+#    include "alpaka/core/BoostPredef.hpp"
 
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#        include <alpaka/core/Cuda.hpp>
+#        include "alpaka/core/Cuda.hpp"
 #    endif
 
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#        include <alpaka/core/Hip.hpp>
+#        include "alpaka/core/Hip.hpp"
 #    endif
 
 #    include <array>

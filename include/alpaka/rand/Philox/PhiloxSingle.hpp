@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/rand/Philox/MultiplyAndSplit64to32.hpp>
-#include <alpaka/rand/Philox/PhiloxBaseTraits.hpp>
+#include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"
+#include "alpaka/rand/Philox/PhiloxBaseTraits.hpp"
 
 #include <utility>
 

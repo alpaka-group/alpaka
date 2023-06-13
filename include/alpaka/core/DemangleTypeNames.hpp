@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
+#include "alpaka/core/BoostPredef.hpp"
 
 #include <boost/core/demangle.hpp>
 

@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include <alpaka/core/AlignedAlloc.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Concepts.hpp>
-#include <alpaka/dev/cpu/SysInfo.hpp>
-#include <alpaka/mem/alloc/Traits.hpp>
+#include "alpaka/core/AlignedAlloc.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/dev/cpu/SysInfo.hpp"
+#include "alpaka/mem/alloc/Traits.hpp"
 
 #include <algorithm>
 

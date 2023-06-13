@@ -8,7 +8,7 @@
 #    define ALPAKA_ACC_GPU_CUDA_ENABLED
 #endif
 
-#include <alpaka/core/BoostPredef.hpp>
+#include "alpaka/core/BoostPredef.hpp"
 
 #if defined(BOOST_COMP_CLANG_CUDA) && (BOOST_COMP_CLANG_CUDA == BOOST_VERSION_NUMBER(14, 0, 0))
 

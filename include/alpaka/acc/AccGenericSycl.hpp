@@ -8,31 +8,31 @@
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 // Base classes.
-#    include <alpaka/atomic/AtomicGenericSycl.hpp>
-#    include <alpaka/atomic/AtomicHierarchy.hpp>
-#    include <alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp>
-#    include <alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp>
-#    include <alpaka/block/sync/BlockSyncGenericSycl.hpp>
-#    include <alpaka/idx/bt/IdxBtGenericSycl.hpp>
-#    include <alpaka/idx/gb/IdxGbGenericSycl.hpp>
-#    include <alpaka/intrinsic/IntrinsicGenericSycl.hpp>
-#    include <alpaka/math/MathGenericSycl.hpp>
-#    include <alpaka/mem/fence/MemFenceGenericSycl.hpp>
-#    include <alpaka/warp/WarpGenericSycl.hpp>
-#    include <alpaka/workdiv/WorkDivGenericSycl.hpp>
+#    include "alpaka/atomic/AtomicGenericSycl.hpp"
+#    include "alpaka/atomic/AtomicHierarchy.hpp"
+#    include "alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp"
+#    include "alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp"
+#    include "alpaka/block/sync/BlockSyncGenericSycl.hpp"
+#    include "alpaka/idx/bt/IdxBtGenericSycl.hpp"
+#    include "alpaka/idx/gb/IdxGbGenericSycl.hpp"
+#    include "alpaka/intrinsic/IntrinsicGenericSycl.hpp"
+#    include "alpaka/math/MathGenericSycl.hpp"
+#    include "alpaka/mem/fence/MemFenceGenericSycl.hpp"
+#    include "alpaka/warp/WarpGenericSycl.hpp"
+#    include "alpaka/workdiv/WorkDivGenericSycl.hpp"
 
 // Specialized traits.
-#    include <alpaka/acc/Traits.hpp>
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/idx/Traits.hpp>
-#    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/vec/Vec.hpp>
+#    include "alpaka/acc/Traits.hpp"
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/idx/Traits.hpp"
+#    include "alpaka/kernel/Traits.hpp"
+#    include "alpaka/pltf/Traits.hpp"
+#    include "alpaka/vec/Vec.hpp"
 
 // Implementation details.
-#    include <alpaka/core/BoostPredef.hpp>
-#    include <alpaka/core/ClipCast.hpp>
-#    include <alpaka/core/Sycl.hpp>
+#    include "alpaka/core/BoostPredef.hpp"
+#    include "alpaka/core/ClipCast.hpp"
+#    include "alpaka/core/Sycl.hpp"
 
 #    include <CL/sycl.hpp>
 

@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/core/Common.hpp>
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Common.hpp"
 
 #include <algorithm>
 #include <type_traits>

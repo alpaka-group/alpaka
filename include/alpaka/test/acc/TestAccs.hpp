@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/dim/TestDims.hpp>
-#include <alpaka/test/idx/TestIdxs.hpp>
+#include "alpaka/alpaka.hpp"
+#include "alpaka/test/dim/TestDims.hpp"
+#include "alpaka/test/idx/TestIdxs.hpp"
 
 #include <iosfwd>
 #include <tuple>

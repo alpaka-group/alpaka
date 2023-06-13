@@ -6,19 +6,19 @@
 #pragma once
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#    include <alpaka/core/Assert.hpp>
-#    include <alpaka/dev/DevCpu.hpp>
-#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#    include <alpaka/dim/DimIntegralConst.hpp>
-#    include <alpaka/extent/Traits.hpp>
-#    include <alpaka/mem/view/Traits.hpp>
-#    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
-#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
+#    include "alpaka/core/Assert.hpp"
+#    include "alpaka/dev/DevCpu.hpp"
+#    include "alpaka/dev/DevUniformCudaHipRt.hpp"
+#    include "alpaka/dim/DimIntegralConst.hpp"
+#    include "alpaka/extent/Traits.hpp"
+#    include "alpaka/mem/view/Traits.hpp"
+#    include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"
+#    include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#        include <alpaka/core/Cuda.hpp>
+#        include "alpaka/core/Cuda.hpp"
 #    else
-#        include <alpaka/core/Hip.hpp>
+#        include "alpaka/core/Hip.hpp"
 #    endif
 
 #    include <cstdint>

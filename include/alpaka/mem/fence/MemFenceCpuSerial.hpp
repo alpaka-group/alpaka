@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/core/Concepts.hpp>
-#include <alpaka/mem/fence/Traits.hpp>
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/mem/fence/Traits.hpp"
 
 #include <atomic>
 

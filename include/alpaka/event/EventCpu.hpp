@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/event/EventGenericThreads.hpp>
+#include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/event/EventGenericThreads.hpp"
 
 namespace alpaka
 {

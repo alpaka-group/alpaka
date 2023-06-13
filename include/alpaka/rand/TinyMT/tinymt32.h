@@ -20,7 +20,7 @@
  * LICENSE.txt
  */
 
-#include <alpaka/core/BoostPredef.hpp>
+#include "alpaka/core/BoostPredef.hpp"
 
 #include <cstdint>
 /* work-around for glibc < 2.18 according to bug

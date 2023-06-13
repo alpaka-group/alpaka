@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/core/ConcurrentExecPool.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/queue/Traits.hpp>
-#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
-#include <alpaka/wait/Traits.hpp>
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/ConcurrentExecPool.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/event/Traits.hpp"
+#include "alpaka/queue/Traits.hpp"
+#include "alpaka/queue/cpu/IGenericThreadsQueue.hpp"
+#include "alpaka/wait/Traits.hpp"
 
 #include <future>
 #include <memory>
@@ -169,4 +169,4 @@ namespace alpaka
     } // namespace trait
 } // namespace alpaka
 
-#include <alpaka/event/EventGenericThreads.hpp>
+#include "alpaka/event/EventGenericThreads.hpp"

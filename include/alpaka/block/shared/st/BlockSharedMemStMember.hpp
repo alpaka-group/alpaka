@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <alpaka/block/shared/st/Traits.hpp>
-#include <alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp>
-#include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Vectorize.hpp>
+#include "alpaka/block/shared/st/Traits.hpp"
+#include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"
+#include "alpaka/core/Assert.hpp"
+#include "alpaka/core/Vectorize.hpp"
 
 #include <algorithm>
 #include <cstdint>

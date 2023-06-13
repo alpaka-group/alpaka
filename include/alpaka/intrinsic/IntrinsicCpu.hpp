@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/intrinsic/IntrinsicFallback.hpp>
-#include <alpaka/intrinsic/Traits.hpp>
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/intrinsic/IntrinsicFallback.hpp"
+#include "alpaka/intrinsic/Traits.hpp"
 
 #include <bitset>
 #include <climits>

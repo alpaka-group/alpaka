@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/mem/view/Traits.hpp>
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/mem/view/Traits.hpp"
 
 namespace alpaka
 {

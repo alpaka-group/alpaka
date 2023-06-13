@@ -6,10 +6,10 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/event/Traits.hpp>
-#    include <alpaka/queue/Traits.hpp>
-#    include <alpaka/wait/Traits.hpp>
+#    include "alpaka/dev/Traits.hpp"
+#    include "alpaka/event/Traits.hpp"
+#    include "alpaka/queue/Traits.hpp"
+#    include "alpaka/wait/Traits.hpp"
 
 #    include <CL/sycl.hpp>
 

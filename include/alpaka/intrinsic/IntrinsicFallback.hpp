@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/intrinsic/Traits.hpp>
+#include "alpaka/intrinsic/Traits.hpp"
 
 namespace alpaka
 {

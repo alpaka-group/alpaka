@@ -10,8 +10,8 @@
 #        error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
 
-#    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/mem/fence/Traits.hpp>
+#    include "alpaka/core/Concepts.hpp"
+#    include "alpaka/mem/fence/Traits.hpp"
 
 namespace alpaka
 {

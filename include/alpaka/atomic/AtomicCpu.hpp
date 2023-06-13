@@ -11,9 +11,9 @@
 #endif
 
 #ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
-#    include <alpaka/atomic/AtomicAtomicRef.hpp>
+#    include "alpaka/atomic/AtomicAtomicRef.hpp"
 #else
-#    include <alpaka/atomic/AtomicStdLibLock.hpp>
+#    include "alpaka/atomic/AtomicStdLibLock.hpp"
 #endif // ALPAKA_DISABLE_ATOMIC_ATOMICREF
 
 namespace alpaka

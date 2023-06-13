@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include <alpaka/core/Utility.hpp>
-#include <alpaka/mem/buf/Traits.hpp>
-#include <alpaka/mem/view/Traits.hpp>
-#include <alpaka/meta/DependentFalseType.hpp>
-#include <alpaka/meta/TypeListOps.hpp>
+#include "alpaka/core/Utility.hpp"
+#include "alpaka/mem/buf/Traits.hpp"
+#include "alpaka/mem/view/Traits.hpp"
+#include "alpaka/meta/DependentFalseType.hpp"
+#include "alpaka/meta/TypeListOps.hpp"
 
 #include <tuple>
 

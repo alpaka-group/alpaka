@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/math/FloatEqualExact.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/math/FloatEqualExact.hpp"
 
 #include <cmath>
 #include <complex>

@@ -3,7 +3,7 @@
  */
 
 #pragma once
-#include <alpaka/alpaka.hpp>
+#include "alpaka/alpaka.hpp"
 
 #include <tuple>
 

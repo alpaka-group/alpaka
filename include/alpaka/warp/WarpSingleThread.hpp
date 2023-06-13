@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <alpaka/warp/Traits.hpp>
+#include "alpaka/warp/Traits.hpp"
 
 #include <cstdint>
 

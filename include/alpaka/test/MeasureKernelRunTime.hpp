@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/alpaka.hpp>
-#include <alpaka/core/DemangleTypeNames.hpp>
+#include "alpaka/alpaka.hpp"
+#include "alpaka/core/DemangleTypeNames.hpp"
 
 #include <type_traits>
 #include <utility>

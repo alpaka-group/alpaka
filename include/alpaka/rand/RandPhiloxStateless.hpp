@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <alpaka/rand/Philox/PhiloxStateless.hpp>
-#include <alpaka/rand/Philox/PhiloxStatelessVector.hpp>
-#include <alpaka/rand/Traits.hpp>
+#include "alpaka/rand/Philox/PhiloxStateless.hpp"
+#include "alpaka/rand/Philox/PhiloxStatelessVector.hpp"
+#include "alpaka/rand/Traits.hpp"
 
 namespace alpaka::rand
 {

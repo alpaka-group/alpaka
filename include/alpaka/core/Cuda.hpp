@@ -6,7 +6,7 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#    include <alpaka/core/CudaHipCommon.hpp>
+#    include "alpaka/core/CudaHipCommon.hpp"
 
 #    include <iostream>
 #    include <stdexcept>
@@ -53,6 +53,6 @@ namespace alpaka::cuda::detail
 //! CUDA driver error checking with log and exception.
 #    define ALPAKA_CUDA_DRV_CHECK(cmd) ::alpaka::cuda::detail::cudaDrvCheck(cmd, #    cmd, __FILE__, __LINE__)
 
-#    include <alpaka/core/UniformCudaHip.hpp>
+#    include "alpaka/core/UniformCudaHip.hpp"
 
 #endif

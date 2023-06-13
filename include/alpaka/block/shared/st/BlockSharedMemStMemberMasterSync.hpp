@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include <alpaka/block/shared/st/Traits.hpp>
-#include <alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp>
-#include <alpaka/core/AlignedAlloc.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Vectorize.hpp>
+#include "alpaka/block/shared/st/Traits.hpp"
+#include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"
+#include "alpaka/core/AlignedAlloc.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/Vectorize.hpp"
 
 #include <functional>
 #include <memory>

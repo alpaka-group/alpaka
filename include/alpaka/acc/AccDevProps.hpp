@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/vec/Vec.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/vec/Vec.hpp"
 
 #include <string>
 #include <vector>

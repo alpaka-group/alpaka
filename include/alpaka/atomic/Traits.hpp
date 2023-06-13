@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <alpaka/atomic/Op.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/Positioning.hpp>
+#include "alpaka/atomic/Op.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/core/Positioning.hpp"
 
 #include <type_traits>
 

@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/dim/DimIntegralConst.hpp>
-#include <alpaka/idx/Traits.hpp>
-#include <alpaka/meta/Fold.hpp>
+#include "alpaka/core/Common.hpp"
+#include "alpaka/dim/DimIntegralConst.hpp"
+#include "alpaka/idx/Traits.hpp"
+#include "alpaka/meta/Fold.hpp"
 
 #include <functional>
 #include <type_traits>

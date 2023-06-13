@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include <alpaka/acc/Traits.hpp>
-#include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Utility.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/vec/Vec.hpp>
-#include <alpaka/workdiv/WorkDivMembers.hpp>
+#include "alpaka/acc/Traits.hpp"
+#include "alpaka/core/Assert.hpp"
+#include "alpaka/core/Common.hpp"
+#include "alpaka/core/Utility.hpp"
+#include "alpaka/dev/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
+#include "alpaka/workdiv/WorkDivMembers.hpp"
 
 #include <algorithm>
 #include <array>

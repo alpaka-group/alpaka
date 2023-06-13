@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <alpaka/core/Decay.hpp>
-#include <alpaka/math/Traits.hpp>
+#include "alpaka/core/Decay.hpp"
+#include "alpaka/math/Traits.hpp"
 
 namespace alpaka::math
 {
