@@ -134,12 +134,12 @@ jobs:
 
         ## CUDA 12.0
         # nvcc + MSVC
-        - name: windows_nvcc-12.0_cl-2022_release_cuda-only
+        - name: windows_nvcc-12.1_cl-2022_release_cuda-only
           os: windows-2022
-          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0, ALPAKA_CI_CMAKE_VER: 3.24.3, ALPAKA_CI_RUN_TESTS: OFF,                     alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "12.0", CMAKE_CUDA_ARCHITECTURES: "50;90", alpaka_ACC_GPU_CUDA_ONLY_MODE: ON,                                                     alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
-        - name: windows_nvcc-12.0_cl-2022_debug
+          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0, ALPAKA_CI_CMAKE_VER: 3.24.3, ALPAKA_CI_RUN_TESTS: OFF,                     alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "12.1", CMAKE_CUDA_ARCHITECTURES: "50;90", alpaka_ACC_GPU_CUDA_ONLY_MODE: ON,                                                     alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        - name: windows_nvcc-12.1_cl-2022_debug
           os: windows-2022
-          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.25.1, ALPAKA_CI_RUN_TESTS: OFF,                     alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "12.0",                                                                                                                           alpaka_ACC_CPU_BT_OMP5_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
+          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.25.1, ALPAKA_CI_RUN_TESTS: OFF,                     alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "12.1",                                                                                                                           alpaka_ACC_CPU_BT_OMP5_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
 
         ### Ubuntu
         ## native
