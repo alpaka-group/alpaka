@@ -54,13 +54,15 @@ namespace alpaka
         template<typename T>
         inline auto get_global_ptr(T* const addr)
         {
-            return sycl::make_ptr<T, sycl::access::address_space::global_space>(addr);
+            return sycl::address_space_cast<sycl::access::address_space::global_space, sycl::access::decorated::no>(
+                addr);
         }
 
         template<typename T>
         inline auto get_local_ptr(T* const addr)
         {
-            return sycl::make_ptr<T, sycl::access::address_space::local_space>(addr);
+            return sycl::address_space_cast<sycl::access::address_space::local_space, sycl::access::decorated::no>(
+                addr);
         }
 
         template<typename T, typename THierarchy>

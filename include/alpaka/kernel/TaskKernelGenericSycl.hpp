@@ -106,21 +106,15 @@ namespace alpaka
                     },
                     m_args));
 
-            auto dyn_shared_accessor
-                = sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local>{
-                    sycl::range<1>{dyn_shared_mem_bytes},
-                    cgh};
+            auto dyn_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{dyn_shared_mem_bytes}, cgh};
 
             // allocate static shared memory -- value comes from the build system
             constexpr auto st_shared_mem_bytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
-            auto st_shared_accessor = sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local>{
-                sycl::range<1>{st_shared_mem_bytes},
-                cgh};
+            auto st_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{st_shared_mem_bytes}, cgh};
 
             // register memory fence dummies
             auto global_fence_dummy = global_fence_buf.get_access(cgh); // Exists once per queue
-            auto local_fence_dummy
-                = sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local>{sycl::range<1>{1}, cgh};
+            auto local_fence_dummy = sycl::local_accessor<int>{sycl::range<1>{1}, cgh};
 
             // copy-by-value so we don't access 'this' on the device
             auto k_func = m_kernelFnObj;

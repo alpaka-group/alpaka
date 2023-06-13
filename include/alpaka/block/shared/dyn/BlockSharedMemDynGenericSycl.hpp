@@ -20,13 +20,11 @@ namespace alpaka
     public:
         using BlockSharedMemDynBase = BlockSharedMemDynGenericSycl;
 
-        BlockSharedMemDynGenericSycl(
-            sycl::accessor<std::byte, 1, sycl::access::mode::read_write, sycl::access::target::local> accessor)
-            : m_accessor{accessor}
+        BlockSharedMemDynGenericSycl(sycl::local_accessor<std::byte> accessor) : m_accessor{accessor}
         {
         }
 
-        sycl::accessor<std::byte, 1, sycl::access::mode::read_write, sycl::access::target::local> m_accessor;
+        sycl::local_accessor<std::byte> m_accessor;
     };
 } // namespace alpaka
 

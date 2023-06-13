@@ -36,7 +36,7 @@ namespace alpaka
             TElem,
             TDim,
             sycl_access_mode<TAlpakaAccessModes...>,
-            sycl::target::global_buffer,
+            sycl::target::device,
             sycl::access::placeholder::true_t>;
     } // namespace detail
 
