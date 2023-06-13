@@ -25,12 +25,12 @@ namespace alpaka
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wweak-vtables"
 #    endif
-        struct IntelGpuSelector : sycl::device_selector
+        struct IntelGpuSelector final
         {
-            auto operator()(sycl::device const& dev) const -> int override
+            auto operator()(sycl::device const& dev) const -> int
             {
-                auto const vendor = dev.get_info<sycl::info::device::vendor>();
-                auto const is_intel_gpu = (vendor.find("Intel(R) Corporation") != std::string::npos) && dev.is_gpu();
+                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
+                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("Intel(R) Corporation") != std::string::npos);
 
                 return is_intel_gpu ? 1 : -1;
             }

@@ -39,15 +39,15 @@ namespace alpaka
     {
     public:
         MemFenceGenericSycl(
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> global_dummy,
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> local_dummy)
+            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_dummy,
+            sycl::local_accessor<int> local_dummy)
             : m_global_dummy{global_dummy}
             , m_local_dummy{local_dummy}
         {
         }
 
-        sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> m_global_dummy;
-        sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> m_local_dummy;
+        sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> m_global_dummy;
+        sycl::local_accessor<int> m_local_dummy;
     };
 } // namespace alpaka
 

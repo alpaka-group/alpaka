@@ -21,8 +21,7 @@ namespace alpaka
         , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl>
     {
     public:
-        BlockSharedMemStGenericSycl(
-            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> accessor)
+        BlockSharedMemStGenericSycl(sycl::local_accessor<std::byte> accessor)
             : BlockSharedMemStMemberImpl(
                 reinterpret_cast<std::uint8_t*>(accessor.get_pointer().get()),
                 accessor.size())
@@ -31,7 +30,7 @@ namespace alpaka
         }
 
     private:
-        sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> m_accessor;
+        sycl::local_accessor<std::byte> m_accessor;
     };
 } // namespace alpaka
 

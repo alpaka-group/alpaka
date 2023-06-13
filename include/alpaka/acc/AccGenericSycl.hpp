@@ -68,10 +68,10 @@ namespace alpaka
         AccGenericSycl(
             Vec<TDim, TIdx> const& threadElemExtent,
             sycl::nd_item<TDim::value> work_item,
-            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> dyn_shared_acc,
-            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> st_shared_acc,
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> global_fence_dummy,
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> local_fence_dummy,
+            sycl::local_accessor<std::byte> dyn_shared_acc,
+            sycl::local_accessor<std::byte> st_shared_acc,
+            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
+            sycl::local_accessor<int> local_fence_dummy,
             sycl::stream output_stream)
             : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
             , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
@@ -93,10 +93,10 @@ namespace alpaka
         AccGenericSycl(
             Vec<TDim, TIdx> const& threadElemExtent,
             sycl::nd_item<TDim::value> work_item,
-            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> dyn_shared_acc,
-            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> st_shared_acc,
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> global_fence_dummy,
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> local_fence_dummy)
+            sycl::local_accessor<std::byte> dyn_shared_acc,
+            sycl::local_accessor<std::byte> st_shared_acc,
+            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
+            sycl::local_accessor<int> local_fence_dummy)
             : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
             , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
             , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
@@ -132,7 +132,11 @@ namespace alpaka::trait
         static auto getAccDevProps(typename DevType<TAcc<TDim, TIdx>>::type const& dev) -> AccDevProps<TDim, TIdx>
         {
             auto const device = dev.getNativeHandle().first;
-            auto max_threads_dim = device.template get_info<sycl::info::device::max_work_item_sizes>();
+            auto const max_threads_dim
+                = device.template get_info<sycl::info::device::max_work_item_sizes<TDim::value>>();
+            Vec<TDim, TIdx> max_threads_dim_vec{};
+            for(int i = 0; i < static_cast<int>(TDim::value); i++)
+                max_threads_dim_vec[i] = alpaka::core::clipCast<TIdx>(max_threads_dim[i]);
             return {// m_multiProcessorCount
                     alpaka::core::clipCast<TIdx>(device.template get_info<sycl::info::device::max_compute_units>()),
                     // m_gridBlockExtentMax
