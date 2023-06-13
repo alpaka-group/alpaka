@@ -725,8 +725,8 @@ namespace alpaka
         struct Enqueue<QueueGenericSyclBlocking<DevGenericSycl<TPltf>>, test::EventHostManualTriggerSycl<TPltf>>
         {
             ALPAKA_FN_HOST static auto enqueue(
-                QueueGenericSyclBlocking<DevGenericSycl<TPltf>>& queue,
-                test::EventHostManualTriggerSycl<TPltf>& event) -> void
+                QueueGenericSyclBlocking<DevGenericSycl<TPltf>>& /* queue */,
+                test::EventHostManualTriggerSycl<TPltf>& /* event */) -> void
             {
             }
         };
@@ -735,8 +735,8 @@ namespace alpaka
         struct Enqueue<QueueGenericSyclNonBlocking<DevGenericSycl<TPltf>>, test::EventHostManualTriggerSycl<TPltf>>
         {
             ALPAKA_FN_HOST static auto enqueue(
-                QueueGenericSyclNonBlocking<DevGenericSycl<TPltf>>& queue,
-                test::EventHostManualTriggerSycl<TPltf>& event) -> void
+                QueueGenericSyclNonBlocking<DevGenericSycl<TPltf>>& /* queue */,
+                test::EventHostManualTriggerSycl<TPltf>& /* event */) -> void
             {
             }
         };
@@ -744,7 +744,7 @@ namespace alpaka
         template<typename TPltf>
         struct IsComplete<test::EventHostManualTriggerSycl<TPltf>>
         {
-            ALPAKA_FN_HOST static auto isComplete(test::EventHostManualTriggerSycl<TPltf> const& event) -> bool
+            ALPAKA_FN_HOST static auto isComplete(test::EventHostManualTriggerSycl<TPltf> const& /* event */) -> bool
             {
                 return true;
             }
