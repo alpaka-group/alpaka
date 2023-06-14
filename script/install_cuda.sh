@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan, Simeon Ehrig
+# Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan, Simeon Ehrig
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -96,8 +96,14 @@ else
             ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.0.0-525.60.13-1_amd64.deb
             ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
             ALPAKA_CUDA_OLD_KEYS=false
+        elif [ "${ALPAKA_CI_CUDA_VERSION}" == "12.1" ]
+        then
+            ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-"${ALPAKA_CUDA_DISTRO}"-12-1-local
+            ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_12.1.1-530.30.02-1_amd64.deb
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.1.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_OLD_KEYS=false
         else
-            echo CUDA versions other than 11.0, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8 and 12.0 are not currently supported on linux!
+            echo CUDA versions other than 11.0, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 12.0 and 12.1 are not currently supported on linux!
         fi
 
         # First install the local repository.
@@ -141,12 +147,12 @@ else
         sudo dpkg --purge "${ALPAKA_CUDA_PKG_DEB_NAME}"
     elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
-        if [ "${ALPAKA_CI_CUDA_VERSION}" == "12.0" ]
+        if [ "${ALPAKA_CI_CUDA_VERSION}" == "12.1" ]
         then
-            ALPAKA_CUDA_PKG_FILE_NAME=cuda_12.0.0_527.41_windows.exe
-            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+            ALPAKA_CUDA_PKG_FILE_NAME=cuda_12.1.1_531.14_windows.exe
+            ALPAKA_CUDA_PKG_FILE_PATH=https://developer.download.nvidia.com/compute/cuda/12.1.1/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
         else
-            echo CUDA versions other than 12.0 are not currently supported on Windows!
+            echo CUDA versions other than 12.1 are not currently supported on Windows!
         fi
 
         curl -L -o cuda_installer.exe ${ALPAKA_CUDA_PKG_FILE_PATH}
