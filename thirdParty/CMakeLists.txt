@@ -9,7 +9,7 @@ if(BUILD_TESTING)
         # Force Catch2's CMake to pick up the variables we set below
         set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
-        set(CATCH_CONFIG_FAST_COMPILE ON)
+        set(CATCH_CONFIG_FAST_COMPILE OFF)
         if(WIN32)
             set(CATCH_CONFIG_WINDOWS_CRTDBG ON)
         endif()
