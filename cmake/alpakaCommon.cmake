@@ -634,7 +634,7 @@ if(alpaka_ACC_SYCL_ENABLE)
         #-----------------------------------------------------------------------------------------------------------------
         # Generic SYCL options
         if(alpaka_SYCL_ENABLE_IOSTREAM)
-            set(alpaka_SYCL_IOSTREAM_KIB "64" CACHE STRING "Kibibytes (1024B) of memory to allocate per block for SYCL's on-device iostream")
+            set(alpaka_SYCL_IOSTREAM_KIB "8" CACHE STRING "Kibibytes (1024B) of memory to allocate per block for SYCL's on-device iostream. Should be less than 64 kB.")
 
             target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_ENABLED")
             target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_KIB=${alpaka_SYCL_IOSTREAM_KIB}")
