@@ -1,4 +1,4 @@
-/* Copyright 2022 Antonio Di Pilato, Jan Stephan
+/* Copyright 2023 Antonio Di Pilato, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -17,5 +17,8 @@ TEMPLATE_LIST_TEST_CASE("NativeHandle", "[handle]", alpaka::test::TestAccs)
     auto handle = alpaka::getNativeHandle(dev);
 
     STATIC_REQUIRE(std::is_same_v<alpaka::NativeHandle<Dev>, decltype(handle)>);
-    STATIC_REQUIRE(std::is_same_v<alpaka::NativeHandle<Dev>, int>); // It won't work for SYCL backend
+    // The SYCL backend does not use an int as the native handle type
+#ifndef ALPAKA_ACC_SYCL_ENABLED
+    STATIC_REQUIRE(std::is_same_v<alpaka::NativeHandle<Dev>, int>);
+#endif
 }
