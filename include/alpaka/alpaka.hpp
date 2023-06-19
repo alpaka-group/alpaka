@@ -171,6 +171,7 @@
 #include "alpaka/meta/IsArrayOrVector.hpp"
 #include "alpaka/meta/IsStrictBase.hpp"
 #include "alpaka/meta/NdLoop.hpp"
+#include "alpaka/meta/NonZero.hpp"
 #include "alpaka/meta/Set.hpp"
 #include "alpaka/meta/Transform.hpp"
 #include "alpaka/meta/TypeListOps.hpp"
