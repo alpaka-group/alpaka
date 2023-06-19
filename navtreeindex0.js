@@ -1,5 +1,6 @@
 var NAVTREEINDEX0 =
 {
+"":[2,0,2],
 "AccCpuOmp2Blocks_8hpp.html":[4,0,0,0,0,0],
 "AccCpuOmp2Blocks_8hpp_source.html":[4,0,0,0,0,0],
 "AccCpuOmp2Threads_8hpp.html":[4,0,0,0,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "Debug_8hpp.html#a7f84384a17e301a636770e17c2951383":[4,0,0,0,3,15,1],
 "Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03":[4,0,0,0,3,15,2],
 "Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681":[4,0,0,0,3,15,7],
-"Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec":[4,0,0,0,3,15,5],
-"Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806":[4,0,0,0,3,15,4]
+"Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec":[4,0,0,0,3,15,5]
 };

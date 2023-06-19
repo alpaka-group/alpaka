@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"mem_2view_2Traits_8hpp.html#aa7b4d9f42d421578d38e8923da784b37":[4,0,0,0,14,3,1,22],
 "mem_2view_2Traits_8hpp.html#ab0892f9211160310c93d8ffef300d3c1":[4,0,0,0,14,3,1,18],
 "mem_2view_2Traits_8hpp.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd":[4,0,0,0,14,3,1,17],
 "mem_2view_2Traits_8hpp.html#ac88495b5e4861e9f4a7081ccfbf47594":[4,0,0,0,14,3,1,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1core_1_1threads.html":[2,0,0,2,2],
 "namespacealpaka_1_1core_1_1threads_1_1detail.html":[2,0,0,2,2,0],
 "namespacealpaka_1_1core_1_1vectorization.html":[2,0,0,2,3],
-"namespacealpaka_1_1core_1_1vectorization.html#a2d12f7e6f724f279a7baf91a5d3b40be":[2,0,0,2,3,11],
-"namespacealpaka_1_1cpu.html":[2,0,0,3]
+"namespacealpaka_1_1core_1_1vectorization.html#a2d12f7e6f724f279a7baf91a5d3b40be":[2,0,0,2,3,11]
 };

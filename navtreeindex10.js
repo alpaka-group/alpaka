@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1ApiCudaRt.html#ab319661a116359f42ebee95ed730d537":[3,0,0,27,62],
 "structalpaka_1_1ApiCudaRt.html#ab6b69232fdfb5d210cbdcb7cc3fcf83a":[3,0,0,27,74],
 "structalpaka_1_1ApiCudaRt.html#abbbd51a415431d12fec2547e996b2900":[3,0,0,27,31],
 "structalpaka_1_1ApiCudaRt.html#abfa2b5a486a9b3f142917fb14b9921d9":[3,0,0,27,83],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Runtime_01_4.html#a8a2921d3c1f0e9251f71b783198aaf8c":[3,0,0,4,39,0],
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Static_01_4.html":[3,0,0,4,40],
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Dynamic_01_4.html":[3,0,0,4,32],
-"structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Dynamic_01_4.html#a88de6dd405234b90ea2e3276154eb1a8":[3,0,0,4,32,0],
-"structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Guided_01_4.html":[3,0,0,4,33]
+"structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Dynamic_01_4.html#a88de6dd405234b90ea2e3276154eb1a8":[3,0,0,4,32,0]
 };
