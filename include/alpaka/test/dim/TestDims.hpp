@@ -17,7 +17,7 @@ namespace alpaka::test
         DimInt<1u>,
         DimInt<2u>,
         DimInt<3u>
-    // The CUDA & HIP accelerators do not currently support 4D buffers and 4D acceleration.
+    // CUDA, HIP and SYCL accelerators do not support 4D buffers and 4D acceleration.
 #if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(ALPAKA_ACC_SYCL_ENABLED)
         ,
         DimInt<4u>
