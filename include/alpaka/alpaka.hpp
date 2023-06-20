@@ -26581,7 +26581,7 @@
 		        , public concepts::Implements<ConceptGetDev, EventUniformCudaHipRt<TApi>>
 		    {
 		    public:
-		        ALPAKA_FN_HOST EventUniformCudaHipRt<TApi>(DevUniformCudaHipRt<TApi> const& dev, bool bBusyWait = true)
+		        ALPAKA_FN_HOST EventUniformCudaHipRt(DevUniformCudaHipRt<TApi> const& dev, bool bBusyWait = true)
 		            : m_spEventImpl(std::make_shared<uniform_cuda_hip::detail::EventUniformCudaHipImpl<TApi>>(dev, bBusyWait))
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
