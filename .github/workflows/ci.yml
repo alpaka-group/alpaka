@@ -15,15 +15,15 @@ concurrency:
 # NOTE: Testing the full matrix is not practical.
 # Therefore we aim to have each value been set in at lest one job.
 # CXX                                           : {g++, clang++}
-#   [g++] ALPAKA_CI_GCC_VER                     : {9, 10, 11, 12}
+#   [g++] ALPAKA_CI_GCC_VER                     : {9, 10, 11, 12, 13}
 #   [clang++] ALPAKA_CI_CLANG_VER               : {9, 10, 11, 12, 13, 14}
 #   [cl.exe] ALPAKA_CI_CL_VER                   : {2022}
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [CXX==clang++]:libc++}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # alpaka_CI                                     : {GITHUB}
 # ALPAKA_CI_DOCKER_BASE_IMAGE_NAME              : {ubuntu:20.04, ubuntu:22.04}
-# ALPAKA_BOOST_VERSION                          : {1.74.0, 1.75.0, 1.76.0, 1.77.0, 1.78.0, 1.79.0}
-# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.3, 3.25.2}
+# ALPAKA_BOOST_VERSION                          : {1.74.0, 1.75.0, 1.76.0, 1.77.0, 1.78.0, 1.79.0, 1.80.0, 1.81.0, 1.82.0}
+# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.3, 3.25.2, 3.26.4}
 # ALPAKA_CI_XCODE_VER                           : {13.2.1, 14.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
@@ -158,6 +158,9 @@ jobs:
         - name: linux_gcc-12_release_c++20
           os: ubuntu-22.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", alpaka_CXX_STANDARD: 20, alpaka_USE_MDSPAN: "FETCH"}
+        - name: linux_gcc-13_debug
+          os: ubuntu-22.04
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 13,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.82.0, ALPAKA_CI_CMAKE_VER: 3.26.4, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04"}
 
         # clang++
         - name: linux_clang-9_debug
