@@ -127,7 +127,7 @@ namespace alpaka::trait
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             printDeviceProperties(sycl_dev);
 #    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-            std::cout << __func__ << sycl_dev.get_info<info::device::name>() << '\n';
+            std::cout << __func__ << sycl_dev.template get_info<sycl::info::device::name>() << '\n';
 #    endif
             using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
             return typename DevType<SyclPltf>::type{sycl_dev, platform.syclContext()};
@@ -189,82 +189,63 @@ namespace alpaka::trait
 
             std::cout << "SYCL version: " << device.get_info<sycl::info::device::version>() << '\n';
 
+#        if !defined(BOOST_COMP_ICPX)
+            // Not defined by Level Zero back-end
             std::cout << "Backend version: " << device.get_info<sycl::info::device::backend_version>() << '\n';
+#        endif
 
             std::cout << "Aspects: " << '\n';
-            auto const aspects = device.get_info<sycl::info::device::aspects>();
-            for(auto const& asp : aspects)
-            {
-                switch(asp)
-                {
-                // Ignore the hardware types - we already have queried this info above
-                case sycl::aspect::cpu:
-                case sycl::aspect::gpu:
-                case sycl::aspect::accelerator:
-                case sycl::aspect::custom:
-                    break;
+            std::cout.flush();
 
-                case sycl::aspect::emulated:
-                    std::cout << "\t* emulated\n";
-                    break;
+#        if defined(BOOST_COMP_ICPX)
+#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+            // These aspects are missing from oneAPI versions < 2023.2.0
+            if(device.has(sycl::aspect::emulated))
+                std::cout << "\t* emulated\n";
 
-                case sycl::aspect::host_debugabble:
-                    std::cout << "\t* debugabble using standard debuggers\n";
-                    break;
+            if(device.has(sycl::aspect::host_debuggable))
+                std::cout << "\t* debuggable using standard debuggers\n";
+#            endif
+#        endif
 
-                case sycl::aspect::fp16:
-                    std::cout << "\t* supports sycl::half precision\n";
-                    break;
+            if(device.has(sycl::aspect::fp16))
+                std::cout << "\t* supports sycl::half precision\n";
 
-                case sycl::aspect::fp64:
-                    std::cout << "\t* supports double precision\n";
-                    break;
+            if(device.has(sycl::aspect::fp64))
+                std::cout << "\t* supports double precision\n";
 
-                case sycl::aspect::atomic64:
-                    std::cout << "\t* supports 64-bit atomics\n";
-                    break;
+            if(device.has(sycl::aspect::atomic64))
+                std::cout << "\t* supports 64-bit atomics\n";
 
-                case sycl::aspect::image:
-                    std::cout << "\t* supports images\n";
-                    break;
+            if(device.has(sycl::aspect::image))
+                std::cout << "\t* supports images\n";
 
-                case sycl::aspect::online_compiler:
-                    std::cout << "\t* supports online compilation of device code\n";
-                    break;
+            if(device.has(sycl::aspect::online_compiler))
+                std::cout << "\t* supports online compilation of device code\n";
 
-                case sycl::aspect::online_linker:
-                    std::cout << "\t* supports online linking of device code\n";
-                    break;
+            if(device.has(sycl::aspect::online_linker))
+                std::cout << "\t* supports online linking of device code\n";
 
-                case sycl::aspect::queue_profiling:
-                    std::cout << "\t* supports queue profiling\n";
-                    break;
+            if(device.has(sycl::aspect::queue_profiling))
+                std::cout << "\t* supports queue profiling\n";
 
-                case sycl::aspect::usm_device_allocations:
-                    std::cout << "\t* supports explicit USM allocations\n";
-                    break;
+            if(device.has(sycl::aspect::usm_device_allocations))
+                std::cout << "\t* supports explicit USM allocations\n";
 
-                case sycl::aspect::usm_host_allocations:
-                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host\n";
-                    break;
+            if(device.has(sycl::aspect::usm_host_allocations))
+                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host\n";
 
-                case sycl::aspect::usm_atomic_host_allocations:
-                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host atomically\n";
-                    break;
+            if(device.has(sycl::aspect::usm_atomic_host_allocations))
+                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host atomically\n";
 
-                case sycl::aspect::usm_shared_allocations:
-                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared\n";
-                    break;
+            if(device.has(sycl::aspect::usm_shared_allocations))
+                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared\n";
 
-                case sycl::aspect::usm_atomic_shared_allocations:
-                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared atomically\n";
-                    break;
+            if(device.has(sycl::aspect::usm_atomic_shared_allocations))
+                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared atomically\n";
 
-                case sycl::aspect::usm_system_allocations:
-                    std::cout << "\t* can access memory allocated by the system allocator\n";
-                    break;
-                }
-            }
+            if(device.has(sycl::aspect::usm_system_allocations))
+                std::cout << "\t* can access memory allocated by the system allocator\n";
 
             std::cout << "Available compute units: " << device.get_info<sycl::info::device::max_compute_units>()
                       << '\n';
@@ -323,7 +304,7 @@ namespace alpaka::trait
             std::cout << "Native ISA vector width (float): "
                       << device.get_info<sycl::info::device::native_vector_width_float>() << '\n';
 
-            if(device.has_aspect(sycl::aspect::fp64))
+            if(device.has(sycl::aspect::fp64))
             {
                 std::cout << "Preferred native vector width (double): "
                           << device.get_info<sycl::info::device::preferred_vector_width_double>() << '\n';
@@ -332,7 +313,7 @@ namespace alpaka::trait
                           << device.get_info<sycl::info::device::native_vector_width_double>() << '\n';
             }
 
-            if(device.has_aspect(sycl::aspect::fp16))
+            if(device.has(sycl::aspect::fp16))
             {
                 std::cout << "Preferred native vector width (half): "
                           << device.get_info<sycl::info::device::preferred_vector_width_half>() << '\n';
@@ -349,7 +330,7 @@ namespace alpaka::trait
             std::cout << "Maximum size of memory object allocation: "
                       << device.get_info<sycl::info::device::max_mem_alloc_size>() << " bytes\n";
 
-            if(device.has_aspect(sycl::aspect::image))
+            if(device.has(sycl::aspect::image))
             {
                 std::cout << "Maximum number of simultaneous image object reads per kernel: "
                           << device.get_info<sycl::info::device::max_read_image_args>() << '\n';
@@ -417,7 +398,7 @@ namespace alpaka::trait
                 find_and_print(sycl::info::fp_config::soft_float);
             };
 
-            if(device.has_aspect(sycl::aspect::fp16))
+            if(device.has(sycl::aspect::fp16))
             {
                 auto const fp16_conf = device.get_info<sycl::info::device::half_fp_config>();
                 print_fp_config("Half", fp16_conf);
@@ -426,7 +407,7 @@ namespace alpaka::trait
             auto const fp32_conf = device.get_info<sycl::info::device::single_fp_config>();
             print_fp_config("Single", fp32_conf);
 
-            if(device.has_aspect(sycl::aspect::fp64))
+            if(device.has(sycl::aspect::fp64))
             {
                 auto const fp64_conf = device.get_info<sycl::info::device::double_fp_config>();
                 print_fp_config("Double", fp64_conf);
@@ -458,7 +439,7 @@ namespace alpaka::trait
                           << device.get_info<sycl::info::device::global_mem_cache_line_size>() << " bytes\n";
 
                 std::cout << "Global memory cache size: "
-                          << device.get_info<sycl::info::device::global_mem_cache_size>() / KiB << " KiB\n"
+                          << device.get_info<sycl::info::device::global_mem_cache_size>() / KiB << " KiB\n";
             }
 
             std::cout << "Global memory size: " << device.get_info<sycl::info::device::global_mem_size>() / MiB
@@ -516,6 +497,11 @@ namespace alpaka::trait
                     case sycl::memory_order::seq_cst:
                         std::cout << "seq_cst";
                         break;
+#        if defined(BOOST_COMP_ICPX)
+                    // Stop icpx from complaining about its own internals.
+                    case sycl::memory_order::__consume_unsupported:
+                        break;
+#        endif
                     }
                     std::cout << ", ";
                 }
@@ -526,9 +512,14 @@ namespace alpaka::trait
             auto const mem_orders = device.get_info<sycl::info::device::atomic_memory_order_capabilities>();
             print_memory_orders(mem_orders);
 
+#        if defined(BOOST_COMP_ICPX)
+#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+            // Not implemented in oneAPI < 2023.2.0
             std::cout << "Supported memory orderings for sycl::atomic_fence: ";
             auto const fence_orders = device.get_info<sycl::info::device::atomic_fence_order_capabilities>();
             print_memory_orders(fence_orders);
+#            endif
+#        endif
 
             auto print_memory_scopes = [](std::vector<sycl::memory_scope> const& mem_scopes)
             {
@@ -565,9 +556,14 @@ namespace alpaka::trait
             auto const mem_scopes = device.get_info<sycl::info::device::atomic_memory_scope_capabilities>();
             print_memory_scopes(mem_scopes);
 
+#        if defined(BOOST_COMP_ICPX)
+#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+            // Not implemented in oneAPI < 2023.2.0
             std::cout << "Supported memory scopes for sycl::atomic_fence: ";
             auto const fence_scopes = device.get_info<sycl::info::device::atomic_fence_scope_capabilities>();
             print_memory_scopes(fence_scopes);
+#            endif
+#        endif
 
             std::cout << "Device timer resolution: "
                       << device.get_info<sycl::info::device::profiling_timer_resolution>() << " ns\n";
@@ -607,6 +603,11 @@ namespace alpaka::trait
                         std::cout << "by affinity domain";
                         has_affinity_domains = true;
                         break;
+#        if defined(BOOST_COMP_ICPX)
+                    case sycl::info::partition_property::ext_intel_partition_by_cslice:
+                        std::cout << "by compute slice (Intel extension; deprecated)";
+                        break;
+#        endif
                     }
                     std::cout << ", ";
                 }
@@ -671,6 +672,12 @@ namespace alpaka::trait
                 case sycl::info::partition_property::partition_by_affinity_domain:
                     std::cout << "partitioned by affinity domain";
                     break;
+
+#        if defined(BOOST_COMP_ICPX)
+                case sycl::info::partition_property::ext_intel_partition_by_cslice:
+                    std::cout << "partitioned by compute slice (Intel extension; deprecated)";
+                    break;
+#        endif
                 }
                 std::cout << '\n';
 

@@ -7,6 +7,7 @@
 #include "alpaka/block/shared/st/Traits.hpp"
 #include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"
 
+#include <cstddef>
 #include <cstdint>
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED

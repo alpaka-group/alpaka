@@ -18,13 +18,7 @@ namespace alpaka
 {
     namespace detail
     {
-        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
-        // linker anyway.
-#    if BOOST_COMP_CLANG
-#        pragma clang diagnostic push
-#        pragma clang diagnostic ignored "-Wweak-vtables"
-#    endif
-        struct IntelCpuSelector final
+        struct IntelCpuSelector
         {
             auto operator()(sycl::device const& dev) const -> int
             {
@@ -34,9 +28,6 @@ namespace alpaka
                 return is_intel_cpu ? 1 : -1;
             }
         };
-#    if BOOST_COMP_CLANG
-#        pragma clang diagnostic pop
-#    endif
     } // namespace detail
 
     //! The SYCL device manager.
