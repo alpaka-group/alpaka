@@ -1,9 +1,8 @@
-/* Copyright 2022 Jan Stephan, Antonio Di Pilato, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
-
 
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/event/Traits.hpp"
@@ -127,19 +126,24 @@ namespace alpaka::detail
                 clean_dependencies();
 
                 // Execute task
-                m_last_event = m_queue.submit(
-                    [this, &task](sycl::handler& cgh)
-                    {
-                        if(!m_dependencies.empty())
-                            cgh.depends_on(m_dependencies);
+                if constexpr(is_sycl_task<TTask> && !is_sycl_kernel<TTask>) // Copy / Fill
+                {
+                    m_last_event = task(m_queue, m_dependencies); // Will call queue.{copy, fill} internally
+                }
+                else
+                {
+                    m_last_event = m_queue.submit(
+                        [this, &task](sycl::handler& cgh)
+                        {
+                            if(!m_dependencies.empty())
+                                cgh.depends_on(m_dependencies);
 
-                        if constexpr(is_sycl_kernel<TTask>) // Kernel
-                            task(cgh, m_fence_dummy); // Will call cgh.parallel_for internally
-                        else if constexpr(is_sycl_task<TTask>) // Copy / Fill
-                            task(cgh); // Will call cgh.{copy, fill} internally
-                        else // Host
-                            cgh.host_task(task);
-                    });
+                            if constexpr(is_sycl_kernel<TTask>) // Kernel
+                                task(cgh, m_fence_dummy); // Will call cgh.parallel_for internally
+                            else // Host
+                                cgh.host_task(task);
+                        });
+                }
 
                 m_dependencies.clear();
             }

@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Luca Ferragina, Aurora Perego
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -192,7 +192,7 @@ namespace alpaka::trait
             }
 #    endif
 
-            auto* memPtr = sycl::malloc_device<TElem>(
+            TElem* memPtr = sycl::malloc_device<TElem>(
                 static_cast<std::size_t>(getExtentProduct(extent)),
                 dev.getNativeHandle().first,
                 dev.getNativeHandle().second);

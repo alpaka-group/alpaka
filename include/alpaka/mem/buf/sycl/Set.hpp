@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Luca Ferragina, Aurora Perego
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -83,20 +83,42 @@ namespace alpaka
 
             using TaskSetSyclBase<TDim, TView, TExtent>::TaskSetSyclBase;
 
-            auto operator()(sycl::handler& cgh) const -> void
+            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 this->printDebug();
 #    endif
+                // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
+                // iteration.
+                Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
+                // [z, y, x] -> [y, x] because the z pitch (the full idx of the buffer) is not required.
+                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
+
+                // Record an event for each memcpy call
+                std::vector<sycl::event> events;
+                events.reserve(static_cast<std::size_t>(extentWithoutInnermost.prod()));
+
                 if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
                 {
-                    cgh.memset(
-                        reinterpret_cast<void*>(this->m_dstMemNative),
-                        this->m_byte,
-                        static_cast<std::size_t>(this->m_extentWidthBytes * this->m_extent.prod()));
+                    meta::ndLoopIncIdx(
+                        extentWithoutInnermost,
+                        [&](Vec<DimMin1, ExtentSize> const& idx)
+                        {
+                            events.push_back(queue.memset(
+                                reinterpret_cast<void*>(
+                                    this->m_dstMemNative
+                                    + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
+                                          .foldrAll(std::plus<DstSize>())),
+                                this->m_byte,
+                                static_cast<std::size_t>(this->m_extentWidthBytes),
+                                requirements));
+                        });
                 }
+
+                // Return an event that depends on all the events assciated to the memcpy calls
+                return queue.ext_oneapi_submit_barrier(events);
             }
         };
 
@@ -106,7 +128,7 @@ namespace alpaka
         {
             using TaskSetSyclBase<DimInt<1u>, TView, TExtent>::TaskSetSyclBase;
 
-            auto operator()(sycl::handler& cgh) const -> void
+            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -115,10 +137,15 @@ namespace alpaka
 #    endif
                 if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
                 {
-                    cgh.memset(
+                    return queue.memset(
                         reinterpret_cast<void*>(this->m_dstMemNative),
                         this->m_byte,
-                        static_cast<std::size_t>(this->m_extentWidthBytes));
+                        static_cast<std::size_t>(this->m_extentWidthBytes),
+                        requirements);
+                }
+                else
+                {
+                    return queue.ext_oneapi_submit_barrier();
                 }
             }
         };
@@ -151,14 +178,14 @@ namespace alpaka
             }
 #    endif
 
-            auto operator()(sycl::handler& cgh) const -> void
+            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 printDebug();
 #    endif
-                cgh.memset(reinterpret_cast<void*>(m_dstMemNative), m_byte, sizeof(Elem));
+                return queue.memset(reinterpret_cast<void*>(m_dstMemNative), m_byte, sizeof(Elem), requirements);
             }
 
             std::uint8_t const m_byte;

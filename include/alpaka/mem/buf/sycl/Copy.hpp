@@ -1,7 +1,6 @@
-/* Copyright 2023 Jan Stephan, Bernhard Manfred Gruber, Luca Ferragina, Aurora Perego
+/* Copyright 2023 Jan Stephan, Bernhard Manfred Gruber, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
-
 
 #pragma once
 
@@ -27,7 +26,7 @@
 
 namespace alpaka::detail
 {
-    //!  The Sycl device memory copy task base.
+    //!  The SYCL device memory copy task base.
     template<typename TDim, typename TViewDst, typename TViewSrc, typename TExtent>
     struct TaskCopySyclBase
     {
@@ -42,8 +41,8 @@ namespace alpaka::detail
         template<typename TViewFwd>
         TaskCopySyclBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
             : m_extent(getExtentVec(extent))
-            , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
 #    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+            , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
             , m_dstExtent(getExtentVec(viewDst))
             , m_srcExtent(getExtentVec(viewSrc))
 #    endif
@@ -70,8 +69,8 @@ namespace alpaka::detail
 #    endif
 
         Vec<TDim, ExtentSize> const m_extent;
-        ExtentSize const m_extentWidthBytes;
 #    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+        ExtentSize const m_extentWidthBytes;
         Vec<TDim, DstSize> const m_dstExtent;
         Vec<TDim, SrcSize> const m_srcExtent;
 #    endif
@@ -83,7 +82,7 @@ namespace alpaka::detail
         static constexpr auto is_sycl_task = true;
     };
 
-    //! The Sycl device ND memory copy task.
+    //! The SYCL device ND memory copy task.
     template<typename TDim, typename TViewDst, typename TViewSrc, typename TExtent>
     struct TaskCopySycl : public TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>
     {
@@ -94,20 +93,47 @@ namespace alpaka::detail
 
         using TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>::TaskCopySyclBase;
 
-        ALPAKA_FN_HOST auto operator()(sycl::handler& cgh) const -> void
+        ALPAKA_FN_HOST auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const
+            -> sycl::event
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             this->printDebug();
 #    endif
+            // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
+            // iteration.
+            Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
+            // [z, y, x] -> [y, x] because the z pitch (the full size of the buffer) is not required.
+            Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
+            Vec<DimMin1, SrcSize> const srcPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_srcPitchBytes));
+
+            // Record an event for each memcpy call
+            std::vector<sycl::event> events;
+            events.reserve(static_cast<std::size_t>(extentWithoutInnermost.prod()));
+
             if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
             {
-                cgh.memcpy(
-                    reinterpret_cast<void*>(this->m_dstMemNative),
-                    reinterpret_cast<void const*>(this->m_srcMemNative),
-                    static_cast<std::size_t>(this->m_extentWidthBytes * this->m_extent.prod()));
+                meta::ndLoopIncIdx(
+                    extentWithoutInnermost,
+                    [&](Vec<DimMin1, ExtentSize> const& idx)
+                    {
+                        events.push_back(queue.memcpy(
+                            reinterpret_cast<void*>(
+                                this->m_dstMemNative
+                                + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
+                                      .foldrAll(std::plus<DstSize>())),
+                            reinterpret_cast<void const*>(
+                                this->m_srcMemNative
+                                + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost)
+                                      .foldrAll(std::plus<SrcSize>())),
+                            static_cast<std::size_t>(this->m_extentWidthBytes),
+                            requirements));
+                    });
             }
+
+            // Return an event that depends on all the events assciated to the memcpy calls
+            return queue.ext_oneapi_submit_barrier(events);
         }
     };
 
@@ -117,8 +143,10 @@ namespace alpaka::detail
         : TaskCopySyclBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>
     {
         using TaskCopySyclBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopySyclBase;
+        using Elem = alpaka::Elem<TViewSrc>;
 
-        ALPAKA_FN_HOST auto operator()(sycl::handler& cgh) const -> void
+        ALPAKA_FN_HOST auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const
+            -> sycl::event
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -127,10 +155,15 @@ namespace alpaka::detail
 #    endif
             if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
             {
-                cgh.memcpy(
+                return queue.memcpy(
                     reinterpret_cast<void*>(this->m_dstMemNative),
                     reinterpret_cast<void const*>(this->m_srcMemNative),
-                    static_cast<std::size_t>(this->m_extentWidthBytes));
+                    sizeof(Elem) * static_cast<std::size_t>(this->m_extent.prod()),
+                    requirements);
+            }
+            else
+            {
+                return queue.ext_oneapi_submit_barrier();
             }
         }
     };
@@ -159,9 +192,9 @@ namespace alpaka::detail
             ALPAKA_ASSERT(getExtentVec(viewSrc).prod() == 1u);
         }
 
-        auto operator()(sycl::handler& cgh) const -> void
+        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
         {
-            cgh.memcpy(m_dstMemNative, m_srcMemNative, sizeof(Elem));
+            return queue.memcpy(m_dstMemNative, m_srcMemNative, sizeof(Elem), requirements);
         }
 
         void* m_dstMemNative;
