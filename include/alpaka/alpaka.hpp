@@ -1075,15 +1075,14 @@
 
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
 
-			#ifndef ALPAKA_HAS_STD_ATOMIC_REF
-			#    include <boost/atomic.hpp>
-			#endif
-
 			#include <array>
 			#include <atomic>
 			// #include <type_traits>    // amalgamate: file already included
 
 			#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF
+			#    ifndef ALPAKA_HAS_STD_ATOMIC_REF
+			#        include <boost/atomic.hpp>
+			#    endif
 
 			namespace alpaka
 			{
@@ -12807,8 +12806,6 @@
 	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
 
-	// #include <omp.h>    // amalgamate: file already included
-
 	// #include <limits>    // amalgamate: file already included
 	// #include <typeinfo>    // amalgamate: file already included
 
@@ -12817,6 +12814,8 @@
 	#    if _OPENMP < 200203
 	#        error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 	#    endif
+
+	// #    include <omp.h>    // amalgamate: file already included
 
 	namespace alpaka
 	{
@@ -27008,8 +27007,6 @@
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
 
-	// #include <omp.h>    // amalgamate: file already included
-
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
@@ -27024,6 +27021,8 @@
 	#    if _OPENMP < 200203
 	#        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 	#    endif
+
+	// #    include <omp.h>    // amalgamate: file already included
 
 	namespace alpaka
 	{
@@ -28063,8 +28062,6 @@
 
 	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
 
-	// #include <omp.h>    // amalgamate: file already included
-
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
@@ -28078,6 +28075,8 @@
 	#    if _OPENMP < 200203
 	#        error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 	#    endif
+
+	// #    include <omp.h>    // amalgamate: file already included
 
 	namespace alpaka
 	{
