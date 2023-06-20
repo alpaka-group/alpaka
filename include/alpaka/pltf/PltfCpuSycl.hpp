@@ -18,29 +18,26 @@ namespace alpaka
 {
     namespace detail
     {
-        struct IntelCpuSelector
+        struct SyclCpuSelector
         {
             auto operator()(sycl::device const& dev) const -> int
             {
-                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
-                auto const is_intel_cpu = (vendor.find("Intel(R) Corporation") != std::string::npos) && dev.is_cpu();
-
-                return is_intel_cpu ? 1 : -1;
+                return dev.is_cpu() ? 1 : -1;
             }
         };
     } // namespace detail
 
     //! The SYCL device manager.
-    using PltfCpuSyclIntel = PltfGenericSycl<detail::IntelCpuSelector>;
+    using PltfCpuSycl = PltfGenericSycl<detail::SyclCpuSelector>;
 } // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
-    struct DevType<PltfCpuSyclIntel>
+    struct DevType<PltfCpuSycl>
     {
-        using type = DevGenericSycl<PltfCpuSyclIntel>; // = DevCpuSyclIntel
+        using type = DevGenericSycl<PltfCpuSycl>; // = DevCpuSycl
     };
 } // namespace alpaka::trait
 
