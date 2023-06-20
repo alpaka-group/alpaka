@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1ApiCudaRt.html#ac67b03536c861dedce19c9124a7184ba":[3,0,0,27,52],
 "structalpaka_1_1ApiCudaRt.html#ac7be2d98fec963fc5dfdb1dc9356db92":[3,0,0,27,24],
 "structalpaka_1_1ApiCudaRt.html#ac7f4ed362b7d1033184cba77ca0c461c":[3,0,0,27,42],
 "structalpaka_1_1ApiCudaRt.html#ac9adb2c41dcb8d8011c1f8eca0b77f54":[3,0,0,27,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Guided_01_4.html#a3cfac7dff8d70956bf5b3d30863a7f2d":[3,0,0,4,33,0],
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Static_01_4.html":[3,0,0,4,34],
 "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01omp_1_1Schedule_00_01omp_1_1Schedule_1_1Static_01_4.html#ac9d39a50395f5d0abe60038663b52506":[3,0,0,4,34,0],
-"structalpaka_1_1detail_1_1ParallelForStaticImpl.html":[3,0,0,4,41],
-"structalpaka_1_1detail_1_1ParallelForStaticImpl.html#ae3c5002b557886e709025c19d1076e19":[3,0,0,4,41,0]
+"structalpaka_1_1detail_1_1ParallelForStaticImpl.html":[3,0,0,4,41]
 };
