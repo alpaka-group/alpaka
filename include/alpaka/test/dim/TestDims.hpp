@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 

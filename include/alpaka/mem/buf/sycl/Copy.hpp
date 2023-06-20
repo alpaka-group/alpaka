@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego
+/* Copyright 2023 Jan Stephan, Bernhard Manfred Gruber, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -146,7 +146,10 @@ namespace alpaka::detail
         using Elem = alpaka::Elem<TViewSrc>;
 
         template<typename TViewDstFwd>
-        ALPAKA_FN_HOST TaskCopySycl(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
+        ALPAKA_FN_HOST TaskCopySycl(
+            TViewDstFwd&& viewDst,
+            TViewSrc const& viewSrc,
+            [[maybe_unused]] TExtent const& extent)
             : m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
             , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
         {
