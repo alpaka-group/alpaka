@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -11,11 +11,10 @@
 namespace alpaka
 {
     template<typename TDim, typename TIdx>
-    class AccCpuSyclIntel;
+    class AccCpuSycl;
 
     template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    using TaskKernelCpuSyclIntel
-        = TaskKernelGenericSycl<AccCpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+    using TaskKernelCpuSycl = TaskKernelGenericSycl<AccCpuSycl<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
 } // namespace alpaka
 
 #endif

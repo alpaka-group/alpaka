@@ -1,4 +1,4 @@
-/* Copyright 2023 Simeon Ehrig, Jan Stephan
+/* Copyright 2023 Simeon Ehrig, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -23,7 +23,7 @@ using TagList = std::tuple<
     alpaka::TagCpuOmp2Threads,
     alpaka::TagGpuCudaRt,
     alpaka::TagGpuHipRt,
-    alpaka::TagCpuSyclIntel,
+    alpaka::TagCpuSycl,
     alpaka::TagFpgaSyclIntel,
     alpaka::TagGpuSyclIntel>;
 
@@ -35,7 +35,7 @@ using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccCpuOmp2ThreadsIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuOmp2Threads>,
     std::pair<alpaka::test::detail::AccGpuCudaRtIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuCudaRt>,
     std::pair<alpaka::test::detail::AccGpuHipRtIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuHipRt>,
-    std::pair<alpaka::test::detail::AccCpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSyclIntel>,
+    std::pair<alpaka::test::detail::AccCpuSyclIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSycl>,
     std::pair<alpaka::test::detail::AccFpgaSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagFpgaSyclIntel>,
     std::pair<alpaka::test::detail::AccGpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclIntel>>;
 

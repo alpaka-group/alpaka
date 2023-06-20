@@ -1,4 +1,4 @@
-/* Copyright 2023 Simeon Ehrig, Jan Stephan
+/* Copyright 2023 Simeon Ehrig, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -23,7 +23,7 @@ namespace alpaka
     CREATE_ACC_TAG(TagCpuOmp2Blocks);
     CREATE_ACC_TAG(TagCpuOmp2Threads);
     CREATE_ACC_TAG(TagCpuSerial);
-    CREATE_ACC_TAG(TagCpuSyclIntel);
+    CREATE_ACC_TAG(TagCpuSycl);
     CREATE_ACC_TAG(TagCpuTbbBlocks);
     CREATE_ACC_TAG(TagCpuThreads);
     CREATE_ACC_TAG(TagFpgaSyclIntel);
