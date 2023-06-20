@@ -17,13 +17,14 @@ jobs:
         git clone -b single-header https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git single-header
     - name: create-single-header.sh
       run: |
-        ./scripts/create-single-header.sh
+        ./script/create-single-header.sh
     - name: commit
       run: |
         set -x
+        cd single-header
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
-        git add alpaka.hpp
+        git add include/alpaka/alpaka.hpp
         if (git diff --quiet) || (git diff --staged --quiet)
         then
           git commit -m "Update alpaka.hpp"
