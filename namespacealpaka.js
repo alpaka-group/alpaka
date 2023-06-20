@@ -44,7 +44,6 @@ var namespacealpaka =
     [ "AtomicNoOp", "classalpaka_1_1AtomicNoOp.html", null ],
     [ "AtomicOmpBuiltIn", "classalpaka_1_1AtomicOmpBuiltIn.html", null ],
     [ "AtomicOr", "structalpaka_1_1AtomicOr.html", "structalpaka_1_1AtomicOr" ],
-    [ "AtomicStdLibLock", "classalpaka_1_1AtomicStdLibLock.html", "classalpaka_1_1AtomicStdLibLock" ],
     [ "AtomicSub", "structalpaka_1_1AtomicSub.html", "structalpaka_1_1AtomicSub" ],
     [ "AtomicUniformCudaHipBuiltIn", "classalpaka_1_1AtomicUniformCudaHipBuiltIn.html", null ],
     [ "AtomicXor", "structalpaka_1_1AtomicXor.html", "structalpaka_1_1AtomicXor" ],

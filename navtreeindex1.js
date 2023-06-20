@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806":[4,0,0,0,3,15,4],
 "Debug_8hpp_source.html":[4,0,0,0,3,15],
 "Decay_8hpp.html":[4,0,0,0,3,16],
 "Decay_8hpp.html#abd223e5dfb4b62614c25046db2a1d1de":[4,0,0,0,3,16,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "PltfFpgaSyclXilinx_8hpp_source.html":[4,0,0,0,17,4],
 "PltfGenericSycl_8hpp.html":[4,0,0,0,17,5],
 "PltfGenericSycl_8hpp_source.html":[4,0,0,0,17,5],
-"PltfGpuSyclIntel_8hpp.html":[4,0,0,0,17,6]
+"PltfGpuSyclIntel_8hpp.html":[4,0,0,0,17,6],
+"PltfGpuSyclIntel_8hpp_source.html":[4,0,0,0,17,6]
 };

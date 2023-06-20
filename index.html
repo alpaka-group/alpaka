@@ -170,6 +170,11 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>The library is header only so nothing has to be built. CMake 3.22+ is required to provide the correct defines and include paths. Just call <code>alpaka_add_executable</code> instead of <code>add_executable</code> and the difficulties of the CUDA nvcc compiler in handling <code>.cu</code> and <code>.cpp</code> files are automatically taken care of. Source files do not need any special file ending. Examples of how to utilize alpaka within CMake can be found in the <code>example</code> folder.</p>
 <p>The whole alpaka library can be included with: <code>#include &lt;<a class="el" href="alpaka_8hpp.html">alpaka/alpaka.hpp</a>&gt;</code> Code that is not intended to be utilized by the user is hidden in the <code>detail</code> namespace.</p>
 <p>Furthermore, for a CUDA-like experience when adopting alpaka we provide the library <a href="https://github.com/alpaka-group/cupla"><em>cupla</em></a>. It enables a simple and straightforward way of porting existing CUDA applications to alpaka and thus to a variety of accelerators.</p>
+<h2>Single header</h2>
+<p>The CI creates a single-header version of alpaka on each commit, which you can find on the <a href="https://github.com/alpaka-group/alpaka/tree/single-header">single-header branch</a>.</p>
+<p>This is especially useful, if you would like to play with alpaka on <a href="https://godbolt.org/z/3KE13dcKv">Compiler explorer</a>. Just include alpaka like </p><div class="fragment"><div class="line"> {c++}</div>
+<div class="line">#include &lt;https://raw.githubusercontent.com/alpaka-group/alpaka/single-header/include/alpaka/alpaka.hpp&gt;</div>
+</div><!-- fragment --><p> and enable the desired backend on the compiler's command line using the corresponding macro, e.g. via <code>-DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED</code>.</p>
 <h1>Introduction </h1>
 <p>For a quick introduction, feel free to playback the recording of our presentation at <a href="https://www.nvidia.com/gtc/">GTC 2016</a>:</p>
 <ul>
@@ -281,7 +286,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jun 19 2023 16:19:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 20 2023 07:26:21 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

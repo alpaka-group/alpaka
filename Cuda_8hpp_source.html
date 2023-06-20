@@ -93,13 +93,13 @@ $(document).ready(function(){initNavTree('Cuda_8hpp_source.html',''); initResiza
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="CudaHipCommon_8hpp.html">alpaka/core/CudaHipCommon.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="CudaHipCommon_8hpp.html">alpaka/core/CudaHipCommon.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#    include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#    include &lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#    include &lt;string&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1cuda.html">   15</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1cuda_1_1detail.html">alpaka::cuda::detail</a></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{<span class="comment"></span></div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('Cuda_8hpp_source.html',''); initResiza
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">//! CUDA driver error checking with log and exception.</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019">   54</a></span>&#160;<span class="comment"></span><span class="preprocessor">#    define ALPAKA_CUDA_DRV_CHECK(cmd) ::alpaka::cuda::detail::cudaDrvCheck(cmd, #    cmd, __FILE__, __LINE__)</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="UniformCudaHip_8hpp.html">alpaka/core/UniformCudaHip.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#    include &quot;<a class="code" href="UniformCudaHip_8hpp.html">alpaka/core/UniformCudaHip.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aCudaHipCommon_8hpp_html"><div class="ttname"><a href="CudaHipCommon_8hpp.html">CudaHipCommon.hpp</a></div></div>
@@ -157,7 +157,7 @@ $(document).ready(function(){initNavTree('Cuda_8hpp_source.html',''); initResiza
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Cuda_8hpp.html">Cuda.hpp</a></li>
-    <li class="footer">Generated on Mon Jun 19 2023 16:19:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 20 2023 07:26:18 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

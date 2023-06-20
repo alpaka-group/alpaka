@@ -18,10 +18,7 @@ var dir_1143562e5ac1f1cac7683540118ef5cd =
       [ "AtomicOp< AtomicXor, AtomicOmpBuiltIn, T, THierarchy >", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicXor_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4" ],
       [ "AtomicOp< TOp, AtomicOmpBuiltIn, T, THierarchy >", "structalpaka_1_1trait_1_1AtomicOp_3_01TOp_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1trait_1_1AtomicOp_3_01TOp_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4" ]
     ] ],
-    [ "AtomicStdLibLock.hpp", "AtomicStdLibLock_8hpp.html", [
-      [ "AtomicStdLibLock", "classalpaka_1_1AtomicStdLibLock.html", "classalpaka_1_1AtomicStdLibLock" ],
-      [ "AtomicOp< TOp, AtomicStdLibLock< THashTableSize >, T, THierarchy >", "structalpaka_1_1trait_1_1AtomicOp_3_01TOp_00_01AtomicStdLibLock_3_01THashTableSize_01_4_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1trait_1_1AtomicOp_3_01TOp_00_01AtomicStdLibLock_3_01THashTableSize_01_4_00_01T_00_01THierarchy_01_4" ]
-    ] ],
+    [ "AtomicStdLibLock.hpp", "AtomicStdLibLock_8hpp.html", null ],
     [ "AtomicUniformCudaHip.hpp", "AtomicUniformCudaHip_8hpp.html", "AtomicUniformCudaHip_8hpp" ],
     [ "AtomicUniformCudaHipBuiltIn.hpp", "AtomicUniformCudaHipBuiltIn_8hpp.html", [
       [ "AtomicOp< AtomicCas, AtomicUniformCudaHipBuiltIn, T, THierarchy >", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicCas_00_01AtomicUniformCudaHipBuiltIn_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicCas_00_01AtomicUniformCudaHipBuiltIn_00_01T_00_01THierarchy_01_4" ],

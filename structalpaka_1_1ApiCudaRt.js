@@ -35,7 +35,7 @@ var structalpaka_1_1ApiCudaRt =
     [ "getErrorName", "structalpaka_1_1ApiCudaRt.html#a6404b9a2298c4d8f0f9ddacaa7d5e3dc", null ],
     [ "getErrorString", "structalpaka_1_1ApiCudaRt.html#a80f5ad3169bf1fc8f9ba08f00ac7df2d", null ],
     [ "getLastError", "structalpaka_1_1ApiCudaRt.html#a40c7d22c7abb67133f833baa3a31d732", null ],
-    [ "getSymbolAddress", "structalpaka_1_1ApiCudaRt.html#a3484f56382d28f95888b32639ab5e594", null ],
+    [ "getSymbolAddress", "structalpaka_1_1ApiCudaRt.html#a8ab0728b6ff573a60451e6b0629d144f", null ],
     [ "getSymbolAddress", "structalpaka_1_1ApiCudaRt.html#ac318a340dd6a2d3acca6017c169136f7", null ],
     [ "hostFree", "structalpaka_1_1ApiCudaRt.html#a52883cb2a35bedf75db003e693834f23", null ],
     [ "hostGetDevicePointer", "structalpaka_1_1ApiCudaRt.html#a7286886bff8cdb11108cd591e343c635", null ],
