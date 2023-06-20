@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Jan Stephan
+/* Copyright 2023 Benjamin Worpitz, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -14,7 +14,16 @@
         {                                                                                                             \
             if(!(expression))                                                                                         \
             {                                                                                                         \
-                acc.cout << "ALPAKA_CHECK failed because '!(" << #expression << ")'\n";                               \
+                /*if constexpr(alpaka::accMatchesTags<   TODO                                                         \
+                                 decltype(acc),                                                                       \
+                                 alpaka::TagCpuSycl,                                                                  \
+                                 alpaka::TagFpgaSyclIntel,                                                            \
+                                 alpaka::TagFpgaSyclXilinx,                                                           \
+                                 alpaka::TagGpuSyclIntel,                                                             \
+                                 alpaka::TagGenericSycl>)                                                             \
+                    acc.cout << "ALPAKA_CHECK failed because '!(" << #expression << ")'\n";                           \
+                else                                                                                                  \
+                    printf("ALPAKA_CHECK failed because '!(%s)'\n", #expression);*/                                   \
                 success = false;                                                                                      \
             }                                                                                                         \
         } while(0)

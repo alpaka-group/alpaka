@@ -79,10 +79,10 @@ namespace alpaka::test
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_TARGET_CPU)
         template<typename TDim, typename TIdx>
-        using AccCpuSyclIntelIfAvailableElseInt = alpaka::AccCpuSyclIntel<TDim, TIdx>;
+        using AccCpuSyclIfAvailableElseInt = alpaka::AccCpuSycl<TDim, TIdx>;
 #else
         template<typename TDim, typename TIdx>
-        using AccCpuSyclIntelIfAvailableElseInt = int;
+        using AccCpuSyclIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_TARGET_FPGA)
         template<typename TDim, typename TIdx>
@@ -109,7 +109,7 @@ namespace alpaka::test
             AccCpuOmp2ThreadsIfAvailableElseInt<TDim, TIdx>,
             AccGpuCudaRtIfAvailableElseInt<TDim, TIdx>,
             AccGpuHipRtIfAvailableElseInt<TDim, TIdx>,
-            AccCpuSyclIntelIfAvailableElseInt<TDim, TIdx>,
+            AccCpuSyclIfAvailableElseInt<TDim, TIdx>,
             AccFpgaSyclIntelIfAvailableElseInt<TDim, TIdx>,
             AccGpuSyclIntelIfAvailableElseInt<TDim, TIdx>>;
     } // namespace detail
