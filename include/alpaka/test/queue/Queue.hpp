@@ -1,4 +1,4 @@
-/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -86,23 +86,23 @@ namespace alpaka::test
 #        ifdef ALPAKA_SYCL_ONEAPI_CPU
         //! The default queue type trait specialization for the Intel CPU device.
         template<>
-        struct DefaultQueueType<alpaka::DevCpuSyclIntel>
+        struct DefaultQueueType<alpaka::DevCpuSycl>
         {
 #            if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = alpaka::QueueCpuSyclIntelBlocking;
+            using type = alpaka::QueueCpuSyclBlocking;
 #            else
-            using type = alpaka::QueueCpuSyclIntelNonBlocking;
+            using type = alpaka::QueueCpuSyclNonBlocking;
 #            endif
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::QueueCpuSyclIntelBlocking>
+        struct IsBlockingQueue<alpaka::QueueCpuSyclBlocking>
         {
             static constexpr auto value = true;
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::QueueCpuSyclIntelNonBlocking>
+        struct IsBlockingQueue<alpaka::QueueCpuSyclNonBlocking>
         {
             static constexpr auto value = false;
         };
@@ -180,8 +180,8 @@ namespace alpaka::test
 #    ifdef ALPAKA_SYCL_BACKEND_ONEAPI
 #        ifdef ALPAKA_SYCL_ONEAPI_CPU
         ,
-        std::tuple<alpaka::DevCpuSyclIntel, alpaka::QueueCpuSyclIntelBlocking>,
-        std::tuple<alpaka::DevCpuSyclIntel, alpaka::QueueCpuSyclIntelNonBlocking>
+        std::tuple<alpaka::DevCpuSycl, alpaka::QueueCpuSyclBlocking>,
+        std::tuple<alpaka::DevCpuSycl, alpaka::QueueCpuSyclNonBlocking>
 #        endif
 #        ifdef ALPAKA_SYCL_ONEAPI_FPGA
         ,

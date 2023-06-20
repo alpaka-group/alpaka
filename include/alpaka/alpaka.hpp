@@ -1,5 +1,5 @@
 /* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
- *                Jan Stephan, Antonio Di Pilato
+ *                Jan Stephan, Antonio Di Pilato, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -13,7 +13,7 @@
 #include "alpaka/acc/AccCpuOmp2Blocks.hpp"
 #include "alpaka/acc/AccCpuOmp2Threads.hpp"
 #include "alpaka/acc/AccCpuSerial.hpp"
-#include "alpaka/acc/AccCpuSyclIntel.hpp"
+#include "alpaka/acc/AccCpuSycl.hpp"
 #include "alpaka/acc/AccCpuTbbBlocks.hpp"
 #include "alpaka/acc/AccCpuThreads.hpp"
 #include "alpaka/acc/AccDevProps.hpp"
@@ -76,7 +76,7 @@
 #include "alpaka/core/Vectorize.hpp"
 // dev
 #include "alpaka/dev/DevCpu.hpp"
-#include "alpaka/dev/DevCpuSyclIntel.hpp"
+#include "alpaka/dev/DevCpuSycl.hpp"
 #include "alpaka/dev/DevCudaRt.hpp"
 #include "alpaka/dev/DevFpgaSyclIntel.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
@@ -90,7 +90,7 @@
 #include "alpaka/dim/Traits.hpp"
 // event
 #include "alpaka/event/EventCpu.hpp"
-#include "alpaka/event/EventCpuSyclIntel.hpp"
+#include "alpaka/event/EventCpuSycl.hpp"
 #include "alpaka/event/EventCudaRt.hpp"
 #include "alpaka/event/EventFpgaSyclIntel.hpp"
 #include "alpaka/event/EventGenericSycl.hpp"
@@ -115,7 +115,7 @@
 #include "alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp"
 #include "alpaka/kernel/TaskKernelCpuOmp2Threads.hpp"
 #include "alpaka/kernel/TaskKernelCpuSerial.hpp"
-#include "alpaka/kernel/TaskKernelCpuSyclIntel.hpp"
+#include "alpaka/kernel/TaskKernelCpuSycl.hpp"
 #include "alpaka/kernel/TaskKernelCpuTbbBlocks.hpp"
 #include "alpaka/kernel/TaskKernelCpuThreads.hpp"
 #include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"
@@ -134,7 +134,7 @@
 #include "alpaka/mem/alloc/AllocCpuNew.hpp"
 #include "alpaka/mem/alloc/Traits.hpp"
 #include "alpaka/mem/buf/BufCpu.hpp"
-#include "alpaka/mem/buf/BufCpuSyclIntel.hpp"
+#include "alpaka/mem/buf/BufCpuSycl.hpp"
 #include "alpaka/mem/buf/BufCudaRt.hpp"
 #include "alpaka/mem/buf/BufFpgaSyclIntel.hpp"
 #include "alpaka/mem/buf/BufGenericSycl.hpp"
@@ -179,7 +179,7 @@
 #include "alpaka/offset/Traits.hpp"
 // platform
 #include "alpaka/pltf/PltfCpu.hpp"
-#include "alpaka/pltf/PltfCpuSyclIntel.hpp"
+#include "alpaka/pltf/PltfCpuSycl.hpp"
 #include "alpaka/pltf/PltfCudaRt.hpp"
 #include "alpaka/pltf/PltfFpgaSyclIntel.hpp"
 #include "alpaka/pltf/PltfGpuSyclIntel.hpp"
@@ -197,8 +197,8 @@
 #include "alpaka/queue/Properties.hpp"
 #include "alpaka/queue/QueueCpuBlocking.hpp"
 #include "alpaka/queue/QueueCpuNonBlocking.hpp"
-#include "alpaka/queue/QueueCpuSyclIntelBlocking.hpp"
-#include "alpaka/queue/QueueCpuSyclIntelNonBlocking.hpp"
+#include "alpaka/queue/QueueCpuSyclBlocking.hpp"
+#include "alpaka/queue/QueueCpuSyclNonBlocking.hpp"
 #include "alpaka/queue/QueueCudaRtBlocking.hpp"
 #include "alpaka/queue/QueueCudaRtNonBlocking.hpp"
 #include "alpaka/queue/QueueFpgaSyclIntelBlocking.hpp"

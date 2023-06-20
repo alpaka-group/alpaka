@@ -1,4 +1,4 @@
-/* Copyright 2023 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -28,7 +28,7 @@ namespace alpaka
     using ExampleDefaultAcc = alpaka::AccCpuSerial<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI)
 #    if defined(ALPAKA_SYCL_ONEAPI_CPU)
-    using ExampleDefaultAcc = alpaka::AccCpuSyclIntel<TDim, TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuSycl<TDim, TIdx>;
 #    elif defined(ALPAKA_SYCL_ONEAPI_FPGA)
     using ExampleDefaultAcc = alpaka::AccFpgaSyclIntel<TDim, TIdx>;
 #    elif defined(ALPAKA_SYCL_ONEAPI_GPU)

@@ -24,14 +24,11 @@ namespace alpaka
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wweak-vtables"
 #    endif
-        struct IntelCpuSelector final
+        struct SyclCpuSelector final
         {
             auto operator()(sycl::device const& dev) const -> int
             {
-                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
-                auto const is_intel_cpu = (vendor.find("Intel(R) Corporation") != std::string::npos) && dev.is_cpu();
-
-                return is_intel_cpu ? 1 : -1;
+                return dev.is_cpu() ? 1 : -1;
             }
         };
 #    if BOOST_COMP_CLANG
@@ -40,16 +37,16 @@ namespace alpaka
     } // namespace detail
 
     //! The SYCL device manager.
-    using PltfCpuSyclIntel = PltfGenericSycl<detail::IntelCpuSelector>;
+    using PltfCpuSycl = PltfGenericSycl<detail::SyclCpuSelector>;
 } // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
-    struct DevType<PltfCpuSyclIntel>
+    struct DevType<PltfCpuSycl>
     {
-        using type = DevGenericSycl<PltfCpuSyclIntel>; // = DevCpuSyclIntel
+        using type = DevGenericSycl<PltfCpuSycl>; // = DevCpuSycl
     };
 } // namespace alpaka::trait
 

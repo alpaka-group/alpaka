@@ -53,9 +53,9 @@ To enable device-side printing add the following compiler flags:
 * `-DALPAKA_SYCL_IOSTREAM_ENABLED`: to enable device-side printing.
 * `-DALPAKA_SYCL_IOSTREAM_KIB=<value>`: `<value>` (without the brackets) defines the kibibytes per block to be reserved for device-side printing. `<value>` cannot exceed the amount of shared memory per block.
 
-### Building for Intel CPUs
+### Building for x86 64-bit CPUs
 
-1. `#include <alpaka/standalone/CpuSyclIntel.hpp>` in your C++ code.
+1. `#include <alpaka/standalone/CpuSycl.hpp>` in your C++ code.
 2. Add the following flags:
   * `-fsycl-targets=spir64_x86_64` (compiler and linker): to enable CPU compilation. Note: If you are using multiple SYCL hardware targets (like CPU and GPU) separate them by comma here.
   * `-Xsycl-target-backend=spir64_x86_64 "-march=<ISA>"` (linker): to choose the Intel ISA to compile for. Check the output of `opencl-aot --help` and look for the possible values of the `--march` flag.
@@ -84,7 +84,7 @@ To enable device-side printing add the following compiler flags:
 
 In contrast to the other back-ends the SYCL back-end comes with multiple different accelerators which should be chosen according to your requirements:
 
-* `alpaka::experimental::AccCpuSyclIntel` for targeting Intel CPUs. In contrast to the other CPU back-ends this will be using Intel's OpenCL implementation for CPUs under the hood.
+* `alpaka::experimental::AccCpuSycl` for targeting Intel and AMD CPUs. In contrast to the other CPU back-ends this will use Intel's OpenCL implementation for CPUs under the hood.
 * `alpaka::experimental::AccFpgaSyclIntel` for targeting Intel FPGAs.
 * `alpaka::experimental::AccGpuSyclIntel` for targeting Intel GPUs. 
 
