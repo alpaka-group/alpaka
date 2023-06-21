@@ -123,6 +123,9 @@ jobs:
         - name: macos_xcode-14.2_release
           os: macos-12
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 14.2,                                CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0,                                                                                                                                                                                                                                                                       alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
+        - name: macos_xcode-14.3.1_debug
+          os: macos-13
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 14.3.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.82.0,                                                                                                                                                                                                                                                                       alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON, ALPAKA_CI_BUILD_JOBS: 3}
 
         ### Windows
         - name: windows_cl-2022_release
