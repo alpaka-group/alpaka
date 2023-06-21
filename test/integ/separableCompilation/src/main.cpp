@@ -11,6 +11,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
+#include <iomanip>
 #include <iostream>
 #include <typeinfo>
 
@@ -38,8 +39,8 @@ public:
     {
         static_assert(alpaka::Dim<TAcc>::value == 1, "The VectorAddKernel expects 1-dimensional indices!");
 
-        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
+        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]);
+        auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0]);
         auto const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
         if(threadFirstElemIdx < numElements)
@@ -64,7 +65,7 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     using Acc = TestType;
     using Idx = alpaka::Idx<Acc>;
 
-    using Val = double;
+    using Val = float;
 
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
@@ -72,13 +73,13 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     using PltfHost = alpaka::PltfCpu;
     using DevHost = alpaka::Dev<PltfHost>;
 
-    Idx const numElements(32);
+    Idx const numElements = 32;
 
     // Create the kernel function object.
     SqrtKernel kernel;
 
     // Get the host device.
-    DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0u);
+    DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0);
 
     // Select a device to execute on.
     DevAcc const devAcc = alpaka::getDevByIdx<PltfAcc>(0);
@@ -107,7 +108,7 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     auto memBufHostC = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
 
     // Initialize the host input vectors
-    for(Idx i(0); i < numElements; ++i)
+    for(Idx i = 0; i < numElements; ++i)
     {
         memBufHostA[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
         memBufHostB[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
@@ -126,9 +127,9 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::getPtrNative(memBufAccA),
-        alpaka::getPtrNative(memBufAccB),
-        alpaka::getPtrNative(memBufAccC),
+        memBufAccA.data(),
+        memBufAccB.data(),
+        memBufAccC.data(),
         numElements);
 
     // Profile the kernel execution.
@@ -140,14 +141,14 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     alpaka::wait(queueAcc);
 
     bool resultCorrect(true);
-    auto const pHostData(alpaka::getPtrNative(memBufHostC));
-    for(Idx i(0u); i < numElements; ++i)
+    for(Idx i = 0; i < numElements; ++i)
     {
-        auto const& val(pHostData[i]);
-        auto const correctResult(std::sqrt(memBufHostA[i]) + std::sqrt(memBufHostB[i]));
-        auto const absDiff = (val - correctResult);
-        if(absDiff > std::numeric_limits<Val>::epsilon())
+        auto const val = memBufHostC[i];
+        auto const correctResult = std::sqrt(memBufHostA[i]) + std::sqrt(memBufHostB[i]);
+        auto const absDiff = std::abs(val - correctResult);
+        if(absDiff > std::numeric_limits<Val>::epsilon() * correctResult)
         {
+            std::cout << std::setprecision(std::numeric_limits<Val>::digits10) << std::fixed;
             std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
         }
