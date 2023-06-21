@@ -27,7 +27,6 @@ namespace alpaka
     CREATE_ACC_TAG(TagCpuTbbBlocks);
     CREATE_ACC_TAG(TagCpuThreads);
     CREATE_ACC_TAG(TagFpgaSyclIntel);
-    CREATE_ACC_TAG(TagFpgaSyclXilinx);
     CREATE_ACC_TAG(TagGenericSycl);
     CREATE_ACC_TAG(TagGpuCudaRt);
     CREATE_ACC_TAG(TagGpuHipRt);

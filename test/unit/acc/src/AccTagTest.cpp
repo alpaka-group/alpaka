@@ -25,7 +25,6 @@ using TagList = std::tuple<
     alpaka::TagGpuHipRt,
     alpaka::TagCpuSyclIntel,
     alpaka::TagFpgaSyclIntel,
-    alpaka::TagFpgaSyclXilinx,
     alpaka::TagGpuSyclIntel>;
 
 using AccToTagMap = std::tuple<
@@ -38,7 +37,6 @@ using AccToTagMap = std::tuple<
     std::pair<alpaka::test::detail::AccGpuHipRtIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuHipRt>,
     std::pair<alpaka::test::detail::AccCpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagCpuSyclIntel>,
     std::pair<alpaka::test::detail::AccFpgaSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagFpgaSyclIntel>,
-    std::pair<alpaka::test::detail::AccFpgaSyclXilinxIfAvailableElseInt<Dim, Idx>, alpaka::TagFpgaSyclXilinx>,
     std::pair<alpaka::test::detail::AccGpuSyclIntelIfAvailableElseInt<Dim, Idx>, alpaka::TagGpuSyclIntel>>;
 
 using AccTagTestMatrix = alpaka::meta::CartesianProduct<std::tuple, AccToTagMap, TagList>;
