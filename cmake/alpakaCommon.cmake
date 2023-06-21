@@ -308,8 +308,24 @@ endif()
 #-------------------------------------------------------------------------------
 # Find OpenMP.
 if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
-    find_package(OpenMP REQUIRED COMPONENTS CXX)
-    target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
+    if(APPLE)
+        # Starting from Xcode 14.3.1 our self-compiled OpenMP libraries are no longer visible by default. We need to specify a few paths first.
+        find_package(OpenMP COMPONENTS CXX)
+        if(NOT OpenMP_CXX_FOUND)
+            execute_process(COMMAND brew --prefix libomp
+                            OUTPUT_VARIABLE HOMEBREW_LIBOMP_PREFIX
+                            OUTPUT_STRIP_TRAILING_WHITESPACE)
+            set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I${HOMEBREW_LIBOMP_PREFIX}/include")
+            set(OpenMP_CXX_LIB_NAMES "omp")
+            set(OpenMP_omp_LIBRARY ${HOMEBREW_LIBOMP_PREFIX}/lib/libomp.dylib)
+
+            find_package(OpenMP REQUIRED COMPONENTS CXX)
+        endif()
+        target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
+    else()
+        find_package(OpenMP REQUIRED COMPONENTS CXX)
+        target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
+    endif()
 endif()
 
 #-------------------------------------------------------------------------------
