@@ -1,4 +1,4 @@
-"""Copyright 2023 Simeon Ehrig, Jan Stephan
+"""Copyright 2023 Simeon Ehrig, Jan Stephan, René Widera
 SPDX-License-Identifier: MPL-2.0
 
 Used software in the CI tests."""
@@ -34,8 +34,8 @@ sw_versions: Dict[str, List[str]] = {
         ALPAKA_ACC_GPU_HIP_ENABLE,
     ],
     UBUNTU: ["20.04"],
-    CMAKE: ["3.22.6", "3.23.5", "3.24.3", "3.25.2"],
-    BOOST: ["1.74.0", "1.75.0", "1.76.0", "1.77.0", "1.78.0", "1.79.0", "1.80.0"],
+    CMAKE: ["3.22.6", "3.23.5", "3.24.4", "3.25.3", "3.26.4"],
+    BOOST: ["1.74.0", "1.75.0", "1.76.0", "1.77.0", "1.78.0", "1.79.0", "1.80.0", "1.81.0", "1.82.0"],
     CXX_STANDARD: ["17", "20"],
     BUILD_TYPE: BUILD_TYPES,
     # use only TEST_COMPILE_ONLY, because TEST_RUNTIME will be set manually depend on some

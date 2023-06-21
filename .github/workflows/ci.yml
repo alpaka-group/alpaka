@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+# Copyright 2023 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Jan Stephan, Simeon Ehrig
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -23,7 +23,7 @@ concurrency:
 # alpaka_CI                                     : {GITHUB}
 # ALPAKA_CI_DOCKER_BASE_IMAGE_NAME              : {ubuntu:20.04, ubuntu:22.04}
 # ALPAKA_BOOST_VERSION                          : {1.74.0, 1.75.0, 1.76.0, 1.77.0, 1.78.0, 1.79.0, 1.80.0, 1.81.0, 1.82.0}
-# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.3, 3.25.2, 3.26.4}
+# ALPAKA_CI_CMAKE_VER                           : {3.22.6, 3.23.5, 3.24.4, 3.25.3, 3.26.4}
 # ALPAKA_CI_XCODE_VER                           : {13.2.1, 14.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
@@ -127,7 +127,7 @@ jobs:
         ### Windows
         - name: windows_cl-2022_release
           os: windows-2022
-          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 1}
+          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.24.4, OMP_NUM_THREADS: 1}
         - name: windows_cl-2022_debug
           os: windows-2022
           env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.25.1, OMP_NUM_THREADS: 4,                                                                                                                                                                                           alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
@@ -136,7 +136,7 @@ jobs:
         # nvcc + MSVC
         # - name: windows_nvcc-12.1_cl-2022_release_cuda-only
         #  os: windows-2022
-        #  env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0, ALPAKA_CI_CMAKE_VER: 3.24.3, ALPAKA_CI_RUN_TESTS: OFF,                     alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "12.1", CMAKE_CUDA_ARCHITECTURES: "50;90", alpaka_ACC_GPU_CUDA_ONLY_MODE: ON,                                                     alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+        #  env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.81.0, ALPAKA_CI_CMAKE_VER: 3.24.4, ALPAKA_CI_RUN_TESTS: OFF,                     alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "12.1", CMAKE_CUDA_ARCHITECTURES: "50;90", alpaka_ACC_GPU_CUDA_ONLY_MODE: ON,                                                     alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
         # - name: windows_nvcc-12.1_cl-2022_debug
         #  os: windows-2022
         #  env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2022,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.25.1, ALPAKA_CI_RUN_TESTS: OFF,                     alpaka_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CI_CUDA_VERSION: "12.1",                                                                                                                           alpaka_ACC_CPU_BT_OMP5_ENABLE: OFF, alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
@@ -157,7 +157,7 @@ jobs:
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 11,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.78.0, ALPAKA_CI_CMAKE_VER: 3.22.6, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
         - name: linux_gcc-12_release_c++20
           os: ubuntu-22.04
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", alpaka_CXX_STANDARD: 20, alpaka_USE_MDSPAN: "FETCH"}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 12,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.80.0, ALPAKA_CI_CMAKE_VER: 3.24.4, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", alpaka_CXX_STANDARD: 20, alpaka_USE_MDSPAN: "FETCH"}
         - name: linux_gcc-13_debug
           os: ubuntu-22.04
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 13,       ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.82.0, ALPAKA_CI_CMAKE_VER: 3.26.4, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04"}
@@ -172,7 +172,7 @@ jobs:
         # clang-11 tested in GitLab CI
         - name: linux_clang-12_release
           os: ubuntu-20.04
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 12,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.24.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 12,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.24.4, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, CMAKE_CXX_EXTENSIONS: OFF}
         - name: linux_clang-13_debug
           os: ubuntu-22.04
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.23.5, OMP_NUM_THREADS: 3, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_EXTENSIONS: OFF}
