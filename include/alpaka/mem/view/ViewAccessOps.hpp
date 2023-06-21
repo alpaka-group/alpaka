@@ -22,6 +22,7 @@ namespace alpaka::internal
         using const_pointer = value_type const*;
         using reference = value_type&;
         using const_reference = value_type const&;
+        using Idx = alpaka::Idx<TView>;
 
     public:
         ViewAccessOps()
@@ -63,13 +64,13 @@ namespace alpaka::internal
             return data();
         }
 
-        ALPAKA_FN_HOST auto operator[](std::size_t i) -> reference
+        ALPAKA_FN_HOST auto operator[](Idx i) -> reference
         {
             static_assert(Dim<TView>::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
             return data()[i];
         }
 
-        ALPAKA_FN_HOST auto operator[](std::size_t i) const -> const_reference
+        ALPAKA_FN_HOST auto operator[](Idx i) const -> const_reference
         {
             static_assert(Dim<TView>::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
             return data()[i];
@@ -79,7 +80,6 @@ namespace alpaka::internal
         template<std::size_t TDim, typename TIdx>
         [[nodiscard]] ALPAKA_FN_HOST auto ptr_at([[maybe_unused]] Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
         {
-            using Idx = alpaka::Idx<TView>;
             static_assert(
                 Dim<TView>::value == TDim,
                 "the index type must have the same dimensionality as the Buffer or View");
