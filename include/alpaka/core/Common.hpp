@@ -12,6 +12,11 @@
 #    include <intrin.h>
 #endif
 
+#if BOOST_LANG_HIP
+// HIP defines some keywords like __forceinline__ in header files.
+#    include <hip/hip_runtime.h>
+#endif
+
 //! All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC.
 //!
 //! \code{.cpp}
