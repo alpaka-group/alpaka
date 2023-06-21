@@ -519,47 +519,33 @@ endif() # HIP
 #-------------------------------------------------------------------------------
 # SYCL settings
 if(alpaka_ACC_SYCL_ENABLE)
-    # Possible SYCL platforms
-    cmake_dependent_option(alpaka_SYCL_PLATFORM_ONEAPI "Enable Intel oneAPI platform for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
-    cmake_dependent_option(alpaka_SYCL_PLATFORM_XILINX "Enable Xilinx platform for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
-    # Possible oneAPI targets
-    cmake_dependent_option(alpaka_SYCL_ONEAPI_CPU "Enable oneAPI CPU targets for the SYCL back-end" OFF "alpaka_SYCL_PLATFORM_ONEAPI" OFF)
-    cmake_dependent_option(alpaka_SYCL_ONEAPI_FPGA "Enable oneAPI FPGA targets for the SYCL back-end" OFF "alpaka_SYCL_PLATFORM_ONEAPI" OFF)
-    cmake_dependent_option(alpaka_SYCL_ONEAPI_GPU "Enable oneAPI GPU targets for the SYCL back-end" OFF "alpaka_SYCL_PLATFORM_ONEAPI" OFF)
-    # Intel FPGA emulation / simulation
-    if(alpaka_SYCL_ONEAPI_FPGA)
-        set(alpaka_SYCL_ONEAPI_FPGA_MODE "emulation" CACHE STRING "Synthesis type for oneAPI FPGA targets")
-        set_property(CACHE alpaka_SYCL_ONEAPI_FPGA_MODE PROPERTY STRINGS "emulation;simulation;hardware")
-    endif()
-    # Xilinx FPGA emulation / synthesis
-    if(alpaka_SYCL_PLATFORM_XILINX)
-        set(alpaka_SYCL_XILINX_FPGA_MODE "simulation" CACHE STRING "Synthesis type for Xilinx FPGA targets")
-        set_property(CACHE alpaka_SYCL_XILINX_FPGA_MODE PROPERTY STRINGS "simulation;hardware")
-    endif()
+    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "IntelLLVM")
+        # Possible oneAPI targets
+        cmake_dependent_option(alpaka_SYCL_ONEAPI_CPU "Enable oneAPI CPU targets for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
+        cmake_dependent_option(alpaka_SYCL_ONEAPI_FPGA "Enable oneAPI FPGA targets for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
+        cmake_dependent_option(alpaka_SYCL_ONEAPI_GPU "Enable oneAPI GPU targets for the SYCL back-end" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
+        # Intel FPGA emulation / simulation
+        if(alpaka_SYCL_ONEAPI_FPGA)
+            set(alpaka_SYCL_ONEAPI_FPGA_MODE "emulation" CACHE STRING "Synthesis type for oneAPI FPGA targets")
+            set_property(CACHE alpaka_SYCL_ONEAPI_FPGA_MODE PROPERTY STRINGS "emulation;simulation;hardware")
+        endif()
 
-    # Enable device-side printing to stdout
-    cmake_dependent_option(alpaka_SYCL_ENABLE_IOSTREAM "Enable device-side printing to stdout" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
-    if(BUILD_TESTING)
-        set(alpaka_SYCL_ENABLE_IOSTREAM ON CACHE BOOL "Enable device-side printing to stdout" FORCE)
-    endif()
+        # Enable device-side printing to stdout
+        cmake_dependent_option(alpaka_SYCL_ENABLE_IOSTREAM "Enable device-side printing to stdout" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
+        if(BUILD_TESTING)
+            set(alpaka_SYCL_ENABLE_IOSTREAM ON CACHE BOOL "Enable device-side printing to stdout" FORCE)
+        endif()
 
-    if(NOT (alpaka_SYCL_PLATFORM_ONEAPI OR alpaka_SYCL_PLATFORM_XILINX))
-        message(FATAL_ERROR "You must specify at least one SYCL platform!")
-    endif()
+        alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl")
+        target_link_options(alpaka INTERFACE "-fsycl")
+        alpaka_set_compiler_options(HOST_DEVICE target alpaka "-sycl-std=2020")
 
-    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl")
-    target_link_options(alpaka INTERFACE "-fsycl")
-    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-sycl-std=2020")
+        #-----------------------------------------------------------------------------------------------------------------
+        # Determine SYCL targets
+        set(alpaka_SYCL_ONEAPI_CPU_TARGET "spir64_x86_64")
+        set(alpaka_SYCL_ONEAPI_FPGA_TARGET "spir64_fpga")
+        set(alpaka_SYCL_ONEAPI_GPU_TARGET "spir64_gen")
 
-    #-----------------------------------------------------------------------------------------------------------------
-    # Determine SYCL targets
-    set(alpaka_SYCL_ONEAPI_CPU_TARGET "spir64_x86_64")
-    set(alpaka_SYCL_ONEAPI_FPGA_TARGET "spir64_fpga")
-    set(alpaka_SYCL_ONEAPI_GPU_TARGET "spir64_gen")
-    set(alpaka_SYCL_XILINX_FPGA_HARDWARE_EMULATION_TARGET "fpga64_hls_hw_emu")
-    set(alpaka_SYCL_XILINX_FPGA_HARDWARE_TARGET "fpga64_hls_hw")
-
-    if(alpaka_SYCL_PLATFORM_ONEAPI)
         if(alpaka_SYCL_ONEAPI_CPU)
             list(APPEND alpaka_SYCL_TARGETS ${alpaka_SYCL_ONEAPI_CPU_TARGET})
         endif()
@@ -575,82 +561,72 @@ if(alpaka_ACC_SYCL_ENABLE)
         if(NOT alpaka_SYCL_TARGETS)
             message(FATAL_ERROR "You must specify at least one oneAPI hardware target!")
         endif()
-    endif()
 
-    if(alpaka_SYCL_PLATFORM_XILINX)
-        if(alpaka_SYCL_XILINX_FPGA_MODE STREQUAL "simulation")
-            list(APPEND alpaka_SYCL_TARGETS ${alpaka_SYCL_XILINX_FPGA_HARDWARE_EMULATION_TARGET})
-        elseif(alpaka_SYCL_XILINX_FPGA_MODE STREQUAL "hardware")
-            list(APPEND alpaka_SYCL_TARGETS ${alpaka_SYCL_XILINX_FPGA_HARDWARE_TARGET})
-        else()
-            message(FATAL_ERROR "You must specify at least one Xilinx FPGA target!")
-        endif()
-    endif()
-
-    list(JOIN alpaka_SYCL_TARGETS "," alpaka_SYCL_TARGETS_CONCAT)
-    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl-targets=${alpaka_SYCL_TARGETS_CONCAT}")
-    target_link_options(alpaka INTERFACE "-fsycl-targets=${alpaka_SYCL_TARGETS_CONCAT}")
-    
-    #-----------------------------------------------------------------------------------------------------------------
-    # Determine actual hardware to compile for 
-    if(alpaka_SYCL_ONEAPI_CPU)
-        set(alpaka_SYCL_ONEAPI_CPU_ISA "avx2" CACHE STRING "Intel ISA to compile for")
-        set_property(CACHE alpaka_SYCL_ONEAPI_CPU_ISA PROPERTY STRINGS "sse4.2;avx;avx2;avx512")
-
-        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_CPU")
-        target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_CPU_TARGET} \"-march=${alpaka_SYCL_ONEAPI_CPU_ISA}\"")
-    endif()
-
-    if(alpaka_SYCL_ONEAPI_FPGA)
-        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_FPGA")
-        # try to come as close to -fintelfpga as possible with the following two flags
-        alpaka_set_compiler_options(DEVICE target alpaka "-fintelfpga")
-
-        if(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
-            target_compile_definitions(alpaka INTERFACE "ALPAKA_FPGA_EMULATION")
-            alpaka_set_compiler_options(DEVICE target alpaka "-Xsemulator")
-            target_link_options(alpaka INTERFACE "-Xsemulator")
-        elseif(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "simulation")
-            alpaka_set_compiler_options(DEVICE target alpaka "-Xssimulation")
-            target_link_options(alpaka INTERFACE "-Xssimulation")
-        elseif(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "hardware")
-            alpaka_set_compiler_options(DEVICE target alpaka "-Xshardware")
-            target_link_options(alpaka INTERFACE "-Xshardware")
-        endif()
-
-        if(NOT alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
-            set(alpaka_SYCL_ONEAPI_FPGA_BOARD "pac_a10" CACHE STRING "Intel FPGA board to compile for")
-            set_property(CACHE alpaka_SYCL_ONEAPI_FPGA_BOARD PROPERTY STRINGS "pac_a10;pac_s10;pac_s10_usm")
-
-            set(alpaka_SYCL_ONEAPI_FPGA_BSP "intel_a10gx_pac" CACHE STRING "Path to or name of the Intel FPGA board support package")
-            set_property(CACHE alpaka_SYCL_ONEAPI_FPGA_BSP PROPERTY STRINGS "intel_a10gx_pac;intel_s10sx_pac")
-            target_link_options(alpaka INTERFACE "-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_FPGA_TARGET} \"-board=${alpaka_SYCL_ONEAPI_FPGA_BSP}:${alpaka_SYCL_ONEAPI_FPGA_BOARD}\"")
-        endif()
-
-    endif()
-
-    if(alpaka_SYCL_ONEAPI_GPU)
-        # Create a drop-down list (in cmake-gui) of valid Intel GPU targets. On the command line the user can specifiy
-        # additional targets, such as ranges: "Gen8-Gen12LP" or lists: "icclp;skl".
-        set(alpaka_SYCL_ONEAPI_GPU_DEVICES "bdw" CACHE STRING "Intel GPU devices / generations to compile for")
-        set_property(CACHE alpaka_SYCL_ONEAPI_GPU_DEVICES
-                     PROPERTY STRINGS "bdw;skl;kbl;cfl;bxt;glk;icllp;lkf;ehl;tgllp;rkl;adls;adlp;dg1;xe_hp_sdv;Gen8;Gen9;Gen11;Gen12LP;XE_HP_CORE")
-        # If the user has given us a list turn all ';' into ',' to pacify the Intel OpenCL compiler.
-        string(REPLACE alpaka_ONEAPI_GPU_DEVICES REPLACE ";" ",")
+        list(JOIN alpaka_SYCL_TARGETS "," alpaka_SYCL_TARGETS_CONCAT)
+        alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl-targets=${alpaka_SYCL_TARGETS_CONCAT}")
+        target_link_options(alpaka INTERFACE "-fsycl-targets=${alpaka_SYCL_TARGETS_CONCAT}")
         
-        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU")
-        target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_GPU_TARGET} \"-device ${alpaka_SYCL_ONEAPI_GPU_DEVICES}\"")
-    endif()
+        #-----------------------------------------------------------------------------------------------------------------
+        # Determine actual hardware to compile for 
+        if(alpaka_SYCL_ONEAPI_CPU)
+            set(alpaka_SYCL_ONEAPI_CPU_ISA "avx2" CACHE STRING "Intel ISA to compile for")
+            set_property(CACHE alpaka_SYCL_ONEAPI_CPU_ISA PROPERTY STRINGS "sse4.2;avx;avx2;avx512")
 
-    #-----------------------------------------------------------------------------------------------------------------
-    # Generic SYCL options
-    if(alpaka_SYCL_ENABLE_IOSTREAM)
-        set(alpaka_SYCL_IOSTREAM_KIB "64" CACHE STRING "Kibibytes (1024B) of memory to allocate per block for SYCL's on-device iostream")
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_CPU")
+            target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_CPU_TARGET} \"-march=${alpaka_SYCL_ONEAPI_CPU_ISA}\"")
+        endif()
 
-        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_ENABLED")
-        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_KIB=${alpaka_SYCL_IOSTREAM_KIB}")
+        if(alpaka_SYCL_ONEAPI_FPGA)
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_FPGA")
+            alpaka_set_compiler_options(DEVICE target alpaka "-fintelfpga")
+
+            if(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
+                target_compile_definitions(alpaka INTERFACE "ALPAKA_FPGA_EMULATION")
+                alpaka_set_compiler_options(DEVICE target alpaka "-Xsemulator")
+                target_link_options(alpaka INTERFACE "-Xsemulator")
+            elseif(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "simulation")
+                alpaka_set_compiler_options(DEVICE target alpaka "-Xssimulation")
+                target_link_options(alpaka INTERFACE "-Xssimulation")
+            elseif(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "hardware")
+                alpaka_set_compiler_options(DEVICE target alpaka "-Xshardware")
+                target_link_options(alpaka INTERFACE "-Xshardware")
+            endif()
+
+            if(NOT alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
+                set(alpaka_SYCL_ONEAPI_FPGA_BOARD "pac_a10" CACHE STRING "Intel FPGA board to compile for")
+                set_property(CACHE alpaka_SYCL_ONEAPI_FPGA_BOARD PROPERTY STRINGS "pac_a10;pac_s10;pac_s10_usm")
+
+                set(alpaka_SYCL_ONEAPI_FPGA_BSP "intel_a10gx_pac" CACHE STRING "Path to or name of the Intel FPGA board support package")
+                set_property(CACHE alpaka_SYCL_ONEAPI_FPGA_BSP PROPERTY STRINGS "intel_a10gx_pac;intel_s10sx_pac")
+                target_link_options(alpaka INTERFACE "-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_FPGA_TARGET} \"-board=${alpaka_SYCL_ONEAPI_FPGA_BSP}:${alpaka_SYCL_ONEAPI_FPGA_BOARD}\"")
+            endif()
+        endif()
+
+        if(alpaka_SYCL_ONEAPI_GPU)
+            # Create a drop-down list (in cmake-gui) of valid Intel GPU targets. On the command line the user can specifiy
+            # additional targets, such as ranges: "Gen8-Gen12LP" or lists: "icclp;skl".
+            set(alpaka_SYCL_ONEAPI_GPU_DEVICES "bdw" CACHE STRING "Intel GPU devices / generations to compile for")
+            set_property(CACHE alpaka_SYCL_ONEAPI_GPU_DEVICES
+                        PROPERTY STRINGS "bdw;skl;kbl;cfl;bxt;glk;whl;aml;cml;icllp;lkf;ehl;tgllp;rkl;adl-s;adl-p;dg1;acm-g10;ats-m150;dg2-g10;acm-g11;ats-m75;dg2-g11;acm-g12;dg2-g12;pvc-sdv;pvc;gen11;gen12lp;gen8;gen9;xe;xe-hpc;xe-hpg")
+            # If the user has given us a list turn all ';' into ',' to pacify the Intel OpenCL compiler.
+            string(REPLACE alpaka_ONEAPI_GPU_DEVICES REPLACE ";" ",")
+            
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU")
+            target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_GPU_TARGET} \"-device ${alpaka_SYCL_ONEAPI_GPU_DEVICES}\"")
+        endif()
+
+        #-----------------------------------------------------------------------------------------------------------------
+        # Generic SYCL options
+        if(alpaka_SYCL_ENABLE_IOSTREAM)
+            set(alpaka_SYCL_IOSTREAM_KIB "64" CACHE STRING "Kibibytes (1024B) of memory to allocate per block for SYCL's on-device iostream")
+
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_ENABLED")
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_KIB=${alpaka_SYCL_IOSTREAM_KIB}")
+        endif()
+        alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
+    else()
+        message(FATAL_ERROR "alpaka currently does not support SYCL implementations other than oneAPI.")
     endif()
-    alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
 endif()
 
 #-------------------------------------------------------------------------------

@@ -156,30 +156,6 @@ namespace alpaka::test
         };
 #        endif
 #    endif
-#    ifdef ALPAKA_SYCL_BACKEND_XILINX
-        //! The default queue type trait specialization for the Xilinx SYCL device.
-        template<>
-        struct DefaultQueueType<alpaka::DevFpgaSyclXilinx>
-        {
-#        if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = alpaka::QueueFpgaSyclXilinxBlocking;
-#        else
-            using type = alpaka::QueueFpgaSyclXilinxNonBlocking;
-#        endif
-        };
-
-        template<>
-        struct IsBlockingQueue<alpaka::QueueFpgaSyclXilinxBlocking>
-        {
-            static constexpr auto value = true;
-        };
-
-        template<>
-        struct IsBlockingQueue<alpaka::QueueFpgaSyclXilinxNonBlocking>
-        {
-            static constexpr auto value = false;
-        };
-#    endif
 #endif
     } // namespace trait
     //! The queue type that should be used for the given accelerator.
@@ -217,11 +193,6 @@ namespace alpaka::test
         std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelBlocking>,
         std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelNonBlocking>
 #        endif
-#    endif
-#    if defined(ALPAKA_SYCL_BACKEND_XILINX)
-        ,
-        std::tuple<alpaka::DevFpgaSyclXilinx, alpaka::QueueFpgaSyclXilinxBlocking>,
-        std::tuple<alpaka::DevFpgaSyclXilinx, alpaka::QueueFpgaSyclXilinxNonBlocking>
 #    endif
 #endif
         >;

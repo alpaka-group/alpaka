@@ -34,8 +34,6 @@ namespace alpaka
 #    elif defined(ALPAKA_SYCL_ONEAPI_GPU)
     using ExampleDefaultAcc = alpaka::AccGpuSyclIntel<TDim, TIdx>;
 #    endif
-#elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-    using ExampleDefaultAcc = alpaka::AccFpgaSyclXilinx<TDim, TIdx>;
 #else
     class ExampleDefaultAcc;
 #    warning "No supported backend selected."
