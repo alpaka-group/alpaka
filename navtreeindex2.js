@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"PltfGpuSyclIntel_8hpp_source.html":[4,0,0,0,17,6],
 "PltfHipRt_8hpp.html":[4,0,0,0,17,7],
 "PltfHipRt_8hpp_source.html":[4,0,0,0,17,7],
 "PltfUniformCudaHipRt_8hpp.html":[4,0,0,0,17,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "ViewTest_8hpp.html#a2f2aac1d04ce746a78be008faa0266a7":[4,0,0,0,21,4,0,1,2],
 "ViewTest_8hpp.html#a4113677614d29718ffb0ce7c82d5d851":[4,0,0,0,21,4,0,1,4],
 "ViewTest_8hpp.html#a490d7ae473e2c0ed15d387d265d5c5dc":[4,0,0,0,21,4,0,1,6],
-"ViewTest_8hpp.html#a72adf94ec41fe458ea2ee43a3b70483c":[4,0,0,0,21,4,0,1,3],
-"ViewTest_8hpp_source.html":[4,0,0,0,21,4,0,1]
+"ViewTest_8hpp.html#a72adf94ec41fe458ea2ee43a3b70483c":[4,0,0,0,21,4,0,1,3]
 };

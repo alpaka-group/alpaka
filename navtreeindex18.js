@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"structutility_1_1tuple_1_1remove__last__type.html":[3,0,3,0,11],
 "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_00_01Args_8_8_8_01_4_01_4.html":[3,0,3,0,13],
 "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_00_01Args_8_8_8_01_4_01_4.html#a0380c3fc474f872479854bff680b92ea":[3,0,3,0,13,0],
 "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_01_4_01_4.html":[3,0,3,0,12],
@@ -82,6 +83,5 @@ var NAVTREEINDEX18 =
 "warp_2Traits_8hpp_source.html":[4,0,0,0,25,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,26,0],
 "workdiv_2Traits_8hpp.html#a2a811570d2074f237f89c9910b82b44c":[4,0,0,0,26,0,4],
-"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0],
-"":[2,0,2]
+"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0]
 };
