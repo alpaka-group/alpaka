@@ -7,7 +7,6 @@ var dir_9c737d14007cafba76b1e7c7800c2a61 =
     [ "CpuTbbBlocks.hpp", "CpuTbbBlocks_8hpp.html", "CpuTbbBlocks_8hpp" ],
     [ "CpuThreads.hpp", "CpuThreads_8hpp.html", null ],
     [ "FpgaSyclIntel.hpp", "FpgaSyclIntel_8hpp.html", "FpgaSyclIntel_8hpp" ],
-    [ "FpgaSyclXilinx.hpp", "FpgaSyclXilinx_8hpp.html", "FpgaSyclXilinx_8hpp" ],
     [ "GenericSycl.hpp", "GenericSycl_8hpp.html", "GenericSycl_8hpp" ],
     [ "GpuCudaRt.hpp", "GpuCudaRt_8hpp.html", null ],
     [ "GpuHipRt.hpp", "GpuHipRt_8hpp.html", "GpuHipRt_8hpp" ],

@@ -58,7 +58,6 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "AccDevProps", "structalpaka_1_1AccDevProps.html", "structalpaka_1_1AccDevProps" ]
     ] ],
     [ "AccFpgaSyclIntel.hpp", "AccFpgaSyclIntel_8hpp.html", null ],
-    [ "AccFpgaSyclXilinx.hpp", "AccFpgaSyclXilinx_8hpp.html", null ],
     [ "AccGenericSycl.hpp", "AccGenericSycl_8hpp.html", null ],
     [ "AccGpuCudaRt.hpp", "AccGpuCudaRt_8hpp.html", "AccGpuCudaRt_8hpp" ],
     [ "AccGpuHipRt.hpp", "AccGpuHipRt_8hpp.html", null ],

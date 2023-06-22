@@ -9,7 +9,6 @@ var dir_3da4cf0d8582bc897be6864cae72e9ae =
     [ "PltfCpuSyclIntel.hpp", "PltfCpuSyclIntel_8hpp.html", null ],
     [ "PltfCudaRt.hpp", "PltfCudaRt_8hpp.html", "PltfCudaRt_8hpp" ],
     [ "PltfFpgaSyclIntel.hpp", "PltfFpgaSyclIntel_8hpp.html", null ],
-    [ "PltfFpgaSyclXilinx.hpp", "PltfFpgaSyclXilinx_8hpp.html", null ],
     [ "PltfGenericSycl.hpp", "PltfGenericSycl_8hpp.html", null ],
     [ "PltfGpuSyclIntel.hpp", "PltfGpuSyclIntel_8hpp.html", null ],
     [ "PltfHipRt.hpp", "PltfHipRt_8hpp.html", null ],

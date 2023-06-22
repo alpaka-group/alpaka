@@ -12,8 +12,6 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
     [ "QueueCudaRtNonBlocking.hpp", "QueueCudaRtNonBlocking_8hpp.html", "QueueCudaRtNonBlocking_8hpp" ],
     [ "QueueFpgaSyclIntelBlocking.hpp", "QueueFpgaSyclIntelBlocking_8hpp.html", null ],
     [ "QueueFpgaSyclIntelNonBlocking.hpp", "QueueFpgaSyclIntelNonBlocking_8hpp.html", null ],
-    [ "QueueFpgaSyclXilinxBlocking.hpp", "QueueFpgaSyclXilinxBlocking_8hpp.html", null ],
-    [ "QueueFpgaSyclXilinxNonBlocking.hpp", "QueueFpgaSyclXilinxNonBlocking_8hpp.html", null ],
     [ "QueueGenericSyclBlocking.hpp", "QueueGenericSyclBlocking_8hpp.html", null ],
     [ "QueueGenericSyclNonBlocking.hpp", "QueueGenericSyclNonBlocking_8hpp.html", null ],
     [ "QueueGenericThreadsBlocking.hpp", "QueueGenericThreadsBlocking_8hpp.html", [

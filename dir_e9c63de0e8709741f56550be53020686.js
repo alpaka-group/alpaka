@@ -24,7 +24,6 @@ var dir_e9c63de0e8709741f56550be53020686 =
     [ "BufCpuSyclIntel.hpp", "BufCpuSyclIntel_8hpp.html", null ],
     [ "BufCudaRt.hpp", "BufCudaRt_8hpp.html", "BufCudaRt_8hpp" ],
     [ "BufFpgaSyclIntel.hpp", "BufFpgaSyclIntel_8hpp.html", null ],
-    [ "BufFpgaSyclXilinx.hpp", "BufFpgaSyclXilinx_8hpp.html", null ],
     [ "BufGenericSycl.hpp", "BufGenericSycl_8hpp.html", null ],
     [ "BufGpuSyclIntel.hpp", "BufGpuSyclIntel_8hpp.html", null ],
     [ "BufHipRt.hpp", "BufHipRt_8hpp.html", null ],

@@ -1241,7 +1241,6 @@ var annotated_dup =
       [ "TagCpuTbbBlocks", "structalpaka_1_1TagCpuTbbBlocks.html", "structalpaka_1_1TagCpuTbbBlocks" ],
       [ "TagCpuThreads", "structalpaka_1_1TagCpuThreads.html", "structalpaka_1_1TagCpuThreads" ],
       [ "TagFpgaSyclIntel", "structalpaka_1_1TagFpgaSyclIntel.html", "structalpaka_1_1TagFpgaSyclIntel" ],
-      [ "TagFpgaSyclXilinx", "structalpaka_1_1TagFpgaSyclXilinx.html", "structalpaka_1_1TagFpgaSyclXilinx" ],
       [ "TagGenericSycl", "structalpaka_1_1TagGenericSycl.html", "structalpaka_1_1TagGenericSycl" ],
       [ "TagGpuCudaRt", "structalpaka_1_1TagGpuCudaRt.html", "structalpaka_1_1TagGpuCudaRt" ],
       [ "TagGpuHipRt", "structalpaka_1_1TagGpuHipRt.html", "structalpaka_1_1TagGpuHipRt" ],

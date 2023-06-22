@@ -466,7 +466,6 @@ var hierarchy =
     [ "alpaka::TagCpuTbbBlocks", "structalpaka_1_1TagCpuTbbBlocks.html", null ],
     [ "alpaka::TagCpuThreads", "structalpaka_1_1TagCpuThreads.html", null ],
     [ "alpaka::TagFpgaSyclIntel", "structalpaka_1_1TagFpgaSyclIntel.html", null ],
-    [ "alpaka::TagFpgaSyclXilinx", "structalpaka_1_1TagFpgaSyclXilinx.html", null ],
     [ "alpaka::TagGenericSycl", "structalpaka_1_1TagGenericSycl.html", null ],
     [ "alpaka::TagGpuCudaRt", "structalpaka_1_1TagGpuCudaRt.html", null ],
     [ "alpaka::TagGpuHipRt", "structalpaka_1_1TagGpuHipRt.html", null ],

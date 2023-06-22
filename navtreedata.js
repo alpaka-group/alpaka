@@ -64,25 +64,25 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806",
-"PltfGpuSyclIntel_8hpp_source.html",
-"ViewTest_8hpp_source.html",
-"classalpaka_1_1Vec.html#a79cd10bdf0f58e103e43275a258399fd",
-"classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html",
-"dir_b5a8ec4893e1f83a89980c2613a4602b.html",
-"mem_2view_2Traits_8hpp.html#adc3e9f88cfcde81a2ac9dd27cdaae903",
-"namespacealpaka_1_1cpu_1_1detail.html#a46231469ec522b61a9df6f64f476cff5",
-"namespacemembers_func_m.html",
-"structalpaka_1_1ApiCudaRt.html#ac67b03536c861dedce19c9124a7184ba",
-"structalpaka_1_1detail_1_1ParallelForStaticImpl.html#ae3c5002b557886e709025c19d1076e19",
-"structalpaka_1_1math_1_1trait_1_1Atanh_3_01AtanhUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html",
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01float_00_012_01_4.html",
-"structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#a213c8b5a459dab8c9e5365525d68a6f5",
-"structalpaka_1_1trait_1_1DimType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html",
-"structalpaka_1_1trait_1_1GetExtent_3_01DimInt_3_01Dim_3_01TExtent_01_4_1_1value_01-_014u_01_4_00f61d80e1893e99f751b04a7bd1a4240c.html#a3069bbe4fbf2dfc663758c5a98b57ae1",
-"structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Threads_00_01TMemScope_01_4.html",
-"structutility_1_1tuple_1_1remove__last__type.html"
+"AccCpuOmp2Blocks_8hpp.html",
+"Decay_8hpp_source.html",
+"QueueCpuOmp2Collective_8hpp_source.html",
+"WorkDivHelpers_8hpp.html#ab1d31914161c1f5c4cf6f71e7d1bfe50",
+"classalpaka_1_1ViewPlainPtr.html#a3d2d8a080f115b70e313662e312c3677",
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformUint.html",
+"event_2Traits_8hpp.html",
+"namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa",
+"namespacealpaka_1_1detail.html#a867e1d281e084bbeb3a56bba70306a21",
+"namespacemembers_u.html",
+"structalpaka_1_1ApiCudaRt.html#af8eb19bfa7a9d5a8a85934ce97af43d1",
+"structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a93890b82f7b319728de301dc8680fd3c",
+"structalpaka_1_1math_1_1trait_1_1Cosh.html",
+"structalpaka_1_1meta_1_1detail_1_1FilterImplHelper.html",
+"structalpaka_1_1trait_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevCpu_01_4.html#a051eccbea77638e8a31cb9664851ef92",
+"structalpaka_1_1trait_1_1DimType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html",
+"structalpaka_1_1trait_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html#a3b09a68490814dd4a4ae8e89c2349796",
+"structalpaka_1_1trait_1_1PltfType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#aab30896cdd8c9d437cdb40cd4b77627b",
+"tinymt32_8h.html#ac29e1292a65ed4821d4453bbb2ea2c30"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
