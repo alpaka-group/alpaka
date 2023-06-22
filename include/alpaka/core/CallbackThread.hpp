@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <atomic>
 #include <condition_variable>
 #include <functional>
 #include <future>
@@ -22,8 +21,12 @@ namespace alpaka::core
     public:
         ~CallbackThread()
         {
-            m_stop = true;
-            m_cond.notify_one();
+            {
+                std::unique_lock<std::mutex> lock{m_mutex};
+                m_stop = true;
+                m_cond.notify_one();
+            }
+
             if(m_thread.joinable())
             {
                 if(std::this_thread::get_id() == m_thread.get_id())
@@ -61,7 +64,7 @@ namespace alpaka::core
         std::thread m_thread;
         std::condition_variable m_cond;
         std::mutex m_mutex;
-        std::atomic<bool> m_stop{false};
+        bool m_stop{false};
         std::queue<Task> m_tasks;
 
         auto startWorkerThread() -> void
