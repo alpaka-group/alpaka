@@ -186,10 +186,10 @@ TEMPLATE_LIST_TEST_CASE("nonBlockingQueueShouldNotRunPastProgramTermination", "[
         // enqueue long task, destroy queue, see what happens
         alpaka::enqueue(
             f.m_queue,
-            [name = typeid(f.m_queue).name()]() noexcept
+            [name = alpaka::core::demangled<decltype(f.m_queue)>]
             {
                 std::cout << "BEGIN not-awaited task in Queue '" << name
-                          << "' (if there is no matchng 'END' line, the task ran past program termination)"
+                          << "' (if there is no matching 'END' line, the task ran past program termination)"
                           << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(3000u));
                 std::cout << "END not-awaited task in Queue '" << name << "'" << std::endl;
