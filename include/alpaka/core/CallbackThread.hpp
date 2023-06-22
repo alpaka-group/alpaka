@@ -34,12 +34,22 @@ namespace alpaka::core
                 m_thread.join();
             }
         }
-        auto submit(Task&& newTask) -> std::future<void>
+
+        template<typename NullaryFunction>
+        auto submit(NullaryFunction&& nf) -> std::future<void>
         {
-            auto f = newTask.get_future();
+            static_assert(
+                std::is_void_v<std::invoke_result_t<NullaryFunction>>,
+                "Submitted function must not have any arguments and return void.");
+            return submit(Task{std::forward<NullaryFunction>(nf)});
+        }
+
+        auto submit(Task task) -> std::future<void>
+        {
+            auto f = task.get_future();
             {
                 std::unique_lock<std::mutex> lock{m_mutex};
-                m_tasks.emplace(std::move(newTask));
+                m_tasks.emplace(std::move(task));
                 if(!m_thread.joinable())
                     startWorkerThread();
             }
