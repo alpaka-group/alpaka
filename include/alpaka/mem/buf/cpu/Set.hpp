@@ -153,7 +153,7 @@ namespace alpaka
             }
 #endif
 
-            ALPAKA_FN_HOST auto operator()() const -> void
+            ALPAKA_FN_HOST auto operator()() const noexcept(ALPAKA_DEBUG < ALPAKA_DEBUG_FULL) -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
