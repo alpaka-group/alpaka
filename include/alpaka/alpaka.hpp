@@ -9061,7 +9061,6 @@
 		    CREATE_ACC_TAG(TagCpuTbbBlocks);
 		    CREATE_ACC_TAG(TagCpuThreads);
 		    CREATE_ACC_TAG(TagFpgaSyclIntel);
-		    CREATE_ACC_TAG(TagFpgaSyclXilinx);
 		    CREATE_ACC_TAG(TagGenericSycl);
 		    CREATE_ACC_TAG(TagGpuCudaRt);
 		    CREATE_ACC_TAG(TagGpuHipRt);
@@ -19854,216 +19853,6 @@
 	// == ./include/alpaka/acc/AccFpgaSyclIntel.hpp ==
 	// ============================================================================
 
-	// ============================================================================
-	// == ./include/alpaka/acc/AccFpgaSyclXilinx.hpp ==
-	// ==
-	/* Copyright 2022 Jan Stephan
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-		// ============================================================================
-		// == ./include/alpaka/dev/DevFpgaSyclXilinx.hpp ==
-		// ==
-		/* Copyright 2022 Jan Stephan
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-			// ============================================================================
-			// == ./include/alpaka/pltf/PltfFpgaSyclXilinx.hpp ==
-			// ==
-			/* Copyright 2023 Jan Stephan
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/pltf/PltfGenericSycl.hpp"    // amalgamate: file already expanded
-
-			// #include <string>    // amalgamate: file already included
-
-			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
-
-			namespace alpaka
-			{
-			    namespace detail
-			    {
-			        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
-			        // linker anyway.
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic push
-			#        pragma clang diagnostic ignored "-Wweak-vtables"
-			#    endif
-			        struct XilinxFpgaSelector : sycl::device_selector
-			        {
-			            auto operator()(sycl::device const& dev) const -> int override
-			            {
-			                auto const vendor = dev.get_info<sycl::info::device::vendor>();
-			                auto const is_xilinx = (vendor.find("Xilinx") != std::string::npos);
-
-			                return is_xilinx ? 1 : -1;
-			            }
-			        };
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic pop
-			#    endif
-			    } // namespace detail
-
-			    //! The SYCL device manager.
-			    using PltfFgpaSyclIntel = PltfGenericSycl<detail::XilinxFpgaSelector>;
-			} // namespace alpaka
-
-			namespace alpaka::trait
-			{
-			    //! The SYCL device manager device type trait specialization.
-			    template<>
-			    struct DevType<PltfFpgaSyclXilinx>
-			    {
-			        using type = DevGenericSycl<PltfFpgaSyclXilinx>; // = DevFpgaSyclXilinx
-			    };
-			} // namespace alpaka::trait
-
-			#endif
-			// ==
-			// == ./include/alpaka/pltf/PltfFpgaSyclXilinx.hpp ==
-			// ============================================================================
-
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-		namespace alpaka
-		{
-		    using DevFpgaSyclXilinx = DevGenericSycl<PltfFpgaSyclXilinx>;
-		}
-
-		#endif
-		// ==
-		// == ./include/alpaka/dev/DevFpgaSyclXilinx.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// ============================================================================
-		// == ./include/alpaka/kernel/TaskKernelFpgaSyclXilinx.hpp ==
-		// ==
-		/* Copyright 2022 Jan Stephan
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-
-		// #pragma once
-		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already expanded
-
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-		namespace alpaka
-		{
-		    template<typename TDim, typename TIdx>
-		    class AccFpgaSyclXilinx;
-
-		    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		    using TaskKernelFpgaSyclXilinx
-		        = TaskKernelGenericSycl<AccFpgaSyclXilinx<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
-		} // namespace alpaka
-
-		#endif
-		// ==
-		// == ./include/alpaka/kernel/TaskKernelFpgaSyclXilinx.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/PltfFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
-
-	// #include <string>    // amalgamate: file already included
-	// #include <utility>    // amalgamate: file already included
-
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-	// #    include <CL/sycl.hpp>    // amalgamate: file already included
-
-	namespace alpaka
-	{
-	    //! The Xilinx FPGA SYCL accelerator.
-	    //!
-	    //! This accelerator allows parallel kernel execution on a SYCL-capable Xilinx FPGA target device.
-	    template<typename TDim, typename TIdx>
-	    class AccFpgaSyclXilinx final
-	        : public AccGenericSycl<TDim, TIdx>
-	        , public concepts::Implements<ConceptAcc, AccFpgaSyclXilinx<TDim, TIdx>>
-	    {
-	    public:
-	        using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
-	    };
-	} // namespace alpaka
-
-	namespace alpaka::trait
-	{
-	    //! The Xilinx FPGA SYCL accelerator name trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct GetAccName<AccFpgaSyclXilinx<TDim, TIdx>>
-	    {
-	        static auto getAccName() -> std::string
-	        {
-	            return "AccFpgaSyclXilinx<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
-	        }
-	    };
-
-	    //! The Xilinx FPGA SYCL accelerator device type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct DevType<AccFpgaSyclXilinx<TDim, TIdx>>
-	    {
-	        using type = DevFpgaSyclXilinx;
-	    };
-
-	    //! The Xilinx FPGA SYCL accelerator execution task type trait specialization.
-	    template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-	    struct CreateTaskKernel<AccFpgaSyclXilinx<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
-	    {
-	        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
-	        {
-	            return TaskKernelFpgaSyclXilinx<TDim, TIdx, TKernelFnObj, TArgs...>{
-	                workDiv,
-	                kernelFnObj,
-	                std::forward<TArgs>(args)...};
-	        }
-	    };
-
-	    //! The Xilinx FPGA SYCL execution task platform type trait specialization.
-	    template<typename TDim, typename TIdx>
-	    struct PltfType<AccFpgaSyclXilinx<TDim, TIdx>>
-	    {
-	        using type = PltfFpgaSyclXilinx;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct AccToTag<alpaka::AccFpgaSyclXilinx<TDim, TIdx>>
-	    {
-	        using type = alpaka::TagFpgaSyclXilinx;
-	    };
-
-	    template<typename TDim, typename TIdx>
-	    struct TagToAcc<alpaka::TagFpgaSyclXilinx, TDim, TIdx>
-	    {
-	        using type = alpaka::AccFpgaSyclXilinx<TDim, TIdx>;
-	    };
-	} // namespace alpaka::trait
-
-	#endif
-	// ==
-	// == ./include/alpaka/acc/AccFpgaSyclXilinx.hpp ==
-	// ============================================================================
-
 // #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already expanded
 	// ============================================================================
 	// == ./include/alpaka/acc/AccGpuCudaRt.hpp ==
@@ -25713,7 +25502,6 @@
 	// ============================================================================
 
 // #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/dev/DevFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
 // #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 // #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already expanded
 	// ============================================================================
@@ -26779,29 +26567,6 @@
 	#endif
 	// ==
 	// == ./include/alpaka/event/EventFpgaSyclIntel.hpp ==
-	// ============================================================================
-
-	// ============================================================================
-	// == ./include/alpaka/event/EventFpgaSyclXilinx.hpp ==
-	// ==
-	/* Copyright 2022 Jan Stephan
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already expanded
-
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-	namespace alpaka
-	{
-	    using EventFpgaSyclXilinx = EventGenericSycl<DevFpgaSyclXilinx>;
-	} // namespace alpaka
-
-	#endif
-	// ==
-	// == ./include/alpaka/event/EventFpgaSyclXilinx.hpp ==
 	// ============================================================================
 
 // #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already expanded
@@ -28820,7 +28585,6 @@
 	// ============================================================================
 
 // #include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/kernel/TaskKernelFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
 // #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already expanded
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuCudaRt.hpp ==
@@ -32760,32 +32524,6 @@
 	// == ./include/alpaka/mem/buf/BufFpgaSyclIntel.hpp ==
 	// ============================================================================
 
-	// ============================================================================
-	// == ./include/alpaka/mem/buf/BufFpgaSyclXilinx.hpp ==
-	// ==
-	/* Copyright 2022 Jan Stephan
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-
-	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already expanded
-
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-	namespace alpaka
-	{
-	    //! The SYCL memory buffer.
-	    template<typename TElem, typename TDim, typename TIdx>
-	    using BufFpgaSyclXilinx = BufGenericSycl<TElem, TDim, TIdx, DevFpgaSyclXilinx>;
-	} // namespace alpaka
-
-	#endif
-	// ==
-	// == ./include/alpaka/mem/buf/BufFpgaSyclXilinx.hpp ==
-	// ============================================================================
-
 // #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already expanded
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufGpuSyclIntel.hpp ==
@@ -34707,7 +34445,6 @@
 	// ============================================================================
 
 // #include "alpaka/pltf/PltfFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/pltf/PltfFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
 // #include "alpaka/pltf/PltfGpuSyclIntel.hpp"    // amalgamate: file already expanded
 	// ============================================================================
 	// == ./include/alpaka/pltf/PltfHipRt.hpp ==
@@ -36165,52 +35902,6 @@
 	#endif
 	// ==
 	// == ./include/alpaka/queue/QueueFpgaSyclIntelNonBlocking.hpp ==
-	// ============================================================================
-
-	// ============================================================================
-	// == ./include/alpaka/queue/QueueFpgaSyclXilinxBlocking.hpp ==
-	// ==
-	/* Copyright 2022 Jan Stephan
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
-
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-	namespace alpaka
-	{
-	    using QueueFpgaSyclXilinxBlocking = QueueGenericSyclBlocking<DevFpgaSyclXilinx>;
-	}
-
-	#endif
-	// ==
-	// == ./include/alpaka/queue/QueueFpgaSyclXilinxBlocking.hpp ==
-	// ============================================================================
-
-	// ============================================================================
-	// == ./include/alpaka/queue/QueueFpgaSyclXilinxNonBlocking.hpp ==
-	// ==
-	/* Copyright 2022 Jan Stephan
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclXilinx.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
-
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_XILINX)
-
-	namespace alpaka
-	{
-	    using QueueFpgaSyclXilinxNonBlocking = QueueGenericSyclNonBlocking<DevFpgaSyclXilinx>;
-	}
-
-	#endif
-	// ==
-	// == ./include/alpaka/queue/QueueFpgaSyclXilinxNonBlocking.hpp ==
 	// ============================================================================
 
 	// ============================================================================
