@@ -239,7 +239,7 @@ namespace alpaka
                 // callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
                 // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
                 // before it executes the next task in the queue (CUDA/HIP stream).
-                auto f = queue.getCallbackThread().submit(std::packaged_task<void()>(
+                auto f = queue.getCallbackThread().submit(
                     [spCallbackSynchronizationData, task]()
                     {
                         // If the callback has not yet been called, we wait for it.
@@ -259,7 +259,7 @@ namespace alpaka
                             spCallbackSynchronizationData->m_state = CallbackState::finished;
                         }
                         spCallbackSynchronizationData->m_event.notify_one();
-                    }));
+                    });
 
                 if constexpr(TBlocking)
                 {
