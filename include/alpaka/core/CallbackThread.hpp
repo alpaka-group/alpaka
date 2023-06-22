@@ -38,6 +38,11 @@ namespace alpaka::core
             }
         }
 
+        // Note: due to different std lib implementations of packaged_task, the lifetime of the passed function either
+        // ends when the packaged_task is destroyed (while the returned future is still alive) or when both are
+        // destroyed. Therefore, ensure that a submitted task does not extend the lifetime of any object that
+        // (transitively) holds the returned future. E.g. don't capture a shared_ptr to an alpaka object that stores
+        // the returned future. This is a cyclic dependency and creates a leak.
         template<typename NullaryFunction>
         auto submit(NullaryFunction&& nf) -> std::future<void>
         {
@@ -52,6 +57,7 @@ namespace alpaka::core
             auto f = task.get_future();
             {
                 std::unique_lock<std::mutex> lock{m_mutex};
+                ++m_tasksInProgress;
                 m_tasks.emplace(std::move(task));
                 if(!m_thread.joinable())
                     startWorkerThread();
@@ -60,12 +66,18 @@ namespace alpaka::core
             return f;
         }
 
+        [[nodiscard]] auto empty() const
+        {
+            return m_tasksInProgress == 0;
+        }
+
     private:
         std::thread m_thread;
         std::condition_variable m_cond;
         std::mutex m_mutex;
         bool m_stop{false};
         std::queue<Task> m_tasks;
+        std::atomic<int> m_tasksInProgress{0};
 
         auto startWorkerThread() -> void
         {
@@ -74,21 +86,24 @@ namespace alpaka::core
                 {
                     while(true)
                     {
-                        // Do not move the tasks out of the loop else the lifetime could be extended until the moment
-                        // where the callback thread is destructed.
-                        Task task;
                         {
-                            std::unique_lock<std::mutex> lock{m_mutex};
-                            m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
+                            // Do not move the tasks out of the loop else the lifetime could be extended until the
+                            // moment where the callback thread is destructed.
+                            Task task;
+                            {
+                                std::unique_lock<std::mutex> lock{m_mutex};
+                                m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
 
-                            if(m_stop && m_tasks.empty())
-                                break;
+                                if(m_stop && m_tasks.empty())
+                                    break;
 
-                            task = std::move(m_tasks.front());
-                            m_tasks.pop();
+                                task = std::move(m_tasks.front());
+                                m_tasks.pop();
+                            }
+
+                            task();
                         }
-
-                        task();
+                        --m_tasksInProgress;
                     }
                 });
         }

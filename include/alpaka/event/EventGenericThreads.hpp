@@ -144,8 +144,8 @@ namespace alpaka
                 auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                 // Enqueue a task that only resets the events flag if it is completed.
-                spEventImpl->m_future = queueImpl.m_workerThread->enqueueTask(
-                    [spEventImpl, enqueueCount]()
+                spEventImpl->m_future = queueImpl.m_workerThread.submit(
+                    [spEventImpl, enqueueCount]() mutable
                     {
                         std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
 
@@ -154,6 +154,8 @@ namespace alpaka
                         {
                             spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
                         }
+                        spEventImpl
+                            .reset(); // avoid keeping the event alive as part of the background thread task's future
                     });
             }
         };
@@ -297,11 +299,13 @@ namespace alpaka
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                     // Enqueue a task that waits for the given event.
-                    queueImpl.m_workerThread->enqueueTask(
-                        [spEventImpl, enqueueCount]()
+                    queueImpl.m_workerThread.submit(
+                        [spEventImpl, enqueueCount]() mutable
                         {
                             std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
                             spEventImpl->wait(enqueueCount, lk2);
+                            spEventImpl.reset(); // avoid keeping the event alive as part of the background thread
+                                                 // task's future
                         });
                 }
             }
