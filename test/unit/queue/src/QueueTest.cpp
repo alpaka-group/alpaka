@@ -170,7 +170,7 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
 //! queue before the task is finished. The run time of the task is a bit longer
 //! than all other tests here, so the task would run past program termination if
 //! not synchronized somewhere. This test has no assertion, because the tested
-//! behviour is outside of any function scope.
+//! behaviour is outside of any function scope.
 //!
 //! A thread running past program termination invokes undefined behavior, which
 //! occasionally leads to crashes after termination. I.e. this test may crash
