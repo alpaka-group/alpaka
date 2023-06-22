@@ -5,7 +5,7 @@
 #pragma once
 
 #include "alpaka/core/BoostPredef.hpp"
-#include "alpaka/core/ConcurrentExecPool.hpp"
+#include "alpaka/core/CallbackThread.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/event/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
@@ -41,21 +41,8 @@ namespace alpaka
 #    pragma clang diagnostic pop
 #endif
             {
-            private:
-                using ThreadPool = alpaka::core::detail::ConcurrentExecPool<
-                    std::size_t,
-                    std::thread, // The concurrent execution type.
-                    std::promise, // The promise type.
-                    void, // The type yielding the current concurrent execution.
-                    std::mutex, // The mutex type to use. Only required if TisYielding is true.
-                    std::condition_variable, // The condition variable type to use. Only required if TisYielding is
-                                             // true.
-                    false>; // If the threads should yield.
-
             public:
-                explicit QueueGenericThreadsNonBlockingImpl(TDev dev)
-                    : m_dev(std::move(dev))
-                    , m_workerThread(std::make_shared<ThreadPool>(1u))
+                explicit QueueGenericThreadsNonBlockingImpl(TDev dev) : m_dev(std::move(dev))
                 {
                 }
                 QueueGenericThreadsNonBlockingImpl(QueueGenericThreadsNonBlockingImpl<TDev> const&) = delete;
@@ -66,14 +53,6 @@ namespace alpaka
                     -> QueueGenericThreadsNonBlockingImpl<TDev>& = delete;
                 ~QueueGenericThreadsNonBlockingImpl() override
                 {
-                    m_dev.registerCleanup(
-                        [pool = std::weak_ptr<ThreadPool>(m_workerThread)]() noexcept
-                        {
-                            if(auto s = pool.lock())
-                                std::ignore = s->takeDetachHandle(); // let returned shared_ptr destroy itself
-                        });
-                    auto* wt = m_workerThread.get();
-                    wt->detach(std::move(m_workerThread));
                 }
 
                 void enqueue(EventGenericThreads<TDev>& ev) final
@@ -88,8 +67,7 @@ namespace alpaka
 
             public:
                 TDev const m_dev; //!< The device this queue is bound to.
-
-                std::shared_ptr<ThreadPool> m_workerThread;
+                core::CallbackThread m_workerThread;
             };
         } // namespace detail
     } // namespace generic
@@ -154,7 +132,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto enqueue(QueueGenericThreadsNonBlocking<TDev>& queue, TTask const& task) -> void
             {
-                queue.m_spQueueImpl->m_workerThread->enqueueTask(task);
+                queue.m_spQueueImpl->m_workerThread.submit(task);
             }
         };
         //! The CPU non-blocking device queue test trait specialization.
@@ -163,7 +141,7 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto empty(QueueGenericThreadsNonBlocking<TDev> const& queue) -> bool
             {
-                return queue.m_spQueueImpl->m_workerThread->isIdle();
+                return queue.m_spQueueImpl->m_workerThread.empty();
             }
         };
     } // namespace trait
