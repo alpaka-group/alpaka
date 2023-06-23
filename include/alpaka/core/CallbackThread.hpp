@@ -59,9 +59,11 @@ namespace alpaka::core
             m_thread = std::thread(
                 [this]
                 {
-                    Task task;
                     while(true)
                     {
+                        // Do not move the tasks out of the loop else the lifetime could be extended until the moment
+                        // where the callback thread is destructed.
+                        Task task;
                         {
                             std::unique_lock<std::mutex> lock{m_mutex};
                             m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
