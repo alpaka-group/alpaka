@@ -38,6 +38,7 @@ option(alpaka_BUILD_EXAMPLES "Build the examples" OFF)
 
 # Enable the test infrastructure only if alpaka is the top-level project
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    option(alpaka_ENABLE_WERROR "Treat all warnings as errors." OFF)
     option(BUILD_TESTING "Build the testing tree." OFF)
     include(CTest)
 endif()

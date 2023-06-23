@@ -179,5 +179,9 @@ if [ ! -z "${alpaka_USE_MDSPAN+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_USE_MDSPAN=${alpaka_USE_MDSPAN}")
 fi
+if [ ! -z "${alpaka_ENABLE_WERROR+x}" ]
+then
+    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ENABLE_WERROR=${alpaka_ENABLE_WERROR}")
+fi
 
 docker_retry docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash -c "source ./script/install.sh && ./script/run.sh"

@@ -72,6 +72,7 @@ env:
   alpaka_ACC_GPU_HIP_ENABLE: OFF
   alpaka_ACC_GPU_HIP_ONLY_MODE: OFF
   alpaka_USE_MDSPAN: OFF
+  alpaka_ENABLE_WERROR: ON
   CMAKE_INSTALL_PREFIX: ${{ github.workspace }}/_install
 
 jobs:

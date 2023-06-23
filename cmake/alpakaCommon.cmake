@@ -184,6 +184,16 @@ else()
             target_link_libraries(alpaka INTERFACE ${RT_LIBRARY})
         endif()
     endif()
+
+    # Add debug optimization levels. CMake doesn't do this by default.
+    # Note that -Og is the recommended gcc optimization level for debug mode but is equivalent to -O1 for clang (and its derivates).
+    alpaka_set_compiler_options(HOST_DEVICE target alpaka $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:GNU>,$<COMPILE_LANGUAGE:CXX>>:-Og>
+                                                          $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:GNU>,$<COMPILE_LANGUAGE:CUDA>>:-Xcompiler -Og>
+                                                          $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang,AppleClang,IntelLLVM>>:-O0>
+                                                          $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/Od>)
+    
+    target_link_options(alpaka INTERFACE $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:GNU>>:-Og>
+                                         $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang,AppleClang,IntelLLVM>>:-O0>) 
 endif()
 
 #-------------------------------------------------------------------------------
@@ -345,7 +355,7 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
     if(CMAKE_CUDA_COMPILER)
         if(NOT CMAKE_CUDA_COMPILER_ID STREQUAL "Clang")
             # Use user selected CMake CXX compiler or CMAKE_CUDA_HOST_COMPILER as cuda host compiler to avoid fallback to the default system CXX host compiler.
-            # CMAKE_CUDA_HOST_COMPILER is reset by check_language(CUDA) therefore definition passed by the user via -DCMAKE_CUDA_HOST_COMPILER are
+            # CMAKE_CUDA_HOST_COMPILER is reset by check_language(CUDA) therefore definitions passed by the user via -DCMAKE_CUDA_HOST_COMPILER are
             # ignored by CMake (looks like a CMake bug).
             if(_alpaka_CUDA_HOST_COMPILER)
                 set(CMAKE_CUDA_HOST_COMPILER ${_alpaka_CUDA_HOST_COMPILER})
@@ -418,13 +428,12 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             if(alpaka_CUDA_EXPT_EXTENDED_LAMBDA STREQUAL ON)
                 alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--extended-lambda>)
             endif()
-            # This is mandatory because with c++17 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
+            # This is mandatory because with C++17 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
             alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>)
 
-            if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
-                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-g>)
-                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-lineinfo>)
-            endif()
+            # CMake automatically sets '-g' in debug mode
+            alpaka_set_compiler_options(DEVICE target alpaka $<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CUDA>>:-G> # -G overrides -lineinfo
+                                                             $<$<AND:$<CONFIG:RelWithDebInfo>,$<COMPILE_LANGUAGE:CUDA>>:-g -lineinfo>)
 
             if(alpaka_FAST_MATH STREQUAL ON)
                 alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--use_fast_math>)
