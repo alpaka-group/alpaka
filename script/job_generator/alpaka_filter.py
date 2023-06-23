@@ -22,5 +22,14 @@ def alpaka_post_filter(row: List) -> bool:
         for clang_cuda_version in ["15", "16"]:
             if row_check_version(row, HOST_COMPILER, "==", clang_cuda_version):
                 return False
+            
+    # Debug builds with nvcc <= 11.6 produce compiler errors
+    if (
+        is_in_row(row, BUILD_TYPE)
+        and row[param_map[BUILD_TYPE]][VERSION] == CMAKE_DEBUG
+        and row_check_name(row, DEVICE_COMPILER, "==", NVCC)
+        and row_check_version(row, DEVICE_COMPILER, "<=", "11.6")
+    ):
+        return False
 
     return True

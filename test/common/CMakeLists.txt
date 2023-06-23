@@ -19,15 +19,13 @@ if(MSVC)
     target_compile_options(${_COMMON_TARGET_NAME} INTERFACE $<$<COMPILE_LANGUAGE:CXX>:/bigobj> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/bigobj>)
 endif()
 
-if(alpaka_ACC_GPU_CUDA_ENABLE OR (alpaka_ACC_GPU_HIP_ENABLE AND HIP_PLATFORM MATCHES "nvcc"))
+if(alpaka_ACC_GPU_CUDA_ENABLE)
     # CUDA driver API is used by EventHostManualTrigger
     target_link_libraries(${_COMMON_TARGET_NAME} INTERFACE CUDA::cuda_driver)
     target_compile_definitions(${_COMMON_TARGET_NAME} INTERFACE "CUDA_API_PER_THREAD_DEFAULT_STREAM")
 endif()
-if(alpaka_ACC_GPU_CUDA_ENABLE AND CMAKE_CUDA_COMPILER_ID STREQUAL "Clang")
-    # nvcc supports werror starting with 10.2
-    if(CUDA_VERSION GREATER_EQUAL 10.2)
-        message(STATUS "adding -Werror=all-warnings")
+if(alpaka_ACC_GPU_CUDA_ENABLE AND CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
+    if(alpaka_ENABLE_WERROR)
         target_compile_options(${_COMMON_TARGET_NAME} INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Werror=all-warnings>)
     endif()
 endif()

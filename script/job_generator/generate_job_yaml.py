@@ -249,6 +249,8 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     variables["ALPAKA_CI_CUDA_DIR"] = "$HOME/cuda"
     # hip install path, if hip version is not already installed
     variables["ALPAKA_CI_HIP_ROOT_DIR"] = "$HOME/hip"
+    # Always enable -Werror in the CI
+    variables["alpaka_ENABLE_WERROR"] = "ON"
 
     ################################################################################################
     ### job dependent environment variables
@@ -391,7 +393,6 @@ def global_variables() -> Dict[str, str]:
     variables["ALPAKA_CI_OS_NAME"] = "Linux"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE] = "ON"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE] = "ON"
-    variables[ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE] = "OFF"
     variables[ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE] = "ON"
     variables[ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE] = "ON"
@@ -413,6 +414,7 @@ def global_variables() -> Dict[str, str]:
     variables["ALPAKA_CI_BOOST_LIB_DIR"] = "$HOME/boost_libs"
     variables["ALPAKA_CI_CUDA_DIR"] = "$HOME/cuda"
     variables["ALPAKA_CI_HIP_ROOT_DIR"] = "$HOME/hip"
+    variables["alpaka_ENABLE_WERROR"] ="ON"
 
     return variables
 
