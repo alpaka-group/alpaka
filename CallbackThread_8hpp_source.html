@@ -148,26 +148,28 @@ $(document).ready(function(){initNavTree('CallbackThread_8hpp_source.html',''); 
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            m_thread = std::thread(</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                [<span class="keyword">this</span>]</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    Task task;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keywordflow">while</span>(<span class="keyword">true</span>)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                        {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                            std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                            m_cond.wait(lock, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> m_stop || !m_tasks.empty(); });</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                            <span class="keywordflow">if</span>(m_stop &amp;&amp; m_tasks.empty())</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                            task = std::move(m_tasks.front());</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                            m_tasks.pop();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                        }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                        task();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                });</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keywordflow">while</span>(<span class="keyword">true</span>)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                        <span class="comment">// Do not move the tasks out of the loop else the lifetime could be extended until the moment</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                        <span class="comment">// where the callback thread is destructed.</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                        Task task;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                            std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                            m_cond.wait(lock, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> m_stop || !m_tasks.empty(); });</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                            <span class="keywordflow">if</span>(m_stop &amp;&amp; m_tasks.empty())</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                            task = std::move(m_tasks.front());</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                            m_tasks.pop();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                        }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                        task();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                });</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    };</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html">alpaka::core::CallbackThread</a></div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00018">CallbackThread.hpp:19</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_aa8b4bfd968c32fd2675f6f145c898cd4"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#aa8b4bfd968c32fd2675f6f145c898cd4">alpaka::core::CallbackThread::submit</a></div><div class="ttdeci">auto submit(Task &amp;&amp;newTask) -&gt; std::future&lt; void &gt;</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00037">CallbackThread.hpp:37</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_affbb697e77860c257d06e6bf8249e176"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176">alpaka::core::CallbackThread::~CallbackThread</a></div><div class="ttdeci">~CallbackThread()</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00023">CallbackThread.hpp:23</a></div></div>
@@ -178,7 +180,7 @@ $(document).ready(function(){initNavTree('CallbackThread_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="CallbackThread_8hpp.html">CallbackThread.hpp</a></li>
-    <li class="footer">Generated on Thu Jun 22 2023 18:25:54 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Jun 23 2023 10:40:42 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
