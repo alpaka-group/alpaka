@@ -15,7 +15,8 @@ var TestAccs_8hpp =
     [ "EnabledAccs", "TestAccs_8hpp.html#a61f6b665ee46c5d41d00ac18855df6e1", null ],
     [ "EnabledAccsElseInt", "TestAccs_8hpp.html#ab57c849d67c6a52eb555586398034871", null ],
     [ "InstantiatedEnabledAccs", "TestAccs_8hpp.html#ae3d5270239c3fdbcb3480c1cdb4fb996", null ],
+    [ "NonZeroTestDims", "TestAccs_8hpp.html#a9d57e67529cc861e8916832722ccfd08", null ],
     [ "TestAccs", "TestAccs_8hpp.html#ac981ce6a8a742c033eb0e664cc0de959", null ],
-    [ "TestDimIdxTuples", "TestAccs_8hpp.html#acec753ca9c8880ea12b959467bb511e7", null ],
+    [ "TestDimIdxTuples", "TestAccs_8hpp.html#ac11bfb3c371f540277d8559d407d6d56", null ],
     [ "writeEnabledAccs", "TestAccs_8hpp.html#af491ce4563849a712e3a22fcc3f7a2cc", null ]
 ];

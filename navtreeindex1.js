@@ -195,6 +195,9 @@ var NAVTREEINDEX1 =
 "NdLoop_8hpp.html#a045597af75fc88f57bf8c02e3ecc4444":[4,0,0,0,15,14,2],
 "NdLoop_8hpp.html#a85354683c329835d1fa3e4da7de4c750":[4,0,0,0,15,14,3],
 "NdLoop_8hpp_source.html":[4,0,0,0,15,14],
+"NonZero_8hpp.html":[4,0,0,0,15,15],
+"NonZero_8hpp.html#a8cc18e1b72c5071da369d80b8f0569a7":[4,0,0,0,15,15,2],
+"NonZero_8hpp_source.html":[4,0,0,0,15,15],
 "OmpSchedule_8hpp.html":[4,0,0,0,3,19],
 "OmpSchedule_8hpp.html#abaa4be57aab4d48a1cd4cd3024dc1b09":[4,0,0,0,3,19,2],
 "OmpSchedule_8hpp.html#ada298672cb75e2de066f2c30c7ba7cba":[4,0,0,0,3,19,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "Properties_8hpp.html":[4,0,0,0,18,3],
 "Properties_8hpp_source.html":[4,0,0,0,18,3],
 "QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
-"QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
-"QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
-"QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
-"QueueCpuOmp2Collective_8hpp.html":[4,0,0,0,21,5,1]
+"QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4]
 };

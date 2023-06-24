@@ -41,6 +41,7 @@ var namespacealpaka_1_1meta =
     [ "LowerMax", "namespacealpaka_1_1meta.html#a0f3c6777dcdb44614e8c23dfe07c99d0", null ],
     [ "LowerMin", "namespacealpaka_1_1meta.html#af9bb8645940302e4f6477058666856fa", null ],
     [ "MakeIntegerSequenceOffset", "namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b", null ],
+    [ "NonZero", "namespacealpaka_1_1meta.html#a8cc18e1b72c5071da369d80b8f0569a7", null ],
     [ "Transform", "namespacealpaka_1_1meta.html#a4d6e5b453ca068f43742cf89a32593dd", null ],
     [ "Unique", "namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c", null ],
     [ "foldr", "namespacealpaka_1_1meta.html#a0cef95a955740a85417c93cee0a99d0e", null ],

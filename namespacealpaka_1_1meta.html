@@ -217,6 +217,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a8e231c413f4066784715ce6383c1762b"><td class="memTemplParams" colspan="2">template&lt;typename T , T Tbegin, T Tsize&gt; </td></tr>
 <tr class="memitem:a8e231c413f4066784715ce6383c1762b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b">MakeIntegerSequenceOffset</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html">detail::MakeIntegerSequenceHelper</a>&lt;(Tsize&lt; 0),(Tsize==0), T, Tbegin, std::integral_constant&lt; T, Tbegin+Tsize &gt;, std::integer_sequence&lt; T &gt; &gt;::type</td></tr>
 <tr class="separator:a8e231c413f4066784715ce6383c1762b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cc18e1b72c5071da369d80b8f0569a7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a8cc18e1b72c5071da369d80b8f0569a7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a8cc18e1b72c5071da369d80b8f0569a7">NonZero</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1NonZeroImpl.html">detail::NonZeroImpl</a>&lt; T &gt;</td></tr>
+<tr class="separator:a8cc18e1b72c5071da369d80b8f0569a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d6e5b453ca068f43742cf89a32593dd"><td class="memTemplParams" colspan="2">template&lt;typename Ts , template&lt; typename... &gt; class TOp&gt; </td></tr>
 <tr class="memitem:a4d6e5b453ca068f43742cf89a32593dd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a4d6e5b453ca068f43742cf89a32593dd">Transform</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1TransformImpl.html">detail::TransformImpl</a>&lt; Ts, TOp &gt;::type</td></tr>
 <tr class="separator:a4d6e5b453ca068f43742cf89a32593dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -533,6 +536,24 @@ template&lt;typename T , T Tbegin, T Tsize&gt; </div>
 
 </div>
 </div>
+<a id="a8cc18e1b72c5071da369d80b8f0569a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cc18e1b72c5071da369d80b8f0569a7">&#9670;&nbsp;</a></span>NonZero</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#a8cc18e1b72c5071da369d80b8f0569a7">alpaka::meta::NonZero</a> = typedef typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1NonZeroImpl.html">detail::NonZeroImpl</a>&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="NonZero_8hpp_source.html#l00025">25</a> of file <a class="el" href="NonZero_8hpp_source.html">NonZero.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a4d6e5b453ca068f43742cf89a32593dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d6e5b453ca068f43742cf89a32593dd">&#9670;&nbsp;</a></span>Transform</h2>
 
@@ -797,7 +818,7 @@ template&lt;typename TExtentVec , typename TFnObj &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1meta.html">meta</a></li>
-    <li class="footer">Generated on Fri Jun 23 2023 10:40:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Jun 24 2023 12:25:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

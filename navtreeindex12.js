@@ -1,5 +1,11 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1trait_1_1Cos.html":[3,0,0,10,0,33],
+"structalpaka_1_1math_1_1trait_1_1Cos.html#a8722ac119e4dcea09a774317837e2346":[3,0,0,10,0,33,0],
+"structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,10,0,34],
+"structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#ab8f8c7baab5815506fb43e1c78cea8a3":[3,0,0,10,0,34,0],
+"structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__77c2a1b9a963af296dfd9194e8bc2b16.html":[3,0,0,10,0,35],
+"structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__77c2a1b9a963af296dfd9194e8bc2b16.html#af1e60771e95217e116e4fe5e11487e23":[3,0,0,10,0,35,0],
 "structalpaka_1_1math_1_1trait_1_1Cosh.html":[3,0,0,10,0,36],
 "structalpaka_1_1math_1_1trait_1_1Cosh.html#ad96aa21981c7c90803aac2239dff9d70":[3,0,0,10,0,36,0],
 "structalpaka_1_1math_1_1trait_1_1Cosh_3_01CoshUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,10,0,37],
@@ -243,11 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_011_01_4.html":[3,0,0,12,0,29],
 "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_011_01_4.html#a4494948a86018251aa3dd4fd9f4c4aab":[3,0,0,12,0,29,0],
 "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_012_01_4.html":[3,0,0,12,0,30],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_012_01_4.html#a37d331da5b1a844820e53e5798a5a478":[3,0,0,12,0,30,0],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_013_01_4.html":[3,0,0,12,0,31],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_013_01_4.html#a534427b299d97416652497efbe55dd59":[3,0,0,12,0,31,0],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_014_01_4.html":[3,0,0,12,0,32],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_014_01_4.html#a9690dcdefacc8ce540eeead0792c25a4":[3,0,0,12,0,32,0],
-"structalpaka_1_1meta_1_1detail_1_1Empty.html":[3,0,0,12,0,33],
-"structalpaka_1_1meta_1_1detail_1_1FilterImpl.html":[3,0,0,12,0,34]
+"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_012_01_4.html#a37d331da5b1a844820e53e5798a5a478":[3,0,0,12,0,30,0]
 };

@@ -1679,6 +1679,9 @@ var hierarchy =
     [ "RangeBuilder::type", null, [
       [ "utility::tuple::IndexRange< MIN, MAX >", "structutility_1_1tuple_1_1IndexRange.html", null ]
     ] ],
+    [ "std::bool_constant", null, [
+      [ "alpaka::meta::detail::NonZeroImpl< std::integral_constant< T, TValue > >", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl_3_01std_1_1integral__constant_3_01T_00_01TValue_01_4_01_4.html", null ]
+    ] ],
     [ "std::bool_constant< std::is_same_v< TApi, ApiCudaRt > &&TApi::version > BOOST_VERSION_NUMBER", null, [
       [ "alpaka::trait::HasAsyncBufSupport< TDim, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ]
     ] ],
@@ -1695,6 +1698,7 @@ var hierarchy =
       [ "alpaka::meta::Contains< List, Value >", "structalpaka_1_1meta_1_1Contains.html", null ],
       [ "alpaka::meta::DependentFalseType< T >", "structalpaka_1_1meta_1_1DependentFalseType.html", null ],
       [ "alpaka::meta::IsArrayOrVector< T >", "structalpaka_1_1meta_1_1IsArrayOrVector.html", null ],
+      [ "alpaka::meta::detail::NonZeroImpl< T >", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl.html", null ],
       [ "alpaka::trait::HasAsyncBufSupport< TDim, TDev >", "structalpaka_1_1trait_1_1HasAsyncBufSupport.html", null ],
       [ "alpaka::trait::HasMappedBufSupport< TPltf >", "structalpaka_1_1trait_1_1HasMappedBufSupport.html", null ],
       [ "alpakaGlobal::AlpakaBuiltInAtomic< TOp, T, THierarchy, TSfinae >", "structalpakaGlobal_1_1AlpakaBuiltInAtomic.html", null ]

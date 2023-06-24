@@ -455,6 +455,8 @@ var annotated_dup =
           [ "NdLoop", "structalpaka_1_1meta_1_1detail_1_1NdLoop.html", null ],
           [ "NdLoop< std::index_sequence< Tdim0, Tdims... > >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4" ],
           [ "NdLoop< std::index_sequence<> >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4" ],
+          [ "NonZeroImpl", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl.html", null ],
+          [ "NonZeroImpl< std::integral_constant< T, TValue > >", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl_3_01std_1_1integral__constant_3_01T_00_01TValue_01_4_01_4.html", null ],
           [ "TransformImpl", "structalpaka_1_1meta_1_1detail_1_1TransformImpl.html", null ],
           [ "TransformImpl< TList< Ts... >, TOp >", "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4.html", "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4" ],
           [ "UniqueHelper", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper.html", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper" ],
