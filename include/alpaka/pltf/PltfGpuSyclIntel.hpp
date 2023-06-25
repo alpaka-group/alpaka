@@ -1,7 +1,6 @@
-/* Copyright 2023 Jan Stephan
+/* Copyright 2023 Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
-
 
 #pragma once
 
