@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="title">AccGenericSycl.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="AccGenericSycl_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jan Stephan, Antonio Di Pilato</span></div>
+<a href="AccGenericSycl_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Andrea Bocci</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
@@ -157,10 +157,10 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        AccGenericSycl(</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; threadElemExtent,</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            sycl::nd_item&lt;TDim::value&gt; work_item,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            sycl::accessor&lt;std::byte, 1, sycl::access_mode::read_write, sycl::target::local&gt; dyn_shared_acc,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            sycl::accessor&lt;std::byte, 1, sycl::access_mode::read_write, sycl::target::local&gt; st_shared_acc,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            sycl::accessor&lt;int, 1, sycl::access_mode::read_write, sycl::target::global_buffer&gt; global_fence_dummy,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            sycl::accessor&lt;int, 1, sycl::access_mode::read_write, sycl::target::local&gt; local_fence_dummy,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            sycl::local_accessor&lt;std::byte&gt; dyn_shared_acc,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            sycl::local_accessor&lt;std::byte&gt; st_shared_acc,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            sycl::accessor&lt;int, 1, sycl::access_mode::read_write, sycl::target::device&gt; global_fence_dummy,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            sycl::local_accessor&lt;int&gt; local_fence_dummy,</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            sycl::stream output_stream)</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            : WorkDivGenericSycl&lt;TDim, TIdx&gt;{threadElemExtent, work_item}</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            , gb::IdxGbGenericSycl&lt;TDim, TIdx&gt;{work_item}</div>
@@ -182,10 +182,10 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        AccGenericSycl(</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            Vec&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; threadElemExtent,</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            sycl::nd_item&lt;TDim::value&gt; work_item,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            sycl::accessor&lt;std::byte, 1, sycl::access_mode::read_write, sycl::target::local&gt; dyn_shared_acc,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            sycl::accessor&lt;std::byte, 1, sycl::access_mode::read_write, sycl::target::local&gt; st_shared_acc,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            sycl::accessor&lt;int, 1, sycl::access_mode::read_write, sycl::target::global_buffer&gt; global_fence_dummy,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            sycl::accessor&lt;int, 1, sycl::access_mode::read_write, sycl::target::local&gt; local_fence_dummy)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            sycl::local_accessor&lt;std::byte&gt; dyn_shared_acc,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            sycl::local_accessor&lt;std::byte&gt; st_shared_acc,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            sycl::accessor&lt;int, 1, sycl::access_mode::read_write, sycl::target::device&gt; global_fence_dummy,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            sycl::local_accessor&lt;int&gt; local_fence_dummy)</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            : WorkDivGenericSycl&lt;TDim, TIdx&gt;{threadElemExtent, work_item}</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            , gb::IdxGbGenericSycl&lt;TDim, TIdx&gt;{work_item}</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            , bt::IdxBtGenericSycl&lt;TDim, TIdx&gt;{work_item}</div>
@@ -221,49 +221,53 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a3fa7ad40eda1f1fc3b26d8945ff882a0">getAccDevProps</a>(<span class="keyword">typename</span> DevType&lt;TAcc&lt;TDim, TIdx&gt;&gt;::type <span class="keyword">const</span>&amp; dev) -&gt; AccDevProps&lt;TDim, TIdx&gt;</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        {</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> device = dev.getNativeHandle().first;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keyword">auto</span> max_threads_dim = device.template get_info&lt;sycl::info::device::max_work_item_sizes&gt;();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keywordflow">return</span> {<span class="comment">// m_multiProcessorCount</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                    alpaka::core::clipCast&lt;TIdx&gt;(device.template get_info&lt;sycl::info::device::max_compute_units&gt;()),</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    <span class="comment">// m_gridBlockExtentMax</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(<a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                        <span class="comment">// WARNING: There is no SYCL way to determine these values</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>())),</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                    <span class="comment">// m_gridBlockCountMax</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                    <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                    <span class="comment">// m_blockThreadExtentMax</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(<a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[2u]),</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[1u]),</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[0u]))),</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    <span class="comment">// m_blockThreadCountMax</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                    alpaka::core::clipCast&lt;TIdx&gt;(device.template get_info&lt;sycl::info::device::max_work_group_size&gt;()),</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                    <span class="comment">// m_threadElemExtentMax</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    <a class="code" href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">Vec&lt;TDim, TIdx&gt;::all</a>(<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>()),</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                    <span class="comment">// m_threadElemCountMax</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                    <span class="comment">// m_sharedMemSizeBytes</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    device.template get_info&lt;sycl::info::device::local_mem_size&gt;()};</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    };</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">    //! The SYCL accelerator dimension getter trait specialization.</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>, <span class="keyword">typename</span>&gt; <span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">struct </span>DimType&lt;TAcc&lt;TDim, TIdx&gt;, std::enable_if_t&lt;std::is_base_of_v&lt;AccGenericSycl&lt;TDim, TIdx&gt;, TAcc&lt;TDim, TIdx&gt;&gt;&gt;&gt;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keyword">using</span> type = TDim;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    };</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    //! The SYCL accelerator idx type trait specialization.</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>, <span class="keyword">typename</span>&gt; <span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keyword">struct </span>IdxType&lt;TAcc&lt;TDim, TIdx&gt;, std::enable_if_t&lt;std::is_base_of_v&lt;AccGenericSycl&lt;TDim, TIdx&gt;, TAcc&lt;TDim, TIdx&gt;&gt;&gt;&gt;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keyword">using</span> type = TIdx;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    };</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> max_threads_dim</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                = device.template get_info&lt;sycl::info::device::max_work_item_sizes&lt;TDim::value&gt;&gt;();</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            Vec&lt;TDim, TIdx&gt; max_threads_dim_vec{};</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(TDim::value); i++)</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                max_threads_dim_vec[i] = alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[i]);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            <span class="keywordflow">return</span> {<span class="comment">// m_multiProcessorCount</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                    alpaka::core::clipCast&lt;TIdx&gt;(device.template get_info&lt;sycl::info::device::max_compute_units&gt;()),</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    <span class="comment">// m_gridBlockExtentMax</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(<a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                        <span class="comment">// WARNING: There is no SYCL way to determine these values</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                        <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>())),</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                    <span class="comment">// m_gridBlockCountMax</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                    <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    <span class="comment">// m_blockThreadExtentMax</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    getExtentVecEnd&lt;TDim&gt;(<a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;DimInt&lt;3u&gt;, TIdx&gt;(</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[2u]),</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[1u]),</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                        alpaka::core::clipCast&lt;TIdx&gt;(max_threads_dim[0u]))),</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                    <span class="comment">// m_blockThreadCountMax</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    alpaka::core::clipCast&lt;TIdx&gt;(device.template get_info&lt;sycl::info::device::max_work_group_size&gt;()),</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                    <span class="comment">// m_threadElemExtentMax</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    <a class="code" href="classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584">Vec&lt;TDim, TIdx&gt;::all</a>(<a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>()),</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    <span class="comment">// m_threadElemCountMax</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    <a class="code" href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">std::numeric_limits&lt;TIdx&gt;::max</a>(),</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                    <span class="comment">// m_sharedMemSizeBytes</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                    device.template get_info&lt;sycl::info::device::local_mem_size&gt;()};</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    };</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    //! The SYCL accelerator dimension getter trait specialization.</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>, <span class="keyword">typename</span>&gt; <span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keyword">struct </span>DimType&lt;TAcc&lt;TDim, TIdx&gt;, std::enable_if_t&lt;std::is_base_of_v&lt;AccGenericSycl&lt;TDim, TIdx&gt;, TAcc&lt;TDim, TIdx&gt;&gt;&gt;&gt;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keyword">using</span> type = TDim;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    };</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    //! The SYCL accelerator idx type trait specialization.</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>, <span class="keyword">typename</span>&gt; <span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">struct </span>IdxType&lt;TAcc&lt;TDim, TIdx&gt;, std::enable_if_t&lt;std::is_base_of_v&lt;AccGenericSycl&lt;TDim, TIdx&gt;, TAcc&lt;TDim, TIdx&gt;&gt;&gt;&gt;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keyword">using</span> type = TIdx;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    };</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;} <span class="comment">// namespace alpaka::trait</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAtomicGenericSycl_8hpp_html"><div class="ttname"><a href="AtomicGenericSycl_8hpp.html">AtomicGenericSycl.hpp</a></div></div>
 <div class="ttc" id="aAtomicHierarchy_8hpp_html"><div class="ttname"><a href="AtomicHierarchy_8hpp.html">AtomicHierarchy.hpp</a></div></div>
 <div class="ttc" id="aBlockSharedMemDynGenericSycl_8hpp_html"><div class="ttname"><a href="BlockSharedMemDynGenericSycl_8hpp.html">BlockSharedMemDynGenericSycl.hpp</a></div></div>
@@ -298,7 +302,7 @@ $(document).ready(function(){initNavTree('AccGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGenericSycl_8hpp.html">AccGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Sat Jun 24 2023 12:50:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Jun 25 2023 20:56:36 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

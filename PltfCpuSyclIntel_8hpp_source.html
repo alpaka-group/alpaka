@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('PltfCpuSyclIntel_8hpp_source.html','')
 <div class="title">PltfCpuSyclIntel.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="PltfCpuSyclIntel_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan</span></div>
+<a href="PltfCpuSyclIntel_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan, Andrea Bocci</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
@@ -113,11 +113,11 @@ $(document).ready(function(){initNavTree('PltfCpuSyclIntel_8hpp_source.html','')
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#        pragma clang diagnostic push</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#        pragma clang diagnostic ignored &quot;-Wweak-vtables&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">struct </span>IntelCpuSelector final : sycl::device_selector</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">struct </span>IntelCpuSelector final</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keyword">auto</span> operator()(sycl::device <span class="keyword">const</span>&amp; dev) <span class="keyword">const</span> -&gt; <span class="keywordtype">int</span> <span class="keyword">override</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keyword">auto</span> operator()(sycl::device <span class="keyword">const</span>&amp; dev) <span class="keyword">const</span> -&gt; <span class="keywordtype">int</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> vendor = dev.get_info&lt;sycl::info::device::vendor&gt;();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span>&amp; vendor = dev.get_info&lt;sycl::info::device::vendor&gt;();</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> is_intel_cpu = (vendor.find(<span class="stringliteral">&quot;Intel(R) Corporation&quot;</span>) != std::string::npos) &amp;&amp; dev.is_cpu();</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">return</span> is_intel_cpu ? 1 : -1;</div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('PltfCpuSyclIntel_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_3da4cf0d8582bc897be6864cae72e9ae.html">pltf</a></li><li class="navelem"><a class="el" href="PltfCpuSyclIntel_8hpp.html">PltfCpuSyclIntel.hpp</a></li>
-    <li class="footer">Generated on Sat Jun 24 2023 12:50:17 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Jun 25 2023 20:56:36 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
