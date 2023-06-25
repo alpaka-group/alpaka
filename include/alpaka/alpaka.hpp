@@ -1,5 +1,5 @@
 /* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
- *                Jan Stephan, Antonio Di Pilato, Andrea Bocci
+ *                Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -187,6 +187,7 @@
 #include "alpaka/pltf/Traits.hpp"
 // rand
 #include "alpaka/rand/RandDefault.hpp"
+#include "alpaka/rand/RandGenericSycl.hpp"
 #include "alpaka/rand/RandPhilox.hpp"
 #include "alpaka/rand/RandStdLib.hpp"
 #include "alpaka/rand/RandUniformCudaHipRand.hpp"

@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -22,6 +22,36 @@
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 #    include <CL/sycl.hpp>
+
+// if SYCL is enabled with the AMD backend the printf will be killed because of missing compiler support
+#    ifdef __AMDGCN__
+#        include <cstdio> // the define breaks <cstdio> if it is included afterwards
+#        define printf(...)
+#    else
+
+#        ifdef __SYCL_DEVICE_ONLY__
+using AlpakaFormat = char const* [[clang::opencl_constant]];
+#        else
+using AlpakaFormat = char const*;
+#        endif
+
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic push
+#            pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#        endif
+
+#        define printf(FORMAT, ...)                                                                                   \
+            do                                                                                                        \
+            {                                                                                                         \
+                static auto const format = AlpakaFormat{FORMAT};                                                      \
+                sycl::ext::oneapi::experimental::printf(format, ##__VA_ARGS__);                                       \
+            } while(false)
+
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic pop
+#        endif
+
+#    endif
 
 // SYCL vector types trait specializations.
 namespace alpaka
@@ -146,10 +176,7 @@ namespace alpaka::trait
     {
         using type = std::conditional_t<std::is_scalar_v<T>, T, typename T::element_type>;
     };
-} // namespace alpaka::trait
 
-namespace alpaka::trait
-{
     //! The SYCL vectors' extent get trait specialization.
     template<typename TExtent>
     struct GetExtent<DimInt<Dim<TExtent>::value>, TExtent, std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
