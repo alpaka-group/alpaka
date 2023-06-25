@@ -13291,7 +13291,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/AccGenericSycl.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan, Antonio Di Pilato
+		/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -13300,7 +13300,7 @@
 			// ============================================================================
 			// == ./include/alpaka/atomic/AtomicGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -13377,13 +13377,15 @@
 			        template<typename T>
 			        inline auto get_global_ptr(T* const addr)
 			        {
-			            return sycl::make_ptr<T, sycl::access::address_space::global_space>(addr);
+			            return sycl::address_space_cast<sycl::access::address_space::global_space, sycl::access::decorated::no>(
+			                addr);
 			        }
 
 			        template<typename T>
 			        inline auto get_local_ptr(T* const addr)
 			        {
-			            return sycl::make_ptr<T, sycl::access::address_space::local_space>(addr);
+			            return sycl::address_space_cast<sycl::access::address_space::local_space, sycl::access::decorated::no>(
+			                addr);
 			        }
 
 			        template<typename T, typename THierarchy>
@@ -13637,7 +13639,7 @@
 			// ============================================================================
 			// == ./include/alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -13658,13 +13660,11 @@
 			    public:
 			        using BlockSharedMemDynBase = BlockSharedMemDynGenericSycl;
 
-			        BlockSharedMemDynGenericSycl(
-			            sycl::accessor<std::byte, 1, sycl::access::mode::read_write, sycl::access::target::local> accessor)
-			            : m_accessor{accessor}
+			        BlockSharedMemDynGenericSycl(sycl::local_accessor<std::byte> accessor) : m_accessor{accessor}
 			        {
 			        }
 
-			        sycl::accessor<std::byte, 1, sycl::access::mode::read_write, sycl::access::target::local> m_accessor;
+			        sycl::local_accessor<std::byte> m_accessor;
 			    };
 			} // namespace alpaka
 
@@ -13690,7 +13690,7 @@
 			// ============================================================================
 			// == ./include/alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -13712,8 +13712,7 @@
 			        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl>
 			    {
 			    public:
-			        BlockSharedMemStGenericSycl(
-			            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> accessor)
+			        BlockSharedMemStGenericSycl(sycl::local_accessor<std::byte> accessor)
 			            : BlockSharedMemStMemberImpl(
 			                reinterpret_cast<std::uint8_t*>(accessor.get_pointer().get()),
 			                accessor.size())
@@ -13722,7 +13721,7 @@
 			        }
 
 			    private:
-			        sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> m_accessor;
+			        sycl::local_accessor<std::byte> m_accessor;
 			    };
 			} // namespace alpaka
 
@@ -15624,7 +15623,7 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/fence/MemFenceGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan, Luca Ferragina
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -15664,15 +15663,15 @@
 			    {
 			    public:
 			        MemFenceGenericSycl(
-			            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> global_dummy,
-			            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> local_dummy)
+			            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_dummy,
+			            sycl::local_accessor<int> local_dummy)
 			            : m_global_dummy{global_dummy}
 			            , m_local_dummy{local_dummy}
 			        {
 			        }
 
-			        sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> m_global_dummy;
-			        sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> m_local_dummy;
+			        sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> m_global_dummy;
+			        sycl::local_accessor<int> m_local_dummy;
 			    };
 			} // namespace alpaka
 
@@ -15990,10 +15989,10 @@
 		        AccGenericSycl(
 		            Vec<TDim, TIdx> const& threadElemExtent,
 		            sycl::nd_item<TDim::value> work_item,
-		            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> dyn_shared_acc,
-		            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> st_shared_acc,
-		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> global_fence_dummy,
-		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> local_fence_dummy,
+		            sycl::local_accessor<std::byte> dyn_shared_acc,
+		            sycl::local_accessor<std::byte> st_shared_acc,
+		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
+		            sycl::local_accessor<int> local_fence_dummy,
 		            sycl::stream output_stream)
 		            : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
 		            , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
@@ -16015,10 +16014,10 @@
 		        AccGenericSycl(
 		            Vec<TDim, TIdx> const& threadElemExtent,
 		            sycl::nd_item<TDim::value> work_item,
-		            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> dyn_shared_acc,
-		            sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local> st_shared_acc,
-		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::global_buffer> global_fence_dummy,
-		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local> local_fence_dummy)
+		            sycl::local_accessor<std::byte> dyn_shared_acc,
+		            sycl::local_accessor<std::byte> st_shared_acc,
+		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
+		            sycl::local_accessor<int> local_fence_dummy)
 		            : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
 		            , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
 		            , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
@@ -16054,7 +16053,11 @@
 		        static auto getAccDevProps(typename DevType<TAcc<TDim, TIdx>>::type const& dev) -> AccDevProps<TDim, TIdx>
 		        {
 		            auto const device = dev.getNativeHandle().first;
-		            auto max_threads_dim = device.template get_info<sycl::info::device::max_work_item_sizes>();
+		            auto const max_threads_dim
+		                = device.template get_info<sycl::info::device::max_work_item_sizes<TDim::value>>();
+		            Vec<TDim, TIdx> max_threads_dim_vec{};
+		            for(int i = 0; i < static_cast<int>(TDim::value); i++)
+		                max_threads_dim_vec[i] = alpaka::core::clipCast<TIdx>(max_threads_dim[i]);
 		            return {// m_multiProcessorCount
 		                    alpaka::core::clipCast<TIdx>(device.template get_info<sycl::info::device::max_compute_units>()),
 		                    // m_gridBlockExtentMax
@@ -16646,7 +16649,7 @@
 			// ============================================================================
 			// == ./include/alpaka/pltf/PltfCpuSyclIntel.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -17434,11 +17437,11 @@
 			#        pragma clang diagnostic push
 			#        pragma clang diagnostic ignored "-Wweak-vtables"
 			#    endif
-			        struct IntelCpuSelector final : sycl::device_selector
+			        struct IntelCpuSelector final
 			        {
-			            auto operator()(sycl::device const& dev) const -> int override
+			            auto operator()(sycl::device const& dev) const -> int
 			            {
-			                auto const vendor = dev.get_info<sycl::info::device::vendor>();
+			                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
 			                auto const is_intel_cpu = (vendor.find("Intel(R) Corporation") != std::string::npos) && dev.is_cpu();
 
 			                return is_intel_cpu ? 1 : -1;
@@ -17493,7 +17496,7 @@
 			// ============================================================================
 			// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -17855,7 +17858,7 @@
 				// ============================================================================
 				// == ./include/alpaka/mem/buf/sycl/Accessor.hpp ==
 				// ==
-				/* Copyright 2021 Jan Stephan
+				/* Copyright 2023 Jan Stephan, Andrea Bocci
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
@@ -18367,7 +18370,7 @@
 				            TElem,
 				            TDim,
 				            sycl_access_mode<TAlpakaAccessModes...>,
-				            sycl::target::global_buffer,
+				            sycl::target::device,
 				            sycl::access::placeholder::true_t>;
 				    } // namespace detail
 
@@ -18566,21 +18569,15 @@
 			                    },
 			                    m_args));
 
-			            auto dyn_shared_accessor
-			                = sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local>{
-			                    sycl::range<1>{dyn_shared_mem_bytes},
-			                    cgh};
+			            auto dyn_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{dyn_shared_mem_bytes}, cgh};
 
 			            // allocate static shared memory -- value comes from the build system
 			            constexpr auto st_shared_mem_bytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
-			            auto st_shared_accessor = sycl::accessor<std::byte, 1, sycl::access_mode::read_write, sycl::target::local>{
-			                sycl::range<1>{st_shared_mem_bytes},
-			                cgh};
+			            auto st_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{st_shared_mem_bytes}, cgh};
 
 			            // register memory fence dummies
 			            auto global_fence_dummy = global_fence_buf.get_access(cgh); // Exists once per queue
-			            auto local_fence_dummy
-			                = sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::local>{sycl::range<1>{1}, cgh};
+			            auto local_fence_dummy = sycl::local_accessor<int>{sycl::range<1>{1}, cgh};
 
 			            // copy-by-value so we don't access 'this' on the device
 			            auto k_func = m_kernelFnObj;
@@ -19688,7 +19685,7 @@
 			// ============================================================================
 			// == ./include/alpaka/pltf/PltfFpgaSyclIntel.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -19700,16 +19697,42 @@
 			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 			// #    include <CL/sycl.hpp>    // amalgamate: file already included
-			#    include <sycl/ext/intel/fpga_extensions.hpp>
+
+			// #    include <string>    // amalgamate: file already included
 
 			namespace alpaka
 			{
-			    //! The SYCL device manager.
-			#    ifdef ALPAKA_FPGA_EMULATION
-			    using PltfFpgaSyclIntel = PltfGenericSycl<sycl::ext::intel::fpga_emulator_selector>;
-			#    else
-			    using PltfFpgaSyclIntel = PltfGenericSycl<sycl::ext::intel::fpga_selector>;
+			    namespace detail
+			    {
+			        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
+			        // linker anyway.
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic push
+			#        pragma clang diagnostic ignored "-Wweak-vtables"
 			#    endif
+			        struct IntelFpgaSelector final
+			        {
+			#    ifdef ALPAKA_FPGA_EMULATION
+			            static constexpr auto platform_name = "Intel(R) FPGA Emulation Platform for OpenCL(TM)";
+			#    else
+			            static constexpr auto platform_name = "Intel(R) FPGA SDK for OpenCL(TM)";
+			#    endif
+
+			            auto operator()(sycl::device const& dev) const -> int
+			            {
+			                auto const& platform = dev.get_platform().get_info<sycl::info::platform::name>();
+			                auto const is_intel_fpga = dev.is_accelerator() && (platform == platform_name);
+
+			                return is_intel_fpga ? 1 : -1;
+			            }
+			        };
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic pop
+			#    endif
+			    } // namespace detail
+
+			    //! The SYCL device manager.
+			    using PltfFpgaSyclIntel = PltfGenericSycl<detail::IntelFpgaSelector>;
 			} // namespace alpaka
 
 			namespace alpaka::trait
@@ -25168,10 +25191,9 @@
 			// ============================================================================
 			// == ./include/alpaka/pltf/PltfGpuSyclIntel.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
-
 
 			// #pragma once
 			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
@@ -25194,12 +25216,12 @@
 			#        pragma clang diagnostic push
 			#        pragma clang diagnostic ignored "-Wweak-vtables"
 			#    endif
-			        struct IntelGpuSelector : sycl::device_selector
+			        struct IntelGpuSelector final
 			        {
-			            auto operator()(sycl::device const& dev) const -> int override
+			            auto operator()(sycl::device const& dev) const -> int
 			            {
-			                auto const vendor = dev.get_info<sycl::info::device::vendor>();
-			                auto const is_intel_gpu = (vendor.find("Intel(R) Corporation") != std::string::npos) && dev.is_gpu();
+			                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
+			                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("Intel(R) Corporation") != std::string::npos);
 
 			                return is_intel_gpu ? 1 : -1;
 			            }
