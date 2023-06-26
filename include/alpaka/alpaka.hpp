@@ -16069,10 +16069,7 @@
 		                    // m_gridBlockCountMax
 		                    std::numeric_limits<TIdx>::max(),
 		                    // m_blockThreadExtentMax
-		                    getExtentVecEnd<TDim>(Vec<DimInt<3u>, TIdx>(
-		                        alpaka::core::clipCast<TIdx>(max_threads_dim[2u]),
-		                        alpaka::core::clipCast<TIdx>(max_threads_dim[1u]),
-		                        alpaka::core::clipCast<TIdx>(max_threads_dim[0u]))),
+		                    max_threads_dim_vec,
 		                    // m_blockThreadCountMax
 		                    alpaka::core::clipCast<TIdx>(device.template get_info<sycl::info::device::max_work_group_size>()),
 		                    // m_threadElemExtentMax
