@@ -45,12 +45,12 @@ namespace alpaka
 
             //! Registers the given queue on this device.
             //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<TQueue> spQueue) const -> void
+            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<TQueue> const& spQueue) const -> void
             {
                 std::lock_guard<std::mutex> lk(m_Mutex);
 
                 // Register this queue on the device.
-                m_queues.push_back(std::move(spQueue));
+                m_queues.push_back(spQueue);
             }
 
             using CleanerFunctor = std::function<void()>;
