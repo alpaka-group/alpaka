@@ -180,8 +180,10 @@ TEMPLATE_LIST_TEST_CASE("FenceTest", "[fence]", TestAccs)
         = isSingleThreaded<Acc> ? alpaka::test::KernelExecutionFixture<Acc>{WorkDiv{one, one, two}}
                                 : alpaka::test::KernelExecutionFixture<Acc>{WorkDiv{one, two, one}};
 
-    auto const host = alpaka::getDevByIdx<alpaka::PltfCpu>(0u);
-    auto const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const host = alpaka::getDevByIdx(platformHost, 0);
+    auto const platformAcc = Pltf{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = Queue{dev};
 
     auto const numElements = Idx{2ul};

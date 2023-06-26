@@ -25,12 +25,11 @@ struct GetSizeTestKernel
 TEMPLATE_LIST_TEST_CASE("getSize", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dev = alpaka::Dev<Acc>;
-    using Pltf = alpaka::Pltf<Dev>;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+    auto const platform = alpaka::Pltf<Acc>{};
+    auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const warpSizes = alpaka::getWarpSizes(dev);
     REQUIRE(std::any_of(
         begin(warpSizes),

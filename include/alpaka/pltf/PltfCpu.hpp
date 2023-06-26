@@ -14,10 +14,8 @@
 namespace alpaka
 {
     //! The CPU device platform.
-    class PltfCpu : public concepts::Implements<ConceptPltf, PltfCpu>
+    struct PltfCpu : concepts::Implements<ConceptPltf, PltfCpu>
     {
-    public:
-        ALPAKA_FN_HOST PltfCpu() = delete;
     };
 
     namespace trait
@@ -33,7 +31,7 @@ namespace alpaka
         template<>
         struct GetDevCount<PltfCpu>
         {
-            ALPAKA_FN_HOST static auto getDevCount() -> std::size_t
+            ALPAKA_FN_HOST static auto getDevCount(PltfCpu const&) -> std::size_t
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -45,11 +43,11 @@ namespace alpaka
         template<>
         struct GetDevByIdx<PltfCpu>
         {
-            ALPAKA_FN_HOST static auto getDevByIdx(std::size_t const& devIdx) -> DevCpu
+            ALPAKA_FN_HOST static auto getDevByIdx(PltfCpu const& platform, std::size_t const& devIdx) -> DevCpu
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                std::size_t const devCount(getDevCount<PltfCpu>());
+                std::size_t const devCount = getDevCount(platform);
                 if(devIdx >= devCount)
                 {
                     std::stringstream ssErr;

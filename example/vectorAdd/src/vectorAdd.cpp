@@ -85,7 +85,8 @@ auto main() -> int
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const platform = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platform, 0);
 
     // Create a queue on the device
     QueueAcc queue(devAcc);
@@ -108,7 +109,8 @@ auto main() -> int
 
     // Get the host device for allocating memory on the host.
     using DevHost = alpaka::DevCpu;
-    auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Allocate 3 host memory buffers
     using BufHost = alpaka::Buf<DevHost, Data, Dim, Idx>;

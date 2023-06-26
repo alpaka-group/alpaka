@@ -264,12 +264,13 @@ The following source code listing shows the execution of a kernel by enqueuing t
    using Queue = alpaka::QueueCpuNonBlocking;
 
    // Select a device to execute on.
-   auto devAcc(alpaka::getDevByIdx<alpaka::PltfCpu>(0));
+   auto platformAcc = alpaka::Pltf<Acc>{};
+   auto devAcc = alpaka::getDevByIdx(platformAcc, 0);
    // Create a queue to enqueue the execution into.
    Queue queue(devAcc);
 
    // Create a 1-dimensional work division with 256 blocks a 16 threads.
-   auto const workDiv(alpaka::WorkDivMembers<Dim, Idx>(256u, 16u);
+   auto const workDiv = alpaka::WorkDivMembers<Dim, Idx>(256u, 16u);
    // Create an instance of the kernel function object.
    MyKernel kernel;
    // Enqueue the execution task into the queue.

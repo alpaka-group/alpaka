@@ -14,8 +14,6 @@
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #    include <iostream>
 #endif
-#include <mutex>
-#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <vector>
@@ -28,104 +26,67 @@ namespace alpaka
 {
     //! The SYCL device manager.
     template<typename TSelector>
-    class PltfGenericSycl : public concepts::Implements<ConceptPltf, PltfGenericSycl<TSelector>>
+    struct PltfGenericSycl : concepts::Implements<ConceptPltf, PltfGenericSycl<TSelector>>
     {
-    public:
-        PltfGenericSycl() = delete;
-
-        [[nodiscard]] static auto syclPlatform() -> sycl::platform&
+        PltfGenericSycl()
+            : platform{TSelector{}}
+            , devices(platform_opt->get_devices())
+            , context{sycl::context{
+                  devices,
+                  [](sycl::exception_list exceptions)
+                  {
+                      auto ss_err = std::stringstream{};
+                      ss_err << "Caught asynchronous SYCL exception(s):\n";
+                      for(std::exception_ptr e : exceptions)
+                      {
+                          try
+                          {
+                              std::rethrow_exception(e);
+                          }
+                          catch(sycl::exception const& err)
+                          {
+                              ss_err << err.what() << " (" << err.code() << ")\n";
+                          }
+                      }
+                      throw std::runtime_error(ss_err.str());
+                  }}}
         {
-            auto lock = std::scoped_lock<std::mutex>{mutex};
-
-            if(!initialized)
-                do_initialization();
-
-            return *platform_opt;
         }
 
-        [[nodiscard]] static auto syclDevices() -> std::vector<sycl::device>&
+        [[nodiscard]] auto syclPlatform() -> sycl::platform&
         {
-            auto lock = std::scoped_lock<std::mutex>{mutex};
+            return platform;
+        }
 
-            if(!initialized)
-                do_initialization();
+        [[nodiscard]] auto syclPlatform() const -> sycl::platform const&
+        {
+            return platform;
+        }
 
+        [[nodiscard]] auto syclDevices() -> std::vector<sycl::device>&
+        {
             return devices;
         }
 
-        [[nodiscard]] static auto syclContext() -> sycl::context&
+        [[nodiscard]] auto syclDevices() const -> std::vector<sycl::device> const&
         {
-            auto lock = std::scoped_lock<std::mutex>{mutex};
-
-            if(!initialized)
-                do_initialization();
-
-            return *context_opt;
+            return devices;
         }
 
-        static auto initialize() -> void
+        [[nodiscard]] auto syclContext() -> sycl::context&
         {
-            auto lock = std::scoped_lock<std::mutex>{mutex};
-            do_initialization();
+            return context;
         }
 
-        static auto reset() -> void
+        [[nodiscard]] auto syclContext() const -> sycl::context const&
         {
-            auto lock = std::scoped_lock<std::mutex>{mutex};
-
-            if(!initialized)
-                return;
-
-            context_opt.reset();
-            devices.clear();
-            platform_opt.reset();
-            initialized = false;
+            return context;
         }
 
     private:
-        static auto do_initialization()
-        {
-            if(initialized)
-                return;
-
-            platform_opt = sycl::platform{TSelector{}};
-            devices = platform_opt->get_devices();
-            context_opt = sycl::context{
-                devices,
-                [](sycl::exception_list exceptions)
-                {
-                    auto ss_err = std::stringstream{};
-                    ss_err << "Caught asynchronous SYCL exception(s):\n";
-                    for(std::exception_ptr e : exceptions)
-                    {
-                        try
-                        {
-                            std::rethrow_exception(e);
-                        }
-                        catch(sycl::exception const& err)
-                        {
-                            ss_err << err.what() << " (" << err.code() << ")\n";
-                        }
-                    }
-                    throw std::runtime_error(ss_err.str());
-                }};
-
-            initialized = true;
-        }
-
-#    if BOOST_COMP_CLANG
-#        pragma clang diagnostic push
-#        pragma clang diagnostic ignored "-Wexit-time-destructors"
-#    endif
-        inline static std::mutex mutex;
-        inline static bool initialized{false};
-
-        inline static std::optional<sycl::platform> platform_opt{std::nullopt};
-        inline static std::vector<sycl::device> devices;
-        inline static std::optional<sycl::context> context_opt{std::nullopt};
-#    if BOOST_COMP_CLANG
-#        pragma clang diagnostic pop
-#    endif
+        sycl::platform platform;
+        std::vector<sycl::device> devices;
+        sycl::context context;
     };
 } // namespace alpaka
 
@@ -133,13 +94,13 @@ namespace alpaka::trait
 {
     //! The SYCL platform device count get trait specialization.
     template<typename TSelector>
-    struct GetDevCount<alpaka::PltfGenericSycl<TSelector>>
+    struct GetDevCount<PltfGenericSycl<TSelector>>
     {
-        static auto getDevCount() -> std::size_t
+        static auto getDevCount(PltfGenericSycl<TSelector> const& platform) -> std::size_t
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-            return alpaka::PltfGenericSycl<TSelector>::syclDevices().size();
+            return platform.syclDevices().size();
         }
     };
 
@@ -147,15 +108,12 @@ namespace alpaka::trait
     template<typename TSelector>
     struct GetDevByIdx<alpaka::PltfGenericSycl<TSelector>>
     {
-        static auto getDevByIdx(std::size_t const& devIdx)
+        static auto getDevByIdx(PltfGenericSycl<TSelector> const& platform, std::size_t const& devIdx)
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-            using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
-
-            auto const dev_num = getDevCount<SyclPltf>();
-
-            if(devIdx >= dev_num)
+            auto const& devices = platform.syclDevices();
+            if(devIdx >= devices.size())
             {
                 auto ss_err = std::stringstream{};
                 ss_err << "Unable to return device handle for device " << devIdx << ". There are only " << dev_num
@@ -163,7 +121,7 @@ namespace alpaka::trait
                 throw std::runtime_error(ss_err.str());
             }
 
-            auto sycl_dev = SyclPltf::syclDevices().at(devIdx);
+            auto sycl_dev = devices.at(devIdx);
 
             // Log this device.
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -171,7 +129,7 @@ namespace alpaka::trait
 #    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
             std::cout << __func__ << sycl_dev.get_info<info::device::name>() << '\n';
 #    endif
-            return typename DevType<SyclPltf>::type{sycl_dev, SyclPltf::syclContext()};
+            return typename DevType<SyclPltf>::type{sycl_dev, platform.syclContext()};
         }
 
     private:

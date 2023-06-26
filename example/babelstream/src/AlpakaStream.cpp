@@ -17,8 +17,8 @@ constexpr auto DOT_NUM_BLOCKS = 256;
 template<typename T>
 AlpakaStream<T>::AlpakaStream(Idx arraySize, Idx deviceIndex)
     : arraySize(arraySize)
-    , devHost(alpaka::getDevByIdx<DevHost>(0u))
-    , devAcc(alpaka::getDevByIdx<Acc>(deviceIndex))
+    , devHost(alpaka::getDevByIdx(platformHost, 0))
+    , devAcc(alpaka::getDevByIdx(platformAcc, deviceIndex))
     , sums(alpaka::allocBuf<T, Idx>(devHost, DOT_NUM_BLOCKS))
     , d_a(alpaka::allocBuf<T, Idx>(devAcc, arraySize))
     , d_b(alpaka::allocBuf<T, Idx>(devAcc, arraySize))
@@ -239,7 +239,8 @@ T AlpakaStream<T>::dot()
 
 void listDevices()
 {
-    auto const count = alpaka::getDevCount<Acc>();
+    auto const platform = alpaka::Pltf<Acc>{};
+    auto const count = alpaka::getDevCount(platform);
     std::cout << "Devices:" << std::endl;
     for(int i = 0; i < count; i++)
         std::cout << i << ": " << getDeviceName(i) << std::endl;
@@ -247,7 +248,8 @@ void listDevices()
 
 std::string getDeviceName(int deviceIndex)
 {
-    return alpaka::getName(alpaka::getDevByIdx<Acc>(deviceIndex));
+    auto const platform = alpaka::Pltf<Acc>{};
+    return alpaka::getName(alpaka::getDevByIdx(platform, deviceIndex));
 }
 
 std::string getDeviceDriver(int device)

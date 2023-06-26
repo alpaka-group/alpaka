@@ -115,8 +115,10 @@ auto main() -> int
     using T = uint32_t;
     static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
 
-    auto devAcc = alpaka::getDevByIdx<Acc>(dev);
-    auto devHost = alpaka::getDevByIdx<Host>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     QueueAcc queue(devAcc);
 
     // calculate optimal block size (8 times the MP count proved to be

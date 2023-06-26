@@ -50,29 +50,29 @@ namespace alpaka
 
     //! \return The device identified by its index.
     template<typename TPltf>
-    ALPAKA_FN_HOST auto getDevCount()
+    ALPAKA_FN_HOST auto getDevCount(TPltf const& platform)
     {
-        return trait::GetDevCount<Pltf<TPltf>>::getDevCount();
+        return trait::GetDevCount<TPltf>::getDevCount(platform);
     }
 
     //! \return The device identified by its index.
     template<typename TPltf>
-    ALPAKA_FN_HOST auto getDevByIdx(std::size_t const& devIdx)
+    ALPAKA_FN_HOST auto getDevByIdx(TPltf const& platform, std::size_t const& devIdx) -> Dev<TPltf>
     {
-        return trait::GetDevByIdx<Pltf<TPltf>>::getDevByIdx(devIdx);
+        return trait::GetDevByIdx<TPltf>::getDevByIdx(platform, devIdx);
     }
 
     //! \return All the devices available on this accelerator.
     template<typename TPltf>
-    ALPAKA_FN_HOST auto getDevs() -> std::vector<Dev<Pltf<TPltf>>>
+    ALPAKA_FN_HOST auto getDevs(TPltf const& platform) -> std::vector<Dev<TPltf>>
     {
-        std::vector<Dev<Pltf<TPltf>>> devs;
+        std::vector<Dev<TPltf>> devs;
 
-        std::size_t const devCount(getDevCount<Pltf<TPltf>>());
+        std::size_t const devCount = getDevCount(platform);
         devs.reserve(devCount);
         for(std::size_t devIdx(0); devIdx < devCount; ++devIdx)
         {
-            devs.push_back(getDevByIdx<Pltf<TPltf>>(devIdx));
+            devs.push_back(getDevByIdx(platform, devIdx));
         }
 
         return devs;

@@ -201,12 +201,10 @@ namespace alpaka::test
     template<typename TView, typename TQueue>
     ALPAKA_FN_HOST auto iotaFillView(TQueue& queue, TView& view) -> void
     {
-        using DevHost = DevCpu;
-        using PltfHost = Pltf<DevHost>;
-
         using Elem = Elem<TView>;
 
-        DevHost const devHost = getDevByIdx<PltfHost>(0);
+        auto const platformHost = alpaka::PltfCpu{};
+        auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
         auto const extent = getExtentVec(view);
 

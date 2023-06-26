@@ -61,14 +61,12 @@ TEMPLATE_LIST_TEST_CASE("viewConstTest", "[memView]", alpaka::test::TestAccs)
 {
     using Elem = float;
     using Acc = TestType;
-
     using Dev = alpaka::Dev<Acc>;
-    using Pltf = alpaka::Pltf<Dev>;
-
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    auto const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
     auto const extents
         = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();

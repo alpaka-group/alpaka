@@ -70,8 +70,6 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<alpaka::Dev<Acc>>;
-    using PltfHost = alpaka::PltfCpu;
-    using DevHost = alpaka::Dev<PltfHost>;
 
     Idx const numElements = 32;
 
@@ -79,10 +77,12 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     SqrtKernel kernel;
 
     // Get the host device.
-    DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Select a device to execute on.
-    DevAcc const devAcc = alpaka::getDevByIdx<PltfAcc>(0);
+    auto const platformAcc = PltfAcc{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get a queue on this device.
     QueueAcc queueAcc(devAcc);

@@ -95,11 +95,11 @@ auto main() -> int
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
-    using DevHost = alpaka::DevCpu;
-
     // Select specific devices
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
-    auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get valid workdiv for the given problem
     uint32_t elemPerThread = 1;
@@ -118,11 +118,10 @@ auto main() -> int
     QueueAcc queue{devAcc};
 
     // Initialize host-buffer
-    using BufHost = alpaka::Buf<DevHost, double, Dim, Idx>;
     // This buffer holds the calculated values
-    auto uNextBufHost = BufHost{alpaka::allocBuf<double, Idx>(devHost, extent)};
+    auto uNextBufHost = alpaka::allocBuf<double, Idx>(devHost, extent);
     // This buffer will hold the current values (used for the next step)
-    auto uCurrBufHost = BufHost{alpaka::allocBuf<double, Idx>(devHost, extent)};
+    auto uCurrBufHost = alpaka::allocBuf<double, Idx>(devHost, extent);
 
     double* const pCurrHost = alpaka::getPtrNative(uCurrBufHost);
     double* const pNextHost = alpaka::getPtrNative(uNextBufHost);

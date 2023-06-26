@@ -165,21 +165,21 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<alpaka::Dev<Acc>>;
-    using PltfHost = alpaka::PltfCpu;
-    using DevHost = alpaka::Dev<PltfHost>;
     using QueueHost = alpaka::QueueCpuNonBlocking;
 
     // Create the kernel function object.
     MatMulKernel kernel;
 
     // Get the host device.
-    DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Get a queue on the host device.
     QueueHost queueHost(devHost);
 
     // Select a device to execute on.
-    DevAcc const devAcc = alpaka::getDevByIdx<PltfAcc>(0u);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get a queue on the accelerator device.
     QueueAcc queueAcc(devAcc);

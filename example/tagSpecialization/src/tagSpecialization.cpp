@@ -107,7 +107,8 @@ auto main() -> int
     using QueueProperty = alpaka::Blocking;
     using Queue = alpaka::Queue<Acc, QueueProperty>;
     // Select a device
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Create a queue on the device
     Queue queue(devAcc);

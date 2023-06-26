@@ -39,7 +39,8 @@ TEMPLATE_LIST_TEST_CASE("hostOnlyAPI", "[hostOnlyAPI]", TestAccs)
     using HostQueue = alpaka::Queue<Host, alpaka::Blocking>;
 
     // CPU host
-    auto const host = alpaka::getDevByIdx<Host>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const host = alpaka::getDevByIdx(platformHost, 0);
     INFO("using alpaka device: " << alpaka::getName(host));
     HostQueue hostQueue(host);
 
@@ -81,7 +82,8 @@ TEMPLATE_LIST_TEST_CASE("hostOnlyAPI", "[hostOnlyAPI]", TestAccs)
     CHECK(expected1 == *alpaka::getPtrNative(h_buffer1));
 
     // GPU device
-    auto const device = alpaka::getDevByIdx<Device>(0u);
+    auto const platformAcc = alpaka::Pltf<TestType>{};
+    auto const device = alpaka::getDevByIdx(platformAcc, 0);
     INFO("using alpaka device: " << alpaka::getName(device));
     DeviceQueue deviceQueue(device);
 

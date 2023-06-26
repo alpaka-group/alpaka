@@ -60,12 +60,11 @@ struct AllMultipleThreadWarpTestKernel
 TEMPLATE_LIST_TEST_CASE("all", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dev = alpaka::Dev<Acc>;
-    using Pltf = alpaka::Pltf<Dev>;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+    auto const platform = alpaka::Pltf<Acc>{};
+    auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const warpExtents = alpaka::getWarpSizes(dev);
     for(auto const warpExtent : warpExtents)
     {

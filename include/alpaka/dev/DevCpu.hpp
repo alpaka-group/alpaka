@@ -38,7 +38,7 @@ namespace alpaka
         template<typename TPltf, typename TSfinae>
         struct GetDevByIdx;
     }
-    class PltfCpu;
+    struct PltfCpu;
 
     //! The CPU device.
     namespace cpu::detail

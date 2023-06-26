@@ -29,7 +29,9 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(std::array<TElem, Tsize> const& /* view */) -> DevCpu
         {
-            return getDevByIdx<PltfCpu>(0u);
+            // Instantiating the CPU platform here is a hack we can do internally, because we know that the CPU
+            // platform does not contain any data. But it generally does not apply.
+            return getDevByIdx(PltfCpu{}, 0u);
         }
     };
 

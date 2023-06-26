@@ -29,7 +29,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(std::vector<TElem, TAllocator> const& /* view */) -> DevCpu
         {
-            return getDevByIdx<PltfCpu>(0u);
+            return getDevByIdx(PltfCpu{}, 0u);
         }
     };
 

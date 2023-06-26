@@ -51,13 +51,12 @@ namespace alpaka::test
     auto testViewPlainPtr() -> void
     {
         using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
-
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
@@ -78,13 +77,12 @@ namespace alpaka::test
     auto testViewPlainPtrConst() -> void
     {
         using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
-
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
@@ -105,13 +103,12 @@ namespace alpaka::test
     auto testViewPlainPtrOperators() -> void
     {
         using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
-
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
@@ -152,7 +149,8 @@ TEMPLATE_LIST_TEST_CASE("viewPlainPtrOperatorTest", "[memView]", alpaka::test::T
 TEMPLATE_TEST_CASE("createView", "[memView]", (std::array<float, 4>), std::vector<float>)
 {
     using Dev = alpaka::DevCpu;
-    auto const dev = alpaka::getDevByIdx<alpaka::PltfCpu>(0u);
+    auto const platform = alpaka::PltfCpu{};
+    auto const dev = alpaka::getDevByIdx(platform, 0);
 
     TestType a{1, 2, 3, 4};
 
