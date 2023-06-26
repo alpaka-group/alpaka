@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f":[3,0,0,110,9],
 "classalpaka_1_1ViewPlainPtr.html":[3,0,0,112],
 "classalpaka_1_1ViewPlainPtr.html#a0b6b3e7109483fc1ee554230f299b09e":[3,0,0,112,0],
 "classalpaka_1_1ViewPlainPtr.html#a15c97c5c40ec230c83bc5cf28f4cb95c":[3,0,0,112,5],
@@ -50,7 +49,8 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1bt_1_1IdxBtUniformCudaHipBuiltIn.html":[3,0,0,0,3],
 "classalpaka_1_1bt_1_1IdxBtZero.html":[3,0,0,0,4],
 "classalpaka_1_1core_1_1CallbackThread.html":[3,0,0,2,4],
-"classalpaka_1_1core_1_1CallbackThread.html#aa8b4bfd968c32fd2675f6f145c898cd4":[3,0,0,2,4,1],
+"classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57":[3,0,0,2,4,2],
+"classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7":[3,0,0,2,4,1],
 "classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176":[3,0,0,2,4,0],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html":[3,0,0,2,1,8],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731":[3,0,0,2,1,8,0],

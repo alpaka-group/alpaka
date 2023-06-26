@@ -64,11 +64,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11",
-"QueueCpuBlocking_8hpp_source.html",
-"WorkDivHelpers_8hpp.html#a5543b86d23164032daa056ed21ba1484",
-"classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f",
+"AccCpuOmp2Blocks_8hpp.html",
+"Decay_8hpp_source.html",
+"QueueCpuNonBlocking_8hpp.html",
+"WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27",
+"classalpaka_1_1ViewPlainPtr.html",
 "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal.html",
 "dir_fb1128c962bebe125e17152b21133100.html",
 "namespacealpaka.html#a04e2df797bfc2c24d3c11bee905fcb38",
