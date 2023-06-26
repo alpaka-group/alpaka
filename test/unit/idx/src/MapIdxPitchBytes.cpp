@@ -25,7 +25,8 @@ TEMPLATE_LIST_TEST_CASE("mapIdxPitchBytes", "[idx]", alpaka::test::NonZeroTestDi
 
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using Elem = std::uint8_t;
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto parentView = alpaka::createView(devAcc, static_cast<Elem*>(nullptr), extentNd);
 
     auto const offset = Vec::all(4u);

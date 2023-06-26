@@ -42,7 +42,7 @@ namespace alpaka
     using QueueUniformCudaHipRtNonBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, false>;
 
     template<typename TApi>
-    class PltfUniformCudaHipRt;
+    struct PltfUniformCudaHipRt;
 
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     class BufUniformCudaHipRt;

@@ -69,11 +69,8 @@ struct TestTemplate
                   << alpaka::core::demangled<TWrappedFunctor> << " seed:" << seed << std::endl;
 
         // SETUP (defines and initialising)
-        // DevAcc and DevHost are defined in Buffer.hpp too.
+        // DevAcc is defined in Buffer.hpp too.
         using DevAcc = alpaka::Dev<TAcc>;
-        using DevHost = alpaka::DevCpu;
-        using PltfAcc = alpaka::Pltf<DevAcc>;
-        using PltfHost = alpaka::Pltf<DevHost>;
 
         using Dim = alpaka::DimInt<1u>;
         using Idx = std::size_t;
@@ -90,8 +87,10 @@ struct TestTemplate
         static constexpr size_t elementsPerThread = 1u;
         static constexpr size_t sizeExtent = 1u;
 
-        DevAcc const devAcc = alpaka::getDevByIdx<PltfAcc>(0u);
-        DevHost const devHost = alpaka::getDevByIdx<PltfHost>(0u);
+        auto const platformAcc = alpaka::Pltf<TAcc>{};
+        auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
+        auto const platformHost = alpaka::PltfCpu{};
+        auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
         QueueAcc queue{devAcc};
 

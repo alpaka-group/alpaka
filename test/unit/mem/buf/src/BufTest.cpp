@@ -19,14 +19,14 @@ template<typename TAcc>
 static auto testBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
     using Dev = alpaka::Dev<TAcc>;
-    using Pltf = alpaka::Pltf<Dev>;
     using Queue = alpaka::test::DefaultQueue<Dev>;
 
     using Elem = float;
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     Queue queue(dev);
 
     // alpaka::malloc
@@ -42,14 +42,14 @@ template<typename TAcc>
 static auto testAsyncBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
     using Dev = alpaka::Dev<TAcc>;
-    using Pltf = alpaka::Pltf<Dev>;
     using Queue = alpaka::test::DefaultQueue<Dev>;
 
     using Elem = float;
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     Queue queue(dev);
 
     // memory is allocated when the queue reaches this point
@@ -128,14 +128,12 @@ TEMPLATE_LIST_TEST_CASE("memBufAsyncZeroSizeTest", "[memBuf]", alpaka::test::Tes
 template<typename TAcc>
 static auto testBufferImmutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent) -> void
 {
-    using Dev = alpaka::Dev<TAcc>;
-    using Pltf = alpaka::Pltf<Dev>;
-
     using Elem = float;
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
     // alpaka::malloc
     auto const buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
@@ -161,14 +159,14 @@ static auto testAsyncBufferImmutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<
 {
     {
         using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
         using Queue = alpaka::test::DefaultQueue<Dev>;
 
         using Elem = float;
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
 
-        Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+        auto const platformAcc = alpaka::Pltf<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platformAcc, 0);
         Queue queue(dev);
 
         // memory is allocated when the queue reaches this point
@@ -216,9 +214,6 @@ static auto testBufferAccessorAdaptor(
     alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& extent,
     alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& index) -> void
 {
-    using Dev = alpaka::Dev<TAcc>;
-    using Pltf = alpaka::Pltf<Dev>;
-
     using Elem = float;
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
@@ -226,7 +221,8 @@ static auto testBufferAccessorAdaptor(
     // assume dimensionality up to 4
     CHECK(Dim::value <= 4);
 
-    Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
     // alpaka::malloc
     auto buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
@@ -279,11 +275,12 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Idx = alpaka::Idx<Acc>;
-    using Pltf = alpaka::Pltf<alpaka::Dev<Acc>>;
     using Elem = std::size_t;
 
-    auto const devHost = alpaka::getDevByIdx<alpaka::PltfCpu>(0u);
-    auto const dev = alpaka::getDevByIdx<Pltf>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = alpaka::Queue<Acc, alpaka::Blocking>{dev};
     auto const extent = alpaka::Vec<alpaka::DimInt<0>, Idx>{};
 

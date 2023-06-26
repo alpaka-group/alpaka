@@ -37,7 +37,8 @@ void testResult(TQueue& queue, TBufAcc& bufAcc)
     alpaka::wait(queue);
     // Copy results to host
     auto const n = alpaka::getExtentProduct(bufAcc);
-    auto const devHost = alpaka::getDevByIdx<alpaka::DevCpu>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
     auto bufHost = alpaka::allocBuf<float, uint32_t>(devHost, n);
     alpaka::memcpy(queue, bufHost, bufAcc);
     // Reset values of device buffer
@@ -91,15 +92,16 @@ struct NaiveCudaStyleKernel
 //! AccCpuOmp2Threads).
 //!
 //! \tparam TAcc The accelerator environment to be executed on.
+//! \tparam TDev The device of the queue.
 //! \tparam TQueue The queue type for work to be submitted to.
 //! \tparam TBufAcc The device buffer type.
 //! \param queue The queue object for work to be submitted to.
 //! \param bufAcc The device buffer.
-template<typename TAcc, typename TQueue, typename TBufAcc>
-void naiveCudaStyle(TQueue& queue, TBufAcc& bufAcc)
+template<typename TAcc, typename TDev, typename TQueue, typename TBufAcc>
+void naiveCudaStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 {
     auto const n = alpaka::getExtentProduct(bufAcc);
-    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(alpaka::getDevByIdx<TAcc>(0u));
+    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(dev);
     auto const maxThreadsPerBlock = deviceProperties.m_blockThreadExtentMax[0];
 
     // With this approach, one normally has a fixed number of threads per block
@@ -154,15 +156,16 @@ struct GridStridedLoopKernel
 //! This strategy can be used with any alpaka accelerator.
 //!
 //! \tparam TAcc The accelerator environment to be executed on.
+//! \tparam TDev The device of the queue.
 //! \tparam TQueue The queue type for work to be submitted to.
 //! \tparam TBufAcc The device buffer type.
 //! \param queue The queue object for work to be submitted to.
 //! \param bufAcc The device buffer.
-template<typename TAcc, typename TQueue, typename TBufAcc>
-void gridStridedLoop(TQueue& queue, TBufAcc& bufAcc)
+template<typename TAcc, typename TDev, typename TQueue, typename TBufAcc>
+void gridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 {
     auto const n = alpaka::getExtentProduct(bufAcc);
-    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(alpaka::getDevByIdx<TAcc>(0u));
+    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(dev);
     auto const maxThreadsPerBlock = deviceProperties.m_blockThreadExtentMax[0];
 
     // With this approach, one normally has a fixed number of threads per block
@@ -227,15 +230,16 @@ struct ChunkedGridStridedLoopKernel
 //! This strategy can be used with any alpaka accelerator.
 //!
 //! \tparam TAcc The accelerator environment to be executed on.
+//! \tparam TDev The device of the queue.
 //! \tparam TQueue The queue type for work to be submitted to.
 //! \tparam TBufAcc The device buffer type.
 //! \param queue The queue object for work to be submitted to.
 //! \param bufAcc The device buffer.
-template<typename TAcc, typename TQueue, typename TBufAcc>
-void chunkedGridStridedLoop(TQueue& queue, TBufAcc& bufAcc)
+template<typename TAcc, typename TDev, typename TQueue, typename TBufAcc>
+void chunkedGridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 {
     auto const n = alpaka::getExtentProduct(bufAcc);
-    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(alpaka::getDevByIdx<TAcc>(0u));
+    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(dev);
     auto const maxThreadsPerBlock = deviceProperties.m_blockThreadExtentMax[0];
 
     // With this approach, one normally has a fixed number of threads per block
@@ -292,15 +296,16 @@ struct NaiveOpenMPStyleKernel
 //! This strategy can in principle be used with any alpaka accelerator, but numCores must be adjusted.
 //!
 //! \tparam TAcc The accelerator environment to be executed on.
+//! \tparam TDev The device of the queue.
 //! \tparam TQueue The queue type for work to be submitted to.
 //! \tparam TBufAcc The device buffer type.
 //! \param queue The queue object for work to be submitted to.
 //! \param bufAcc The device buffer.
-template<typename TAcc, typename TQueue, typename TBufAcc>
-void naiveOpenMPStyle(TQueue& queue, TBufAcc& bufAcc)
+template<typename TAcc, typename TDev, typename TQueue, typename TBufAcc>
+void naiveOpenMPStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 {
     auto const n = alpaka::getExtentProduct(bufAcc);
-    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(alpaka::getDevByIdx<TAcc>(0u));
+    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(dev);
     auto const maxThreadsPerBlock = deviceProperties.m_blockThreadExtentMax[0];
     auto const numCores = std::max(std::thread::hardware_concurrency(), 1u);
 
@@ -368,15 +373,16 @@ struct OpenMPSimdStyleKernel
 //! This strategy can in principle be used with any alpaka accelerator, but numCores must be adjusted.
 //!
 //! \tparam TAcc The accelerator environment to be executed on.
+//! \tparam TDev The device of the queue.
 //! \tparam TQueue The queue type for work to be submitted to.
 //! \tparam TBufAcc The device buffer type.
 //! \param queue The queue object for work to be submitted to.
 //! \param bufAcc The device buffer.
-template<typename TAcc, typename TQueue, typename TBufAcc>
-void openMPSimdStyle(TQueue& queue, TBufAcc& bufAcc)
+template<typename TAcc, typename TDev, typename TQueue, typename TBufAcc>
+void openMPSimdStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 {
     auto const n = alpaka::getExtentProduct(bufAcc);
-    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(alpaka::getDevByIdx<TAcc>(0u));
+    auto const deviceProperties = alpaka::getAccDevProps<TAcc>(dev);
     auto const maxThreadsPerBlock = deviceProperties.m_blockThreadExtentMax[0];
     auto const numCores = 16u; // should be taken from hardware properties, alpaka currently does not expose it
 
@@ -421,7 +427,8 @@ auto main() -> int
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
     // Select a device and create queue for it
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = alpaka::Queue<Acc, alpaka::Blocking>(devAcc);
 
     // Define the problem size = buffer size and allocate memory
@@ -429,11 +436,11 @@ auto main() -> int
     auto bufAcc = alpaka::allocBuf<float, uint32_t>(devAcc, bufferSize);
 
     // Call different kernel versions
-    naiveCudaStyle<Acc>(queue, bufAcc);
-    gridStridedLoop<Acc>(queue, bufAcc);
-    chunkedGridStridedLoop<Acc>(queue, bufAcc);
-    naiveOpenMPStyle<Acc>(queue, bufAcc);
-    openMPSimdStyle<Acc>(queue, bufAcc);
+    naiveCudaStyle<Acc>(devAcc, queue, bufAcc);
+    gridStridedLoop<Acc>(devAcc, queue, bufAcc);
+    chunkedGridStridedLoop<Acc>(devAcc, queue, bufAcc);
+    naiveOpenMPStyle<Acc>(devAcc, queue, bufAcc);
+    openMPSimdStyle<Acc>(devAcc, queue, bufAcc);
 
 #endif
 }

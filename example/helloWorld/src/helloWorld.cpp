@@ -74,7 +74,7 @@ auto main() -> int
     // - AccCpuSerial
     //
     // Each accelerator has strengths and weaknesses. Therefore,
-    // they need to be choosen carefully depending on the actual
+    // they need to be chosen carefully depending on the actual
     // use case. Furthermore, some accelerators only support a
     // particular workdiv, but workdiv can also be generated
     // automatically.
@@ -93,12 +93,13 @@ auto main() -> int
     // Select a device
     //
     // The accelerator only defines how something should be
-    // parallized, but a device is the real entity which will
-    // run the parallel programm. The device can be choosen
+    // parallelized, but a device is the real entity which will
+    // run the parallel program. The device can be chosen
     // by id (0 to the number of devices minus 1) or you
     // can also retrieve all devices in a vector (getDevs()).
-    // In this example the first devices is choosen.
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    // In this example the first devices is chosen.
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Create a queue on the device
     //
@@ -108,7 +109,7 @@ auto main() -> int
     // tasks will be executed. Queues are provided in
     // non-blocking and blocking variants.
     // The example queue is a blocking queue to a cpu device,
-    // but it also exists an non-blocking queue for this
+    // but it also exists as non-blocking queue for this
     // device (QueueCpuNonBlocking).
     Queue queue(devAcc);
 
@@ -165,7 +166,7 @@ auto main() -> int
     // parameters.
     // The kernel execution task is enqueued into an accelerator queue.
     // The queue can be blocking or non-blocking
-    // depending on the choosen queue type (see type definitions above).
+    // depending on the chosen queue type (see type definitions above).
     // Here it is synchronous which means that the kernel is directly executed.
     alpaka::exec<Acc>(
         queue,

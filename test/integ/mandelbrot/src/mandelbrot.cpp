@@ -274,16 +274,17 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
-    using PltfHost = alpaka::PltfCpu;
 
     // Create the kernel function object.
     MandelbrotKernel kernel;
 
     // Get the host device.
-    auto const devHost = alpaka::getDevByIdx<PltfHost>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Select a device to execute on.
-    auto const devAcc = alpaka::getDevByIdx<PltfAcc>(0u);
+    auto const platformAcc = PltfAcc{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get a queue on this device.
     QueueAcc queue(devAcc);

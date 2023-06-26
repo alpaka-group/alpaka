@@ -53,7 +53,8 @@ void BlockSharedMemSharingTest(TKernel kernel)
     using Idx = alpaka::Idx<TAcc>;
     using Vec = alpaka::Vec<Dim, Idx>;
 
-    auto const devAcc = alpaka::getDevByIdx<TAcc>(0u);
+    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     auto const accDevProps = alpaka::getAccDevProps<TAcc>(devAcc);
     const Idx gridBlockCount = 2u;
@@ -68,8 +69,8 @@ void BlockSharedMemSharingTest(TKernel kernel)
 
     alpaka::exec<TAcc>(queue, workDiv, kernel, alpaka::getPtrNative(bufAcc));
 
-    using DevHost = alpaka::DevCpu;
-    auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
     auto bufHost = alpaka::allocBuf<std::uint32_t, Idx>(devHost, gridBlockCount);
 
     alpaka::memcpy(queue, bufHost, bufAcc);

@@ -82,13 +82,12 @@ namespace alpaka::test
     auto testViewSubViewNoOffset() -> void
     {
         using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
-
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewSubView<Dev, TElem, Dim, Idx>;
 
-        Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
@@ -105,13 +104,12 @@ namespace alpaka::test
     auto testViewSubViewOffset() -> void
     {
         using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
-
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewSubView<Dev, TElem, Dim, Idx>;
 
-        Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
@@ -130,13 +128,12 @@ namespace alpaka::test
     auto testViewSubViewOffsetConst() -> void
     {
         using Dev = alpaka::Dev<TAcc>;
-        using Pltf = alpaka::Pltf<Dev>;
-
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewSubView<Dev, TElem, Dim, Idx>;
 
-        Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
+        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
             = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();

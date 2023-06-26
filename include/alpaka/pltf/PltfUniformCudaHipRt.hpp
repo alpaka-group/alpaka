@@ -25,10 +25,8 @@ namespace alpaka
 
     //! The CUDA/HIP RT platform.
     template<typename TApi>
-    class PltfUniformCudaHipRt : public concepts::Implements<ConceptPltf, PltfUniformCudaHipRt<TApi>>
+    struct PltfUniformCudaHipRt : concepts::Implements<ConceptPltf, PltfUniformCudaHipRt<TApi>>
     {
-    public:
-        ALPAKA_FN_HOST PltfUniformCudaHipRt() = delete;
     };
 
     namespace trait
@@ -44,7 +42,7 @@ namespace alpaka
         template<typename TApi>
         struct GetDevCount<PltfUniformCudaHipRt<TApi>>
         {
-            ALPAKA_FN_HOST static auto getDevCount() -> std::size_t
+            ALPAKA_FN_HOST static auto getDevCount(PltfUniformCudaHipRt<TApi> const&) -> std::size_t
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -61,11 +59,13 @@ namespace alpaka
         template<typename TApi>
         struct GetDevByIdx<PltfUniformCudaHipRt<TApi>>
         {
-            ALPAKA_FN_HOST static auto getDevByIdx(std::size_t const& devIdx) -> DevUniformCudaHipRt<TApi>
+            ALPAKA_FN_HOST static auto getDevByIdx(
+                PltfUniformCudaHipRt<TApi> const& platform,
+                std::size_t const& devIdx) -> DevUniformCudaHipRt<TApi>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                std::size_t const devCount(getDevCount<PltfUniformCudaHipRt<TApi>>());
+                std::size_t const devCount = getDevCount(platform);
                 if(devIdx >= devCount)
                 {
                     std::stringstream ssErr;

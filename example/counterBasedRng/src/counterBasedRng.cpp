@@ -124,8 +124,6 @@ auto main() -> int
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
     using AccHost = alpaka::AccCpuSerial<Dim, Idx>;
-    // Get the host device for allocating memory on the host.
-    using DevHost = alpaka::DevCpu;
 
     // Defines the synchronization behavior of a queue
     //
@@ -135,8 +133,10 @@ auto main() -> int
     using QueueHost = alpaka::Queue<AccHost, QueueProperty>;
 
     // Select a device
-    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
-    auto const devHost = alpaka::getDevByIdx<AccHost>(0u);
+    auto const platformHost = alpaka::PltfCpu{};
+    auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Create a queue on the device
     QueueAcc queueAcc(devAcc);
@@ -165,9 +165,8 @@ auto main() -> int
     using Data = std::uint32_t;
 
     // Allocate 3 host memory buffers
-    using BufHost = alpaka::Buf<DevHost, Data, Dim, Idx>;
-    BufHost bufHost(alpaka::allocBuf<Data, Idx>(devHost, extent));
-    BufHost bufHostDev(alpaka::allocBuf<Data, Idx>(devHost, extent));
+    auto bufHost(alpaka::allocBuf<Data, Idx>(devHost, extent));
+    auto bufHostDev(alpaka::allocBuf<Data, Idx>(devHost, extent));
 
     // Initialize the host input vectors A and B
     Data* const pBufHost(alpaka::getPtrNative(bufHost));

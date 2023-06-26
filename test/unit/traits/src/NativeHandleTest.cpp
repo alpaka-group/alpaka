@@ -12,9 +12,10 @@
 TEMPLATE_LIST_TEST_CASE("NativeHandle", "[handle]", alpaka::test::TestAccs)
 {
     using Dev = alpaka::Dev<TestType>;
-    using Pltf = alpaka::Pltf<Dev>;
-    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
-    auto handle = alpaka::getNativeHandle(dev);
+
+    auto const platformAcc = alpaka::Pltf<TestType>{};
+    auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
+    auto handle = alpaka::getNativeHandle(devAcc);
 
     STATIC_REQUIRE(std::is_same_v<alpaka::NativeHandle<Dev>, decltype(handle)>);
     // The SYCL backend does not use an int as the native handle type
