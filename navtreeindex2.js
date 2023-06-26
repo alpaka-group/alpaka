@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
 "QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
 "QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
 "QueueCpuOmp2Collective_8hpp.html":[4,0,0,0,21,5,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "WorkDivHelpers_8hpp.html#a336492ddbb304d87f082dd90164f8f30":[4,0,0,0,26,2,2],
 "WorkDivHelpers_8hpp.html#a36eeeef4bfe30fe8892e2ca2c2aa682a":[4,0,0,0,26,2,6],
 "WorkDivHelpers_8hpp.html#a378a4ed1bdce40639b3204d84a004d1c":[4,0,0,0,26,2,5],
-"WorkDivHelpers_8hpp.html#a49da61db606743ad5f75c6db33cfc043":[4,0,0,0,26,2,3],
-"WorkDivHelpers_8hpp.html#a5543b86d23164032daa056ed21ba1484":[4,0,0,0,26,2,7]
+"WorkDivHelpers_8hpp.html#a49da61db606743ad5f75c6db33cfc043":[4,0,0,0,26,2,3]
 };
