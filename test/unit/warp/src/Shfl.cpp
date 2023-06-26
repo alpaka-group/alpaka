@@ -1,4 +1,4 @@
-/* Copyright 2023 David M. Rogers, Jan Stephan
+/* Copyright 2023 David M. Rogers, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -35,6 +35,7 @@ struct ShflSingleThreadWarpTestKernel
     }
 };
 
+template<std::uint32_t TWarpSize>
 struct ShflMultipleThreadWarpTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
@@ -87,6 +88,15 @@ struct ShflMultipleThreadWarpTestKernel
     }
 };
 
+namespace alpaka::trait
+{
+    template<std::uint32_t TWarpSize, typename TAcc>
+    struct WarpSize<ShflMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
+    {
+        static constexpr std::uint32_t warp_size = TWarpSize;
+    };
+} // namespace alpaka::trait
+
 TEMPLATE_LIST_TEST_CASE("shfl", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
@@ -114,8 +124,18 @@ TEMPLATE_LIST_TEST_CASE("shfl", "[warp]", alpaka::test::TestAccs)
             auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
             auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
             auto fixture = ExecutionFixture{workDiv};
-            ShflMultipleThreadWarpTestKernel kernel;
-            REQUIRE(fixture(kernel));
+            if(warpExtent == 8)
+            {
+                REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<8>{}));
+            }
+            else if(warpExtent == 16)
+            {
+                REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<16>{}));
+            }
+            else if(warpExtent == 32)
+            {
+                REQUIRE(fixture(ShflMultipleThreadWarpTestKernel<32>{}));
+            }
         }
     }
 }

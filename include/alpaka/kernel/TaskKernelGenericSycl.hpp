@@ -136,33 +136,67 @@ namespace alpaka
 
             auto output_stream = sycl::stream{buf_size, buf_per_work_item, cgh};
 #    endif
-            // cgh.parallel_for<detail::kernel<TAcc, TKernelFnObj, TArgs...>>( //FIXME_
-            cgh.parallel_for(
-                sycl::nd_range<TDim::value>{global_size, local_size},
-                [=](sycl::nd_item<TDim::value> work_item)
-                {
+            if constexpr(trait::WarpSize<TKernelFnObj, TAcc>::warp_size != 0)
+            {
+                // cgh.parallel_for<detail::kernel<TAcc, TKernelFnObj, TArgs...>>( //FIXME_
+                cgh.parallel_for(
+                    sycl::nd_range<TDim::value>{global_size, local_size},
+                    [=](sycl::nd_item<TDim::value> work_item)
+                        [[intel::reqd_sub_group_size(trait::WarpSize<TKernelFnObj, TAcc>::warp_size)]]
+                    {
 #    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-                    auto acc = TAcc{
-                        item_elements,
-                        work_item,
-                        dyn_shared_accessor,
-                        st_shared_accessor,
-                        global_fence_dummy,
-                        local_fence_dummy,
-                        output_stream};
+                        auto acc = TAcc{
+                            item_elements,
+                            work_item,
+                            dyn_shared_accessor,
+                            st_shared_accessor,
+                            global_fence_dummy,
+                            local_fence_dummy,
+                            output_stream};
 #    else
-                    auto acc = TAcc{
-                        item_elements,
-                        work_item,
-                        dyn_shared_accessor,
-                        st_shared_accessor,
-                        global_fence_dummy,
-                        local_fence_dummy};
+                        auto acc = TAcc{
+                            item_elements,
+                            work_item,
+                            dyn_shared_accessor,
+                            st_shared_accessor,
+                            global_fence_dummy,
+                            local_fence_dummy};
 #    endif
-                    core::apply(
-                        [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },
-                        k_args);
-                });
+                        core::apply(
+                            [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },
+                            k_args);
+                    });
+            }
+            else
+            { // autodetect
+                // cgh.parallel_for<detail::kernel<TAcc, TKernelFnObj, TArgs...>>( //FIXME_
+                cgh.parallel_for(
+                    sycl::nd_range<TDim::value>{global_size, local_size},
+                    [=](sycl::nd_item<TDim::value> work_item)
+                    {
+#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
+                        auto acc = TAcc{
+                            item_elements,
+                            work_item,
+                            dyn_shared_accessor,
+                            st_shared_accessor,
+                            global_fence_dummy,
+                            local_fence_dummy,
+                            output_stream};
+#    else
+                        auto acc = TAcc{
+                            item_elements,
+                            work_item,
+                            dyn_shared_accessor,
+                            st_shared_accessor,
+                            global_fence_dummy,
+                            local_fence_dummy};
+#    endif
+                        core::apply(
+                            [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },
+                            k_args);
+                    });
+            }
         }
 
         static constexpr auto is_sycl_task = true;

@@ -1,4 +1,4 @@
-/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -25,6 +25,7 @@ struct ActivemaskSingleThreadWarpTestKernel
     }
 };
 
+template<std::uint32_t TWarpSize>
 struct ActivemaskMultipleThreadWarpTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
@@ -53,6 +54,15 @@ struct ActivemaskMultipleThreadWarpTestKernel
     }
 };
 
+namespace alpaka::trait
+{
+    template<std::uint32_t TWarpSize, typename TAcc>
+    struct WarpSize<ActivemaskMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
+    {
+        static constexpr std::uint32_t warp_size = TWarpSize;
+    };
+} // namespace alpaka::trait
+
 TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
@@ -68,7 +78,7 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
         if(scalar)
         {
             alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(4));
-            REQUIRE(fixture(ActivemaskSingleThreadWarpTestKernel{}));
+            CHECK(fixture(ActivemaskSingleThreadWarpTestKernel{}));
         }
         else
         {
@@ -80,9 +90,27 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
             auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
             auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
             auto fixture = ExecutionFixture{workDiv};
-            ActivemaskMultipleThreadWarpTestKernel kernel;
-            for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
-                REQUIRE(fixture(kernel, inactiveThreadIdx));
+            if(warpExtent == 8)
+            {
+                for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
+                {
+                    CHECK(fixture(ActivemaskMultipleThreadWarpTestKernel<8>{}, inactiveThreadIdx));
+                }
+            }
+            else if(warpExtent == 16)
+            {
+                for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
+                {
+                    CHECK(fixture(ActivemaskMultipleThreadWarpTestKernel<16>{}, inactiveThreadIdx));
+                }
+            }
+            else if(warpExtent == 32)
+            {
+                for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
+                {
+                    CHECK(fixture(ActivemaskMultipleThreadWarpTestKernel<32>{}, inactiveThreadIdx));
+                }
+            }
         }
     }
 }

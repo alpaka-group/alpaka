@@ -36,7 +36,7 @@ namespace alpaka::warp::trait
         {
             auto const sub_group = warp.m_item.get_sub_group();
             // SYCL sub-groups are always 1D
-            return static_cast<std::int32_t>(sub_group.get_local_linear_range());
+            return static_cast<std::int32_t>(sub_group.get_max_local_range()[0]);
         }
     };
 
