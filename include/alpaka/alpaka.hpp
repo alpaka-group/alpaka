@@ -21565,11 +21565,19 @@
 					#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 					//! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
 					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                     \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(                                         \
-					                "'" #cmd "' A previous API call (not this one) set the error ",                                       \
-					                __FILE__,                                                                                             \
-					                __LINE__);                                                                                            \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, true>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+					            do                                                                                                        \
+					            {                                                                                                         \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(                                     \
+					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+					                    __FILE__,                                                                                         \
+					                    __LINE__);                                                                                        \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, true>(                                        \
+					                    cmd,                                                                                              \
+					                    #cmd,                                                                                             \
+					                    __FILE__,                                                                                         \
+					                    __LINE__,                                                                                         \
+					                    __VA_ARGS__);                                                                                     \
+					            } while(0)
 					#    else
 					#        if BOOST_COMP_CLANG
 					#            pragma clang diagnostic push
@@ -21577,11 +21585,19 @@
 					#        endif
 					//! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
 					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                     \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(                                         \
-					                "'" #cmd "' A previous API call (not this one) set the error ",                                       \
-					                __FILE__,                                                                                             \
-					                __LINE__);                                                                                            \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, true>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+					            do                                                                                                        \
+					            {                                                                                                         \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(                                     \
+					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+					                    __FILE__,                                                                                         \
+					                    __LINE__);                                                                                        \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, true>(                                        \
+					                    cmd,                                                                                              \
+					                    #cmd,                                                                                             \
+					                    __FILE__,                                                                                         \
+					                    __LINE__,                                                                                         \
+					                    ##__VA_ARGS__);                                                                                   \
+					            } while(0)
 					#        if BOOST_COMP_CLANG
 					#            pragma clang diagnostic pop
 					#        endif
@@ -21593,11 +21609,19 @@
 					#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 					//! CUDA/HIP runtime error checking with log, ignoring specific error values
 					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                            \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, false>(                                        \
-					                "'" #cmd "' A previous API call (not this one) set the error ",                                       \
-					                __FILE__,                                                                                             \
-					                __LINE__);                                                                                            \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, false>(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+					            do                                                                                                        \
+					            {                                                                                                         \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, false>(                                    \
+					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+					                    __FILE__,                                                                                         \
+					                    __LINE__);                                                                                        \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, false>(                                       \
+					                    cmd,                                                                                              \
+					                    #cmd,                                                                                             \
+					                    __FILE__,                                                                                         \
+					                    __LINE__,                                                                                         \
+					                    __VA_ARGS__);                                                                                     \
+					            } while(0)
 					#    else
 					#        if BOOST_COMP_CLANG
 					#            pragma clang diagnostic push
@@ -21605,16 +21629,19 @@
 					#        endif
 					//! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
 					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                            \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, false>(                                        \
-					                "'" #cmd "' A previous API call (not this one) set the error ",                                       \
-					                __FILE__,                                                                                             \
-					                __LINE__);                                                                                            \
-					            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, false>(                                           \
-					                cmd,                                                                                                  \
-					                #cmd,                                                                                                 \
-					                __FILE__,                                                                                             \
-					                __LINE__,                                                                                             \
-					                ##__VA_ARGS__)
+					            do                                                                                                        \
+					            {                                                                                                         \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, false>(                                    \
+					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
+					                    __FILE__,                                                                                         \
+					                    __LINE__);                                                                                        \
+					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, false>(                                       \
+					                    cmd,                                                                                              \
+					                    #cmd,                                                                                             \
+					                    __FILE__,                                                                                         \
+					                    __LINE__,                                                                                         \
+					                    ##__VA_ARGS__);                                                                                   \
+					            } while(0)
 					#        if BOOST_COMP_CLANG
 					#            pragma clang diagnostic pop
 					#        endif
@@ -25919,7 +25946,6 @@
 					 */
 
 					// #pragma once
-					// #include <atomic>    // amalgamate: file already included
 					// #include <condition_variable>    // amalgamate: file already included
 					// #include <functional>    // amalgamate: file already included
 					// #include <future>    // amalgamate: file already included
@@ -25937,8 +25963,12 @@
 					    public:
 					        ~CallbackThread()
 					        {
-					            m_stop = true;
-					            m_cond.notify_one();
+					            {
+					                std::unique_lock<std::mutex> lock{m_mutex};
+					                m_stop = true;
+					                m_cond.notify_one();
+					            }
+
 					            if(m_thread.joinable())
 					            {
 					                if(std::this_thread::get_id() == m_thread.get_id())
@@ -25949,12 +25979,22 @@
 					                m_thread.join();
 					            }
 					        }
-					        auto submit(Task&& newTask) -> std::future<void>
+
+					        template<typename NullaryFunction>
+					        auto submit(NullaryFunction&& nf) -> std::future<void>
 					        {
-					            auto f = newTask.get_future();
+					            static_assert(
+					                std::is_void_v<std::invoke_result_t<NullaryFunction>>,
+					                "Submitted function must not have any arguments and return void.");
+					            return submit(Task{std::forward<NullaryFunction>(nf)});
+					        }
+
+					        auto submit(Task task) -> std::future<void>
+					        {
+					            auto f = task.get_future();
 					            {
 					                std::unique_lock<std::mutex> lock{m_mutex};
-					                m_tasks.emplace(std::move(newTask));
+					                m_tasks.emplace(std::move(task));
 					                if(!m_thread.joinable())
 					                    startWorkerThread();
 					            }
@@ -25966,7 +26006,7 @@
 					        std::thread m_thread;
 					        std::condition_variable m_cond;
 					        std::mutex m_mutex;
-					        std::atomic<bool> m_stop{false};
+					        bool m_stop{false};
 					        std::queue<Task> m_tasks;
 
 					        auto startWorkerThread() -> void
@@ -26233,7 +26273,7 @@
 				                // callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
 				                // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
 				                // before it executes the next task in the queue (CUDA/HIP stream).
-				                auto f = queue.getCallbackThread().submit(std::packaged_task<void()>(
+				                auto f = queue.getCallbackThread().submit(
 				                    [spCallbackSynchronizationData, task]()
 				                    {
 				                        // If the callback has not yet been called, we wait for it.
@@ -26253,7 +26293,7 @@
 				                            spCallbackSynchronizationData->m_state = CallbackState::finished;
 				                        }
 				                        spCallbackSynchronizationData->m_event.notify_one();
-				                    }));
+				                    });
 
 				                if constexpr(TBlocking)
 				                {
