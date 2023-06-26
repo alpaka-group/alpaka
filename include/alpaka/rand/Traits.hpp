@@ -7,6 +7,7 @@
 #include "alpaka/core/Common.hpp"
 #include "alpaka/core/Concepts.hpp"
 
+#include <cstdint>
 #include <type_traits>
 
 namespace alpaka::rand
