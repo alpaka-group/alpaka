@@ -53,42 +53,6 @@ namespace alpaka
                 m_queues.push_back(spQueue);
             }
 
-            using CleanerFunctor = std::function<void()>;
-            static ALPAKA_FN_HOST auto registerCleanup(CleanerFunctor cleaner) -> void
-            {
-                class CleanupList
-                {
-                    std::mutex m_mutex;
-                    std::deque<CleanerFunctor> mutable m_cleanup;
-
-                public:
-                    ~CleanupList()
-                    {
-                        for(auto& c : m_cleanup)
-                        {
-                            c();
-                        }
-                    }
-
-                    void push(CleanerFunctor&& c)
-                    {
-                        std::lock_guard<std::mutex> lk(m_mutex);
-
-                        m_cleanup.emplace_back(std::move(c));
-                    }
-                };
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wexit-time-destructors" // running this at exit time is the point
-#endif
-                static CleanupList cleanupList;
-#if BOOST_COMP_CLANG
-#    pragma clang diagnostic pop
-#endif
-
-                cleanupList.push(std::move(cleaner));
-            }
-
         private:
             std::mutex mutable m_Mutex;
             std::deque<std::weak_ptr<TQueue>> mutable m_queues;

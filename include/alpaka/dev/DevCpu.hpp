@@ -81,11 +81,6 @@ namespace alpaka
             m_spDevCpuImpl->registerQueue(spQueue);
         }
 
-        auto registerCleanup(cpu::detail::DevCpuImpl::CleanerFunctor c) const -> void
-        {
-            m_spDevCpuImpl->registerCleanup(c);
-        }
-
         [[nodiscard]] auto getNativeHandle() const noexcept
         {
             return 0;
