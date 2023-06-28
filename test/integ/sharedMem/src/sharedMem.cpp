@@ -1,4 +1,5 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber,
+ *                Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -138,8 +139,9 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     std::cout << "SharedMemKernel("
-              << " accelerator: " << alpaka::getAccName<Acc>() << ", kernel: " << typeid(kernel).name()
-              << ", workDiv: " << workDiv << ")" << std::endl;
+              << " accelerator: " << alpaka::getAccName<Acc>()
+              << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
+              << std::endl;
 
     Idx const gridBlocksCount(alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
     Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
