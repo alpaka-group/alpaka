@@ -107,9 +107,9 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae307d49484041bc95c9a57dd87a9f2bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1QueueRegistry.html#ae307d49484041bc95c9a57dd87a9f2bb">getAllExistingQueues</a> () const -&gt; std::vector&lt; std::shared_ptr&lt; TQueue &gt;&gt;</td></tr>
 <tr class="separator:ae307d49484041bc95c9a57dd87a9f2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29fdf8b3b24cf5a07d190322225d5919"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1QueueRegistry.html#a29fdf8b3b24cf5a07d190322225d5919">registerQueue</a> (std::shared_ptr&lt; TQueue &gt; spQueue) const -&gt; void</td></tr>
-<tr class="memdesc:a29fdf8b3b24cf5a07d190322225d5919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the given queue on this device. NOTE: Every queue has to be registered for correct functionality of device wait operations!  <a href="classalpaka_1_1detail_1_1QueueRegistry.html#a29fdf8b3b24cf5a07d190322225d5919">More...</a><br /></td></tr>
-<tr class="separator:a29fdf8b3b24cf5a07d190322225d5919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af88f954d7a28f111d8c142f27d4c1617"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1QueueRegistry.html#af88f954d7a28f111d8c142f27d4c1617">registerQueue</a> (std::shared_ptr&lt; TQueue &gt; const &amp;spQueue) const -&gt; void</td></tr>
+<tr class="memdesc:af88f954d7a28f111d8c142f27d4c1617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the given queue on this device. NOTE: Every queue has to be registered for correct functionality of device wait operations!  <a href="classalpaka_1_1detail_1_1QueueRegistry.html#af88f954d7a28f111d8c142f27d4c1617">More...</a><br /></td></tr>
+<tr class="separator:af88f954d7a28f111d8c142f27d4c1617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -204,8 +204,8 @@ template&lt;typename TQueue &gt; </div>
 
 </div>
 </div>
-<a id="a29fdf8b3b24cf5a07d190322225d5919"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29fdf8b3b24cf5a07d190322225d5919">&#9670;&nbsp;</a></span>registerQueue()</h2>
+<a id="af88f954d7a28f111d8c142f27d4c1617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af88f954d7a28f111d8c142f27d4c1617">&#9670;&nbsp;</a></span>registerQueue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +218,7 @@ template&lt;typename TQueue &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1detail_1_1QueueRegistry.html">alpaka::detail::QueueRegistry</a>&lt; TQueue &gt;::registerQueue </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; TQueue &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; TQueue &gt; const &amp;&#160;</td>
           <td class="paramname"><em>spQueue</em></td><td>)</td>
           <td> const -&gt; void
             </td>
@@ -246,7 +246,7 @@ template&lt;typename TQueue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1detail_1_1QueueRegistry.html">QueueRegistry</a></li>
-    <li class="footer">Generated on Wed Jun 28 2023 09:30:05 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jun 28 2023 13:28:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
