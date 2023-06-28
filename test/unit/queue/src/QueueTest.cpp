@@ -8,6 +8,7 @@
 #include <alpaka/test/queue/QueueCpuOmp2Collective.hpp>
 #include <alpaka/test/queue/QueueTestFixture.hpp>
 
+#include <catch2/benchmark/catch_benchmark.hpp>
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
@@ -195,4 +196,21 @@ TEMPLATE_LIST_TEST_CASE("nonBlockingQueueShouldNotRunPastProgramTermination", "[
                 std::cout << "END not-awaited task in Queue '" << name << "'" << std::endl;
             });
     }
+}
+
+TEMPLATE_LIST_TEST_CASE("enqueueBenchmark", "[queue]", alpaka::test::TestQueues)
+{
+    using DevQueue = TestType;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
+    Fixture f;
+
+    constexpr auto reps = 1000;
+    BENCHMARK("Enqueue " + std::to_string(reps))
+    {
+        std::atomic<int> count = 0;
+        for(int i = 0; i < reps; i++)
+            alpaka::enqueue(f.m_queue, [&]() noexcept { ++count; });
+        alpaka::wait(f.m_queue);
+        return count.load();
+    };
 }
