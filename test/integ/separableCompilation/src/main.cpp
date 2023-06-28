@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -97,7 +97,7 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
-    std::cout << typeid(kernel).name() << "("
+    std::cout << alpaka::core::demangled<decltype(kernel)> << "("
               << "accelerator: " << alpaka::getAccName<Acc>() << ", workDiv: " << workDiv
               << ", numElements:" << numElements << ")" << std::endl;
 

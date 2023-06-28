@@ -1,4 +1,5 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan, Bernhard Manfred Gruber,
+ *                Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -201,7 +202,8 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
 
     std::cout << "MatMulKernel("
               << "m:" << m << ", n:" << n << ", k:" << k << ", accelerator: " << alpaka::getAccName<Acc>()
-              << ", kernel: " << typeid(kernel).name() << ", workDiv: " << workDiv << ")" << std::endl;
+              << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
+              << std::endl;
 
     // Allocate the A and B matrices as std::vectors because this allows them to be filled with uint32_t(1).
     // alpaka::set only supports setting all bytes leading to a value of 16843009 in all elements.

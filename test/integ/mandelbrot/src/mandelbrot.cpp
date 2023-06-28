@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -300,8 +300,9 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
 
     std::cout << "MandelbrotKernel("
               << " numRows:" << numRows << ", numCols:" << numCols << ", maxIterations:" << maxIterations
-              << ", accelerator: " << alpaka::getAccName<Acc>() << ", kernel: " << typeid(kernel).name()
-              << ", workDiv: " << workDiv << ")" << std::endl;
+              << ", accelerator: " << alpaka::getAccName<Acc>()
+              << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
+              << std::endl;
 
     // allocate host memory, potentially pinned for faster copy to/from the accelerator.
     auto bufColorHost = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);

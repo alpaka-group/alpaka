@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -104,7 +104,8 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
 
     std::cout << "AxpyKernel("
               << " numElements:" << numElements << ", accelerator: " << alpaka::getAccName<Acc>()
-              << ", kernel: " << typeid(kernel).name() << ", workDiv: " << workDiv << ")" << std::endl;
+              << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
+              << std::endl;
 
     // Allocate host memory buffers in pinned memory.
     auto memBufHostX = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
