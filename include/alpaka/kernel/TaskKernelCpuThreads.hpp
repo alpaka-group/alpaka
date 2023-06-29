@@ -14,8 +14,8 @@
 // Implementation details.
 #include "alpaka/acc/AccCpuThreads.hpp"
 #include "alpaka/core/BoostPredef.hpp"
-#include "alpaka/core/ConcurrentExecPool.hpp"
 #include "alpaka/core/Decay.hpp"
+#include "alpaka/core/ThreadPool.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/meta/NdLoop.hpp"
@@ -41,23 +41,10 @@ namespace alpaka
     class TaskKernelCpuThreads final : public WorkDivMembers<TDim, TIdx>
     {
     private:
-        //! The type given to the ConcurrentExecPool for yielding the current thread.
-        struct ThreadPoolYield
-        {
-            //! Yields the current thread.
-            ALPAKA_FN_HOST static auto yield() -> void
-            {
-                std::this_thread::yield();
-            }
-        };
         // When using the thread pool the threads are yielding because this is faster.
         // Using condition variables and going to sleep is very costly for real threads.
         // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
-        using ThreadPool = alpaka::core::detail::ConcurrentExecPool<
-            TIdx,
-            std::thread, // The concurrent execution type.
-            std::promise, // The promise type.
-            ThreadPoolYield>; // The type yielding the current concurrent execution.
+        using ThreadPool = alpaka::core::detail::ThreadPool;
 
     public:
         template<typename TWorkDiv>
@@ -99,7 +86,7 @@ namespace alpaka
             AccCpuThreads<TDim, TIdx> acc(*static_cast<WorkDivMembers<TDim, TIdx> const*>(this), smBytes);
 
             auto const threadsPerBlock = blockThreadExtent.prod();
-            ThreadPool threadPool(threadsPerBlock);
+            ThreadPool threadPool(static_cast<std::size_t>(threadsPerBlock));
 
             // Execute the blocks serially.
             meta::ndLoopIncIdx(
