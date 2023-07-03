@@ -9115,90 +9115,50 @@
 			#include <memory>
 			// #include <mutex>    // amalgamate: file already included
 
-			namespace alpaka
+			namespace alpaka::detail
 			{
-			    namespace detail
+			    //! The CPU device implementation.
+			    template<typename TQueue>
+			    struct QueueRegistry
 			    {
-			        //! The CPU device implementation.
-			        template<typename TQueue>
-			        class QueueRegistry
+			        ALPAKA_FN_HOST auto getAllExistingQueues() const -> std::vector<std::shared_ptr<TQueue>>
 			        {
-			        public:
-			            ALPAKA_FN_HOST auto getAllExistingQueues() const -> std::vector<std::shared_ptr<TQueue>>
+			            std::vector<std::shared_ptr<TQueue>> vspQueues;
+
+			            std::lock_guard<std::mutex> lk(m_Mutex);
+			            vspQueues.reserve(std::size(m_queues));
+
+			            for(auto it = std::begin(m_queues); it != std::end(m_queues);)
 			            {
-			                std::vector<std::shared_ptr<TQueue>> vspQueues;
-
-			                std::lock_guard<std::mutex> lk(m_Mutex);
-			                vspQueues.reserve(std::size(m_queues));
-
-			                for(auto it = std::begin(m_queues); it != std::end(m_queues);)
+			                auto spQueue = it->lock();
+			                if(spQueue)
 			                {
-			                    auto spQueue = it->lock();
-			                    if(spQueue)
-			                    {
-			                        vspQueues.emplace_back(std::move(spQueue));
-			                        ++it;
-			                    }
-			                    else
-			                    {
-			                        it = m_queues.erase(it);
-			                    }
+			                    vspQueues.emplace_back(std::move(spQueue));
+			                    ++it;
 			                }
-			                return vspQueues;
-			            }
-
-			            //! Registers the given queue on this device.
-			            //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-			            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<TQueue> const& spQueue) const -> void
-			            {
-			                std::lock_guard<std::mutex> lk(m_Mutex);
-
-			                // Register this queue on the device.
-			                m_queues.push_back(spQueue);
-			            }
-
-			            using CleanerFunctor = std::function<void()>;
-			            static ALPAKA_FN_HOST auto registerCleanup(CleanerFunctor cleaner) -> void
-			            {
-			                class CleanupList
+			                else
 			                {
-			                    std::mutex m_mutex;
-			                    std::deque<CleanerFunctor> mutable m_cleanup;
-
-			                public:
-			                    ~CleanupList()
-			                    {
-			                        for(auto& c : m_cleanup)
-			                        {
-			                            c();
-			                        }
-			                    }
-
-			                    void push(CleanerFunctor&& c)
-			                    {
-			                        std::lock_guard<std::mutex> lk(m_mutex);
-
-			                        m_cleanup.emplace_back(std::move(c));
-			                    }
-			                };
-			#if BOOST_COMP_CLANG
-			#    pragma clang diagnostic push
-			#    pragma clang diagnostic ignored "-Wexit-time-destructors" // running this at exit time is the point
-			#endif
-			                static CleanupList cleanupList;
-			#if BOOST_COMP_CLANG
-			#    pragma clang diagnostic pop
-			#endif
-
-			                cleanupList.push(std::move(cleaner));
+			                    it = m_queues.erase(it);
+			                }
 			            }
+			            return vspQueues;
+			        }
 
-			        private:
-			            std::mutex mutable m_Mutex;
-			            std::deque<std::weak_ptr<TQueue>> mutable m_queues;
-			        };
-			    } // namespace detail
-			} // namespace alpaka
+			        //! Registers the given queue on this device.
+			        //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+			        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<TQueue> const& spQueue) const -> void
+			        {
+			            std::lock_guard<std::mutex> lk(m_Mutex);
+
+			            // Register this queue on the device.
+			            m_queues.push_back(spQueue);
+			        }
+
+			    private:
+			        std::mutex mutable m_Mutex;
+			        std::deque<std::weak_ptr<TQueue>> mutable m_queues;
+			    };
+			} // namespace alpaka::detail
 			// ==
 			// == ./include/alpaka/dev/common/QueueRegistry.hpp ==
 			// ============================================================================
@@ -10698,440 +10658,120 @@
 					// #pragma once
 					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
 						// ============================================================================
-						// == ./include/alpaka/core/ConcurrentExecPool.hpp ==
+						// == ./include/alpaka/core/CallbackThread.hpp ==
 						// ==
-						/* Copyright 2023 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Jeffrey Kelling
+						/* Copyright 2022 Antonio Di Pilato
 						 * SPDX-License-Identifier: MPL-2.0
 						 */
 
 						// #pragma once
-						// Clang does not support exceptions when natively compiling device code.
-						// This is no problem at some places but others explicitly rely on std::exception_ptr,
-						// std::current_exception, std::make_exception_ptr, etc. which are not declared in device code.
-						// Therefore, we can not even parse those parts when compiling device code.
-						// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-						// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-							// ============================================================================
-							// == ./include/alpaka/core/ThreadTraits.hpp ==
-							// ==
-							/* Copyright 2022 Jeffrey Kelling
-							 * SPDX-License-Identifier: MPL-2.0
-							 */
-
-							// #pragma once
-							// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-
-							#include <thread>
-							// #include <utility>    // amalgamate: file already included
-
-							namespace alpaka
-							{
-							    //! The host thread traits.
-							    namespace trait
-							    {
-							        //! The queue enqueue trait.
-							        template<typename TThread, typename TSfinae = void>
-							        struct IsThisThread;
-							    } // namespace trait
-
-							    //! Checks if the given thread handle is a handle for the executing thread.
-							    template<typename TThread>
-							    ALPAKA_FN_HOST auto isThisThread(TThread const& thread) -> bool
-							    {
-							        return trait::IsThisThread<TThread>::isThisThread(thread);
-							    }
-
-							    namespace trait
-							    {
-							        //! C++ STL threads implementation of IsThisThread trait.
-							        template<>
-							        struct IsThisThread<std::thread>
-							        {
-							            ALPAKA_FN_HOST static auto isThisThread(std::thread const& thread) -> bool
-							            {
-							                return std::this_thread::get_id() == thread.get_id();
-							            }
-							        };
-							    } // namespace trait
-							} // namespace alpaka
-							// ==
-							// == ./include/alpaka/core/ThreadTraits.hpp ==
-							// ============================================================================
-
-
-						// #include <atomic>    // amalgamate: file already included
-						#include <exception>
+						#include <condition_variable>
 						// #include <functional>    // amalgamate: file already included
-						// #include <memory>    // amalgamate: file already included
+						#include <future>
+						// #include <iostream>    // amalgamate: file already included
 						// #include <mutex>    // amalgamate: file already included
 						#include <queue>
-						// #include <stdexcept>    // amalgamate: file already included
-						// #include <type_traits>    // amalgamate: file already included
-						// #include <utility>    // amalgamate: file already included
-						// #include <vector>    // amalgamate: file already included
+						#include <thread>
 
-						namespace alpaka::core::detail
+						namespace alpaka::core
 						{
-						    template<typename T>
-						    struct ThreadSafeQueue
+						    class CallbackThread
 						    {
-						        ThreadSafeQueue() = default;
+						        using Task = std::packaged_task<void()>;
 
-						        [[nodiscard]] auto empty() const -> bool
+						    public:
+						        ~CallbackThread()
 						        {
-						            return m_queue.empty();
+						            {
+						                std::unique_lock<std::mutex> lock{m_mutex};
+						                m_stop = true;
+						                m_cond.notify_one();
+						            }
+
+						            if(m_thread.joinable())
+						            {
+						                if(std::this_thread::get_id() == m_thread.get_id())
+						                {
+						                    std::cerr << "ERROR in ~CallbackThread: thread joins itself" << std::endl;
+						                    std::abort();
+						                }
+						                m_thread.join();
+						            }
 						        }
 
-						        //! Pushes the given value onto the back of the queue.
-						        void push(T&& t)
+						        // Note: due to different std lib implementations of packaged_task, the lifetime of the passed function either
+						        // ends when the packaged_task is destroyed (while the returned future is still alive) or when both are
+						        // destroyed. Therefore, ensure that a submitted task does not extend the lifetime of any object that
+						        // (transitively) holds the returned future. E.g. don't capture a shared_ptr to an alpaka object that stores
+						        // the returned future. This is a cyclic dependency and creates a leak.
+						        template<typename NullaryFunction>
+						        auto submit(NullaryFunction&& nf) -> std::future<void>
 						        {
-						            std::lock_guard<std::mutex> lk(m_mutex);
-						            m_queue.push(std::move(t));
+						            static_assert(
+						                std::is_void_v<std::invoke_result_t<NullaryFunction>>,
+						                "Submitted function must not have any arguments and return void.");
+						            return submit(Task{std::forward<NullaryFunction>(nf)});
 						        }
 
-						        //! Pops the given value from the front of the queue.
-						        auto pop(T& t) -> bool
+						        auto submit(Task task) -> std::future<void>
 						        {
-						            std::lock_guard<std::mutex> lk(m_mutex);
+						            auto f = task.get_future();
+						            {
+						                std::unique_lock<std::mutex> lock{m_mutex};
+						                ++m_tasksInProgress;
+						                m_tasks.emplace(std::move(task));
+						                if(!m_thread.joinable())
+						                    startWorkerThread();
+						            }
+						            m_cond.notify_one();
+						            return f;
+						        }
 
-						            if(m_queue.empty())
-						                return false;
-						            t = std::move(m_queue.front());
-						            m_queue.pop();
-						            return true;
+						        [[nodiscard]] auto empty() const
+						        {
+						            return m_tasksInProgress == 0;
 						        }
 
 						    private:
-						        std::queue<T> m_queue;
+						        std::thread m_thread;
+						        std::condition_variable m_cond;
 						        std::mutex m_mutex;
-						    };
+						        bool m_stop{false};
+						        std::queue<Task> m_tasks;
+						        std::atomic<int> m_tasksInProgress{0};
 
-						    //! ITaskPkg.
-						    // \NOTE: We can not use std::packaged_task as it forces the use of std::future.
-						#if BOOST_COMP_CLANG
-						#    pragma clang diagnostic push
-						#    pragma clang diagnostic ignored "-Wweak-vtables"
-						#endif
-						    struct ITaskPkg
-						    {
-						        virtual ~ITaskPkg() = default;
-
-						        //! Runs this task.
-						        void runTask() noexcept
+						        auto startWorkerThread() -> void
 						        {
-						            try
-						            {
-						                run();
-						            }
-						            catch(...)
-						            {
-						                setException(std::current_exception());
-						            }
-						        }
-
-						        //! Sets an exception.
-						        virtual auto setException(std::exception_ptr const& exceptPtr) -> void = 0;
-
-						    protected:
-						        //! The execution function.
-						        virtual auto run() -> void = 0;
-						    };
-						#if BOOST_COMP_CLANG
-						#    pragma clang diagnostic pop
-						#endif
-
-						    //! \tparam TPromise The promise type returned by the task.
-						    //! \tparam TFnObj The type of the function to execute.
-						    template<template<typename> class TPromise, typename TFnObj>
-						    struct TaskPkg final : ITaskPkg
-						    {
-						        using TFnObjReturn = decltype(std::declval<TFnObj>()());
-
-						        TaskPkg(TFnObj&& func) : m_Promise(), m_FnObj(std::move(func))
-						        {
-						        }
-
-						        //! Sets an exception.
-						        void setException(std::exception_ptr const& exceptPtr) final
-						        {
-						            m_Promise.set_exception(exceptPtr);
-						        }
-						        TPromise<TFnObjReturn> m_Promise;
-
-						    private:
-						        //! The execution function.
-						        void run() final
-						        {
-						            if constexpr(std::is_void_v<TFnObjReturn>)
-						            {
-						                this->m_FnObj();
-						                m_Promise.set_value();
-						            }
-						            else
-						                m_Promise.set_value(this->m_FnObj());
-						        }
-
-						        // NOTE: To avoid invalid memory accesses to memory of a different thread
-						        // `std::remove_reference` enforces the function object to be copied.
-						        std::remove_reference_t<TFnObj> m_FnObj;
-						    };
-
-						    template<typename TFnObj0, typename TFnObj1>
-						    auto invokeBothReturnFirst(TFnObj0&& fn0, TFnObj1&& fn1)
-						    {
-						        if constexpr(!std::is_same_v<void, decltype(std::declval<TFnObj0>()())>)
-						        {
-						            auto ret = fn0();
-						            fn1();
-						            return ret;
-						        }
-						        else
-						        {
-						            fn0();
-						            fn1();
-						        }
-						    }
-
-						    template<typename TMutex, typename TCondVar>
-						    struct ConcurrentExecPoolMutexAndCond
-						    {
-						        TMutex m_mtxWakeup;
-						        TCondVar m_cvWakeup;
-						    };
-
-						    struct Empty
-						    {
-						    };
-
-						    //! ConcurrentExecPool using yield or a condition variable to wait for new work.
-						    //!
-						    //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).
-						    //! \tparam TPromise The promise type returned by the task.
-						    //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread
-						    //! if there is no work.
-						    //! \tparam TMutex The mutex type used for locking threads.
-						    //! \tparam TCondVar The condition variable type used to make the threads wait if there is no work.
-						    //! \tparam TisYielding Boolean value if the threads should yield instead of wait for a condition variable.
-						    template<
-						        typename TIdx,
-						        typename TConcurrentExec,
-						        template<typename TFnObjReturn>
-						        typename TPromise,
-						        typename TYield,
-						        typename TMutex = void,
-						        typename TCondVar = void,
-						        bool TisYielding = true>
-						    struct ConcurrentExecPool final
-						        : std::conditional_t<TisYielding, Empty, ConcurrentExecPoolMutexAndCond<TMutex, TCondVar>>
-						    {
-						        //! Creates a concurrent executors pool with a specific number of concurrent executors and a maximum
-						        //! number of queued tasks.
-						        //!
-						        //! \param concurrentExecutionCount
-						        //!    The guaranteed number of concurrent executors used in the pool.
-						        //!    This is also the maximum number of tasks worked on concurrently.
-						        ConcurrentExecPool(TIdx concurrentExecutionCount)
-						        {
-						            if(concurrentExecutionCount < 1)
-						            {
-						                throw std::invalid_argument(
-						                    "The argument 'concurrentExecutionCount' has to be greate or equal to one!");
-						            }
-
-						            m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
-
-						            // Create all concurrent executors.
-						            for(TIdx i = 0; i < concurrentExecutionCount; ++i)
-						                m_vConcurrentExecs.emplace_back([this]() { concurrentExecFn(); });
-						        }
-
-						        ConcurrentExecPool(ConcurrentExecPool const&) = delete;
-						        auto operator=(ConcurrentExecPool const&) -> ConcurrentExecPool& = delete;
-
-						        //! Completes any currently running task normally.
-						        //! Signals a std::runtime_error exception to any other tasks that was not able to run.
-						        ~ConcurrentExecPool()
-						        {
-						            // Signal that concurrent executors should not perform any new work
-						            if constexpr(TisYielding)
-						                m_bShutdownFlag.store(true);
-						            else
-						            {
+						            m_thread = std::thread(
+						                [this]
 						                {
-						                    std::unique_lock<TMutex> lock(this->m_mtxWakeup);
-						                    m_bShutdownFlag = true;
-						                }
-						                this->m_cvWakeup.notify_all();
-						            }
-
-						            joinAllConcurrentExecs();
-
-						            // Signal to each incomplete task that it will not complete due to pool destruction.
-						            while(auto task = popTask())
-						            {
-						                auto const except = std::runtime_error("Could not perform task before ConcurrentExecPool destruction");
-						                task->setException(std::make_exception_ptr(except));
-						            }
-						        }
-
-						        //! Runs the given function on one of the pool in First In First Out (FIFO) order.
-						        //!
-						        //! \tparam TFnObj  The function type.
-						        //! \param task     Function object to be called on the pool.
-						        //!                 Takes an arbitrary number of arguments and arbitrary return type.
-						        //! \tparam TArgs   The argument types pack.
-						        //! \param args     Arguments for task, cannot be moved.
-						        //!                 If such parameters must be used, use a lambda and capture via move then move the
-						        //!                 lambda.
-						        //!
-						        //! \return Signals when the task has completed with either success or an exception.
-						        //!         Also results in an exception if the pool is destroyed before execution has begun.
-						        template<typename TFnObj, typename... TArgs>
-						        auto enqueueTask(TFnObj&& task, TArgs&&... args)
-						        {
-						            auto boundTask = [=]() { return task(args...); };
-						            auto decrementNumActiveTasks = [this]() { --m_numActiveTasks; };
-
-						            auto extendedTask = [boundTask, decrementNumActiveTasks]()
-						            { return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks)); };
-
-						            using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
-						            auto pTaskPackage = new TaskPackage(std::move(extendedTask));
-						            std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
-
-						            auto future = pTaskPackage->m_Promise.get_future();
-
-						            ++m_numActiveTasks;
-						            if constexpr(TisYielding)
-						                m_qTasks.push(std::move(upTaskPackage));
-						            else
-						            {
-						                {
-						                    std::lock_guard<TMutex> lock(this->m_mtxWakeup);
-						                    m_qTasks.push(std::move(upTaskPackage));
-						                }
-
-						                this->m_cvWakeup.notify_one();
-						            }
-
-						            return future;
-						        }
-
-						        //! \return The number of concurrent executors available.
-						        [[nodiscard]] auto getConcurrentExecutionCount() const -> TIdx
-						        {
-						            return std::size(m_vConcurrentExecs);
-						        }
-
-						        //! \return If the thread pool is idle.
-						        [[nodiscard]] auto isIdle() const -> bool
-						        {
-						            return m_numActiveTasks == 0u;
-						        }
-
-						        void detach(std::shared_ptr<ConcurrentExecPool>&& self)
-						        {
-						            m_self = std::move(self);
-						            if constexpr(TisYielding)
-						                m_bDetachedFlag = true;
-						            else
-						            {
-						                std::lock_guard<TMutex> lock(this->m_mtxWakeup);
-						                m_bDetachedFlag = true;
-						                // we need to notify during the lock, because setting m_bDetachedFlag to true, allows another
-						                // thread to delete this and thus destroy m_cvWakeup.
-						                this->m_cvWakeup.notify_one();
-						            }
-						        }
-
-						        auto takeDetachHandle() -> std::shared_ptr<ConcurrentExecPool>
-						        {
-						            if(m_bDetachedFlag.exchange(false))
-						                return std::move(m_self);
-						            else
-						                return nullptr;
-						        }
-
-						    private:
-						        //! The function the concurrent executors are executing.
-						        void concurrentExecFn()
-						        {
-						            // Checks whether pool is being destroyed, if so, stop running.
-						            while(!m_bShutdownFlag.load(std::memory_order_relaxed))
-						            {
-						                if constexpr(TisYielding)
-						                {
-						                    if(auto task = popTask())
-						                        task->runTask();
-						                    else
+						                    while(true)
 						                    {
-						                        if(takeDetachHandle())
-						                            return; // Pool was detached and is idle, stop and delete
-						                        TYield::yield();
-						                    }
-						                }
-						                else
-						                {
-						                    if(auto task = popTask())
-						                        task->runTask();
-
-						                    std::unique_lock<TMutex> lock(this->m_mtxWakeup);
-						                    if(m_qTasks.empty())
-						                    {
-						                        auto self = takeDetachHandle();
-						                        if(self)
 						                        {
-						                            // Pool was detached and is idle, stop and delete
-						                            lock.unlock(); // TODO(bgruber): I guess we unlock here so the mutex is not locked when
-						                                           // the dtor of self runs, which also tries to lock?
-						                            return;
+						                            // Do not move the tasks out of the loop else the lifetime could be extended until the
+						                            // moment where the callback thread is destructed.
+						                            Task task;
+						                            {
+						                                std::unique_lock<std::mutex> lock{m_mutex};
+						                                m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
+
+						                                if(m_stop && m_tasks.empty())
+						                                    break;
+
+						                                task = std::move(m_tasks.front());
+						                                m_tasks.pop();
+						                            }
+
+						                            task();
 						                        }
-
-						                        // If the shutdown flag has been set since the last check, return now.
-						                        if(m_bShutdownFlag)
-						                            return;
-
-						                        this->m_cvWakeup.wait(
-						                            lock,
-						                            [this] { return !m_qTasks.empty() || m_bShutdownFlag || m_bDetachedFlag; });
+						                        --m_tasksInProgress;
 						                    }
-						                }
-						            }
+						                });
 						        }
-
-						        //! Joins all concurrent executors.
-						        void joinAllConcurrentExecs()
-						        {
-						            for(auto&& concurrentExec : m_vConcurrentExecs)
-						            {
-						                if(isThisThread(concurrentExec))
-						                    concurrentExec.detach();
-						                else
-						                    concurrentExec.join();
-						            }
-						        }
-
-						        //! Pops a task from the queue.
-						        auto popTask() -> std::shared_ptr<ITaskPkg>
-						        {
-						            std::shared_ptr<ITaskPkg> out;
-						            if(m_qTasks.pop(out))
-						                return out;
-						            else
-						                return nullptr;
-						        }
-
-						    private:
-						        std::vector<TConcurrentExec> m_vConcurrentExecs;
-						        ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
-						        std::atomic<std::uint32_t> m_numActiveTasks = 0u;
-						        std::atomic<bool> m_bShutdownFlag = false;
-						        std::atomic<bool> m_bDetachedFlag = false;
-						        std::shared_ptr<ConcurrentExecPool> m_self = nullptr;
 						    };
-						} // namespace alpaka::core::detail
+						} // namespace alpaka::core
 						// ==
-						// == ./include/alpaka/core/ConcurrentExecPool.hpp ==
+						// == ./include/alpaka/core/CallbackThread.hpp ==
 						// ============================================================================
 
 					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
@@ -11140,7 +10780,7 @@
 					// #include "alpaka/queue/cpu/IGenericThreadsQueue.hpp"    // amalgamate: file already expanded
 					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
 
-					#include <future>
+					// #include <future>    // amalgamate: file already included
 					// #include <memory>    // amalgamate: file already included
 					// #include <mutex>    // amalgamate: file already included
 					// #include <thread>    // amalgamate: file already included
@@ -11169,21 +10809,8 @@
 					#    pragma clang diagnostic pop
 					#endif
 					            {
-					            private:
-					                using ThreadPool = alpaka::core::detail::ConcurrentExecPool<
-					                    std::size_t,
-					                    std::thread, // The concurrent execution type.
-					                    std::promise, // The promise type.
-					                    void, // The type yielding the current concurrent execution.
-					                    std::mutex, // The mutex type to use. Only required if TisYielding is true.
-					                    std::condition_variable, // The condition variable type to use. Only required if TisYielding is
-					                                             // true.
-					                    false>; // If the threads should yield.
-
 					            public:
-					                explicit QueueGenericThreadsNonBlockingImpl(TDev dev)
-					                    : m_dev(std::move(dev))
-					                    , m_workerThread(std::make_shared<ThreadPool>(1u))
+					                explicit QueueGenericThreadsNonBlockingImpl(TDev dev) : m_dev(std::move(dev))
 					                {
 					                }
 					                QueueGenericThreadsNonBlockingImpl(QueueGenericThreadsNonBlockingImpl<TDev> const&) = delete;
@@ -11194,14 +10821,6 @@
 					                    -> QueueGenericThreadsNonBlockingImpl<TDev>& = delete;
 					                ~QueueGenericThreadsNonBlockingImpl() override
 					                {
-					                    m_dev.registerCleanup(
-					                        [pool = std::weak_ptr<ThreadPool>(m_workerThread)]() noexcept
-					                        {
-					                            if(auto s = pool.lock())
-					                                std::ignore = s->takeDetachHandle(); // let returned shared_ptr destroy itself
-					                        });
-					                    auto* wt = m_workerThread.get();
-					                    wt->detach(std::move(m_workerThread));
 					                }
 
 					                void enqueue(EventGenericThreads<TDev>& ev) final
@@ -11216,8 +10835,7 @@
 
 					            public:
 					                TDev const m_dev; //!< The device this queue is bound to.
-
-					                std::shared_ptr<ThreadPool> m_workerThread;
+					                core::CallbackThread m_workerThread;
 					            };
 					        } // namespace detail
 					    } // namespace generic
@@ -11282,7 +10900,7 @@
 					        {
 					            ALPAKA_FN_HOST static auto enqueue(QueueGenericThreadsNonBlocking<TDev>& queue, TTask const& task) -> void
 					            {
-					                queue.m_spQueueImpl->m_workerThread->enqueueTask(task);
+					                queue.m_spQueueImpl->m_workerThread.submit(task);
 					            }
 					        };
 					        //! The CPU non-blocking device queue test trait specialization.
@@ -11291,7 +10909,7 @@
 					        {
 					            ALPAKA_FN_HOST static auto empty(QueueGenericThreadsNonBlocking<TDev> const& queue) -> bool
 					            {
-					                return queue.m_spQueueImpl->m_workerThread->isIdle();
+					                return queue.m_spQueueImpl->m_workerThread.empty();
 					            }
 					        };
 					    } // namespace trait
@@ -11304,7 +10922,7 @@
 
 				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
 
-				#include <condition_variable>
+				// #include <condition_variable>    // amalgamate: file already included
 				// #include <future>    // amalgamate: file already included
 				// #include <mutex>    // amalgamate: file already included
 				// #include <utility>    // amalgamate: file already included
@@ -11436,8 +11054,8 @@
 				                auto const enqueueCount = spEventImpl->m_enqueueCount;
 
 				                // Enqueue a task that only resets the events flag if it is completed.
-				                spEventImpl->m_future = queueImpl.m_workerThread->enqueueTask(
-				                    [spEventImpl, enqueueCount]()
+				                spEventImpl->m_future = queueImpl.m_workerThread.submit(
+				                    [spEventImpl, enqueueCount]() mutable
 				                    {
 				                        std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
 
@@ -11446,6 +11064,8 @@
 				                        {
 				                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
 				                        }
+				                        spEventImpl
+				                            .reset(); // avoid keeping the event alive as part of the background thread task's future
 				                    });
 				            }
 				        };
@@ -11589,11 +11209,13 @@
 				                    auto const enqueueCount = spEventImpl->m_enqueueCount;
 
 				                    // Enqueue a task that waits for the given event.
-				                    queueImpl.m_workerThread->enqueueTask(
-				                        [spEventImpl, enqueueCount]()
+				                    queueImpl.m_workerThread.submit(
+				                        [spEventImpl, enqueueCount]() mutable
 				                        {
 				                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
 				                            spEventImpl->wait(enqueueCount, lk2);
+				                            spEventImpl.reset(); // avoid keeping the event alive as part of the background thread
+				                                                 // task's future
 				                        });
 				                }
 				            }
@@ -11788,11 +11410,6 @@
 		        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<cpu::ICpuQueue> spQueue) const -> void
 		        {
 		            m_spDevCpuImpl->registerQueue(spQueue);
-		        }
-
-		        auto registerCleanup(cpu::detail::DevCpuImpl::CleanerFunctor c) const -> void
-		        {
-		            m_spDevCpuImpl->registerCleanup(c);
 		        }
 
 		        [[nodiscard]] auto getNativeHandle() const noexcept
@@ -16141,7 +15758,7 @@
 				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
 
 				// #include <algorithm>    // amalgamate: file already included
-				// #include <exception>    // amalgamate: file already included
+				#include <exception>
 				// #include <memory>    // amalgamate: file already included
 				// #include <mutex>    // amalgamate: file already included
 				#include <shared_mutex>
@@ -25434,7 +25051,403 @@
 // #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already expanded
 // #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
 // #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/ConcurrentExecPool.hpp"    // amalgamate: file already expanded
+	// ============================================================================
+	// == ./include/alpaka/core/ConcurrentExecPool.hpp ==
+	// ==
+	/* Copyright 2023 Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Jeffrey Kelling
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// Clang does not support exceptions when natively compiling device code.
+	// This is no problem at some places but others explicitly rely on std::exception_ptr,
+	// std::current_exception, std::make_exception_ptr, etc. which are not declared in device code.
+	// Therefore, we can not even parse those parts when compiling device code.
+	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+		// ============================================================================
+		// == ./include/alpaka/core/ThreadTraits.hpp ==
+		// ==
+		/* Copyright 2022 Jeffrey Kelling
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+
+		// #include <thread>    // amalgamate: file already included
+		// #include <utility>    // amalgamate: file already included
+
+		namespace alpaka
+		{
+		    //! The host thread traits.
+		    namespace trait
+		    {
+		        //! The queue enqueue trait.
+		        template<typename TThread, typename TSfinae = void>
+		        struct IsThisThread;
+		    } // namespace trait
+
+		    //! Checks if the given thread handle is a handle for the executing thread.
+		    template<typename TThread>
+		    ALPAKA_FN_HOST auto isThisThread(TThread const& thread) -> bool
+		    {
+		        return trait::IsThisThread<TThread>::isThisThread(thread);
+		    }
+
+		    namespace trait
+		    {
+		        //! C++ STL threads implementation of IsThisThread trait.
+		        template<>
+		        struct IsThisThread<std::thread>
+		        {
+		            ALPAKA_FN_HOST static auto isThisThread(std::thread const& thread) -> bool
+		            {
+		                return std::this_thread::get_id() == thread.get_id();
+		            }
+		        };
+		    } // namespace trait
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/core/ThreadTraits.hpp ==
+		// ============================================================================
+
+
+	// #include <atomic>    // amalgamate: file already included
+	// #include <exception>    // amalgamate: file already included
+	// #include <functional>    // amalgamate: file already included
+	// #include <memory>    // amalgamate: file already included
+	// #include <mutex>    // amalgamate: file already included
+	// #include <queue>    // amalgamate: file already included
+	// #include <stdexcept>    // amalgamate: file already included
+	// #include <type_traits>    // amalgamate: file already included
+	// #include <utility>    // amalgamate: file already included
+	// #include <vector>    // amalgamate: file already included
+
+	namespace alpaka::core::detail
+	{
+	    template<typename T>
+	    struct ThreadSafeQueue
+	    {
+	        ThreadSafeQueue() = default;
+
+	        [[nodiscard]] auto empty() const -> bool
+	        {
+	            return m_queue.empty();
+	        }
+
+	        //! Pushes the given value onto the back of the queue.
+	        void push(T&& t)
+	        {
+	            std::lock_guard<std::mutex> lk(m_mutex);
+	            m_queue.push(std::move(t));
+	        }
+
+	        //! Pops the given value from the front of the queue.
+	        auto pop(T& t) -> bool
+	        {
+	            std::lock_guard<std::mutex> lk(m_mutex);
+
+	            if(m_queue.empty())
+	                return false;
+	            t = std::move(m_queue.front());
+	            m_queue.pop();
+	            return true;
+	        }
+
+	    private:
+	        std::queue<T> m_queue;
+	        std::mutex m_mutex;
+	    };
+
+	    //! ITaskPkg.
+	    // \NOTE: We can not use std::packaged_task as it forces the use of std::future.
+	#if BOOST_COMP_CLANG
+	#    pragma clang diagnostic push
+	#    pragma clang diagnostic ignored "-Wweak-vtables"
+	#endif
+	    struct ITaskPkg
+	    {
+	        virtual ~ITaskPkg() = default;
+
+	        //! Runs this task.
+	        void runTask() noexcept
+	        {
+	            try
+	            {
+	                run();
+	            }
+	            catch(...)
+	            {
+	                setException(std::current_exception());
+	            }
+	        }
+
+	        //! Sets an exception.
+	        virtual auto setException(std::exception_ptr const& exceptPtr) -> void = 0;
+
+	    protected:
+	        //! The execution function.
+	        virtual auto run() -> void = 0;
+	    };
+	#if BOOST_COMP_CLANG
+	#    pragma clang diagnostic pop
+	#endif
+
+	    //! \tparam TPromise The promise type returned by the task.
+	    //! \tparam TFnObj The type of the function to execute.
+	    template<template<typename> class TPromise, typename TFnObj>
+	    struct TaskPkg final : ITaskPkg
+	    {
+	        using TFnObjReturn = decltype(std::declval<TFnObj>()());
+
+	        TaskPkg(TFnObj&& func) : m_Promise(), m_FnObj(std::move(func))
+	        {
+	        }
+
+	        //! Sets an exception.
+	        void setException(std::exception_ptr const& exceptPtr) final
+	        {
+	            m_Promise.set_exception(exceptPtr);
+	        }
+	        TPromise<TFnObjReturn> m_Promise;
+
+	    private:
+	        //! The execution function.
+	        void run() final
+	        {
+	            if constexpr(std::is_void_v<TFnObjReturn>)
+	            {
+	                this->m_FnObj();
+	                m_Promise.set_value();
+	            }
+	            else
+	                m_Promise.set_value(this->m_FnObj());
+	        }
+
+	        // NOTE: To avoid invalid memory accesses to memory of a different thread
+	        // `std::remove_reference` enforces the function object to be copied.
+	        std::remove_reference_t<TFnObj> m_FnObj;
+	    };
+
+	    template<typename TFnObj0, typename TFnObj1>
+	    auto invokeBothReturnFirst(TFnObj0&& fn0, TFnObj1&& fn1)
+	    {
+	        if constexpr(!std::is_same_v<void, decltype(std::declval<TFnObj0>()())>)
+	        {
+	            auto ret = fn0();
+	            fn1();
+	            return ret;
+	        }
+	        else
+	        {
+	            fn0();
+	            fn1();
+	        }
+	    }
+
+	    template<typename TMutex, typename TCondVar>
+	    struct ConcurrentExecPoolMutexAndCond
+	    {
+	        TMutex m_mtxWakeup;
+	        TCondVar m_cvWakeup;
+	    };
+
+	    struct Empty
+	    {
+	    };
+
+	    //! ConcurrentExecPool using yield or a condition variable to wait for new work.
+	    //!
+	    //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).
+	    //! \tparam TPromise The promise type returned by the task.
+	    //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread
+	    //! if there is no work.
+	    //! \tparam TMutex The mutex type used for locking threads.
+	    //! \tparam TCondVar The condition variable type used to make the threads wait if there is no work.
+	    //! \tparam TisYielding Boolean value if the threads should yield instead of wait for a condition variable.
+	    template<
+	        typename TIdx,
+	        typename TConcurrentExec,
+	        template<typename TFnObjReturn>
+	        typename TPromise,
+	        typename TYield,
+	        typename TMutex = void,
+	        typename TCondVar = void,
+	        bool TisYielding = true>
+	    struct ConcurrentExecPool final
+	        : std::conditional_t<TisYielding, Empty, ConcurrentExecPoolMutexAndCond<TMutex, TCondVar>>
+	    {
+	        //! Creates a concurrent executors pool with a specific number of concurrent executors and a maximum
+	        //! number of queued tasks.
+	        //!
+	        //! \param concurrentExecutionCount
+	        //!    The guaranteed number of concurrent executors used in the pool.
+	        //!    This is also the maximum number of tasks worked on concurrently.
+	        ConcurrentExecPool(TIdx concurrentExecutionCount)
+	        {
+	            if(concurrentExecutionCount < 1)
+	            {
+	                throw std::invalid_argument(
+	                    "The argument 'concurrentExecutionCount' has to be greate or equal to one!");
+	            }
+
+	            m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
+
+	            // Create all concurrent executors.
+	            for(TIdx i = 0; i < concurrentExecutionCount; ++i)
+	                m_vConcurrentExecs.emplace_back([this]() { concurrentExecFn(); });
+	        }
+
+	        ConcurrentExecPool(ConcurrentExecPool const&) = delete;
+	        auto operator=(ConcurrentExecPool const&) -> ConcurrentExecPool& = delete;
+
+	        //! Completes any currently running task normally.
+	        //! Signals a std::runtime_error exception to any other tasks that was not able to run.
+	        ~ConcurrentExecPool()
+	        {
+	            // Signal that concurrent executors should not perform any new work
+	            if constexpr(TisYielding)
+	                m_bShutdownFlag.store(true);
+	            else
+	            {
+	                {
+	                    std::unique_lock<TMutex> lock(this->m_mtxWakeup);
+	                    m_bShutdownFlag = true;
+	                }
+	                this->m_cvWakeup.notify_all();
+	            }
+
+	            joinAllConcurrentExecs();
+
+	            // Signal to each incomplete task that it will not complete due to pool destruction.
+	            while(auto task = popTask())
+	            {
+	                auto const except = std::runtime_error("Could not perform task before ConcurrentExecPool destruction");
+	                task->setException(std::make_exception_ptr(except));
+	            }
+	        }
+
+	        //! Runs the given function on one of the pool in First In First Out (FIFO) order.
+	        //!
+	        //! \tparam TFnObj  The function type.
+	        //! \param task     Function object to be called on the pool.
+	        //!                 Takes an arbitrary number of arguments and arbitrary return type.
+	        //! \tparam TArgs   The argument types pack.
+	        //! \param args     Arguments for task, cannot be moved.
+	        //!                 If such parameters must be used, use a lambda and capture via move then move the
+	        //!                 lambda.
+	        //!
+	        //! \return Signals when the task has completed with either success or an exception.
+	        //!         Also results in an exception if the pool is destroyed before execution has begun.
+	        template<typename TFnObj, typename... TArgs>
+	        auto enqueueTask(TFnObj&& task, TArgs&&... args)
+	        {
+	            auto boundTask = [=]() { return task(args...); };
+	            auto decrementNumActiveTasks = [this]() { --m_numActiveTasks; };
+
+	            auto extendedTask = [boundTask, decrementNumActiveTasks]()
+	            { return invokeBothReturnFirst(std::move(boundTask), std::move(decrementNumActiveTasks)); };
+
+	            using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
+	            auto pTaskPackage = new TaskPackage(std::move(extendedTask));
+	            std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
+
+	            auto future = pTaskPackage->m_Promise.get_future();
+
+	            ++m_numActiveTasks;
+	            if constexpr(TisYielding)
+	                m_qTasks.push(std::move(upTaskPackage));
+	            else
+	            {
+	                {
+	                    std::lock_guard<TMutex> lock(this->m_mtxWakeup);
+	                    m_qTasks.push(std::move(upTaskPackage));
+	                }
+
+	                this->m_cvWakeup.notify_one();
+	            }
+
+	            return future;
+	        }
+
+	        //! \return The number of concurrent executors available.
+	        [[nodiscard]] auto getConcurrentExecutionCount() const -> TIdx
+	        {
+	            return std::size(m_vConcurrentExecs);
+	        }
+
+	        //! \return If the thread pool is idle.
+	        [[nodiscard]] auto isIdle() const -> bool
+	        {
+	            return m_numActiveTasks == 0u;
+	        }
+
+	    private:
+	        //! The function the concurrent executors are executing.
+	        void concurrentExecFn()
+	        {
+	            // Checks whether pool is being destroyed, if so, stop running.
+	            while(!m_bShutdownFlag.load(std::memory_order_relaxed))
+	            {
+	                if constexpr(TisYielding)
+	                {
+	                    if(auto task = popTask())
+	                        task->runTask();
+	                    else
+	                        TYield::yield();
+	                }
+	                else
+	                {
+	                    if(auto task = popTask())
+	                        task->runTask();
+
+	                    std::unique_lock<TMutex> lock(this->m_mtxWakeup);
+	                    if(m_qTasks.empty())
+	                    {
+	                        // If the shutdown flag has been set since the last check, return now.
+	                        if(m_bShutdownFlag)
+	                            return;
+
+	                        this->m_cvWakeup.wait(lock, [this] { return !m_qTasks.empty() || m_bShutdownFlag; });
+	                    }
+	                }
+	            }
+	        }
+
+	        //! Joins all concurrent executors.
+	        void joinAllConcurrentExecs()
+	        {
+	            for(auto&& concurrentExec : m_vConcurrentExecs)
+	            {
+	                if(isThisThread(concurrentExec))
+	                    concurrentExec.detach();
+	                else
+	                    concurrentExec.join();
+	            }
+	        }
+
+	        //! Pops a task from the queue.
+	        auto popTask() -> std::shared_ptr<ITaskPkg>
+	        {
+	            std::shared_ptr<ITaskPkg> out;
+	            if(m_qTasks.pop(out))
+	                return out;
+	            else
+	                return nullptr;
+	        }
+
+	    private:
+	        std::vector<TConcurrentExec> m_vConcurrentExecs;
+	        ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
+	        std::atomic<std::uint32_t> m_numActiveTasks = 0u;
+	        std::atomic<bool> m_bShutdownFlag = false;
+	    };
+	} // namespace alpaka::core::detail
+	// ==
+	// == ./include/alpaka/core/ConcurrentExecPool.hpp ==
+	// ============================================================================
+
 // #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
 // #include "alpaka/core/Debug.hpp"    // amalgamate: file already expanded
 // #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
@@ -25932,108 +25945,7 @@
 				 */
 
 				// #pragma once
-					// ============================================================================
-					// == ./include/alpaka/core/CallbackThread.hpp ==
-					// ==
-					/* Copyright 2022 Antonio Di Pilato
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include <condition_variable>    // amalgamate: file already included
-					// #include <functional>    // amalgamate: file already included
-					// #include <future>    // amalgamate: file already included
-					// #include <iostream>    // amalgamate: file already included
-					// #include <mutex>    // amalgamate: file already included
-					// #include <queue>    // amalgamate: file already included
-					// #include <thread>    // amalgamate: file already included
-
-					namespace alpaka::core
-					{
-					    class CallbackThread
-					    {
-					        using Task = std::packaged_task<void()>;
-
-					    public:
-					        ~CallbackThread()
-					        {
-					            {
-					                std::unique_lock<std::mutex> lock{m_mutex};
-					                m_stop = true;
-					                m_cond.notify_one();
-					            }
-
-					            if(m_thread.joinable())
-					            {
-					                if(std::this_thread::get_id() == m_thread.get_id())
-					                {
-					                    std::cerr << "ERROR in ~CallbackThread: thread joins itself" << std::endl;
-					                    std::abort();
-					                }
-					                m_thread.join();
-					            }
-					        }
-
-					        template<typename NullaryFunction>
-					        auto submit(NullaryFunction&& nf) -> std::future<void>
-					        {
-					            static_assert(
-					                std::is_void_v<std::invoke_result_t<NullaryFunction>>,
-					                "Submitted function must not have any arguments and return void.");
-					            return submit(Task{std::forward<NullaryFunction>(nf)});
-					        }
-
-					        auto submit(Task task) -> std::future<void>
-					        {
-					            auto f = task.get_future();
-					            {
-					                std::unique_lock<std::mutex> lock{m_mutex};
-					                m_tasks.emplace(std::move(task));
-					                if(!m_thread.joinable())
-					                    startWorkerThread();
-					            }
-					            m_cond.notify_one();
-					            return f;
-					        }
-
-					    private:
-					        std::thread m_thread;
-					        std::condition_variable m_cond;
-					        std::mutex m_mutex;
-					        bool m_stop{false};
-					        std::queue<Task> m_tasks;
-
-					        auto startWorkerThread() -> void
-					        {
-					            m_thread = std::thread(
-					                [this]
-					                {
-					                    while(true)
-					                    {
-					                        // Do not move the tasks out of the loop else the lifetime could be extended until the moment
-					                        // where the callback thread is destructed.
-					                        Task task;
-					                        {
-					                            std::unique_lock<std::mutex> lock{m_mutex};
-					                            m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
-
-					                            if(m_stop && m_tasks.empty())
-					                                break;
-
-					                            task = std::move(m_tasks.front());
-					                            m_tasks.pop();
-					                        }
-
-					                        task();
-					                    }
-					                });
-					        }
-					    };
-					} // namespace alpaka::core
-					// ==
-					// == ./include/alpaka/core/CallbackThread.hpp ==
-					// ============================================================================
-
+				// #include "alpaka/core/CallbackThread.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
@@ -26091,10 +26003,10 @@
 				            {
 				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-				                // In case the device is still doing work in the queue when cuda/hip-StreamDestroy() is called, the
-				                // function will return immediately and the resources associated with queue will be released
-				                // automatically once the device has completed all work in queue.
-				                // -> No need to synchronize here.
+				                // Make sure all pending async work is finished before destroying the stream to guarantee determinism.
+				                // This would not be necessary for plain CUDA/HIP operations, but we can have host functions in the
+				                // stream, which reference this queue instance and its CallbackThread. Make sure they are done.
+				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
 				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
 				            }
 
@@ -26213,86 +26125,43 @@
 				        template<typename TApi, bool TBlocking, typename TTask>
 				        struct Enqueue<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>, TTask>
 				        {
-				            enum class CallbackState
-				            {
-				                enqueued,
-				                notified,
-				                finished,
-				            };
+				            using QueueImpl = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
 
-				            struct CallbackSynchronizationData : public std::enable_shared_from_this<CallbackSynchronizationData>
+				            struct HostFuncData
 				            {
-				                std::mutex m_mutex;
-				                std::condition_variable m_event;
-				                CallbackState m_state = CallbackState::enqueued;
+				                // We don't need to keep the queue alive, because in it's dtor it will synchronize with the CUDA/HIP
+				                // stream and wait until all host functions and the CallbackThread are done. It's actually an error to
+				                // copy the queue into the host function. Destroying it here would call CUDA/HIP APIs from the host
+				                // function. Passing it further to the Callback thread, would make the Callback thread hold a task
+				                // containing the queue with the CallbackThread itself. Destroying the task if no other queue instance
+				                // exists will make the CallbackThread join itself and crash.
+				                QueueImpl& q;
+				                TTask t;
 				            };
 
 				            ALPAKA_FN_HOST static void uniformCudaHipRtHostFunc(void* arg)
 				            {
-				                // explicitly copy the shared_ptr so that this method holds the state even when the executing thread
-				                // has already finished.
-				                auto const spCallbackSynchronizationData
-				                    = reinterpret_cast<CallbackSynchronizationData*>(arg)->shared_from_this();
-
-				                // Notify the executing thread.
-				                {
-				                    std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
-				                    spCallbackSynchronizationData->m_state = CallbackState::notified;
-				                }
-				                spCallbackSynchronizationData->m_event.notify_one();
-
-				                // Wait for the executing thread to finish the task if it has not already finished.
-				                std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
-				                if(spCallbackSynchronizationData->m_state != CallbackState::finished)
-				                {
-				                    spCallbackSynchronizationData->m_event.wait(
-				                        lock,
-				                        [&spCallbackSynchronizationData]()
-				                        { return spCallbackSynchronizationData->m_state == CallbackState::finished; });
-				                }
-				            }
+				                auto data = std::unique_ptr<HostFuncData>(reinterpret_cast<HostFuncData*>(arg));
+				                auto& queue = data->q;
+				                auto f = queue.m_callbackThread.submit(
+				                    [data = std::move(data)]() mutable
+				                    {
+				                        data->t();
+				                        data.reset(); // destroy the task
+				                    });
+				                f.wait();
+				            } // destroys the future `f`, destroying the packaged task and the above lambda
 
 				            ALPAKA_FN_HOST static auto enqueue(
 				                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
 				                TTask const& task) -> void
 				            {
-				                auto spCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
 				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::launchHostFunc(
 				                    queue.getNativeHandle(),
 				                    uniformCudaHipRtHostFunc,
-				                    spCallbackSynchronizationData.get()));
-
-				                // We start a new std::thread which stores the task to be executed.
-				                // This circumvents the limitation that it is not possible to call CUDA/HIP methods within the CUDA/HIP
-				                // callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
-				                // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
-				                // before it executes the next task in the queue (CUDA/HIP stream).
-				                auto f = queue.getCallbackThread().submit(
-				                    [spCallbackSynchronizationData, task]()
-				                    {
-				                        // If the callback has not yet been called, we wait for it.
-				                        {
-				                            std::unique_lock<std::mutex> lock(spCallbackSynchronizationData->m_mutex);
-				                            if(spCallbackSynchronizationData->m_state != CallbackState::notified)
-				                            {
-				                                spCallbackSynchronizationData->m_event.wait(
-				                                    lock,
-				                                    [&spCallbackSynchronizationData]()
-				                                    { return spCallbackSynchronizationData->m_state == CallbackState::notified; });
-				                            }
-
-				                            task();
-
-				                            // Notify the waiting CUDA/HIP thread.
-				                            spCallbackSynchronizationData->m_state = CallbackState::finished;
-				                        }
-				                        spCallbackSynchronizationData->m_event.notify_one();
-				                    });
-
+				                    new HostFuncData{*queue.m_spQueueImpl, task}));
 				                if constexpr(TBlocking)
-				                {
-				                    f.wait();
-				                }
+				                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
 				            }
 				        };
 
