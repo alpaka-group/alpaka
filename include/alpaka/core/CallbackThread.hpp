@@ -61,13 +61,15 @@ namespace alpaka::core
                 m_tasks.emplace(std::move(task));
                 if(!m_thread.joinable())
                     startWorkerThread();
+                m_cond.notify_one();
             }
-            m_cond.notify_one();
+
             return f;
         }
 
-        [[nodiscard]] auto empty() const
+        [[nodiscard]] auto empty()
         {
+            std::unique_lock<std::mutex> lock{m_mutex};
             return m_tasksInProgress == 0;
         }
 

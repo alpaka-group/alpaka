@@ -108,7 +108,7 @@ namespace alpaka
             {
                 return m_spQueueImpl->getNativeHandle();
             }
-            auto getCallbackThread() -> core::CallbackThread&
+            auto getCallbackThread() const -> core::CallbackThread&
             {
                 return m_spQueueImpl->m_callbackThread;
             }
@@ -146,7 +146,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
                     ret = TApi::streamQuery(queue.getNativeHandle()),
                     TApi::errorNotReady);
-                return (ret == TApi::success);
+                return (ret == TApi::success) && queue.getCallbackThread().empty();
             }
         };
 

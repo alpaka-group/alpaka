@@ -94,6 +94,7 @@ TEMPLATE_LIST_TEST_CASE(
         alpaka::wait(f.m_queue);
     }
 
+    alpaka::empty(f.m_queue);
     CHECK(callbackFinished.load() == true);
 
     // The blocking queue must be empty because we wait for the non-blocking queue and the blocking on is synchronized
