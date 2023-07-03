@@ -122,7 +122,7 @@ var hierarchy =
     [ "alpaka::detail::ParallelForStaticImpl< TKernel, TSchedule, HasScheduleChunkSize< TKernel > >", "structalpaka_1_1detail_1_1ParallelForStaticImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html", null ],
     [ "alpaka::detail::Print< TDim, TView >", "structalpaka_1_1detail_1_1Print.html", null ],
     [ "alpaka::detail::Print< DimInt< Dim< TView >::value - 1u >, TView >", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4.html", null ],
-    [ "alpaka::detail::QueueRegistry< TQueue >", "classalpaka_1_1detail_1_1QueueRegistry.html", null ],
+    [ "alpaka::detail::QueueRegistry< TQueue >", "structalpaka_1_1detail_1_1QueueRegistry.html", null ],
     [ "alpaka::detail::TaskCopyCpu< DimInt< 0u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", null ],
     [ "alpaka::detail::TaskCopyCpuBase< TDim, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpuBase.html", [
       [ "alpaka::detail::TaskCopyCpu< TDim, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpu.html", null ]
@@ -718,6 +718,7 @@ var hierarchy =
     [ "alpaka::trait::Enqueue< QueueUniformCudaHipRtNonBlocking< TApi >, EventUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_3_01TApi_01_4_00_01EventUnb371dda0c3fad7859625a369617cb310.html", null ],
     [ "alpaka::trait::Enqueue< QueueUniformCudaHipRtNonBlocking< TApi >, TaskKernelGpuUniformCudaHipRt< TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_3_01TApi_01_4_00_01TaskKercda831e3343a928a98cd81e7d01f0f88.html", null ],
     [ "alpaka::trait::Enqueue< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking >, TTask >", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01T9dbb58e551c44567a74899d54e5680a4.html", null ],
+    [ "alpaka::trait::Enqueue< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking >, TTask >::HostFuncData", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Td759b6d1df26520003f1888921f03722.html", null ],
     [ "alpaka::trait::EventType< T, TSfinae >", "structalpaka_1_1trait_1_1EventType.html", null ],
     [ "alpaka::trait::EventType< QueueCpuOmp2Collective >", "structalpaka_1_1trait_1_1EventType_3_01QueueCpuOmp2Collective_01_4.html", null ],
     [ "alpaka::trait::EventType< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1trait_1_1EventType_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", null ],
@@ -1688,9 +1689,6 @@ var hierarchy =
     [ "std::conditional_t", null, [
       [ "alpaka::core::detail::ConcurrentExecPool< TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding >", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html", null ],
       [ "alpaka::meta::detail::UniqueHelper< TList< Ts... >, U, Us... >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html", null ]
-    ] ],
-    [ "std::enable_shared_from_this", null, [
-      [ "alpaka::trait::Enqueue< uniform_cuda_hip::detail::QueueUniformCudaHipRt< TApi, TBlocking >, TTask >::CallbackSynchronizationData", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta7b72ee3ef27528fd85d493efb492f69.html", null ]
     ] ],
     [ "std::false_type", null, [
       [ "alpaka::experimental::internal::IsAccessor< T >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor.html", null ],

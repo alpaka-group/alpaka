@@ -111,7 +111,7 @@ var annotated_dup =
         [ "ParallelForStaticImpl< TKernel, TSchedule, HasScheduleChunkSize< TKernel > >", "structalpaka_1_1detail_1_1ParallelForStaticImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html", "structalpaka_1_1detail_1_1ParallelForStaticImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4" ],
         [ "Print", "structalpaka_1_1detail_1_1Print.html", "structalpaka_1_1detail_1_1Print" ],
         [ "Print< DimInt< Dim< TView >::value - 1u >, TView >", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4.html", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4" ],
-        [ "QueueRegistry", "classalpaka_1_1detail_1_1QueueRegistry.html", "classalpaka_1_1detail_1_1QueueRegistry" ],
+        [ "QueueRegistry", "structalpaka_1_1detail_1_1QueueRegistry.html", "structalpaka_1_1detail_1_1QueueRegistry" ],
         [ "TaskCopyCpu", "structalpaka_1_1detail_1_1TaskCopyCpu.html", "structalpaka_1_1detail_1_1TaskCopyCpu" ],
         [ "TaskCopyCpu< DimInt< 0u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_010u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],
         [ "TaskCopyCpu< DimInt< 1u >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html", "structalpaka_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4" ],

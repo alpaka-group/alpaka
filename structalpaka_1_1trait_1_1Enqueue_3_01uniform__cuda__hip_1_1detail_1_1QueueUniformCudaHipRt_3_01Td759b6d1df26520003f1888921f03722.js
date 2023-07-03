@@ -1,0 +1,5 @@
+var structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Td759b6d1df26520003f1888921f03722 =
+[
+    [ "q", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Td759b6d1df26520003f1888921f03722.html#a84985f4fcc27f785801430eb9970520b", null ],
+    [ "t", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Td759b6d1df26520003f1888921f03722.html#a37f5c55733010eba51bb1a08ac43b75a", null ]
+];

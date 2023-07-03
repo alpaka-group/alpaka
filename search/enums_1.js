@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gridblockextentsubdivrestrictions_4844',['GridBlockExtentSubDivRestrictions',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27',1,'alpaka']]]
+  ['kind_4836',['Kind',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474a',1,'alpaka::omp::Schedule']]]
 ];

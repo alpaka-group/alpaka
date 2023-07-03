@@ -9,5 +9,5 @@ var classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl =
     [ "operator=", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#aeb2432b0fc83d7d03649e15062b29dab", null ],
     [ "wait", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#adaaef9be95ffab8e505bf59cc273ebaf", null ],
     [ "m_dev", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#afe35ba5696923c4e5efdda2c9847b9d3", null ],
-    [ "m_workerThread", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a32b9c9d29d8ea66dc031d636ce799177", null ]
+    [ "m_workerThread", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a1dfba770a21ab54b9300ff2a4afff3b7", null ]
 ];

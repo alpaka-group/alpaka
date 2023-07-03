@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f":[3,0,0,110,9],
 "classalpaka_1_1ViewPlainPtr.html":[3,0,0,112],
 "classalpaka_1_1ViewPlainPtr.html#a0b6b3e7109483fc1ee554230f299b09e":[3,0,0,112,0],
 "classalpaka_1_1ViewPlainPtr.html#a15c97c5c40ec230c83bc5cf28f4cb95c":[3,0,0,112,5],
@@ -50,8 +49,9 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1bt_1_1IdxBtUniformCudaHipBuiltIn.html":[3,0,0,0,3],
 "classalpaka_1_1bt_1_1IdxBtZero.html":[3,0,0,0,4],
 "classalpaka_1_1core_1_1CallbackThread.html":[3,0,0,2,4],
-"classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57":[3,0,0,2,4,2],
-"classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7":[3,0,0,2,4,1],
+"classalpaka_1_1core_1_1CallbackThread.html#a5300d61d0bcc07dbe3ab63104ad7dbd3":[3,0,0,2,4,1],
+"classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57":[3,0,0,2,4,3],
+"classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7":[3,0,0,2,4,2],
 "classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176":[3,0,0,2,4,0],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html":[3,0,0,2,1,8],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a120fc939ffc77abe24125d3293255731":[3,0,0,2,1,8,0],
@@ -89,11 +89,6 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1detail_1_1BufCpuImpl.html#ac363e87486911b6a5f6306a1fea7b2e9":[3,0,0,4,6,6],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#adeb569361a4aefa3172e7ef8cd8515da":[3,0,0,4,6,1],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#ae190997f7f7db148ae8d0ea325320cdd":[3,0,0,4,6,3],
-"classalpaka_1_1detail_1_1QueueRegistry.html":[3,0,0,4,45],
-"classalpaka_1_1detail_1_1QueueRegistry.html#a2927a8b007a9dead0f71c0e4cb48e3a6":[3,0,0,4,45,2],
-"classalpaka_1_1detail_1_1QueueRegistry.html#a9cc2bd1f99f2ae313c2015dee7c94255":[3,0,0,4,45,0],
-"classalpaka_1_1detail_1_1QueueRegistry.html#ae307d49484041bc95c9a57dd87a9f2bb":[3,0,0,4,45,1],
-"classalpaka_1_1detail_1_1QueueRegistry.html#af88f954d7a28f111d8c142f27d4c1617":[3,0,0,4,45,3],
 "classalpaka_1_1gb_1_1IdxGbLinear.html":[3,0,0,6,0],
 "classalpaka_1_1gb_1_1IdxGbLinear.html#a791d9d6fe298d20e614af5e9c6984aee":[3,0,0,6,0,1],
 "classalpaka_1_1gb_1_1IdxGbLinear.html#aa0853ce2470319e534b02a1522dcb485":[3,0,0,6,0,0],
@@ -122,7 +117,7 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a83941b86d3ff5a32067c864ad5919eab":[3,0,0,7,0,1,1],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a8751611de589a14327b1b6d477bc36ac":[3,0,0,7,0,1,2],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html":[3,0,0,7,0,2],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a32b9c9d29d8ea66dc031d636ce799177":[3,0,0,7,0,2,9],
+"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a1dfba770a21ab54b9300ff2a4afff3b7":[3,0,0,7,0,2,9],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a4ebb0943adf5891055b8136492ffc108":[3,0,0,7,0,2,5],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a66bd384a13ba0805f97abc6c9c154a79":[3,0,0,7,0,2,0],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a7a5899ca36486ab14176f646d31b8635":[3,0,0,7,0,2,3],
@@ -249,5 +244,10 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal.html":[3,0,0,14,0,3,0],
 "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01double_01_4.html":[3,0,0,14,0,3,1],
 "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01double_01_4.html#a91ff72bdeef0e5c825d42c7017466044":[3,0,0,14,0,3,1,0],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01float_01_4.html":[3,0,0,14,0,3,2]
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01float_01_4.html":[3,0,0,14,0,3,2],
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01float_01_4.html#a2df6001a9969dab51c583da71ff56bf2":[3,0,0,14,0,3,2,0],
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal.html":[3,0,0,14,0,3,3],
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01double_01_4.html":[3,0,0,14,0,3,4],
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01double_01_4.html#adfa8f1b99220b48095687e83035b60df":[3,0,0,14,0,3,4,0],
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01float_01_4.html":[3,0,0,14,0,3,5]
 };

@@ -114,8 +114,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac272f9dc3b96a91228c98cf548e134c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">~ConcurrentExecPool</a> ()</td></tr>
 <tr class="memdesc:ac272f9dc3b96a91228c98cf548e134c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Completes any currently running task normally. Signals a std::runtime_error exception to any other tasks that was not able to run.  <a href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">More...</a><br /></td></tr>
 <tr class="separator:ac272f9dc3b96a91228c98cf548e134c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cb9a25fe2a60c2a04c847fa75bde627"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a8cb9a25fe2a60c2a04c847fa75bde627">detach</a> (std::shared_ptr&lt; <a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &gt; &amp;&amp;self)</td></tr>
-<tr class="separator:a8cb9a25fe2a60c2a04c847fa75bde627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99eb1e7c7adb78ceef844da91f5103f5"><td class="memTemplParams" colspan="2">template&lt;typename TFnObj , typename... TArgs&gt; </td></tr>
 <tr class="memitem:a99eb1e7c7adb78ceef844da91f5103f5"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">enqueueTask</a> (TFnObj &amp;&amp;task, TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a99eb1e7c7adb78ceef844da91f5103f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the given function on one of the pool in First In First Out (FIFO) order.  <a href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5">More...</a><br /></td></tr>
@@ -126,8 +124,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3569557a259487b5136e46d4aee5585c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a377b2ed2e34a0a7b72f758fdadc83fa0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0">operator=</a> (<a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> const &amp;) -&gt; <a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td></tr>
 <tr class="separator:a377b2ed2e34a0a7b72f758fdadc83fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b1e0777c7c96c216f8eca68d7ae66e5"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a6b1e0777c7c96c216f8eca68d7ae66e5">takeDetachHandle</a> () -&gt; std::shared_ptr&lt; <a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &gt;</td></tr>
-<tr class="separator:a6b1e0777c7c96c216f8eca68d7ae66e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TIdx, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; typename TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt;<br />
@@ -246,36 +242,6 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8cb9a25fe2a60c2a04c847fa75bde627"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cb9a25fe2a60c2a04c847fa75bde627">&#9670;&nbsp;</a></span>detach()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFnObjReturn &gt; typename TPromise, typename TYield , typename TMutex  = void, typename TCondVar  = void, bool TisYielding = true&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::detach </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt; &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00285">285</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a99eb1e7c7adb78ceef844da91f5103f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a99eb1e7c7adb78ceef844da91f5103f5">&#9670;&nbsp;</a></span>enqueueTask()</h2>
 
@@ -435,36 +401,6 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 
 </div>
 </div>
-<a id="a6b1e0777c7c96c216f8eca68d7ae66e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b1e0777c7c96c216f8eca68d7ae66e5">&#9670;&nbsp;</a></span>takeDetachHandle()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFnObjReturn &gt; typename TPromise, typename TYield , typename TMutex  = void, typename TCondVar  = void, bool TisYielding = true&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::takeDetachHandle </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> -&gt; std::shared_ptr&lt;<a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&gt;
-        </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00300">300</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
-
-</div>
-</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/alpaka/alpaka/include/alpaka/core/<a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a></li>
 </ul>
@@ -474,7 +410,7 @@ template&lt;typename TIdx , typename TConcurrentExec , template&lt; typename TFn
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a></li>
-    <li class="footer">Generated on Wed Jun 28 2023 13:28:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jul 3 2023 11:05:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

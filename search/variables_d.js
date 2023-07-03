@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['result_4683',['result',['../structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html#a1179f0fcbd156538f1c4508a65a3eccf',1,'alpaka::rand::engine::PhiloxStateSingle']]],
-  ['rounds_4684',['rounds',['../structalpaka_1_1rand_1_1engine_1_1PhiloxParams.html#a8608e41699cf4983e594d2c5d8d4f1ad',1,'alpaka::rand::engine::PhiloxParams']]]
+  ['q_4673',['q',['../structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Td759b6d1df26520003f1888921f03722.html#a84985f4fcc27f785801430eb9970520b',1,'alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt;, TTask &gt;::HostFuncData']]]
 ];

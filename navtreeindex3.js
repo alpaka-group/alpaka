@@ -143,9 +143,8 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e":[3,0,0,73,3],
 "classalpaka_1_1DevCpu.html#a2da988a706d5cad069288fd114016482":[3,0,0,73,2],
 "classalpaka_1_1DevCpu.html#a3492d59ae31f40221aae144c0d0a945e":[3,0,0,73,4],
-"classalpaka_1_1DevCpu.html#a832f88212a47e0bf1173a1fde3cd46fc":[3,0,0,73,5],
-"classalpaka_1_1DevCpu.html#a8a2518241a95dcf51ae5adea401ef7a4":[3,0,0,73,6],
-"classalpaka_1_1DevCpu.html#aa83ebb2491095ee82457b87a99807356":[3,0,0,73,7],
+"classalpaka_1_1DevCpu.html#a8a2518241a95dcf51ae5adea401ef7a4":[3,0,0,73,5],
+"classalpaka_1_1DevCpu.html#aa83ebb2491095ee82457b87a99807356":[3,0,0,73,6],
 "classalpaka_1_1DevCpu.html#ab324b087702441f8c017c75282f2c87c":[3,0,0,73,1],
 "classalpaka_1_1DevCpu.html#acd010da121738074cde3aab4b726b11d":[3,0,0,73,0],
 "classalpaka_1_1DevUniformCudaHipRt.html":[3,0,0,74],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1Vec.html#ad37faa5cabafbb63e4c497371d31569a":[3,0,0,110,26],
 "classalpaka_1_1Vec.html#ad617df99935286b9f948b9588a34f15d":[3,0,0,110,23],
 "classalpaka_1_1Vec.html#adede57b5f6210149dc4a05c16cd137c5":[3,0,0,110,6],
-"classalpaka_1_1Vec.html#af0338d99e5dd2c496e634a5890182f4d":[3,0,0,110,17]
+"classalpaka_1_1Vec.html#af0338d99e5dd2c496e634a5890182f4d":[3,0,0,110,17],
+"classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f":[3,0,0,110,9]
 };

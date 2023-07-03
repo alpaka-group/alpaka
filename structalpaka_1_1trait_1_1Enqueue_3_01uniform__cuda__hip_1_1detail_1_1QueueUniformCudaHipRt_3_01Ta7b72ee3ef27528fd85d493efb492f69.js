@@ -1,6 +1,0 @@
-var structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta7b72ee3ef27528fd85d493efb492f69 =
-[
-    [ "m_event", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta7b72ee3ef27528fd85d493efb492f69.html#a771323bb2e035c7ae903bf2c66184816", null ],
-    [ "m_mutex", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta7b72ee3ef27528fd85d493efb492f69.html#a5de2d8ad7cd7b3da71e8c1003e61c4c0", null ],
-    [ "m_state", "structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01Ta7b72ee3ef27528fd85d493efb492f69.html#aff1eeb8f28a453ffe0954d31edf85be4", null ]
-];

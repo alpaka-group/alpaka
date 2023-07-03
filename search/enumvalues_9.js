@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['static_4857',['Static',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aabf8fdf2338221fbbb8fbe079c84d6935',1,'alpaka::omp::Schedule']]]
+  ['unrestricted_4846',['Unrestricted',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870',1,'alpaka']]]
 ];
