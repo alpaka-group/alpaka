@@ -64,7 +64,8 @@ namespace alpaka
         ALPAKA_FN_HOST TaskKernelCpuThreads(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
             : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
             , m_kernelFnObj(kernelFnObj)
-            , m_args(std::forward<TArgs>(args)...)
+            , m_args(std::forward<TArgs>(
+                  args)...) // FIXME(bgruber): this does not forward, since TArgs is not a deduced template parameter
         {
             static_assert(
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
@@ -76,55 +77,39 @@ namespace alpaka
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+            std::apply([&](auto const&... args) { runWithArgs(args...); }, m_args);
+        }
+
+    private:
+        ALPAKA_FN_HOST auto runWithArgs(std::decay_t<TArgs> const&... args) const -> void
+        {
             auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(*this);
             auto const blockThreadExtent = getWorkDiv<Block, Threads>(*this);
             auto const threadElemExtent = getWorkDiv<Thread, Elems>(*this);
 
             // Get the size of the block shared dynamic memory.
-            auto const blockSharedMemDynSizeBytes = std::apply(
-                [&](ALPAKA_DECAY_T(TArgs) const&... args)
-                {
-                    return getBlockSharedMemDynSizeBytes<AccCpuThreads<TDim, TIdx>>(
-                        m_kernelFnObj,
-                        blockThreadExtent,
-                        threadElemExtent,
-                        args...);
-                },
-                m_args);
-
+            auto const smBytes = getBlockSharedMemDynSizeBytes<AccCpuThreads<TDim, TIdx>>(
+                m_kernelFnObj,
+                blockThreadExtent,
+                threadElemExtent,
+                args...);
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            std::cout << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
-                      << std::endl;
+            std::cout << __func__ << " smBytes: " << smBytes << " B" << std::endl;
 #    endif
-            AccCpuThreads<TDim, TIdx> acc(
-                *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),
-                blockSharedMemDynSizeBytes);
+            AccCpuThreads<TDim, TIdx> acc(*static_cast<WorkDivMembers<TDim, TIdx> const*>(this), smBytes);
 
-            auto const blockThreadCount = blockThreadExtent.prod();
-            ThreadPool threadPool(blockThreadCount);
-
-            // Bind the kernel and its arguments to the grid block function.
-            auto const boundGridBlockExecHost = std::apply(
-                [this, &acc, &blockThreadExtent, &threadPool](ALPAKA_DECAY_T(TArgs) const&... args)
-                {
-                    return std::bind(
-                        &TaskKernelCpuThreads::gridBlockExecHost,
-                        std::ref(acc),
-                        std::placeholders::_1,
-                        std::ref(blockThreadExtent),
-                        std::ref(threadPool),
-                        std::ref(m_kernelFnObj),
-                        std::ref(args)...);
-                },
-                m_args);
+            auto const threadsPerBlock = blockThreadExtent.prod();
+            ThreadPool threadPool(threadsPerBlock);
 
             // Execute the blocks serially.
-            meta::ndLoopIncIdx(gridBlockExtent, boundGridBlockExecHost);
+            meta::ndLoopIncIdx(
+                gridBlockExtent,
+                [&](Vec<TDim, TIdx> const& gridBlockIdx)
+                { runBlock(acc, gridBlockIdx, blockThreadExtent, threadPool, m_kernelFnObj, args...); });
         }
 
-    private:
         //! The function executed for each grid block.
-        ALPAKA_FN_HOST static auto gridBlockExecHost(
+        ALPAKA_FN_HOST static auto runBlock(
             AccCpuThreads<TDim, TIdx>& acc,
             Vec<TDim, TIdx> const& gridBlockIdx,
             Vec<TDim, TIdx> const& blockThreadExtent,
@@ -132,53 +117,31 @@ namespace alpaka
             TKernelFnObj const& kernelFnObj,
             std::decay_t<TArgs> const&... args) -> void
         {
-            // The futures of the threads in the current block.
             std::vector<std::future<void>> futuresInBlock;
-
-            // Set the index of the current block
             acc.m_gridBlockIdx = gridBlockIdx;
 
-            // Bind the kernel and its arguments to the host block thread execution function.
-            auto boundBlockThreadExecHost = std::bind(
-                &TaskKernelCpuThreads::blockThreadExecHost,
-                std::ref(acc),
-                std::ref(futuresInBlock),
-                std::placeholders::_1,
-                std::ref(threadPool),
-                std::ref(kernelFnObj),
-                std::ref(args)...);
-            // Execute the block threads in parallel.
-            meta::ndLoopIncIdx(blockThreadExtent, boundBlockThreadExecHost);
+            // Execute the threads of this block in parallel.
+            meta::ndLoopIncIdx(
+                blockThreadExtent,
+                [&](Vec<TDim, TIdx> const& blockThreadIdx)
+                {
+                    // copy blockThreadIdx because it will get changed for the next iteration/thread.
+                    futuresInBlock.emplace_back(threadPool.enqueueTask(
+                        [&, blockThreadIdx] { runThread(acc, blockThreadIdx, kernelFnObj, args...); }));
+                });
+
             // Wait for the completion of the block thread kernels.
             for(auto& t : futuresInBlock)
                 t.wait();
+
             // Clean up.
             futuresInBlock.clear();
-
             acc.m_threadToIndexMap.clear();
+            freeSharedVars(acc); // After a block has been processed, the shared memory has to be deleted.
+        }
 
-            // After a block has been processed, the shared memory has to be deleted.
-            freeSharedVars(acc);
-        }
-        //! The function executed for each block thread on the host.
-        ALPAKA_FN_HOST static auto blockThreadExecHost(
-            AccCpuThreads<TDim, TIdx>& acc,
-            std::vector<std::future<void>>& futuresInBlock,
-            Vec<TDim, TIdx> const& blockThreadIdx,
-            ThreadPool& threadPool,
-            TKernelFnObj const& kernelFnObj,
-            std::decay_t<TArgs> const&... args) -> void
-        {
-            // Bind the arguments to the accelerator block thread execution function.
-            // The blockThreadIdx is required to be copied in because the variable will get changed for the next
-            // iteration/thread.
-            auto boundBlockThreadExecAcc
-                = [&, blockThreadIdx]() { blockThreadExecAcc(acc, blockThreadIdx, kernelFnObj, args...); };
-            // Add the bound function to the block thread pool.
-            futuresInBlock.emplace_back(threadPool.enqueueTask(boundBlockThreadExecAcc));
-        }
         //! The thread entry point on the accelerator.
-        ALPAKA_FN_HOST static auto blockThreadExecAcc(
+        ALPAKA_FN_HOST static auto runThread(
             AccCpuThreads<TDim, TIdx>& acc,
             Vec<TDim, TIdx> const& blockThreadIdx,
             TKernelFnObj const& kernelFnObj,
@@ -186,19 +149,16 @@ namespace alpaka
         {
             // We have to store the thread data before the kernel is calling any of the methods of this class depending
             // on them.
-            auto const threadId(std::this_thread::get_id());
+            auto const threadId = std::this_thread::get_id();
 
-            // Set the master thread id.
             if(blockThreadIdx.sum() == 0)
             {
                 acc.m_idMasterThread = threadId;
             }
 
             {
-                // The insertion of elements has to be done one thread at a time.
-                std::lock_guard<std::mutex> lock(acc.m_mtxMapInsert);
-
                 // Save the thread id, and index.
+                std::lock_guard<std::mutex> lock(acc.m_mtxMapInsert);
                 acc.m_threadToIndexMap.emplace(threadId, blockThreadIdx);
             }
 
@@ -206,7 +166,7 @@ namespace alpaka
             syncBlockThreads(acc);
 
             // Execute the kernel itself.
-            kernelFnObj(const_cast<AccCpuThreads<TDim, TIdx> const&>(acc), args...);
+            kernelFnObj(std::as_const(acc), args...);
 
             // We have to sync all threads here because if a thread would finish before all threads have been started,
             // a new thread could get the recycled (then duplicate) thread id!
