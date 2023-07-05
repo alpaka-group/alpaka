@@ -80,7 +80,6 @@ namespace alpaka
 
               // 2 component vector types
               sycl::char2,
-              sycl::schar2,
               sycl::uchar2,
               sycl::short2,
               sycl::ushort2,
@@ -88,15 +87,12 @@ namespace alpaka
               sycl::uint2,
               sycl::long2,
               sycl::ulong2,
-              sycl::longlong2,
-              sycl::ulonglong2,
               sycl::float2,
               sycl::double2,
               sycl::half2,
 
               // 3 component vector types
               sycl::char3,
-              sycl::schar3,
               sycl::uchar3,
               sycl::short3,
               sycl::ushort3,
@@ -104,15 +100,12 @@ namespace alpaka
               sycl::uint3,
               sycl::long3,
               sycl::ulong3,
-              sycl::longlong3,
-              sycl::ulonglong3,
               sycl::float3,
               sycl::double3,
               sycl::half3,
 
               // 4 component vector types
               sycl::char4,
-              sycl::schar4,
               sycl::uchar4,
               sycl::short4,
               sycl::ushort4,
@@ -120,15 +113,12 @@ namespace alpaka
               sycl::uint4,
               sycl::long4,
               sycl::ulong4,
-              sycl::longlong4,
-              sycl::ulonglong4,
               sycl::float4,
               sycl::double4,
               sycl::half4,
 
               // 8 component vector types
               sycl::char8,
-              sycl::schar8,
               sycl::uchar8,
               sycl::short8,
               sycl::ushort8,
@@ -136,15 +126,12 @@ namespace alpaka
               sycl::uint8,
               sycl::long8,
               sycl::ulong8,
-              sycl::longlong8,
-              sycl::ulonglong8,
               sycl::float8,
               sycl::double8,
               sycl::half8,
 
               // 16 component vector types
               sycl::char16,
-              sycl::schar16,
               sycl::uchar16,
               sycl::short16,
               sycl::ushort16,
@@ -152,8 +139,6 @@ namespace alpaka
               sycl::uint16,
               sycl::long16,
               sycl::ulong16,
-              sycl::longlong16,
-              sycl::ulonglong16,
               sycl::float16,
               sycl::double16,
               sycl::half16>

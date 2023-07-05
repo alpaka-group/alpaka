@@ -1,4 +1,4 @@
-/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
+/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -54,14 +54,11 @@ struct ActivemaskMultipleThreadWarpTestKernel
     }
 };
 
-namespace alpaka::trait
+template<std::uint32_t TWarpSize, typename TAcc>
+struct alpaka::trait::WarpSize<ActivemaskMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
+    : std::integral_constant<std::uint32_t, TWarpSize>
 {
-    template<std::uint32_t TWarpSize, typename TAcc>
-    struct WarpSize<ActivemaskMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
-    {
-        static constexpr std::uint32_t warp_size = TWarpSize;
-    };
-} // namespace alpaka::trait
+};
 
 TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
 {
@@ -90,7 +87,14 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
             auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
             auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
             auto fixture = ExecutionFixture{workDiv};
-            if(warpExtent == 8)
+            if(warpExtent == 4)
+            {
+                for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
+                {
+                    CHECK(fixture(ActivemaskMultipleThreadWarpTestKernel<4>{}, inactiveThreadIdx));
+                }
+            }
+            else if(warpExtent == 8)
             {
                 for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
                 {
@@ -109,6 +113,13 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
                 for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
                 {
                     CHECK(fixture(ActivemaskMultipleThreadWarpTestKernel<32>{}, inactiveThreadIdx));
+                }
+            }
+            else if(warpExtent == 64)
+            {
+                for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
+                {
+                    CHECK(fixture(ActivemaskMultipleThreadWarpTestKernel<64>{}, inactiveThreadIdx));
                 }
             }
         }

@@ -58,14 +58,11 @@ struct AnyMultipleThreadWarpTestKernel
     }
 };
 
-namespace alpaka::trait
+template<std::uint32_t TWarpSize, typename TAcc>
+struct alpaka::trait::WarpSize<AnyMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
+    : std::integral_constant<std::uint32_t, TWarpSize>
 {
-    template<std::uint32_t TWarpSize, typename TAcc>
-    struct WarpSize<AnyMultipleThreadWarpTestKernel<TWarpSize>, TAcc>
-    {
-        static constexpr std::uint32_t warp_size = TWarpSize;
-    };
-} // namespace alpaka::trait
+};
 
 TEMPLATE_LIST_TEST_CASE("any", "[warp]", alpaka::test::TestAccs)
 {
@@ -94,7 +91,11 @@ TEMPLATE_LIST_TEST_CASE("any", "[warp]", alpaka::test::TestAccs)
             auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
             auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
             auto fixture = ExecutionFixture{workDiv};
-            if(warpExtent == 8)
+            if(warpExtent == 4)
+            {
+                REQUIRE(fixture(AnyMultipleThreadWarpTestKernel<4>{}));
+            }
+            else if(warpExtent == 8)
             {
                 REQUIRE(fixture(AnyMultipleThreadWarpTestKernel<8>{}));
             }
@@ -105,6 +106,10 @@ TEMPLATE_LIST_TEST_CASE("any", "[warp]", alpaka::test::TestAccs)
             else if(warpExtent == 32)
             {
                 REQUIRE(fixture(AnyMultipleThreadWarpTestKernel<32>{}));
+            }
+            else if(warpExtent == 64)
+            {
+                REQUIRE(fixture(AnyMultipleThreadWarpTestKernel<64>{}));
             }
         }
     }

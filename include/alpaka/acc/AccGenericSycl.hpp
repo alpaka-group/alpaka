@@ -68,33 +68,6 @@ namespace alpaka
         auto operator=(AccGenericSycl const&) -> AccGenericSycl& = delete;
         auto operator=(AccGenericSycl&&) -> AccGenericSycl& = delete;
 
-#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-        AccGenericSycl(
-            Vec<TDim, TIdx> const& threadElemExtent,
-            sycl::nd_item<TDim::value> work_item,
-            sycl::local_accessor<std::byte> dyn_shared_acc,
-            sycl::local_accessor<std::byte> st_shared_acc,
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
-            sycl::local_accessor<int> local_fence_dummy,
-            sycl::stream output_stream)
-            : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
-            , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
-            , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
-            , AtomicHierarchy<AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl>{}
-            , math::MathGenericSycl{}
-            , BlockSharedMemDynGenericSycl{dyn_shared_acc}
-            , BlockSharedMemStGenericSycl{st_shared_acc}
-            , BlockSyncGenericSycl<TDim>{work_item}
-            , IntrinsicGenericSycl{}
-            , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
-            , rand::RandGenericSycl<TDim>{work_item}
-            , warp::WarpGenericSycl<TDim>{work_item}
-            , cout{output_stream}
-        {
-        }
-
-        sycl::stream cout;
-#    else
         AccGenericSycl(
             Vec<TDim, TIdx> const& threadElemExtent,
             sycl::nd_item<TDim::value> work_item,
@@ -116,7 +89,6 @@ namespace alpaka
             , warp::WarpGenericSycl<TDim>{work_item}
         {
         }
-#    endif
     };
 } // namespace alpaka
 

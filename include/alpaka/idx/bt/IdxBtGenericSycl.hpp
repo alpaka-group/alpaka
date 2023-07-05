@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2023 Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -23,11 +23,11 @@ namespace alpaka::bt
     public:
         using IdxBtBase = IdxBtGenericSycl;
 
-        explicit IdxBtGenericSycl(sycl::nd_item<TDim::value> work_item) : my_item{work_item}
+        explicit IdxBtGenericSycl(sycl::nd_item<TDim::value> work_item) : m_item_bt{work_item}
         {
         }
 
-        sycl::nd_item<TDim::value> my_item;
+        sycl::nd_item<TDim::value> m_item_bt;
     };
 } // namespace alpaka::bt
 
@@ -49,19 +49,19 @@ namespace alpaka::trait
         static auto getIdx(bt::IdxBtGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&) -> Vec<TDim, TIdx>
         {
             if constexpr(TDim::value == 1)
-                return Vec<TDim, TIdx>{static_cast<TIdx>(idx.my_item.get_local_id(0))};
+                return Vec<TDim, TIdx>{static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
             else if constexpr(TDim::value == 2)
             {
                 return Vec<TDim, TIdx>{
-                    static_cast<TIdx>(idx.my_item.get_local_id(1)),
-                    static_cast<TIdx>(idx.my_item.get_local_id(0))};
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
             }
             else
             {
                 return Vec<TDim, TIdx>{
-                    static_cast<TIdx>(idx.my_item.get_local_id(2)),
-                    static_cast<TIdx>(idx.my_item.get_local_id(1)),
-                    static_cast<TIdx>(idx.my_item.get_local_id(0))};
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(2)),
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
+                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
             }
         }
     };

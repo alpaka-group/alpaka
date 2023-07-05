@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -13,6 +13,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/SyclSubgroupSize.hpp"
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/mem/buf/sycl/Accessor.hpp"
 #include "alpaka/pltf/Traits.hpp"
@@ -29,7 +30,71 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wunused-lambda-capture"
+#        pragma clang diagnostic ignored "-Wunused-parameter"
+#    endif
+
 #    include <CL/sycl.hpp>
+
+#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
+        cgh.parallel_for(                                                                                             \
+            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+            [item_elements,                                                                                           \
+             dyn_shared_accessor,                                                                                     \
+             st_shared_accessor,                                                                                      \
+             global_fence_dummy,                                                                                      \
+             local_fence_dummy,                                                                                       \
+             k_func,                                                                                                  \
+             k_args](sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]             \
+            {                                                                                                         \
+                auto acc = TAcc{                                                                                      \
+                    item_elements,                                                                                    \
+                    work_item,                                                                                        \
+                    dyn_shared_accessor,                                                                              \
+                    st_shared_accessor,                                                                               \
+                    global_fence_dummy,                                                                               \
+                    local_fence_dummy};                                                                               \
+                core::apply(                                                                                          \
+                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
+                    k_args);                                                                                          \
+            });
+
+#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
+        cgh.parallel_for(                                                                                             \
+            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+            [item_elements,                                                                                           \
+             dyn_shared_accessor,                                                                                     \
+             st_shared_accessor,                                                                                      \
+             global_fence_dummy,                                                                                      \
+             local_fence_dummy,                                                                                       \
+             k_func,                                                                                                  \
+             k_args](sycl::nd_item<TDim::value> work_item)                                                            \
+            {                                                                                                         \
+                auto acc = TAcc{                                                                                      \
+                    item_elements,                                                                                    \
+                    work_item,                                                                                        \
+                    dyn_shared_accessor,                                                                              \
+                    st_shared_accessor,                                                                               \
+                    global_fence_dummy,                                                                               \
+                    local_fence_dummy};                                                                               \
+                core::apply(                                                                                          \
+                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
+                    k_args);                                                                                          \
+            });
+
+#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
+        throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
+        cgh.parallel_for(                                                                                             \
+            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+            [item_elements,                                                                                           \
+             dyn_shared_accessor,                                                                                     \
+             st_shared_accessor,                                                                                      \
+             global_fence_dummy,                                                                                      \
+             local_fence_dummy,                                                                                       \
+             k_func,                                                                                                  \
+             k_args](sycl::nd_item<TDim::value> work_item) {});
 
 namespace alpaka::detail
 {
@@ -120,82 +185,86 @@ namespace alpaka
             auto k_func = m_kernelFnObj;
             auto k_args = m_args;
 
-#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-            // Set up device-side printing with (user-chosen value) KiB per block for the output buffer.
-            constexpr auto buf_size = std::size_t{ALPAKA_SYCL_IOSTREAM_KIB * 1024};
-            auto buf_per_work_item = std::size_t{};
-            if constexpr(TDim::value == 1)
-                buf_per_work_item = buf_size / static_cast<std::size_t>(group_items[0]);
-            else if constexpr(TDim::value == 2)
-                buf_per_work_item = buf_size / static_cast<std::size_t>(group_items[0] * group_items[1]);
-            else
-                buf_per_work_item
-                    = buf_size / static_cast<std::size_t>(group_items[0] * group_items[1] * group_items[2]);
+            constexpr std::size_t sub_group_size = trait::warpSize<TKernelFnObj, TAcc>;
+            bool supported = false;
 
-            assert(buf_per_work_item > 0);
-
-            auto output_stream = sycl::stream{buf_size, buf_per_work_item, cgh};
-#    endif
-            if constexpr(trait::WarpSize<TKernelFnObj, TAcc>::warp_size != 0)
+            if constexpr(sub_group_size == 0)
             {
-                // cgh.parallel_for<detail::kernel<TAcc, TKernelFnObj, TArgs...>>( //FIXME_
-                cgh.parallel_for(
-                    sycl::nd_range<TDim::value>{global_size, local_size},
-                    [=](sycl::nd_item<TDim::value> work_item)
-                        [[intel::reqd_sub_group_size(trait::WarpSize<TKernelFnObj, TAcc>::warp_size)]]
-                    {
-#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-                        auto acc = TAcc{
-                            item_elements,
-                            work_item,
-                            dyn_shared_accessor,
-                            st_shared_accessor,
-                            global_fence_dummy,
-                            local_fence_dummy,
-                            output_stream};
-#    else
-                        auto acc = TAcc{
-                            item_elements,
-                            work_item,
-                            dyn_shared_accessor,
-                            st_shared_accessor,
-                            global_fence_dummy,
-                            local_fence_dummy};
-#    endif
-                        core::apply(
-                            [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },
-                            k_args);
-                    });
+                // no explicit subgroup size requirement
+                LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE
+                supported = true;
             }
             else
-            { // autodetect
-                // cgh.parallel_for<detail::kernel<TAcc, TKernelFnObj, TArgs...>>( //FIXME_
-                cgh.parallel_for(
-                    sycl::nd_range<TDim::value>{global_size, local_size},
-                    [=](sycl::nd_item<TDim::value> work_item)
-                    {
-#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-                        auto acc = TAcc{
-                            item_elements,
-                            work_item,
-                            dyn_shared_accessor,
-                            st_shared_accessor,
-                            global_fence_dummy,
-                            local_fence_dummy,
-                            output_stream};
+            {
+#    if(SYCL_SUBGROUP_SIZE == 0)
+                // no explicit SYCL target, assume JIT compilation
+                LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)
+                supported = true;
 #    else
-                        auto acc = TAcc{
-                            item_elements,
-                            work_item,
-                            dyn_shared_accessor,
-                            st_shared_accessor,
-                            global_fence_dummy,
-                            local_fence_dummy};
+                // check if the kernel should be launched with a subgroup size of 4
+                if constexpr(sub_group_size == 4)
+                {
+#        if(SYCL_SUBGROUP_SIZE & 4)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(4)
+                    supported = true;
+#        else
+                    // empty kernel, required to keep SYCL happy
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+#        endif
+                }
+
+                // check if the kernel should be launched with a subgroup size of 8
+                if constexpr(sub_group_size == 8)
+                {
+#        if(SYCL_SUBGROUP_SIZE & 8)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(8)
+                    supported = true;
+#        else
+                    // empty kernel, required to keep SYCL happy
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+#        endif
+                }
+
+                // check if the kernel should be launched with a subgroup size of 16
+                if constexpr(sub_group_size == 16)
+                {
+#        if(SYCL_SUBGROUP_SIZE & 16)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(16)
+                    supported = true;
+#        else
+                    // empty kernel, required to keep SYCL happy
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+#        endif
+                }
+
+                // check if the kernel should be launched with a subgroup size of 32
+                if constexpr(sub_group_size == 32)
+                {
+#        if(SYCL_SUBGROUP_SIZE & 32)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(32)
+                    supported = true;
+#        else
+                    // empty kernel, required to keep SYCL happy
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+#        endif
+                }
+
+                // check if the kernel should be launched with a subgroup size of 64
+                if constexpr(sub_group_size == 64)
+                {
+#        if(SYCL_SUBGROUP_SIZE & 64)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(64)
+                    supported = true;
+#        else
+                    // empty kernel, required to keep SYCL happy
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+#        endif
+                }
 #    endif
-                        core::apply(
-                            [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },
-                            k_args);
-                    });
+
+                // this subgroup size is not supported, raise an exception
+                if(not supported)
+                    throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));
             }
         }
 
@@ -238,7 +307,12 @@ namespace alpaka
         TKernelFnObj m_kernelFnObj;
         core::Tuple<std::decay_t<TArgs>...> m_args;
     };
+
 } // namespace alpaka
+
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
 
 namespace alpaka::trait
 {
@@ -277,5 +351,7 @@ namespace alpaka::trait
         using type = TIdx;
     };
 } // namespace alpaka::trait
+
+#    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS
 
 #endif
