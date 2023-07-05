@@ -1,5 +1,5 @@
 #
-# Copyright 2023 Benjamin Worpitz, Erik Zenker, Axel Hübl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci, Bernhard Manfred Gruber
+# Copyright 2023 Benjamin Worpitz, Erik Zenker, Axel Hübl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -547,9 +547,6 @@ if(alpaka_ACC_SYCL_ENABLE)
 
         # Enable device-side printing to stdout
         cmake_dependent_option(alpaka_SYCL_ENABLE_IOSTREAM "Enable device-side printing to stdout" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
-        if(BUILD_TESTING)
-            set(alpaka_SYCL_ENABLE_IOSTREAM ON CACHE BOOL "Enable device-side printing to stdout" FORCE)
-        endif()
 
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl")
         target_link_options(alpaka INTERFACE "-fsycl")
@@ -559,7 +556,7 @@ if(alpaka_ACC_SYCL_ENABLE)
         # Determine SYCL targets
         set(alpaka_SYCL_ONEAPI_CPU_TARGET "spir64_x86_64")
         set(alpaka_SYCL_ONEAPI_FPGA_TARGET "spir64_fpga")
-        set(alpaka_SYCL_ONEAPI_GPU_TARGET "spir64_gen")
+        set(alpaka_SYCL_ONEAPI_GPU_TARGET ${alpaka_SYCL_ONEAPI_GPU_DEVICES})
 
         if(alpaka_SYCL_ONEAPI_CPU)
             list(APPEND alpaka_SYCL_TARGETS ${alpaka_SYCL_ONEAPI_CPU_TARGET})
@@ -620,14 +617,13 @@ if(alpaka_ACC_SYCL_ENABLE)
         if(alpaka_SYCL_ONEAPI_GPU)
             # Create a drop-down list (in cmake-gui) of valid Intel GPU targets. On the command line the user can specifiy
             # additional targets, such as ranges: "Gen8-Gen12LP" or lists: "icllp;skl".
-            set(alpaka_SYCL_ONEAPI_GPU_DEVICES "bdw" CACHE STRING "Intel GPU devices / generations to compile for")
+            set(alpaka_SYCL_ONEAPI_GPU_DEVICES "intel_gpu_pvc" CACHE STRING "Intel GPU devices / generations to compile for")
             set_property(CACHE alpaka_SYCL_ONEAPI_GPU_DEVICES
-                        PROPERTY STRINGS "bdw;skl;kbl;cfl;bxt;glk;whl;aml;cml;icllp;lkf;ehl;tgllp;rkl;adl-s;adl-p;dg1;acm-g10;ats-m150;dg2-g10;acm-g11;ats-m75;dg2-g11;acm-g12;dg2-g12;pvc-sdv;pvc;gen11;gen12lp;gen8;gen9;xe;xe-hpc;xe-hpg")
+                        PROPERTY STRINGS "intel_gpu_pvc;intel_gpu_acm_g12;intel_gpu_acm_g11;intel_gpu_acm_g10;intel_gpu_dg1;intel_gpu_adl_n;intel_gpu_adl_p;intel_gpu_rpl_s;intel_gpu_adl_s;intel_gpu_rkl;intel_gpu_tgllp;intel_gpu_icllp;intel_gpu_cml;intel_gpu_aml;intel_gpu_whl;intel_gpu_glk;intel_gpu_apl;intel_gpu_cfl;intel_gpu_kbl;intel_gpu_skl;intel_gpu_bdw")
             # If the user has given us a list turn all ';' into ',' to pacify the Intel OpenCL compiler.
             string(REPLACE ";" "," alpaka_SYCL_ONEAPI_GPU_DEVICES "${alpaka_SYCL_ONEAPI_GPU_DEVICES}")
             
             target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU")
-            target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${alpaka_SYCL_ONEAPI_GPU_TARGET} \"-device ${alpaka_SYCL_ONEAPI_GPU_DEVICES}\"")
         endif()
 
         #-----------------------------------------------------------------------------------------------------------------

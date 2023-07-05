@@ -1,5 +1,5 @@
 /* Copyright 2023 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
- *                Andrea Bocci
+ *                Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -76,11 +76,13 @@ namespace alpaka
         //!
         //! The default implementation returns 0, which lets the accelerator compiler and runtime choose the warp size.
         template<typename TKernelFnObj, typename TAcc, typename TSfinae = void>
-        struct WarpSize
+        struct WarpSize : std::integral_constant<std::uint32_t, 0>
         {
-            static constexpr std::uint32_t warp_size = 0u;
         };
 
+        //! This is a shortcut for the trait defined above
+        template<typename TKernelFnObj, typename TAcc>
+        inline constexpr std::uint32_t warpSize = WarpSize<TKernelFnObj, TAcc>::value;
 
         //! The trait for getting the schedule to use when a kernel is run using the CpuOmp2Blocks accelerator.
         //!

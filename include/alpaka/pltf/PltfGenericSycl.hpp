@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -195,7 +195,6 @@ namespace alpaka::trait
 #        endif
 
             std::cout << "Aspects: " << '\n';
-            std::cout.flush();
 
 #        if defined(BOOST_COMP_ICPX)
 #            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)

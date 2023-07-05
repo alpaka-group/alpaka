@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2023 Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -23,11 +23,11 @@ namespace alpaka::gb
     public:
         using IdxGbBase = IdxGbGenericSycl;
 
-        explicit IdxGbGenericSycl(sycl::nd_item<TDim::value> work_item) : my_item{work_item}
+        explicit IdxGbGenericSycl(sycl::nd_item<TDim::value> work_item) : m_item_gb{work_item}
         {
         }
 
-        sycl::nd_item<TDim::value> my_item;
+        sycl::nd_item<TDim::value> m_item_gb;
     };
 } // namespace alpaka::gb
 
@@ -49,19 +49,19 @@ namespace alpaka::trait
         static auto getIdx(gb::IdxGbGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&)
         {
             if constexpr(TDim::value == 1)
-                return Vec<TDim, TIdx>(static_cast<TIdx>(idx.my_item.get_group(0)));
+                return Vec<TDim, TIdx>(static_cast<TIdx>(idx.m_item_gb.get_group(0)));
             else if constexpr(TDim::value == 2)
             {
                 return Vec<TDim, TIdx>(
-                    static_cast<TIdx>(idx.my_item.get_group(1)),
-                    static_cast<TIdx>(idx.my_item.get_group(0)));
+                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
+                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
             }
             else
             {
                 return Vec<TDim, TIdx>(
-                    static_cast<TIdx>(idx.my_item.get_group(2)),
-                    static_cast<TIdx>(idx.my_item.get_group(1)),
-                    static_cast<TIdx>(idx.my_item.get_group(0)));
+                    static_cast<TIdx>(idx.m_item_gb.get_group(2)),
+                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
+                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
             }
         }
     };

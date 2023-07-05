@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Antonio Di Pilato, Luca Ferragina
+/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -176,7 +176,12 @@ namespace alpaka::trait
         static auto getWarpSizes(DevGenericSycl<TPltf> const& dev) -> std::vector<std::size_t>
         {
             auto const device = dev.getNativeHandle().first;
-            return device.template get_info<sycl::info::device::sub_group_sizes>();
+            std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
+            // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently does not
+            auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
+            if(find64 != warp_sizes.end())
+                warp_sizes.erase(find64);
+            return warp_sizes;
         }
     };
 

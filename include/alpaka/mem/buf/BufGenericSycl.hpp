@@ -73,7 +73,7 @@ namespace alpaka::trait
     template<typename TElem, typename TDim, typename TIdx, typename TPltf>
     struct GetDev<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
     {
-        ALPAKA_FN_HOST static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf)
+        static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf)
         {
             return buf.m_dev;
         }
@@ -99,7 +99,7 @@ namespace alpaka::trait
     {
         static_assert(TDim::value > TIdxIntegralConst::value, "Requested dimension out of bounds");
 
-        ALPAKA_FN_HOST static auto getExtent(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf) -> TIdx
+        static auto getExtent(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf) -> TIdx
         {
             return buf.m_extentElements[TIdxIntegralConst::value];
         }
@@ -109,12 +109,12 @@ namespace alpaka::trait
     template<typename TElem, typename TDim, typename TIdx, typename TPltf>
     struct GetPtrNative<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
     {
-        ALPAKA_FN_HOST static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf) -> TElem const*
+        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf) -> TElem const*
         {
             return buf.m_spMem.get();
         }
 
-        ALPAKA_FN_HOST static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPltf>& buf) -> TElem*
+        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPltf>& buf) -> TElem*
         {
             return buf.m_spMem.get();
         }
@@ -124,9 +124,8 @@ namespace alpaka::trait
     template<typename TElem, typename TDim, typename TIdx, typename TPltf>
     struct GetPtrDev<BufGenericSycl<TElem, TDim, TIdx, TPltf>, DevGenericSycl<TPltf>>
     {
-        ALPAKA_FN_HOST static auto getPtrDev(
-            BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf,
-            DevGenericSycl<TPltf> const& dev) -> TElem const*
+        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf, DevGenericSycl<TPltf> const& dev)
+            -> TElem const*
         {
             if(dev == getDev(buf))
             {
@@ -138,9 +137,8 @@ namespace alpaka::trait
             }
         }
 
-        ALPAKA_FN_HOST static auto getPtrDev(
-            BufGenericSycl<TElem, TDim, TIdx, TPltf>& buf,
-            DevGenericSycl<TPltf> const& dev) -> TElem*
+        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TPltf>& buf, DevGenericSycl<TPltf> const& dev)
+            -> TElem*
         {
             if(dev == getDev(buf))
             {
@@ -158,7 +156,7 @@ namespace alpaka::trait
     struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TPltf>>
     {
         template<typename TExtent>
-        ALPAKA_FN_HOST static auto allocBuf(DevGenericSycl<TPltf> const& dev, TExtent const& extent)
+        static auto allocBuf(DevGenericSycl<TPltf> const& dev, TExtent const& extent)
             -> BufGenericSycl<TElem, TDim, TIdx, TPltf>
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -192,10 +190,13 @@ namespace alpaka::trait
             }
 #    endif
 
+            auto const& [nativeDev, nativeContext] = dev.getNativeHandle();
             TElem* memPtr = sycl::malloc_device<TElem>(
                 static_cast<std::size_t>(getExtentProduct(extent)),
-                dev.getNativeHandle().first,
-                dev.getNativeHandle().second);
+                nativeDev,
+                nativeContext);
+            // captured structured bindings are a C++20 extension
+            // auto deleter = [nativeContext](TElem* ptr) { sycl::free(ptr, nativeContext); };
             auto deleter = [&dev](TElem* ptr) { sycl::free(ptr, dev.getNativeHandle().second); };
 
             return BufGenericSycl<TElem, TDim, TIdx, TPltf>(dev, memPtr, std::move(deleter), extent);
@@ -204,7 +205,7 @@ namespace alpaka::trait
 
     //! The BufGenericSycl stream-ordered memory allocation capability trait specialization.
     template<typename TDim, typename TPltf>
-    struct HasAsyncBufSupport<TDim, DevGenericSycl<TPltf>> : public std::false_type
+    struct HasAsyncBufSupport<TDim, DevGenericSycl<TPltf>> : std::false_type
     {
     };
 
@@ -223,8 +224,7 @@ namespace alpaka::trait
     struct BufAllocMapped
     {
         template<typename TExtent>
-        ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
-            -> BufCpu<TElem, TDim, TIdx>
+        static auto allocMappedBuf(DevCpu const& host, TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -249,12 +249,11 @@ namespace alpaka::trait
     template<typename TElem, typename TDim, typename TIdx, typename TPltf>
     struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TPltf>>
     {
-        ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPltf> const&)
-            -> TElem const*
+        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPltf> const&) -> TElem const*
         {
             return getPtrNative(buf);
         }
-        ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPltf> const&) -> TElem*
+        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPltf> const&) -> TElem*
         {
             return getPtrNative(buf);
         }

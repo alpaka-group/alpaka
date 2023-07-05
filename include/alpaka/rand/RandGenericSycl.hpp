@@ -4,12 +4,12 @@
 
 #pragma once
 
-#if defined(ALPAKA_ACC_SYCL_ENABLED)
+#include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Concepts.hpp"
+#include "alpaka/dev/DevGenericSycl.hpp"
+#include "alpaka/rand/Traits.hpp"
 
-#    include <alpaka/core/BoostPredef.hpp>
-#    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/dev/DevGenericSycl.hpp>
-#    include <alpaka/rand/Traits.hpp>
+#ifdef ALPAKA_ACC_SYCL_ENABLED
 
 // Backend specific imports.
 #    include <CL/sycl.hpp>
@@ -38,14 +38,13 @@ namespace alpaka::rand
 {
     //! The SYCL rand implementation.
     template<typename TDim>
-    class RandGenericSycl : public concepts::Implements<ConceptRand, RandGenericSycl<TDim>>
+    struct RandGenericSycl : concepts::Implements<ConceptRand, RandGenericSycl<TDim>>
     {
-    public:
-        RandGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item{my_item}
+        explicit RandGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_rand{my_item}
         {
         }
 
-        sycl::nd_item<TDim::value> m_item;
+        sycl::nd_item<TDim::value> m_item_rand;
     };
 
 #    if !defined(ALPAKA_HOST_ONLY)
@@ -53,15 +52,11 @@ namespace alpaka::rand
     {
         //! The SYCL random number floating point normal distribution.
         template<typename T>
-        class NormalReal;
+        struct NormalReal;
 
-        //! The SYCL random number floating point uniform distribution.
+        //! The SYCL random number uniform distribution.
         template<typename T>
-        class UniformReal;
-
-        //! The SYCL random number integer uniform distribution.
-        template<typename T>
-        class UniformUint;
+        struct Uniform;
     } // namespace distribution::sycl_rand
 
     namespace engine::sycl_rand
@@ -77,17 +72,15 @@ namespace alpaka::rand
 
             Minstd(RandGenericSycl<TDim> rand, std::uint32_t const& seed)
             {
-                oneapi::dpl::minstd_rand engine(seed, rand.m_item.get_global_linear_id());
+                oneapi::dpl::minstd_rand engine(seed, rand.m_item_rand.get_global_linear_id());
                 rng_engine = engine;
             }
 
         private:
             template<typename T>
-            friend class distribution::sycl_rand::NormalReal;
+            friend struct distribution::sycl_rand::NormalReal;
             template<typename T>
-            friend class distribution::sycl_rand::UniformReal;
-            template<typename T>
-            friend class distribution::sycl_rand::UniformUint;
+            friend struct distribution::sycl_rand::Uniform;
 
             oneapi::dpl::minstd_rand rng_engine;
 
@@ -112,83 +105,40 @@ namespace alpaka::rand
 
     namespace distribution::sycl_rand
     {
-        //! The SYCL random number float normal distribution.
-        template<>
-        class NormalReal<float>
-        {
-        public:
-            template<typename TEngine>
-            auto operator()(TEngine& engine) -> float
-            {
-                // Create float uniform_real_distribution distribution
-                oneapi::dpl::normal_distribution<float> distr;
-
-                // Generate float random number
-                return distr(engine.rng_engine);
-            }
-        };
 
         //! The SYCL random number double normal distribution.
-        template<>
-        class NormalReal<double>
+        template<typename F>
+        struct NormalReal
         {
-        public:
-            template<typename TEngine>
-            auto operator()(TEngine& engine) -> double
-            {
-                // Create float uniform_real_distribution distribution
-                oneapi::dpl::normal_distribution<double> distr;
+            static_assert(std::is_floating_point_v<F>);
 
-                // Generate float random number
+            template<typename TEngine>
+            auto operator()(TEngine& engine) -> F
+            {
+                oneapi::dpl::normal_distribution<F> distr;
                 return distr(engine.rng_engine);
             }
         };
 
         //! The SYCL random number float uniform distribution.
-        template<>
-        class UniformReal<float>
+        template<typename T>
+        struct Uniform
         {
-        public:
+            static_assert(std::is_floating_point_v<T> || std::is_unsigned_v<T>);
+
             template<typename TEngine>
-            auto operator()(TEngine& engine) -> float
+            auto operator()(TEngine& engine) -> T
             {
-                // Create float uniform_real_distribution distribution
-                oneapi::dpl::uniform_real_distribution<float> distr;
-
-                // Generate float random number
-                return distr(engine.rng_engine);
-            }
-        };
-
-        //! The SYCL random number float uniform distribution.
-        template<>
-        class UniformReal<double>
-        {
-        public:
-            template<typename TEngine>
-            auto operator()(TEngine& engine) -> double
-            {
-                // Create float uniform_real_distribution distribution
-                oneapi::dpl::uniform_real_distribution<double> distr;
-
-                // Generate float random number
-                return distr(engine.rng_engine);
-            }
-        };
-
-        //! The SYCL random number unsigned integer uniform distribution.
-        template<>
-        class UniformUint<unsigned int>
-        {
-        public:
-            template<typename TEngine>
-            auto operator()(TEngine& engine) -> unsigned int
-            {
-                // Create float uniform_real_distribution distribution
-                oneapi::dpl::uniform_int_distribution<unsigned int> distr;
-
-                // Generate float random number
-                return distr(engine.rng_engine);
+                if constexpr(std::is_floating_point_v<T>)
+                {
+                    oneapi::dpl::uniform_real_distribution<T> distr;
+                    return distr(engine.rng_engine);
+                }
+                else
+                {
+                    oneapi::dpl::uniform_int_distribution<T> distr;
+                    return distr(engine.rng_engine);
+                }
             }
         };
     } // namespace distribution::sycl_rand
@@ -209,7 +159,7 @@ namespace alpaka::rand
         template<typename TDim, typename T>
         struct CreateUniformReal<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_floating_point_v<T>>>
         {
-            static auto createUniformReal(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::UniformReal<T>
+            static auto createUniformReal(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::Uniform<T>
             {
                 return {};
             }
@@ -219,7 +169,7 @@ namespace alpaka::rand
         template<typename TDim, typename T>
         struct CreateUniformUint<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_integral_v<T>>>
         {
-            static auto createUniformUint(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::UniformUint<T>
+            static auto createUniformUint(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::Uniform<T>
             {
                 return {};
             }
