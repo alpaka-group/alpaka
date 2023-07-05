@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"Properties_8hpp_source.html":[4,0,0,0,18,3],
+"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
 "QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
 "QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "WorkDivGenericSycl_8hpp_source.html":[4,0,0,0,26,1],
 "WorkDivHelpers_8hpp.html":[4,0,0,0,26,2],
 "WorkDivHelpers_8hpp.html#a336492ddbb304d87f082dd90164f8f30":[4,0,0,0,26,2,2],
-"WorkDivHelpers_8hpp.html#a36eeeef4bfe30fe8892e2ca2c2aa682a":[4,0,0,0,26,2,6],
-"WorkDivHelpers_8hpp.html#a378a4ed1bdce40639b3204d84a004d1c":[4,0,0,0,26,2,5],
-"WorkDivHelpers_8hpp.html#a49da61db606743ad5f75c6db33cfc043":[4,0,0,0,26,2,3]
+"WorkDivHelpers_8hpp.html#a36eeeef4bfe30fe8892e2ca2c2aa682a":[4,0,0,0,26,2,6]
 };

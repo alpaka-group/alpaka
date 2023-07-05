@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1trait_1_1Conj_3_01ConjUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#aeb02f6e19565211ac19c36d9ac56083f":[3,0,0,10,0,31,0],
+"structalpaka_1_1math_1_1trait_1_1Conj_3_01ConjUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablea9e3f97a54abded383223db0eb2943f0.html":[3,0,0,10,0,32],
+"structalpaka_1_1math_1_1trait_1_1Conj_3_01ConjUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablea9e3f97a54abded383223db0eb2943f0.html#a22a3b80c1b0b47ec3abacaefe82fe5dc":[3,0,0,10,0,32,0],
+"structalpaka_1_1math_1_1trait_1_1Cos.html":[3,0,0,10,0,33],
 "structalpaka_1_1math_1_1trait_1_1Cos.html#a8722ac119e4dcea09a774317837e2346":[3,0,0,10,0,33,0],
 "structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,10,0,34],
 "structalpaka_1_1math_1_1trait_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#ab8f8c7baab5815506fb43e1c78cea8a3":[3,0,0,10,0,34,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01int_00_013_01_4.html#addd82855a54fe3797ce5ef8a85353194":[3,0,0,12,0,27,0],
 "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01int_00_014_01_4.html":[3,0,0,12,0,28],
 "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01int_00_014_01_4.html#a564ca790b0ed24900115552594629204":[3,0,0,12,0,28,0],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_011_01_4.html":[3,0,0,12,0,29],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_011_01_4.html#a4494948a86018251aa3dd4fd9f4c4aab":[3,0,0,12,0,29,0],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_012_01_4.html":[3,0,0,12,0,30],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_012_01_4.html#a37d331da5b1a844820e53e5798a5a478":[3,0,0,12,0,30,0],
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_013_01_4.html":[3,0,0,12,0,31]
+"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_011_01_4.html":[3,0,0,12,0,29]
 };

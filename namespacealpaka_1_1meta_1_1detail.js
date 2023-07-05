@@ -52,9 +52,6 @@ var namespacealpaka_1_1meta_1_1detail =
     [ "MakeIntegerSequenceHelper", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html", null ],
     [ "MakeIntegerSequenceHelper< false, false, T, Tbegin, std::integral_constant< T, TIdx >, std::integer_sequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01false_00_01T_00_01Tbe2226ebc67c6afc7587e3108b88049dfe.html", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01false_00_01T_00_01Tbe2226ebc67c6afc7587e3108b88049dfe" ],
     [ "MakeIntegerSequenceHelper< false, true, T, Tbegin, std::integral_constant< T, Tbegin >, std::integer_sequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01true_00_01T_00_01Tbeg466ec65af3249a9f6f5c982e7153affc.html", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01true_00_01T_00_01Tbeg466ec65af3249a9f6f5c982e7153affc" ],
-    [ "NdLoop", "structalpaka_1_1meta_1_1detail_1_1NdLoop.html", null ],
-    [ "NdLoop< std::index_sequence< Tdim0, Tdims... > >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4" ],
-    [ "NdLoop< std::index_sequence<> >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4" ],
     [ "NonZeroImpl", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl.html", null ],
     [ "NonZeroImpl< std::integral_constant< T, TValue > >", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl_3_01std_1_1integral__constant_3_01T_00_01TValue_01_4_01_4.html", null ],
     [ "TransformImpl", "structalpaka_1_1meta_1_1detail_1_1TransformImpl.html", null ],
@@ -62,5 +59,7 @@ var namespacealpaka_1_1meta_1_1detail =
     [ "UniqueHelper", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper.html", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper" ],
     [ "UniqueHelper< TList< Ts... >, U, Us... >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html", null ],
     [ "UniqueImpl", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl.html", null ],
-    [ "UniqueImpl< TList< Ts... > >", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4" ]
+    [ "UniqueImpl< TList< Ts... > >", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4" ],
+    [ "ndLoopImpl", "namespacealpaka_1_1meta_1_1detail.html#ad8abf25478ffee4131ff37b40b632c61", null ],
+    [ "ndLoopImpl", "namespacealpaka_1_1meta_1_1detail.html#a506c39189d46d44efa87e74169f88c22", null ]
 ];

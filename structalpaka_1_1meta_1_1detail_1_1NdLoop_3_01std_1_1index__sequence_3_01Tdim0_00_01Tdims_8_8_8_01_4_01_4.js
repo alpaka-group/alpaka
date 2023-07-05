@@ -1,4 +1,0 @@
-var structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4 =
-[
-    [ "ndLoop", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4.html#a5207b416fc6b5f1e5b84bac60b6340e2", null ]
-];

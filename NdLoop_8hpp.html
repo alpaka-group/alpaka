@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('NdLoop_8hpp.html',''); initResizable()
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -98,15 +97,6 @@ $(document).ready(function(){initNavTree('NdLoop_8hpp.html',''); initResizable()
 </div>
 <p><a href="NdLoop_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4.html">alpaka::meta::detail::NdLoop&lt; std::index_sequence&lt; Tdim0, Tdims... &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N-dimensional loop iteration template.  <a href="structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdims_8_8_8_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html">alpaka::meta::detail::NdLoop&lt; std::index_sequence&lt;&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N-dimensional loop iteration template.  <a href="structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
@@ -119,10 +109,16 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a045597af75fc88f57bf8c02e3ecc4444"><td class="memTemplParams" colspan="2">template&lt;typename TExtentVec , typename TFnObj , std::size_t... Tdims&gt; </td></tr>
-<tr class="memitem:a045597af75fc88f57bf8c02e3ecc4444"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a045597af75fc88f57bf8c02e3ecc4444">alpaka::meta::ndLoop</a> ([[maybe_unused]] std::index_sequence&lt; Tdims... &gt; const &amp;indexSequence, TExtentVec const &amp;extent, TFnObj const &amp;f) -&gt; void</td></tr>
-<tr class="memdesc:a045597af75fc88f57bf8c02e3ecc4444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested in the order given by the index_sequence with the first element being the outermost and the last index the innermost loop.  <a href="namespacealpaka_1_1meta.html#a045597af75fc88f57bf8c02e3ecc4444">More...</a><br /></td></tr>
-<tr class="separator:a045597af75fc88f57bf8c02e3ecc4444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7261a133bf3b52a94cc2e289f0c73497"><td class="memTemplParams" colspan="2">template&lt;typename TExtentVec , typename TFnObj , std::size_t... Tdims&gt; </td></tr>
+<tr class="memitem:a7261a133bf3b52a94cc2e289f0c73497"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a7261a133bf3b52a94cc2e289f0c73497">alpaka::meta::ndLoop</a> ([[maybe_unused]] std::index_sequence&lt; Tdims... &gt; indexSequence, TExtentVec const &amp;extent, TFnObj const &amp;f) -&gt; void</td></tr>
+<tr class="memdesc:a7261a133bf3b52a94cc2e289f0c73497"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested in the order given by the index_sequence with the first element being the outermost and the last index the innermost loop.  <a href="namespacealpaka_1_1meta.html#a7261a133bf3b52a94cc2e289f0c73497">More...</a><br /></td></tr>
+<tr class="separator:a7261a133bf3b52a94cc2e289f0c73497"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8abf25478ffee4131ff37b40b632c61"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tdim0, std::size_t... Tdims, typename TIndex , typename TExtentVec , typename TFnObj &gt; </td></tr>
+<tr class="memitem:ad8abf25478ffee4131ff37b40b632c61"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta_1_1detail.html#ad8abf25478ffee4131ff37b40b632c61">alpaka::meta::detail::ndLoopImpl</a> (std::index_sequence&lt; Tdim0, Tdims... &gt;, TIndex &amp;idx, TExtentVec const &amp;extent, TFnObj const &amp;f)</td></tr>
+<tr class="separator:ad8abf25478ffee4131ff37b40b632c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a506c39189d46d44efa87e74169f88c22"><td class="memTemplParams" colspan="2">template&lt;typename TIndex , typename TExtentVec , typename TFnObj &gt; </td></tr>
+<tr class="memitem:a506c39189d46d44efa87e74169f88c22"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta_1_1detail.html#a506c39189d46d44efa87e74169f88c22">alpaka::meta::detail::ndLoopImpl</a> (std::index_sequence&lt;&gt;, TIndex &amp;idx, TExtentVec const &amp;, TFnObj const &amp;f)</td></tr>
+<tr class="separator:a506c39189d46d44efa87e74169f88c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85354683c329835d1fa3e4da7de4c750"><td class="memTemplParams" colspan="2">template&lt;typename TExtentVec , typename TFnObj &gt; </td></tr>
 <tr class="memitem:a85354683c329835d1fa3e4da7de4c750"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750">alpaka::meta::ndLoopIncIdx</a> (TExtentVec const &amp;extent, TFnObj const &amp;f) -&gt; void</td></tr>
 <tr class="memdesc:a85354683c329835d1fa3e4da7de4c750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested from index zero outmost to index (dim-1) innermost.  <a href="namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750">More...</a><br /></td></tr>
@@ -134,7 +130,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_9b06e2d5421d26ecb89f5fc8cf901459.html">meta</a></li><li class="navelem"><a class="el" href="NdLoop_8hpp.html">NdLoop.hpp</a></li>
-    <li class="footer">Generated on Mon Jul 3 2023 11:05:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jul 5 2023 11:07:13 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

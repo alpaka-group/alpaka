@@ -47,6 +47,6 @@ var namespacealpaka_1_1meta =
     [ "foldr", "namespacealpaka_1_1meta.html#a0cef95a955740a85417c93cee0a99d0e", null ],
     [ "foldr", "namespacealpaka_1_1meta.html#acbbc58bde0ebd68f42808ae663e6047d", null ],
     [ "forEachType", "namespacealpaka_1_1meta.html#a84fa9b71d57092b3d9da78ee5eea68b4", null ],
-    [ "ndLoop", "namespacealpaka_1_1meta.html#a045597af75fc88f57bf8c02e3ecc4444", null ],
+    [ "ndLoop", "namespacealpaka_1_1meta.html#a7261a133bf3b52a94cc2e289f0c73497", null ],
     [ "ndLoopIncIdx", "namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750", null ]
 ];

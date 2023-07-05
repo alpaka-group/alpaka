@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['hasschedulechunksize_4759',['HasScheduleChunkSize',['../namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe',1,'alpaka::detail']]],
-  ['highermax_4760',['HigherMax',['../namespacealpaka_1_1meta.html#a2977de255e74797d3699121598066dd2',1,'alpaka::meta']]],
-  ['highermin_4761',['HigherMin',['../namespacealpaka_1_1meta.html#abf03afba38c7ce1e0f5ffd122cbed958',1,'alpaka::meta']]],
-  ['hostfn_5ft_4762',['HostFn_t',['../structalpaka_1_1ApiCudaRt.html#aaf25e9ca7af5ff52ba86a3dc328ca603',1,'alpaka::ApiCudaRt']]]
+  ['hasschedulechunksize_4755',['HasScheduleChunkSize',['../namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe',1,'alpaka::detail']]],
+  ['highermax_4756',['HigherMax',['../namespacealpaka_1_1meta.html#a2977de255e74797d3699121598066dd2',1,'alpaka::meta']]],
+  ['highermin_4757',['HigherMin',['../namespacealpaka_1_1meta.html#abf03afba38c7ce1e0f5ffd122cbed958',1,'alpaka::meta']]],
+  ['hostfn_5ft_4758',['HostFn_t',['../structalpaka_1_1ApiCudaRt.html#aaf25e9ca7af5ff52ba86a3dc328ca603',1,'alpaka::ApiCudaRt']]]
 ];

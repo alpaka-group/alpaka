@@ -240,10 +240,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a84fa9b71d57092b3d9da78ee5eea68b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a84fa9b71d57092b3d9da78ee5eea68b4">forEachType</a> (TFnObj &amp;&amp;f, TArgs &amp;&amp;... args) -&gt; void</td></tr>
 <tr class="memdesc:a84fa9b71d57092b3d9da78ee5eea68b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible. This function does not create instances of the types instead it passes the types as template parameter.  <a href="namespacealpaka_1_1meta.html#a84fa9b71d57092b3d9da78ee5eea68b4">More...</a><br /></td></tr>
 <tr class="separator:a84fa9b71d57092b3d9da78ee5eea68b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a045597af75fc88f57bf8c02e3ecc4444"><td class="memTemplParams" colspan="2">template&lt;typename TExtentVec , typename TFnObj , std::size_t... Tdims&gt; </td></tr>
-<tr class="memitem:a045597af75fc88f57bf8c02e3ecc4444"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a045597af75fc88f57bf8c02e3ecc4444">ndLoop</a> ([[maybe_unused]] std::index_sequence&lt; Tdims... &gt; const &amp;indexSequence, TExtentVec const &amp;extent, TFnObj const &amp;f) -&gt; void</td></tr>
-<tr class="memdesc:a045597af75fc88f57bf8c02e3ecc4444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested in the order given by the index_sequence with the first element being the outermost and the last index the innermost loop.  <a href="namespacealpaka_1_1meta.html#a045597af75fc88f57bf8c02e3ecc4444">More...</a><br /></td></tr>
-<tr class="separator:a045597af75fc88f57bf8c02e3ecc4444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7261a133bf3b52a94cc2e289f0c73497"><td class="memTemplParams" colspan="2">template&lt;typename TExtentVec , typename TFnObj , std::size_t... Tdims&gt; </td></tr>
+<tr class="memitem:a7261a133bf3b52a94cc2e289f0c73497"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a7261a133bf3b52a94cc2e289f0c73497">ndLoop</a> ([[maybe_unused]] std::index_sequence&lt; Tdims... &gt; indexSequence, TExtentVec const &amp;extent, TFnObj const &amp;f) -&gt; void</td></tr>
+<tr class="memdesc:a7261a133bf3b52a94cc2e289f0c73497"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested in the order given by the index_sequence with the first element being the outermost and the last index the innermost loop.  <a href="namespacealpaka_1_1meta.html#a7261a133bf3b52a94cc2e289f0c73497">More...</a><br /></td></tr>
+<tr class="separator:a7261a133bf3b52a94cc2e289f0c73497"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85354683c329835d1fa3e4da7de4c750"><td class="memTemplParams" colspan="2">template&lt;typename TExtentVec , typename TFnObj &gt; </td></tr>
 <tr class="memitem:a85354683c329835d1fa3e4da7de4c750"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750">ndLoopIncIdx</a> (TExtentVec const &amp;extent, TFnObj const &amp;f) -&gt; void</td></tr>
 <tr class="memdesc:a85354683c329835d1fa3e4da7de4c750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested from index zero outmost to index (dim-1) innermost.  <a href="namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750">More...</a><br /></td></tr>
@@ -721,8 +721,8 @@ template&lt;typename TList , typename TFnObj , typename... TArgs&gt; </div>
 
 </div>
 </div>
-<a id="a045597af75fc88f57bf8c02e3ecc4444"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a045597af75fc88f57bf8c02e3ecc4444">&#9670;&nbsp;</a></span>ndLoop()</h2>
+<a id="a7261a133bf3b52a94cc2e289f0c73497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7261a133bf3b52a94cc2e289f0c73497">&#9670;&nbsp;</a></span>ndLoop()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -732,7 +732,7 @@ template&lt;typename TExtentVec , typename TFnObj , std::size_t... Tdims&gt; </d
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::meta::ndLoop </td>
           <td>(</td>
-          <td class="paramtype">[[maybe_unused] ] std::index_sequence&lt; Tdims... &gt; const &amp;&#160;</td>
+          <td class="paramtype">[[maybe_unused] ] std::index_sequence&lt; Tdims... &gt;&#160;</td>
           <td class="paramname"><em>indexSequence</em>, </td>
         </tr>
         <tr>
@@ -766,7 +766,7 @@ template&lt;typename TExtentVec , typename TFnObj , std::size_t... Tdims&gt; </d
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00065">65</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00058">58</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
 
 </div>
 </div>
@@ -808,7 +808,7 @@ template&lt;typename TExtentVec , typename TFnObj &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00089">89</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00081">81</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
 
 </div>
 </div>
@@ -818,7 +818,7 @@ template&lt;typename TExtentVec , typename TFnObj &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1meta.html">meta</a></li>
-    <li class="footer">Generated on Mon Jul 3 2023 11:05:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jul 5 2023 11:07:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

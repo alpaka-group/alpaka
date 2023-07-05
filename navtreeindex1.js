@@ -193,8 +193,10 @@ var NAVTREEINDEX1 =
 "MultiplyAndSplit64to32_8hpp.html#a78260ac74587972ea7408fa1305054c9":[4,0,0,0,19,0,0,2],
 "MultiplyAndSplit64to32_8hpp_source.html":[4,0,0,0,19,0,0],
 "NdLoop_8hpp.html":[4,0,0,0,15,14],
-"NdLoop_8hpp.html#a045597af75fc88f57bf8c02e3ecc4444":[4,0,0,0,15,14,2],
+"NdLoop_8hpp.html#a506c39189d46d44efa87e74169f88c22":[4,0,0,0,15,14,2],
+"NdLoop_8hpp.html#a7261a133bf3b52a94cc2e289f0c73497":[4,0,0,0,15,14,0],
 "NdLoop_8hpp.html#a85354683c329835d1fa3e4da7de4c750":[4,0,0,0,15,14,3],
+"NdLoop_8hpp.html#ad8abf25478ffee4131ff37b40b632c61":[4,0,0,0,15,14,1],
 "NdLoop_8hpp_source.html":[4,0,0,0,15,14],
 "NonZero_8hpp.html":[4,0,0,0,15,15],
 "NonZero_8hpp.html#a8cc18e1b72c5071da369d80b8f0569a7":[4,0,0,0,15,15,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "PltfUniformCudaHipRt_8hpp_source.html":[4,0,0,0,17,7],
 "Positioning_8hpp.html":[4,0,0,0,3,20],
 "Positioning_8hpp_source.html":[4,0,0,0,3,20],
-"Properties_8hpp.html":[4,0,0,0,18,3],
-"Properties_8hpp_source.html":[4,0,0,0,18,3],
-"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4]
+"Properties_8hpp.html":[4,0,0,0,18,3]
 };
