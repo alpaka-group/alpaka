@@ -23,7 +23,6 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "ClipCast.hpp", "ClipCast_8hpp.html", "ClipCast_8hpp" ],
     [ "Common.hpp", "core_2Common_8hpp.html", "core_2Common_8hpp" ],
     [ "Concepts.hpp", "Concepts_8hpp.html", "Concepts_8hpp" ],
-    [ "ConcurrentExecPool.hpp", "ConcurrentExecPool_8hpp.html", "ConcurrentExecPool_8hpp" ],
     [ "Cuda.hpp", "Cuda_8hpp.html", "Cuda_8hpp" ],
     [ "CudaHipCommon.hpp", "CudaHipCommon_8hpp.html", "CudaHipCommon_8hpp" ],
     [ "Debug.hpp", "Debug_8hpp.html", "Debug_8hpp" ],
@@ -38,7 +37,9 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     ] ],
     [ "RemoveRestrict.hpp", "RemoveRestrict_8hpp.html", "RemoveRestrict_8hpp" ],
     [ "Sycl.hpp", "Sycl_8hpp.html", null ],
-    [ "ThreadTraits.hpp", "ThreadTraits_8hpp.html", "ThreadTraits_8hpp" ],
+    [ "ThreadPool.hpp", "ThreadPool_8hpp.html", [
+      [ "ThreadPool", "structalpaka_1_1core_1_1detail_1_1ThreadPool.html", "structalpaka_1_1core_1_1detail_1_1ThreadPool" ]
+    ] ],
     [ "Tuple.hpp", "Tuple_8hpp.html", "Tuple_8hpp" ],
     [ "UniformCudaHip.hpp", "UniformCudaHip_8hpp.html", "UniformCudaHip_8hpp" ],
     [ "Unreachable.hpp", "Unreachable_8hpp.html", "Unreachable_8hpp" ],

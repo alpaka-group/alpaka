@@ -50,13 +50,8 @@ var hierarchy =
     [ "alpaka::core::CallbackThread", "classalpaka_1_1core_1_1CallbackThread.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", null ],
     [ "alpaka::core::detail::AssertValueUnsigned< TArg >", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html", null ],
-    [ "alpaka::core::detail::ConcurrentExecPoolMutexAndCond< TMutex, TCondVar >", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPoolMutexAndCond.html", null ],
-    [ "alpaka::core::detail::Empty", "structalpaka_1_1core_1_1detail_1_1Empty.html", null ],
-    [ "alpaka::core::detail::ITaskPkg", "structalpaka_1_1core_1_1detail_1_1ITaskPkg.html", [
-      [ "alpaka::core::detail::TaskPkg< TPromise, TFnObj >", "structalpaka_1_1core_1_1detail_1_1TaskPkg.html", null ]
-    ] ],
     [ "alpaka::core::detail::ScopeLogStdOut", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html", null ],
-    [ "alpaka::core::detail::ThreadSafeQueue< T >", "structalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", null ],
+    [ "alpaka::core::detail::ThreadPool", "structalpaka_1_1core_1_1detail_1_1ThreadPool.html", null ],
     [ "alpaka::core::threads::BarrierThread< TIdx >", "classalpaka_1_1core_1_1threads_1_1BarrierThread.html", null ],
     [ "alpaka::core::threads::BarrierThreadWithPredicate< TIdx >", "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html", null ],
     [ "alpaka::core::threads::detail::AtomicOp< TOp >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html", null ],
@@ -885,8 +880,6 @@ var hierarchy =
     [ "alpaka::trait::IsComplete< EventUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1IsComplete_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ],
     [ "alpaka::trait::IsComplete< test::EventHostManualTriggerCpu< TDev > >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html", null ],
     [ "alpaka::trait::IsComplete< test::EventHostManualTriggerCuda >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html", null ],
-    [ "alpaka::trait::IsThisThread< TThread, TSfinae >", "structalpaka_1_1trait_1_1IsThisThread.html", null ],
-    [ "alpaka::trait::IsThisThread< std::thread >", "structalpaka_1_1trait_1_1IsThisThread_3_01std_1_1thread_01_4.html", null ],
     [ "alpaka::trait::Malloc< T, TAlloc, TSfinae >", "structalpaka_1_1trait_1_1Malloc.html", null ],
     [ "alpaka::trait::Malloc< T, AllocCpuAligned< TAlignment > >", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html", null ],
     [ "alpaka::trait::Malloc< T, AllocCpuNew >", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4.html", null ],
@@ -1684,7 +1677,6 @@ var hierarchy =
       [ "alpaka::trait::HasAsyncBufSupport< TDim, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ]
     ] ],
     [ "std::conditional_t", null, [
-      [ "alpaka::core::detail::ConcurrentExecPool< TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding >", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html", null ],
       [ "alpaka::meta::detail::UniqueHelper< TList< Ts... >, U, Us... >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html", null ]
     ] ],
     [ "std::false_type", null, [
@@ -1764,7 +1756,6 @@ var hierarchy =
     [ "TDim::value", null, [
       [ "alpaka::trait::HasAsyncBufSupport< TDim, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ]
     ] ],
-    [ "alpaka::core::detail::ThreadSafeQueue< std::shared_ptr< alpaka::core::detail::ITaskPkg > >", "structalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", null ],
     [ "TINYMT32_T", "structTINYMT32__T.html", null ],
     [ "utility::tuple::Tuple< Ts... >", "structutility_1_1tuple_1_1Tuple.html", null ],
     [ "utility::tuple::concat_tuple< typename, typename >", "structutility_1_1tuple_1_1concat__tuple.html", null ],

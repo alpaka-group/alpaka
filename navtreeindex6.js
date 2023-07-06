@@ -1,10 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"elem_2Traits_8hpp.html":[4,0,0,0,6,0],
-"elem_2Traits_8hpp.html#a807188d82118e5a640469d676853a195":[4,0,0,0,6,0,1],
-"elem_2Traits_8hpp_source.html":[4,0,0,0,6,0],
-"event_2Traits_8hpp.html":[4,0,0,0,7,9],
-"event_2Traits_8hpp.html#a097911074293c18d5a37aac3266f9a24":[4,0,0,0,7,9,0],
 "event_2Traits_8hpp.html#a5906c3e845cdb7c70e581d378c212e81":[4,0,0,0,7,9,1],
 "event_2Traits_8hpp_source.html":[4,0,0,0,7,9],
 "extent_2Traits_8hpp.html":[4,0,0,0,9,0],
@@ -91,8 +86,8 @@ var NAVTREEINDEX6 =
 "functions_type_w.html":[3,2,3,17],
 "functions_u.html":[3,2,0,20],
 "functions_v.html":[3,2,0,21],
-"functions_vars.html":[3,2,2],
 "functions_vars.html":[3,2,2,0],
+"functions_vars.html":[3,2,2],
 "functions_vars_d.html":[3,2,2,1],
 "functions_vars_e.html":[3,2,2,2],
 "functions_vars_f.html":[3,2,2,3],
@@ -244,10 +239,15 @@ var NAVTREEINDEX6 =
 "meta_2Set_8hpp.html#a7007c16b361a3bbc1184a79223d884dc":[4,0,0,0,15,16,4],
 "meta_2Set_8hpp_source.html":[4,0,0,0,15,16],
 "namespacealpaka.html":[2,0,0],
-"namespacealpaka.html#a00807567e743f0ad969ff20f5e48a179":[2,0,0,247],
 "namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70":[2,0,0,136],
 "namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4":[2,0,0,202],
-"namespacealpaka.html#a048ff9cca5c56811851e429e924dca34":[2,0,0,288],
-"namespacealpaka.html#a04ae4930bfe8066926626e8cb5bb66ef":[2,0,0,277],
-"namespacealpaka.html#a04e2df797bfc2c24d3c11bee905fcb38":[2,0,0,291]
+"namespacealpaka.html#a048ff9cca5c56811851e429e924dca34":[2,0,0,287],
+"namespacealpaka.html#a04ae4930bfe8066926626e8cb5bb66ef":[2,0,0,276],
+"namespacealpaka.html#a04e2df797bfc2c24d3c11bee905fcb38":[2,0,0,290],
+"namespacealpaka.html#a0580041d23c64bdc559cf814a5789c40":[2,0,0,190],
+"namespacealpaka.html#a05ded3e1760e87f4b377803a98f98885":[2,0,0,194],
+"namespacealpaka.html#a097911074293c18d5a37aac3266f9a24":[2,0,0,132],
+"namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb":[2,0,0,320],
+"namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa":[2,0,0,140],
+"namespacealpaka.html#a0aa8696df70f831430950ec8709194a4":[2,0,0,268]
 };

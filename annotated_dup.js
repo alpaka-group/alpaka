@@ -24,15 +24,10 @@ var annotated_dup =
         [ "detail", "namespacealpaka_1_1core_1_1detail.html", [
           [ "AssertGreaterThan", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan" ],
           [ "AssertValueUnsigned", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned" ],
-          [ "ConcurrentExecPool", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool" ],
-          [ "ConcurrentExecPoolMutexAndCond", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPoolMutexAndCond.html", "structalpaka_1_1core_1_1detail_1_1ConcurrentExecPoolMutexAndCond" ],
-          [ "Empty", "structalpaka_1_1core_1_1detail_1_1Empty.html", null ],
-          [ "ITaskPkg", "structalpaka_1_1core_1_1detail_1_1ITaskPkg.html", "structalpaka_1_1core_1_1detail_1_1ITaskPkg" ],
           [ "RoundUpToPowerOfTwoHelper", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html", null ],
           [ "RoundUpToPowerOfTwoHelper< N, false >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html", null ],
           [ "ScopeLogStdOut", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut" ],
-          [ "TaskPkg", "structalpaka_1_1core_1_1detail_1_1TaskPkg.html", "structalpaka_1_1core_1_1detail_1_1TaskPkg" ],
-          [ "ThreadSafeQueue", "structalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", "structalpaka_1_1core_1_1detail_1_1ThreadSafeQueue" ]
+          [ "ThreadPool", "structalpaka_1_1core_1_1detail_1_1ThreadPool.html", "structalpaka_1_1core_1_1detail_1_1ThreadPool" ]
         ] ],
         [ "threads", "namespacealpaka_1_1core_1_1threads.html", [
           [ "detail", "namespacealpaka_1_1core_1_1threads_1_1detail.html", [
@@ -1026,8 +1021,6 @@ var annotated_dup =
         [ "IsComplete< EventUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1IsComplete_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4" ],
         [ "IsComplete< test::EventHostManualTriggerCpu< TDev > >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4" ],
         [ "IsComplete< test::EventHostManualTriggerCuda >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4" ],
-        [ "IsThisThread", "structalpaka_1_1trait_1_1IsThisThread.html", null ],
-        [ "IsThisThread< std::thread >", "structalpaka_1_1trait_1_1IsThisThread_3_01std_1_1thread_01_4.html", "structalpaka_1_1trait_1_1IsThisThread_3_01std_1_1thread_01_4" ],
         [ "Malloc", "structalpaka_1_1trait_1_1Malloc.html", null ],
         [ "Malloc< T, AllocCpuAligned< TAlignment > >", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4" ],
         [ "Malloc< T, AllocCpuNew >", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4.html", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4" ],

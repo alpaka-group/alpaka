@@ -100,16 +100,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html">AssertValueUnsigned</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html" title="ConcurrentExecPool using yield or a condition variable to wait for new work.">ConcurrentExecPool</a> using yield or a condition variable to wait for new work.  <a href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ConcurrentExecPoolMutexAndCond.html">ConcurrentExecPoolMutexAndCond</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1Empty.html">Empty</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html">ITaskPkg</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html" title="ITaskPkg.">ITaskPkg</a>.  <a href="structalpaka_1_1core_1_1detail_1_1ITaskPkg.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html">RoundUpToPowerOfTwoHelper</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base case for N being a power of two.  <a href="structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,9 +109,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html">ScopeLogStdOut</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scope logger.  <a href="classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1TaskPkg.html">TaskPkg</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html">ThreadSafeQueue</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1core_1_1detail_1_1ThreadPool.html">ThreadPool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A thread pool yielding when there is not enough work to be done.  <a href="structalpaka_1_1core_1_1detail_1_1ThreadPool.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -129,9 +118,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aaed5eba1aa1870e218d10a93430c3f80"><td class="memTemplParams" colspan="2">template&lt;typename TFunc , typename... TArgs, std::size_t... Is&gt; </td></tr>
 <tr class="memitem:aaed5eba1aa1870e218d10a93430c3f80"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core_1_1detail.html#aaed5eba1aa1870e218d10a93430c3f80">apply_impl</a> (TFunc &amp;&amp;f, Tuple&lt; TArgs... &gt; &amp;&amp;t, std::index_sequence&lt; Is... &gt;)</td></tr>
 <tr class="separator:aaed5eba1aa1870e218d10a93430c3f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1ea1d5b9fd8ccc4cb900940abcc8eec"><td class="memTemplParams" colspan="2">template&lt;typename TFnObj0 , typename TFnObj1 &gt; </td></tr>
-<tr class="memitem:ae1ea1d5b9fd8ccc4cb900940abcc8eec"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core_1_1detail.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec">invokeBothReturnFirst</a> (TFnObj0 &amp;&amp;fn0, TFnObj1 &amp;&amp;fn1)</td></tr>
-<tr class="separator:ae1ea1d5b9fd8ccc4cb900940abcc8eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines implementation details that should not be used directly by the user. </p>
@@ -182,45 +168,13 @@ template&lt;typename TFunc , typename... TArgs, std::size_t... Is&gt; </div>
 
 </div>
 </div>
-<a id="ae1ea1d5b9fd8ccc4cb900940abcc8eec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1ea1d5b9fd8ccc4cb900940abcc8eec">&#9670;&nbsp;</a></span>invokeBothReturnFirst()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TFnObj0 , typename TFnObj1 &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">auto alpaka::core::detail::invokeBothReturnFirst </td>
-          <td>(</td>
-          <td class="paramtype">TFnObj0 &amp;&amp;&#160;</td>
-          <td class="paramname"><em>fn0</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TFnObj1 &amp;&amp;&#160;</td>
-          <td class="paramname"><em>fn1</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00133">133</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Wed Jul 5 2023 16:03:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 6 2023 08:38:00 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

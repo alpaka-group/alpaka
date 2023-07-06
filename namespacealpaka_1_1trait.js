@@ -384,8 +384,6 @@ var namespacealpaka_1_1trait =
     [ "IsComplete< EventUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1IsComplete_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4" ],
     [ "IsComplete< test::EventHostManualTriggerCpu< TDev > >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4" ],
     [ "IsComplete< test::EventHostManualTriggerCuda >", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html", "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4" ],
-    [ "IsThisThread", "structalpaka_1_1trait_1_1IsThisThread.html", null ],
-    [ "IsThisThread< std::thread >", "structalpaka_1_1trait_1_1IsThisThread_3_01std_1_1thread_01_4.html", "structalpaka_1_1trait_1_1IsThisThread_3_01std_1_1thread_01_4" ],
     [ "Malloc", "structalpaka_1_1trait_1_1Malloc.html", null ],
     [ "Malloc< T, AllocCpuAligned< TAlignment > >", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4" ],
     [ "Malloc< T, AllocCpuNew >", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4.html", "structalpaka_1_1trait_1_1Malloc_3_01T_00_01AllocCpuNew_01_4" ],

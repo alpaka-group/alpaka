@@ -251,7 +251,6 @@ var namespacealpaka =
     [ "getWorkDiv", "namespacealpaka.html#a2a811570d2074f237f89c9910b82b44c", null ],
     [ "isComplete", "namespacealpaka.html#a5906c3e845cdb7c70e581d378c212e81", null ],
     [ "isSupportedByAtomicAtomicRef", "namespacealpaka.html#ae9234c08c7824fc7b5a9a73e6a11fbd1", null ],
-    [ "isThisThread", "namespacealpaka.html#a00807567e743f0ad969ff20f5e48a179", null ],
     [ "isValidAccDevProps", "namespacealpaka.html#a49da61db606743ad5f75c6db33cfc043", null ],
     [ "isValidWorkDiv", "namespacealpaka.html#abe4c3a3b90386720d53c5a5fc9426ce1", null ],
     [ "isValidWorkDiv", "namespacealpaka.html#a378a4ed1bdce40639b3204d84a004d1c", null ],

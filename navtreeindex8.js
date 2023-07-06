@@ -1,12 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"namespacealpaka_1_1detail.html#a5fbc42e51c833856a03a2a7f3956b23f":[2,0,0,5,68],
-"namespacealpaka_1_1detail.html#a64053dbfaaaefdf2572ec83b38b30623":[2,0,0,5,78],
-"namespacealpaka_1_1detail.html#a67dc480b31ee420646bf5c6cc9799ccf":[2,0,0,5,81],
-"namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b":[2,0,0,5,72],
-"namespacealpaka_1_1detail.html#a867e1d281e084bbeb3a56bba70306a21":[2,0,0,5,67],
-"namespacealpaka_1_1detail.html#a8889b3386f7d3a4beaa306743c0672f6":[2,0,0,5,66],
-"namespacealpaka_1_1detail.html#a93cfb90319ccb5e30631f043aff3cfdf":[2,0,0,5,80],
 "namespacealpaka_1_1detail.html#a97da91c88a5fe4706fa3747b0e6c8cc9":[2,0,0,5,75],
 "namespacealpaka_1_1detail.html#a9ee62c9b6003cde99028340666f38685":[2,0,0,5,65],
 "namespacealpaka_1_1detail.html#aa4d5063ec3f3e7b763fc5fc02617e8f5":[2,0,0,5,73],
@@ -194,8 +187,8 @@ var NAVTREEINDEX8 =
 "namespacealpaka_1_1test_1_1uniform__cuda__hip.html":[2,0,0,18,4],
 "namespacealpaka_1_1test_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,18,4,0],
 "namespacealpaka_1_1trait.html":[2,0,0,19],
-"namespacealpaka_1_1trait.html#a24b5d6fa444921ebd3bb7eb7a688ff80":[2,0,0,19,482],
-"namespacealpaka_1_1trait.html#a503e1b034d84e42b00504644b8623948":[2,0,0,19,481],
+"namespacealpaka_1_1trait.html#a24b5d6fa444921ebd3bb7eb7a688ff80":[2,0,0,19,480],
+"namespacealpaka_1_1trait.html#a503e1b034d84e42b00504644b8623948":[2,0,0,19,479],
 "namespacealpaka_1_1trait_1_1detail.html":[2,0,0,19,0],
 "namespacealpaka_1_1trait_1_1detail.html#a103c83a3115216746d6c45d9705310fe":[2,0,0,19,0,13],
 "namespacealpaka_1_1trait_1_1generic.html":[2,0,0,19,1],
@@ -225,8 +218,8 @@ var NAVTREEINDEX8 =
 "namespacemembers_e.html":[2,1,0,4],
 "namespacemembers_enum.html":[2,1,4],
 "namespacemembers_f.html":[2,1,0,5],
-"namespacemembers_func.html":[2,1,1],
 "namespacemembers_func.html":[2,1,1,0],
+"namespacemembers_func.html":[2,1,1],
 "namespacemembers_func_b.html":[2,1,1,1],
 "namespacemembers_func_c.html":[2,1,1,2],
 "namespacemembers_func_d.html":[2,1,1,3],
@@ -249,5 +242,12 @@ var NAVTREEINDEX8 =
 "namespacemembers_h.html":[2,1,0,7],
 "namespacemembers_i.html":[2,1,0,8],
 "namespacemembers_l.html":[2,1,0,9],
-"namespacemembers_m.html":[2,1,0,10]
+"namespacemembers_m.html":[2,1,0,10],
+"namespacemembers_n.html":[2,1,0,11],
+"namespacemembers_o.html":[2,1,0,12],
+"namespacemembers_p.html":[2,1,0,13],
+"namespacemembers_q.html":[2,1,0,14],
+"namespacemembers_r.html":[2,1,0,15],
+"namespacemembers_s.html":[2,1,0,16],
+"namespacemembers_t.html":[2,1,0,17]
 };
