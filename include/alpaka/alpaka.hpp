@@ -12361,6 +12361,9 @@
 		                 *   a == 10 && b == 20
 		                 */
 		#    pragma omp flush
+		#    ifdef _MSC_VER
+		                ; // MSVC needs an empty statement here or it diagnoses a syntax error
+		#    endif
 		            }
 		        };
 		    } // namespace trait
