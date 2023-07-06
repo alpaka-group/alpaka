@@ -147,11 +147,14 @@ $(document).ready(function(){initNavTree('MemFenceOmp2Threads_8hpp_source.html',
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">                 *   a == 10 &amp;&amp; b == 20</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">                 */</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#    pragma omp flush</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        };</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#    ifdef _MSC_VER</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                ; <span class="comment">// MSVC needs an empty statement here or it diagnoses a syntax error</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        };</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1MemFenceOmp2Threads_html"><div class="ttname"><a href="classalpaka_1_1MemFenceOmp2Threads.html">alpaka::MemFenceOmp2Threads</a></div><div class="ttdoc">The CPU OpenMP 2.0 block memory fence.</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceOmp2Threads_8hpp_source.html#l00019">MemFenceOmp2Threads.hpp:20</a></div></div>
 <div class="ttc" id="amem_2fence_2Traits_8hpp_html"><div class="ttname"><a href="mem_2fence_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -165,7 +168,7 @@ $(document).ready(function(){initNavTree('MemFenceOmp2Threads_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceOmp2Threads_8hpp.html">MemFenceOmp2Threads.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 6 2023 08:37:59 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 6 2023 08:40:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
