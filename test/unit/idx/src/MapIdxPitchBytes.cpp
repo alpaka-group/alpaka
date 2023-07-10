@@ -1,4 +1,4 @@
-/* Copyright 2022 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2022 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -14,7 +14,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-TEMPLATE_LIST_TEST_CASE("mapIdxPitchBytes", "[idx]", alpaka::test::TestDims)
+TEMPLATE_LIST_TEST_CASE("mapIdxPitchBytes", "[idx]", alpaka::test::NonZeroTestDims)
 {
     using Dim = TestType;
     using Idx = std::size_t;
