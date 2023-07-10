@@ -6,6 +6,8 @@
 
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
+#include "alpaka/meta/Filter.hpp"
+#include "alpaka/meta/NonZero.hpp"
 
 #include <tuple>
 
@@ -23,4 +25,10 @@ namespace alpaka::test
         DimInt<4u>
 #endif
         >;
+
+    //! A std::tuple holding non-zero dimensions.
+    //!
+    //! NonZeroTestDims = std::tuple<Dim1, Dim2, ... DimN>
+    using NonZeroTestDims = meta::Filter<TestDims, meta::NonZero>;
+
 } // namespace alpaka::test

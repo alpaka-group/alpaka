@@ -145,11 +145,6 @@ namespace alpaka::test
 
     namespace detail
     {
-        //! A std::tuple holding non-zero dimensions.
-        //!
-        //! NonZeroTestDims = std::tuple<Dim1, Dim2, Dim3, ... DimN>
-        using NonZeroTestDims = meta::Filter<TestDims, meta::NonZero>;
-
         //! A std::tuple holding multiple std::tuple consisting of a dimension and a idx type.
         //!
         //! TestDimIdxTuples =
