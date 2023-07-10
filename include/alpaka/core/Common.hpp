@@ -76,13 +76,12 @@
 //! Macro defining the inline function attribute.
 #if BOOST_LANG_CUDA || BOOST_LANG_HIP
 #    define ALPAKA_FN_INLINE __forceinline__
-#else
-#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+#elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 // TODO: With C++20 [[msvc::forceinline]] can be used.
-#        define ALPAKA_FN_INLINE __forceinline
-#    else
-#        define ALPAKA_FN_INLINE [[gnu::always_inline]] inline
-#    endif
+#    define ALPAKA_FN_INLINE __forceinline
+#else
+// For gcc, clang, and clang-based compilers like Intel icpx
+#    define ALPAKA_FN_INLINE [[gnu::always_inline]] inline
 #endif
 
 //! This macro defines a variable lying in global accelerator device memory.

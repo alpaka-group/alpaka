@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2023 Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -45,7 +45,7 @@ namespace alpaka::trait
     template<typename TDim, typename TIdx>
     struct GetAccName<AccFpgaSyclIntel<TDim, TIdx>>
     {
-        ALPAKA_FN_HOST static auto getAccName() -> std::string
+        static auto getAccName() -> std::string
         {
             return "AccFpgaSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
         }

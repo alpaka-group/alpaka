@@ -1,5 +1,5 @@
 /* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber,
- *                Jan Stephan, Andrea Bocci
+ *                Jan Stephan, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -229,6 +229,26 @@ namespace alpaka
         };
 #endif
 
+#if defined(ALPAKA_ACC_SYCL_ENABLED)
+        //! The SYCL device CreateViewPlainPtr trait specialization.
+        template<typename TPltf>
+        struct CreateViewPlainPtr<DevGenericSycl<TPltf>>
+        {
+            template<typename TElem, typename TExtent, typename TPitch>
+            static auto createViewPlainPtr(
+                DevGenericSycl<TPltf> const& dev,
+                TElem* pMem,
+                TExtent const& extent,
+                TPitch const& pitch)
+            {
+                return alpaka::ViewPlainPtr<DevGenericSycl<TPltf>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                    pMem,
+                    dev,
+                    extent,
+                    pitch);
+            }
+        };
+#endif
         //! The ViewPlainPtr offset get trait specialization.
         template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
         struct GetOffset<TIdxIntegralConst, ViewPlainPtr<TDev, TElem, TDim, TIdx>>
