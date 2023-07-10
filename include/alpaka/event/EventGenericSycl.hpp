@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan, Antonio Di Pilato
+/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -87,7 +87,7 @@ namespace alpaka::trait
     {
         static auto enqueue(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
         {
-            event.setEvent(queue.m_impl->get_last_event());
+            event.setEvent(queue.m_spQueueImpl->get_last_event());
         }
     };
 
@@ -97,7 +97,7 @@ namespace alpaka::trait
     {
         static auto enqueue(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
         {
-            event.setEvent(queue.m_impl->get_last_event());
+            event.setEvent(queue.m_spQueueImpl->get_last_event());
         }
     };
 
@@ -120,7 +120,7 @@ namespace alpaka::trait
     {
         static auto waiterWaitFor(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
         {
-            queue.m_impl->register_dependency(event.getNativeHandle());
+            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
         }
     };
 
@@ -130,7 +130,7 @@ namespace alpaka::trait
     {
         static auto waiterWaitFor(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
         {
-            queue.m_impl->register_dependency(event.getNativeHandle());
+            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
         }
     };
 

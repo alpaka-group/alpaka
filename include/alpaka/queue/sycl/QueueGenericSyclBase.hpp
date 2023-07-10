@@ -1,4 +1,4 @@
-/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci
+/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -172,16 +172,16 @@ namespace alpaka::detail
     public:
         QueueGenericSyclBase(TDev const& dev)
             : m_dev{dev}
-            , m_impl{std::make_shared<detail::QueueGenericSyclImpl>(
+            , m_spQueueImpl{std::make_shared<detail::QueueGenericSyclImpl>(
                   dev.getNativeHandle().second,
                   dev.getNativeHandle().first)}
         {
-            m_dev.m_impl->register_queue(m_impl);
+            m_dev.m_impl->register_queue(m_spQueueImpl);
         }
 
         friend auto operator==(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
         {
-            return (lhs.m_dev == rhs.m_dev) && (lhs.m_impl == rhs.m_impl);
+            return (lhs.m_dev == rhs.m_dev) && (lhs.m_spQueueImpl == rhs.m_spQueueImpl);
         }
 
         friend auto operator!=(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
@@ -191,11 +191,11 @@ namespace alpaka::detail
 
         [[nodiscard]] auto getNativeHandle() const noexcept
         {
-            return m_impl->getNativeHandle();
+            return m_spQueueImpl->getNativeHandle();
         }
 
         TDev m_dev;
-        std::shared_ptr<detail::QueueGenericSyclImpl> m_impl;
+        std::shared_ptr<detail::QueueGenericSyclImpl> m_spQueueImpl;
     };
 } // namespace alpaka::detail
 
@@ -239,7 +239,7 @@ namespace alpaka::trait
         static auto enqueue(detail::QueueGenericSyclBase<TDev, TBlocking>& queue, TTask const& task) -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-            queue.m_impl->template enqueue<TBlocking>(task);
+            queue.m_spQueueImpl->template enqueue<TBlocking>(task);
         }
     };
 
@@ -250,7 +250,7 @@ namespace alpaka::trait
         static auto empty(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> bool
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-            return queue.m_impl->empty();
+            return queue.m_spQueueImpl->empty();
         }
     };
 
@@ -264,7 +264,7 @@ namespace alpaka::trait
         static auto currentThreadWaitFor(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-            queue.m_impl->wait();
+            queue.m_spQueueImpl->wait();
         }
     };
 

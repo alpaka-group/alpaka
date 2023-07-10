@@ -54,7 +54,7 @@ namespace alpaka
             }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            ALPAKA_FN_HOST auto printDebug() const -> void
+            auto printDebug() const -> void
             {
                 std::cout << __func__ << " e: " << this->m_extent << " ewb: " << this->m_extentWidthBytes
                           << " de: " << this->m_dstExtent << " dptr: " << reinterpret_cast<void*>(this->m_dstMemNative)
@@ -170,7 +170,7 @@ namespace alpaka
             }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            ALPAKA_FN_HOST auto printDebug() const -> void
+            auto printDebug() const -> void
             {
                 std::cout << __func__ << " e: " << Scalar() << " ewb: " << sizeof(Elem) << " de: " << Scalar()
                           << " dptr: " << reinterpret_cast<void*>(m_dstMemNative) << " dpitchb: " << Scalar()
@@ -203,7 +203,7 @@ namespace alpaka
         struct CreateTaskMemset<TDim, DevGenericSycl<TPltf>>
         {
             template<typename TExtent, typename TView>
-            ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
+            static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
                 -> detail::TaskSetSycl<TDim, TView, TExtent>
             {
                 return detail::TaskSetSycl<TDim, TView, TExtent>(view, byte, extent);
