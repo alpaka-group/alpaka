@@ -180,4 +180,82 @@ namespace alpaka
 
         ALPAKA_UNREACHABLE(allocBuf<TElem, TIdx>(host, extent));
     }
+
+    namespace detail
+    {
+        // TODO(bgruber): very crude
+        template<typename DevDst, typename DevSrc>
+        auto canZeroCopy(DevDst const& devDst, DevSrc const& devSrc) -> bool
+        {
+            if constexpr(std::is_same_v<DevDst, DevSrc>)
+                if(devSrc == devDst)
+                    return true;
+            return false;
+        }
+    } // namespace detail
+
+    //! Makes the content of the source view available on the device associated with the destination queue. If the
+    //! destination shares the same memory space as the source view, no copy is performed and the destination view is
+    //! updated to share the same buffer as the source view. Otherwise, a memcpy is performed from source to
+    //! destination view.
+    template<typename TQueue, typename TViewDst, typename TViewSrc>
+    ALPAKA_FN_HOST void makeAvailable(TQueue& queue, TViewDst& viewDst, TViewSrc const& viewSrc)
+    {
+        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+        if constexpr(std::is_same_v<TViewSrc, TViewDst>) // TODO(bgruber): lift this by converting buffer types
+            if(detail::canZeroCopy(getDev(viewDst), getDev(viewSrc)))
+            {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "zero_memcopy: copy elided\n";
+#endif
+                viewDst = viewSrc;
+                return;
+            }
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+        std::cout << "zero_memcopy: deep copy required\n";
+#endif
+        memcpy(queue, viewDst, viewSrc);
+    }
+
+    //! Makes the content of the source view available on the destination device. If the destination shares the same
+    //! memory space as the source view, no copy is performed and the source view is returned. Otherwise a newly
+    //! allocated buffer is created on the destination device and the content of the source view copied to it.
+    template<
+        typename TQueue,
+        typename TDevDst,
+        typename TViewSrc,
+        std::enable_if_t<isDevice<TDevDst>, int> = 0,
+        typename TViewDst = Buf<TDevDst, Elem<TViewSrc>, Dim<TViewSrc>, Idx<TViewSrc>>>
+    ALPAKA_FN_HOST auto makeAvailable(TQueue& queue, TDevDst const& dstDev, TViewSrc const& viewSrc) -> TViewDst
+    {
+        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+        if constexpr(std::is_same_v<TViewSrc, TViewDst>) // TODO(bgruber): lift this by converting buffer types
+            if(detail::canZeroCopy(dstDev, getDev(viewSrc)))
+            {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                std::cout << "zero_memcopy: shallow copy returned\n";
+#endif
+                return viewSrc;
+            }
+
+        using E = Elem<TViewSrc>;
+        using I = Idx<TViewSrc>;
+        auto const extent = getExtentVec(viewSrc);
+        TViewDst dst = [&]
+        {
+            using TDevQueue = Dev<TQueue>;
+            if constexpr(std::is_same_v<TDevQueue, TDevDst>)
+                if(getDev(queue) == dstDev)
+                    return allocAsyncBufIfSupported<E, I>(queue, extent);
+            return allocBuf<E, I>(dstDev, extent);
+        }();
+        memcpy(queue, dst, viewSrc);
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+        std::cout << "zero_memcopy: deep copy returned\n";
+#endif
+        return dst;
+    }
 } // namespace alpaka
