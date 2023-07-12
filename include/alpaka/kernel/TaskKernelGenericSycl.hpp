@@ -36,7 +36,7 @@
 #        pragma clang diagnostic ignored "-Wunused-parameter"
 #    endif
 
-#    include <CL/sycl.hpp>
+#    include <sycl/sycl.hpp>
 
 #    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
         cgh.parallel_for(                                                                                             \

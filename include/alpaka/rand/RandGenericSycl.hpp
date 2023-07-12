@@ -12,7 +12,7 @@
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 // Backend specific imports.
-#    include <CL/sycl.hpp>
+#    include <sycl/sycl.hpp>
 #    if BOOST_COMP_CLANG
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wcast-align"

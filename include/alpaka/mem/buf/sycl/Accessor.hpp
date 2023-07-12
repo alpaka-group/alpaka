@@ -13,7 +13,7 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <CL/sycl.hpp>
+#    include <sycl/sycl.hpp>
 
 namespace alpaka
 {
