@@ -22,7 +22,7 @@
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
-#    include <CL/sycl.hpp>
+#    include <sycl/sycl.hpp>
 
 // if SYCL is enabled with the AMD backend the printf will be killed because of missing compiler support
 #    ifdef __AMDGCN__
