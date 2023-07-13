@@ -1,4 +1,4 @@
-/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -45,13 +45,13 @@ struct AnyMultipleThreadWarpTestKernel
 
         // Some threads quit the kernel to test that the warp operations
         // properly operate on the active threads only
-        if(threadIdxInWarp % 5)
+        if(threadIdxInWarp % 2)
             return;
 
         for(auto idx = 0; idx < warpExtent; idx++)
         {
             ALPAKA_CHECK(*success, alpaka::warp::any(acc, threadIdxInWarp == idx ? 0 : 1) == 1);
-            std::int32_t const expected = idx % 5 ? 0 : 1;
+            std::int32_t const expected = idx % 2 ? 0 : 1;
             ALPAKA_CHECK(*success, alpaka::warp::any(acc, threadIdxInWarp == idx ? 1 : 0) == expected);
         }
     }
