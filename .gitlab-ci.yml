@@ -26,7 +26,8 @@ generate:
   script:
     - apk update && apk add python3~=3.11 py3-pip
     - pip3 install -r script/job_generator/requirements.txt
-    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --compile-only -o compile_only.yml
+    # it's enough to verify one time, because --compile-only und --runtime-only generates the same job matrix and filter it
+    - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --verify --compile-only -o compile_only.yml
     - python3 script/job_generator/job_generator.py ${ALPAKA_GITLAB_CI_GENERATOR_CONTAINER_VERSION} --runtime-only -o runtime.yml
     - cat compile_only.yml
     - cat runtime.yml
