@@ -13,8 +13,8 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/kernel/TaskKernelGpuSyclIntel.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/PltfGpuSyclIntel.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/PlatformGpuSyclIntel.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <string>
@@ -71,9 +71,9 @@ namespace alpaka::trait
 
     //! The Intel GPU SYCL execution task platform type trait specialization.
     template<typename TDim, typename TIdx>
-    struct PltfType<AccGpuSyclIntel<TDim, TIdx>>
+    struct PlatformType<AccGpuSyclIntel<TDim, TIdx>>
     {
-        using type = PltfGpuSyclIntel;
+        using type = PlatformGpuSyclIntel;
     };
 
     template<typename TDim, typename TIdx>

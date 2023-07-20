@@ -163,7 +163,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     using Val = std::uint32_t;
     using Vec2 = alpaka::Vec<Dim, Idx>;
     using DevAcc = alpaka::Dev<Acc>;
-    using PltfAcc = alpaka::Pltf<DevAcc>;
+    using PlatformAcc = alpaka::Platform<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<alpaka::Dev<Acc>>;
     using QueueHost = alpaka::QueueCpuNonBlocking;
 
@@ -171,14 +171,14 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     MatMulKernel kernel;
 
     // Get the host device.
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Get a queue on the host device.
     QueueHost queueHost(devHost);
 
     // Select a device to execute on.
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get a queue on the accelerator device.
@@ -217,7 +217,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     auto bufBHost = alpaka::createView(devHost, bufBHost1d.data(), extentB);
 
     // Allocate C and set it to zero.
-    auto bufCHost = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extentC);
+    auto bufCHost = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extentC);
     alpaka::memset(queueHost, bufCHost, 0u);
 
     // Allocate the buffers on the accelerator.

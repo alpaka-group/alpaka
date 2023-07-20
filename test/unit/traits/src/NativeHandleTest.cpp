@@ -13,7 +13,7 @@ TEMPLATE_LIST_TEST_CASE("NativeHandle", "[handle]", alpaka::test::TestAccs)
 {
     using Dev = alpaka::Dev<TestType>;
 
-    auto const platformAcc = alpaka::Pltf<TestType>{};
+    auto const platformAcc = alpaka::Platform<TestType>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto handle = alpaka::getNativeHandle(devAcc);
 

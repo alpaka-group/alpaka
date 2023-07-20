@@ -49,7 +49,7 @@ TEMPLATE_LIST_TEST_CASE("zeroDimBuffer", "[zeroDimBuffer]", TestAccs)
     CHECK(scalar.prod() == 1u);
 
     // CPU host
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const host = alpaka::getDevByIdx(platformHost, 0);
     INFO("Using alpaka accelerator: " << alpaka::getAccName<HostAcc>());
     HostQueue hostQueue(host);
@@ -92,7 +92,7 @@ TEMPLATE_LIST_TEST_CASE("zeroDimBuffer", "[zeroDimBuffer]", TestAccs)
     CHECK(expected1 == *h_buffer1);
 
     // GPU device
-    auto const platformAcc = alpaka::Pltf<DeviceAcc>{};
+    auto const platformAcc = alpaka::Platform<DeviceAcc>{};
     auto const device = alpaka::getDevByIdx(platformAcc, 0);
     INFO("Using alpaka accelerator: " << alpaka::getAccName<DeviceAcc>());
     DeviceQueue deviceQueue(device);

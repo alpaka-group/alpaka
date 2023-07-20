@@ -10,7 +10,7 @@
 #include "alpaka/core/Common.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/mem/view/Traits.hpp"
-#include "alpaka/pltf/PltfCpu.hpp"
+#include "alpaka/platform/PlatformCpu.hpp"
 
 #include <array>
 
@@ -31,7 +31,7 @@ namespace alpaka::trait
         {
             // Instantiating the CPU platform here is a hack we can do internally, because we know that the CPU
             // platform does not contain any data. But it generally does not apply.
-            return getDevByIdx(PltfCpu{}, 0u);
+            return getDevByIdx(PlatformCpu{}, 0u);
         }
     };
 

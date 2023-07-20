@@ -301,7 +301,7 @@ namespace alpaka
 
         //! The pinned/mapped memory allocation trait specialization for the CUDA/HIP devices.
         template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct BufAllocMapped<PltfUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
+        struct BufAllocMapped<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
         {
             template<typename TExtent>
             ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
@@ -324,7 +324,7 @@ namespace alpaka
 
         //! The pinned/mapped memory allocation capability trait specialization.
         template<typename TApi>
-        struct HasMappedBufSupport<PltfUniformCudaHipRt<TApi>> : public std::true_type
+        struct HasMappedBufSupport<PlatformUniformCudaHipRt<TApi>> : public std::true_type
         {
         };
 

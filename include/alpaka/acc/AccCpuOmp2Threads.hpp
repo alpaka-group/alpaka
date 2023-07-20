@@ -26,7 +26,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 // Implementation details.
 #include "alpaka/acc/Tag.hpp"
@@ -199,9 +199,9 @@ namespace alpaka
 
         //! The CPU OpenMP 2.0 thread execution task platform type trait specialization.
         template<typename TDim, typename TIdx>
-        struct PltfType<AccCpuOmp2Threads<TDim, TIdx>>
+        struct PlatformType<AccCpuOmp2Threads<TDim, TIdx>>
         {
-            using type = PltfCpu;
+            using type = PlatformCpu;
         };
 
         //! The CPU OpenMP 2.0 thread accelerator idx type trait specialization.

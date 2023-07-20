@@ -9,7 +9,7 @@
 #include "alpaka/core/Hip.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Properties.hpp"
 #include "alpaka/queue/Traits.hpp"
 #include "alpaka/traits/Traits.hpp"
@@ -25,7 +25,7 @@ namespace alpaka
 {
     namespace trait
     {
-        template<typename TPltf, typename TSfinae>
+        template<typename TPlatform, typename TSfinae>
         struct GetDevByIdx;
     }
 
@@ -42,7 +42,7 @@ namespace alpaka
     using QueueUniformCudaHipRtNonBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, false>;
 
     template<typename TApi>
-    struct PltfUniformCudaHipRt;
+    struct PlatformUniformCudaHipRt;
 
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
     class BufUniformCudaHipRt;
@@ -53,7 +53,7 @@ namespace alpaka
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt<TApi>>
         , public concepts::Implements<ConceptDev, DevUniformCudaHipRt<TApi>>
     {
-        friend struct trait::GetDevByIdx<PltfUniformCudaHipRt<TApi>>;
+        friend struct trait::GetDevByIdx<PlatformUniformCudaHipRt<TApi>>;
 
     protected:
         DevUniformCudaHipRt() = default;
@@ -179,9 +179,9 @@ namespace alpaka
 
         //! The CUDA/HIP RT device platform type trait specialization.
         template<typename TApi>
-        struct PltfType<DevUniformCudaHipRt<TApi>>
+        struct PlatformType<DevUniformCudaHipRt<TApi>>
         {
-            using type = PltfUniformCudaHipRt<TApi>;
+            using type = PlatformUniformCudaHipRt<TApi>;
         };
 
         //! The thread CUDA/HIP device wait specialization.

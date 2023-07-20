@@ -35,11 +35,11 @@ namespace alpaka
         };
 
         //! The pinned/mapped memory allocator trait.
-        template<typename TPltf, typename TElem, typename TDim, typename TIdx>
+        template<typename TPlatform, typename TElem, typename TDim, typename TIdx>
         struct BufAllocMapped;
 
         //! The pinned/mapped memory allocation capability trait.
-        template<typename TPltf>
+        template<typename TPlatform>
         struct HasMappedBufSupport : public std::false_type
         {
         };
@@ -125,17 +125,17 @@ namespace alpaka
 
     //! Allocates pinned/mapped host memory, accessible by all devices in the given platform.
     //!
-    //! \tparam TPltf The platform from which the buffer is accessible.
+    //! \tparam TPlatform The platform from which the buffer is accessible.
     //! \tparam TElem The element type of the returned buffer.
     //! \tparam TIdx The linear index type of the buffer.
     //! \tparam TExtent The extent type of the buffer.
     //! \param host The host device to allocate the buffer on.
     //! \param extent The extent of the buffer.
     //! \return The newly allocated buffer.
-    template<typename TPltf, typename TElem, typename TIdx, typename TExtent>
+    template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
     ALPAKA_FN_HOST auto allocMappedBuf(DevCpu const& host, TExtent const& extent = TExtent())
     {
-        return trait::BufAllocMapped<TPltf, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
+        return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
     }
 
     /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
@@ -146,9 +146,9 @@ namespace alpaka
 #endif
     //! Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.
     //!
-    //! \tparam TPltf The platform from which the buffer is accessible.
-    template<typename TPltf>
-    constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPltf>::value;
+    //! \tparam TPlatform The platform from which the buffer is accessible.
+    template<typename TPlatform>
+    constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
@@ -159,19 +159,19 @@ namespace alpaka
     //! this function is provided for convenience in the cases where the difference is not relevant,
     //! and the pinned/mapped memory is only used as a performance optimisation.
     //!
-    //! \tparam TPltf The platform from which the buffer is accessible.
+    //! \tparam TPlatform The platform from which the buffer is accessible.
     //! \tparam TElem The element type of the returned buffer.
     //! \tparam TIdx The linear index type of the buffer.
     //! \tparam TExtent The extent type of the buffer.
     //! \param host The host device to allocate the buffer on.
     //! \param extent The extent of the buffer.
     //! \return The newly allocated buffer.
-    template<typename TPltf, typename TElem, typename TIdx, typename TExtent>
+    template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
     ALPAKA_FN_HOST auto allocMappedBufIfSupported(DevCpu const& host, TExtent const& extent = TExtent())
     {
-        if constexpr(hasMappedBufSupport<TPltf>)
+        if constexpr(hasMappedBufSupport<TPlatform>)
         {
-            return allocMappedBuf<TPltf, TElem, TIdx>(host, extent);
+            return allocMappedBuf<TPlatform, TElem, TIdx>(host, extent);
         }
         else
         {

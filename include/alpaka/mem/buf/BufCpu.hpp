@@ -267,7 +267,7 @@ namespace alpaka
 
         //! The pinned/mapped memory allocation trait specialization.
         template<typename TElem, typename TDim, typename TIdx>
-        struct BufAllocMapped<PltfCpu, TElem, TDim, TIdx>
+        struct BufAllocMapped<PlatformCpu, TElem, TDim, TIdx>
         {
             template<typename TExtent>
             ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
@@ -280,7 +280,7 @@ namespace alpaka
 
         //! The pinned/mapped memory allocation capability trait specialization.
         template<>
-        struct HasMappedBufSupport<PltfCpu> : public std::true_type
+        struct HasMappedBufSupport<PlatformCpu> : public std::true_type
         {
         };
 

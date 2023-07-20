@@ -13,8 +13,8 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/kernel/TaskKernelCpuSycl.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/PltfCpuSycl.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/PlatformCpuSycl.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <cstddef>
@@ -74,9 +74,9 @@ namespace alpaka::trait
 
     //! The Intel CPU SYCL execution task platform type trait specialization.
     template<typename TDim, typename TIdx>
-    struct PltfType<AccCpuSycl<TDim, TIdx>>
+    struct PlatformType<AccCpuSycl<TDim, TIdx>>
     {
-        using type = PltfCpuSycl;
+        using type = PlatformCpuSycl;
     };
 
     template<typename TDim, typename TIdx>

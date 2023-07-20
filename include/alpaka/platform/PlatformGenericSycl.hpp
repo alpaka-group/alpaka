@@ -7,7 +7,7 @@
 #include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/Sycl.hpp"
 #include "alpaka/dev/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 #include <cstddef>
 #include <exception>
@@ -26,9 +26,9 @@ namespace alpaka
 {
     //! The SYCL device manager.
     template<typename TSelector>
-    struct PltfGenericSycl : concepts::Implements<ConceptPltf, PltfGenericSycl<TSelector>>
+    struct PlatformGenericSycl : concepts::Implements<ConceptPlatform, PlatformGenericSycl<TSelector>>
     {
-        PltfGenericSycl()
+        PlatformGenericSycl()
             : platform{TSelector{}}
             , devices(platform.get_devices())
             , context{sycl::context{
@@ -94,9 +94,9 @@ namespace alpaka::trait
 {
     //! The SYCL platform device count get trait specialization.
     template<typename TSelector>
-    struct GetDevCount<PltfGenericSycl<TSelector>>
+    struct GetDevCount<PlatformGenericSycl<TSelector>>
     {
-        static auto getDevCount(PltfGenericSycl<TSelector> const& platform) -> std::size_t
+        static auto getDevCount(PlatformGenericSycl<TSelector> const& platform) -> std::size_t
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -106,9 +106,9 @@ namespace alpaka::trait
 
     //! The SYCL platform device get trait specialization.
     template<typename TSelector>
-    struct GetDevByIdx<alpaka::PltfGenericSycl<TSelector>>
+    struct GetDevByIdx<alpaka::PlatformGenericSycl<TSelector>>
     {
-        static auto getDevByIdx(PltfGenericSycl<TSelector> const& platform, std::size_t const& devIdx)
+        static auto getDevByIdx(PlatformGenericSycl<TSelector> const& platform, std::size_t const& devIdx)
         {
             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -130,7 +130,7 @@ namespace alpaka::trait
             std::cout << __func__ << sycl_dev.template get_info<sycl::info::device::name>() << '\n';
 #    endif
             using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
-            return typename DevType<SyclPltf>::type{sycl_dev, platform.syclContext()};
+            return typename DevType<SyclPlatform>::type{sycl_dev, platform.syclContext()};
         }
 
     private:

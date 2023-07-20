@@ -272,18 +272,18 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
 
     using Val = std::uint32_t;
     using DevAcc = alpaka::Dev<Acc>;
-    using PltfAcc = alpaka::Pltf<DevAcc>;
+    using PlatformAcc = alpaka::Platform<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
 
     // Create the kernel function object.
     MandelbrotKernel kernel;
 
     // Get the host device.
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Select a device to execute on.
-    auto const platformAcc = PltfAcc{};
+    auto const platformAcc = PlatformAcc{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get a queue on this device.
@@ -306,7 +306,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
               << std::endl;
 
     // allocate host memory, potentially pinned for faster copy to/from the accelerator.
-    auto bufColorHost = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
+    auto bufColorHost = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
 
     // Allocate the buffer on the accelerator.
     auto bufColorAcc = alpaka::allocBuf<Val, Idx>(devAcc, extent);

@@ -6,7 +6,7 @@
 
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/Traits.hpp"
-#include "alpaka/pltf/PltfGenericSycl.hpp"
+#include "alpaka/platform/PlatformGenericSycl.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
@@ -46,16 +46,16 @@ namespace alpaka
     } // namespace detail
 
     //! The SYCL device manager.
-    using PltfFpgaSyclIntel = PltfGenericSycl<detail::IntelFpgaSelector>;
+    using PlatformFpgaSyclIntel = PlatformGenericSycl<detail::IntelFpgaSelector>;
 } // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
-    struct DevType<PltfFpgaSyclIntel>
+    struct DevType<PlatformFpgaSyclIntel>
     {
-        using type = DevGenericSycl<PltfFpgaSyclIntel>; // = DevFpgaSyclIntel
+        using type = DevGenericSycl<PlatformFpgaSyclIntel>; // = DevFpgaSyclIntel
     };
 } // namespace alpaka::trait
 

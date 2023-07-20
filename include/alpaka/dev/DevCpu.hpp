@@ -9,7 +9,7 @@
 #include "alpaka/dev/common/QueueRegistry.hpp"
 #include "alpaka/dev/cpu/SysInfo.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Properties.hpp"
 #include "alpaka/queue/QueueGenericThreadsBlocking.hpp"
 #include "alpaka/queue/QueueGenericThreadsNonBlocking.hpp"
@@ -35,10 +35,10 @@ namespace alpaka
     }
     namespace trait
     {
-        template<typename TPltf, typename TSfinae>
+        template<typename TPlatform, typename TSfinae>
         struct GetDevByIdx;
     }
-    struct PltfCpu;
+    struct PlatformCpu;
 
     //! The CPU device.
     namespace cpu::detail
@@ -52,7 +52,7 @@ namespace alpaka
         : public concepts::Implements<ConceptCurrentThreadWaitFor, DevCpu>
         , public concepts::Implements<ConceptDev, DevCpu>
     {
-        friend struct trait::GetDevByIdx<PltfCpu>;
+        friend struct trait::GetDevByIdx<PlatformCpu>;
 
     protected:
         DevCpu() : m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
@@ -168,9 +168,9 @@ namespace alpaka
 
         //! The CPU device platform type trait specialization.
         template<>
-        struct PltfType<DevCpu>
+        struct PlatformType<DevCpu>
         {
-            using type = PltfCpu;
+            using type = PlatformCpu;
         };
     } // namespace trait
     using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;

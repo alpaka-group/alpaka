@@ -40,9 +40,9 @@ TEST_CASE("queueCollective", "[queue]")
     using Dev = alpaka::Dev<Acc>;
 
     using Queue = alpaka::QueueCpuOmp2Collective;
-    using Pltf = alpaka::Pltf<Dev>;
+    using Platform = alpaka::Platform<Dev>;
 
-    auto const platform = Pltf{};
+    auto const platform = Platform{};
     auto dev = alpaka::getDevByIdx(platform, 0);
     Queue queue(dev);
 
@@ -82,9 +82,9 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     using Dev = alpaka::Dev<Acc>;
 
     using Queue = alpaka::QueueCpuOmp2Collective;
-    using Pltf = alpaka::Pltf<Dev>;
+    using Platform = alpaka::Platform<Dev>;
 
-    auto const platform = Pltf{};
+    auto const platform = Platform{};
     auto dev = alpaka::getDevByIdx(platform, 0);
     Queue queue(dev);
 

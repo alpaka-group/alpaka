@@ -198,11 +198,11 @@ TEMPLATE_LIST_TEST_CASE("kernel specialization with tags", "[acc][tag]", TestAcc
     using TestAcc = TestType;
     using QueueProperty = alpaka::Blocking;
     using Queue = alpaka::Queue<TestAcc, QueueProperty>;
-    auto const platformAcc = alpaka::Pltf<TestAcc>{};
+    auto const platformAcc = alpaka::Platform<TestAcc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     Queue queue(devAcc);
 
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     using Vec = alpaka::Vec<alpaka::DimInt<1>, int>;

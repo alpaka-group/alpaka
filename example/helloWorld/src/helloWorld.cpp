@@ -98,7 +98,7 @@ auto main() -> int
     // by id (0 to the number of devices minus 1) or you
     // can also retrieve all devices in a vector (getDevs()).
     // In this example the first devices is chosen.
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Create a queue on the device

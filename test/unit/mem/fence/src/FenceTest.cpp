@@ -168,7 +168,7 @@ TEMPLATE_LIST_TEST_CASE("FenceTest", "[fence]", TestAccs)
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
     using Dev = alpaka::Dev<Acc>;
-    using Pltf = alpaka::Pltf<Dev>;
+    using Platform = alpaka::Platform<Dev>;
     using Queue = alpaka::Queue<Dev, alpaka::property::NonBlocking>;
 
     // Fixtures with different number of blocks, threads and elements
@@ -180,15 +180,15 @@ TEMPLATE_LIST_TEST_CASE("FenceTest", "[fence]", TestAccs)
         = isSingleThreaded<Acc> ? alpaka::test::KernelExecutionFixture<Acc>{WorkDiv{one, one, two}}
                                 : alpaka::test::KernelExecutionFixture<Acc>{WorkDiv{one, two, one}};
 
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const host = alpaka::getDevByIdx(platformHost, 0);
-    auto const platformAcc = Pltf{};
+    auto const platformAcc = Platform{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = Queue{dev};
 
     auto const numElements = Idx{2ul};
     auto const extent = alpaka::Vec<Dim, Idx>{numElements};
-    auto vars_host = alpaka::allocMappedBufIfSupported<Pltf, int, Idx>(host, extent);
+    auto vars_host = alpaka::allocMappedBufIfSupported<Platform, int, Idx>(host, extent);
     auto vars_dev = alpaka::allocBuf<int, Idx>(dev, extent);
     vars_host[0] = 1;
     vars_host[1] = 2;

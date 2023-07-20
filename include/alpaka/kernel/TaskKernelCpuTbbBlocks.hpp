@@ -9,7 +9,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 // Implementation details.
 #include "alpaka/acc/AccCpuTbbBlocks.hpp"
@@ -138,9 +138,9 @@ namespace alpaka
 
         //! The CPU TBB block execution task platform type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-        struct PltfType<TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+        struct PlatformType<TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            using type = PltfCpu;
+            using type = PlatformCpu;
         };
 
         //! The CPU TBB block execution task idx type trait specialization.

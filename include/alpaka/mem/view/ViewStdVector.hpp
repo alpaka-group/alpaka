@@ -10,7 +10,7 @@
 #include "alpaka/core/Common.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/mem/view/Traits.hpp"
-#include "alpaka/pltf/PltfCpu.hpp"
+#include "alpaka/platform/PlatformCpu.hpp"
 
 #include <vector>
 
@@ -29,7 +29,7 @@ namespace alpaka::trait
     {
         ALPAKA_FN_HOST static auto getDev(std::vector<TElem, TAllocator> const& /* view */) -> DevCpu
         {
-            return getDevByIdx(PltfCpu{}, 0u);
+            return getDevByIdx(PlatformCpu{}, 0u);
         }
     };
 

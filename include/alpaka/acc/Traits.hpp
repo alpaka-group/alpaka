@@ -12,7 +12,7 @@
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
 
 #include <string>
@@ -79,7 +79,7 @@ namespace alpaka
         template<typename TAcc, typename TProperty>
         struct QueueType<TAcc, TProperty, std::enable_if_t<concepts::ImplementsConcept<ConceptAcc, TAcc>::value>>
         {
-            using type = typename QueueType<typename alpaka::trait::PltfType<TAcc>::type, TProperty>::type;
+            using type = typename QueueType<typename alpaka::trait::PlatformType<TAcc>::type, TProperty>::type;
         };
     } // namespace trait
 } // namespace alpaka

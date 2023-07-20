@@ -24,7 +24,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 // Implementation details.

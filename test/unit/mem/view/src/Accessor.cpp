@@ -23,7 +23,7 @@ TEST_CASE("IsView", "[accessor]")
     using Dev = alpaka::Dev<Acc>;
 
     // buffer
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto buffer = alpaka::allocBuf<int, Size>(devAcc, Size{1});
     STATIC_REQUIRE(IsView<decltype(buffer)>::value);
@@ -126,7 +126,7 @@ TEST_CASE("readWrite", "[accessor]")
     using DevAcc = alpaka::Dev<Acc>;
     using Queue = alpaka::Queue<DevAcc, alpaka::Blocking>;
 
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = Queue{devAcc};
     auto buffer = alpaka::allocBuf<float, Size>(devAcc, Size{N});
@@ -230,7 +230,7 @@ TEST_CASE("projection", "[accessor]")
     using DevAcc = alpaka::Dev<Acc>;
     using Queue = alpaka::Queue<DevAcc, alpaka::Blocking>;
 
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = Queue{devAcc};
 
@@ -257,7 +257,7 @@ TEST_CASE("constraining", "[accessor]")
     using Size = std::size_t;
     using Acc = alpaka::ExampleDefaultAcc<Dim, Size>;
 
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto buffer = alpaka::allocBuf<int, Size>(devAcc, Size{1});
     using MemoryHandle = alpakaex::MemoryHandle<decltype(alpakaex::access(buffer))>;
@@ -342,7 +342,7 @@ TEST_CASE("BufferAccessor", "[accessor]")
     using DevAcc = alpaka::Dev<Acc>;
     using Queue = alpaka::Queue<DevAcc, alpaka::Blocking>;
 
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = Queue{devAcc};
     auto buffer = alpaka::allocBuf<int, Size>(devAcc, Size{1});

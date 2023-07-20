@@ -25,7 +25,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 // Implementation details.
 #include "alpaka/core/ClipCast.hpp"
@@ -286,9 +286,9 @@ namespace alpaka
 
         //! The CPU CUDA execution task platform type trait specialization.
         template<typename TApi, typename TDim, typename TIdx>
-        struct PltfType<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
+        struct PlatformType<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
         {
-            using type = PltfUniformCudaHipRt<TApi>;
+            using type = PlatformUniformCudaHipRt<TApi>;
         };
 
         //! The GPU CUDA accelerator idx type trait specialization.

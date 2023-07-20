@@ -32,9 +32,9 @@ struct Box
     using Idx = std::size_t;
     using Vec = alpaka::Vec<Dim, Idx>;
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
-    using PlatformHost = alpaka::PltfCpu;
+    using PlatformHost = alpaka::PlatformCpu;
     using Host = alpaka::Dev<PlatformHost>;
-    using PlatformAcc = alpaka::Pltf<Acc>;
+    using PlatformAcc = alpaka::Platform<Acc>;
     using QueueProperty = alpaka::Blocking;
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;

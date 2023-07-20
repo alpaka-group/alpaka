@@ -20,7 +20,7 @@ namespace
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
 
-        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
         auto const gridThreadExtent = alpaka::Vec<Dim, Idx>::all(10);
         auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
@@ -50,7 +50,7 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     if constexpr(Dim::value == 2)
     {
-        auto const platform = alpaka::Pltf<Acc>{};
+        auto const platform = alpaka::Platform<Acc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
         auto props = alpaka::getAccDevProps<Acc>(dev);
         props.m_gridBlockExtentMax = Vec{1024, 1024};
@@ -120,7 +120,7 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDiv.1D.withIdx", "[workDiv]", alpaka::test:
     using Vec = alpaka::Vec<Dim, Idx>;
     if constexpr(Dim::value == 1)
     {
-        auto const platform = alpaka::Pltf<Acc>{};
+        auto const platform = alpaka::Platform<Acc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
         // test that we can call getValidWorkDiv with the Idx type directly instead of a Vec
         auto const ref = alpaka::getValidWorkDiv<Acc>(dev, Vec{256}, Vec{13});
@@ -132,7 +132,7 @@ TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
 
-    auto const platform = alpaka::Pltf<Acc>{};
+    auto const platform = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const workDiv = getWorkDiv<Acc>();
     // Test both overloads

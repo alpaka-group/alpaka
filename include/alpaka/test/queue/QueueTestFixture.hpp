@@ -14,13 +14,13 @@ namespace alpaka::test
     {
         using Dev = std::tuple_element_t<0, TDevQueue>;
         using Queue = std::tuple_element_t<1, TDevQueue>;
-        using Pltf = alpaka::Pltf<Dev>;
+        using Platform = alpaka::Platform<Dev>;
 
         QueueTestFixture() : m_dev(getDevByIdx(m_platform, 0)), m_queue(m_dev)
         {
         }
 
-        Pltf m_platform;
+        Platform m_platform;
         Dev m_dev;
         Queue m_queue;
     };

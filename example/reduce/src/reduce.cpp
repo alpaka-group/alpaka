@@ -115,9 +115,9 @@ auto main() -> int
     using T = uint32_t;
     static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
 
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     QueueAcc queue(devAcc);
 

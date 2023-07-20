@@ -65,7 +65,7 @@ TEMPLATE_LIST_TEST_CASE("viewConstTest", "[memView]", alpaka::test::TestAccs)
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
     auto const extents

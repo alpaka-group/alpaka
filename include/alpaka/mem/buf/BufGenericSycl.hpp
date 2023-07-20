@@ -152,12 +152,12 @@ namespace alpaka::trait
     };
 
     //! The SYCL memory allocation trait specialization.
-    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
-    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TPltf>>
+    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TPlatform>>
     {
         template<typename TExtent>
-        static auto allocBuf(DevGenericSycl<TPltf> const& dev, TExtent const& extent)
-            -> BufGenericSycl<TElem, TDim, TIdx, TPltf>
+        static auto allocBuf(DevGenericSycl<TPlatform> const& dev, TExtent const& extent)
+            -> BufGenericSycl<TElem, TDim, TIdx, TPlatform>
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -246,14 +246,14 @@ namespace alpaka::trait
     };
 
     //! The BufCpu pointer on SYCL device get trait specialization.
-    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
-    struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TPltf>>
+    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+    struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TPlatform>>
     {
-        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPltf> const&) -> TElem const*
+        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPlatform> const&) -> TElem const*
         {
             return getPtrNative(buf);
         }
-        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPltf> const&) -> TElem*
+        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPlatform> const&) -> TElem*
         {
             return getPtrNative(buf);
         }
