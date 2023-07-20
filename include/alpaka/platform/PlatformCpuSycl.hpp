@@ -6,7 +6,7 @@
 
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/Traits.hpp"
-#include "alpaka/pltf/PltfGenericSycl.hpp"
+#include "alpaka/platform/PlatformGenericSycl.hpp"
 
 #include <string>
 
@@ -28,16 +28,16 @@ namespace alpaka
     } // namespace detail
 
     //! The SYCL device manager.
-    using PltfCpuSycl = PltfGenericSycl<detail::SyclCpuSelector>;
+    using PlatformCpuSycl = PlatformGenericSycl<detail::SyclCpuSelector>;
 } // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
-    struct DevType<PltfCpuSycl>
+    struct DevType<PlatformCpuSycl>
     {
-        using type = DevGenericSycl<PltfCpuSycl>; // = DevCpuSycl
+        using type = DevGenericSycl<PlatformCpuSycl>; // = DevCpuSycl
     };
 } // namespace alpaka::trait
 

@@ -264,7 +264,7 @@ The following source code listing shows the execution of a kernel by enqueuing t
    using Queue = alpaka::QueueCpuNonBlocking;
 
    // Select a device to execute on.
-   auto platformAcc = alpaka::Pltf<Acc>{};
+   auto platformAcc = alpaka::Platform<Acc>{};
    auto devAcc = alpaka::getDevByIdx(platformAcc, 0);
    // Create a queue to enqueue the execution into.
    Queue queue(devAcc);

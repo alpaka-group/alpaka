@@ -34,7 +34,7 @@ TEMPLATE_LIST_TEST_CASE("getSize", "[warp]", alpaka::test::TestAccs)
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    auto const platform = alpaka::Pltf<Acc>{};
+    auto const platform = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const warpSizes = alpaka::getWarpSizes(dev);
     REQUIRE(std::any_of(

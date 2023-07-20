@@ -6,7 +6,7 @@
 
 #include "alpaka/core/Concepts.hpp"
 #include "alpaka/dev/DevCpu.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 #include <sstream>
 #include <vector>
@@ -14,7 +14,7 @@
 namespace alpaka
 {
     //! The CPU device platform.
-    struct PltfCpu : concepts::Implements<ConceptPltf, PltfCpu>
+    struct PlatformCpu : concepts::Implements<ConceptPlatform, PlatformCpu>
     {
     };
 
@@ -22,16 +22,16 @@ namespace alpaka
     {
         //! The CPU device device type trait specialization.
         template<>
-        struct DevType<PltfCpu>
+        struct DevType<PlatformCpu>
         {
             using type = DevCpu;
         };
 
         //! The CPU platform device count get trait specialization.
         template<>
-        struct GetDevCount<PltfCpu>
+        struct GetDevCount<PlatformCpu>
         {
-            ALPAKA_FN_HOST static auto getDevCount(PltfCpu const&) -> std::size_t
+            ALPAKA_FN_HOST static auto getDevCount(PlatformCpu const&) -> std::size_t
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -41,9 +41,9 @@ namespace alpaka
 
         //! The CPU platform device get trait specialization.
         template<>
-        struct GetDevByIdx<PltfCpu>
+        struct GetDevByIdx<PlatformCpu>
         {
-            ALPAKA_FN_HOST static auto getDevByIdx(PltfCpu const& platform, std::size_t const& devIdx) -> DevCpu
+            ALPAKA_FN_HOST static auto getDevByIdx(PlatformCpu const& platform, std::size_t const& devIdx) -> DevCpu
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 

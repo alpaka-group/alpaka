@@ -23,19 +23,19 @@ struct TestContainer
     using AccQueueProperty = alpaka::Blocking;
     using DevQueue = alpaka::Queue<TAcc, AccQueueProperty>;
     using DevAcc = alpaka::Dev<TAcc>;
-    using PltfAcc = alpaka::Pltf<TAcc>;
+    using PlatformAcc = alpaka::Platform<TAcc>;
 
     using DevHost = alpaka::DevCpu;
-    using PltfHost = alpaka::Pltf<DevHost>;
+    using PlatformHost = alpaka::Platform<DevHost>;
 
     using BufHost = alpaka::Buf<DevHost, TData, TDim, TIdx>;
     using BufDevice = alpaka::Buf<DevAcc, TData, TDim, TIdx>;
 
     using SubView = alpaka::ViewSubView<DevAcc, TData, TDim, TIdx>;
 
-    PltfAcc const platformAcc{};
+    PlatformAcc const platformAcc{};
     DevAcc const devAcc;
-    PltfHost const platformHost{};
+    PlatformHost const platformHost{};
     DevHost const devHost;
     DevQueue devQueue;
 

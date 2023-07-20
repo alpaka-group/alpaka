@@ -199,8 +199,8 @@ namespace alpaka
     namespace trait
     {
         //! The SYCL device memory set trait specialization.
-        template<typename TDim, typename TPltf>
-        struct CreateTaskMemset<TDim, DevGenericSycl<TPltf>>
+        template<typename TDim, typename TPlatform>
+        struct CreateTaskMemset<TDim, DevGenericSycl<TPlatform>>
         {
             template<typename TExtent, typename TView>
             static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)

@@ -133,9 +133,9 @@ auto main() -> int
     using QueueHost = alpaka::Queue<AccHost, QueueProperty>;
 
     // Select a device
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Create a queue on the device

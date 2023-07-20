@@ -25,7 +25,7 @@ static auto testBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> 
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const platformAcc = alpaka::Platform<TAcc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     Queue queue(dev);
 
@@ -48,7 +48,7 @@ static auto testAsyncBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TA
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const platformAcc = alpaka::Platform<TAcc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     Queue queue(dev);
 
@@ -132,7 +132,7 @@ static auto testBufferImmutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const platformAcc = alpaka::Platform<TAcc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
     // alpaka::malloc
@@ -165,7 +165,7 @@ static auto testAsyncBufferImmutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
 
-        auto const platformAcc = alpaka::Pltf<TAcc>{};
+        auto const platformAcc = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platformAcc, 0);
         Queue queue(dev);
 
@@ -221,7 +221,7 @@ static auto testBufferAccessorAdaptor(
     // assume dimensionality up to 4
     CHECK(Dim::value <= 4);
 
-    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const platformAcc = alpaka::Platform<TAcc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
     // alpaka::malloc
@@ -277,9 +277,9 @@ TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)
     using Idx = alpaka::Idx<Acc>;
     using Elem = std::size_t;
 
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = alpaka::Queue<Acc, alpaka::Blocking>{dev};
     auto const extent = alpaka::Vec<alpaka::DimInt<0>, Idx>{};

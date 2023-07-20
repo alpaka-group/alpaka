@@ -81,9 +81,9 @@ auto main() -> int
     using Vec = alpaka::Vec<Dim, Idx>;
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using Host = alpaka::DevCpu;
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     using QueueProperty = alpaka::Blocking;
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;

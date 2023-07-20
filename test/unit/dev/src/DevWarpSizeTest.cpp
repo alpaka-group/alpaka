@@ -13,7 +13,7 @@
 
 TEMPLATE_LIST_TEST_CASE("getWarpSizes", "[dev]", alpaka::test::TestAccs)
 {
-    auto const platform = alpaka::Pltf<TestType>{};
+    auto const platform = alpaka::Platform<TestType>{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const warpExtents = alpaka::getWarpSizes(dev);
     REQUIRE(std::all_of(

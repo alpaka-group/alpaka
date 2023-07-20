@@ -42,7 +42,7 @@ TEMPLATE_LIST_TEST_CASE("mdSpan", "[memView]", alpaka::test::TestAccs)
     using Idx = alpaka::Idx<Acc>;
     using Vec = alpaka::Vec<Dim, Idx>;
 
-    auto const dev = alpaka::getDevByIdx<alpaka::Pltf<Dev>>(0u);
+    auto const dev = alpaka::getDevByIdx<alpaka::Platform<Dev>>(0u);
     auto queue = alpaka::Queue<Dev, alpaka::Blocking>(dev);
 
     auto const extent
@@ -95,7 +95,7 @@ TEMPLATE_LIST_TEST_CASE("submdspan", "[memView]", alpaka::test::TestAccs)
     using Idx = alpaka::Idx<Acc>;
     using Vec = alpaka::Vec<Dim, Idx>;
 
-    auto const dev = alpaka::getDevByIdx<alpaka::Pltf<Dev>>(0u);
+    auto const dev = alpaka::getDevByIdx<alpaka::Platform<Dev>>(0u);
     auto queue = alpaka::Queue<Dev, alpaka::Blocking>(dev);
 
     auto const extent = alpaka::Vec{2, 3}; // 2 rows, 3 cols

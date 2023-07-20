@@ -70,7 +70,7 @@ TEMPLATE_LIST_TEST_CASE("all", "[warp]", alpaka::test::TestAccs)
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    auto const platform = alpaka::Pltf<Acc>{};
+    auto const platform = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const warpExtents = alpaka::getWarpSizes(dev);
     for(auto const warpExtent : warpExtents)

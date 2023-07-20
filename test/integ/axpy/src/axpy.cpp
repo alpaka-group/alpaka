@@ -76,18 +76,18 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
 
     using Val = float;
     using DevAcc = alpaka::Dev<Acc>;
-    using PltfAcc = alpaka::Pltf<DevAcc>;
+    using PlatformAcc = alpaka::Platform<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
 
     // Create the kernel function object.
     AxpyKernel kernel;
 
     // Get the host device.
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Select a device to execute on.
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get a queue on this device.
@@ -109,9 +109,9 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
               << std::endl;
 
     // Allocate host memory buffers in pinned memory.
-    auto memBufHostX = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
-    auto memBufHostOrigY = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
-    auto memBufHostY = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
+    auto memBufHostX = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
+    auto memBufHostOrigY = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
+    auto memBufHostY = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
     Val* const pBufHostX = alpaka::getPtrNative(memBufHostX);
     Val* const pBufHostOrigY = alpaka::getPtrNative(memBufHostOrigY);
     Val* const pBufHostY = alpaka::getPtrNative(memBufHostY);

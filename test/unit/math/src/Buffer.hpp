@@ -37,14 +37,14 @@ namespace alpaka
 
                     // Defines using's for alpaka-buffer.
                     using DevHost = alpaka::DevCpu;
-                    using PltfHost = alpaka::Pltf<DevHost>;
+                    using PlatformHost = alpaka::Platform<DevHost>;
                     using BufHost = alpaka::Buf<DevHost, TData, Dim, Idx>;
 
                     using DevAcc = alpaka::Dev<TAcc>;
-                    using PltfAcc = alpaka::Pltf<DevAcc>;
+                    using PlatformAcc = alpaka::Platform<DevAcc>;
                     using BufAcc = alpaka::Buf<DevAcc, TData, Dim, Idx>;
 
-                    PltfHost platformHost;
+                    PlatformHost platformHost;
                     DevHost devHost;
 
                     BufHost hostBuffer;
@@ -61,7 +61,7 @@ namespace alpaka
                     // Constructor needs to initialize all Buffer.
                     Buffer(DevAcc const& devAcc)
                         : devHost{alpaka::getDevByIdx(platformHost, 0)}
-                        , hostBuffer{alpaka::allocMappedBufIfSupported<PltfAcc, TData, Idx>(devHost, Tcapacity)}
+                        , hostBuffer{alpaka::allocMappedBufIfSupported<PlatformAcc, TData, Idx>(devHost, Tcapacity)}
                         , devBuffer{alpaka::allocBuf<TData, Idx>(devAcc, Tcapacity)}
                         , pHostBuffer{alpaka::getPtrNative(hostBuffer)}
                         , pDevBuffer{alpaka::getPtrNative(devBuffer)}

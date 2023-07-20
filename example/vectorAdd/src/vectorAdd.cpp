@@ -77,7 +77,6 @@ auto main() -> int
     // - AccCpuSerial
     // using Acc = alpaka::AccCpuSerial<Dim, Idx>;
     using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
-    using Pltf = alpaka::Pltf<Acc>;
     using DevAcc = alpaka::Dev<Acc>;
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
@@ -88,7 +87,7 @@ auto main() -> int
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
-    auto const platform = alpaka::Pltf<Acc>{};
+    auto const platform = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platform, 0);
 
     // Create a queue on the device
@@ -112,7 +111,7 @@ auto main() -> int
 
     // Get the host device for allocating memory on the host.
     using DevHost = alpaka::DevCpu;
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Allocate 3 host memory buffers

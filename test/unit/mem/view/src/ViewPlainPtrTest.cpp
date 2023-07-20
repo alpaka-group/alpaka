@@ -55,7 +55,7 @@ namespace alpaka::test
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
@@ -81,7 +81,7 @@ namespace alpaka::test
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
@@ -107,7 +107,7 @@ namespace alpaka::test
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
@@ -149,7 +149,7 @@ TEMPLATE_LIST_TEST_CASE("viewPlainPtrOperatorTest", "[memView]", alpaka::test::T
 TEMPLATE_TEST_CASE("createView", "[memView]", (std::array<float, 4>), std::vector<float>)
 {
     using Dev = alpaka::DevCpu;
-    auto const platform = alpaka::PltfCpu{};
+    auto const platform = alpaka::PlatformCpu{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
 
     TestType a{1, 2, 3, 4};

@@ -5,13 +5,13 @@
 #pragma once
 
 #include "alpaka/dev/DevGenericSycl.hpp"
-#include "alpaka/pltf/PltfFpgaSyclIntel.hpp"
+#include "alpaka/platform/PlatformFpgaSyclIntel.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 namespace alpaka
 {
-    using DevFpgaSyclIntel = DevGenericSycl<PltfFpgaSyclIntel>;
+    using DevFpgaSyclIntel = DevGenericSycl<PlatformFpgaSyclIntel>;
 } // namespace alpaka
 
 #endif

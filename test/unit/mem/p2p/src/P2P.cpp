@@ -24,7 +24,7 @@ static auto testP2P(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> const& ext
     using Elem = std::uint32_t;
     using Idx = alpaka::Idx<TAcc>;
 
-    auto const platformAcc = alpaka::Pltf<TAcc>{};
+    auto const platformAcc = alpaka::Platform<TAcc>{};
     if(alpaka::getDevCount(platformAcc) < 2)
     {
         std::cerr << "No two devices found to test peer-to-peer copy." << std::endl;

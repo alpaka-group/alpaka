@@ -202,8 +202,8 @@ namespace alpaka::detail
 namespace alpaka::trait
 {
     //! The SYCL host-to-device memory copy trait specialization.
-    template<typename TPltf, typename TDim>
-    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltf>, DevCpu>
+    template<typename TPlatform, typename TDim>
+    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPlatform>, DevCpu>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
         static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -216,8 +216,8 @@ namespace alpaka::trait
     };
 
     //! The SYCL device-to-host memory copy trait specialization.
-    template<typename TPltf, typename TDim>
-    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TPltf>>
+    template<typename TPlatform, typename TDim>
+    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TPlatform>>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
         static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -230,8 +230,8 @@ namespace alpaka::trait
     };
 
     //! The SYCL device-to-device memory copy trait specialization.
-    template<typename TPltfDst, typename TPltfSrc, typename TDim>
-    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltfDst>, DevGenericSycl<TPltfSrc>>
+    template<typename TPlatformDst, typename TPlatformSrc, typename TDim>
+    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPlatformDst>, DevGenericSycl<TPlatformSrc>>
     {
         template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
         static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)

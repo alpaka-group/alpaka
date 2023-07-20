@@ -51,7 +51,7 @@ Define accelerator type (CUDA, OpenMP,etc.)
 Create platform and select a device by index
    .. code-block:: c++
 
-      auto const platform = Pltf<Acc>{};
+      auto const platform = Platform<Acc>{};
       auto const device = getDevByIdx(platform, index);
 
 Queue and Events
@@ -107,7 +107,7 @@ Memory allocation and transfers are symmetric for host and devices, both done vi
 Create a CPU device for memory allocation on the host side
   .. code-block:: c++
 
-     auto const platformHost = PltfCpu{};
+     auto const platformHost = PlatformCpu{};
      auto const devHost = getDevByIdx(platformHost, 0);
 
 Allocate a buffer in host memory

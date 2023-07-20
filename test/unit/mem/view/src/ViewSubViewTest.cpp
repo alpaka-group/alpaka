@@ -86,7 +86,7 @@ namespace alpaka::test
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewSubView<Dev, TElem, Dim, Idx>;
 
-        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
@@ -108,7 +108,7 @@ namespace alpaka::test
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewSubView<Dev, TElem, Dim, Idx>;
 
-        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf
@@ -132,7 +132,7 @@ namespace alpaka::test
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::ViewSubView<Dev, TElem, Dim, Idx>;
 
-        auto const platform = alpaka::Pltf<TAcc>{};
+        auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto const extentBuf

@@ -18,7 +18,7 @@
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"
 #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"
 #include "alpaka/queue/Traits.hpp"
@@ -161,9 +161,9 @@ namespace alpaka
 
         //! The CPU CUDA/HIP execution task platform type trait specialization.
         template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-        struct PltfType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+        struct PlatformType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            using type = PltfUniformCudaHipRt<TApi>;
+            using type = PlatformUniformCudaHipRt<TApi>;
         };
 
         //! The GPU CUDA/HIP execution task idx type trait specialization.

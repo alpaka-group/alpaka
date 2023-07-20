@@ -239,7 +239,7 @@ T AlpakaStream<T>::dot()
 
 void listDevices()
 {
-    auto const platform = alpaka::Pltf<Acc>{};
+    auto const platform = alpaka::Platform<Acc>{};
     auto const count = alpaka::getDevCount(platform);
     std::cout << "Devices:" << std::endl;
     for(int i = 0; i < count; i++)
@@ -248,7 +248,7 @@ void listDevices()
 
 std::string getDeviceName(int deviceIndex)
 {
-    auto const platform = alpaka::Pltf<Acc>{};
+    auto const platform = alpaka::Platform<Acc>{};
     return alpaka::getName(alpaka::getDevByIdx(platform, deviceIndex));
 }
 

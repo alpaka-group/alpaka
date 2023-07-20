@@ -37,7 +37,7 @@ void testResult(TQueue& queue, TBufAcc& bufAcc)
     alpaka::wait(queue);
     // Copy results to host
     auto const n = alpaka::getExtentProduct(bufAcc);
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
     auto bufHost = alpaka::allocBuf<float, uint32_t>(devHost, n);
     alpaka::memcpy(queue, bufHost, bufAcc);
@@ -427,7 +427,7 @@ auto main() -> int
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
     // Select a device and create queue for it
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
     auto queue = alpaka::Queue<Acc, alpaka::Blocking>(devAcc);
 

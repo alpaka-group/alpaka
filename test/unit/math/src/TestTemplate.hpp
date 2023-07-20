@@ -87,9 +87,9 @@ struct TestTemplate
         static constexpr size_t elementsPerThread = 1u;
         static constexpr size_t sizeExtent = 1u;
 
-        auto const platformAcc = alpaka::Pltf<TAcc>{};
+        auto const platformAcc = alpaka::Platform<TAcc>{};
         auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
-        auto const platformHost = alpaka::PltfCpu{};
+        auto const platformHost = alpaka::PlatformCpu{};
         auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
         QueueAcc queue{devAcc};

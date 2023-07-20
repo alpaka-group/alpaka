@@ -29,8 +29,8 @@ namespace alpaka::test
         using Acc = TAcc;
         using Dim = alpaka::Dim<Acc>;
         using Idx = alpaka::Idx<Acc>;
-        using Platform = alpaka::Pltf<Acc>;
-        using Device = alpaka::Dev<Acc>;
+        using Platform = alpaka::Platform<Acc>;
+        using Device = Dev<Acc>;
         using Queue = test::DefaultQueue<Device>;
         using WorkDiv = WorkDivMembers<Dim, Idx>;
 
@@ -76,7 +76,7 @@ namespace alpaka::test
         }
 
     private:
-        PltfCpu m_platformHost;
+        PlatformCpu m_platformHost;
         DevCpu m_devHost;
         Platform m_platform;
         Device m_device;

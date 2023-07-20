@@ -203,7 +203,7 @@ namespace alpaka::test
     {
         using Elem = Elem<TView>;
 
-        auto const platformHost = alpaka::PltfCpu{};
+        auto const platformHost = alpaka::PlatformCpu{};
         auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
         auto const extent = getExtentVec(view);

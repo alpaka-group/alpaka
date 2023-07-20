@@ -68,7 +68,7 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     using Val = float;
 
     using DevAcc = alpaka::Dev<Acc>;
-    using PltfAcc = alpaka::Pltf<DevAcc>;
+    using PlatformAcc = alpaka::Platform<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<alpaka::Dev<Acc>>;
 
     Idx const numElements = 32;
@@ -77,11 +77,11 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     SqrtKernel kernel;
 
     // Get the host device.
-    auto const platformHost = alpaka::PltfCpu{};
+    auto const platformHost = alpaka::PlatformCpu{};
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Select a device to execute on.
-    auto const platformAcc = PltfAcc{};
+    auto const platformAcc = PlatformAcc{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     // Get a queue on this device.
@@ -103,9 +103,9 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
               << ", numElements:" << numElements << ")" << std::endl;
 
     // Allocate host memory buffers, potentially pinned for faster copy to/from the accelerator.
-    auto memBufHostA = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
-    auto memBufHostB = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
-    auto memBufHostC = alpaka::allocMappedBufIfSupported<PltfAcc, Val, Idx>(devHost, extent);
+    auto memBufHostA = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
+    auto memBufHostB = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
+    auto memBufHostC = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
 
     // Initialize the host input vectors
     for(Idx i = 0; i < numElements; ++i)

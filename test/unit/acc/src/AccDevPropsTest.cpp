@@ -12,7 +12,7 @@
 TEMPLATE_LIST_TEST_CASE("getAccDevProps", "[acc]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    auto const platform = alpaka::Pltf<Acc>{};
+    auto const platform = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
     auto const devProps = alpaka::getAccDevProps<Acc>(dev);
 

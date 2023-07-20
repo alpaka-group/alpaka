@@ -25,7 +25,7 @@ namespace alpaka
 
     //! The CUDA/HIP RT platform.
     template<typename TApi>
-    struct PltfUniformCudaHipRt : concepts::Implements<ConceptPltf, PltfUniformCudaHipRt<TApi>>
+    struct PlatformUniformCudaHipRt : concepts::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
     {
     };
 
@@ -33,16 +33,16 @@ namespace alpaka
     {
         //! The CUDA/HIP RT platform device type trait specialization.
         template<typename TApi>
-        struct DevType<PltfUniformCudaHipRt<TApi>>
+        struct DevType<PlatformUniformCudaHipRt<TApi>>
         {
             using type = DevUniformCudaHipRt<TApi>;
         };
 
         //! The CUDA/HIP RT platform device count get trait specialization.
         template<typename TApi>
-        struct GetDevCount<PltfUniformCudaHipRt<TApi>>
+        struct GetDevCount<PlatformUniformCudaHipRt<TApi>>
         {
-            ALPAKA_FN_HOST static auto getDevCount(PltfUniformCudaHipRt<TApi> const&) -> std::size_t
+            ALPAKA_FN_HOST static auto getDevCount(PlatformUniformCudaHipRt<TApi> const&) -> std::size_t
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -57,10 +57,10 @@ namespace alpaka
 
         //! The CUDA/HIP RT platform device get trait specialization.
         template<typename TApi>
-        struct GetDevByIdx<PltfUniformCudaHipRt<TApi>>
+        struct GetDevByIdx<PlatformUniformCudaHipRt<TApi>>
         {
             ALPAKA_FN_HOST static auto getDevByIdx(
-                PltfUniformCudaHipRt<TApi> const& platform,
+                PlatformUniformCudaHipRt<TApi> const& platform,
                 std::size_t const& devIdx) -> DevUniformCudaHipRt<TApi>
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;

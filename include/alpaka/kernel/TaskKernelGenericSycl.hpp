@@ -16,7 +16,7 @@
 #include "alpaka/kernel/SyclSubgroupSize.hpp"
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/mem/buf/sycl/Accessor.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
 
@@ -332,9 +332,9 @@ namespace alpaka::trait
 
     //! The SYCL execution task platform type trait specialization.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    struct PltfType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+    struct PlatformType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
     {
-        using type = typename PltfType<TAcc>::type;
+        using type = typename PlatformType<TAcc>::type;
     };
 
     //! The SYCL execution task dimension getter trait specialization.

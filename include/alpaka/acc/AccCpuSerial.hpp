@@ -26,7 +26,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 // Implementation details.
 #include "alpaka/acc/Tag.hpp"
@@ -183,9 +183,9 @@ namespace alpaka
 
         //! The CPU serial execution task platform type trait specialization.
         template<typename TDim, typename TIdx>
-        struct PltfType<AccCpuSerial<TDim, TIdx>>
+        struct PlatformType<AccCpuSerial<TDim, TIdx>>
         {
-            using type = PltfCpu;
+            using type = PlatformCpu;
         };
 
         //! The CPU serial accelerator idx type trait specialization.

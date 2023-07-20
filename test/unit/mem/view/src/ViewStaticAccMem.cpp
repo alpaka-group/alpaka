@@ -52,7 +52,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
     using Acc = TestType;
     using DevAcc = alpaka::Dev<Acc>;
 
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     alpaka::Vec<Dim, Idx> const extent(3u, 2u);
@@ -63,7 +63,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
 
     // uninitialized static constant device memory
     {
-        auto const platformHost = alpaka::PltfCpu{};
+        auto const platformHost = alpaka::PlatformCpu{};
         auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
         using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
@@ -105,7 +105,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
     using Acc = TestType;
     using DevAcc = alpaka::Dev<Acc>;
 
-    auto const platformAcc = alpaka::Pltf<Acc>{};
+    auto const platformAcc = alpaka::Platform<Acc>{};
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     alpaka::Vec<Dim, Idx> const extent(3u, 2u);
@@ -116,7 +116,7 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
 
     // uninitialized static global device memory
     {
-        auto const platformHost = alpaka::PltfCpu{};
+        auto const platformHost = alpaka::PlatformCpu{};
         auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
         using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;

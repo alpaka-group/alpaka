@@ -13,8 +13,8 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/pltf/PltfFpgaSyclIntel.hpp"
-#include "alpaka/pltf/Traits.hpp"
+#include "alpaka/platform/PlatformFpgaSyclIntel.hpp"
+#include "alpaka/platform/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <string>
@@ -73,9 +73,9 @@ namespace alpaka::trait
 
     //! The Intel FPGA SYCL execution task platform type trait specialization.
     template<typename TDim, typename TIdx>
-    struct PltfType<AccFpgaSyclIntel<TDim, TIdx>>
+    struct PlatformType<AccFpgaSyclIntel<TDim, TIdx>>
     {
-        using type = PltfFpgaSyclIntel;
+        using type = PlatformFpgaSyclIntel;
     };
 
     template<typename TDim, typename TIdx>

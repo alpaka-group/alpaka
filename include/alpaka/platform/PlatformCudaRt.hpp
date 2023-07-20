@@ -5,14 +5,14 @@
 #pragma once
 
 #include "alpaka/core/ApiCudaRt.hpp"
-#include "alpaka/pltf/PltfUniformCudaHipRt.hpp"
+#include "alpaka/platform/PlatformUniformCudaHipRt.hpp"
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 namespace alpaka
 {
     //! The CUDA RT platform.
-    using PltfCudaRt = PltfUniformCudaHipRt<ApiCudaRt>;
+    using PlatformCudaRt = PlatformUniformCudaHipRt<ApiCudaRt>;
 } // namespace alpaka
 
 #endif // ALPAKA_ACC_GPU_CUDA_ENABLED
