@@ -29559,10 +29559,10 @@
 	                using Allocator = AllocCpuAligned<std::integral_constant<std::size_t, alignment>>;
 	                static_assert(std::is_empty_v<Allocator>, "AllocCpuAligned is expected to be stateless");
 	                auto* memPtr = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(getExtentProduct(extent)));
-	                auto deleter = [queue = std::move(queue)](TElem* ptr) mutable
+	                auto deleter = [l_queue = std::move(queue)](TElem* ptr) mutable
 	                {
 	                    alpaka::enqueue(
-	                        queue,
+	                        l_queue,
 	                        [ptr]()
 	                        {
 	                            // free the memory
