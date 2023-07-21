@@ -333,10 +333,10 @@ $(document).ready(function(){initNavTree('BufCpu_8hpp_source.html',''); initResi
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                <span class="keyword">using</span> Allocator = <a class="code" href="classalpaka_1_1AllocCpuAligned.html">AllocCpuAligned&lt;std::integral_constant&lt;std::size_t, alignment&gt;</a>&gt;;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                static_assert(std::is_empty_v&lt;Allocator&gt;, <span class="stringliteral">&quot;AllocCpuAligned is expected to be stateless&quot;</span>);</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                <span class="keyword">auto</span>* memPtr = alpaka::malloc&lt;TElem&gt;(Allocator{}, <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<a class="code" href="namespacealpaka.html#aedb2f08496dfc99d68cbe99a43eb1f2e">getExtentProduct</a>(extent)));</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                <span class="keyword">auto</span> deleter = [queue = std::move(queue)](TElem* ptr) <span class="keyword">mutable</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                <span class="keyword">auto</span> deleter = [l_queue = std::move(queue)](TElem* ptr) <span class="keyword">mutable</span></div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                {</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                    <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">alpaka::enqueue</a>(</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                        queue,</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                        l_queue,</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                        [ptr]()</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                        {</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                            <span class="comment">// free the memory</span></div>
@@ -469,7 +469,7 @@ $(document).ready(function(){initNavTree('BufCpu_8hpp_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufCpu_8hpp.html">BufCpu.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 6 2023 08:40:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Jul 21 2023 15:58:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
