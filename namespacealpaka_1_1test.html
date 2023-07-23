@@ -155,6 +155,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aa839db9d57839ee169d666ff52272a13"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
 <tr class="memitem:aa839db9d57839ee169d666ff52272a13"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13">Iterator</a> = <a class="el" href="classalpaka_1_1test_1_1trait_1_1IteratorView.html">trait::IteratorView</a>&lt; TView &gt;</td></tr>
 <tr class="separator:aa839db9d57839ee169d666ff52272a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afac7bd7e920007cb27f7f7d2c3aa7b2a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#afac7bd7e920007cb27f7f7d2c3aa7b2a">NonZeroTestDims</a> = <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">meta::Filter</a>&lt; <a class="el" href="namespacealpaka_1_1test.html#a5a34c17994a72cc9e63b68fdcb274870">TestDims</a>, <a class="el" href="namespacealpaka_1_1meta.html#a8cc18e1b72c5071da369d80b8f0569a7">meta::NonZero</a> &gt;</td></tr>
+<tr class="memdesc:afac7bd7e920007cb27f7f7d2c3aa7b2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple holding non-zero dimensions.  <a href="namespacealpaka_1_1test.html#afac7bd7e920007cb27f7f7d2c3aa7b2a">More...</a><br /></td></tr>
+<tr class="separator:afac7bd7e920007cb27f7f7d2c3aa7b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac981ce6a8a742c033eb0e664cc0de959"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#ac981ce6a8a742c033eb0e664cc0de959">TestAccs</a> = <a class="el" href="namespacealpaka_1_1meta.html#ad0cbe491078fbefb5d6c6908dd4d799e">meta::Apply</a>&lt; <a class="el" href="namespacealpaka_1_1test_1_1detail.html#ae3d5270239c3fdbcb3480c1cdb4fb996">detail::InstantiatedEnabledAccs</a>, <a class="el" href="namespacealpaka_1_1meta.html#a8ec9f76ad5048e654936626c56845f2c">meta::Concatenate</a> &gt;</td></tr>
 <tr class="memdesc:ac981ce6a8a742c033eb0e664cc0de959"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple containing fully instantiated accelerators.  <a href="namespacealpaka_1_1test.html#ac981ce6a8a742c033eb0e664cc0de959">More...</a><br /></td></tr>
 <tr class="separator:ac981ce6a8a742c033eb0e664cc0de959"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,6 +304,25 @@ template&lt;typename TView &gt; </div>
 
 </div>
 </div>
+<a id="afac7bd7e920007cb27f7f7d2c3aa7b2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afac7bd7e920007cb27f7f7d2c3aa7b2a">&#9670;&nbsp;</a></span>NonZeroTestDims</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1test.html#afac7bd7e920007cb27f7f7d2c3aa7b2a">alpaka::test::NonZeroTestDims</a> = typedef <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">meta::Filter</a>&lt;<a class="el" href="namespacealpaka_1_1test.html#a5a34c17994a72cc9e63b68fdcb274870">TestDims</a>, <a class="el" href="namespacealpaka_1_1meta.html#a8cc18e1b72c5071da369d80b8f0569a7">meta::NonZero</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A std::tuple holding non-zero dimensions. </p>
+<p>NonZeroTestDims = std::tuple&lt;Dim1, Dim2, ... DimN&gt; </p>
+
+<p class="definition">Definition at line <a class="el" href="TestDims_8hpp_source.html#l00032">32</a> of file <a class="el" href="TestDims_8hpp_source.html">TestDims.hpp</a>.</p>
+
+</div>
+</div>
 <a id="ac981ce6a8a742c033eb0e664cc0de959"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac981ce6a8a742c033eb0e664cc0de959">&#9670;&nbsp;</a></span>TestAccs</h2>
 
@@ -316,7 +338,7 @@ template&lt;typename TView &gt; </div>
 <p>A std::tuple containing fully instantiated accelerators. </p>
 <p>TestAccs = tuple&lt; Acc1&lt;Dim1,Idx1&gt;, ..., AccN&lt;Dim1,Idx1&gt;, Acc1&lt;Dim2,Idx1&gt;, ..., AccN&lt;Dim2,Idx1&gt;, ..., Acc1&lt;DimN,IdxN&gt;, ..., AccN&lt;DimN,IdxN&gt;&gt; </p>
 
-<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00186">186</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestAccs_8hpp_source.html#l00181">181</a> of file <a class="el" href="TestAccs_8hpp_source.html">TestAccs.hpp</a>.</p>
 
 </div>
 </div>
@@ -334,7 +356,7 @@ template&lt;typename TView &gt; </div>
 
 <p>A std::tuple holding dimensions. </p>
 
-<p class="definition">Definition at line <a class="el" href="TestDims_8hpp_source.html#l00015">15</a> of file <a class="el" href="TestDims_8hpp_source.html">TestDims.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TestDims_8hpp_source.html#l00017">17</a> of file <a class="el" href="TestDims_8hpp_source.html">TestDims.hpp</a>.</p>
 
 </div>
 </div>
@@ -654,7 +676,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test.html">test</a></li>
-    <li class="footer">Generated on Fri Jul 21 2023 15:58:58 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Jul 23 2023 08:56:01 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

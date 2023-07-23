@@ -92,6 +92,8 @@ $(document).ready(function(){initNavTree('TestDims_8hpp.html',''); initResizable
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DimIntegralConst_8hpp_source.html">alpaka/dim/DimIntegralConst.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Filter_8hpp_source.html">alpaka/meta/Filter.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="NonZero_8hpp_source.html">alpaka/meta/NonZero.hpp</a>&quot;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 </div>
 <p><a href="TestDims_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -107,6 +109,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:afac7bd7e920007cb27f7f7d2c3aa7b2a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#afac7bd7e920007cb27f7f7d2c3aa7b2a">alpaka::test::NonZeroTestDims</a> = meta::Filter&lt; TestDims, meta::NonZero &gt;</td></tr>
+<tr class="memdesc:afac7bd7e920007cb27f7f7d2c3aa7b2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple holding non-zero dimensions.  <a href="namespacealpaka_1_1test.html#afac7bd7e920007cb27f7f7d2c3aa7b2a">More...</a><br /></td></tr>
+<tr class="separator:afac7bd7e920007cb27f7f7d2c3aa7b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a34c17994a72cc9e63b68fdcb274870"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1test.html#a5a34c17994a72cc9e63b68fdcb274870">alpaka::test::TestDims</a> = std::tuple&lt; DimInt&lt; 0u &gt;, DimInt&lt; 1u &gt;, DimInt&lt; 2u &gt;, DimInt&lt; 3u &gt; &gt;</td></tr>
 <tr class="memdesc:a5a34c17994a72cc9e63b68fdcb274870"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::tuple holding dimensions.  <a href="namespacealpaka_1_1test.html#a5a34c17994a72cc9e63b68fdcb274870">More...</a><br /></td></tr>
 <tr class="separator:a5a34c17994a72cc9e63b68fdcb274870"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,7 +122,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="dir_503cb11d94d05cb253eec124a79b720b.html">dim</a></li><li class="navelem"><a class="el" href="TestDims_8hpp.html">TestDims.hpp</a></li>
-    <li class="footer">Generated on Fri Jul 21 2023 15:58:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Jul 23 2023 08:56:00 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

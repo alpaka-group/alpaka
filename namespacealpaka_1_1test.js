@@ -25,6 +25,7 @@ var namespacealpaka_1_1test =
     [ "EventHostManualTrigger", "namespacealpaka_1_1test.html#a5751f63b161a4e0460c55f2f5c3d2a17", null ],
     [ "IsBlockingQueue", "namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e", null ],
     [ "Iterator", "namespacealpaka_1_1test.html#aa839db9d57839ee169d666ff52272a13", null ],
+    [ "NonZeroTestDims", "namespacealpaka_1_1test.html#afac7bd7e920007cb27f7f7d2c3aa7b2a", null ],
     [ "TestAccs", "namespacealpaka_1_1test.html#ac981ce6a8a742c033eb0e664cc0de959", null ],
     [ "TestDims", "namespacealpaka_1_1test.html#a5a34c17994a72cc9e63b68fdcb274870", null ],
     [ "TestIdxs", "namespacealpaka_1_1test.html#ac0f459f4608106cb91d1aebf5899600a", null ],

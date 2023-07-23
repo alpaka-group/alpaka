@@ -14,6 +14,5 @@ var namespacealpaka_1_1test_1_1detail =
     [ "ApplyEnabledAccs", "namespacealpaka_1_1test_1_1detail.html#a500c90b7587f9c4bc775f8bffde773ba", null ],
     [ "EnabledAccsElseInt", "namespacealpaka_1_1test_1_1detail.html#ab57c849d67c6a52eb555586398034871", null ],
     [ "InstantiatedEnabledAccs", "namespacealpaka_1_1test_1_1detail.html#ae3d5270239c3fdbcb3480c1cdb4fb996", null ],
-    [ "NonZeroTestDims", "namespacealpaka_1_1test_1_1detail.html#a9d57e67529cc861e8916832722ccfd08", null ],
     [ "TestDimIdxTuples", "namespacealpaka_1_1test_1_1detail.html#ac11bfb3c371f540277d8559d407d6d56", null ]
 ];
