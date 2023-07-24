@@ -61,8 +61,9 @@ namespace alpaka::core
                 m_tasks.emplace(std::move(task));
                 if(!m_thread.joinable())
                     startWorkerThread();
+                m_cond.notify_one();
             }
-            m_cond.notify_one();
+
             return f;
         }
 
