@@ -106,6 +106,41 @@ TEMPLATE_LIST_TEST_CASE(
     CHECK(alpaka::empty(f.m_queue));
 }
 
+TEMPLATE_LIST_TEST_CASE("taskIsDestroyedAfterExecution", "[queue]", TestQueues)
+{
+    struct Kernel
+    {
+        std::atomic<bool>* destroyed;
+
+        explicit Kernel(std::atomic<bool>& a) : destroyed(&a)
+        {
+        }
+
+        Kernel(Kernel const&) = default;
+
+        ~Kernel()
+        {
+            *destroyed = true;
+        }
+
+        void operator()() const
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1u));
+        }
+    };
+
+    using DevQueue = TestType;
+    auto f = alpaka::test::QueueTestFixture<DevQueue>{};
+
+    std::atomic<bool> destroyed{false};
+    alpaka::enqueue(f.m_queue, Kernel{destroyed});
+
+    if(!alpaka::test::IsBlockingQueue<decltype(f.m_queue)>::value)
+        alpaka::wait(f.m_queue);
+    CHECK(destroyed == true);
+    CHECK(alpaka::empty(f.m_queue));
+}
+
 TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQueues)
 {
     using DevQueue = TestType;
