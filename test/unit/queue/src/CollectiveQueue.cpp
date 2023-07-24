@@ -65,10 +65,7 @@ TEST_CASE("queueCollective", "[queue]")
         alpaka::wait(queue);
     }
 
-    for(size_t i = 0; i < results.size(); ++i)
-    {
-        REQUIRE(static_cast<int>(i) == results.at(i));
-    }
+    CHECK(results == std::vector<int>{0, 1, 2, 3});
 }
 
 TEST_CASE("TestCollectiveMemcpy", "[queue]")
