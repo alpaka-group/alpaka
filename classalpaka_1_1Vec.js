@@ -4,7 +4,9 @@ var classalpaka_1_1Vec =
     [ "Val", "classalpaka_1_1Vec.html#a8ba1d21778eba24f0ada0ec057204c8b", null ],
     [ "Vec", "classalpaka_1_1Vec.html#a9b28e4f55e2d24291409d1b1b4ca3e5b", null ],
     [ "Vec", "classalpaka_1_1Vec.html#a7b6b1a4bfbc7a6b7a28fbc8f15a97755", null ],
+    [ "all", "classalpaka_1_1Vec.html#a8698fac84793b50ba4b3178229440733", null ],
     [ "all", "classalpaka_1_1Vec.html#a63e2be5b9e7ed693e6185ebdfccec584", null ],
+    [ "any", "classalpaka_1_1Vec.html#a3b2105ff93e428adbadc7b5761f425d2", null ],
     [ "begin", "classalpaka_1_1Vec.html#a4a11451f61b3919f3a2d95619e5ed738", null ],
     [ "begin", "classalpaka_1_1Vec.html#adede57b5f6210149dc4a05c16cd137c5", null ],
     [ "end", "classalpaka_1_1Vec.html#a6ac119f42a315031892a2290648f96ce", null ],
@@ -19,6 +21,7 @@ var classalpaka_1_1Vec =
     [ "maxElem", "classalpaka_1_1Vec.html#a1f01132f4979edf700104e42196d1d48", null ],
     [ "min", "classalpaka_1_1Vec.html#af0338d99e5dd2c496e634a5890182f4d", null ],
     [ "minElem", "classalpaka_1_1Vec.html#a2da81d997cdcdbf9bdbfdd797f7aad30", null ],
+    [ "none", "classalpaka_1_1Vec.html#ac6f8d6032291bbbc27e5ea5feeff850a", null ],
     [ "ones", "classalpaka_1_1Vec.html#a0f9c20adc8c791ed09ad385a01bd4bd2", null ],
     [ "operator[]", "classalpaka_1_1Vec.html#a550d1c86077a8f3fb5c4ba4f27e2d275", null ],
     [ "operator[]", "classalpaka_1_1Vec.html#aaaa175415beba6fdd1ff04f78d5af68a", null ],
@@ -26,6 +29,7 @@ var classalpaka_1_1Vec =
     [ "sum", "classalpaka_1_1Vec.html#ad617df99935286b9f948b9588a34f15d", null ],
     [ "zeros", "classalpaka_1_1Vec.html#a715d74bf7082c7a9233ff4001ff03c2e", null ],
     [ "operator!=", "classalpaka_1_1Vec.html#a5e6d1538ed27a8086aaa4a4d5b90506d", null ],
+    [ "operator&&", "classalpaka_1_1Vec.html#a3f27dae3dce2ac4db8a4f5ae06caf2c3", null ],
     [ "operator*", "classalpaka_1_1Vec.html#ad37faa5cabafbb63e4c497371d31569a", null ],
     [ "operator+", "classalpaka_1_1Vec.html#a90bd14a18ac8dd77372fbe8419020e41", null ],
     [ "operator-", "classalpaka_1_1Vec.html#a46721bd1697dfb78381a47052ef4081a", null ],
@@ -34,5 +38,6 @@ var classalpaka_1_1Vec =
     [ "operator<=", "classalpaka_1_1Vec.html#a784354ea6a317576b2e7d301a7277b46", null ],
     [ "operator==", "classalpaka_1_1Vec.html#aa6dbf39d6040e6e87081ef9cd00488b3", null ],
     [ "operator>", "classalpaka_1_1Vec.html#a41c466cf2e2c390d8c0a65f7ec9b1aeb", null ],
-    [ "operator>=", "classalpaka_1_1Vec.html#aa5e17e7b1bf4f3fdcbe761090e53ff34", null ]
+    [ "operator>=", "classalpaka_1_1Vec.html#aa5e17e7b1bf4f3fdcbe761090e53ff34", null ],
+    [ "operator||", "classalpaka_1_1Vec.html#a025377fdc4bfa7545911e91d2cab5c42", null ]
 ];

@@ -1,5 +1,11 @@
 var NAVTREEINDEX14 =
 {
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicDec_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#a8bec8f03c9929a55d2a34de612dd3e9c":[3,0,0,16,28,0],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicExch_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html":[3,0,0,16,29],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicExch_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#aa281b1b2b26953011d5dbf16d8d82d0c":[3,0,0,16,29,0],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicExch_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html":[3,0,0,16,30],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicExch_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#ab9ed8dd3f6b56309838482784ff1393b":[3,0,0,16,30,0],
+"structalpaka_1_1trait_1_1AtomicOp_3_01AtomicInc_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html":[3,0,0,16,31],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicInc_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#add5aef3b3b323a57a7a58d122e782db7":[3,0,0,16,31,0],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicMax_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html":[3,0,0,16,32],
 "structalpaka_1_1trait_1_1AtomicOp_3_01AtomicMax_00_01AtomicAtomicRef_00_01T_00_01THierarchy_01_4.html#a25683f62749d37947c65a8092a5381e2":[3,0,0,16,32,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX14 =
 "structalpaka_1_1trait_1_1ElemType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,16,161],
 "structalpaka_1_1trait_1_1ElemType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a68b7b8baccf3ef7c78909f3df4292cfa":[3,0,0,16,161,0],
 "structalpaka_1_1trait_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,16,162],
-"structalpaka_1_1trait_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a06faa162d00a8a7dd0337e79c80ab139":[3,0,0,16,162,0],
-"structalpaka_1_1trait_1_1ElemType_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html":[3,0,0,16,156],
-"structalpaka_1_1trait_1_1ElemType_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html#a1212529519af9efbea816348808b0b52":[3,0,0,16,156,0],
-"structalpaka_1_1trait_1_1ElemType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html":[3,0,0,16,157],
-"structalpaka_1_1trait_1_1ElemType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#abe2a73ec0ef62e5f6377295085a51aee":[3,0,0,16,157,0],
-"structalpaka_1_1trait_1_1Empty.html":[3,0,0,16,163],
-"structalpaka_1_1trait_1_1Empty_3_01QueueCpuOmp2Collective_01_4.html":[3,0,0,16,164]
+"structalpaka_1_1trait_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a06faa162d00a8a7dd0337e79c80ab139":[3,0,0,16,162,0]
 };

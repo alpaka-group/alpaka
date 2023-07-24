@@ -1,5 +1,11 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1Vec.html#adede57b5f6210149dc4a05c16cd137c5":[3,0,0,110,8],
+"classalpaka_1_1Vec.html#af0338d99e5dd2c496e634a5890182f4d":[3,0,0,110,19],
+"classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f":[3,0,0,110,11],
+"classalpaka_1_1ViewPlainPtr.html":[3,0,0,112],
+"classalpaka_1_1ViewPlainPtr.html#a0b6b3e7109483fc1ee554230f299b09e":[3,0,0,112,0],
+"classalpaka_1_1ViewPlainPtr.html#a15c97c5c40ec230c83bc5cf28f4cb95c":[3,0,0,112,5],
 "classalpaka_1_1ViewPlainPtr.html#a1ea73be548e7c28bbb2eca2c933bbb6f":[3,0,0,112,2],
 "classalpaka_1_1ViewPlainPtr.html#a3d2d8a080f115b70e313662e312c3677":[3,0,0,112,9],
 "classalpaka_1_1ViewPlainPtr.html#a5160c0f407398f5e3e21b1a3ed2ce1e8":[3,0,0,112,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01double_01_4.html#a91ff72bdeef0e5c825d42c7017466044":[3,0,0,14,0,3,1,0],
 "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01float_01_4.html":[3,0,0,14,0,3,2],
 "classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01float_01_4.html#a2df6001a9969dab51c583da71ff56bf2":[3,0,0,14,0,3,2,0],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal.html":[3,0,0,14,0,3,3],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01double_01_4.html":[3,0,0,14,0,3,4],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01double_01_4.html#adfa8f1b99220b48095687e83035b60df":[3,0,0,14,0,3,4,0],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01float_01_4.html":[3,0,0,14,0,3,5],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal_3_01float_01_4.html#a92a5e25c4252a51fde5827643d048fe7":[3,0,0,14,0,3,5,0],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformUint.html":[3,0,0,14,0,3,6],
-"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformUint_3_01unsigned_01int_01_4.html":[3,0,0,14,0,3,7]
+"classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1UniformReal.html":[3,0,0,14,0,3,3]
 };
