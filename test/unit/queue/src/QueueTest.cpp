@@ -76,15 +76,18 @@ TEMPLATE_LIST_TEST_CASE(
     Fixture f;
 
     std::atomic<bool> callbackFinished{false};
+    std::atomic<bool> inKernelIsNotEmptyBeforeSleep{false};
+    std::atomic<bool> inKernelIsNotEmptyAfterSleep{false};
+
     alpaka::enqueue(
         f.m_queue,
-        [&f, &callbackFinished]() noexcept
+        [&]() noexcept
         {
             // This callback function is in the queue therefore the queue can not be empty.
-            CHECK(!alpaka::empty(f.m_queue));
+            inKernelIsNotEmptyBeforeSleep = !alpaka::empty(f.m_queue);
             std::this_thread::sleep_for(std::chrono::milliseconds(100u));
             // Check again, the queue must stay not empty.
-            CHECK(!alpaka::empty(f.m_queue));
+            inKernelIsNotEmptyAfterSleep = !alpaka::empty(f.m_queue);
             callbackFinished = true;
         });
 
@@ -95,6 +98,8 @@ TEMPLATE_LIST_TEST_CASE(
     }
 
     CHECK(callbackFinished.load() == true);
+    CHECK(inKernelIsNotEmptyBeforeSleep.load() == true);
+    CHECK(inKernelIsNotEmptyAfterSleep.load() == true);
 
     // The blocking queue must be empty because we wait for the non-blocking queue and the blocking on is synchronized
     // implicitly.
@@ -110,33 +115,37 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
     std::atomic<bool> taskIsExecuting(false);
     std::promise<void> firstTaskFinished;
     std::future<void> firstTaskFinishedFuture = firstTaskFinished.get_future();
+    std::atomic<bool> firstTaskInKernelIsExecutingBeforeSleep{false};
+    std::atomic<bool> firstTaskInKernelIsExecutingAfterSleep{false};
     std::promise<void> secondTaskFinished;
     std::future<void> secondTaskFinishedFuture = secondTaskFinished.get_future();
+    std::atomic<bool> secondTaskInKernelIsExecutingBeforeSleep{false};
+    std::atomic<bool> secondTaskInKernelIsExecutingAfterSleep{false};
 
     std::thread thread1(
-        [&f, &taskIsExecuting, &firstTaskFinished]()
+        [&]()
         {
             alpaka::enqueue(
                 f.m_queue,
-                [&taskIsExecuting, &firstTaskFinished]() noexcept
+                [&]() noexcept
                 {
-                    CHECK(!taskIsExecuting.exchange(true));
+                    firstTaskInKernelIsExecutingBeforeSleep = !taskIsExecuting.exchange(true);
                     std::this_thread::sleep_for(std::chrono::milliseconds(100u));
-                    CHECK(taskIsExecuting.exchange(false));
+                    firstTaskInKernelIsExecutingAfterSleep = taskIsExecuting.exchange(false);
                     firstTaskFinished.set_value();
                 });
         });
 
     std::thread thread2(
-        [&f, &taskIsExecuting, &secondTaskFinished]()
+        [&]()
         {
             alpaka::enqueue(
                 f.m_queue,
-                [&taskIsExecuting, &secondTaskFinished]() noexcept
+                [&]() noexcept
                 {
-                    CHECK(!taskIsExecuting.exchange(true));
+                    secondTaskInKernelIsExecutingBeforeSleep = !taskIsExecuting.exchange(true);
                     std::this_thread::sleep_for(std::chrono::milliseconds(100u));
-                    CHECK(taskIsExecuting.exchange(false));
+                    secondTaskInKernelIsExecutingAfterSleep = taskIsExecuting.exchange(false);
                     secondTaskFinished.set_value();
                 });
         });
@@ -146,6 +155,10 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
     thread2.join();
 
     alpaka::wait(f.m_queue);
+    CHECK(firstTaskInKernelIsExecutingBeforeSleep.load() == true);
+    CHECK(firstTaskInKernelIsExecutingAfterSleep.load() == true);
+    CHECK(secondTaskInKernelIsExecutingBeforeSleep.load() == true);
+    CHECK(secondTaskInKernelIsExecutingAfterSleep.load() == true);
 
     firstTaskFinishedFuture.get();
     secondTaskFinishedFuture.get();
