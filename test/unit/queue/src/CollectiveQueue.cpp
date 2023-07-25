@@ -106,9 +106,8 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
         auto dst = alpaka::createView(dev, results.data() + threadId, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
         auto src = alpaka::createView(dev, &threadId, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
 
-        // avoid that the first thread is executing the copy (can not be guaranteed)
-        size_t sleep_ms = (results.size() - static_cast<uint32_t>(threadId)) * 100u;
-        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+        // avoid that the first thread is executing the memcpy before all other threads wrote their changes
+        alpaka::wait(queue);
 
         // only one thread will perform this memcpy
         alpaka::memcpy(queue, dst, src, Vec(static_cast<Idx>(1u)));
