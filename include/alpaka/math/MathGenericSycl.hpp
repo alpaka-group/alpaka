@@ -102,6 +102,11 @@ namespace alpaka::math
     {
     };
 
+    //! The SYCL fma.
+    class FmaGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFma, FmaGenericSycl>
+    {
+    };
+
     //! The SYCL fmod.
     class FmodGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFmod, FmodGenericSycl>
     {
@@ -211,6 +216,7 @@ namespace alpaka::math
         , public ErfGenericSycl
         , public ExpGenericSycl
         , public FloorGenericSycl
+        , public FmaGenericSycl
         , public FmodGenericSycl
         , public IsfiniteGenericSycl
         , public IsinfGenericSycl
@@ -423,6 +429,21 @@ namespace alpaka::math::trait
         auto operator()(math::FloorGenericSycl const&, TArg const& arg)
         {
             return sycl::floor(arg);
+        }
+    };
+
+    //! The SYCL fma trait specialization.
+    template<typename Tx, typename Ty, typename Tz>
+    struct Fma<
+        math::FmaGenericSycl,
+        Tx,
+        Ty,
+        Tz,
+        std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty> && std::is_floating_point_v<Tz>>>
+    {
+        auto operator()(math::FmaGenericSycl const&, Tx const& x, Ty const& y, Tz const& z)
+        {
+            return sycl::fma(x, y, z);
         }
     };
 

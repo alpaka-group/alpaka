@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bert Wesarg, Valentin Gehrke, René Widera,
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bert Wesarg, Valentin Gehrke, René Widera,
  * Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Jeffrey Kelling, Sergei Bastrakov
  * SPDX-License-Identifier: MPL-2.0
  */
@@ -102,6 +102,11 @@ namespace alpaka::math
 
     //! The CUDA built in floor.
     class FloorUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFloor, FloorUniformCudaHipBuiltIn>
+    {
+    };
+
+    //! The CUDA built in fma.
+    class FmaUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFma, FmaUniformCudaHipBuiltIn>
     {
     };
 
@@ -216,6 +221,7 @@ namespace alpaka::math
         , public ErfUniformCudaHipBuiltIn
         , public ExpUniformCudaHipBuiltIn
         , public FloorUniformCudaHipBuiltIn
+        , public FmaUniformCudaHipBuiltIn
         , public FmodUniformCudaHipBuiltIn
         , public LogUniformCudaHipBuiltIn
         , public MaxUniformCudaHipBuiltIn
@@ -699,6 +705,37 @@ namespace alpaka::math
                     static_assert(!sizeof(TArg), "Unsupported data type");
 
                 ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA fma trait specialization.
+        template<typename Tx, typename Ty, typename Tz>
+        struct Fma<
+            FmaUniformCudaHipBuiltIn,
+            Tx,
+            Ty,
+            Tz,
+            std::enable_if_t<
+                std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty> && std::is_floating_point_v<Tz>>>
+        {
+            __host__ __device__ auto operator()(
+                FmaUniformCudaHipBuiltIn const& /* fma_ctx */,
+                Tx const& x,
+                Ty const& y,
+                Tz const& z)
+            {
+                if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float> && is_decayed_v<Tz, float>)
+                    return ::fmaf(x, y, z);
+                else if constexpr(is_decayed_v<Tx, double> || is_decayed_v<Ty, double> || is_decayed_v<Tz, double>)
+                    return ::fma(x, y, z);
+                else
+                    static_assert(!sizeof(Tx), "Unsupported data type");
+
+                using Ret [[maybe_unused]] = std::conditional_t<
+                    is_decayed_v<Tx, float> && is_decayed_v<Ty, float> && is_decayed_v<Tz, float>,
+                    float,
+                    double>;
+                ALPAKA_UNREACHABLE(Ret{});
             }
         };
 
