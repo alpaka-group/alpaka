@@ -1,4 +1,5 @@
-/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Sergei Bastrakov
+/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Sergei Bastrakov,
+ * Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -193,6 +194,10 @@ namespace alpaka::math
     };
 
     struct ConceptMathFloor
+    {
+    };
+
+    struct ConceptMathFma
     {
     };
 
@@ -499,6 +504,19 @@ namespace alpaka::math
                 // backend and we could not find floor(TArg) in the namespace of your type.
                 using std::floor;
                 return floor(arg);
+            }
+        };
+
+        //! The fma trait.
+        template<typename T, typename Tx, typename Ty, typename Tz, typename TSfinae = void>
+        struct Fma
+        {
+            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, Tx const& x, Ty const& y, Tz const& z)
+            {
+                // This is an ADL call. If you get a compile error here then your type is not supported by the
+                // backend and we could not find fma(Tx, Ty, Tz) in the namespace of your type.
+                using std::fma;
+                return fma(x, y, z);
             }
         };
 
@@ -1063,6 +1081,24 @@ namespace alpaka::math
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathFloor, T>;
         return trait::Floor<ImplementationBase, TArg>{}(floor_ctx, arg);
+    }
+
+    //! Computes x * y + z as if to infinite precision and rounded only once to fit the result type.
+    //!
+    //! \tparam T The type of the object specializing Fma.
+    //! \tparam Tx The type of the first argument.
+    //! \tparam Ty The type of the second argument.
+    //! \tparam Tz The type of the third argument.
+    //! \param fma_ctx The object specializing .
+    //! \param x The first argument.
+    //! \param y The second argument.
+    //! \param z The third argument.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename T, typename Tx, typename Ty, typename Tz>
+    ALPAKA_FN_HOST_ACC auto fma(T const& fma_ctx, Tx const& x, Ty const& y, Tz const& z)
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMathFma, T>;
+        return trait::Fma<ImplementationBase, Tx, Ty, Tz>{}(fma_ctx, x, y, z);
     }
 
     //! Computes the floating-point remainder of the division operation x/y.

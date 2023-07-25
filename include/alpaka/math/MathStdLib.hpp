@@ -1,5 +1,5 @@
-/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber,
- * Jeffrey Kelling, Sergei Bastrakov
+/* Copyright 2023 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber,
+ * Jeffrey Kelling, Sergei Bastrakov, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -92,6 +92,11 @@ namespace alpaka::math
 
     //! The standard library floor, implementation covered by the general template.
     class FloorStdLib : public concepts::Implements<ConceptMathFloor, FloorStdLib>
+    {
+    };
+
+    //! The standard library fma, implementation covered by the general template.
+    class FmaStdLib : public concepts::Implements<ConceptMathFma, FmaStdLib>
     {
     };
 
@@ -214,6 +219,7 @@ namespace alpaka::math
         , public ErfStdLib
         , public ExpStdLib
         , public FloorStdLib
+        , public FmaStdLib
         , public FmodStdLib
         , public LogStdLib
         , public Log2StdLib
