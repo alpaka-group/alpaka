@@ -1583,10 +1583,10 @@ var hierarchy =
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptPltf, PltfCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::PltfCpu", "classalpaka_1_1PltfCpu.html", null ]
+      [ "alpaka::PltfCpu", "structalpaka_1_1PltfCpu.html", null ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptPltf, PltfUniformCudaHipRt< TApi > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::PltfUniformCudaHipRt< TApi >", "classalpaka_1_1PltfUniformCudaHipRt.html", null ]
+      [ "alpaka::PltfUniformCudaHipRt< TApi >", "structalpaka_1_1PltfUniformCudaHipRt.html", null ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptQueue, QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::QueueGenericThreadsBlocking< TDev >", "classalpaka_1_1QueueGenericThreadsBlocking.html", null ]

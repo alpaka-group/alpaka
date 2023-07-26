@@ -1,6 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4.html#a5a8155e7de709270c41f30a1cf9a8dbb":[3,0,0,12,0,43,0],
 "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html":[3,0,0,12,0,44],
 "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html":[3,0,0,12,0,45],
 "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a44f2a099fe34476669968ee70ccbd45d":[3,0,0,12,0,45,0],
@@ -158,8 +157,9 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html#adad2a1df042dbc8fe4ea781cc5de4396":[3,0,0,15,5,2,0],
 "structalpaka_1_1test_1_1QueueTestFixture.html":[3,0,0,15,9],
 "structalpaka_1_1test_1_1QueueTestFixture.html#a31498dfa654e0b1798e8c371c1ff3f31":[3,0,0,15,9,1],
+"structalpaka_1_1test_1_1QueueTestFixture.html#a376595bb46ae80ed9e0ecc5021efbcfc":[3,0,0,15,9,5],
 "structalpaka_1_1test_1_1QueueTestFixture.html#aa7ea709cee86b8cf754023ac959d39c6":[3,0,0,15,9,0],
-"structalpaka_1_1test_1_1QueueTestFixture.html#ab6d9a51ae066c4b3a3d1ac2b2b12715e":[3,0,0,15,9,5],
+"structalpaka_1_1test_1_1QueueTestFixture.html#ab6d9a51ae066c4b3a3d1ac2b2b12715e":[3,0,0,15,9,6],
 "structalpaka_1_1test_1_1QueueTestFixture.html#ab985951be3fd8592432a205192614ff5":[3,0,0,15,9,2],
 "structalpaka_1_1test_1_1QueueTestFixture.html#abd7882817b1ec6fbfd27db6261618ac4":[3,0,0,15,9,4],
 "structalpaka_1_1test_1_1QueueTestFixture.html#ae7e4406a653bd5fc2e6625c5e39c5637":[3,0,0,15,9,3],
