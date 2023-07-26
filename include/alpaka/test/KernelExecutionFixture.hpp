@@ -29,28 +29,30 @@ namespace alpaka::test
         using Acc = TAcc;
         using Dim = alpaka::Dim<Acc>;
         using Idx = alpaka::Idx<Acc>;
-        using PlatformAcc = Pltf<Acc>;
-        using DevAcc = Dev<Acc>;
-        using PltfAcc = Pltf<DevAcc>;
-        using QueueAcc = test::DefaultQueue<DevAcc>;
+        using Platform = alpaka::Pltf<Acc>;
+        using Device = alpaka::Dev<Acc>;
+        using Queue = test::DefaultQueue<Device>;
         using WorkDiv = WorkDivMembers<Dim, Idx>;
 
         KernelExecutionFixture(WorkDiv workDiv)
-            : m_devHost(getDevByIdx(m_platformHost, 0))
-            , m_devAcc(getDevByIdx(m_platformAcc, 0))
-            , m_queue(m_devAcc)
-            , m_workDiv(std::move(workDiv))
+            : m_devHost{getDevByIdx(m_platformHost, 0)}
+            , m_device{getDevByIdx(m_platform, 0)}
+            , m_queue{m_device}
+            , m_workDiv{std::move(workDiv)}
         {
         }
 
         template<typename TExtent>
         KernelExecutionFixture(TExtent const& extent)
-            : KernelExecutionFixture(getValidWorkDiv<Acc>(
-                getDevByIdx(m_platformAcc, 0),
-                extent,
-                Vec<Dim, Idx>::ones(),
-                false,
-                GridBlockExtentSubDivRestrictions::Unrestricted))
+            : m_devHost{getDevByIdx(m_platformHost, 0)}
+            , m_device{getDevByIdx(m_platform, 0)}
+            , m_queue{m_device}
+            , m_workDiv{getValidWorkDiv<Acc>(
+                  m_device,
+                  extent,
+                  Vec<Dim, Idx>::ones(),
+                  false,
+                  GridBlockExtentSubDivRestrictions::Unrestricted)}
         {
         }
 
@@ -58,7 +60,7 @@ namespace alpaka::test
         auto operator()(TKernelFnObj const& kernelFnObj, TArgs&&... args) -> bool
         {
             // Allocate the result value
-            auto bufAccResult = allocBuf<bool, Idx>(m_devAcc, static_cast<Idx>(1u));
+            auto bufAccResult = allocBuf<bool, Idx>(m_device, static_cast<Idx>(1u));
             memset(m_queue, bufAccResult, static_cast<std::uint8_t>(true));
 
             exec<Acc>(m_queue, m_workDiv, kernelFnObj, getPtrNative(bufAccResult), std::forward<TArgs>(args)...);
@@ -76,9 +78,9 @@ namespace alpaka::test
     private:
         PltfCpu m_platformHost;
         DevCpu m_devHost;
-        PlatformAcc m_platformAcc;
-        DevAcc m_devAcc;
-        QueueAcc m_queue;
+        Platform m_platform;
+        Device m_device;
+        Queue m_queue;
         WorkDiv m_workDiv;
     };
 } // namespace alpaka::test
