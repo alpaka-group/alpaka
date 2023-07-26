@@ -16399,7 +16399,7 @@
 				    {
 				        PltfGenericSycl()
 				            : platform{TSelector{}}
-				            , devices(platform_opt->get_devices())
+				            , devices(platform.get_devices())
 				            , context{sycl::context{
 				                  devices,
 				                  [](sycl::exception_list exceptions)
@@ -16485,8 +16485,8 @@
 				            if(devIdx >= devices.size())
 				            {
 				                auto ss_err = std::stringstream{};
-				                ss_err << "Unable to return device handle for device " << devIdx << ". There are only " << dev_num
-				                       << " SYCL devices!";
+				                ss_err << "Unable to return device handle for device " << devIdx << ". There are only "
+				                       << devices.size() << " SYCL devices!";
 				                throw std::runtime_error(ss_err.str());
 				            }
 
@@ -16498,6 +16498,7 @@
 				#    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 				            std::cout << __func__ << sycl_dev.get_info<info::device::name>() << '\n';
 				#    endif
+				            using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
 				            return typename DevType<SyclPltf>::type{sycl_dev, platform.syclContext()};
 				        }
 
