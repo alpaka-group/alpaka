@@ -1,12 +1,11 @@
 var classalpaka_1_1test_1_1KernelExecutionFixture =
 [
     [ "Acc", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a814d71c640fde499f251a17477032b17", null ],
-    [ "DevAcc", "classalpaka_1_1test_1_1KernelExecutionFixture.html#ad951ea78e45e01f32899ed598f289091", null ],
+    [ "Device", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a7747161d1d518d9e855e00cf0bf72b22", null ],
     [ "Dim", "classalpaka_1_1test_1_1KernelExecutionFixture.html#ae1cc86d52037716538000934645aa6b1", null ],
     [ "Idx", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a3eb3a6e0568292a74bbe66f9f60f420a", null ],
-    [ "PlatformAcc", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a80a1a45e5959fa260e6877823c4a4d81", null ],
-    [ "PltfAcc", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a9c757d80118c1c78819ecd255eb65df4", null ],
-    [ "QueueAcc", "classalpaka_1_1test_1_1KernelExecutionFixture.html#ae56da1b3a5effb5f77efbce4d8a4ba9f", null ],
+    [ "Platform", "classalpaka_1_1test_1_1KernelExecutionFixture.html#aca3969ef10d8bc44c1e7eb6d023ed5e1", null ],
+    [ "Queue", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a8808631bc9f7a0f0af343cd7a00fba56", null ],
     [ "WorkDiv", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a1a89a721b3883649183fb0450b03e5ab", null ],
     [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#a776e1dce15e8d4528cc89ff04daf2e66", null ],
     [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html#adb153f13bb0abe25f5c2c8be21ded3ef", null ],
