@@ -87,8 +87,8 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="title">Vec.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="Vec_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Bernhard Manfred Gruber</span></div>
+<a href="Vec_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *                Bernhard Manfred Gruber</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
@@ -344,14 +344,14 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f">foldrAll</a>(<a class="code" href="structalpaka_1_1meta_1_1max.html">meta::max&lt;TVal&gt;</a>(), <a class="code" href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">std::numeric_limits&lt;TVal&gt;::min</a>());</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        }</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">        //! \return True if all values are true, i.e., the &quot;logcal and&quot; of all values.</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">        //! \return True if all values are true, i.e., the &quot;logical and&quot; of all values.</span></div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
 <div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a8698fac84793b50ba4b3178229440733">  260</a></span>&#160;        [[nodiscard]] <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#a8698fac84793b50ba4b3178229440733">all</a>() const -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        {</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f">foldrAll</a>(std::logical_and&lt;TVal&gt;(), <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        }</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">        //! \return True if any value is true, i.e., the &quot;logcal or&quot; of all values.</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">        //! \return True if any value is true, i.e., the &quot;logical or&quot; of all values.</span></div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
 <div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a3b2105ff93e428adbadc7b5761f425d2">  267</a></span>&#160;        [[nodiscard]] <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#a3b2105ff93e428adbadc7b5761f425d2">any</a>() const -&gt; <span class="keywordtype">bool</span></div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        {</div>
@@ -1068,7 +1068,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7056b9f7cd8b764aedbfcd44587c0438.html">vec</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Wed Jul 26 2023 05:59:54 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jul 26 2023 08:30:50 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
