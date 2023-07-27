@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="SyclSubgroupSize_8hpp.html">alpaka/kernel/SyclSubgroupSize.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kernel_2Traits_8hpp.html">alpaka/kernel/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="buf_2sycl_2Accessor_8hpp.html">alpaka/mem/buf/sycl/Accessor.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="pltf_2Traits_8hpp.html">alpaka/pltf/Traits.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="platform_2Traits_8hpp.html">alpaka/platform/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="queue_2Traits_8hpp.html">alpaka/queue/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="WorkDivMembers_8hpp.html">alpaka/workdiv/WorkDivMembers.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
@@ -421,9 +421,9 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">    //! The SYCL execution task platform type trait specialization.</span></div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TKernelFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keyword">struct </span>PltfType&lt;TaskKernelGenericSycl&lt;TAcc, TDim, TIdx, TKernelFnObj, TArgs...&gt;&gt;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keyword">struct </span>PlatformType&lt;TaskKernelGenericSycl&lt;TAcc, TDim, TIdx, TKernelFnObj, TArgs...&gt;&gt;</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keyword">using</span> type = <span class="keyword">typename</span> PltfType&lt;TAcc&gt;::type;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        <span class="keyword">using</span> type = <span class="keyword">typename</span> PlatformType&lt;TAcc&gt;::type;</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    };</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">    //! The SYCL execution task dimension getter trait specialization.</span></div>
@@ -466,7 +466,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="ttc" id="anamespacealpaka_1_1math_html_a1c8270a0ce32a1ee8f28e9184988e57a"><div class="ttname"><a href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">alpaka::math::max</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto max(T const &amp;max_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the larger of two arguments. NaNs are treated as missing data (between a NaN and a numeric va...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01121">Traits.hpp:1121</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00118">AccCpuOmp2Blocks.hpp:119</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
-<div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="aplatform_2Traits_8hpp_html"><div class="ttname"><a href="platform_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aqueue_2Traits_8hpp_html"><div class="ttname"><a href="queue_2Traits_8hpp.html">Traits.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -474,7 +474,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGenericSycl_8hpp.html">TaskKernelGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

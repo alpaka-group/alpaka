@@ -241,12 +241,12 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    };</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">    //! The SYCL memory allocation trait specialization.</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TPltf&gt;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">struct </span>BufAlloc&lt;TElem, TDim, TIdx, DevGenericSycl&lt;TPltf&gt;&gt;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TPlatform&gt;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">struct </span>BufAlloc&lt;TElem, TDim, TIdx, DevGenericSycl&lt;TPlatform&gt;&gt;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    {</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent&gt;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">allocBuf</a>(DevGenericSycl&lt;TPltf&gt; <span class="keyword">const</span>&amp; dev, TExtent <span class="keyword">const</span>&amp; extent)</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            -&gt; BufGenericSycl&lt;TElem, TDim, TIdx, TPltf&gt;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">allocBuf</a>(DevGenericSycl&lt;TPlatform&gt; <span class="keyword">const</span>&amp; dev, TExtent <span class="keyword">const</span>&amp; extent)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            -&gt; BufGenericSycl&lt;TElem, TDim, TIdx, TPlatform&gt;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        {</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <a class="code" href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a>;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
@@ -335,14 +335,14 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    };</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">    //! The BufCpu pointer on SYCL device get trait specialization.</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TPltf&gt;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keyword">struct </span>GetPtrDev&lt;BufCpu&lt;TElem, TDim, TIdx&gt;, DevGenericSycl&lt;TPltf&gt;&gt;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TPlatform&gt;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keyword">struct </span>GetPtrDev&lt;BufCpu&lt;TElem, TDim, TIdx&gt;, DevGenericSycl&lt;TPlatform&gt;&gt;</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd">getPtrDev</a>(BufCpu&lt;TElem, TDim, TIdx&gt; <span class="keyword">const</span>&amp; buf, DevGenericSycl&lt;TPltf&gt; <span class="keyword">const</span>&amp;) -&gt; TElem <span class="keyword">const</span>*</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd">getPtrDev</a>(BufCpu&lt;TElem, TDim, TIdx&gt; <span class="keyword">const</span>&amp; buf, DevGenericSycl&lt;TPlatform&gt; <span class="keyword">const</span>&amp;) -&gt; TElem <span class="keyword">const</span>*</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        {</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">getPtrNative</a>(buf);</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        }</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd">getPtrDev</a>(BufCpu&lt;TElem, TDim, TIdx&gt;&amp; buf, DevGenericSycl&lt;TPltf&gt; <span class="keyword">const</span>&amp;) -&gt; TElem*</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd">getPtrDev</a>(BufCpu&lt;TElem, TDim, TIdx&gt;&amp; buf, DevGenericSycl&lt;TPlatform&gt; <span class="keyword">const</span>&amp;) -&gt; TElem*</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        {</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a7524e1a8dac8cd18d9b9e07b10e36054">getPtrNative</a>(buf);</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        }</div>
@@ -389,7 +389,7 @@ $(document).ready(function(){initNavTree('BufGenericSycl_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufGenericSycl_8hpp.html">BufGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

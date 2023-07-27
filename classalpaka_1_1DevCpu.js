@@ -6,5 +6,5 @@ var classalpaka_1_1DevCpu =
     [ "operator!=", "classalpaka_1_1DevCpu.html#a05a024d2bb357066a6557066c281996e", null ],
     [ "operator==", "classalpaka_1_1DevCpu.html#a3492d59ae31f40221aae144c0d0a945e", null ],
     [ "registerQueue", "classalpaka_1_1DevCpu.html#a8a2518241a95dcf51ae5adea401ef7a4", null ],
-    [ "trait::GetDevByIdx< PltfCpu >", "classalpaka_1_1DevCpu.html#aa83ebb2491095ee82457b87a99807356", null ]
+    [ "trait::GetDevByIdx< PlatformCpu >", "classalpaka_1_1DevCpu.html#a218c7564030c2ed614e64c184cd1281f", null ]
 ];

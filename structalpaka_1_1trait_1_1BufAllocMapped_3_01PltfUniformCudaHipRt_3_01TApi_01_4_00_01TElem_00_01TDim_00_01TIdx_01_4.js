@@ -1,4 +1,0 @@
-var structalpaka_1_1trait_1_1BufAllocMapped_3_01PltfUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4 =
-[
-    [ "allocMappedBuf", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PltfUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4.html#add1a294ebf8ee7665c75564f38181a83", null ]
-];

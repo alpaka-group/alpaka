@@ -291,8 +291,8 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1trait.html">alpaka::trait</a></div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;{<span class="comment"></span></div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">    //! The SYCL host-to-device memory copy trait specialization.</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPltf, <span class="keyword">typename</span> TDim&gt;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevGenericSycl&lt;TPltf&gt;, DevCpu&gt;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPlatform, <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevGenericSycl&lt;TPlatform&gt;, DevCpu&gt;</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    {</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDstFwd&gt;</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a1f44bd5b99e7faa8d562aff41b4c8668">createTaskMemcpy</a>(TViewDstFwd&amp;&amp; viewDst, TViewSrc <span class="keyword">const</span>&amp; viewSrc, TExtent <span class="keyword">const</span>&amp; extent)</div>
@@ -305,8 +305,8 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    };</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">    //! The SYCL device-to-host memory copy trait specialization.</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPltf, <span class="keyword">typename</span> TDim&gt;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevCpu, DevGenericSycl&lt;TPltf&gt;&gt;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPlatform, <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevCpu, DevGenericSycl&lt;TPlatform&gt;&gt;</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    {</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDstFwd&gt;</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a1f44bd5b99e7faa8d562aff41b4c8668">createTaskMemcpy</a>(TViewDstFwd&amp;&amp; viewDst, TViewSrc <span class="keyword">const</span>&amp; viewSrc, TExtent <span class="keyword">const</span>&amp; extent)</div>
@@ -319,8 +319,8 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    };</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">    //! The SYCL device-to-device memory copy trait specialization.</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPltfDst, <span class="keyword">typename</span> TPltfSrc, <span class="keyword">typename</span> TDim&gt;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevGenericSycl&lt;TPltfDst&gt;, DevGenericSycl&lt;TPltfSrc&gt;&gt;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPlatformDst, <span class="keyword">typename</span> TPlatformSrc, <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">struct </span>CreateTaskMemcpy&lt;TDim, DevGenericSycl&lt;TPlatformDst&gt;, DevGenericSycl&lt;TPlatformSrc&gt;&gt;</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    {</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TViewSrc, <span class="keyword">typename</span> TViewDstFwd&gt;</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a1f44bd5b99e7faa8d562aff41b4c8668">createTaskMemcpy</a>(TViewDstFwd&amp;&amp; viewDst, TViewSrc <span class="keyword">const</span>&amp; viewSrc, TExtent <span class="keyword">const</span>&amp; extent)</div>
@@ -366,7 +366,7 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="sycl_2Copy_8hpp.html">Copy.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

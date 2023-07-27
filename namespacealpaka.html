@@ -296,7 +296,7 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptMemFence.html">ConceptMemFence</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptPlatform.html">ConceptPlatform</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptWorkDiv.html">ConceptWorkDiv</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -342,11 +342,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1MemSetKernel.html">MemSetKernel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">any device ND memory set kernel.  <a href="classalpaka_1_1MemSetKernel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1PltfCpu.html">PltfCpu</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device platform.  <a href="structalpaka_1_1PltfCpu.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1PlatformCpu.html">PlatformCpu</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device platform.  <a href="structalpaka_1_1PlatformCpu.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT platform.  <a href="structalpaka_1_1PltfUniformCudaHipRt.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1PlatformUniformCudaHipRt.html">PlatformUniformCudaHipRt</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT platform.  <a href="structalpaka_1_1PlatformUniformCudaHipRt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1QueueCpuOmp2Collective.html">QueueCpuOmp2Collective</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU collective device queue.  <a href="classalpaka_1_1QueueCpuOmp2Collective.html#details">More...</a><br /></td></tr>
@@ -481,13 +481,13 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a7e6b1402f1e49d215eec8772c4e29b60"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">NativeHandle</a> = decltype(<a class="el" href="namespacealpaka.html#aa56ad4ba3f41bcea4e804b88d05c9ac0">getNativeHandle</a>(std::declval&lt; TImpl &gt;()))</td></tr>
 <tr class="memdesc:a7e6b1402f1e49d215eec8772c4e29b60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to the type of the native handle.  <a href="namespacealpaka.html#a7e6b1402f1e49d215eec8772c4e29b60">More...</a><br /></td></tr>
 <tr class="separator:a7e6b1402f1e49d215eec8772c4e29b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b83bc07c7ca78824c9b5026f951cff4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a6b83bc07c7ca78824c9b5026f951cff4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4">Pltf</a> = typename <a class="el" href="structalpaka_1_1trait_1_1PltfType.html">trait::PltfType</a>&lt; T &gt;::type</td></tr>
-<tr class="memdesc:a6b83bc07c7ca78824c9b5026f951cff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The platform type trait alias template to remove the ::type.  <a href="namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4">More...</a><br /></td></tr>
-<tr class="separator:a6b83bc07c7ca78824c9b5026f951cff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2da3c226528d12baea2581aaa6fb9cd5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5">PltfCudaRt</a> = <a class="el" href="structalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a> &gt;</td></tr>
-<tr class="memdesc:a2da3c226528d12baea2581aaa6fb9cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT platform.  <a href="namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5">More...</a><br /></td></tr>
-<tr class="separator:a2da3c226528d12baea2581aaa6fb9cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec2e8bbefd54fa3bcb2da600f5184f96"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aec2e8bbefd54fa3bcb2da600f5184f96"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aec2e8bbefd54fa3bcb2da600f5184f96">Platform</a> = typename <a class="el" href="structalpaka_1_1trait_1_1PlatformType.html">trait::PlatformType</a>&lt; T &gt;::type</td></tr>
+<tr class="memdesc:aec2e8bbefd54fa3bcb2da600f5184f96"><td class="mdescLeft">&#160;</td><td class="mdescRight">The platform type trait alias template to remove the ::type.  <a href="namespacealpaka.html#aec2e8bbefd54fa3bcb2da600f5184f96">More...</a><br /></td></tr>
+<tr class="separator:aec2e8bbefd54fa3bcb2da600f5184f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17f73a8e41d00f3260749d87a13978df"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a17f73a8e41d00f3260749d87a13978df">PlatformCudaRt</a> = <a class="el" href="structalpaka_1_1PlatformUniformCudaHipRt.html">PlatformUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a> &gt;</td></tr>
+<tr class="memdesc:a17f73a8e41d00f3260749d87a13978df"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT platform.  <a href="namespacealpaka.html#a17f73a8e41d00f3260749d87a13978df">More...</a><br /></td></tr>
+<tr class="separator:a17f73a8e41d00f3260749d87a13978df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="memTemplParams" colspan="2">template&lt;typename TEnv , typename TProperty &gt; </td></tr>
 <tr class="memitem:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa">Queue</a> = typename <a class="el" href="structalpaka_1_1trait_1_1QueueType.html">trait::QueueType</a>&lt; TEnv, TProperty &gt;::type</td></tr>
 <tr class="memdesc:a0a2fa6435cfd735679b6c5f1ac7561aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue based on the environment and a property.  <a href="namespacealpaka.html#a0a2fa6435cfd735679b6c5f1ac7561aa">More...</a><br /></td></tr>
@@ -545,11 +545,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">allocBuf</a> (TDev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:a7ff762720c64dc454a53faa6622c227d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">More...</a><br /></td></tr>
 <tr class="separator:a7ff762720c64dc454a53faa6622c227d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe5f57f02a15d022db5d66e4e4da55ef"><td class="memTemplParams" colspan="2">template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &gt; </td></tr>
+<tr class="memitem:abe5f57f02a15d022db5d66e4e4da55ef"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform , typename TElem , typename TIdx , typename TExtent &gt; </td></tr>
 <tr class="memitem:abe5f57f02a15d022db5d66e4e4da55ef"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abe5f57f02a15d022db5d66e4e4da55ef">allocMappedBuf</a> (<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> const &amp;host, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:abe5f57f02a15d022db5d66e4e4da55ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates pinned/mapped host memory, accessible by all devices in the given platform.  <a href="namespacealpaka.html#abe5f57f02a15d022db5d66e4e4da55ef">More...</a><br /></td></tr>
 <tr class="separator:abe5f57f02a15d022db5d66e4e4da55ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a659d4d94ffb5a2b560c7278488323bb7"><td class="memTemplParams" colspan="2">template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &gt; </td></tr>
+<tr class="memitem:a659d4d94ffb5a2b560c7278488323bb7"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform , typename TElem , typename TIdx , typename TExtent &gt; </td></tr>
 <tr class="memitem:a659d4d94ffb5a2b560c7278488323bb7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a659d4d94ffb5a2b560c7278488323bb7">allocMappedBufIfSupported</a> (<a class="el" href="classalpaka_1_1DevCpu.html">DevCpu</a> const &amp;host, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:a659d4d94ffb5a2b560c7278488323bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If supported, allocates pinned/mapped host memory, accessible by all devices in the given platform. Otherwise, allocates regular host memory. Please note that pinned/mapped and regular memory may have different semantics: this function is provided for convenience in the cases where the difference is not relevant, and the pinned/mapped memory is only used as a performance optimisation.  <a href="namespacealpaka.html#a659d4d94ffb5a2b560c7278488323bb7">More...</a><br /></td></tr>
 <tr class="separator:a659d4d94ffb5a2b560c7278488323bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -711,15 +711,15 @@ Functions</h2></td></tr>
 <tr class="memitem:aa4fe5980725182b3306caf3167053a75"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa4fe5980725182b3306caf3167053a75"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a> (T const &amp;t)</td></tr>
 <tr class="separator:aa4fe5980725182b3306caf3167053a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1890b449b4659e29ef338db419a984a8"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
-<tr class="memitem:a1890b449b4659e29ef338db419a984a8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1890b449b4659e29ef338db419a984a8">getDevByIdx</a> (TPltf const &amp;platform, std::size_t const &amp;devIdx) -&gt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt; TPltf &gt;</td></tr>
-<tr class="separator:a1890b449b4659e29ef338db419a984a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86b1aae20626a93ba922327e78457f11"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
-<tr class="memitem:a86b1aae20626a93ba922327e78457f11"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a86b1aae20626a93ba922327e78457f11">getDevCount</a> (TPltf const &amp;platform)</td></tr>
-<tr class="separator:a86b1aae20626a93ba922327e78457f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73a418e47a8d15a72828b73f598b3dbc"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
-<tr class="memitem:a73a418e47a8d15a72828b73f598b3dbc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a73a418e47a8d15a72828b73f598b3dbc">getDevs</a> (TPltf const &amp;platform) -&gt; std::vector&lt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt; TPltf &gt;&gt;</td></tr>
-<tr class="separator:a73a418e47a8d15a72828b73f598b3dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3eb41a0009d08e6e466c14424280971"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform &gt; </td></tr>
+<tr class="memitem:aa3eb41a0009d08e6e466c14424280971"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa3eb41a0009d08e6e466c14424280971">getDevByIdx</a> (TPlatform const &amp;platform, std::size_t const &amp;devIdx) -&gt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt; TPlatform &gt;</td></tr>
+<tr class="separator:aa3eb41a0009d08e6e466c14424280971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa18b2f146a19a69096e1f3d1add51a"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform &gt; </td></tr>
+<tr class="memitem:a4aa18b2f146a19a69096e1f3d1add51a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4aa18b2f146a19a69096e1f3d1add51a">getDevCount</a> (TPlatform const &amp;platform)</td></tr>
+<tr class="separator:a4aa18b2f146a19a69096e1f3d1add51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3425c31d35deb9045bc65b21a9bfe0f"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform &gt; </td></tr>
+<tr class="memitem:ae3425c31d35deb9045bc65b21a9bfe0f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae3425c31d35deb9045bc65b21a9bfe0f">getDevs</a> (TPlatform const &amp;platform) -&gt; std::vector&lt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt; TPlatform &gt;&gt;</td></tr>
+<tr class="separator:ae3425c31d35deb9045bc65b21a9bfe0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a94cfffd5d547f55d97551bc8b5c78e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TBlockSharedMemDyn &gt; </td></tr>
 <tr class="memitem:a1a94cfffd5d547f55d97551bc8b5c78e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1a94cfffd5d547f55d97551bc8b5c78e">getDynSharedMem</a> (TBlockSharedMemDyn const &amp;blockSharedMemDyn) -&gt; T *</td></tr>
 <tr class="memdesc:a1a94cfffd5d547f55d97551bc8b5c78e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get block shared dynamic memory.  <a href="namespacealpaka.html#a1a94cfffd5d547f55d97551bc8b5c78e">More...</a><br /></td></tr>
@@ -1171,8 +1171,8 @@ Variables</h2></td></tr>
 <tr class="memitem:a8a8e81d9d160079842607c98825b67ce"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce">hasAsyncBufSupport</a> = <a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport.html">trait::HasAsyncBufSupport</a>&lt;TDim, TDev&gt;::value</td></tr>
 <tr class="memdesc:a8a8e81d9d160079842607c98825b67ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the given device can allocate a stream-ordered memory buffer of the given dimensionality.  <a href="namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce">More...</a><br /></td></tr>
 <tr class="separator:a8a8e81d9d160079842607c98825b67ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09bd9b1c03186827ab8f08fbb0be4aeb"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
-<tr class="memitem:a09bd9b1c03186827ab8f08fbb0be4aeb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb">hasMappedBufSupport</a> = <a class="el" href="structalpaka_1_1trait_1_1HasMappedBufSupport.html">trait::HasMappedBufSupport</a>&lt;TPltf&gt;::value</td></tr>
+<tr class="memitem:a09bd9b1c03186827ab8f08fbb0be4aeb"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform &gt; </td></tr>
+<tr class="memitem:a09bd9b1c03186827ab8f08fbb0be4aeb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb">hasMappedBufSupport</a> = <a class="el" href="structalpaka_1_1trait_1_1HasMappedBufSupport.html">trait::HasMappedBufSupport</a>&lt;TPlatform&gt;::value</td></tr>
 <tr class="memdesc:a09bd9b1c03186827ab8f08fbb0be4aeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.  <a href="namespacealpaka.html#a09bd9b1c03186827ab8f08fbb0be4aeb">More...</a><br /></td></tr>
 <tr class="separator:a09bd9b1c03186827ab8f08fbb0be4aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd223e5dfb4b62614c25046db2a1d1de"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
@@ -1187,9 +1187,9 @@ Variables</h2></td></tr>
 <tr class="memitem:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">isDevice</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptDev, TDev&gt;::value</td></tr>
 <tr class="memdesc:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TDev is a device, i.e. if it implements the ConceptDev concept.  <a href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">More...</a><br /></td></tr>
 <tr class="separator:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
-<tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">isPlatform</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a>, TPltf&gt;::value</td></tr>
-<tr class="memdesc:a87d64705ec25ad0c9a25a218118c0ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TPltf is a platform, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a> concept.  <a href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">More...</a><br /></td></tr>
+<tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform &gt; </td></tr>
+<tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">isPlatform</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptPlatform.html">ConceptPlatform</a>, TPlatform&gt;::value</td></tr>
+<tr class="memdesc:a87d64705ec25ad0c9a25a218118c0ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TPlatform is a platform, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptPlatform.html">ConceptPlatform</a> concept.  <a href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">More...</a><br /></td></tr>
 <tr class="separator:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b01aa67d992572f8812a47813269bfa"><td class="memTemplParams" colspan="2">template&lt;typename TQueue &gt; </td></tr>
 <tr class="memitem:a8b01aa67d992572f8812a47813269bfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">isQueue</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptQueue, TQueue&gt;::value</td></tr>
@@ -1538,8 +1538,8 @@ template&lt;typename TImpl &gt; </div>
 
 </div>
 </div>
-<a id="a6b83bc07c7ca78824c9b5026f951cff4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b83bc07c7ca78824c9b5026f951cff4">&#9670;&nbsp;</a></span>Pltf</h2>
+<a id="aec2e8bbefd54fa3bcb2da600f5184f96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec2e8bbefd54fa3bcb2da600f5184f96">&#9670;&nbsp;</a></span>Platform</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1547,32 +1547,32 @@ template&lt;typename TImpl &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4">alpaka::Pltf</a> = typedef typename <a class="el" href="structalpaka_1_1trait_1_1PltfType.html">trait::PltfType</a>&lt;T&gt;::type</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#aec2e8bbefd54fa3bcb2da600f5184f96">alpaka::Platform</a> = typedef typename <a class="el" href="structalpaka_1_1trait_1_1PlatformType.html">trait::PlatformType</a>&lt;T&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The platform type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="platform_2Traits_8hpp_source.html#l00051">51</a> of file <a class="el" href="platform_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a2da3c226528d12baea2581aaa6fb9cd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2da3c226528d12baea2581aaa6fb9cd5">&#9670;&nbsp;</a></span>PltfCudaRt</h2>
+<a id="a17f73a8e41d00f3260749d87a13978df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17f73a8e41d00f3260749d87a13978df">&#9670;&nbsp;</a></span>PlatformCudaRt</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5">alpaka::PltfCudaRt</a> = typedef <a class="el" href="structalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a17f73a8e41d00f3260749d87a13978df">alpaka::PlatformCudaRt</a> = typedef <a class="el" href="structalpaka_1_1PlatformUniformCudaHipRt.html">PlatformUniformCudaHipRt</a>&lt;<a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The CUDA RT platform. </p>
 
-<p class="definition">Definition at line <a class="el" href="PltfCudaRt_8hpp_source.html#l00015">15</a> of file <a class="el" href="PltfCudaRt_8hpp_source.html">PltfCudaRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PlatformCudaRt_8hpp_source.html#l00015">15</a> of file <a class="el" href="PlatformCudaRt_8hpp_source.html">PlatformCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -2043,7 +2043,7 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &g
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &gt; </div>
+template&lt;typename TPlatform , typename TElem , typename TIdx , typename TExtent &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::allocMappedBuf </td>
@@ -2068,7 +2068,7 @@ template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &
 <p>Allocates pinned/mapped host memory, accessible by all devices in the given platform. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">TPltf</td><td>The platform from which the buffer is accessible. </td></tr>
+    <tr><td class="paramname">TPlatform</td><td>The platform from which the buffer is accessible. </td></tr>
     <tr><td class="paramname">TElem</td><td>The element type of the returned buffer. </td></tr>
     <tr><td class="paramname">TIdx</td><td>The linear index type of the buffer. </td></tr>
     <tr><td class="paramname">TExtent</td><td>The extent type of the buffer. </td></tr>
@@ -2094,7 +2094,7 @@ template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &gt; </div>
+template&lt;typename TPlatform , typename TElem , typename TIdx , typename TExtent &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::allocMappedBufIfSupported </td>
@@ -2119,7 +2119,7 @@ template&lt;typename TPltf , typename TElem , typename TIdx , typename TExtent &
 <p>If supported, allocates pinned/mapped host memory, accessible by all devices in the given platform. Otherwise, allocates regular host memory. Please note that pinned/mapped and regular memory may have different semantics: this function is provided for convenience in the cases where the difference is not relevant, and the pinned/mapped memory is only used as a performance optimisation. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">TPltf</td><td>The platform from which the buffer is accessible. </td></tr>
+    <tr><td class="paramname">TPlatform</td><td>The platform from which the buffer is accessible. </td></tr>
     <tr><td class="paramname">TElem</td><td>The element type of the returned buffer. </td></tr>
     <tr><td class="paramname">TIdx</td><td>The linear index type of the buffer. </td></tr>
     <tr><td class="paramname">TExtent</td><td>The extent type of the buffer. </td></tr>
@@ -4417,18 +4417,18 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a1890b449b4659e29ef338db419a984a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1890b449b4659e29ef338db419a984a8">&#9670;&nbsp;</a></span>getDevByIdx()</h2>
+<a id="aa3eb41a0009d08e6e466c14424280971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3eb41a0009d08e6e466c14424280971">&#9670;&nbsp;</a></span>getDevByIdx()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TPltf &gt; </div>
+template&lt;typename TPlatform &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::getDevByIdx </td>
           <td>(</td>
-          <td class="paramtype">TPltf const &amp;&#160;</td>
+          <td class="paramtype">TPlatform const &amp;&#160;</td>
           <td class="paramname"><em>platform</em>, </td>
         </tr>
         <tr>
@@ -4440,29 +4440,29 @@ template&lt;typename TPltf &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt;TPltf&gt;
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt;TPlatform&gt;
     </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device identified by its index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00060">60</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="platform_2Traits_8hpp_source.html#l00062">62</a> of file <a class="el" href="platform_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a86b1aae20626a93ba922327e78457f11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86b1aae20626a93ba922327e78457f11">&#9670;&nbsp;</a></span>getDevCount()</h2>
+<a id="a4aa18b2f146a19a69096e1f3d1add51a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aa18b2f146a19a69096e1f3d1add51a">&#9670;&nbsp;</a></span>getDevCount()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TPltf &gt; </div>
+template&lt;typename TPlatform &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::getDevCount </td>
           <td>(</td>
-          <td class="paramtype">TPltf const &amp;&#160;</td>
+          <td class="paramtype">TPlatform const &amp;&#160;</td>
           <td class="paramname"><em>platform</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4470,31 +4470,31 @@ template&lt;typename TPltf &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device identified by its index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00053">53</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="platform_2Traits_8hpp_source.html#l00055">55</a> of file <a class="el" href="platform_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a73a418e47a8d15a72828b73f598b3dbc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73a418e47a8d15a72828b73f598b3dbc">&#9670;&nbsp;</a></span>getDevs()</h2>
+<a id="ae3425c31d35deb9045bc65b21a9bfe0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3425c31d35deb9045bc65b21a9bfe0f">&#9670;&nbsp;</a></span>getDevs()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TPltf &gt; </div>
+template&lt;typename TPlatform &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::getDevs </td>
           <td>(</td>
-          <td class="paramtype">TPltf const &amp;&#160;</td>
+          <td class="paramtype">TPlatform const &amp;&#160;</td>
           <td class="paramname"><em>platform</em></td><td>)</td>
-          <td> -&gt; std::vector&lt;<a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt;TPltf&gt;&gt;
+          <td> -&gt; std::vector&lt;<a class="el" href="namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be">Dev</a>&lt;TPlatform&gt;&gt;
     </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>All the devices available on this accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00067">67</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="platform_2Traits_8hpp_source.html#l00069">69</a> of file <a class="el" href="platform_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8326,13 +8326,13 @@ template&lt;typename TDev , typename TDim &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TPltf &gt; </div>
+template&lt;typename TPlatform &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool alpaka::hasMappedBufSupport = <a class="el" href="structalpaka_1_1trait_1_1HasMappedBufSupport.html">trait::HasMappedBufSupport</a>&lt;TPltf&gt;::value</td>
+          <td class="memname">constexpr bool alpaka::hasMappedBufSupport = <a class="el" href="structalpaka_1_1trait_1_1HasMappedBufSupport.html">trait::HasMappedBufSupport</a>&lt;TPlatform&gt;::value</td>
         </tr>
       </table>
   </td>
@@ -8345,7 +8345,7 @@ template&lt;typename TPltf &gt; </div>
 <p>Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">TPltf</td><td>The platform from which the buffer is accessible. </td></tr>
+    <tr><td class="paramname">TPlatform</td><td>The platform from which the buffer is accessible. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8444,13 +8444,13 @@ template&lt;typename TDev &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TPltf &gt; </div>
+template&lt;typename TPlatform &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool alpaka::isPlatform = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a>, TPltf&gt;::value</td>
+          <td class="memname">constexpr bool alpaka::isPlatform = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptPlatform.html">ConceptPlatform</a>, TPlatform&gt;::value</td>
         </tr>
       </table>
   </td>
@@ -8460,9 +8460,9 @@ template&lt;typename TPltf &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>True if TPltf is a platform, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a> concept. </p>
+<p>True if TPlatform is a platform, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptPlatform.html">ConceptPlatform</a> concept. </p>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00023">23</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="platform_2Traits_8hpp_source.html#l00023">23</a> of file <a class="el" href="platform_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8500,7 +8500,7 @@ template&lt;typename TQueue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:21 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

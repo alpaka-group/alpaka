@@ -102,8 +102,8 @@ $(document).ready(function(){initNavTree('AccGpuSyclIntel_8hpp_source.html','');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="dev_2Traits_8hpp.html">alpaka/dev/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="TaskKernelGpuSyclIntel_8hpp.html">alpaka/kernel/TaskKernelGpuSyclIntel.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kernel_2Traits_8hpp.html">alpaka/kernel/Traits.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="PltfGpuSyclIntel_8hpp.html">alpaka/pltf/PltfGpuSyclIntel.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="pltf_2Traits_8hpp.html">alpaka/pltf/Traits.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="PlatformGpuSyclIntel_8hpp.html">alpaka/platform/PlatformGpuSyclIntel.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="platform_2Traits_8hpp.html">alpaka/platform/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Vec_8hpp.html">alpaka/vec/Vec.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
@@ -160,9 +160,9 @@ $(document).ready(function(){initNavTree('AccGpuSyclIntel_8hpp_source.html','');
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">    //! The Intel GPU SYCL execution task platform type trait specialization.</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">struct </span>PltfType&lt;AccGpuSyclIntel&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">struct </span>PlatformType&lt;AccGpuSyclIntel&lt;TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">using</span> type = PltfGpuSyclIntel;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">using</span> type = PlatformGpuSyclIntel;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    };</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('AccGpuSyclIntel_8hpp_source.html','');
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aDemangleTypeNames_8hpp_html"><div class="ttname"><a href="DemangleTypeNames_8hpp.html">DemangleTypeNames.hpp</a></div></div>
 <div class="ttc" id="aDevGpuSyclIntel_8hpp_html"><div class="ttname"><a href="DevGpuSyclIntel_8hpp.html">DevGpuSyclIntel.hpp</a></div></div>
-<div class="ttc" id="aPltfGpuSyclIntel_8hpp_html"><div class="ttname"><a href="PltfGpuSyclIntel_8hpp.html">PltfGpuSyclIntel.hpp</a></div></div>
+<div class="ttc" id="aPlatformGpuSyclIntel_8hpp_html"><div class="ttname"><a href="PlatformGpuSyclIntel_8hpp.html">PlatformGpuSyclIntel.hpp</a></div></div>
 <div class="ttc" id="aSycl_8hpp_html"><div class="ttname"><a href="Sycl_8hpp.html">Sycl.hpp</a></div></div>
 <div class="ttc" id="aTag_8hpp_html"><div class="ttname"><a href="Tag_8hpp.html">Tag.hpp</a></div></div>
 <div class="ttc" id="aTaskKernelGpuSyclIntel_8hpp_html"><div class="ttname"><a href="TaskKernelGpuSyclIntel_8hpp.html">TaskKernelGpuSyclIntel.hpp</a></div></div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('AccGpuSyclIntel_8hpp_source.html','');
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00118">AccCpuOmp2Blocks.hpp:119</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a64392e68c8cc7a290aec236751415cf3"><div class="ttname"><a href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdoc">Creates a kernel execution task.</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2Traits_8hpp_source.html#l00230">Traits.hpp:230</a></div></div>
-<div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="aplatform_2Traits_8hpp_html"><div class="ttname"><a href="platform_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1TagGpuSyclIntel_html"><div class="ttname"><a href="structalpaka_1_1TagGpuSyclIntel.html">alpaka::TagGpuSyclIntel</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00033">Tag.hpp:33</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1GetAccName_html_a89be9c6144a1fd916731d19c5aa9d507"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetAccName.html#a89be9c6144a1fd916731d19c5aa9d507">alpaka::trait::GetAccName::getAccName</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getAccName() -&gt; std::string</div><div class="ttdef"><b>Definition:</b> <a href="acc_2Traits_8hpp_source.html#l00049">Traits.hpp:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -202,7 +202,7 @@ $(document).ready(function(){initNavTree('AccGpuSyclIntel_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGpuSyclIntel_8hpp.html">AccGpuSyclIntel.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

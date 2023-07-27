@@ -288,8 +288,8 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Set_8hpp_source.html',
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keyword">namespace </span>trait</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    {<span class="comment"></span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">        //! The SYCL device memory set trait specialization.</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TPltf&gt;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keyword">struct </span>CreateTaskMemset&lt;TDim, DevGenericSycl&lt;TPltf&gt;&gt;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TPlatform&gt;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keyword">struct </span>CreateTaskMemset&lt;TDim, DevGenericSycl&lt;TPlatform&gt;&gt;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        {</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TView&gt;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac88495b5e4861e9f4a7081ccfbf47594">createTaskMemset</a>(TView&amp; view, std::uint8_t <span class="keyword">const</span>&amp; <span class="keywordtype">byte</span>, TExtent <span class="keyword">const</span>&amp; extent)</div>
@@ -333,7 +333,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2sycl_2Set_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="mem_2buf_2sycl_2Set_8hpp.html">Set.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

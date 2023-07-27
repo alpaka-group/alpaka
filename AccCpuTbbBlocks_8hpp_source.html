@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('AccCpuTbbBlocks_8hpp_source.html','');
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="dev_2Traits_8hpp.html">alpaka/dev/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="idx_2Traits_8hpp.html">alpaka/idx/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kernel_2Traits_8hpp.html">alpaka/kernel/Traits.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="pltf_2Traits_8hpp.html">alpaka/pltf/Traits.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="platform_2Traits_8hpp.html">alpaka/platform/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Implementation details.</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Tag_8hpp.html">alpaka/acc/Tag.hpp</a>&quot;</span></div>
@@ -269,9 +269,9 @@ $(document).ready(function(){initNavTree('AccCpuTbbBlocks_8hpp_source.html','');
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">        //! The CPU TBB block execution task platform type trait specialization.</span></div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keyword">struct </span>PltfType&lt;AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keyword">struct </span>PlatformType&lt;AccCpuTbbBlocks&lt;TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        {</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <span class="keyword">using</span> type = PltfCpu;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            <span class="keyword">using</span> type = PlatformCpu;</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        };</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">        //! The CPU TBB block accelerator idx type trait specialization.</span></div>
@@ -329,7 +329,7 @@ $(document).ready(function(){initNavTree('AccCpuTbbBlocks_8hpp_source.html','');
 <div class="ttc" id="anamespacealpaka_html_a64392e68c8cc7a290aec236751415cf3"><div class="ttname"><a href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdoc">Creates a kernel execution task.</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2Traits_8hpp_source.html#l00230">Traits.hpp:230</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_ab339d2982f7e28701dd0c359855ffa74"><div class="ttname"><a href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">alpaka::Vec</a></div><div class="ttdeci">Vec(TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</div></div>
 <div class="ttc" id="anamespacealpaka_html_abe27c0dad6ddd453657dee8f0bb343ff"><div class="ttname"><a href="namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff">alpaka::AtomicHierarchy</a></div><div class="ttdeci">alpaka::meta::InheritFromList&lt; alpaka::meta::Unique&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, concepts::Implements&lt; ConceptAtomicGrids, TGridAtomic &gt;, concepts::Implements&lt; ConceptAtomicBlocks, TBlockAtomic &gt;, concepts::Implements&lt; ConceptAtomicThreads, TThreadAtomic &gt; &gt;&gt; &gt; AtomicHierarchy</div><div class="ttdoc">build a single class to inherit from different atomic implementations</div><div class="ttdef"><b>Definition:</b> <a href="AtomicHierarchy_8hpp_source.html#l00027">AtomicHierarchy.hpp:33</a></div></div>
-<div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="aplatform_2Traits_8hpp_html"><div class="ttname"><a href="platform_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1TagCpuTbbBlocks_html"><div class="ttname"><a href="structalpaka_1_1TagCpuTbbBlocks.html">alpaka::TagCpuTbbBlocks</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00027">Tag.hpp:27</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1GetAccName_html_a89be9c6144a1fd916731d19c5aa9d507"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetAccName.html#a89be9c6144a1fd916731d19c5aa9d507">alpaka::trait::GetAccName::getAccName</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getAccName() -&gt; std::string</div><div class="ttdef"><b>Definition:</b> <a href="acc_2Traits_8hpp_source.html#l00049">Traits.hpp:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -338,7 +338,7 @@ $(document).ready(function(){initNavTree('AccCpuTbbBlocks_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccCpuTbbBlocks_8hpp.html">AccCpuTbbBlocks.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

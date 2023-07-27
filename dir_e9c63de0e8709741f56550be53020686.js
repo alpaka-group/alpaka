@@ -8,7 +8,7 @@ var dir_e9c63de0e8709741f56550be53020686 =
       [ "BufCpuImpl", "classalpaka_1_1detail_1_1BufCpuImpl.html", "classalpaka_1_1detail_1_1BufCpuImpl" ],
       [ "AsyncBufAlloc< TElem, TDim, TIdx, DevCpu >", "structalpaka_1_1trait_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevCpu_01_4" ],
       [ "BufAlloc< TElem, TDim, TIdx, DevCpu >", "structalpaka_1_1trait_1_1BufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1BufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevCpu_01_4" ],
-      [ "BufAllocMapped< PltfCpu, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PltfCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PltfCpu_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
+      [ "BufAllocMapped< PlatformCpu, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PlatformCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PlatformCpu_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
       [ "DevType< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "DimType< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "ElemType< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1ElemType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1ElemType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
@@ -18,7 +18,7 @@ var dir_e9c63de0e8709741f56550be53020686 =
       [ "GetPtrDev< BufCpu< TElem, TDim, TIdx >, DevCpu >", "structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetPtrDev_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevCpu_01_4" ],
       [ "GetPtrNative< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetPtrNative_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "HasAsyncBufSupport< TDim, DevCpu >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevCpu_01_4.html", null ],
-      [ "HasMappedBufSupport< PltfCpu >", "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PltfCpu_01_4.html", null ],
+      [ "HasMappedBufSupport< PlatformCpu >", "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PlatformCpu_01_4.html", null ],
       [ "IdxType< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "BufCpuSycl.hpp", "BufCpuSycl_8hpp.html", null ],
@@ -31,7 +31,7 @@ var dir_e9c63de0e8709741f56550be53020686 =
       [ "BufUniformCudaHipRt", "classalpaka_1_1BufUniformCudaHipRt.html", "classalpaka_1_1BufUniformCudaHipRt" ],
       [ "AsyncBufAlloc< TElem, TDim, TIdx, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4" ],
       [ "BufAlloc< TElem, Dim, TIdx, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1BufAlloc_3_01TElem_00_01Dim_00_01TIdx_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1BufAlloc_3_01TElem_00_01Dim_00_01TIdx_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4" ],
-      [ "BufAllocMapped< PltfUniformCudaHipRt< TApi >, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PltfUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PltfUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
+      [ "BufAllocMapped< PlatformUniformCudaHipRt< TApi >, TElem, TDim, TIdx >", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1BufAllocMapped_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
       [ "DevType< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DevType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "DimType< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1DimType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1DimType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "ElemType< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1ElemType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1ElemType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
@@ -43,7 +43,7 @@ var dir_e9c63de0e8709741f56550be53020686 =
       [ "GetPtrDev< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx >, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TI1d297e90c6baf5572a528bbc508c5d3c.html", "structalpaka_1_1trait_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TI1d297e90c6baf5572a528bbc508c5d3c" ],
       [ "GetPtrNative< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetPtrNative_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "HasAsyncBufSupport< TDim, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ],
-      [ "HasMappedBufSupport< PltfUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ],
+      [ "HasMappedBufSupport< PlatformUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ],
       [ "IdxType< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "SetKernel.hpp", "SetKernel_8hpp.html", [

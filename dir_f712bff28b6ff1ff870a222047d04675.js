@@ -17,7 +17,7 @@ var dir_f712bff28b6ff1ff870a222047d04675 =
     [ "mem", "dir_fb1128c962bebe125e17152b21133100.html", "dir_fb1128c962bebe125e17152b21133100" ],
     [ "meta", "dir_9b06e2d5421d26ecb89f5fc8cf901459.html", "dir_9b06e2d5421d26ecb89f5fc8cf901459" ],
     [ "offset", "dir_2fd2a33bf37bb9d804931f787b573f1a.html", "dir_2fd2a33bf37bb9d804931f787b573f1a" ],
-    [ "pltf", "dir_3da4cf0d8582bc897be6864cae72e9ae.html", "dir_3da4cf0d8582bc897be6864cae72e9ae" ],
+    [ "platform", "dir_ca6de7bc64c9403e30034829d52eb840.html", "dir_ca6de7bc64c9403e30034829d52eb840" ],
     [ "queue", "dir_35e231cfaf39d44c1525e8247564e585.html", "dir_35e231cfaf39d44c1525e8247564e585" ],
     [ "rand", "dir_192cbe7214f78dcbefe56af07355e2bc.html", "dir_192cbe7214f78dcbefe56af07355e2bc" ],
     [ "standalone", "dir_9c737d14007cafba76b1e7c7800c2a61.html", "dir_9c737d14007cafba76b1e7c7800c2a61" ],

@@ -10,7 +10,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "GetAccDevProps< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "GetAccName< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "IdxType< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "PlatformType< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "TagToAcc< alpaka::TagCpuOmp2Blocks, TDim, TIdx >", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuOmp2Blocks_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuOmp2Blocks_00_01TDim_00_01TIdx_01_4" ]
     ] ],
     [ "AccCpuOmp2Threads.hpp", "AccCpuOmp2Threads_8hpp.html", [
@@ -23,7 +23,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "GetAccDevProps< AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "GetAccName< AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "IdxType< AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "PlatformType< AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "TagToAcc< alpaka::TagCpuOmp2Threads, TDim, TIdx >", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuOmp2Threads_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuOmp2Threads_00_01TDim_00_01TIdx_01_4" ]
     ] ],
     [ "AccCpuSerial.hpp", "AccCpuSerial_8hpp.html", [
@@ -36,7 +36,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "GetAccDevProps< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "GetAccName< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "IdxType< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "PlatformType< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "TagToAcc< alpaka::TagCpuSerial, TDim, TIdx >", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuSerial_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuSerial_00_01TDim_00_01TIdx_01_4" ]
     ] ],
     [ "AccCpuSycl.hpp", "AccCpuSycl_8hpp.html", null ],
@@ -51,7 +51,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "GetAccDevProps< AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "GetAccName< AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "IdxType< AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "PlatformType< AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "TagToAcc< alpaka::TagCpuThreads, TDim, TIdx >", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuThreads_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuThreads_00_01TDim_00_01TIdx_01_4" ]
     ] ],
     [ "AccDevProps.hpp", "AccDevProps_8hpp.html", [
@@ -72,7 +72,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "GetAccDevProps< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccDevProps_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "GetAccName< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetAccName_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "IdxType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "PltfType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ]
+      [ "PlatformType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1PlatformType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "Tag.hpp", "Tag_8hpp.html", "Tag_8hpp" ],
     [ "Traits.hpp", "acc_2Traits_8hpp.html", "acc_2Traits_8hpp" ]

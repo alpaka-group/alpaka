@@ -7,7 +7,7 @@ var DevCpu_8hpp =
     [ "GetName< DevCpu >", "structalpaka_1_1trait_1_1GetName_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetName_3_01DevCpu_01_4" ],
     [ "GetWarpSizes< DevCpu >", "structalpaka_1_1trait_1_1GetWarpSizes_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetWarpSizes_3_01DevCpu_01_4" ],
     [ "NativeHandle< DevCpu >", "structalpaka_1_1trait_1_1NativeHandle_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1NativeHandle_3_01DevCpu_01_4" ],
-    [ "PltfType< DevCpu >", "structalpaka_1_1trait_1_1PltfType_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01DevCpu_01_4" ],
+    [ "PlatformType< DevCpu >", "structalpaka_1_1trait_1_1PlatformType_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01DevCpu_01_4" ],
     [ "QueueType< DevCpu, Blocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01Blocking_01_4.html", "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01Blocking_01_4" ],
     [ "QueueType< DevCpu, NonBlocking >", "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4.html", "structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4" ],
     [ "Reset< DevCpu >", "structalpaka_1_1trait_1_1Reset_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1Reset_3_01DevCpu_01_4" ],

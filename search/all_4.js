@@ -97,7 +97,7 @@ var searchData=
   ['conceptmathtrunc_525',['ConceptMathTrunc',['../structalpaka_1_1math_1_1ConceptMathTrunc.html',1,'alpaka::math']]],
   ['conceptmemalloc_526',['ConceptMemAlloc',['../structalpaka_1_1ConceptMemAlloc.html',1,'alpaka']]],
   ['conceptmemfence_527',['ConceptMemFence',['../structalpaka_1_1ConceptMemFence.html',1,'alpaka']]],
-  ['conceptpltf_528',['ConceptPltf',['../structalpaka_1_1ConceptPltf.html',1,'alpaka']]],
+  ['conceptplatform_528',['ConceptPlatform',['../structalpaka_1_1ConceptPlatform.html',1,'alpaka']]],
   ['conceptrand_529',['ConceptRand',['../structalpaka_1_1rand_1_1ConceptRand.html',1,'alpaka::rand']]],
   ['concepts_2ehpp_530',['Concepts.hpp',['../Concepts_8hpp.html',1,'']]],
   ['conceptwarp_531',['ConceptWarp',['../structalpaka_1_1warp_1_1ConceptWarp.html',1,'alpaka::warp']]],

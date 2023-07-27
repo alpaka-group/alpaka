@@ -157,11 +157,14 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
  (CUDA 11.8 - 12.0)   </td><td class="markdownTableBodyNone">:white_check_mark: <br  />
  (CUDA 12.1)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">CUDA (clang)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-    </td></tr>
+<td class="markdownTableBodyNone">CUDA (clang)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)   </td><td class="markdownTableBodyNone">:white_check_mark: (CUDA 11.0 - 11.5)*   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a href="https://alpaka.readthedocs.io/en/latest/install/HIP.html">HIP</a> (clang)   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">:white_check_mark: (HIP 5.0 - 5.2)   </td><td class="markdownTableBodyNone">:white_check_mark: (HIP 5.3 - 5.4)   </td><td class="markdownTableBodyNone">:white_check_mark: (HIP 5.5)   </td><td class="markdownTableBodyNone">:x:   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
 <p>Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.</p>
+<ul>
+<li>due to a <a href="https://github.com/llvm/llvm-project/issues/58491">compiler bug</a> in debug mode only release builds are supported</li>
+</ul>
 <h1>Dependencies </h1>
 <p><a href="https://boost.org/">Boost</a> 1.74.0+ is the only mandatory external dependency. The <b>alpaka</b> library itself just requires header-only libraries. However some of the accelerator back-end implementations require different boost libraries to be built.</p>
 <p>When an accelerator back-end using <em>CUDA</em> is enabled, version <em>11.0</em> (with nvcc as CUDA compiler) or version <em>9.2</em> (with clang as CUDA compiler) of the <em>CUDA SDK</em> is the minimum requirement. <em>NOTE</em>: When using clang as a native <em>CUDA</em> compiler, the <em>CUDA accelerator back-end</em> can not be enabled together with any <em>OpenMP accelerator back-end</em> because this combination is currently unsupported. <em>NOTE</em>: Separable compilation is disabled by default and can be enabled via the CMake flag <code>CMAKE_CUDA_SEPARABLE_COMPILATION</code>.</p>
@@ -287,7 +290,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:22 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

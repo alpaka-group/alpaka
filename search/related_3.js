@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['getdevbyidx_3c_20pltfcpu_20_3e_4826',['GetDevByIdx&lt; PltfCpu &gt;',['../classalpaka_1_1DevCpu.html#aa83ebb2491095ee82457b87a99807356',1,'alpaka::DevCpu']]],
-  ['getdevbyidx_3c_20pltfuniformcudahiprt_3c_20tapi_20_3e_20_3e_4827',['GetDevByIdx&lt; PltfUniformCudaHipRt&lt; TApi &gt; &gt;',['../classalpaka_1_1DevUniformCudaHipRt.html#af40026fe1e0275520a97b228bd9680c5',1,'alpaka::DevUniformCudaHipRt']]]
+  ['getdevbyidx_3c_20platformcpu_20_3e_4824',['GetDevByIdx&lt; PlatformCpu &gt;',['../classalpaka_1_1DevCpu.html#a218c7564030c2ed614e64c184cd1281f',1,'alpaka::DevCpu']]],
+  ['getdevbyidx_3c_20platformuniformcudahiprt_3c_20tapi_20_3e_20_3e_4825',['GetDevByIdx&lt; PlatformUniformCudaHipRt&lt; TApi &gt; &gt;',['../classalpaka_1_1DevUniformCudaHipRt.html#a9aeac2f33c4c8d9869f29bb43268e542',1,'alpaka::DevUniformCudaHipRt']]]
 ];

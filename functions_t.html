@@ -155,11 +155,11 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 <li>tmat
 : <a class="el" href="structTINYMT32__T.html#a0e43df3eee3e3829d517bcba2f0ebc9b">TINYMT32_T</a>
 </li>
-<li>trait::GetDevByIdx&lt; PltfCpu &gt;
-: <a class="el" href="classalpaka_1_1DevCpu.html#aa83ebb2491095ee82457b87a99807356">alpaka::DevCpu</a>
+<li>trait::GetDevByIdx&lt; PlatformCpu &gt;
+: <a class="el" href="classalpaka_1_1DevCpu.html#a218c7564030c2ed614e64c184cd1281f">alpaka::DevCpu</a>
 </li>
-<li>trait::GetDevByIdx&lt; PltfUniformCudaHipRt&lt; TApi &gt; &gt;
-: <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#af40026fe1e0275520a97b228bd9680c5">alpaka::DevUniformCudaHipRt&lt; TApi &gt;</a>
+<li>trait::GetDevByIdx&lt; PlatformUniformCudaHipRt&lt; TApi &gt; &gt;
+: <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#a9aeac2f33c4c8d9869f29bb43268e542">alpaka::DevUniformCudaHipRt&lt; TApi &gt;</a>
 </li>
 <li>Traits
 : <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a14d5794a215f630c1fa0d2c545cb6665">alpaka::rand::engine::PhiloxSingle&lt; TAcc, TParams &gt;</a>
@@ -260,8 +260,8 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 , <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a2d01a9a5e4f05e00a73e7b719a2f1488">alpaka::trait::DevType&lt; BufUniformCudaHipRt&lt; TApi, TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01EventGenericThreads_3_01TDev_01_4_01_4.html#ac8901d0d5bd8623c80b9c7202a6fe00f">alpaka::trait::DevType&lt; EventGenericThreads&lt; TDev &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html#a1a5cf064d6df17262b435208c6928274">alpaka::trait::DevType&lt; EventUniformCudaHipRt&lt; TApi &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01PltfCpu_01_4.html#acc4460166b810513d598b023ea7eb1f1">alpaka::trait::DevType&lt; PltfCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01PltfUniformCudaHipRt_3_01TApi_01_4_01_4.html#a8916bacc7eb845ef47658acebdd2e6d3">alpaka::trait::DevType&lt; PltfUniformCudaHipRt&lt; TApi &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01PlatformCpu_01_4.html#ad95d8aa9fc4ee97446f575ecd1657c60">alpaka::trait::DevType&lt; PlatformCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html#a150122d4858880b02a40a73131252502">alpaka::trait::DevType&lt; PlatformUniformCudaHipRt&lt; TApi &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01QueueCpuOmp2Collective_01_4.html#ae193cfefdcb1761a365d290d24c9f4c5">alpaka::trait::DevType&lt; QueueCpuOmp2Collective &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html#ab4800c78fdebe303038f6122a10f7471">alpaka::trait::DevType&lt; QueueGenericThreadsBlocking&lt; TDev &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1DevType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html#aee21ae8d00575fe203afdb62cf7123f2">alpaka::trait::DevType&lt; QueueGenericThreadsNonBlocking&lt; TDev &gt; &gt;</a>
@@ -350,25 +350,25 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 , <a class="el" href="structalpaka_1_1trait_1_1IdxType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a14125c57d3c74bcbdd3bb3bfb5bc0de9">alpaka::trait::IdxType&lt; ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html#ae7bf2602d787aafa411af47510b27944">alpaka::trait::IdxType&lt; WorkDivMembers&lt; TDim, TIdx &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a339560e60a0978615b345a5499116701">alpaka::trait::IdxType&lt; WorkDivUniformCudaHipBuiltIn&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#ac72156acdaa36f9098bfad482947055f">alpaka::trait::PltfType&lt; AccCpuOmp2Blocks&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#aab30896cdd8c9d437cdb40cd4b77627b">alpaka::trait::PltfType&lt; AccCpuOmp2Threads&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a2448e30859576134f900cc6b9021cf76">alpaka::trait::PltfType&lt; AccCpuSerial&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#a5f91cc9cb8f0fdd50c2c01d3504ca1a3">alpaka::trait::PltfType&lt; AccCpuThreads&lt; TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#ae51ccd1daf60e4e1f6e72019aee6c46c">alpaka::trait::PltfType&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01DevCpu_01_4.html#a188305134c251914aa78feb42991cbf7">alpaka::trait::PltfType&lt; DevCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a8e959f3d873daaf7417c720115b530d6">alpaka::trait::PltfType&lt; DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#abca39dfe0784fd9785b3609b9246f58e">alpaka::trait::PltfType&lt; TaskKernelCpuOmp2Blocks&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuOmp2Threads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#abccfb14cee387644918a46764bc548ec">alpaka::trait::PltfType&lt; TaskKernelCpuOmp2Threads&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#aee9926133a926c2caebf641e504b6040">alpaka::trait::PltfType&lt; TaskKernelCpuSerial&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a47c814a2482a739f1ac86cfcc6de63d6">alpaka::trait::PltfType&lt; TaskKernelCpuThreads&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDimf72504c03e3e168797d44ff03c491c2d.html#a71a44e9d2eefc6fa45f243a1020c2c44">alpaka::trait::PltfType&lt; TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1PltfType_3_01TPltf_00_01std_1_1enable__if__t_3_01concepts_1_1Implementsd091e589351dc501b5c4a68b1298149b.html#ae330a8167b9b3754e30873b7dc80c8c2">alpaka::trait::PltfType&lt; TPltf, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptPltf, TPltf &gt;::value &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#aa657f6e5b1d22c88865d877ebcd94afa">alpaka::trait::PlatformType&lt; AccCpuOmp2Blocks&lt; TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a8f9e0c48e8f2aaaf6a01689df2d34364">alpaka::trait::PlatformType&lt; AccCpuOmp2Threads&lt; TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a5c922668e6ae225820f3ca7c0ba82b1f">alpaka::trait::PlatformType&lt; AccCpuSerial&lt; TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html#aa25907c0af9b6918bdd06882f345157a">alpaka::trait::PlatformType&lt; AccCpuThreads&lt; TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#a2d65e2555e51728677e8ee45fee7ce9d">alpaka::trait::PlatformType&lt; AccGpuUniformCudaHipRt&lt; TApi, TDim, TIdx &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01DevCpu_01_4.html#adb3de0787be9452a8db87d178c46d3cf">alpaka::trait::PlatformType&lt; DevCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a70eb6abc2267d5b3bde2dd988b554ab9">alpaka::trait::PlatformType&lt; DevUniformCudaHipRt&lt; TApi &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernea98d6d0cf9b537a479c050737fa6d86e.html#a4f0ef80d49e23b2d8d04d4c0812bab9c">alpaka::trait::PlatformType&lt; TaskKernelCpuOmp2Blocks&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuOmp2Threads_3_01TDim_00_01TIdx_00_01TKernffd8f26cbb10a968e4de2bde8850e97c.html#a0e51a99dd5e39b8e09bfd3bf128a543a">alpaka::trait::PlatformType&lt; TaskKernelCpuOmp2Threads&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a7babe4c913fe96579cb8658bab1ddb28">alpaka::trait::PlatformType&lt; TaskKernelCpuSerial&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a18b0104885450c49505a4627413ab1fd">alpaka::trait::PlatformType&lt; TaskKernelCpuThreads&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_010d3ab9faa5359f76890af49d5bc67568.html#a9f29be5c7f2b5b7a6072f9710d4b54b3">alpaka::trait::PlatformType&lt; TaskKernelGpuUniformCudaHipRt&lt; TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01concepts_1_1Im56703196c511d6767c91af80eebe840e.html#a54443df5b6ec03c445a71a158141a2a2">alpaka::trait::PlatformType&lt; TPlatform, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptPlatform, TPlatform &gt;::value &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01Blocking_01_4.html#a913d17a0f55d133edbb28c08b517832e">alpaka::trait::QueueType&lt; DevCpu, Blocking &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4.html#a492d57f84fa8258038f01107a72cb3bb">alpaka::trait::QueueType&lt; DevCpu, NonBlocking &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01Blocking_01_4.html#aeadacd044e09b80a936a72763561112d">alpaka::trait::QueueType&lt; DevUniformCudaHipRt&lt; TApi &gt;, Blocking &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01NonBlocking_01_4.html#a1be18bfc367e45fa5d501ba5fbfa08e5">alpaka::trait::QueueType&lt; DevUniformCudaHipRt&lt; TApi &gt;, NonBlocking &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245.html#a53f1f53e4bef470e25cf86eeb221bc31">alpaka::trait::QueueType&lt; TAcc, TProperty, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptAcc, TAcc &gt;::value &gt; &gt;</a>
-, <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01TPltf_00_01TProperty_00_01std_1_1enable__if__t_3_01concep4997b00340242a10601911982a8dde4e.html#aa23feefde678fdb362e542e3e9ec9a32">alpaka::trait::QueueType&lt; TPltf, TProperty, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptPltf, TPltf &gt;::value &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concept39ead53fb685330c2a3e4c28406e3245.html#a4f47b5b3cde4736269203cd31791670b">alpaka::trait::QueueType&lt; TAcc, TProperty, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptAcc, TAcc &gt;::value &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1trait_1_1QueueType_3_01TPlatform_00_01TProperty_00_01std_1_1enable__if__t_3_01cof2295b602ff1b86e835d3331331292eb.html#a896628c09fd1ea70a840a990c6963f12">alpaka::trait::QueueType&lt; TPlatform, TProperty, std::enable_if_t&lt; concepts::ImplementsConcept&lt; ConceptPlatform, TPlatform &gt;::value &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuOmp2Blocks_00_01TDim_00_01TIdx_01_4.html#aa22cdd4d6a8556068d4b6db9bd41d41b">alpaka::trait::TagToAcc&lt; alpaka::TagCpuOmp2Blocks, TDim, TIdx &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuOmp2Threads_00_01TDim_00_01TIdx_01_4.html#a3b961e45e34a2bf1b8d81cc83cf28179">alpaka::trait::TagToAcc&lt; alpaka::TagCpuOmp2Threads, TDim, TIdx &gt;</a>
 , <a class="el" href="structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuSerial_00_01TDim_00_01TIdx_01_4.html#aa3c0e918812876e83788d2be963bbcd2">alpaka::trait::TagToAcc&lt; alpaka::TagCpuSerial, TDim, TIdx &gt;</a>
@@ -400,7 +400,7 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jul 27 2023 14:27:23 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 22:09:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
