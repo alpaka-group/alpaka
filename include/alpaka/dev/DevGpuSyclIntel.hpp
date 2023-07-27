@@ -12,6 +12,6 @@
 namespace alpaka
 {
     using DevGpuSyclIntel = DevGenericSycl<PlatformGpuSyclIntel>;
-}
+} // namespace alpaka
 
 #endif

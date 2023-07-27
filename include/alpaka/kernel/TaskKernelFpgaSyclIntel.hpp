@@ -2,7 +2,6 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-
 #pragma once
 
 #include "alpaka/kernel/TaskKernelGenericSycl.hpp"
