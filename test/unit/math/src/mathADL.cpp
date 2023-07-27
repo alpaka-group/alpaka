@@ -25,14 +25,18 @@ namespace custom
     {
         Abs,
         Acos,
+        Acosh,
         Arg,
         Asin,
+        Asinh,
         Atan,
+        Atanh,
         Atan2,
         Cbrt,
         Ceil,
         Conj,
         Cos,
+        Cosh,
         Erf,
         Exp,
         Floor,
@@ -49,9 +53,11 @@ namespace custom
         Llround,
         Rsqrt,
         Sin,
+        Sinh,
         Sincos,
         Sqrt,
         Tan,
+        Tanh,
         Trunc,
 
         Arg1 = 1024,
@@ -75,6 +81,12 @@ namespace custom
         return Custom::Acos | c;
     }
 
+    ALPAKA_FN_HOST_ACC auto acosh(Custom c);
+    ALPAKA_FN_HOST_ACC auto acosh(Custom c)
+    {
+        return Custom::Acosh | c;
+    }
+
     ALPAKA_FN_HOST_ACC auto arg(Custom c);
     ALPAKA_FN_HOST_ACC auto arg(Custom c)
     {
@@ -87,10 +99,22 @@ namespace custom
         return Custom::Asin | c;
     }
 
+    ALPAKA_FN_HOST_ACC auto asinh(Custom c);
+    ALPAKA_FN_HOST_ACC auto asinh(Custom c)
+    {
+        return Custom::Asinh | c;
+    }
+
     ALPAKA_FN_HOST_ACC auto atan(Custom c);
     ALPAKA_FN_HOST_ACC auto atan(Custom c)
     {
         return Custom::Atan | c;
+    }
+
+    ALPAKA_FN_HOST_ACC auto atanh(Custom c);
+    ALPAKA_FN_HOST_ACC auto atanh(Custom c)
+    {
+        return Custom::Atanh | c;
     }
 
     ALPAKA_FN_HOST_ACC auto atan2(Custom a, Custom b);
@@ -121,6 +145,12 @@ namespace custom
     ALPAKA_FN_HOST_ACC auto cos(Custom c)
     {
         return Custom::Cos | c;
+    }
+
+    ALPAKA_FN_HOST_ACC auto cosh(Custom c);
+    ALPAKA_FN_HOST_ACC auto cosh(Custom c)
+    {
+        return Custom::Cosh | c;
     }
 
     ALPAKA_FN_HOST_ACC auto erf(Custom c);
@@ -219,6 +249,12 @@ namespace custom
         return Custom::Sin | c;
     }
 
+    ALPAKA_FN_HOST_ACC auto sinh(Custom c);
+    ALPAKA_FN_HOST_ACC auto sinh(Custom c)
+    {
+        return Custom::Sinh | c;
+    }
+
     ALPAKA_FN_HOST_ACC void sincos(Custom c, Custom& a, Custom& b);
     ALPAKA_FN_HOST_ACC void sincos(Custom c, Custom& a, Custom& b)
     {
@@ -238,6 +274,12 @@ namespace custom
         return Custom::Tan | c;
     }
 
+    ALPAKA_FN_HOST_ACC auto tanh(Custom c);
+    ALPAKA_FN_HOST_ACC auto tanh(Custom c)
+    {
+        return Custom::Tanh | c;
+    }
+
     ALPAKA_FN_HOST_ACC auto trunc(Custom c);
     ALPAKA_FN_HOST_ACC auto trunc(Custom c)
     {
@@ -254,13 +296,17 @@ struct AdlKernel
 
         ALPAKA_CHECK(*success, alpaka::math::abs(acc, Custom::Arg1) == (Custom::Abs | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::acos(acc, Custom::Arg1) == (Custom::Acos | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::acosh(acc, Custom::Arg1) == (Custom::Acosh | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::arg(acc, Custom::Arg1) == (Custom::Arg | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::asin(acc, Custom::Arg1) == (Custom::Asin | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::asinh(acc, Custom::Arg1) == (Custom::Asinh | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::atan(acc, Custom::Arg1) == (Custom::Atan | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::atanh(acc, Custom::Arg1) == (Custom::Atanh | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::cbrt(acc, Custom::Arg1) == (Custom::Cbrt | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::ceil(acc, Custom::Arg1) == (Custom::Ceil | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::conj(acc, Custom::Arg1) == (Custom::Conj | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::cos(acc, Custom::Arg1) == (Custom::Cos | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::cosh(acc, Custom::Arg1) == (Custom::Cosh | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::erf(acc, Custom::Arg1) == (Custom::Erf | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::exp(acc, Custom::Arg1) == (Custom::Exp | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::floor(acc, Custom::Arg1) == (Custom::Floor | Custom::Arg1));
@@ -272,8 +318,10 @@ struct AdlKernel
         ALPAKA_CHECK(*success, alpaka::math::llround(acc, Custom::Arg1) == (Custom::Llround | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::rsqrt(acc, Custom::Arg1) == (Custom::Rsqrt | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::sin(acc, Custom::Arg1) == (Custom::Sin | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::sinh(acc, Custom::Arg1) == (Custom::Sinh | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::sqrt(acc, Custom::Arg1) == (Custom::Sqrt | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::tan(acc, Custom::Arg1) == (Custom::Tan | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::tanh(acc, Custom::Arg1) == (Custom::Tanh | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::trunc(acc, Custom::Arg1) == (Custom::Trunc | Custom::Arg1));
 
         ALPAKA_CHECK(
