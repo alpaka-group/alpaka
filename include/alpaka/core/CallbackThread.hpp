@@ -16,7 +16,10 @@ namespace alpaka::core
 {
     class CallbackThread
     {
+        // std::packaged_task is used because std::function requires that the wrapped callable is copyable.
+        //! \todo with C++23 std::move_only_function should be used
         using Task = std::packaged_task<void()>;
+        using TaskPackage = std::pair<Task, std::promise<void>>;
 
     public:
         ~CallbackThread()
@@ -38,11 +41,8 @@ namespace alpaka::core
             }
         }
 
-        // Note: due to different std lib implementations of packaged_task, the lifetime of the passed function either
-        // ends when the packaged_task is destroyed (while the returned future is still alive) or when both are
-        // destroyed. Therefore, ensure that a submitted task does not extend the lifetime of any object that
-        // (transitively) holds the returned future. E.g. don't capture a shared_ptr to an alpaka object that stores
-        // the returned future. This is a cyclic dependency and creates a leak.
+        //! It is guaranteed that the task is fully destroyed before the future's result is set.
+        //! @{
         template<typename NullaryFunction>
         auto submit(NullaryFunction&& nf) -> std::future<void>
         {
@@ -54,11 +54,13 @@ namespace alpaka::core
 
         auto submit(Task task) -> std::future<void>
         {
-            auto f = task.get_future();
+            // We do not use the future of std::packed_task because the future will keep the task alive
+            // and we can not control the moment the future is set.
+            auto tp = std::make_pair(std::move(task), std::promise<void>{});
+            auto f = tp.second.get_future();
             {
                 std::unique_lock<std::mutex> lock{m_mutex};
-                ++m_tasksInProgress;
-                m_tasks.emplace(std::move(task));
+                m_tasks.emplace(std::move(tp));
                 if(!m_thread.joinable())
                     startWorkerThread();
                 m_cond.notify_one();
@@ -67,9 +69,15 @@ namespace alpaka::core
             return f;
         }
 
-        [[nodiscard]] auto empty() const
+        //! @}
+
+        //! @return True if queue is empty and no task is executed else false.
+        //! If only one tasks is enqueued and the task is executed the task will see the queue as not empty.
+        //! During the destruction of this single enqueued task the queue will already be accounted as empty.
+        [[nodiscard]] auto empty()
         {
-            return m_tasksInProgress == 0;
+            std::unique_lock<std::mutex> lock{m_mutex};
+            return m_tasks.empty();
         }
 
     private:
@@ -77,8 +85,7 @@ namespace alpaka::core
         std::condition_variable m_cond;
         std::mutex m_mutex;
         bool m_stop{false};
-        std::queue<Task> m_tasks;
-        std::atomic<int> m_tasksInProgress{0};
+        std::queue<TaskPackage> m_tasks;
 
         auto startWorkerThread() -> void
         {
@@ -87,9 +94,9 @@ namespace alpaka::core
                 {
                     while(true)
                     {
+                        std::promise<void> taskPromise;
                         {
-                            // Do not move the tasks out of the loop else the lifetime could be extended until the
-                            // moment where the callback thread is destructed.
+                            // Task is destroyed before promise is updated but after the queue state is up to date.
                             Task task;
                             {
                                 std::unique_lock<std::mutex> lock{m_mutex};
@@ -98,13 +105,21 @@ namespace alpaka::core
                                 if(m_stop && m_tasks.empty())
                                     break;
 
-                                task = std::move(m_tasks.front());
+                                task = std::move(m_tasks.front().first);
+                                taskPromise = std::move(m_tasks.front().second);
+                            }
+                            task();
+                            {
+                                std::unique_lock<std::mutex> lock{m_mutex};
+                                // Pop empty data from the queue, task and promise will be destroyed later in a
+                                // well-defined order.
                                 m_tasks.pop();
                             }
-
-                            task();
+                            // Task will be destroyed here, the queue status is already updated.
                         }
-                        --m_tasksInProgress;
+                        // In case the executed tasks is the last task in the queue the waiting threads will see the
+                        // queue as empty.
+                        taskPromise.set_value();
                     }
                 });
         }

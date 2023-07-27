@@ -185,8 +185,6 @@ namespace alpaka::trait
                         lk2,
                         [spEventImpl, enqueueCount]
                         { return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady; });
-                    spEventImpl
-                        .reset(); // avoid keeping the event alive as part of the background thread task's future
                 });
         }
     };

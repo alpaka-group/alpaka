@@ -203,14 +203,9 @@ namespace alpaka
             {
                 auto data = std::unique_ptr<HostFuncData>(reinterpret_cast<HostFuncData*>(arg));
                 auto& queue = data->q;
-                auto f = queue.m_callbackThread.submit(
-                    [data = std::move(data)]() mutable
-                    {
-                        data->t();
-                        data.reset(); // destroy the task
-                    });
+                auto f = queue.m_callbackThread.submit([data = std::move(data)] { data->t(); });
                 f.wait();
-            } // destroys the future `f`, destroying the packaged task and the above lambda
+            }
 
             ALPAKA_FN_HOST static auto enqueue(
                 uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
