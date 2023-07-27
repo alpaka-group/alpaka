@@ -8,7 +8,20 @@ from typing import List
 
 from alpaka_job_coverage.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from alpaka_job_coverage.util import row_check_name, row_check_version, is_in_row
 
 
 def alpaka_post_filter(row: List) -> bool:
+    # debug builds with clang 15 as CUDA compiler produces a compiler error
+    # see here: https://github.com/llvm/llvm-project/issues/58491
+    if (
+        is_in_row(row, BUILD_TYPE)
+        and row[param_map[BUILD_TYPE]][VERSION] == CMAKE_DEBUG
+        and row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
+    ):
+        # preparation to add also clang 16
+        for clang_cuda_version in ["15"]:
+            if row_check_version(row, HOST_COMPILER, "==", clang_cuda_version):
+                return False
+
     return True
