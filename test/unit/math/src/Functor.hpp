@@ -169,6 +169,15 @@ namespace alpaka
 
                 ALPAKA_TEST_MATH_OP_FUNCTOR(OpLog, Arity::Unary, std::log, alpaka::math::log, Range::PositiveOnly)
 
+                ALPAKA_TEST_MATH_OP_FUNCTOR(OpLog2, Arity::Unary, std::log2, alpaka::math::log2, Range::PositiveOnly)
+
+                ALPAKA_TEST_MATH_OP_FUNCTOR(
+                    OpLog10,
+                    Arity::Unary,
+                    std::log10,
+                    alpaka::math::log10,
+                    Range::PositiveOnly)
+
                 ALPAKA_TEST_MATH_OP_FUNCTOR(
                     OpRound,
                     Arity::Unary,
@@ -287,6 +296,8 @@ namespace alpaka
                     OpExp,
                     OpFloor,
                     OpLog,
+                    OpLog2,
+                    OpLog10,
                     OpRound,
                     OpRsqrt,
                     OpSin,
@@ -363,6 +374,7 @@ namespace alpaka
                     OpCosh,
                     OpExp,
                     OpLog,
+                    OpLog10,
                     OpRsqrt,
                     OpSin,
                     OpSinh,

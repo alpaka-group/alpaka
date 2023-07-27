@@ -216,6 +216,14 @@ namespace alpaka::math
     {
     };
 
+    struct ConceptMathLog2
+    {
+    };
+
+    struct ConceptMathLog10
+    {
+    };
+
     struct ConceptMathMax
     {
     };
@@ -556,6 +564,32 @@ namespace alpaka::math
                 // backend and we could not find log(TArg) in the namespace of your type.
                 using std::log;
                 return log(arg);
+            }
+        };
+
+        //! The bas 2 log trait.
+        template<typename T, typename TArg, typename TSfinae = void>
+        struct Log2
+        {
+            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArg const& arg)
+            {
+                // This is an ADL call. If you get a compile error here then your type is not supported by the
+                // backend and we could not find log2(TArg) in the namespace of your type.
+                using std::log2;
+                return log2(arg);
+            }
+        };
+
+        //! The base 10 log trait.
+        template<typename T, typename TArg, typename TSfinae = void>
+        struct Log10
+        {
+            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArg const& arg)
+            {
+                // This is an ADL call. If you get a compile error here then your type is not supported by the
+                // backend and we could not find log10(TArg) in the namespace of your type.
+                using std::log10;
+                return log10(arg);
             }
         };
 
@@ -1105,6 +1139,42 @@ namespace alpaka::math
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathLog, T>;
         return trait::Log<ImplementationBase, TArg>{}(log_ctx, arg);
+    }
+
+    //! Computes the the natural (base 2) logarithm of arg.
+    //!
+    //! Valid real arguments are non-negative. For other values the result
+    //! may depend on the backend and compilation options, will likely
+    //! be NaN.
+    //!
+    //! \tparam T The type of the object specializing Log2.
+    //! \tparam TArg The arg type.
+    //! \param log2_ctx The object specializing Log2.
+    //! \param arg The arg.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename T, typename TArg>
+    ALPAKA_FN_HOST_ACC auto log2(T const& log2_ctx, TArg const& arg)
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog2, T>;
+        return trait::Log2<ImplementationBase, TArg>{}(log2_ctx, arg);
+    }
+
+    //! Computes the the natural (base 10) logarithm of arg.
+    //!
+    //! Valid real arguments are non-negative. For other values the result
+    //! may depend on the backend and compilation options, will likely
+    //! be NaN.
+    //!
+    //! \tparam T The type of the object specializing Log10.
+    //! \tparam TArg The arg type.
+    //! \param log10_ctx The object specializing Log10.
+    //! \param arg The arg.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename T, typename TArg>
+    ALPAKA_FN_HOST_ACC auto log10(T const& log10_ctx, TArg const& arg)
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog10, T>;
+        return trait::Log10<ImplementationBase, TArg>{}(log10_ctx, arg);
     }
 
     //! Returns the larger of two arguments.

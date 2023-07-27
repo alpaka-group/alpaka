@@ -120,6 +120,16 @@ namespace alpaka::math
     {
     };
 
+    //! The standard library log2, implementation covered by the general template.
+    class Log2StdLib : public concepts::Implements<ConceptMathLog2, Log2StdLib>
+    {
+    };
+
+    //! The standard library log10, implementation covered by the general template.
+    class Log10StdLib : public concepts::Implements<ConceptMathLog10, Log10StdLib>
+    {
+    };
+
     //! The standard library max.
     class MaxStdLib : public concepts::Implements<ConceptMathMax, MaxStdLib>
     {
@@ -206,6 +216,8 @@ namespace alpaka::math
         , public FloorStdLib
         , public FmodStdLib
         , public LogStdLib
+        , public Log2StdLib
+        , public Log10StdLib
         , public MaxStdLib
         , public MinStdLib
         , public PowStdLib
