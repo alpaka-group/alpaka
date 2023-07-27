@@ -114,10 +114,6 @@ if __name__ == "__main__":
         )
     )
 
-    # TODO(SimeonEhrig): remove Clang 15 as CUDA compiler until issue #1906 is solved
-    parameters[HOST_COMPILER].remove((CLANG_CUDA, "15"))
-    parameters[DEVICE_COMPILER].remove((CLANG_CUDA, "15"))
-
     parameters[BACKENDS] = get_backend_matrix()
     parameters[CMAKE] = get_sw_tuple_list(CMAKE)
     parameters[BOOST] = get_sw_tuple_list(BOOST)
