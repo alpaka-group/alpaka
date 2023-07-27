@@ -4,7 +4,7 @@
 // == ./include/alpaka/alpaka.hpp ==
 // ==
 /* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
- *                Jan Stephan, Antonio Di Pilato
+ *                Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -83,7 +83,7 @@
 						// ============================================================================
 						// == ./include/alpaka/core/BoostPredef.hpp ==
 						// ==
-						/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan
+						/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan
 						 * SPDX-License-Identifier: MPL-2.0
 						 */
 
@@ -152,6 +152,14 @@
 						#    undef BOOST_COMP_PGI
 						#    define BOOST_COMP_PGI BOOST_COMP_PGI_EMULATED
 						#endif
+
+						// Intel LLVM compiler detection
+						#if !defined(BOOST_COMP_ICPX)
+						#    if defined(SYCL_LANGUAGE_VERSION) && defined(__INTEL_LLVM_COMPILER)
+						// The version string for icpx 2023.1.0 is 20230100. In Boost.Predef this becomes (53,1,0).
+						#        define BOOST_COMP_ICPX BOOST_PREDEF_MAKE_YYYYMMDD(__INTEL_LLVM_COMPILER)
+						#    endif
+						#endif
 						// ==
 						// == ./include/alpaka/core/BoostPredef.hpp ==
 						// ============================================================================
@@ -159,7 +167,7 @@
 						// ============================================================================
 						// == ./include/alpaka/core/Common.hpp ==
 						// ==
-						/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+						/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci
 						 * SPDX-License-Identifier: MPL-2.0
 						 */
 
@@ -316,13 +324,12 @@
 						//! Macro defining the inline function attribute.
 						#if BOOST_LANG_CUDA || BOOST_LANG_HIP
 						#    define ALPAKA_FN_INLINE __forceinline__
-						#else
-						#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+						#elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 						// TODO: With C++20 [[msvc::forceinline]] can be used.
-						#        define ALPAKA_FN_INLINE __forceinline
-						#    else
-						#        define ALPAKA_FN_INLINE [[gnu::always_inline]] inline
-						#    endif
+						#    define ALPAKA_FN_INLINE __forceinline
+						#else
+						// For gcc, clang, and clang-based compilers like Intel icpx
+						#    define ALPAKA_FN_INLINE [[gnu::always_inline]] inline
 						#endif
 
 						//! This macro defines a variable lying in global accelerator device memory.
@@ -357,6 +364,8 @@
 						#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
 						    || BOOST_LANG_HIP)
 						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
+						#elif defined(ALPAKA_ACC_SYCL_ENABLED)
+						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL _Pragma("GCC error \"The SYCL backend does not support global device variables.\""))
 						#else
 						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL
 						#endif
@@ -393,6 +402,8 @@
 						#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
 						    || BOOST_LANG_HIP)
 						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
+						#elif defined(ALPAKA_ACC_SYCL_ENABLED)
+						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT _Pragma("GCC error \"The SYCL backend does not support global device constants.\""))
 						#else
 						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT
 						#endif
@@ -8465,7 +8476,8 @@
 			// ============================================================================
 			// == ./include/alpaka/kernel/Traits.hpp ==
 			// ==
-			/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber
+			/* Copyright 2023 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
+			 *                Andrea Bocci, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -8748,6 +8760,21 @@
 			                return 0u;
 			            }
 			        };
+
+			        //! The trait for getting the warp size required by a kernel.
+			        //!
+			        //! \tparam TKernelFnObj The kernel function object.
+			        //! \tparam TAcc The accelerator.
+			        //!
+			        //! The default implementation returns 0, which lets the accelerator compiler and runtime choose the warp size.
+			        template<typename TKernelFnObj, typename TAcc, typename TSfinae = void>
+			        struct WarpSize : std::integral_constant<std::uint32_t, 0>
+			        {
+			        };
+
+			        //! This is a shortcut for the trait defined above
+			        template<typename TKernelFnObj, typename TAcc>
+			        inline constexpr std::uint32_t warpSize = WarpSize<TKernelFnObj, TAcc>::value;
 
 			        //! The trait for getting the schedule to use when a kernel is run using the CpuOmp2Blocks accelerator.
 			        //!
@@ -9129,7 +9156,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/Tag.hpp ==
 		// ==
-		/* Copyright 2023 Simeon Ehrig, Jan Stephan
+		/* Copyright 2023 Simeon Ehrig, Jan Stephan, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -9153,7 +9180,7 @@
 		    CREATE_ACC_TAG(TagCpuOmp2Blocks);
 		    CREATE_ACC_TAG(TagCpuOmp2Threads);
 		    CREATE_ACC_TAG(TagCpuSerial);
-		    CREATE_ACC_TAG(TagCpuSyclIntel);
+		    CREATE_ACC_TAG(TagCpuSycl);
 		    CREATE_ACC_TAG(TagCpuTbbBlocks);
 		    CREATE_ACC_TAG(TagCpuThreads);
 		    CREATE_ACC_TAG(TagFpgaSyclIntel);
@@ -12993,9 +13020,9 @@
 	// ============================================================================
 
 	// ============================================================================
-	// == ./include/alpaka/acc/AccCpuSyclIntel.hpp ==
+	// == ./include/alpaka/acc/AccCpuSycl.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -13003,7 +13030,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/AccGenericSycl.hpp ==
 		// ==
-		/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Andrea Bocci
+		/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -13012,7 +13039,7 @@
 			// ============================================================================
 			// == ./include/alpaka/atomic/AtomicGenericSycl.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Andrea Bocci
+			/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -13049,7 +13076,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			#    include <CL/sycl.hpp>
+			#    include <sycl/sycl.hpp>
 
 			namespace alpaka
 			{
@@ -13133,17 +13160,12 @@
 			        inline auto casWithCondition(T* const addr, TEval&& eval)
 			        {
 			            auto ref = TRef{*addr};
-
 			            auto old_val = ref.load();
-			            auto assumed = T{};
 
-			            do
+			            // prefer compare_exchange_weak when in a loop, assuming that eval is not expensive
+			            while(!ref.compare_exchange_weak(old_val, eval(old_val)))
 			            {
-			                assumed = old_val;
-			                auto const new_val = eval(old_val);
-			                old_val = ref.compare_exchange_strong(assumed, new_val);
-			            } while(assumed != old_val);
-
+			            }
 
 			            return old_val;
 			        }
@@ -13217,7 +13239,9 @@
 			    template<typename T, typename THierarchy>
 			    struct AtomicOp<AtomicExch, AtomicGenericSycl, T, THierarchy>
 			    {
-			        static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "SYCL atomics do not support this type");
+			        static_assert(
+			            (std::is_integral_v<T> || std::is_floating_point_v<T>) &&(sizeof(T) == 4 || sizeof(T) == 8),
+			            "SYCL atomics do not support this type");
 
 			        static auto atomicOp(AtomicGenericSycl const&, T* const addr, T const& value) -> T
 			        {
@@ -13230,11 +13254,14 @@
 			    template<typename T, typename THierarchy>
 			    struct AtomicOp<AtomicInc, AtomicGenericSycl, T, THierarchy>
 			    {
-			        static_assert(std::is_unsigned_v<T>, "atomicInc only supported for unsigned types");
+			        static_assert(
+			            std::is_unsigned_v<T> && (sizeof(T) == 4 || sizeof(T) == 8),
+			            "SYCL atomics support only 32- and 64-bits unsigned integral types");
 
 			        static auto atomicOp(AtomicGenericSycl const&, T* const addr, T const& value) -> T
 			        {
-			            auto inc = [&value](auto old_val) { return (old_val >= value) ? static_cast<T>(0) : (old_val + 1u); };
+			            auto inc = [&value](auto old_val)
+			            { return (old_val >= value) ? static_cast<T>(0) : (old_val + static_cast<T>(1)); };
 			            if(auto ptr = alpaka::detail::get_global_ptr(addr); ptr != nullptr)
 			                return alpaka::detail::casWithCondition<alpaka::detail::global_ref<T, THierarchy>>(addr, inc);
 			            else
@@ -13247,12 +13274,14 @@
 			    template<typename T, typename THierarchy>
 			    struct AtomicOp<AtomicDec, AtomicGenericSycl, T, THierarchy>
 			    {
-			        static_assert(std::is_unsigned_v<T>, "atomicDec only supported for unsigned types");
+			        static_assert(
+			            std::is_unsigned_v<T> && (sizeof(T) == 4 || sizeof(T) == 8),
+			            "SYCL atomics support only 32- and 64-bits unsigned integral types");
 
 			        static auto atomicOp(AtomicGenericSycl const&, T* const addr, T const& value) -> T
 			        {
-			            auto dec
-			                = [&value](auto& old_val) { return ((old_val == 0) || (old_val > value)) ? value : (old_val - 1u); };
+			            auto dec = [&value](auto& old_val)
+			            { return ((old_val == 0) || (old_val > value)) ? value : (old_val - static_cast<T>(1)); };
 			            if(auto ptr = alpaka::detail::get_global_ptr(addr); ptr != nullptr)
 			                return alpaka::detail::casWithCondition<alpaka::detail::global_ref<T, THierarchy>>(addr, dec);
 			            else
@@ -13310,22 +13339,21 @@
 			    {
 			        static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>, "SYCL atomics do not support this type");
 
-			        static auto atomicOp(AtomicGenericSycl const&, T* const addr, T const& compare, T const& value) -> T
+			        static auto atomicOp(AtomicGenericSycl const&, T* const addr, T const& expected, T const& desired) -> T
 			        {
-			            auto cas = [&compare, &value](auto& ref)
+			            auto cas = [&expected, &desired](auto& ref)
 			            {
-			                // SYCL stores the value in *addr to the "compare" parameter if the values are not equal. Since
-			                // alpaka's interface does not expect this we need to copy "compare" to this function and forget it
-			                // afterwards.
-			                auto tmp = compare;
+			                auto expected_ = expected;
+			                // Atomically compares the value of `ref` with the value of `expected`.
+			                // If the values are equal, replaces the value of `ref` with `desired`.
+			                // Otherwise updates `expected` with the value of `ref`.
+			                // Returns a bool telling us if the exchange happened or not, but the Alpaka API does not make use of
+			                // it.
+			                ref.compare_exchange_strong(expected_, desired);
 
-			                // We always want to return the old value at the end.
-			                const auto old = ref.load();
-
-			                // This returns a bool telling us if the exchange happened or not. Useless in this case.
-			                ref.compare_exchange_strong(tmp, value);
-
-			                return old;
+			                // If the update succeded, return the previous value of `ref`.
+			                // Otherwise, return the current value of `ref`.
+			                return expected_;
 			            };
 
 			            if(auto ptr = alpaka::detail::get_global_ptr(addr); ptr != nullptr)
@@ -13361,7 +13389,7 @@
 			// #include <cstddef>    // amalgamate: file already included
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -13387,9 +13415,7 @@
 			    {
 			        static auto getMem(BlockSharedMemDynGenericSycl const& shared) -> T*
 			        {
-			            auto void_ptr = sycl::multi_ptr<void, sycl::access::address_space::local_space>{shared.m_accessor};
-			            auto t_ptr = static_cast<sycl::multi_ptr<T, sycl::access::address_space::local_space>>(void_ptr);
-			            return t_ptr.get();
+			            return reinterpret_cast<T*>(shared.m_accessor.get_pointer().get());
 			        }
 			    };
 			} // namespace alpaka::trait
@@ -13410,11 +13436,12 @@
 			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"    // amalgamate: file already expanded
 
+			// #include <cstddef>    // amalgamate: file already included
 			// #include <cstdint>    // amalgamate: file already included
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -13483,7 +13510,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -13559,7 +13586,7 @@
 			// ============================================================================
 			// == ./include/alpaka/idx/bt/IdxBtGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -13569,7 +13596,7 @@
 				// ============================================================================
 				// == ./include/alpaka/core/Sycl.hpp ==
 				// ==
-				/* Copyright 2022 Jan Stephan
+				/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
@@ -13583,6 +13610,7 @@
 
 				// #include <array>    // amalgamate: file already included
 				// #include <cstddef>    // amalgamate: file already included
+				#include <cstdio> // the #define printf(...) breaks <cstdio> if it is included afterwards
 				// #include <iostream>    // amalgamate: file already included
 				// #include <stdexcept>    // amalgamate: file already included
 				// #include <string>    // amalgamate: file already included
@@ -13591,7 +13619,36 @@
 
 				#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-				// #    include <CL/sycl.hpp>    // amalgamate: file already included
+				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+				// if SYCL is enabled with the AMD backend the printf will be killed because of missing compiler support
+				#    ifdef __AMDGCN__
+				#        define printf(...)
+				#    else
+
+				#        ifdef __SYCL_DEVICE_ONLY__
+				using AlpakaFormat = char const* [[clang::opencl_constant]];
+				#        else
+				using AlpakaFormat = char const*;
+				#        endif
+
+				#        if BOOST_COMP_CLANG
+				#            pragma clang diagnostic push
+				#            pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+				#        endif
+
+				#        define printf(FORMAT, ...)                                                                                   \
+				            do                                                                                                        \
+				            {                                                                                                         \
+				                static auto const format = AlpakaFormat{FORMAT};                                                      \
+				                sycl::ext::oneapi::experimental::printf(format, ##__VA_ARGS__);                                       \
+				            } while(false)
+
+				#        if BOOST_COMP_CLANG
+				#            pragma clang diagnostic pop
+				#        endif
+
+				#    endif
 
 				// SYCL vector types trait specializations.
 				namespace alpaka
@@ -13620,7 +13677,6 @@
 
 				              // 2 component vector types
 				              sycl::char2,
-				              sycl::schar2,
 				              sycl::uchar2,
 				              sycl::short2,
 				              sycl::ushort2,
@@ -13628,15 +13684,12 @@
 				              sycl::uint2,
 				              sycl::long2,
 				              sycl::ulong2,
-				              sycl::longlong2,
-				              sycl::ulonglong2,
 				              sycl::float2,
 				              sycl::double2,
 				              sycl::half2,
 
 				              // 3 component vector types
 				              sycl::char3,
-				              sycl::schar3,
 				              sycl::uchar3,
 				              sycl::short3,
 				              sycl::ushort3,
@@ -13644,15 +13697,12 @@
 				              sycl::uint3,
 				              sycl::long3,
 				              sycl::ulong3,
-				              sycl::longlong3,
-				              sycl::ulonglong3,
 				              sycl::float3,
 				              sycl::double3,
 				              sycl::half3,
 
 				              // 4 component vector types
 				              sycl::char4,
-				              sycl::schar4,
 				              sycl::uchar4,
 				              sycl::short4,
 				              sycl::ushort4,
@@ -13660,15 +13710,12 @@
 				              sycl::uint4,
 				              sycl::long4,
 				              sycl::ulong4,
-				              sycl::longlong4,
-				              sycl::ulonglong4,
 				              sycl::float4,
 				              sycl::double4,
 				              sycl::half4,
 
 				              // 8 component vector types
 				              sycl::char8,
-				              sycl::schar8,
 				              sycl::uchar8,
 				              sycl::short8,
 				              sycl::ushort8,
@@ -13676,15 +13723,12 @@
 				              sycl::uint8,
 				              sycl::long8,
 				              sycl::ulong8,
-				              sycl::longlong8,
-				              sycl::ulonglong8,
 				              sycl::float8,
 				              sycl::double8,
 				              sycl::half8,
 
 				              // 16 component vector types
 				              sycl::char16,
-				              sycl::schar16,
 				              sycl::uchar16,
 				              sycl::short16,
 				              sycl::ushort16,
@@ -13692,8 +13736,6 @@
 				              sycl::uint16,
 				              sycl::long16,
 				              sycl::ulong16,
-				              sycl::longlong16,
-				              sycl::ulonglong16,
 				              sycl::float16,
 				              sycl::double16,
 				              sycl::half16>
@@ -13716,10 +13758,7 @@
 				    {
 				        using type = std::conditional_t<std::is_scalar_v<T>, T, typename T::element_type>;
 				    };
-				} // namespace alpaka::trait
 
-				namespace alpaka::trait
-				{
 				    //! The SYCL vectors' extent get trait specialization.
 				    template<typename TExtent>
 				    struct GetExtent<DimInt<Dim<TExtent>::value>, TExtent, std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
@@ -13814,7 +13853,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka::bt
 			{
@@ -13825,11 +13864,11 @@
 			    public:
 			        using IdxBtBase = IdxBtGenericSycl;
 
-			        explicit IdxBtGenericSycl(sycl::nd_item<TDim::value> work_item) : my_item{work_item}
+			        explicit IdxBtGenericSycl(sycl::nd_item<TDim::value> work_item) : m_item_bt{work_item}
 			        {
 			        }
 
-			        sycl::nd_item<TDim::value> my_item;
+			        sycl::nd_item<TDim::value> m_item_bt;
 			    };
 			} // namespace alpaka::bt
 
@@ -13851,19 +13890,19 @@
 			        static auto getIdx(bt::IdxBtGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&) -> Vec<TDim, TIdx>
 			        {
 			            if constexpr(TDim::value == 1)
-			                return Vec<TDim, TIdx>{static_cast<TIdx>(idx.my_item.get_local_id(0))};
+			                return Vec<TDim, TIdx>{static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(idx.my_item.get_local_id(1)),
-			                    static_cast<TIdx>(idx.my_item.get_local_id(0))};
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(idx.my_item.get_local_id(2)),
-			                    static_cast<TIdx>(idx.my_item.get_local_id(1)),
-			                    static_cast<TIdx>(idx.my_item.get_local_id(0))};
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(2)),
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
+			                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
 			            }
 			        }
 			    };
@@ -13884,7 +13923,7 @@
 			// ============================================================================
 			// == ./include/alpaka/idx/gb/IdxGbGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -13897,7 +13936,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka::gb
 			{
@@ -13908,11 +13947,11 @@
 			    public:
 			        using IdxGbBase = IdxGbGenericSycl;
 
-			        explicit IdxGbGenericSycl(sycl::nd_item<TDim::value> work_item) : my_item{work_item}
+			        explicit IdxGbGenericSycl(sycl::nd_item<TDim::value> work_item) : m_item_gb{work_item}
 			        {
 			        }
 
-			        sycl::nd_item<TDim::value> my_item;
+			        sycl::nd_item<TDim::value> m_item_gb;
 			    };
 			} // namespace alpaka::gb
 
@@ -13934,19 +13973,19 @@
 			        static auto getIdx(gb::IdxGbGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&)
 			        {
 			            if constexpr(TDim::value == 1)
-			                return Vec<TDim, TIdx>(static_cast<TIdx>(idx.my_item.get_group(0)));
+			                return Vec<TDim, TIdx>(static_cast<TIdx>(idx.m_item_gb.get_group(0)));
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>(
-			                    static_cast<TIdx>(idx.my_item.get_group(1)),
-			                    static_cast<TIdx>(idx.my_item.get_group(0)));
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>(
-			                    static_cast<TIdx>(idx.my_item.get_group(2)),
-			                    static_cast<TIdx>(idx.my_item.get_group(1)),
-			                    static_cast<TIdx>(idx.my_item.get_group(0)));
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(2)),
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
+			                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
 			            }
 			        }
 			    };
@@ -13979,7 +14018,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -14030,7 +14069,7 @@
 			// ============================================================================
 			// == ./include/alpaka/math/MathGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Sergei Bastrakov, René Widera, Luca Ferragina, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -14676,7 +14715,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			//! The mathematical operation specifics.
 			namespace alpaka::math
@@ -14943,7 +14982,7 @@
 			            if constexpr(std::is_integral_v<TArgument>)
 			                return sycl::atan2(0.0, static_cast<double>(argument));
 			            else if constexpr(std::is_floating_point_v<TArgument>)
-			                return sycl::atan2(TArgument{0.0}, argument);
+			                return sycl::atan2(static_cast<TArgument>(0.0), argument);
 			            else
 			                static_assert(!sizeof(TArgument), "Unsupported data type");
 			        }
@@ -14997,9 +15036,11 @@
 			        Tx,
 			        std::enable_if_t<std::is_floating_point_v<Ty> && std::is_floating_point_v<Tx>>>
 			    {
+			        using TCommon = std::common_type_t<Ty, Tx>;
+
 			        auto operator()(math::Atan2GenericSycl const&, Ty const& y, Tx const& x)
 			        {
-			            return sycl::atan2(y, x);
+			            return sycl::atan2(static_cast<TCommon>(y), static_cast<TCommon>(x));
 			        }
 			    };
 
@@ -15096,9 +15137,11 @@
 			        Ty,
 			        std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
 			    {
+			        using TCommon = std::common_type_t<Tx, Ty>;
+
 			        auto operator()(math::FmodGenericSycl const&, Tx const& x, Ty const& y)
 			        {
-			            return sycl::fmod(x, y);
+			            return sycl::fmod(static_cast<TCommon>(x), static_cast<TCommon>(y));
 			        }
 			    };
 
@@ -15108,7 +15151,7 @@
 			    {
 			        auto operator()(math::IsfiniteGenericSycl const&, TArg const& arg)
 			        {
-			            return sycl::isfinite(arg);
+			            return static_cast<bool>(sycl::isfinite(arg));
 			        }
 			    };
 
@@ -15118,7 +15161,7 @@
 			    {
 			        auto operator()(math::IsinfGenericSycl const&, TArg const& arg)
 			        {
-			            return sycl::isinf(arg);
+			            return static_cast<bool>(sycl::isinf(arg));
 			        }
 			    };
 
@@ -15128,7 +15171,7 @@
 			    {
 			        auto operator()(math::IsnanGenericSycl const&, TArg const& arg)
 			        {
-			            return sycl::isnan(arg);
+			            return static_cast<bool>(sycl::isnan(arg));
 			        }
 			    };
 
@@ -15146,18 +15189,20 @@
 			    template<typename Tx, typename Ty>
 			    struct Max<math::MaxGenericSycl, Tx, Ty, std::enable_if_t<std::is_arithmetic_v<Tx> && std::is_arithmetic_v<Ty>>>
 			    {
+			        using TCommon = std::common_type_t<Tx, Ty>;
+
 			        auto operator()(math::MaxGenericSycl const&, Tx const& x, Ty const& y)
 			        {
 			            if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
-			                return sycl::max(x, y);
+			                return sycl::max(static_cast<TCommon>(x), static_cast<TCommon>(y));
 			            else if constexpr(std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>)
-			                return sycl::fmax(x, y);
+			                return sycl::fmax(static_cast<TCommon>(x), static_cast<TCommon>(y));
 			            else if constexpr(
 			                (std::is_floating_point_v<Tx> && std::is_integral_v<Ty>)
 			                || (std::is_integral_v<Tx> && std::is_floating_point_v<Ty>) )
 			                return sycl::fmax(static_cast<double>(x), static_cast<double>(y)); // mirror CUDA back-end
 			            else
-			                static_assert(!sizeof(Tx), "Unsupported data type");
+			                static_assert(!sizeof(Tx), "Unsupported data types");
 			        }
 			    };
 
@@ -15176,7 +15221,7 @@
 			                || (std::is_integral_v<Tx> && std::is_floating_point_v<Ty>) )
 			                return sycl::fmin(static_cast<double>(x), static_cast<double>(y)); // mirror CUDA back-end
 			            else
-			                static_assert(!sizeof(Tx), "Unsupported data type");
+			                static_assert(!sizeof(Tx), "Unsupported data types");
 			        }
 			    };
 
@@ -15188,9 +15233,11 @@
 			        TExp,
 			        std::enable_if_t<std::is_floating_point_v<TBase> && std::is_floating_point_v<TExp>>>
 			    {
+			        using TCommon = std::common_type_t<TBase, TExp>;
+
 			        auto operator()(math::PowGenericSycl const&, TBase const& base, TExp const& exp)
 			        {
-			            return sycl::pow(base, exp);
+			            return sycl::pow(static_cast<TCommon>(base), static_cast<TCommon>(exp));
 			        }
 			    };
 
@@ -15202,9 +15249,11 @@
 			        Ty,
 			        std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty>>>
 			    {
+			        using TCommon = std::common_type_t<Tx, Ty>;
+
 			        auto operator()(math::RemainderGenericSycl const&, Tx const& x, Ty const& y)
 			        {
-			            return sycl::remainder(x, y);
+			            return sycl::remainder(static_cast<TCommon>(x), static_cast<TCommon>(y));
 			        }
 			    };
 
@@ -15244,9 +15293,9 @@
 			    {
 			        auto operator()(math::RsqrtGenericSycl const&, TArg const& arg)
 			        {
-			            if(std::is_floating_point_v<TArg>)
+			            if constexpr(std::is_floating_point_v<TArg>)
 			                return sycl::rsqrt(arg);
-			            else if(std::is_integral_v<TArg>)
+			            else if constexpr(std::is_integral_v<TArg>)
 			                return sycl::rsqrt(static_cast<double>(arg)); // mirror CUDA back-end and use double for ints
 			            else
 			                static_assert(!sizeof(TArg), "Unsupported data type");
@@ -15344,7 +15393,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -15364,6 +15413,13 @@
 
 			        template<>
 			        struct SyclFenceProps<alpaka::memory_scope::Device>
+			        {
+			            static constexpr auto scope = sycl::memory_scope::device;
+			            static constexpr auto space = sycl::access::address_space::global_space;
+			        };
+
+			        template<>
+			        struct SyclFenceProps<alpaka::memory_scope::Grid>
 			        {
 			            static constexpr auto scope = sycl::memory_scope::device;
 			            static constexpr auto space = sycl::access::address_space::global_space;
@@ -15413,9 +15469,752 @@
 			// ============================================================================
 
 			// ============================================================================
+			// == ./include/alpaka/rand/RandGenericSycl.hpp ==
+			// ==
+			/* Copyright 2023 Luca Ferragina, Aurora Perego, Jan Stephan, Andrea Bocci
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+				// ============================================================================
+				// == ./include/alpaka/dev/DevGenericSycl.hpp ==
+				// ==
+				/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+					// ============================================================================
+					// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
+					// ==
+					/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Luca Ferragina, Andrea Bocci, Aurora Perego
+					 * SPDX-License-Identifier: MPL-2.0
+					 */
+
+					// #pragma once
+					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+
+					// #include <algorithm>    // amalgamate: file already included
+					#include <exception>
+					// #include <memory>    // amalgamate: file already included
+					// #include <mutex>    // amalgamate: file already included
+					#include <shared_mutex>
+					// #include <type_traits>    // amalgamate: file already included
+					// #include <utility>    // amalgamate: file already included
+					// #include <vector>    // amalgamate: file already included
+
+					#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+					// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+					namespace alpaka::detail
+					{
+					    template<typename T, typename = void>
+					    inline constexpr auto is_sycl_task = false;
+
+					    template<typename T>
+					    inline constexpr auto is_sycl_task<T, std::void_t<decltype(T::is_sycl_task)>> = true;
+
+					    template<typename T, typename = void>
+					    inline constexpr auto is_sycl_kernel = false;
+
+					    template<typename T>
+					    inline constexpr auto is_sycl_kernel<T, std::void_t<decltype(T::is_sycl_kernel)>> = true;
+
+					    class QueueGenericSyclImpl
+					    {
+					    public:
+					        QueueGenericSyclImpl(sycl::context context, sycl::device device)
+					            : m_queue{
+					                std::move(context), // This is important. In SYCL a device can belong to multiple contexts.
+					                std::move(device),
+					                {sycl::property::queue::enable_profiling{}, sycl::property::queue::in_order{}}}
+					        {
+					        }
+
+					        // This class will only exist as a pointer. We don't care about copy and move semantics.
+					        QueueGenericSyclImpl(QueueGenericSyclImpl const& other) = delete;
+					        auto operator=(QueueGenericSyclImpl const& rhs) -> QueueGenericSyclImpl& = delete;
+
+					        QueueGenericSyclImpl(QueueGenericSyclImpl&& other) noexcept = delete;
+					        auto operator=(QueueGenericSyclImpl&& rhs) noexcept -> QueueGenericSyclImpl& = delete;
+
+					        ~QueueGenericSyclImpl()
+					        {
+					            try
+					            {
+					                m_queue.wait_and_throw();
+					            }
+					            catch(sycl::exception const& err)
+					            {
+					                std::cerr << "Caught SYCL exception while destructing a SYCL queue: " << err.what() << " ("
+					                          << err.code() << ')' << std::endl;
+					            }
+					            catch(std::exception const& err)
+					            {
+					                std::cerr << "The following runtime error(s) occured while destructing a SYCL queue:" << err.what()
+					                          << std::endl;
+					            }
+					        }
+
+					        // Don't call this without locking first!
+					        auto clean_dependencies() -> void
+					        {
+					            // Clean up completed events
+					            auto const start = std::begin(m_dependencies);
+					            auto const old_end = std::end(m_dependencies);
+					            auto const new_end = std::remove_if(
+					                start,
+					                old_end,
+					                [](sycl::event ev) {
+					                    return ev.get_info<sycl::info::event::command_execution_status>()
+					                           == sycl::info::event_command_status::complete;
+					                });
+
+					            m_dependencies.erase(new_end, old_end);
+					        }
+
+					        auto register_dependency(sycl::event event) -> void
+					        {
+					            std::lock_guard<std::shared_mutex> lock{m_mutex};
+
+					            clean_dependencies();
+					            m_dependencies.push_back(event);
+					        }
+
+					        auto empty() const -> bool
+					        {
+					            std::shared_lock<std::shared_mutex> lock{m_mutex};
+					            return m_last_event.get_info<sycl::info::event::command_execution_status>()
+					                   == sycl::info::event_command_status::complete;
+					        }
+
+					        auto wait() -> void
+					        {
+					            // SYCL queues are thread-safe.
+					            m_queue.wait_and_throw();
+					        }
+
+					        auto get_last_event() const -> sycl::event
+					        {
+					            std::shared_lock<std::shared_mutex> lock{m_mutex};
+					            return m_last_event;
+					        }
+
+					        template<bool TBlocking, typename TTask>
+					        auto enqueue(TTask const& task) -> void
+					        {
+					            {
+					                std::lock_guard<std::shared_mutex> lock{m_mutex};
+
+					                clean_dependencies();
+
+					                // Execute task
+					                if constexpr(is_sycl_task<TTask> && !is_sycl_kernel<TTask>) // Copy / Fill
+					                {
+					                    m_last_event = task(m_queue, m_dependencies); // Will call queue.{copy, fill} internally
+					                }
+					                else
+					                {
+					                    m_last_event = m_queue.submit(
+					                        [this, &task](sycl::handler& cgh)
+					                        {
+					                            if(!m_dependencies.empty())
+					                                cgh.depends_on(m_dependencies);
+
+					                            if constexpr(is_sycl_kernel<TTask>) // Kernel
+					                                task(cgh, m_fence_dummy); // Will call cgh.parallel_for internally
+					                            else // Host
+					                                cgh.host_task(task);
+					                        });
+					                }
+
+					                m_dependencies.clear();
+					            }
+
+					            if constexpr(TBlocking)
+					                wait();
+					        }
+
+					        [[nodiscard]] auto getNativeHandle() const noexcept
+					        {
+					            return m_queue;
+					        }
+
+					        std::vector<sycl::event> m_dependencies;
+					        sycl::event m_last_event;
+					        sycl::buffer<int, 1> m_fence_dummy{sycl::range<1>{1}};
+					        std::shared_mutex mutable m_mutex;
+
+					    private:
+					        sycl::queue m_queue;
+					    };
+
+					    template<typename TDev, bool TBlocking>
+					    class QueueGenericSyclBase
+					    {
+					    public:
+					        QueueGenericSyclBase(TDev const& dev)
+					            : m_dev{dev}
+					            , m_spQueueImpl{std::make_shared<detail::QueueGenericSyclImpl>(
+					                  dev.getNativeHandle().second,
+					                  dev.getNativeHandle().first)}
+					        {
+					            m_dev.m_impl->register_queue(m_spQueueImpl);
+					        }
+
+					        friend auto operator==(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
+					        {
+					            return (lhs.m_dev == rhs.m_dev) && (lhs.m_spQueueImpl == rhs.m_spQueueImpl);
+					        }
+
+					        friend auto operator!=(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
+					        {
+					            return !(lhs == rhs);
+					        }
+
+					        [[nodiscard]] auto getNativeHandle() const noexcept
+					        {
+					            return m_spQueueImpl->getNativeHandle();
+					        }
+
+					        TDev m_dev;
+					        std::shared_ptr<detail::QueueGenericSyclImpl> m_spQueueImpl;
+					    };
+					} // namespace alpaka::detail
+
+					namespace alpaka
+					{
+					    template<typename TDev>
+					    class EventGenericSycl;
+					}
+
+					namespace alpaka::trait
+					{
+					    //! The SYCL blocking queue device type trait specialization.
+					    template<typename TDev, bool TBlocking>
+					    struct DevType<detail::QueueGenericSyclBase<TDev, TBlocking>>
+					    {
+					        using type = TDev;
+					    };
+
+					    //! The SYCL blocking queue device get trait specialization.
+					    template<typename TDev, bool TBlocking>
+					    struct GetDev<detail::QueueGenericSyclBase<TDev, TBlocking>>
+					    {
+					        static auto getDev(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
+					        {
+					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+					            return queue.m_dev;
+					        }
+					    };
+
+					    //! The SYCL blocking queue event type trait specialization.
+					    template<typename TDev, bool TBlocking>
+					    struct EventType<detail::QueueGenericSyclBase<TDev, TBlocking>>
+					    {
+					        using type = EventGenericSycl<TDev>;
+					    };
+
+					    //! The SYCL blocking queue enqueue trait specialization.
+					    template<typename TDev, bool TBlocking, typename TTask>
+					    struct Enqueue<detail::QueueGenericSyclBase<TDev, TBlocking>, TTask>
+					    {
+					        static auto enqueue(detail::QueueGenericSyclBase<TDev, TBlocking>& queue, TTask const& task) -> void
+					        {
+					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+					            queue.m_spQueueImpl->template enqueue<TBlocking>(task);
+					        }
+					    };
+
+					    //! The SYCL blocking queue test trait specialization.
+					    template<typename TDev, bool TBlocking>
+					    struct Empty<detail::QueueGenericSyclBase<TDev, TBlocking>>
+					    {
+					        static auto empty(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> bool
+					        {
+					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+					            return queue.m_spQueueImpl->empty();
+					        }
+					    };
+
+					    //! The SYCL blocking queue thread wait trait specialization.
+					    //!
+					    //! Blocks execution of the calling thread until the queue has finished processing all previously requested
+					    //! tasks (kernels, data copies, ...)
+					    template<typename TDev, bool TBlocking>
+					    struct CurrentThreadWaitFor<detail::QueueGenericSyclBase<TDev, TBlocking>>
+					    {
+					        static auto currentThreadWaitFor(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> void
+					        {
+					            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+					            queue.m_spQueueImpl->wait();
+					        }
+					    };
+
+					    //! The SYCL queue native handle trait specialization.
+					    template<typename TDev, bool TBlocking>
+					    struct NativeHandle<detail::QueueGenericSyclBase<TDev, TBlocking>>
+					    {
+					        [[nodiscard]] static auto getNativeHandle(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
+					        {
+					            return queue.getNativeHandle();
+					        }
+					    };
+					} // namespace alpaka::trait
+
+					#endif
+					// ==
+					// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
+					// ============================================================================
+
+				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+
+				// #include <algorithm>    // amalgamate: file already included
+				// #include <cstddef>    // amalgamate: file already included
+				// #include <memory>    // amalgamate: file already included
+				// #include <mutex>    // amalgamate: file already included
+				// #include <shared_mutex>    // amalgamate: file already included
+				// #include <string>    // amalgamate: file already included
+				// #include <utility>    // amalgamate: file already included
+				// #include <vector>    // amalgamate: file already included
+
+				#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+				namespace alpaka
+				{
+				    template<typename TElem, typename TDim, typename TIdx, typename TDev>
+				    class BufGenericSycl;
+
+				    namespace detail
+				    {
+				        class DevGenericSyclImpl
+				        {
+				        public:
+				            DevGenericSyclImpl(sycl::device device, sycl::context context)
+				                : m_device{std::move(device)}
+				                , m_context{std::move(context)}
+				            {
+				            }
+
+				            // Don't call this without locking first!
+				            auto clean_queues() -> void
+				            {
+				                // Clean up dead queues
+				                auto const start = std::begin(m_queues);
+				                auto const old_end = std::end(m_queues);
+				                auto const new_end = std::remove_if(start, old_end, [](auto q_ptr) { return q_ptr.expired(); });
+				                m_queues.erase(new_end, old_end);
+				            }
+
+				            auto register_queue(std::shared_ptr<QueueGenericSyclImpl> const& queue) -> void
+				            {
+				                std::lock_guard<std::shared_mutex> lock{m_mutex};
+
+				                clean_queues();
+				                m_queues.emplace_back(queue);
+				            }
+
+				            auto register_dependency(sycl::event event) -> void
+				            {
+				                std::shared_lock<std::shared_mutex> lock{m_mutex};
+
+				                for(auto& q_ptr : m_queues)
+				                {
+				                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
+				                        ptr->register_dependency(event);
+				                }
+				            }
+
+				            auto wait()
+				            {
+				                std::shared_lock<std::shared_mutex> lock{m_mutex};
+
+				                for(auto& q_ptr : m_queues)
+				                {
+				                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
+				                        ptr->wait();
+				                }
+				            }
+
+				            auto get_device() const -> sycl::device
+				            {
+				                return m_device;
+				            }
+
+				            auto get_context() const -> sycl::context
+				            {
+				                return m_context;
+				            }
+
+				        private:
+				            sycl::device m_device;
+				            sycl::context m_context;
+				            std::vector<std::weak_ptr<QueueGenericSyclImpl>> m_queues;
+				            std::shared_mutex mutable m_mutex;
+				        };
+				    } // namespace detail
+
+				    //! The SYCL device handle.
+				    template<typename TPltf>
+				    class DevGenericSycl
+				        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TPltf>>
+				        , public concepts::Implements<ConceptDev, DevGenericSycl<TPltf>>
+				    {
+				    public:
+				        DevGenericSycl(sycl::device device, sycl::context context)
+				            : m_impl{std::make_shared<detail::DevGenericSyclImpl>(std::move(device), std::move(context))}
+				        {
+				        }
+
+				        friend auto operator==(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
+				        {
+				            return (lhs.m_impl == rhs.m_impl);
+				        }
+
+				        friend auto operator!=(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
+				        {
+				            return !(lhs == rhs);
+				        }
+
+				        [[nodiscard]] auto getNativeHandle() const -> std::pair<sycl::device, sycl::context>
+				        {
+				            return std::make_pair(m_impl->get_device(), m_impl->get_context());
+				        }
+
+				        std::shared_ptr<detail::DevGenericSyclImpl> m_impl;
+				    };
+				} // namespace alpaka
+
+				namespace alpaka::trait
+				{
+				    //! The SYCL device name get trait specialization.
+				    template<typename TPltf>
+				    struct GetName<DevGenericSycl<TPltf>>
+				    {
+				        static auto getName(DevGenericSycl<TPltf> const& dev) -> std::string
+				        {
+				            auto const device = dev.getNativeHandle().first;
+				            return device.template get_info<sycl::info::device::name>();
+				        }
+				    };
+
+				    //! The SYCL device available memory get trait specialization.
+				    template<typename TPltf>
+				    struct GetMemBytes<DevGenericSycl<TPltf>>
+				    {
+				        static auto getMemBytes(DevGenericSycl<TPltf> const& dev) -> std::size_t
+				        {
+				            auto const device = dev.getNativeHandle().first;
+				            return device.template get_info<sycl::info::device::global_mem_size>();
+				        }
+				    };
+
+				    //! The SYCL device free memory get trait specialization.
+				    template<typename TPltf>
+				    struct GetFreeMemBytes<DevGenericSycl<TPltf>>
+				    {
+				        static auto getFreeMemBytes(DevGenericSycl<TPltf> const& /* dev */) -> std::size_t
+				        {
+				            static_assert(!sizeof(TPltf), "Querying free device memory not supported for SYCL devices.");
+				            return std::size_t{};
+				        }
+				    };
+
+				    //! The SYCL device warp size get trait specialization.
+				    template<typename TPltf>
+				    struct GetWarpSizes<DevGenericSycl<TPltf>>
+				    {
+				        static auto getWarpSizes(DevGenericSycl<TPltf> const& dev) -> std::vector<std::size_t>
+				        {
+				            auto const device = dev.getNativeHandle().first;
+				            std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
+				            // The CPU runtime supports a sub-group size of 64, but the SYCL implementation currently does not
+				            auto find64 = std::find(warp_sizes.begin(), warp_sizes.end(), 64);
+				            if(find64 != warp_sizes.end())
+				                warp_sizes.erase(find64);
+				            return warp_sizes;
+				        }
+				    };
+
+				    //! The SYCL device reset trait specialization.
+				    template<typename TPltf>
+				    struct Reset<DevGenericSycl<TPltf>>
+				    {
+				        static auto reset(DevGenericSycl<TPltf> const&) -> void
+				        {
+				            static_assert(!sizeof(TPltf), "Explicit device reset not supported for SYCL devices");
+				        }
+				    };
+
+				    //! The SYCL device native handle trait specialization.
+				    template<typename TPltf>
+				    struct NativeHandle<DevGenericSycl<TPltf>>
+				    {
+				        [[nodiscard]] static auto getNativeHandle(DevGenericSycl<TPltf> const& dev)
+				        {
+				            return dev.getNativeHandle();
+				        }
+				    };
+
+				    //! The SYCL device memory buffer type trait specialization.
+				    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+				    struct BufType<DevGenericSycl<TPltf>, TElem, TDim, TIdx>
+				    {
+				        using type = BufGenericSycl<TElem, TDim, TIdx, TPltf>;
+				    };
+
+				    //! The SYCL device platform type trait specialization.
+				    template<typename TPltf>
+				    struct PltfType<DevGenericSycl<TPltf>>
+				    {
+				        using type = TPltf;
+				    };
+
+				    //! The thread SYCL device wait specialization.
+				    template<typename TPltf>
+				    struct CurrentThreadWaitFor<DevGenericSycl<TPltf>>
+				    {
+				        static auto currentThreadWaitFor(DevGenericSycl<TPltf> const& dev) -> void
+				        {
+				            dev.m_impl->wait();
+				        }
+				    };
+
+				    //! The SYCL blocking queue trait specialization.
+				    template<typename TPltf>
+				    struct QueueType<DevGenericSycl<TPltf>, Blocking>
+				    {
+				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPltf>, true>;
+				    };
+
+				    //! The SYCL non-blocking queue trait specialization.
+				    template<typename TPltf>
+				    struct QueueType<DevGenericSycl<TPltf>, NonBlocking>
+				    {
+				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPltf>, false>;
+				    };
+				} // namespace alpaka::trait
+
+				#endif
+				// ==
+				// == ./include/alpaka/dev/DevGenericSycl.hpp ==
+				// ============================================================================
+
+			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already expanded
+
+			#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+			// Backend specific imports.
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic push
+			#        pragma clang diagnostic ignored "-Wcast-align"
+			#        pragma clang diagnostic ignored "-Wcast-qual"
+			#        pragma clang diagnostic ignored "-Wextra-semi"
+			#        pragma clang diagnostic ignored "-Wfloat-equal"
+			#        pragma clang diagnostic ignored "-Wold-style-cast"
+			#        pragma clang diagnostic ignored "-Wreserved-identifier"
+			#        pragma clang diagnostic ignored "-Wreserved-macro-identifier"
+			#        pragma clang diagnostic ignored "-Wsign-compare"
+			#        pragma clang diagnostic ignored "-Wundef"
+			#    endif
+			#    include <oneapi/mkl/rng.hpp>
+
+			#    include <oneapi/dpl/random>
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic pop
+			#    endif
+
+			// #    include <type_traits>    // amalgamate: file already included
+
+			namespace alpaka::rand
+			{
+			    //! The SYCL rand implementation.
+			    template<typename TDim>
+			    struct RandGenericSycl : concepts::Implements<ConceptRand, RandGenericSycl<TDim>>
+			    {
+			        explicit RandGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_rand{my_item}
+			        {
+			        }
+
+			        sycl::nd_item<TDim::value> m_item_rand;
+			    };
+
+			#    if !defined(ALPAKA_HOST_ONLY)
+			    namespace distribution::sycl_rand
+			    {
+			        //! The SYCL random number floating point normal distribution.
+			        template<typename T>
+			        struct NormalReal;
+
+			        //! The SYCL random number uniform distribution.
+			        template<typename T>
+			        struct Uniform;
+			    } // namespace distribution::sycl_rand
+
+			    namespace engine::sycl_rand
+			    {
+			        //! The SYCL linear congruential random number generator engine.
+			        template<typename TDim>
+			        class Minstd
+			        {
+			        public:
+			            // After calling this constructor the instance is not valid initialized and
+			            // need to be overwritten with a valid object
+			            Minstd() = default;
+
+			            Minstd(RandGenericSycl<TDim> rand, std::uint32_t const& seed)
+			            {
+			                oneapi::dpl::minstd_rand engine(seed, rand.m_item_rand.get_global_linear_id());
+			                rng_engine = engine;
+			            }
+
+			        private:
+			            template<typename T>
+			            friend struct distribution::sycl_rand::NormalReal;
+			            template<typename T>
+			            friend struct distribution::sycl_rand::Uniform;
+
+			            oneapi::dpl::minstd_rand rng_engine;
+
+			        public:
+			            using result_type = float;
+
+			            ALPAKA_FN_HOST_ACC static result_type min()
+			            {
+			                return std::numeric_limits<result_type>::min();
+			            }
+			            ALPAKA_FN_HOST_ACC static result_type max()
+			            {
+			                return std::numeric_limits<result_type>::max();
+			            }
+			            result_type operator()()
+			            {
+			                oneapi::dpl::uniform_real_distribution<float> distr;
+			                return distr(rng_engine);
+			            }
+			        };
+			    } // namespace engine::sycl_rand
+
+			    namespace distribution::sycl_rand
+			    {
+
+			        //! The SYCL random number double normal distribution.
+			        template<typename F>
+			        struct NormalReal
+			        {
+			            static_assert(std::is_floating_point_v<F>);
+
+			            template<typename TEngine>
+			            auto operator()(TEngine& engine) -> F
+			            {
+			                oneapi::dpl::normal_distribution<F> distr;
+			                return distr(engine.rng_engine);
+			            }
+			        };
+
+			        //! The SYCL random number float uniform distribution.
+			        template<typename T>
+			        struct Uniform
+			        {
+			            static_assert(std::is_floating_point_v<T> || std::is_unsigned_v<T>);
+
+			            template<typename TEngine>
+			            auto operator()(TEngine& engine) -> T
+			            {
+			                if constexpr(std::is_floating_point_v<T>)
+			                {
+			                    oneapi::dpl::uniform_real_distribution<T> distr;
+			                    return distr(engine.rng_engine);
+			                }
+			                else
+			                {
+			                    oneapi::dpl::uniform_int_distribution<T> distr;
+			                    return distr(engine.rng_engine);
+			                }
+			            }
+			        };
+			    } // namespace distribution::sycl_rand
+
+			    namespace distribution::trait
+			    {
+			        //! The SYCL random number float normal distribution get trait specialization.
+			        template<typename TDim, typename T>
+			        struct CreateNormalReal<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_floating_point_v<T>>>
+			        {
+			            static auto createNormalReal(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::NormalReal<T>
+			            {
+			                return {};
+			            }
+			        };
+
+			        //! The SYCL random number float uniform distribution get trait specialization.
+			        template<typename TDim, typename T>
+			        struct CreateUniformReal<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_floating_point_v<T>>>
+			        {
+			            static auto createUniformReal(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::Uniform<T>
+			            {
+			                return {};
+			            }
+			        };
+
+			        //! The SYCL random number integer uniform distribution get trait specialization.
+			        template<typename TDim, typename T>
+			        struct CreateUniformUint<RandGenericSycl<TDim>, T, std::enable_if_t<std::is_integral_v<T>>>
+			        {
+			            static auto createUniformUint(RandGenericSycl<TDim> const& /*rand*/) -> sycl_rand::Uniform<T>
+			            {
+			                return {};
+			            }
+			        };
+			    } // namespace distribution::trait
+
+			    namespace engine::trait
+			    {
+			        //! The SYCL random number default generator get trait specialization.
+			        template<typename TDim>
+			        struct CreateDefault<RandGenericSycl<TDim>>
+			        {
+			            static auto createDefault(
+			                RandGenericSycl<TDim> const& rand,
+			                std::uint32_t const& seed = 0,
+			                std::uint32_t const& /* subsequence */ = 0,
+			                std::uint32_t const& /* offset */ = 0) -> sycl_rand::Minstd<TDim>
+			            {
+			                return {rand, seed};
+			            }
+			        };
+			    } // namespace engine::trait
+			#    endif
+			} // namespace alpaka::rand
+
+			#endif
+			// ==
+			// == ./include/alpaka/rand/RandGenericSycl.hpp ==
+			// ============================================================================
+
+			// ============================================================================
 			// == ./include/alpaka/warp/WarpGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -15426,7 +16225,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka::warp
 			{
@@ -15435,11 +16234,11 @@
 			    class WarpGenericSycl : public concepts::Implements<alpaka::warp::ConceptWarp, WarpGenericSycl<TDim>>
 			    {
 			    public:
-			        WarpGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item{my_item}
+			        WarpGenericSycl(sycl::nd_item<TDim::value> my_item) : m_item_warp{my_item}
 			        {
 			        }
 
-			        sycl::nd_item<TDim::value> m_item;
+			        sycl::nd_item<TDim::value> m_item_warp;
 			    };
 			} // namespace alpaka::warp
 
@@ -15450,21 +16249,30 @@
 			    {
 			        static auto getSize(warp::WarpGenericSycl<TDim> const& warp) -> std::int32_t
 			        {
-			            auto const sub_group = warp.m_item.get_sub_group();
+			            auto const sub_group = warp.m_item_warp.get_sub_group();
 			            // SYCL sub-groups are always 1D
-			            return static_cast<std::int32_t>(sub_group.get_local_linear_range());
+			            return static_cast<std::int32_t>(sub_group.get_max_local_range()[0]);
 			        }
 			    };
 
 			    template<typename TDim>
 			    struct Activemask<warp::WarpGenericSycl<TDim>>
 			    {
+			        // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
+			        // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
+			        // Restrict to warpSize <= 32 for now.
 			        static auto activemask(warp::WarpGenericSycl<TDim> const& warp) -> std::uint32_t
 			        {
 			            // SYCL has no way of querying this. Since sub-group functions have to be executed in convergent code
 			            // regions anyway we return the full mask.
-			            auto const sub_group = warp.m_item.get_sub_group();
-			            return sycl::ext::oneapi::group_ballot(sub_group, true);
+			            auto const sub_group = warp.m_item_warp.get_sub_group();
+			            auto const mask = sycl::ext::oneapi::group_ballot(sub_group, true);
+			            // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
+			            // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
+			            // Restrict to warpSize <= 32 for now.
+			            std::uint32_t bits = 0;
+			            mask.extract_bits(bits);
+			            return bits;
 			        }
 			    };
 
@@ -15473,7 +16281,7 @@
 			    {
 			        static auto all(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
 			        {
-			            auto const sub_group = warp.m_item.get_sub_group();
+			            auto const sub_group = warp.m_item_warp.get_sub_group();
 			            return static_cast<std::int32_t>(sycl::all_of_group(sub_group, static_cast<bool>(predicate)));
 			        }
 			    };
@@ -15483,7 +16291,7 @@
 			    {
 			        static auto any(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::int32_t
 			        {
-			            auto const sub_group = warp.m_item.get_sub_group();
+			            auto const sub_group = warp.m_item_warp.get_sub_group();
 			            return static_cast<std::int32_t>(sycl::any_of_group(sub_group, static_cast<bool>(predicate)));
 			        }
 			    };
@@ -15491,10 +16299,19 @@
 			    template<typename TDim>
 			    struct Ballot<warp::WarpGenericSycl<TDim>>
 			    {
-			        static auto ballot(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate)
+			        // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
+			        // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
+			        // Restrict to warpSize <= 32 for now.
+			        static auto ballot(warp::WarpGenericSycl<TDim> const& warp, std::int32_t predicate) -> std::uint32_t
 			        {
-			            auto const sub_group = warp.m_item.get_sub_group();
-			            return sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));
+			            auto const sub_group = warp.m_item_warp.get_sub_group();
+			            auto const mask = sycl::ext::oneapi::group_ballot(sub_group, static_cast<bool>(predicate));
+			            // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
+			            // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
+			            // Restrict to warpSize <= 32 for now.
+			            std::uint32_t bits = 0;
+			            mask.extract_bits(bits);
+			            return bits;
 			        }
 			    };
 
@@ -15504,21 +16321,20 @@
 			        template<typename T>
 			        static auto shfl(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t srcLane, std::int32_t width)
 			        {
+			            ALPAKA_ASSERT_OFFLOAD(width > 0);
+			            ALPAKA_ASSERT_OFFLOAD(srcLane < width);
+			            ALPAKA_ASSERT_OFFLOAD(srcLane >= 0);
+
 			            /* If width < srcLane the sub-group needs to be split into assumed subdivisions. The first item of each
 			               subdivision has the assumed index 0. The srcLane index is relative to the subdivisions.
 
 			               Example: If we assume a sub-group size of 32 and a width of 16 we will receive two subdivisions:
 			               The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the
 			               first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */
-			            auto const actual_group = warp.m_item.get_sub_group();
-			            auto const actual_item_id = actual_group.get_local_linear_id();
-
-			            auto const assumed_group_id = actual_item_id / width;
-			            auto const assumed_item_id = actual_item_id % width;
-
-			            auto const assumed_src_id = static_cast<std::size_t>(srcLane % width);
-			            auto const actual_src_id = assumed_src_id + assumed_group_id * width;
-
+			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            auto const actual_item_id = static_cast<std::int32_t>(actual_group.get_local_linear_id());
+			            auto const actual_group_id = actual_item_id / width;
+			            auto const actual_src_id = static_cast<std::size_t>(srcLane + actual_group_id * width);
 			            auto const src = sycl::id<1>{actual_src_id};
 
 			            return sycl::select_from_group(actual_group, value, src);
@@ -15534,7 +16350,7 @@
 			// ============================================================================
 			// == ./include/alpaka/workdiv/WorkDivGenericSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -15545,7 +16361,7 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -15553,17 +16369,19 @@
 			    template<typename TDim, typename TIdx>
 			    class WorkDivGenericSycl : public concepts::Implements<ConceptWorkDiv, WorkDivGenericSycl<TDim, TIdx>>
 			    {
+			        static_assert(TDim::value > 0, "The SYCL work division must have a dimension greater than zero.");
+
 			    public:
 			        using WorkDivBase = WorkDivGenericSycl;
 
 			        WorkDivGenericSycl(Vec<TDim, TIdx> const& threadElemExtent, sycl::nd_item<TDim::value> work_item)
 			            : m_threadElemExtent{threadElemExtent}
-			            , my_item{work_item}
+			            , m_item_workdiv{work_item}
 			        {
 			        }
 
 			        Vec<TDim, TIdx> const& m_threadElemExtent;
-			        sycl::nd_item<TDim::value> my_item;
+			        sycl::nd_item<TDim::value> m_item_workdiv;
 			    };
 			} // namespace alpaka
 
@@ -15590,20 +16408,22 @@
 			        //! \return The number of blocks in each dimension of the grid.
 			        static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
 			        {
-			            if constexpr(TDim::value == 1)
-			                return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.my_item.get_group_range(0))};
+			            if constexpr(TDim::value == 0)
+			                return Vec<TDim, TIdx>{};
+			            else if constexpr(TDim::value == 1)
+			                return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(0))};
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.my_item.get_group_range(1)),
-			                    static_cast<TIdx>(workDiv.my_item.get_group_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(1)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(0))};
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.my_item.get_group_range(2)),
-			                    static_cast<TIdx>(workDiv.my_item.get_group_range(1)),
-			                    static_cast<TIdx>(workDiv.my_item.get_group_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(2)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(1)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_group_range(0))};
 			            }
 			        }
 			    };
@@ -15615,20 +16435,22 @@
 			        //! \return The number of threads in each dimension of a block.
 			        static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
 			        {
-			            if constexpr(TDim::value == 1)
-			                return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.my_item.get_local_range(0))};
+			            if constexpr(TDim::value == 0)
+			                return Vec<TDim, TIdx>{};
+			            else if constexpr(TDim::value == 1)
+			                return Vec<TDim, TIdx>{static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(0))};
 			            else if constexpr(TDim::value == 2)
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.my_item.get_local_range(1)),
-			                    static_cast<TIdx>(workDiv.my_item.get_local_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(1)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(0))};
 			            }
 			            else
 			            {
 			                return Vec<TDim, TIdx>{
-			                    static_cast<TIdx>(workDiv.my_item.get_local_range(2)),
-			                    static_cast<TIdx>(workDiv.my_item.get_local_range(1)),
-			                    static_cast<TIdx>(workDiv.my_item.get_local_range(0))};
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(2)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(1)),
+			                    static_cast<TIdx>(workDiv.m_item_workdiv.get_local_range(0))};
 			            }
 			        }
 			    };
@@ -15637,7 +16459,7 @@
 			    template<typename TDim, typename TIdx>
 			    struct GetWorkDiv<WorkDivGenericSycl<TDim, TIdx>, origin::Thread, unit::Elems>
 			    {
-			        //! \return The number of blocks in each dimension of the grid.
+			        //! \return The number of elements in each dimension of the thread.
 			        static auto getWorkDiv(WorkDivGenericSycl<TDim, TIdx> const& workDiv) -> Vec<TDim, TIdx>
 			        {
 			            return workDiv.m_threadElemExtent;
@@ -15670,7 +16492,7 @@
 
 		#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-		// #    include <CL/sycl.hpp>    // amalgamate: file already included
+		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 		namespace alpaka
 		{
@@ -15689,40 +16511,17 @@
 		        , public BlockSyncGenericSycl<TDim>
 		        , public IntrinsicGenericSycl
 		        , public MemFenceGenericSycl
+		        , public rand::RandGenericSycl<TDim>
 		        , public warp::WarpGenericSycl<TDim>
 		    {
+		        static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
+
 		    public:
 		        AccGenericSycl(AccGenericSycl const&) = delete;
 		        AccGenericSycl(AccGenericSycl&&) = delete;
 		        auto operator=(AccGenericSycl const&) -> AccGenericSycl& = delete;
 		        auto operator=(AccGenericSycl&&) -> AccGenericSycl& = delete;
 
-		#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-		        AccGenericSycl(
-		            Vec<TDim, TIdx> const& threadElemExtent,
-		            sycl::nd_item<TDim::value> work_item,
-		            sycl::local_accessor<std::byte> dyn_shared_acc,
-		            sycl::local_accessor<std::byte> st_shared_acc,
-		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
-		            sycl::local_accessor<int> local_fence_dummy,
-		            sycl::stream output_stream)
-		            : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
-		            , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
-		            , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
-		            , AtomicHierarchy<AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl>{}
-		            , math::MathGenericSycl{}
-		            , BlockSharedMemDynGenericSycl{dyn_shared_acc}
-		            , BlockSharedMemStGenericSycl{st_shared_acc}
-		            , BlockSyncGenericSycl<TDim>{work_item}
-		            , IntrinsicGenericSycl{}
-		            , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
-		            , warp::WarpGenericSycl<TDim>{work_item}
-		            , cout{output_stream}
-		        {
-		        }
-
-		        sycl::stream cout;
-		#    else
 		        AccGenericSycl(
 		            Vec<TDim, TIdx> const& threadElemExtent,
 		            sycl::nd_item<TDim::value> work_item,
@@ -15740,10 +16539,10 @@
 		            , BlockSyncGenericSycl<TDim>{work_item}
 		            , IntrinsicGenericSycl{}
 		            , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
+		            , rand::RandGenericSycl<TDim>{work_item}
 		            , warp::WarpGenericSycl<TDim>{work_item}
 		        {
 		        }
-		#    endif
 		    };
 		} // namespace alpaka
 
@@ -15818,547 +16617,18 @@
 	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
 		// ============================================================================
-		// == ./include/alpaka/dev/DevCpuSyclIntel.hpp ==
+		// == ./include/alpaka/dev/DevCpuSycl.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan
+		/* Copyright 2023 Jan Stephan, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 			// ============================================================================
-			// == ./include/alpaka/dev/DevGenericSycl.hpp ==
+			// == ./include/alpaka/pltf/PltfCpuSycl.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan, Antonio Di Pilato
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-				// ============================================================================
-				// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
-				// ==
-				/* Copyright 2022 Jan Stephan, Antonio Di Pilato
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
-
-				// #include <algorithm>    // amalgamate: file already included
-				#include <exception>
-				// #include <memory>    // amalgamate: file already included
-				// #include <mutex>    // amalgamate: file already included
-				#include <shared_mutex>
-				// #include <type_traits>    // amalgamate: file already included
-				// #include <utility>    // amalgamate: file already included
-				// #include <vector>    // amalgamate: file already included
-
-				#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-				// #    include <CL/sycl.hpp>    // amalgamate: file already included
-
-				namespace alpaka::detail
-				{
-				    template<typename T, typename = void>
-				    inline constexpr auto is_sycl_task = false;
-
-				    template<typename T>
-				    inline constexpr auto is_sycl_task<T, std::void_t<decltype(T::is_sycl_task)>> = true;
-
-				    template<typename T, typename = void>
-				    inline constexpr auto is_sycl_kernel = false;
-
-				    template<typename T>
-				    inline constexpr auto is_sycl_kernel<T, std::void_t<decltype(T::is_sycl_kernel)>> = true;
-
-				    class QueueGenericSyclImpl
-				    {
-				    public:
-				        QueueGenericSyclImpl(sycl::context context, sycl::device device)
-				            : m_queue{
-				                std::move(context), // This is important. In SYCL a device can belong to multiple contexts.
-				                std::move(device),
-				                {sycl::property::queue::enable_profiling{}, sycl::property::queue::in_order{}}}
-				        {
-				        }
-
-				        // This class will only exist as a pointer. We don't care about copy and move semantics.
-				        QueueGenericSyclImpl(QueueGenericSyclImpl const& other) = delete;
-				        auto operator=(QueueGenericSyclImpl const& rhs) -> QueueGenericSyclImpl& = delete;
-
-				        QueueGenericSyclImpl(QueueGenericSyclImpl&& other) noexcept = delete;
-				        auto operator=(QueueGenericSyclImpl&& rhs) noexcept -> QueueGenericSyclImpl& = delete;
-
-				        ~QueueGenericSyclImpl()
-				        {
-				            try
-				            {
-				                m_queue.wait_and_throw();
-				            }
-				            catch(sycl::exception const& err)
-				            {
-				                std::cerr << "Caught SYCL exception while destructing a SYCL queue: " << err.what() << " ("
-				                          << err.code() << ')' << std::endl;
-				            }
-				            catch(std::exception const& err)
-				            {
-				                std::cerr << "The following runtime error(s) occured while destructing a SYCL queue:" << err.what()
-				                          << std::endl;
-				            }
-				        }
-
-				        // Don't call this without locking first!
-				        auto clean_dependencies() -> void
-				        {
-				            // Clean up completed events
-				            auto const start = std::begin(m_dependencies);
-				            auto const old_end = std::end(m_dependencies);
-				            auto const new_end = std::remove_if(
-				                start,
-				                old_end,
-				                [](sycl::event ev) {
-				                    return ev.get_info<sycl::info::event::command_execution_status>()
-				                           == sycl::info::event_command_status::complete;
-				                });
-
-				            m_dependencies.erase(new_end, old_end);
-				        }
-
-				        auto register_dependency(sycl::event event) -> void
-				        {
-				            std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-				            clean_dependencies();
-				            m_dependencies.push_back(event);
-				        }
-
-				        auto empty() const -> bool
-				        {
-				            std::shared_lock<std::shared_mutex> lock{m_mutex};
-				            return m_last_event.get_info<sycl::info::event::command_execution_status>()
-				                   == sycl::info::event_command_status::complete;
-				        }
-
-				        auto wait() -> void
-				        {
-				            // SYCL queues are thread-safe.
-				            m_queue.wait_and_throw();
-				        }
-
-				        auto get_last_event() const -> sycl::event
-				        {
-				            std::shared_lock<std::shared_mutex> lock{m_mutex};
-				            return m_last_event;
-				        }
-
-				        template<bool TBlocking, typename TTask>
-				        auto enqueue(TTask const& task) -> void
-				        {
-				            {
-				                std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-				                clean_dependencies();
-
-				                // Execute task
-				                m_last_event = m_queue.submit(
-				                    [this, &task](sycl::handler& cgh)
-				                    {
-				                        if(!m_dependencies.empty())
-				                            cgh.depends_on(m_dependencies);
-
-				                        if constexpr(is_sycl_kernel<TTask>) // Kernel
-				                            task(cgh, m_fence_dummy); // Will call cgh.parallel_for internally
-				                        else if constexpr(is_sycl_task<TTask>) // Copy / Fill
-				                            task(cgh); // Will call cgh.{copy, fill} internally
-				                        else // Host
-				                            cgh.host_task(task);
-				                    });
-
-				                m_dependencies.clear();
-				            }
-
-				            if constexpr(TBlocking)
-				                wait();
-				        }
-
-				        [[nodiscard]] auto getNativeHandle() const noexcept
-				        {
-				            return m_queue;
-				        }
-
-				        std::vector<sycl::event> m_dependencies;
-				        sycl::event m_last_event;
-				        sycl::buffer<int, 1> m_fence_dummy{sycl::range<1>{1}};
-				        std::shared_mutex mutable m_mutex;
-
-				    private:
-				        sycl::queue m_queue;
-				    };
-
-				    template<typename TDev, bool TBlocking>
-				    class QueueGenericSyclBase
-				    {
-				    public:
-				        QueueGenericSyclBase(TDev const& dev)
-				            : m_dev{dev}
-				            , m_impl{std::make_shared<detail::QueueGenericSyclImpl>(
-				                  dev.getNativeHandle().second,
-				                  dev.getNativeHandle().first)}
-				        {
-				            m_dev.m_impl->register_queue(m_impl);
-				        }
-
-				        friend auto operator==(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
-				        {
-				            return (lhs.m_dev == rhs.m_dev) && (lhs.m_impl == rhs.m_impl);
-				        }
-
-				        friend auto operator!=(QueueGenericSyclBase const& lhs, QueueGenericSyclBase const& rhs) -> bool
-				        {
-				            return !(lhs == rhs);
-				        }
-
-				        [[nodiscard]] auto getNativeHandle() const noexcept
-				        {
-				            return m_impl->getNativeHandle();
-				        }
-
-				        TDev m_dev;
-				        std::shared_ptr<detail::QueueGenericSyclImpl> m_impl;
-				    };
-				} // namespace alpaka::detail
-
-				namespace alpaka
-				{
-				    template<typename TDev>
-				    class EventGenericSycl;
-				}
-
-				namespace alpaka::trait
-				{
-				    //! The SYCL blocking queue device type trait specialization.
-				    template<typename TDev, bool TBlocking>
-				    struct DevType<detail::QueueGenericSyclBase<TDev, TBlocking>>
-				    {
-				        using type = TDev;
-				    };
-
-				    //! The SYCL blocking queue device get trait specialization.
-				    template<typename TDev, bool TBlocking>
-				    struct GetDev<detail::QueueGenericSyclBase<TDev, TBlocking>>
-				    {
-				        static auto getDev(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
-				        {
-				            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-				            return queue.m_dev;
-				        }
-				    };
-
-				    //! The SYCL blocking queue event type trait specialization.
-				    template<typename TDev, bool TBlocking>
-				    struct EventType<detail::QueueGenericSyclBase<TDev, TBlocking>>
-				    {
-				        using type = EventGenericSycl<TDev>;
-				    };
-
-				    //! The SYCL blocking queue enqueue trait specialization.
-				    template<typename TDev, bool TBlocking, typename TTask>
-				    struct Enqueue<detail::QueueGenericSyclBase<TDev, TBlocking>, TTask>
-				    {
-				        static auto enqueue(detail::QueueGenericSyclBase<TDev, TBlocking>& queue, TTask const& task) -> void
-				        {
-				            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-				            queue.m_impl->template enqueue<TBlocking>(task);
-				        }
-				    };
-
-				    //! The SYCL blocking queue test trait specialization.
-				    template<typename TDev, bool TBlocking>
-				    struct Empty<detail::QueueGenericSyclBase<TDev, TBlocking>>
-				    {
-				        static auto empty(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> bool
-				        {
-				            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-				            return queue.m_impl->empty();
-				        }
-				    };
-
-				    //! The SYCL blocking queue thread wait trait specialization.
-				    //!
-				    //! Blocks execution of the calling thread until the queue has finished processing all previously requested
-				    //! tasks (kernels, data copies, ...)
-				    template<typename TDev, bool TBlocking>
-				    struct CurrentThreadWaitFor<detail::QueueGenericSyclBase<TDev, TBlocking>>
-				    {
-				        static auto currentThreadWaitFor(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue) -> void
-				        {
-				            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-				            queue.m_impl->wait();
-				        }
-				    };
-
-				    //! The SYCL queue native handle trait specialization.
-				    template<typename TDev, bool TBlocking>
-				    struct NativeHandle<detail::QueueGenericSyclBase<TDev, TBlocking>>
-				    {
-				        [[nodiscard]] static auto getNativeHandle(detail::QueueGenericSyclBase<TDev, TBlocking> const& queue)
-				        {
-				            return queue.getNativeHandle();
-				        }
-				    };
-				} // namespace alpaka::trait
-
-				#endif
-				// ==
-				// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
-				// ============================================================================
-
-			// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
-
-			// #include <algorithm>    // amalgamate: file already included
-			// #include <cstddef>    // amalgamate: file already included
-			// #include <memory>    // amalgamate: file already included
-			// #include <mutex>    // amalgamate: file already included
-			// #include <shared_mutex>    // amalgamate: file already included
-			// #include <string>    // amalgamate: file already included
-			// #include <utility>    // amalgamate: file already included
-			// #include <vector>    // amalgamate: file already included
-
-			#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
-
-			namespace alpaka
-			{
-			    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-			    class BufGenericSycl;
-
-			    namespace detail
-			    {
-			        class DevGenericSyclImpl
-			        {
-			        public:
-			            DevGenericSyclImpl(sycl::device device, sycl::context context)
-			                : m_device{std::move(device)}
-			                , m_context{std::move(context)}
-			            {
-			            }
-
-			            // Don't call this without locking first!
-			            auto clean_queues() -> void
-			            {
-			                // Clean up dead queues
-			                auto const start = std::begin(m_queues);
-			                auto const old_end = std::end(m_queues);
-			                auto const new_end = std::remove_if(start, old_end, [](auto q_ptr) { return q_ptr.expired(); });
-			                m_queues.erase(new_end, old_end);
-			            }
-
-			            auto register_queue(std::shared_ptr<QueueGenericSyclImpl> const& queue) -> void
-			            {
-			                std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-			                clean_queues();
-			                m_queues.emplace_back(queue);
-			            }
-
-			            auto register_dependency(sycl::event event) -> void
-			            {
-			                std::shared_lock<std::shared_mutex> lock{m_mutex};
-
-			                for(auto& q_ptr : m_queues)
-			                {
-			                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
-			                        ptr->register_dependency(event);
-			                }
-			            }
-
-			            auto wait()
-			            {
-			                std::shared_lock<std::shared_mutex> lock{m_mutex};
-
-			                for(auto& q_ptr : m_queues)
-			                {
-			                    if(auto ptr = q_ptr.lock(); ptr != nullptr)
-			                        ptr->wait();
-			                }
-			            }
-
-			            auto get_device() const -> sycl::device
-			            {
-			                return m_device;
-			            }
-
-			            auto get_context() const -> sycl::context
-			            {
-			                return m_context;
-			            }
-
-			        private:
-			            sycl::device m_device;
-			            sycl::context m_context;
-			            std::vector<std::weak_ptr<QueueGenericSyclImpl>> m_queues;
-			            std::shared_mutex mutable m_mutex;
-			        };
-			    } // namespace detail
-
-			    //! The SYCL device handle.
-			    template<typename TPltf>
-			    class DevGenericSycl
-			        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TPltf>>
-			        , public concepts::Implements<ConceptDev, DevGenericSycl<TPltf>>
-			    {
-			    public:
-			        DevGenericSycl(sycl::device device, sycl::context context)
-			            : m_impl{std::make_shared<detail::DevGenericSyclImpl>(std::move(device), std::move(context))}
-			        {
-			        }
-
-			        friend auto operator==(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
-			        {
-			            return (lhs.m_impl == rhs.m_impl);
-			        }
-
-			        friend auto operator!=(DevGenericSycl const& lhs, DevGenericSycl const& rhs) -> bool
-			        {
-			            return !(lhs == rhs);
-			        }
-
-			        [[nodiscard]] auto getNativeHandle() const -> std::pair<sycl::device, sycl::context>
-			        {
-			            return std::make_pair(m_impl->get_device(), m_impl->get_context());
-			        }
-
-			        std::shared_ptr<detail::DevGenericSyclImpl> m_impl;
-			    };
-			} // namespace alpaka
-
-			namespace alpaka::trait
-			{
-			    //! The SYCL device name get trait specialization.
-			    template<typename TPltf>
-			    struct GetName<DevGenericSycl<TPltf>>
-			    {
-			        static auto getName(DevGenericSycl<TPltf> const& dev) -> std::string
-			        {
-			            auto const device = dev.getNativeHandle().first;
-			            return device.template get_info<sycl::info::device::name>();
-			        }
-			    };
-
-			    //! The SYCL device available memory get trait specialization.
-			    template<typename TPltf>
-			    struct GetMemBytes<DevGenericSycl<TPltf>>
-			    {
-			        static auto getMemBytes(DevGenericSycl<TPltf> const& dev) -> std::size_t
-			        {
-			            auto const device = dev.getNativeHandle().first;
-			            return device.template get_info<sycl::info::device::global_mem_size>();
-			        }
-			    };
-
-			    //! The SYCL device free memory get trait specialization.
-			    template<typename TPltf>
-			    struct GetFreeMemBytes<DevGenericSycl<TPltf>>
-			    {
-			        static auto getFreeMemBytes(DevGenericSycl<TPltf> const& /* dev */) -> std::size_t
-			        {
-			            static_assert(!sizeof(TPltf), "Querying free device memory not supported for SYCL devices.");
-			            return std::size_t{};
-			        }
-			    };
-
-			    //! The SYCL device warp size get trait specialization.
-			    template<typename TPltf>
-			    struct GetWarpSizes<DevGenericSycl<TPltf>>
-			    {
-			        static auto getWarpSizes(DevGenericSycl<TPltf> const& dev) -> std::vector<std::size_t>
-			        {
-			            auto const device = dev.getNativeHandle().first;
-			            return device.template get_info<sycl::info::device::sub_group_sizes>();
-			        }
-			    };
-
-			    //! The SYCL device reset trait specialization.
-			    template<typename TPltf>
-			    struct Reset<DevGenericSycl<TPltf>>
-			    {
-			        static auto reset(DevGenericSycl<TPltf> const&) -> void
-			        {
-			            static_assert(!sizeof(TPltf), "Explicit device reset not supported for SYCL devices");
-			        }
-			    };
-
-			    //! The SYCL device native handle trait specialization.
-			    template<typename TPltf>
-			    struct NativeHandle<DevGenericSycl<TPltf>>
-			    {
-			        [[nodiscard]] static auto getNativeHandle(DevGenericSycl<TPltf> const& dev)
-			        {
-			            return dev.getNativeHandle();
-			        }
-			    };
-
-			    //! The SYCL device memory buffer type trait specialization.
-			    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
-			    struct BufType<DevGenericSycl<TPltf>, TElem, TDim, TIdx>
-			    {
-			        using type = BufGenericSycl<TElem, TDim, TIdx, DevGenericSycl<TPltf>>;
-			    };
-
-			    //! The SYCL device platform type trait specialization.
-			    template<typename TPltf>
-			    struct PltfType<DevGenericSycl<TPltf>>
-			    {
-			        using type = TPltf;
-			    };
-
-			    //! The thread SYCL device wait specialization.
-			    template<typename TPltf>
-			    struct CurrentThreadWaitFor<DevGenericSycl<TPltf>>
-			    {
-			        static auto currentThreadWaitFor(DevGenericSycl<TPltf> const& dev) -> void
-			        {
-			            dev.m_impl->wait();
-			        }
-			    };
-
-			    //! The SYCL blocking queue trait specialization.
-			    template<typename TPltf>
-			    struct QueueType<DevGenericSycl<TPltf>, Blocking>
-			    {
-			        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPltf>, true>;
-			    };
-
-			    //! The SYCL non-blocking queue trait specialization.
-			    template<typename TPltf>
-			    struct QueueType<DevGenericSycl<TPltf>, NonBlocking>
-			    {
-			        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPltf>, false>;
-			    };
-			} // namespace alpaka::trait
-
-			#endif
-			// ==
-			// == ./include/alpaka/dev/DevGenericSycl.hpp ==
-			// ============================================================================
-
-			// ============================================================================
-			// == ./include/alpaka/pltf/PltfCpuSyclIntel.hpp ==
-			// ==
-			/* Copyright 2023 Jan Stephan, Andrea Bocci
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -16368,7 +16638,7 @@
 				// ============================================================================
 				// == ./include/alpaka/pltf/PltfGenericSycl.hpp ==
 				// ==
-				/* Copyright 2023 Jan Stephan
+				/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
@@ -16389,7 +16659,7 @@
 
 				#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-				// #    include <CL/sycl.hpp>    // amalgamate: file already included
+				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 				namespace alpaka
 				{
@@ -16496,7 +16766,7 @@
 				#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 				            printDeviceProperties(sycl_dev);
 				#    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-				            std::cout << __func__ << sycl_dev.get_info<info::device::name>() << '\n';
+				            std::cout << __func__ << sycl_dev.template get_info<sycl::info::device::name>() << '\n';
 				#    endif
 				            using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
 				            return typename DevType<SyclPltf>::type{sycl_dev, platform.syclContext()};
@@ -16558,82 +16828,62 @@
 
 				            std::cout << "SYCL version: " << device.get_info<sycl::info::device::version>() << '\n';
 
+				#        if !defined(BOOST_COMP_ICPX)
+				            // Not defined by Level Zero back-end
 				            std::cout << "Backend version: " << device.get_info<sycl::info::device::backend_version>() << '\n';
+				#        endif
 
 				            std::cout << "Aspects: " << '\n';
-				            auto const aspects = device.get_info<sycl::info::device::aspects>();
-				            for(auto const& asp : aspects)
-				            {
-				                switch(asp)
-				                {
-				                // Ignore the hardware types - we already have queried this info above
-				                case sycl::aspect::cpu:
-				                case sycl::aspect::gpu:
-				                case sycl::aspect::accelerator:
-				                case sycl::aspect::custom:
-				                    break;
 
-				                case sycl::aspect::emulated:
-				                    std::cout << "\t* emulated\n";
-				                    break;
+				#        if defined(BOOST_COMP_ICPX)
+				#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+				            // These aspects are missing from oneAPI versions < 2023.2.0
+				            if(device.has(sycl::aspect::emulated))
+				                std::cout << "\t* emulated\n";
 
-				                case sycl::aspect::host_debugabble:
-				                    std::cout << "\t* debugabble using standard debuggers\n";
-				                    break;
+				            if(device.has(sycl::aspect::host_debuggable))
+				                std::cout << "\t* debuggable using standard debuggers\n";
+				#            endif
+				#        endif
 
-				                case sycl::aspect::fp16:
-				                    std::cout << "\t* supports sycl::half precision\n";
-				                    break;
+				            if(device.has(sycl::aspect::fp16))
+				                std::cout << "\t* supports sycl::half precision\n";
 
-				                case sycl::aspect::fp64:
-				                    std::cout << "\t* supports double precision\n";
-				                    break;
+				            if(device.has(sycl::aspect::fp64))
+				                std::cout << "\t* supports double precision\n";
 
-				                case sycl::aspect::atomic64:
-				                    std::cout << "\t* supports 64-bit atomics\n";
-				                    break;
+				            if(device.has(sycl::aspect::atomic64))
+				                std::cout << "\t* supports 64-bit atomics\n";
 
-				                case sycl::aspect::image:
-				                    std::cout << "\t* supports images\n";
-				                    break;
+				            if(device.has(sycl::aspect::image))
+				                std::cout << "\t* supports images\n";
 
-				                case sycl::aspect::online_compiler:
-				                    std::cout << "\t* supports online compilation of device code\n";
-				                    break;
+				            if(device.has(sycl::aspect::online_compiler))
+				                std::cout << "\t* supports online compilation of device code\n";
 
-				                case sycl::aspect::online_linker:
-				                    std::cout << "\t* supports online linking of device code\n";
-				                    break;
+				            if(device.has(sycl::aspect::online_linker))
+				                std::cout << "\t* supports online linking of device code\n";
 
-				                case sycl::aspect::queue_profiling:
-				                    std::cout << "\t* supports queue profiling\n";
-				                    break;
+				            if(device.has(sycl::aspect::queue_profiling))
+				                std::cout << "\t* supports queue profiling\n";
 
-				                case sycl::aspect::usm_device_allocations:
-				                    std::cout << "\t* supports explicit USM allocations\n";
-				                    break;
+				            if(device.has(sycl::aspect::usm_device_allocations))
+				                std::cout << "\t* supports explicit USM allocations\n";
 
-				                case sycl::aspect::usm_host_allocations:
-				                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host\n";
-				                    break;
+				            if(device.has(sycl::aspect::usm_host_allocations))
+				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host\n";
 
-				                case sycl::aspect::usm_atomic_host_allocations:
-				                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host atomically\n";
-				                    break;
+				            if(device.has(sycl::aspect::usm_atomic_host_allocations))
+				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::host atomically\n";
 
-				                case sycl::aspect::usm_shared_allocations:
-				                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared\n";
-				                    break;
+				            if(device.has(sycl::aspect::usm_shared_allocations))
+				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared\n";
 
-				                case sycl::aspect::usm_atomic_shared_allocations:
-				                    std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared atomically\n";
-				                    break;
+				            if(device.has(sycl::aspect::usm_atomic_shared_allocations))
+				                std::cout << "\t* can access USM memory allocated by sycl::usm::alloc::shared atomically\n";
 
-				                case sycl::aspect::usm_system_allocations:
-				                    std::cout << "\t* can access memory allocated by the system allocator\n";
-				                    break;
-				                }
-				            }
+				            if(device.has(sycl::aspect::usm_system_allocations))
+				                std::cout << "\t* can access memory allocated by the system allocator\n";
 
 				            std::cout << "Available compute units: " << device.get_info<sycl::info::device::max_compute_units>()
 				                      << '\n';
@@ -16692,7 +16942,7 @@
 				            std::cout << "Native ISA vector width (float): "
 				                      << device.get_info<sycl::info::device::native_vector_width_float>() << '\n';
 
-				            if(device.has_aspect(sycl::aspect::fp64))
+				            if(device.has(sycl::aspect::fp64))
 				            {
 				                std::cout << "Preferred native vector width (double): "
 				                          << device.get_info<sycl::info::device::preferred_vector_width_double>() << '\n';
@@ -16701,7 +16951,7 @@
 				                          << device.get_info<sycl::info::device::native_vector_width_double>() << '\n';
 				            }
 
-				            if(device.has_aspect(sycl::aspect::fp16))
+				            if(device.has(sycl::aspect::fp16))
 				            {
 				                std::cout << "Preferred native vector width (half): "
 				                          << device.get_info<sycl::info::device::preferred_vector_width_half>() << '\n';
@@ -16718,7 +16968,7 @@
 				            std::cout << "Maximum size of memory object allocation: "
 				                      << device.get_info<sycl::info::device::max_mem_alloc_size>() << " bytes\n";
 
-				            if(device.has_aspect(sycl::aspect::image))
+				            if(device.has(sycl::aspect::image))
 				            {
 				                std::cout << "Maximum number of simultaneous image object reads per kernel: "
 				                          << device.get_info<sycl::info::device::max_read_image_args>() << '\n';
@@ -16786,7 +17036,7 @@
 				                find_and_print(sycl::info::fp_config::soft_float);
 				            };
 
-				            if(device.has_aspect(sycl::aspect::fp16))
+				            if(device.has(sycl::aspect::fp16))
 				            {
 				                auto const fp16_conf = device.get_info<sycl::info::device::half_fp_config>();
 				                print_fp_config("Half", fp16_conf);
@@ -16795,7 +17045,7 @@
 				            auto const fp32_conf = device.get_info<sycl::info::device::single_fp_config>();
 				            print_fp_config("Single", fp32_conf);
 
-				            if(device.has_aspect(sycl::aspect::fp64))
+				            if(device.has(sycl::aspect::fp64))
 				            {
 				                auto const fp64_conf = device.get_info<sycl::info::device::double_fp_config>();
 				                print_fp_config("Double", fp64_conf);
@@ -16827,7 +17077,7 @@
 				                          << device.get_info<sycl::info::device::global_mem_cache_line_size>() << " bytes\n";
 
 				                std::cout << "Global memory cache size: "
-				                          << device.get_info<sycl::info::device::global_mem_cache_size>() / KiB << " KiB\n"
+				                          << device.get_info<sycl::info::device::global_mem_cache_size>() / KiB << " KiB\n";
 				            }
 
 				            std::cout << "Global memory size: " << device.get_info<sycl::info::device::global_mem_size>() / MiB
@@ -16885,6 +17135,11 @@
 				                    case sycl::memory_order::seq_cst:
 				                        std::cout << "seq_cst";
 				                        break;
+				#        if defined(BOOST_COMP_ICPX)
+				                    // Stop icpx from complaining about its own internals.
+				                    case sycl::memory_order::__consume_unsupported:
+				                        break;
+				#        endif
 				                    }
 				                    std::cout << ", ";
 				                }
@@ -16895,9 +17150,14 @@
 				            auto const mem_orders = device.get_info<sycl::info::device::atomic_memory_order_capabilities>();
 				            print_memory_orders(mem_orders);
 
+				#        if defined(BOOST_COMP_ICPX)
+				#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+				            // Not implemented in oneAPI < 2023.2.0
 				            std::cout << "Supported memory orderings for sycl::atomic_fence: ";
 				            auto const fence_orders = device.get_info<sycl::info::device::atomic_fence_order_capabilities>();
 				            print_memory_orders(fence_orders);
+				#            endif
+				#        endif
 
 				            auto print_memory_scopes = [](std::vector<sycl::memory_scope> const& mem_scopes)
 				            {
@@ -16934,9 +17194,14 @@
 				            auto const mem_scopes = device.get_info<sycl::info::device::atomic_memory_scope_capabilities>();
 				            print_memory_scopes(mem_scopes);
 
+				#        if defined(BOOST_COMP_ICPX)
+				#            if BOOST_COMP_ICPX >= BOOST_VERSION_NUMBER(53, 2, 0)
+				            // Not implemented in oneAPI < 2023.2.0
 				            std::cout << "Supported memory scopes for sycl::atomic_fence: ";
 				            auto const fence_scopes = device.get_info<sycl::info::device::atomic_fence_scope_capabilities>();
 				            print_memory_scopes(fence_scopes);
+				#            endif
+				#        endif
 
 				            std::cout << "Device timer resolution: "
 				                      << device.get_info<sycl::info::device::profiling_timer_resolution>() << " ns\n";
@@ -16976,6 +17241,11 @@
 				                        std::cout << "by affinity domain";
 				                        has_affinity_domains = true;
 				                        break;
+				#        if defined(BOOST_COMP_ICPX)
+				                    case sycl::info::partition_property::ext_intel_partition_by_cslice:
+				                        std::cout << "by compute slice (Intel extension; deprecated)";
+				                        break;
+				#        endif
 				                    }
 				                    std::cout << ", ";
 				                }
@@ -17040,6 +17310,12 @@
 				                case sycl::info::partition_property::partition_by_affinity_domain:
 				                    std::cout << "partitioned by affinity domain";
 				                    break;
+
+				#        if defined(BOOST_COMP_ICPX)
+				                case sycl::info::partition_property::ext_intel_partition_by_cslice:
+				                    std::cout << "partitioned by compute slice (Intel extension; deprecated)";
+				                    break;
+				#        endif
 				                }
 				                std::cout << '\n';
 
@@ -17093,50 +17369,38 @@
 
 			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
 			    namespace detail
 			    {
-			        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
-			        // linker anyway.
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic push
-			#        pragma clang diagnostic ignored "-Wweak-vtables"
-			#    endif
-			        struct IntelCpuSelector final
+			        struct SyclCpuSelector
 			        {
 			            auto operator()(sycl::device const& dev) const -> int
 			            {
-			                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
-			                auto const is_intel_cpu = (vendor.find("Intel(R) Corporation") != std::string::npos) && dev.is_cpu();
-
-			                return is_intel_cpu ? 1 : -1;
+			                return dev.is_cpu() ? 1 : -1;
 			            }
 			        };
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic pop
-			#    endif
 			    } // namespace detail
 
 			    //! The SYCL device manager.
-			    using PltfCpuSyclIntel = PltfGenericSycl<detail::IntelCpuSelector>;
+			    using PltfCpuSycl = PltfGenericSycl<detail::SyclCpuSelector>;
 			} // namespace alpaka
 
 			namespace alpaka::trait
 			{
 			    //! The SYCL device manager device type trait specialization.
 			    template<>
-			    struct DevType<PltfCpuSyclIntel>
+			    struct DevType<PltfCpuSycl>
 			    {
-			        using type = DevGenericSycl<PltfCpuSyclIntel>; // = DevCpuSyclIntel
+			        using type = DevGenericSycl<PltfCpuSycl>; // = DevCpuSycl
 			    };
 			} // namespace alpaka::trait
 
 			#endif
 			// ==
-			// == ./include/alpaka/pltf/PltfCpuSyclIntel.hpp ==
+			// == ./include/alpaka/pltf/PltfCpuSycl.hpp ==
 			// ============================================================================
 
 
@@ -17144,19 +17408,19 @@
 
 		namespace alpaka
 		{
-		    using DevCpuSyclIntel = DevGenericSycl<PltfCpuSyclIntel>;
+		    using DevCpuSycl = DevGenericSycl<PltfCpuSycl>;
 		} // namespace alpaka
 
 		#endif
 		// ==
-		// == ./include/alpaka/dev/DevCpuSyclIntel.hpp ==
+		// == ./include/alpaka/dev/DevCpuSycl.hpp ==
 		// ============================================================================
 
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 		// ============================================================================
-		// == ./include/alpaka/kernel/TaskKernelCpuSyclIntel.hpp ==
+		// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan
+		/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -17164,12 +17428,13 @@
 			// ============================================================================
 			// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Andrea Bocci
+			/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
 			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
 				// ============================================================================
 				// == ./include/alpaka/core/STLTuple/STLTuple.hpp ==
@@ -17522,11 +17787,115 @@
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
+				// ============================================================================
+				// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
+				// ==
+				/* Copyright 2023 Andrea Bocci, Aurora Perego
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+				#    ifdef __SYCL_DEVICE_ONLY__
+
+				#        if defined(__SYCL_TARGET_INTEL_GPU_BDW__) || /* Broadwell Intel graphics architecture */                     \
+				            defined(__SYCL_TARGET_INTEL_GPU_SKL__) || /* Skylake Intel graphics architecture */                       \
+				            defined(__SYCL_TARGET_INTEL_GPU_KBL__) || /* Kaby Lake Intel graphics architecture */                     \
+				            defined(__SYCL_TARGET_INTEL_GPU_CFL__) || /* Coffee Lake Intel graphics architecture */                   \
+				            defined(__SYCL_TARGET_INTEL_GPU_APL__) || /* Apollo Lake Intel graphics architecture */                   \
+				            defined(__SYCL_TARGET_INTEL_GPU_GLK__) || /* Gemini Lake Intel graphics architecture */                   \
+				            defined(__SYCL_TARGET_INTEL_GPU_WHL__) || /* Whiskey Lake Intel graphics architecture */                  \
+				            defined(__SYCL_TARGET_INTEL_GPU_AML__) || /* Amber Lake Intel graphics architecture */                    \
+				            defined(__SYCL_TARGET_INTEL_GPU_CML__) || /* Comet Lake Intel graphics architecture */                    \
+				            defined(__SYCL_TARGET_INTEL_GPU_ICLLP__) || /* Ice Lake Intel graphics architecture */                    \
+				            defined(__SYCL_TARGET_INTEL_GPU_TGLLP__) || /* Tiger Lake Intel graphics architecture */                  \
+				            defined(__SYCL_TARGET_INTEL_GPU_RKL__) || /* Rocket Lake Intel graphics architecture */                   \
+				            defined(__SYCL_TARGET_INTEL_GPU_ADL_S__) || /* Alder Lake S Intel graphics architecture */                \
+				            defined(__SYCL_TARGET_INTEL_GPU_RPL_S__) || /* Raptor Lake Intel graphics architecture */                 \
+				            defined(__SYCL_TARGET_INTEL_GPU_ADL_P__) || /* Alder Lake P Intel graphics architecture */                \
+				            defined(__SYCL_TARGET_INTEL_GPU_ADL_N__) || /* Alder Lake N Intel graphics architecture */                \
+				            defined(__SYCL_TARGET_INTEL_GPU_DG1__) || /* DG1 Intel graphics architecture */                           \
+				            defined(__SYCL_TARGET_INTEL_GPU_ACM_G10__) || /* Alchemist G10 Intel graphics architecture */             \
+				            defined(__SYCL_TARGET_INTEL_GPU_ACM_G11__) || /* Alchemist G11 Intel graphics architecture */             \
+				            defined(__SYCL_TARGET_INTEL_GPU_ACM_G12__) /* Alchemist G12 Intel graphics architecture */
+
+				#            define SYCL_SUBGROUP_SIZE (8 | 16 | 32)
+
+				#        elif defined(__SYCL_TARGET_INTEL_GPU_PVC__) /* Ponte Vecchio Intel graphics architecture */
+
+				#            define SYCL_SUBGROUP_SIZE (16 | 32)
+
+				#        elif defined(__SYCL_TARGET_INTEL_X86_64__) /* generate code ahead of time for x86_64 CPUs */
+
+				#            define SYCL_SUBGROUP_SIZE (4 | 8 | 16 | 32 | 64)
+
+				#        elif defined(__SYCL_TARGET_NVIDIA_GPU_SM_50__) || /* NVIDIA Maxwell architecture (compute capability 5.0) */ \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_52__) || /* NVIDIA Maxwell architecture (compute capability 5.2) */   \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_53__) || /* NVIDIA Jetson TX1 / Nano (compute capability 5.3) */      \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_60__) || /* NVIDIA Pascal architecture (compute capability 6.0) */    \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_61__) || /* NVIDIA Pascal architecture (compute capability 6.1) */    \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_62__) || /* NVIDIA Jetson TX2 (compute capability 6.2) */             \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_70__) || /* NVIDIA Volta architecture (compute capability 7.0) */     \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_72__) || /* NVIDIA Jetson AGX (compute capability 7.2) */             \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_75__) || /* NVIDIA Turing architecture (compute capability 7.5) */    \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_80__) || /* NVIDIA Ampere architecture (compute capability 8.0) */    \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_86__) || /* NVIDIA Ampere architecture (compute capability 8.6) */    \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_87__) || /* NVIDIA Jetson/Drive AGX Orin (compute capability 8.7) */  \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_89__) || /* NVIDIA Ada Lovelace arch. (compute capability 8.9) */     \
+				            defined(__SYCL_TARGET_NVIDIA_GPU_SM_90__) /* NVIDIA Hopper architecture (compute capability 9.0) */
+
+				#            define SYCL_SUBGROUP_SIZE (32)
+
+				#        elif defined(__SYCL_TARGET_AMD_GPU_GFX700__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */         \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX701__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */           \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX702__) || /* AMD GCN 2.0 Sea Islands architecture (gfx 7.0) */           \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX801__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX802__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX803__) || /* AMD GCN 4.0 Arctic Islands architecture (gfx 8.0) */        \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX805__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.0) */      \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX810__) || /* AMD GCN 3.0 Volcanic Islands architecture (gfx 8.1) */      \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX900__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX902__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX904__) || /* AMD GCN 5.0 Vega architecture (gfx 9.0) */                  \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX906__) || /* AMD GCN 5.1 Vega II architecture (gfx 9.0) */               \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX908__) || /* AMD CDNA 1.0 Arcturus architecture (gfx 9.0) */             \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX90A__) /* AMD CDNA 2.0 Aldebaran architecture (gfx 9.0) */
+
+				#            define SYCL_SUBGROUP_SIZE (64)
+
+				#        elif defined(__SYCL_TARGET_AMD_GPU_GFX1010__) || /* AMD RDNA 1.0 Navi 10 architecture (gfx 10.1) */          \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX1011__) || /* AMD RDNA 1.0 Navi 12 architecture (gfx 10.1) */            \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX1012__) || /* AMD RDNA 1.0 Navi 14 architecture (gfx 10.1) */            \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX1013__) || /* AMD RDNA 2.0 Oberon architecture (gfx 10.1) */             \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX1030__) || /* AMD RDNA 2.0 Navi 21 architecture (gfx 10.3) */            \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX1031__) || /* AMD RDNA 2.0 Navi 22 architecture (gfx 10.3) */            \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX1032__) || /* AMD RDNA 2.0 Navi 23 architecture (gfx 10.3) */            \
+				            defined(__SYCL_TARGET_AMD_GPU_GFX1034__) /* AMD RDNA 2.0 Navi 24 architecture (gfx 10.3) */
+
+				#            define SYCL_SUBGROUP_SIZE (32 | 64)
+
+				#        else // __SYCL_TARGET_*
+
+				#            define SYCL_SUBGROUP_SIZE (0) /* unknown target */
+
+				#        endif // __SYCL_TARGET_*
+
+				#    else
+
+				#        define SYCL_SUBGROUP_SIZE (0) /* host compilation */
+
+				#    endif // __SYCL_DEVICE_ONLY__
+
+				#endif // ALPAKA_ACC_SYCL_ENABLED
+				// ==
+				// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
+				// ============================================================================
+
 			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
 				// ============================================================================
 				// == ./include/alpaka/mem/buf/sycl/Accessor.hpp ==
 				// ==
-				/* Copyright 2023 Jan Stephan, Andrea Bocci
+				/* Copyright 2023 Jan Stephan, Andrea Bocci, Aurora Perego
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
@@ -18015,7 +18384,7 @@
 
 				#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-				// #    include <CL/sycl.hpp>    // amalgamate: file already included
+				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 				namespace alpaka
 				{
@@ -18114,30 +18483,6 @@
 				        SyclAccessor m_accessor;
 				        VecType extents;
 				    };
-
-				    namespace experimental::trait
-				    {
-				        namespace internal
-				        {
-				            template<typename TElem, typename TDim, typename TIdx, typename TDev>
-				            struct IsView<BufGenericSycl<TElem, TDim, TIdx, TDev>> : std::false_type
-				            {
-				            };
-				        } // namespace internal
-
-				        template<typename TElem, typename TDim, typename TIdx, typename TDev>
-				        struct BuildAccessor<BufGenericSycl<TElem, TDim, TIdx, TDev>>
-				        {
-				            template<typename... TAccessModes>
-				            static auto buildAccessor(BufGenericSycl<TElem, TDim, TIdx, TDev>& buffer)
-				            {
-				                using SyclAccessor = detail::SyclAccessor<TElem, TDim::value, TAccessModes...>;
-				                return Accessor<SyclAccessor, TElem, TIdx, TDim::value, TAccessModes...>{
-				                    SyclAccessor{buffer.m_buffer},
-				                    buffer.m_extentElements};
-				            }
-				        };
-				    } // namespace experimental::trait
 				} // namespace alpaka
 
 				#endif
@@ -18159,7 +18504,71 @@
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic push
+			#        pragma clang diagnostic ignored "-Wunused-lambda-capture"
+			#        pragma clang diagnostic ignored "-Wunused-parameter"
+			#    endif
+
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+			#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
+			        cgh.parallel_for(                                                                                             \
+			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+			            [item_elements,                                                                                           \
+			             dyn_shared_accessor,                                                                                     \
+			             st_shared_accessor,                                                                                      \
+			             global_fence_dummy,                                                                                      \
+			             local_fence_dummy,                                                                                       \
+			             k_func,                                                                                                  \
+			             k_args](sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]             \
+			            {                                                                                                         \
+			                auto acc = TAcc{                                                                                      \
+			                    item_elements,                                                                                    \
+			                    work_item,                                                                                        \
+			                    dyn_shared_accessor,                                                                              \
+			                    st_shared_accessor,                                                                               \
+			                    global_fence_dummy,                                                                               \
+			                    local_fence_dummy};                                                                               \
+			                core::apply(                                                                                          \
+			                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
+			                    k_args);                                                                                          \
+			            });
+
+			#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
+			        cgh.parallel_for(                                                                                             \
+			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+			            [item_elements,                                                                                           \
+			             dyn_shared_accessor,                                                                                     \
+			             st_shared_accessor,                                                                                      \
+			             global_fence_dummy,                                                                                      \
+			             local_fence_dummy,                                                                                       \
+			             k_func,                                                                                                  \
+			             k_args](sycl::nd_item<TDim::value> work_item)                                                            \
+			            {                                                                                                         \
+			                auto acc = TAcc{                                                                                      \
+			                    item_elements,                                                                                    \
+			                    work_item,                                                                                        \
+			                    dyn_shared_accessor,                                                                              \
+			                    st_shared_accessor,                                                                               \
+			                    global_fence_dummy,                                                                               \
+			                    local_fence_dummy};                                                                               \
+			                core::apply(                                                                                          \
+			                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
+			                    k_args);                                                                                          \
+			            });
+
+			#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
+			        throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
+			        cgh.parallel_for(                                                                                             \
+			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
+			            [item_elements,                                                                                           \
+			             dyn_shared_accessor,                                                                                     \
+			             st_shared_accessor,                                                                                      \
+			             global_fence_dummy,                                                                                      \
+			             local_fence_dummy,                                                                                       \
+			             k_func,                                                                                                  \
+			             k_args](sycl::nd_item<TDim::value> work_item) {});
 
 			namespace alpaka::detail
 			{
@@ -18179,9 +18588,8 @@
 			    template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
 			    inline auto require(
 			        sycl::handler& cgh,
-			        experimental::
-			            Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
-			                acc,
+			        experimental::Accessor<SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
+			            acc,
 			        special)
 			    {
 			        cgh.require(acc.m_accessor);
@@ -18251,48 +18659,87 @@
 			            auto k_func = m_kernelFnObj;
 			            auto k_args = m_args;
 
-			#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-			            // Set up device-side printing with (user-chosen value) KiB per block for the output buffer.
-			            constexpr auto buf_size = std::size_t{ALPAKA_SYCL_IOSTREAM_KIB * 1024};
-			            auto buf_per_work_item = std::size_t{};
-			            if constexpr(TDim::value == 1)
-			                buf_per_work_item = buf_size / static_cast<std::size_t>(group_items[0]);
-			            else if constexpr(TDim::value == 2)
-			                buf_per_work_item = buf_size / static_cast<std::size_t>(group_items[0] * group_items[1]);
+			            constexpr std::size_t sub_group_size = trait::warpSize<TKernelFnObj, TAcc>;
+			            bool supported = false;
+
+			            if constexpr(sub_group_size == 0)
+			            {
+			                // no explicit subgroup size requirement
+			                LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE
+			                supported = true;
+			            }
 			            else
-			                buf_per_work_item
-			                    = buf_size / static_cast<std::size_t>(group_items[0] * group_items[1] * group_items[2]);
-
-			            assert(buf_per_work_item > 0);
-
-			            auto output_stream = sycl::stream{buf_size, buf_per_work_item, cgh};
-			#    endif
-			            cgh.parallel_for<detail::kernel<TAcc, TKernelFnObj, TArgs...>>(
-			                sycl::nd_range<TDim::value>{global_size, local_size},
-			                [=](sycl::nd_item<TDim::value> work_item)
-			                {
-			#    ifdef ALPAKA_SYCL_IOSTREAM_ENABLED
-			                    auto acc = TAcc{
-			                        item_elements,
-			                        work_item,
-			                        dyn_shared_accessor,
-			                        st_shared_accessor,
-			                        global_fence_dummy,
-			                        local_fence_dummy,
-			                        output_stream};
+			            {
+			#    if(SYCL_SUBGROUP_SIZE == 0)
+			                // no explicit SYCL target, assume JIT compilation
+			                LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)
+			                supported = true;
 			#    else
-			                    auto acc = TAcc{
-			                        item_elements,
-			                        work_item,
-			                        dyn_shared_accessor,
-			                        st_shared_accessor,
-			                        global_fence_dummy,
-			                        local_fence_dummy};
+			                // check if the kernel should be launched with a subgroup size of 4
+			                if constexpr(sub_group_size == 4)
+			                {
+			#        if(SYCL_SUBGROUP_SIZE & 4)
+			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(4)
+			                    supported = true;
+			#        else
+			                    // empty kernel, required to keep SYCL happy
+			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+			#        endif
+			                }
+
+			                // check if the kernel should be launched with a subgroup size of 8
+			                if constexpr(sub_group_size == 8)
+			                {
+			#        if(SYCL_SUBGROUP_SIZE & 8)
+			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(8)
+			                    supported = true;
+			#        else
+			                    // empty kernel, required to keep SYCL happy
+			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+			#        endif
+			                }
+
+			                // check if the kernel should be launched with a subgroup size of 16
+			                if constexpr(sub_group_size == 16)
+			                {
+			#        if(SYCL_SUBGROUP_SIZE & 16)
+			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(16)
+			                    supported = true;
+			#        else
+			                    // empty kernel, required to keep SYCL happy
+			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+			#        endif
+			                }
+
+			                // check if the kernel should be launched with a subgroup size of 32
+			                if constexpr(sub_group_size == 32)
+			                {
+			#        if(SYCL_SUBGROUP_SIZE & 32)
+			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(32)
+			                    supported = true;
+			#        else
+			                    // empty kernel, required to keep SYCL happy
+			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+			#        endif
+			                }
+
+			                // check if the kernel should be launched with a subgroup size of 64
+			                if constexpr(sub_group_size == 64)
+			                {
+			#        if(SYCL_SUBGROUP_SIZE & 64)
+			                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(64)
+			                    supported = true;
+			#        else
+			                    // empty kernel, required to keep SYCL happy
+			                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+			#        endif
+			                }
 			#    endif
-			                    core::apply(
-			                        [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },
-			                        k_args);
-			                });
+
+			                // this subgroup size is not supported, raise an exception
+			                if(not supported)
+			                    throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));
+			            }
 			        }
 
 			        static constexpr auto is_sycl_task = true;
@@ -18334,7 +18781,12 @@
 			        TKernelFnObj m_kernelFnObj;
 			        core::Tuple<std::decay_t<TArgs>...> m_args;
 			    };
+
 			} // namespace alpaka
+
+			#    if BOOST_COMP_CLANG
+			#        pragma clang diagnostic pop
+			#    endif
 
 			namespace alpaka::trait
 			{
@@ -18374,6 +18826,8 @@
 			    };
 			} // namespace alpaka::trait
 
+			#    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS
+
 			#endif
 			// ==
 			// == ./include/alpaka/kernel/TaskKernelGenericSycl.hpp ==
@@ -18385,20 +18839,19 @@
 		namespace alpaka
 		{
 		    template<typename TDim, typename TIdx>
-		    class AccCpuSyclIntel;
+		    class AccCpuSycl;
 
 		    template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		    using TaskKernelCpuSyclIntel
-		        = TaskKernelGenericSycl<AccCpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+		    using TaskKernelCpuSycl = TaskKernelGenericSycl<AccCpuSycl<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
 		} // namespace alpaka
 
 		#endif
 		// ==
-		// == ./include/alpaka/kernel/TaskKernelCpuSyclIntel.hpp ==
+		// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
 		// ============================================================================
 
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/PltfCpuSyclIntel.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/pltf/PltfCpuSycl.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
@@ -18408,7 +18861,7 @@
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
-	// #    include <CL/sycl.hpp>    // amalgamate: file already included
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 	namespace alpaka
 	{
@@ -18416,9 +18869,9 @@
 	    //!
 	    //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel CPU target device.
 	    template<typename TDim, typename TIdx>
-	    class AccCpuSyclIntel final
+	    class AccCpuSycl final
 	        : public AccGenericSycl<TDim, TIdx>
-	        , public concepts::Implements<ConceptAcc, AccCpuSyclIntel<TDim, TIdx>>
+	        , public concepts::Implements<ConceptAcc, AccCpuSycl<TDim, TIdx>>
 	    {
 	    public:
 	        using AccGenericSycl<TDim, TIdx>::AccGenericSycl;
@@ -18429,28 +18882,28 @@
 	{
 	    //! The Intel CPU SYCL accelerator name trait specialization.
 	    template<typename TDim, typename TIdx>
-	    struct GetAccName<AccCpuSyclIntel<TDim, TIdx>>
+	    struct GetAccName<AccCpuSycl<TDim, TIdx>>
 	    {
 	        static auto getAccName() -> std::string
 	        {
-	            return "AccCpuSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
+	            return "AccCpuSycl<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
 	        }
 	    };
 
 	    //! The Intel CPU SYCL accelerator device type trait specialization.
 	    template<typename TDim, typename TIdx>
-	    struct DevType<AccCpuSyclIntel<TDim, TIdx>>
+	    struct DevType<AccCpuSycl<TDim, TIdx>>
 	    {
-	        using type = DevCpuSyclIntel;
+	        using type = DevCpuSycl;
 	    };
 
 	    //! The Intel CPU SYCL accelerator execution task type trait specialization.
 	    template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-	    struct CreateTaskKernel<AccCpuSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+	    struct CreateTaskKernel<AccCpuSycl<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
 	    {
 	        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
 	        {
-	            return TaskKernelCpuSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
+	            return TaskKernelCpuSycl<TDim, TIdx, TKernelFnObj, TArgs...>{
 	                workDiv,
 	                kernelFnObj,
 	                std::forward<TArgs>(args)...};
@@ -18459,27 +18912,27 @@
 
 	    //! The Intel CPU SYCL execution task platform type trait specialization.
 	    template<typename TDim, typename TIdx>
-	    struct PltfType<AccCpuSyclIntel<TDim, TIdx>>
+	    struct PltfType<AccCpuSycl<TDim, TIdx>>
 	    {
-	        using type = PltfCpuSyclIntel;
+	        using type = PltfCpuSycl;
 	    };
 
 	    template<typename TDim, typename TIdx>
-	    struct AccToTag<alpaka::AccCpuSyclIntel<TDim, TIdx>>
+	    struct AccToTag<alpaka::AccCpuSycl<TDim, TIdx>>
 	    {
-	        using type = alpaka::TagCpuSyclIntel;
+	        using type = alpaka::TagCpuSycl;
 	    };
 
 	    template<typename TDim, typename TIdx>
-	    struct TagToAcc<alpaka::TagCpuSyclIntel, TDim, TIdx>
+	    struct TagToAcc<alpaka::TagCpuSycl, TDim, TIdx>
 	    {
-	        using type = alpaka::AccCpuSyclIntel<TDim, TIdx>;
+	        using type = alpaka::AccCpuSycl<TDim, TIdx>;
 	    };
 	} // namespace alpaka::trait
 
 	#endif
 	// ==
-	// == ./include/alpaka/acc/AccCpuSyclIntel.hpp ==
+	// == ./include/alpaka/acc/AccCpuSycl.hpp ==
 	// ============================================================================
 
 	// ============================================================================
@@ -19331,7 +19784,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccFpgaSyclIntel.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -19353,7 +19806,7 @@
 			// ============================================================================
 			// == ./include/alpaka/pltf/PltfFpgaSyclIntel.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Andrea Bocci
+			/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -19364,7 +19817,7 @@
 
 			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			// #    include <string>    // amalgamate: file already included
 
@@ -19470,7 +19923,7 @@
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
-	// #    include <CL/sycl.hpp>    // amalgamate: file already included
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 	namespace alpaka
 	{
@@ -19493,7 +19946,7 @@
 	    template<typename TDim, typename TIdx>
 	    struct GetAccName<AccFpgaSyclIntel<TDim, TIdx>>
 	    {
-	        ALPAKA_FN_HOST static auto getAccName() -> std::string
+	        static auto getAccName() -> std::string
 	        {
 	            return "AccFpgaSyclIntel<" + std::to_string(TDim::value) + "," + core::demangled<TIdx> + ">";
 	        }
@@ -24886,7 +25339,7 @@
 			// ============================================================================
 			// == ./include/alpaka/pltf/PltfGpuSyclIntel.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Andrea Bocci
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -24899,19 +25352,13 @@
 
 			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka
 			{
 			    namespace detail
 			    {
-			        // Prevent clang from annoying us with warnings about emitting too many vtables. These are discarded by the
-			        // linker anyway.
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic push
-			#        pragma clang diagnostic ignored "-Wweak-vtables"
-			#    endif
-			        struct IntelGpuSelector final
+			        struct IntelGpuSelector
 			        {
 			            auto operator()(sycl::device const& dev) const -> int
 			            {
@@ -24921,9 +25368,6 @@
 			                return is_intel_gpu ? 1 : -1;
 			            }
 			        };
-			#    if BOOST_COMP_CLANG
-			#        pragma clang diagnostic pop
-			#    endif
 			    } // namespace detail
 
 			    //! The SYCL device manager.
@@ -25290,7 +25734,7 @@
 // #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already expanded
 // dev
 // #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-// #include "alpaka/dev/DevCpuSyclIntel.hpp"    // amalgamate: file already expanded
+// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
 	// ============================================================================
 	// == ./include/alpaka/dev/DevCudaRt.hpp ==
 	// ==
@@ -25425,18 +25869,18 @@
 // event
 // #include "alpaka/event/EventCpu.hpp"    // amalgamate: file already expanded
 	// ============================================================================
-	// == ./include/alpaka/event/EventCpuSyclIntel.hpp ==
+	// == ./include/alpaka/event/EventCpuSycl.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSyclIntel.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
 		// ============================================================================
 		// == ./include/alpaka/event/EventGenericSycl.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan, Antonio Di Pilato
+		/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -25504,7 +25948,7 @@
 
 		#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-		// #    include <CL/sycl.hpp>    // amalgamate: file already included
+		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 		namespace alpaka
 		{
@@ -25574,7 +26018,7 @@
 		    {
 		        static auto enqueue(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
 		        {
-		            event.setEvent(queue.m_impl->get_last_event());
+		            event.setEvent(queue.m_spQueueImpl->get_last_event());
 		        }
 		    };
 
@@ -25584,7 +26028,7 @@
 		    {
 		        static auto enqueue(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
 		        {
-		            event.setEvent(queue.m_impl->get_last_event());
+		            event.setEvent(queue.m_spQueueImpl->get_last_event());
 		        }
 		    };
 
@@ -25607,7 +26051,7 @@
 		    {
 		        static auto waiterWaitFor(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
 		        {
-		            queue.m_impl->register_dependency(event.getNativeHandle());
+		            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
 		        }
 		    };
 
@@ -25617,7 +26061,7 @@
 		    {
 		        static auto waiterWaitFor(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
 		        {
-		            queue.m_impl->register_dependency(event.getNativeHandle());
+		            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
 		        }
 		    };
 
@@ -25655,12 +26099,12 @@
 
 	namespace alpaka
 	{
-	    using EventCpuSyclIntel = EventGenericSycl<DevCpuSyclIntel>;
+	    using EventCpuSycl = EventGenericSycl<DevCpuSycl>;
 	} // namespace alpaka
 
 	#endif
 	// ==
-	// == ./include/alpaka/event/EventCpuSyclIntel.hpp ==
+	// == ./include/alpaka/event/EventCpuSycl.hpp ==
 	// ============================================================================
 
 	// ============================================================================
@@ -27834,7 +28278,7 @@
 	// == ./include/alpaka/kernel/TaskKernelCpuSerial.hpp ==
 	// ============================================================================
 
-// #include "alpaka/kernel/TaskKernelCpuSyclIntel.hpp"    // amalgamate: file already expanded
+// #include "alpaka/kernel/TaskKernelCpuSycl.hpp"    // amalgamate: file already expanded
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuTbbBlocks.hpp ==
 	// ==
@@ -30096,18 +30540,18 @@
 	// ============================================================================
 
 	// ============================================================================
-	// == ./include/alpaka/mem/buf/BufCpuSyclIntel.hpp ==
+	// == ./include/alpaka/mem/buf/BufCpuSycl.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSyclIntel.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/BufGenericSycl.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan
+		/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -30120,6 +30564,7 @@
 		// #include "alpaka/mem/buf/BufCpu.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/mem/view/Accessor.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
 		// #include <memory>    // amalgamate: file already included
@@ -30127,27 +30572,27 @@
 
 		#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-		// #    include <CL/sycl.hpp>    // amalgamate: file already included
+		// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 		namespace alpaka
 		{
 		    //! The SYCL memory buffer.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    class BufGenericSycl
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    class BufGenericSycl : public internal::ViewAccessOps<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
+		    public:
 		        static_assert(
 		            !std::is_const_v<TElem>,
 		            "The elem type of the buffer can not be const because the C++ Standard forbids containers of const "
 		            "elements!");
 		        static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
 
-		    public:
 		        //! Constructor
-		        template<typename TExtent>
-		        BufGenericSycl(TDev const& dev, sycl::buffer<TElem, TDim::value> buffer, TExtent const& extent)
+		        template<typename TExtent, typename Deleter>
+		        BufGenericSycl(DevGenericSycl<TPltf> const& dev, TElem* const pMem, Deleter deleter, TExtent const& extent)
 		            : m_dev{dev}
 		            , m_extentElements{getExtentVecEnd<TDim>(extent)}
-		            , m_buffer{buffer}
+		            , m_spMem(pMem, std::move(deleter))
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -30161,92 +30606,100 @@
 		                "The idx type of TExtent and the TIdx template parameter have to be identical!");
 		        }
 
-		        TDev m_dev;
+		        DevGenericSycl<TPltf> m_dev;
 		        Vec<TDim, TIdx> m_extentElements;
-		        sycl::buffer<TElem, TDim::value> m_buffer;
+		        std::shared_ptr<TElem> m_spMem;
 		    };
 		} // namespace alpaka
 
 		namespace alpaka::trait
 		{
 		    //! The BufGenericSycl device type trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct DevType<BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct DevType<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
-		        using type = TDev;
+		        using type = DevGenericSycl<TPltf>;
 		    };
 
 		    //! The BufGenericSycl device get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct GetDev<BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct GetDev<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
-		        static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TDev> const& buf)
+		        static auto getDev(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf)
 		        {
 		            return buf.m_dev;
 		        }
 		    };
 
 		    //! The BufGenericSycl dimension getter trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct DimType<BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct DimType<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
 		        using type = TDim;
 		    };
 
 		    //! The BufGenericSycl memory element type get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct ElemType<BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct ElemType<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
 		        using type = TElem;
 		    };
 
 		    //! The BufGenericSycl extent get trait specialization.
-		    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct GetExtent<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct GetExtent<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
 		        static_assert(TDim::value > TIdxIntegralConst::value, "Requested dimension out of bounds");
 
-		        static auto getExtent(BufGenericSycl<TElem, TDim, TIdx, TDev> const& buf) -> TIdx
+		        static auto getExtent(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf) -> TIdx
 		        {
 		            return buf.m_extentElements[TIdxIntegralConst::value];
 		        }
 		    };
 
 		    //! The BufGenericSycl native pointer get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct GetPtrNative<BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct GetPtrNative<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
-		        static_assert(
-		            !sizeof(TElem),
-		            "Accessing device-side pointers on the host is not supported by the SYCL back-end");
-
-		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TDev> const&) -> TElem const*
+		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf) -> TElem const*
 		        {
-		            return nullptr;
+		            return buf.m_spMem.get();
 		        }
 
-		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TDev>&) -> TElem*
+		        static auto getPtrNative(BufGenericSycl<TElem, TDim, TIdx, TPltf>& buf) -> TElem*
 		        {
-		            return nullptr;
+		            return buf.m_spMem.get();
 		        }
 		    };
 
 		    //! The BufGenericSycl pointer on device get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct GetPtrDev<BufGenericSycl<TElem, TDim, TIdx, TDev>, TDev>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct GetPtrDev<BufGenericSycl<TElem, TDim, TIdx, TPltf>, DevGenericSycl<TPltf>>
 		    {
-		        static_assert(
-		            !sizeof(TElem),
-		            "Accessing device-side pointers on the host is not supported by the SYCL back-end");
-
-		        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TDev> const&, TDev const&) -> TElem const*
+		        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TPltf> const& buf, DevGenericSycl<TPltf> const& dev)
+		            -> TElem const*
 		        {
-		            return nullptr;
+		            if(dev == getDev(buf))
+		            {
+		                return buf.m_spMem.get();
+		            }
+		            else
+		            {
+		                throw std::runtime_error("The buffer is not accessible from the given device!");
+		            }
 		        }
 
-		        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TDev>&, TDev const&) -> TElem*
+		        static auto getPtrDev(BufGenericSycl<TElem, TDim, TIdx, TPltf>& buf, DevGenericSycl<TPltf> const& dev)
+		            -> TElem*
 		        {
-		            return nullptr;
+		            if(dev == getDev(buf))
+		            {
+		                return buf.m_spMem.get();
+		            }
+		            else
+		            {
+		                throw std::runtime_error("The buffer is not accessible from the given device!");
+		            }
 		        }
 		    };
 
@@ -30255,68 +30708,91 @@
 		    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TPltf>>
 		    {
 		        template<typename TExtent>
-		        static auto allocBuf(DevGenericSycl<TPltf> const& dev, TExtent const& ext)
-		            -> BufGenericSycl<TElem, TDim, TIdx, DevGenericSycl<TPltf>>
+		        static auto allocBuf(DevGenericSycl<TPltf> const& dev, TExtent const& extent)
+		            -> BufGenericSycl<TElem, TDim, TIdx, TPltf>
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		            if constexpr(TDim::value == 0 || TDim::value == 1)
 		            {
-		                auto const width = getWidth(ext);
+		                auto const width = getWidth(extent);
 
-		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 		                std::cout << __func__ << " ew: " << width << " ewb: " << widthBytes << '\n';
-		#    endif
-
-		                auto const range = sycl::range<1>{width};
-		                return {dev, sycl::buffer<TElem, 1>{range}, ext};
 		            }
 		            else if constexpr(TDim::value == 2)
 		            {
-		                auto const width = getWidth(ext);
-		                auto const height = getHeight(ext);
+		                auto const width = getWidth(extent);
+		                auto const height = getHeight(extent);
 
-		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 		                std::cout << __func__ << " ew: " << width << " eh: " << height << " ewb: " << widthBytes
 		                          << " pitch: " << widthBytes << '\n';
-		#    endif
-
-		                auto const range = sycl::range<2>{width, height};
-		                return {dev, sycl::buffer<TElem, 2>{range}, ext};
 		            }
 		            else if constexpr(TDim::value == 3)
 		            {
-		                auto const width = getWidth(ext);
-		                auto const height = getHeight(ext);
-		                auto const depth = getDepth(ext);
+		                auto const width = getWidth(extent);
+		                auto const height = getHeight(extent);
+		                auto const depth = getDepth(extent);
 
-		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 		                std::cout << __func__ << " ew: " << width << " eh: " << height << " ed: " << depth
 		                          << " ewb: " << widthBytes << " pitch: " << widthBytes << '\n';
+		            }
 		#    endif
 
-		                auto const range = sycl::range<3>{width, height, depth};
-		                return {dev, sycl::buffer<TElem, 3>{range}, ext};
-		            }
+		            auto const& [nativeDev, nativeContext] = dev.getNativeHandle();
+		            TElem* memPtr = sycl::malloc_device<TElem>(
+		                static_cast<std::size_t>(getExtentProduct(extent)),
+		                nativeDev,
+		                nativeContext);
+		            // captured structured bindings are a C++20 extension
+		            // auto deleter = [nativeContext](TElem* ptr) { sycl::free(ptr, nativeContext); };
+		            auto deleter = [&dev](TElem* ptr) { sycl::free(ptr, dev.getNativeHandle().second); };
+
+		            return BufGenericSycl<TElem, TDim, TIdx, TPltf>(dev, memPtr, std::move(deleter), extent);
 		        }
 		    };
 
-		    //! The BufGenericSycl offset get trait specialization.
-		    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct GetOffset<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    //! The BufGenericSycl stream-ordered memory allocation capability trait specialization.
+		    template<typename TDim, typename TPltf>
+		    struct HasAsyncBufSupport<TDim, DevGenericSycl<TPltf>> : std::false_type
 		    {
-		        static auto getOffset(BufGenericSycl<TElem, TDim, TIdx, TDev> const&) -> TIdx
+		    };
+
+		    //! The BufGenericSycl offset get trait specialization.
+		    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct GetOffset<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TPltf>>
+		    {
+		        static auto getOffset(BufGenericSycl<TElem, TDim, TIdx, TPltf> const&) -> TIdx
 		        {
 		            return 0u;
 		        }
 		    };
 
+		    //! The pinned/mapped memory allocation trait specialization for the SYCL devices.
+		    template<typename TPltf, typename TElem, typename TDim, typename TIdx>
+		    struct BufAllocMapped
+		    {
+		        template<typename TExtent>
+		        static auto allocMappedBuf(DevCpu const& host, TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+		        {
+		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+		            // Allocate SYCL page-locked memory on the host, mapped into the TPltf address space and
+		            // accessible to all devices in the TPltf.
+		            auto ctx = TPltf::syclContext();
+		            TElem* memPtr = sycl::malloc_host<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
+		            auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
+
+		            return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+		        }
+		    };
+
 		    //! The BufGenericSycl idx type trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-		    struct IdxType<BufGenericSycl<TElem, TDim, TIdx, TDev>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
+		    struct IdxType<BufGenericSycl<TElem, TDim, TIdx, TPltf>>
 		    {
 		        using type = TIdx;
 		    };
@@ -30325,16 +30801,13 @@
 		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
 		    struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TPltf>>
 		    {
-		        static_assert(!sizeof(TElem), "Accessing host pointers on the device is not supported by the SYCL back-end");
-
-		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const&, DevGenericSycl<TPltf> const&) -> TElem const*
+		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPltf> const&) -> TElem const*
 		        {
-		            return nullptr;
+		            return getPtrNative(buf);
 		        }
-
-		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>&, DevGenericSycl<TPltf> const&) -> TElem*
+		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPltf> const&) -> TElem*
 		        {
-		            return nullptr;
+		            return getPtrNative(buf);
 		        }
 		    };
 		} // namespace alpaka::trait
@@ -30343,10 +30816,9 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/sycl/Copy.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Bernhard Manfred Gruber, Luca Ferragina, Aurora Perego, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
-
 
 			// #pragma once
 			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already expanded
@@ -30372,7 +30844,7 @@
 
 				#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-				// #    include <CL/sycl.hpp>    // amalgamate: file already included
+				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 				namespace alpaka::detail
 				{
@@ -30411,51 +30883,187 @@
 				// ============================================================================
 
 			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
 
 			// #include <memory>    // amalgamate: file already included
 			// #include <type_traits>    // amalgamate: file already included
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
-			// #    include <CL/sycl.hpp>    // amalgamate: file already included
+			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 			namespace alpaka::detail
 			{
-			    template<typename TElem, std::size_t TDim>
-			    using SrcAccessor = sycl::
-			        accessor<TElem, TDim, sycl::access_mode::read, sycl::target::global_buffer, sycl::access::placeholder::true_t>;
-
-			    template<typename TElem, std::size_t TDim>
-			    using DstAccessor = sycl::accessor<
-			        TElem,
-			        TDim,
-			        sycl::access_mode::write,
-			        sycl::target::global_buffer,
-			        sycl::access::placeholder::true_t>;
-
-			    enum class Direction
+			    //!  The SYCL device memory copy task base.
+			    template<typename TDim, typename TViewDst, typename TViewSrc, typename TExtent>
+			    struct TaskCopySyclBase
 			    {
-			        h2d,
-			        d2h,
-			        d2d
-			    };
+			        static_assert(
+			            std::is_same_v<std::remove_const_t<alpaka::Elem<TViewSrc>>, std::remove_const_t<alpaka::Elem<TViewDst>>>,
+			            "The source and the destination view are required to have the same element type!");
+			        using ExtentSize = Idx<TExtent>;
+			        using DstSize = Idx<TViewDst>;
+			        using SrcSize = Idx<TViewSrc>;
+			        using Elem = alpaka::Elem<TViewSrc>;
 
-			    template<typename TSrc, typename TDst, Direction TDirection>
-			    struct TaskCopySycl
-			    {
-			        auto operator()(sycl::handler& cgh) const -> void
+			        template<typename TViewFwd>
+			        TaskCopySyclBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
+			            : m_extent(getExtentVec(extent))
+			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+			            , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+			            , m_dstExtent(getExtentVec(viewDst))
+			            , m_srcExtent(getExtentVec(viewSrc))
+			#    endif
+			            , m_dstPitchBytes(getPitchBytesVec(viewDst))
+			            , m_srcPitchBytes(getPitchBytesVec(viewSrc))
+			            , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
+			            , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
 			        {
-			            if constexpr(TDirection == Direction::d2h || TDirection == Direction::d2d)
-			                cgh.require(m_src);
-
-			            if constexpr(TDirection == Direction::h2d || TDirection == Direction::d2d)
-			                cgh.require(m_dst);
-
-			            cgh.copy(m_src, m_dst);
+			            if constexpr(TDim::value > 0)
+			            {
+			                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
+			                ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).foldrAll(std::logical_or<bool>()));
+			            }
 			        }
 
-			        TSrc m_src;
-			        TDst m_dst;
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			        auto printDebug() const -> void
+			        {
+			            std::cout << __func__ << " e: " << m_extent << " ewb: " << this->m_extentWidthBytes
+			                      << " de: " << m_dstExtent << " dptr: " << reinterpret_cast<void*>(m_dstMemNative)
+			                      << " se: " << m_srcExtent << " sptr: " << reinterpret_cast<void const*>(m_srcMemNative)
+			                      << std::endl;
+			        }
+			#    endif
+
+			        Vec<TDim, ExtentSize> const m_extent;
+			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+			        ExtentSize const m_extentWidthBytes;
+			        Vec<TDim, DstSize> const m_dstExtent;
+			        Vec<TDim, SrcSize> const m_srcExtent;
+			#    endif
+
+			        Vec<TDim, DstSize> const m_dstPitchBytes;
+			        Vec<TDim, SrcSize> const m_srcPitchBytes;
+			        std::uint8_t* const m_dstMemNative;
+			        std::uint8_t const* const m_srcMemNative;
+			        static constexpr auto is_sycl_task = true;
+			    };
+
+			    //! The SYCL device ND memory copy task.
+			    template<typename TDim, typename TViewDst, typename TViewSrc, typename TExtent>
+			    struct TaskCopySycl : public TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>
+			    {
+			        using DimMin1 = DimInt<TDim::value - 1u>;
+			        using typename TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>::ExtentSize;
+			        using typename TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>::DstSize;
+			        using typename TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>::SrcSize;
+
+			        using TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>::TaskCopySyclBase;
+
+			        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			        {
+			            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			            this->printDebug();
+			#    endif
+			            // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
+			            // iteration.
+			            Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
+			            // [z, y, x] -> [y, x] because the z pitch (the full size of the buffer) is not required.
+			            Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
+			            Vec<DimMin1, SrcSize> const srcPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_srcPitchBytes));
+
+			            // Record an event for each memcpy call
+			            std::vector<sycl::event> events;
+			            events.reserve(static_cast<std::size_t>(extentWithoutInnermost.prod()));
+
+			            if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+			            {
+			                meta::ndLoopIncIdx(
+			                    extentWithoutInnermost,
+			                    [&](Vec<DimMin1, ExtentSize> const& idx)
+			                    {
+			                        events.push_back(queue.memcpy(
+			                            reinterpret_cast<void*>(
+			                                this->m_dstMemNative
+			                                + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
+			                                      .foldrAll(std::plus<DstSize>())),
+			                            reinterpret_cast<void const*>(
+			                                this->m_srcMemNative
+			                                + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost)
+			                                      .foldrAll(std::plus<SrcSize>())),
+			                            static_cast<std::size_t>(this->m_extentWidthBytes),
+			                            requirements));
+			                    });
+			            }
+
+			            // Return an event that depends on all the events assciated to the memcpy calls
+			            return queue.ext_oneapi_submit_barrier(events);
+			        }
+			    };
+
+			    //! The SYCL device 1D memory copy task.
+			    template<typename TViewDst, typename TViewSrc, typename TExtent>
+			    struct TaskCopySycl<DimInt<1u>, TViewDst, TViewSrc, TExtent>
+			        : TaskCopySyclBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>
+			    {
+			        using TaskCopySyclBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopySyclBase;
+			        using Elem = alpaka::Elem<TViewSrc>;
+
+			        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			        {
+			            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			            this->printDebug();
+			#    endif
+			            if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+			            {
+			                return queue.memcpy(
+			                    reinterpret_cast<void*>(this->m_dstMemNative),
+			                    reinterpret_cast<void const*>(this->m_srcMemNative),
+			                    sizeof(Elem) * static_cast<std::size_t>(this->m_extent.prod()),
+			                    requirements);
+			            }
+			            else
+			            {
+			                return queue.ext_oneapi_submit_barrier();
+			            }
+			        }
+			    };
+
+			    //! The scalar SYCL memory copy trait.
+			    template<typename TViewDst, typename TViewSrc, typename TExtent>
+			    struct TaskCopySycl<DimInt<0u>, TViewDst, TViewSrc, TExtent>
+			    {
+			        static_assert(
+			            std::is_same_v<std::remove_const_t<alpaka::Elem<TViewSrc>>, std::remove_const_t<alpaka::Elem<TViewDst>>>,
+			            "The source and the destination view are required to have the same element type!");
+
+			        using Elem = alpaka::Elem<TViewSrc>;
+
+			        template<typename TViewDstFwd>
+			        TaskCopySycl(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, [[maybe_unused]] TExtent const& extent)
+			            : m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
+			            , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
+			        {
+			            // all zero-sized extents are equivalent
+			            ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
+			            ALPAKA_ASSERT(getExtentVec(viewDst).prod() == 1u);
+			            ALPAKA_ASSERT(getExtentVec(viewSrc).prod() == 1u);
+			        }
+
+			        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			        {
+			            return queue.memcpy(m_dstMemNative, m_srcMemNative, sizeof(Elem), requirements);
+			        }
+
+			        void* m_dstMemNative;
+			        void const* m_srcMemNative;
 			        static constexpr auto is_sycl_task = true;
 			    };
 			} // namespace alpaka::detail
@@ -30464,76 +31072,44 @@
 			namespace alpaka::trait
 			{
 			    //! The SYCL host-to-device memory copy trait specialization.
-			    template<typename TDim, typename TPltf>
+			    template<typename TPltf, typename TDim>
 			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltf>, DevCpu>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
-			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
+			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
+			            -> alpaka::detail::TaskCopySycl<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
 			        {
 			            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-			            constexpr auto copy_dim = static_cast<int>(Dim<TExtent>::value);
-			            using ElemType = Elem<std::remove_const_t<TViewSrc>>;
-			            using SrcType = ElemType const*;
-			            using DstType = alpaka::detail::DstAccessor<ElemType, copy_dim>;
-
-			            auto const range = detail::make_sycl_range(ext);
-			            auto const offset = detail::make_sycl_offset(viewDst);
-
-			            return detail::TaskCopySycl<SrcType, DstType, detail::Direction::h2d>{
-			                getPtrNative(viewSrc),
-			                DstType{viewDst.m_buffer, range, offset}};
+			            return {std::forward<TViewDstFwd>(viewDst), viewSrc, extent};
 			        }
 			    };
 
 			    //! The SYCL device-to-host memory copy trait specialization.
-			    template<typename TDim, typename TPltf>
+			    template<typename TPltf, typename TDim>
 			    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TPltf>>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
-			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
+			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
+			            -> alpaka::detail::TaskCopySycl<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
 			        {
 			            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-			            constexpr auto copy_dim = static_cast<int>(Dim<TExtent>::value);
-			            using ElemType = Elem<std::remove_const_t<TViewSrc>>;
-			            using SrcType = alpaka::detail::SrcAccessor<ElemType, copy_dim>;
-			            using DstType = ElemType*;
-
-			            auto const range = detail::make_sycl_range(ext);
-			            auto const offset = detail::make_sycl_offset(viewSrc);
-
-			            auto view_src = const_cast<TViewSrc&>(viewSrc);
-
-			            return detail::TaskCopySycl<SrcType, DstType, detail::Direction::d2h>{
-			                SrcType{view_src.m_buffer, range, offset},
-			                getPtrNative(viewDst)};
+			            return {std::forward<TViewDstFwd>(viewDst), viewSrc, extent};
 			        }
 			    };
 
 			    //! The SYCL device-to-device memory copy trait specialization.
-			    template<typename TDim, typename TPltfDst, typename TPltfSrc>
+			    template<typename TPltfDst, typename TPltfSrc, typename TDim>
 			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltfDst>, DevGenericSycl<TPltfSrc>>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
-			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& ext)
+			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
+			            -> alpaka::detail::TaskCopySycl<TDim, std::remove_reference_t<TViewDstFwd>, TViewSrc, TExtent>
 			        {
 			            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-			            constexpr auto copy_dim = static_cast<int>(Dim<TExtent>::value);
-			            using ElemType = Elem<std::remove_const_t<TViewSrc>>;
-			            using SrcType = alpaka::detail::SrcAccessor<ElemType, copy_dim>;
-			            using DstType = alpaka::detail::DstAccessor<ElemType, copy_dim>;
-
-			            auto const range = detail::make_sycl_range(ext);
-			            auto const offset_src = detail::make_sycl_offset(viewSrc);
-			            auto const offset_dst = detail::make_sycl_offset(viewDst);
-
-			            auto view_src = const_cast<TViewSrc&>(viewSrc);
-
-			            return detail::TaskCopySycl<SrcType, DstType, detail::Direction::d2d>{
-			                SrcType{view_src.m_buffer, range, offset_src},
-			                DstType{viewDst.m_buffer, range, offset_dst}};
+			            return {std::forward<TViewDstFwd>(viewDst), viewSrc, extent};
 			        }
 			    };
 			} // namespace alpaka::trait
@@ -30546,7 +31122,7 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/sycl/Set.hpp ==
 			// ==
-			/* Copyright 2022 Jan Stephan
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -30559,6 +31135,9 @@
 			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/mem/buf/sycl/Common.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
 
 			// #include <cstddef>    // amalgamate: file already included
@@ -30572,29 +31151,171 @@
 
 			    namespace detail
 			    {
-			        template<std::size_t TDim>
-			        using Accessor = sycl::accessor<
-			            std::byte,
-			            TDim,
-			            sycl::access_mode::write,
-			            sycl::target::global_buffer,
-			            sycl::access::placeholder::true_t>;
-
-			        //! The SYCL memory set trait.
-			        template<typename TAccessor>
-			        struct TaskSetSycl
+			        //!  The SYCL ND memory set task base.
+			        template<typename TDim, typename TView, typename TExtent>
+			        struct TaskSetSyclBase
 			        {
-			            auto operator()(sycl::handler& cgh) const -> void
+			            using ExtentSize = Idx<TExtent>;
+			            using DstSize = Idx<TView>;
+			            using Elem = alpaka::Elem<TView>;
+
+			            template<typename TViewFwd>
+			            TaskSetSyclBase(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
+			                : m_byte(byte)
+			                , m_extent(getExtentVec(extent))
+			                , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+			                , m_dstExtent(getExtentVec(view))
+			#    endif
+
+			                , m_dstPitchBytes(getPitchBytesVec(view))
+			                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
+
 			            {
-			                cgh.require(m_accessor);
-			                cgh.fill(m_accessor, m_value);
+			                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
+			                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
 			            }
 
-			            TAccessor m_accessor;
-			            std::byte m_value;
-			            // Distinguish from non-alpaka types (= host tasks)
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			            auto printDebug() const -> void
+			            {
+			                std::cout << __func__ << " e: " << this->m_extent << " ewb: " << this->m_extentWidthBytes
+			                          << " de: " << this->m_dstExtent << " dptr: " << reinterpret_cast<void*>(this->m_dstMemNative)
+			                          << " dpitchb: " << this->m_dstPitchBytes << std::endl;
+			            }
+			#    endif
+
+			            std::uint8_t const m_byte;
+			            Vec<TDim, ExtentSize> const m_extent;
+			            ExtentSize const m_extentWidthBytes;
+			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+			            Vec<TDim, DstSize> const m_dstExtent;
+			#    endif
+			            Vec<TDim, DstSize> const m_dstPitchBytes;
+			            std::uint8_t* const m_dstMemNative;
 			            static constexpr auto is_sycl_task = true;
 			        };
+
+			        //! The SYCL device ND memory set task.
+			        template<typename TDim, typename TView, typename TExtent>
+			        struct TaskSetSycl : public TaskSetSyclBase<TDim, TView, TExtent>
+			        {
+			            using DimMin1 = DimInt<TDim::value - 1u>;
+			            using typename TaskSetSyclBase<TDim, TView, TExtent>::ExtentSize;
+			            using typename TaskSetSyclBase<TDim, TView, TExtent>::DstSize;
+
+			            using TaskSetSyclBase<TDim, TView, TExtent>::TaskSetSyclBase;
+
+			            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			            {
+			                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			                this->printDebug();
+			#    endif
+			                // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
+			                // iteration.
+			                Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
+			                // [z, y, x] -> [y, x] because the z pitch (the full idx of the buffer) is not required.
+			                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
+
+			                // Record an event for each memcpy call
+			                std::vector<sycl::event> events;
+			                events.reserve(static_cast<std::size_t>(extentWithoutInnermost.prod()));
+
+			                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+			                {
+			                    meta::ndLoopIncIdx(
+			                        extentWithoutInnermost,
+			                        [&](Vec<DimMin1, ExtentSize> const& idx)
+			                        {
+			                            events.push_back(queue.memset(
+			                                reinterpret_cast<void*>(
+			                                    this->m_dstMemNative
+			                                    + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
+			                                          .foldrAll(std::plus<DstSize>())),
+			                                this->m_byte,
+			                                static_cast<std::size_t>(this->m_extentWidthBytes),
+			                                requirements));
+			                        });
+			                }
+
+			                // Return an event that depends on all the events assciated to the memcpy calls
+			                return queue.ext_oneapi_submit_barrier(events);
+			            }
+			        };
+
+			        //! The 1D SYCL memory set task.
+			        template<typename TView, typename TExtent>
+			        struct TaskSetSycl<DimInt<1u>, TView, TExtent> : public TaskSetSyclBase<DimInt<1u>, TView, TExtent>
+			        {
+			            using TaskSetSyclBase<DimInt<1u>, TView, TExtent>::TaskSetSyclBase;
+
+			            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			            {
+			                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			                this->printDebug();
+			#    endif
+			                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+			                {
+			                    return queue.memset(
+			                        reinterpret_cast<void*>(this->m_dstMemNative),
+			                        this->m_byte,
+			                        static_cast<std::size_t>(this->m_extentWidthBytes),
+			                        requirements);
+			                }
+			                else
+			                {
+			                    return queue.ext_oneapi_submit_barrier();
+			                }
+			            }
+			        };
+
+			        //! The SYCL device scalar memory set task.
+			        template<typename TView, typename TExtent>
+			        struct TaskSetSycl<DimInt<0u>, TView, TExtent>
+			        {
+			            using ExtentSize = Idx<TExtent>;
+			            using Scalar = Vec<DimInt<0u>, ExtentSize>;
+			            using DstSize = Idx<TView>;
+			            using Elem = alpaka::Elem<TView>;
+
+			            template<typename TViewFwd>
+			            TaskSetSycl(TViewFwd&& view, std::uint8_t const& byte, [[maybe_unused]] TExtent const& extent)
+			                : m_byte(byte)
+			                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
+			            {
+			                // all zero-sized extents are equivalent
+			                ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
+			                ALPAKA_ASSERT(getExtentVec(view).prod() == 1u);
+			            }
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			            auto printDebug() const -> void
+			            {
+			                std::cout << __func__ << " e: " << Scalar() << " ewb: " << sizeof(Elem) << " de: " << Scalar()
+			                          << " dptr: " << reinterpret_cast<void*>(m_dstMemNative) << " dpitchb: " << Scalar()
+			                          << std::endl;
+			            }
+			#    endif
+
+			            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+			            {
+			                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+			                printDebug();
+			#    endif
+			                return queue.memset(reinterpret_cast<void*>(m_dstMemNative), m_byte, sizeof(Elem), requirements);
+			            }
+
+			            std::uint8_t const m_byte;
+			            std::uint8_t* const m_dstMemNative;
+			            static constexpr auto is_sycl_task = true;
+			        };
+
 			    } // namespace detail
 
 
@@ -30604,27 +31325,17 @@
 			        template<typename TDim, typename TPltf>
 			        struct CreateTaskMemset<TDim, DevGenericSycl<TPltf>>
 			        {
-			            template<typename TExtent, typename TViewFwd>
-			            static auto createTaskMemset(TViewFwd&& view, std::uint8_t const& byte, TExtent const& ext)
+			            template<typename TExtent, typename TView>
+			            static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
+			                -> detail::TaskSetSycl<TDim, TView, TExtent>
 			            {
-			                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-			                constexpr auto set_dim = static_cast<int>(Dim<TExtent>::value);
-			                using TView = std::remove_reference_t<TViewFwd>;
-			                using ElemType = Elem<TView>;
-			                using DstType = alpaka::detail::Accessor<set_dim>;
-
-			                // Reinterpret as byte buffer
-			                auto buf = view.m_buffer.template reinterpret<std::byte>();
-			                auto const byte_val = static_cast<std::byte>(byte);
-
-			                auto const range = detail::make_sycl_range(ext, sizeof(ElemType));
-			                return detail::TaskSetSycl<DstType>{DstType{buf, range}, byte_val};
+			                return detail::TaskSetSycl<TDim, TView, TExtent>(view, byte, extent);
 			            }
 			        };
-			    } // namespace trait
-			} // namespace alpaka
 
+			    } // namespace trait
+
+			} // namespace alpaka
 			#endif
 			// ==
 			// == ./include/alpaka/mem/buf/sycl/Set.hpp ==
@@ -30642,12 +31353,12 @@
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
-	    using BufCpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, DevCpuSyclIntel>;
+	    using BufCpuSycl = BufGenericSycl<TElem, TDim, TIdx, PltfCpuSycl>;
 	}
 
 	#endif
 	// ==
-	// == ./include/alpaka/mem/buf/BufCpuSyclIntel.hpp ==
+	// == ./include/alpaka/mem/buf/BufCpuSycl.hpp ==
 	// ============================================================================
 
 	// ============================================================================
@@ -32152,7 +32863,7 @@
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufGpuSyclIntel.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2022 Jan Stephan, Luca Ferragina
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -32165,7 +32876,7 @@
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
-	    using BufGpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, DevGpuSyclIntel>;
+	    using BufGpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, PltfGpuSyclIntel>;
 	}
 
 	#endif
@@ -32332,15 +33043,18 @@
 	// ============================================================================
 	// == ./include/alpaka/mem/view/ViewPlainPtr.hpp ==
 	// ==
-	/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber, Jan Stephan
+	/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber,
+	 *                Jan Stephan, Andrea Bocci, Aurora Perego
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
 	// #include <type_traits>    // amalgamate: file already included
@@ -32511,6 +33225,17 @@
 	        };
 	#endif
 
+	#if defined(ALPAKA_ACC_SYCL_ENABLED)
+	        //! The SYCL device CreateStaticDevMemView trait specialization.
+	        template<typename TPltf>
+	        struct CreateStaticDevMemView<DevGenericSycl<TPltf>>
+	        {
+	            static_assert(
+	                meta::DependentFalseType<TPltf>::value,
+	                "The SYCL backend does not support global device variables.");
+	        };
+	#endif
+
 	        //! The CPU device CreateViewPlainPtr trait specialization.
 	        template<>
 	        struct CreateViewPlainPtr<DevCpu>
@@ -32548,6 +33273,26 @@
 	        };
 	#endif
 
+	#if defined(ALPAKA_ACC_SYCL_ENABLED)
+	        //! The SYCL device CreateViewPlainPtr trait specialization.
+	        template<typename TPltf>
+	        struct CreateViewPlainPtr<DevGenericSycl<TPltf>>
+	        {
+	            template<typename TElem, typename TExtent, typename TPitch>
+	            static auto createViewPlainPtr(
+	                DevGenericSycl<TPltf> const& dev,
+	                TElem* pMem,
+	                TExtent const& extent,
+	                TPitch const& pitch)
+	            {
+	                return alpaka::ViewPlainPtr<DevGenericSycl<TPltf>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+	                    pMem,
+	                    dev,
+	                    extent,
+	                    pitch);
+	            }
+	        };
+	#endif
 	        //! The ViewPlainPtr offset get trait specialization.
 	        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
 	        struct GetOffset<TIdxIntegralConst, ViewPlainPtr<TDev, TElem, TDim, TIdx>>
@@ -33813,7 +34558,7 @@
 // #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
 // platform
 // #include "alpaka/pltf/PltfCpu.hpp"    // amalgamate: file already expanded
-// #include "alpaka/pltf/PltfCpuSyclIntel.hpp"    // amalgamate: file already expanded
+// #include "alpaka/pltf/PltfCpuSycl.hpp"    // amalgamate: file already expanded
 	// ============================================================================
 	// == ./include/alpaka/pltf/PltfCudaRt.hpp ==
 	// ==
@@ -35374,6 +36119,7 @@
 	// == ./include/alpaka/rand/RandDefault.hpp ==
 	// ============================================================================
 
+// #include "alpaka/rand/RandGenericSycl.hpp"    // amalgamate: file already expanded
 // #include "alpaka/rand/RandPhilox.hpp"    // amalgamate: file already expanded
 // #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already expanded
 // #include "alpaka/rand/RandUniformCudaHipRand.hpp"    // amalgamate: file already expanded
@@ -35421,49 +36167,49 @@
 	// ============================================================================
 
 	// ============================================================================
-	// == ./include/alpaka/queue/QueueCpuSyclIntelBlocking.hpp ==
+	// == ./include/alpaka/queue/QueueCpuSyclBlocking.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSyclIntel.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
-	    using QueueCpuSyclIntelBlocking = QueueGenericSyclBlocking<DevCpuSyclIntel>;
+	    using QueueCpuSyclBlocking = QueueGenericSyclBlocking<DevCpuSycl>;
 	}
 
 	#endif
 	// ==
-	// == ./include/alpaka/queue/QueueCpuSyclIntelBlocking.hpp ==
+	// == ./include/alpaka/queue/QueueCpuSyclBlocking.hpp ==
 	// ============================================================================
 
 	// ============================================================================
-	// == ./include/alpaka/queue/QueueCpuSyclIntelNonBlocking.hpp ==
+	// == ./include/alpaka/queue/QueueCpuSyclNonBlocking.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSyclIntel.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
-	    using QueueCpuSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevCpuSyclIntel>;
+	    using QueueCpuSyclNonBlocking = QueueGenericSyclNonBlocking<DevCpuSycl>;
 	}
 
 	#endif
 	// ==
-	// == ./include/alpaka/queue/QueueCpuSyclIntelNonBlocking.hpp ==
+	// == ./include/alpaka/queue/QueueCpuSyclNonBlocking.hpp ==
 	// ============================================================================
 
 	// ============================================================================
