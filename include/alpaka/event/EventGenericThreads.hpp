@@ -154,8 +154,6 @@ namespace alpaka
                         {
                             spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
                         }
-                        spEventImpl
-                            .reset(); // avoid keeping the event alive as part of the background thread task's future
                     });
             }
         };
@@ -304,8 +302,6 @@ namespace alpaka
                         {
                             std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
                             spEventImpl->wait(enqueueCount, lk2);
-                            spEventImpl.reset(); // avoid keeping the event alive as part of the background thread
-                                                 // task's future
                         });
                 }
             }
@@ -376,9 +372,12 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto currentThreadWaitFor(QueueGenericThreadsNonBlocking<TDev> const& queue) -> void
             {
-                EventGenericThreads<TDev> event(getDev(queue));
-                alpaka::enqueue(const_cast<QueueGenericThreadsNonBlocking<TDev>&>(queue), event);
-                wait(event);
+                // Enqueue a dummy tasks into the worker thread of the queue will provide a future we can wait for.
+                // Previously we enqueued an event into the queue but this will not guarantee that queue is empty
+                // after the event is finished because the event handling can be finished before the event task is
+                // fully removed from the queue.
+                auto f = queue.m_spQueueImpl->m_workerThread.submit([]() noexcept {});
+                f.wait();
             }
         };
     } // namespace trait
