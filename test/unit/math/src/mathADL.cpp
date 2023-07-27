@@ -38,6 +38,8 @@ namespace custom
         Floor,
         Fmod,
         Log,
+        Log2,
+        Log10,
         Max,
         Min,
         Pow,
@@ -151,6 +153,18 @@ namespace custom
         return Custom::Log | c;
     }
 
+    ALPAKA_FN_HOST_ACC auto log2(Custom c);
+    ALPAKA_FN_HOST_ACC auto log2(Custom c)
+    {
+        return Custom::Log2 | c;
+    }
+
+    ALPAKA_FN_HOST_ACC auto log10(Custom c);
+    ALPAKA_FN_HOST_ACC auto log10(Custom c)
+    {
+        return Custom::Log10 | c;
+    }
+
     ALPAKA_FN_HOST_ACC auto max(Custom a, Custom b);
     ALPAKA_FN_HOST_ACC auto max(Custom a, Custom b)
     {
@@ -251,6 +265,8 @@ struct AdlKernel
         ALPAKA_CHECK(*success, alpaka::math::exp(acc, Custom::Arg1) == (Custom::Exp | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::floor(acc, Custom::Arg1) == (Custom::Floor | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::log(acc, Custom::Arg1) == (Custom::Log | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::log2(acc, Custom::Arg1) == (Custom::Log2 | Custom::Arg1));
+        ALPAKA_CHECK(*success, alpaka::math::log10(acc, Custom::Arg1) == (Custom::Log10 | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::round(acc, Custom::Arg1) == (Custom::Round | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::lround(acc, Custom::Arg1) == (Custom::Lround | Custom::Arg1));
         ALPAKA_CHECK(*success, alpaka::math::llround(acc, Custom::Arg1) == (Custom::Llround | Custom::Arg1));

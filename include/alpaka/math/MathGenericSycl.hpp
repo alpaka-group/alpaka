@@ -127,6 +127,16 @@ namespace alpaka::math
     {
     };
 
+    //! The SYCL log2.
+    class Log2GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog2, Log2GenericSycl>
+    {
+    };
+
+    //! The SYCL log10.
+    class Log10GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog10, Log10GenericSycl>
+    {
+    };
+
     //! The SYCL max.
     class MaxGenericSycl : public concepts::Implements<alpaka::math::ConceptMathMax, MaxGenericSycl>
     {
@@ -216,6 +226,8 @@ namespace alpaka::math
         , public IsinfGenericSycl
         , public IsnanGenericSycl
         , public LogGenericSycl
+        , public Log2GenericSycl
+        , public Log10GenericSycl
         , public MaxGenericSycl
         , public MinGenericSycl
         , public PowGenericSycl
@@ -479,6 +491,26 @@ namespace alpaka::math::trait
         auto operator()(math::LogGenericSycl const&, TArg const& arg)
         {
             return sycl::log(arg);
+        }
+    };
+
+    //! The SYCL log2 trait specialization.
+    template<typename TArg>
+    struct Log2<math::Log2GenericSycl, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+    {
+        auto operator()(math::Log2GenericSycl const&, TArg const& arg)
+        {
+            return sycl::log2(arg);
+        }
+    };
+
+    //! The SYCL log10 trait specialization.
+    template<typename TArg>
+    struct Log10<math::Log10GenericSycl, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+    {
+        auto operator()(math::Log10GenericSycl const&, TArg const& arg)
+        {
+            return sycl::log10(arg);
         }
     };
 

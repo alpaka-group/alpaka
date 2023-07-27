@@ -131,6 +131,16 @@ namespace alpaka::math
     {
     };
 
+    // ! The CUDA built in log2.
+    class Log2UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog2, Log2UniformCudaHipBuiltIn>
+    {
+    };
+
+    // ! The CUDA built in log10.
+    class Log10UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog10, Log10UniformCudaHipBuiltIn>
+    {
+    };
+
     //! The CUDA built in max.
     class MaxUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMax, MaxUniformCudaHipBuiltIn>
     {
@@ -218,6 +228,8 @@ namespace alpaka::math
         , public FloorUniformCudaHipBuiltIn
         , public FmodUniformCudaHipBuiltIn
         , public LogUniformCudaHipBuiltIn
+        , public Log2UniformCudaHipBuiltIn
+        , public Log10UniformCudaHipBuiltIn
         , public MaxUniformCudaHipBuiltIn
         , public MinUniformCudaHipBuiltIn
         , public PowUniformCudaHipBuiltIn
@@ -786,6 +798,52 @@ namespace alpaka::math
                 // Branch cut along the negative real axis (same as for std::complex),
                 // principal value of ln(z) = ln(|z|) + i * arg(z)
                 return log(ctx, abs(ctx, argument)) + Complex<T>{0.0, 1.0} * arg(ctx, argument);
+            }
+        };
+
+        //! The CUDA log2 trait specialization for real types.
+        template<typename TArg>
+        struct Log2<Log2UniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+        {
+            __host__ __device__ auto operator()(Log2UniformCudaHipBuiltIn const& /* log2_ctx */, TArg const& arg)
+            {
+                if constexpr(is_decayed_v<TArg, float>)
+                    return ::log2f(arg);
+                else if constexpr(is_decayed_v<TArg, double>)
+                    return ::log2(arg);
+                else
+                    static_assert(!sizeof(TArg), "Unsupported data type");
+
+                ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA log10 trait specialization for real types.
+        template<typename TArg>
+        struct Log10<Log10UniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+        {
+            __host__ __device__ auto operator()(Log10UniformCudaHipBuiltIn const& /* log10_ctx */, TArg const& arg)
+            {
+                if constexpr(is_decayed_v<TArg, float>)
+                    return ::log10f(arg);
+                else if constexpr(is_decayed_v<TArg, double>)
+                    return ::log10(arg);
+                else
+                    static_assert(!sizeof(TArg), "Unsupported data type");
+
+                ALPAKA_UNREACHABLE(TArg{});
+            }
+        };
+
+        //! The CUDA log10 trait specialization for complex types.
+        template<typename T>
+        struct Log10<Log10UniformCudaHipBuiltIn, Complex<T>>
+        {
+            //! Take context as original (accelerator) type, since we call other math functions
+            template<typename TCtx>
+            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+            {
+                return log(ctx, argument) / log(ctx, static_cast<T>(10));
             }
         };
 
