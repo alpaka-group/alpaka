@@ -73,9 +73,12 @@ namespace alpaka
     // to the user workflows.
     //
     // Within a OpenMP parallel region kernel will be performed collectively.
-    // All other operations will be performed from one thread (it is not defined which thread).
+    // All other operations will be performed from one thread (it is not defined which thread) and there will be no
+    // implicit synchronization between other operations within the parallel OpenMP parallel region. Operations
+    // executed within a OpenMP parallel region will be executed after already queued tasks before the parallel region
+    // was created.
     //
-    // Outside of a OpenMP parallel region the queue behaves like QueueCpuBlocking.
+    // Outside of an OpenMP parallel region the queue behaves like QueueCpuBlocking.
     class QueueCpuOmp2Collective final
         : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueCpuOmp2Collective>
     {
