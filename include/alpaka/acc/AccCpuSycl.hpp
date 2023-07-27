@@ -17,19 +17,16 @@
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 
-#include <cstddef>
 #include <string>
 #include <utility>
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
-#    include <sycl/sycl.hpp>
-
 namespace alpaka
 {
-    //! The Intel CPU SYCL accelerator.
+    //! The CPU SYCL accelerator.
     //!
-    //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel CPU target device.
+    //! This accelerator allows parallel kernel execution on a oneAPI-capable CPU target device.
     template<typename TDim, typename TIdx>
     class AccCpuSycl final
         : public AccGenericSycl<TDim, TIdx>
@@ -42,7 +39,7 @@ namespace alpaka
 
 namespace alpaka::trait
 {
-    //! The Intel CPU SYCL accelerator name trait specialization.
+    //! The CPU SYCL accelerator name trait specialization.
     template<typename TDim, typename TIdx>
     struct GetAccName<AccCpuSycl<TDim, TIdx>>
     {
@@ -52,14 +49,14 @@ namespace alpaka::trait
         }
     };
 
-    //! The Intel CPU SYCL accelerator device type trait specialization.
+    //! The CPU SYCL accelerator device type trait specialization.
     template<typename TDim, typename TIdx>
     struct DevType<AccCpuSycl<TDim, TIdx>>
     {
         using type = DevCpuSycl;
     };
 
-    //! The Intel CPU SYCL accelerator execution task type trait specialization.
+    //! The CPU SYCL accelerator execution task type trait specialization.
     template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
     struct CreateTaskKernel<AccCpuSycl<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
     {
@@ -72,7 +69,7 @@ namespace alpaka::trait
         }
     };
 
-    //! The Intel CPU SYCL execution task platform type trait specialization.
+    //! The CPU SYCL execution task platform type trait specialization.
     template<typename TDim, typename TIdx>
     struct PlatformType<AccCpuSycl<TDim, TIdx>>
     {

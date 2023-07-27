@@ -6,15 +6,12 @@
 
 #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"
 
-#include <memory>
-#include <utility>
-
 #ifdef ALPAKA_ACC_SYCL_ENABLED
 
 namespace alpaka
 {
     template<typename TDev>
     using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TDev, true>;
-} // namespace alpaka
+}
 
 #endif
