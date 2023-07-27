@@ -21,7 +21,7 @@ var dir_e9c63de0e8709741f56550be53020686 =
       [ "HasMappedBufSupport< PltfCpu >", "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PltfCpu_01_4.html", null ],
       [ "IdxType< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
-    [ "BufCpuSyclIntel.hpp", "BufCpuSyclIntel_8hpp.html", null ],
+    [ "BufCpuSycl.hpp", "BufCpuSycl_8hpp.html", null ],
     [ "BufCudaRt.hpp", "BufCudaRt_8hpp.html", "BufCudaRt_8hpp" ],
     [ "BufFpgaSyclIntel.hpp", "BufFpgaSyclIntel_8hpp.html", null ],
     [ "BufGenericSycl.hpp", "BufGenericSycl_8hpp.html", null ],

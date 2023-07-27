@@ -481,6 +481,8 @@ var namespacealpaka_1_1trait =
     [ "WaiterWaitFor< QueueUniformCudaHipRtBlocking< TApi >, EventUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01Even9bd2d2c09c98f9f04aeae65df74fb19f.html", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01Even9bd2d2c09c98f9f04aeae65df74fb19f" ],
     [ "WaiterWaitFor< QueueUniformCudaHipRtNonBlocking< TApi >, EventUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtNonBlocking_3_01TApi_01_4_00_01E19bd7448850749104fd5d2cb2291b691.html", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtNonBlocking_3_01TApi_01_4_00_01E19bd7448850749104fd5d2cb2291b691" ],
     [ "WaiterWaitFor< TDev, EventGenericThreads< TDev > >", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01TDev_00_01EventGenericThreads_3_01TDev_01_4_01_4.html", "structalpaka_1_1trait_1_1WaiterWaitFor_3_01TDev_00_01EventGenericThreads_3_01TDev_01_4_01_4" ],
+    [ "WarpSize", "structalpaka_1_1trait_1_1WarpSize.html", null ],
     [ "AccToTagType", "namespacealpaka_1_1trait.html#a503e1b034d84e42b00504644b8623948", null ],
-    [ "TagToAccType", "namespacealpaka_1_1trait.html#a24b5d6fa444921ebd3bb7eb7a688ff80", null ]
+    [ "TagToAccType", "namespacealpaka_1_1trait.html#a24b5d6fa444921ebd3bb7eb7a688ff80", null ],
+    [ "warpSize", "namespacealpaka_1_1trait.html#a215ecdb62defcf56faf46d0405c9e8e1", null ]
 ];

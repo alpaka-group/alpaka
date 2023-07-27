@@ -3,7 +3,7 @@ var dir_978fff6d009a0eab698f51257fa3760a =
     [ "common", "dir_8f14782a672cdb098bfbc2217f5c6c1d.html", "dir_8f14782a672cdb098bfbc2217f5c6c1d" ],
     [ "cpu", "dir_c201f7a35756f890108797586165839d.html", "dir_c201f7a35756f890108797586165839d" ],
     [ "DevCpu.hpp", "DevCpu_8hpp.html", "DevCpu_8hpp" ],
-    [ "DevCpuSyclIntel.hpp", "DevCpuSyclIntel_8hpp.html", null ],
+    [ "DevCpuSycl.hpp", "DevCpuSycl_8hpp.html", null ],
     [ "DevCudaRt.hpp", "DevCudaRt_8hpp.html", "DevCudaRt_8hpp" ],
     [ "DevFpgaSyclIntel.hpp", "DevFpgaSyclIntel_8hpp.html", null ],
     [ "DevGenericSycl.hpp", "DevGenericSycl_8hpp.html", null ],

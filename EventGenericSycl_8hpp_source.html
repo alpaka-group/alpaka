@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="title">EventGenericSycl.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="EventGenericSycl_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jan Stephan, Antonio Di Pilato</span></div>
+<a href="EventGenericSycl_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Aurora Perego</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_SYCL_ENABLED</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#    include &lt;CL/sycl.hpp&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#    include &lt;sycl/sycl.hpp&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{<span class="comment"></span></div>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    {</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(QueueGenericSyclNonBlocking&lt;TDev&gt;&amp; queue, EventGenericSycl&lt;TDev&gt;&amp; event)</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">event</span>.setEvent(queue.m_impl-&gt;get_last_event());</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">event</span>.setEvent(queue.m_spQueueImpl-&gt;get_last_event());</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    };</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment"></span> </div>
@@ -186,7 +186,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    {</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ab768cb4d64d49fbd5c722aea7c00d835">enqueue</a>(QueueGenericSyclBlocking&lt;TDev&gt;&amp; queue, EventGenericSycl&lt;TDev&gt;&amp; event)</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">event</span>.setEvent(queue.m_impl-&gt;get_last_event());</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">event</span>.setEvent(queue.m_spQueueImpl-&gt;get_last_event());</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    };</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment"></span> </div>
@@ -209,7 +209,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    {</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> waiterWaitFor(QueueGenericSyclNonBlocking&lt;TDev&gt;&amp; queue, EventGenericSycl&lt;TDev&gt; <span class="keyword">const</span>&amp; event)</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        {</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            queue.m_impl-&gt;register_dependency(event.getNativeHandle());</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            queue.m_spQueueImpl-&gt;register_dependency(event.getNativeHandle());</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    };</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment"></span> </div>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> waiterWaitFor(QueueGenericSyclBlocking&lt;TDev&gt;&amp; queue, EventGenericSycl&lt;TDev&gt; <span class="keyword">const</span>&amp; event)</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        {</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            queue.m_impl-&gt;register_dependency(event.getNativeHandle());</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            queue.m_spQueueImpl-&gt;register_dependency(event.getNativeHandle());</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        }</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    };</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment"></span> </div>
@@ -270,7 +270,7 @@ $(document).ready(function(){initNavTree('EventGenericSycl_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cb41fd9734833cacff31b3343158f46b.html">event</a></li><li class="navelem"><a class="el" href="EventGenericSycl_8hpp.html">EventGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 08:00:18 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 08:30:38 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

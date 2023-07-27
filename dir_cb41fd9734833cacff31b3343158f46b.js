@@ -1,7 +1,7 @@
 var dir_cb41fd9734833cacff31b3343158f46b =
 [
     [ "EventCpu.hpp", "EventCpu_8hpp.html", "EventCpu_8hpp" ],
-    [ "EventCpuSyclIntel.hpp", "EventCpuSyclIntel_8hpp.html", null ],
+    [ "EventCpuSycl.hpp", "EventCpuSycl_8hpp.html", null ],
     [ "EventCudaRt.hpp", "EventCudaRt_8hpp.html", "EventCudaRt_8hpp" ],
     [ "EventFpgaSyclIntel.hpp", "EventFpgaSyclIntel_8hpp.html", null ],
     [ "EventGenericSycl.hpp", "EventGenericSycl_8hpp.html", null ],

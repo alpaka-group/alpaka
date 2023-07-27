@@ -454,7 +454,7 @@ var hierarchy =
     [ "alpaka::TagCpuOmp2Blocks", "structalpaka_1_1TagCpuOmp2Blocks.html", null ],
     [ "alpaka::TagCpuOmp2Threads", "structalpaka_1_1TagCpuOmp2Threads.html", null ],
     [ "alpaka::TagCpuSerial", "structalpaka_1_1TagCpuSerial.html", null ],
-    [ "alpaka::TagCpuSyclIntel", "structalpaka_1_1TagCpuSyclIntel.html", null ],
+    [ "alpaka::TagCpuSycl", "structalpaka_1_1TagCpuSycl.html", null ],
     [ "alpaka::TagCpuTbbBlocks", "structalpaka_1_1TagCpuTbbBlocks.html", null ],
     [ "alpaka::TagCpuThreads", "structalpaka_1_1TagCpuThreads.html", null ],
     [ "alpaka::TagFpgaSyclIntel", "structalpaka_1_1TagFpgaSyclIntel.html", null ],
@@ -1695,6 +1695,7 @@ var hierarchy =
       [ "alpaka::core::align::OptimalAlignment< TsizeBytes >", "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html", null ],
       [ "alpaka::core::detail::RoundUpToPowerOfTwoHelper< N, TisPowerTwo >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html", null ],
       [ "alpaka::core::detail::RoundUpToPowerOfTwoHelper< N, false >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html", null ],
+      [ "alpaka::trait::WarpSize< TKernelFnObj, TAcc, TSfinae >", "structalpaka_1_1trait_1_1WarpSize.html", null ],
       [ "std::tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
       [ "std::tuple_size< alpaka::meta::CudaVectorArrayWrapper< T, N > >", "structstd_1_1tuple__size_3_01alpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],

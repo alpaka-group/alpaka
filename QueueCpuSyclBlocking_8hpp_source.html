@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: /home/runner/work/alpaka/alpaka/include/alpaka/queue/QueueCpuSyclIntelNonBlocking.hpp Source File</title>
+<title>alpaka: /home/runner/work/alpaka/alpaka/include/alpaka/queue/QueueCpuSyclBlocking.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('QueueCpuSyclIntelNonBlocking_8hpp_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('QueueCpuSyclBlocking_8hpp_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -84,36 +84,36 @@ $(document).ready(function(){initNavTree('QueueCpuSyclIntelNonBlocking_8hpp_sour
 
 <div class="header">
   <div class="headertitle">
-<div class="title">QueueCpuSyclIntelNonBlocking.hpp</div>  </div>
+<div class="title">QueueCpuSyclBlocking.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="QueueCpuSyclIntelNonBlocking_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jan Stephan</span></div>
+<a href="QueueCpuSyclBlocking_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="DevCpuSyclIntel_8hpp.html">alpaka/dev/DevCpuSyclIntel.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QueueGenericSyclNonBlocking_8hpp.html">alpaka/queue/QueueGenericSyclNonBlocking.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="DevCpuSycl_8hpp.html">alpaka/dev/DevCpuSycl.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="QueueGenericSyclBlocking_8hpp.html">alpaka/queue/QueueGenericSyclBlocking.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_SYCL_ENABLED) &amp;&amp; defined(ALPAKA_SYCL_BACKEND_ONEAPI) &amp;&amp; defined(ALPAKA_SYCL_ONEAPI_CPU)</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">using</span> QueueCpuSyclIntelNonBlocking = QueueGenericSyclNonBlocking&lt;DevCpuSyclIntel&gt;;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">using</span> QueueCpuSyclBlocking = QueueGenericSyclBlocking&lt;DevCpuSycl&gt;;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aDevCpuSyclIntel_8hpp_html"><div class="ttname"><a href="DevCpuSyclIntel_8hpp.html">DevCpuSyclIntel.hpp</a></div></div>
-<div class="ttc" id="aQueueGenericSyclNonBlocking_8hpp_html"><div class="ttname"><a href="QueueGenericSyclNonBlocking_8hpp.html">QueueGenericSyclNonBlocking.hpp</a></div></div>
+<div class="ttc" id="aDevCpuSycl_8hpp_html"><div class="ttname"><a href="DevCpuSycl_8hpp.html">DevCpuSycl.hpp</a></div></div>
+<div class="ttc" id="aQueueGenericSyclBlocking_8hpp_html"><div class="ttname"><a href="QueueGenericSyclBlocking_8hpp.html">QueueGenericSyclBlocking.hpp</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00046">AccCpuOmp2Blocks.hpp:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_35e231cfaf39d44c1525e8247564e585.html">queue</a></li><li class="navelem"><a class="el" href="QueueCpuSyclIntelNonBlocking_8hpp.html">QueueCpuSyclIntelNonBlocking.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 08:00:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_35e231cfaf39d44c1525e8247564e585.html">queue</a></li><li class="navelem"><a class="el" href="QueueCpuSyclBlocking_8hpp.html">QueueCpuSyclBlocking.hpp</a></li>
+    <li class="footer">Generated on Thu Jul 27 2023 08:30:38 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

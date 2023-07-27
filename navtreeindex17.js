@@ -1,5 +1,11 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#a47c814a2482a739f1ac86cfcc6de63d6":[3,0,0,16,413,0],
+"structalpaka_1_1trait_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDimf72504c03e3e168797d44ff03c491c2d.html":[3,0,0,16,414],
+"structalpaka_1_1trait_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TApi_00_01TAcc_00_01TDimf72504c03e3e168797d44ff03c491c2d.html#a71a44e9d2eefc6fa45f243a1020c2c44":[3,0,0,16,414,0],
+"structalpaka_1_1trait_1_1Popcount.html":[3,0,0,16,416],
+"structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html":[3,0,0,16,417],
+"structalpaka_1_1trait_1_1Popcount_3_01IntrinsicCpu_01_4.html#a4434eaa511b6e3281fec03d90357980d":[3,0,0,16,417,0],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html":[3,0,0,16,418],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html#adf1db7a05178482ffca1452cb8d0620a":[3,0,0,16,418,0],
 "structalpaka_1_1trait_1_1Popcount_3_01IntrinsicFallback_01_4.html#afd0aca80c7fac8e398e9743bbeb259aa":[3,0,0,16,418,1],
@@ -112,6 +118,7 @@ var NAVTREEINDEX17 =
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNoncc3418cdf5ea14849eed331af2118e8f.html#a9679f7d717fe3d217666d8ec2a35ef41":[3,0,0,16,469,0],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl_00_01EventCpu_01_4.html":[3,0,0,16,470],
 "structalpaka_1_1trait_1_1WaiterWaitFor_3_01cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl_00_01EventCpu_01_4.html#ab5fa6484509b1908a071d37bc1dcea1e":[3,0,0,16,470,0],
+"structalpaka_1_1trait_1_1WarpSize.html":[3,0,0,16,478],
 "structalpaka_1_1trait_1_1detail_1_1AtomicOp.html":[3,0,0,16,0,0],
 "structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html":[3,0,0,16,0,1],
 "structalpaka_1_1trait_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html#aa5a89c89818bf61fd4f689cd9f8ffc3d":[3,0,0,16,0,1,0],
@@ -242,12 +249,5 @@ var NAVTREEINDEX17 =
 "traits_2Traits_8hpp.html#a7e6b1402f1e49d215eec8772c4e29b60":[4,0,0,0,22,0,1],
 "traits_2Traits_8hpp.html#aa56ad4ba3f41bcea4e804b88d05c9ac0":[4,0,0,0,22,0,2],
 "traits_2Traits_8hpp_source.html":[4,0,0,0,22,0],
-"uniformCudaHip_2Copy_8hpp.html":[4,0,0,0,14,1,2,0],
-"uniformCudaHip_2Copy_8hpp_source.html":[4,0,0,0,14,1,2,0],
-"vec_2Traits_8hpp.html":[4,0,0,0,23,0],
-"vec_2Traits_8hpp.html#a56eac7d84a35e1a83a56dcfc6e73a78f":[4,0,0,0,23,0,0],
-"vec_2Traits_8hpp.html#a649f4c73ac22bcc093bb705aa6c65efb":[4,0,0,0,23,0,1],
-"vec_2Traits_8hpp.html#a734094d00febe551f0e85310a3faf1ec":[4,0,0,0,23,0,2],
-"vec_2Traits_8hpp.html#a7678d4f6ec00b41cfff96dfa7e6fabde":[4,0,0,0,23,0,4],
-"vec_2Traits_8hpp.html#abed27e1316e97fbfb281a3e13e433ec5":[4,0,0,0,23,0,3]
+"uniformCudaHip_2Copy_8hpp.html":[4,0,0,0,14,1,2,0]
 };

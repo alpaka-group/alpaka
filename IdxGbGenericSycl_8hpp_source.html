@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div class="title">IdxGbGenericSycl.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="IdxGbGenericSycl_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2022 Jan Stephan</span></div>
+<a href="IdxGbGenericSycl_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jan Stephan, Aurora Perego</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_SYCL_ENABLED</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;CL/sycl.hpp&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    include &lt;sycl/sycl.hpp&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1gb.html">alpaka::gb</a></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{<span class="comment"></span></div>
@@ -112,11 +112,11 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">using</span> IdxGbBase = IdxGbGenericSycl;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">explicit</span> IdxGbGenericSycl(sycl::nd_item&lt;TDim::value&gt; work_item) : my_item{work_item}</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">explicit</span> IdxGbGenericSycl(sycl::nd_item&lt;TDim::value&gt; work_item) : m_item_gb{work_item}</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        sycl::nd_item&lt;TDim::value&gt; my_item;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        sycl::nd_item&lt;TDim::value&gt; m_item_gb;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    };</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <span class="comment">// namespace alpaka::gb</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
@@ -138,19 +138,19 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ae467143f5deed4ecdeb5de6ad22a0121">getIdx</a>(gb::IdxGbGenericSycl&lt;TDim, TIdx&gt; <span class="keyword">const</span>&amp; idx, TWorkDiv <span class="keyword">const</span>&amp;)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">if</span> constexpr(TDim::value == 1)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                return <a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;TDim, TIdx&gt;(static_cast&lt;TIdx&gt;(idx.my_item.get_group(0)));</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                return <a class="code" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">Vec</a>&lt;TDim, TIdx&gt;(static_cast&lt;TIdx&gt;(idx.m_item_gb.get_group(0)));</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            else if constexpr(TDim::value == 2)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keywordflow">return</span> Vec&lt;TDim, TIdx&gt;(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.my_item.get_group(1)),</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.my_item.get_group(0)));</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.m_item_gb.get_group(1)),</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.m_item_gb.get_group(0)));</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">return</span> Vec&lt;TDim, TIdx&gt;(</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.my_item.get_group(2)),</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.my_item.get_group(1)),</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.my_item.get_group(0)));</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.m_item_gb.get_group(2)),</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.m_item_gb.get_group(1)),</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(idx.m_item_gb.get_group(0)));</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    };</div>
@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('IdxGbGenericSycl_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="dir_820f4fd4051d8a4d65c2fe0dda35bb00.html">gb</a></li><li class="navelem"><a class="el" href="IdxGbGenericSycl_8hpp.html">IdxGbGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 08:00:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 08:30:38 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

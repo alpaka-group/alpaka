@@ -6,7 +6,7 @@ var dir_3da4cf0d8582bc897be6864cae72e9ae =
       [ "GetDevByIdx< PltfCpu >", "structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfCpu_01_4.html", "structalpaka_1_1trait_1_1GetDevByIdx_3_01PltfCpu_01_4" ],
       [ "GetDevCount< PltfCpu >", "structalpaka_1_1trait_1_1GetDevCount_3_01PltfCpu_01_4.html", "structalpaka_1_1trait_1_1GetDevCount_3_01PltfCpu_01_4" ]
     ] ],
-    [ "PltfCpuSyclIntel.hpp", "PltfCpuSyclIntel_8hpp.html", null ],
+    [ "PltfCpuSycl.hpp", "PltfCpuSycl_8hpp.html", null ],
     [ "PltfCudaRt.hpp", "PltfCudaRt_8hpp.html", "PltfCudaRt_8hpp" ],
     [ "PltfFpgaSyclIntel.hpp", "PltfFpgaSyclIntel_8hpp.html", null ],
     [ "PltfGenericSycl.hpp", "PltfGenericSycl_8hpp.html", null ],

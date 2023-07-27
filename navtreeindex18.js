@@ -1,5 +1,12 @@
 var NAVTREEINDEX18 =
 {
+"uniformCudaHip_2Copy_8hpp_source.html":[4,0,0,0,14,1,2,0],
+"vec_2Traits_8hpp.html":[4,0,0,0,23,0],
+"vec_2Traits_8hpp.html#a56eac7d84a35e1a83a56dcfc6e73a78f":[4,0,0,0,23,0,0],
+"vec_2Traits_8hpp.html#a649f4c73ac22bcc093bb705aa6c65efb":[4,0,0,0,23,0,1],
+"vec_2Traits_8hpp.html#a734094d00febe551f0e85310a3faf1ec":[4,0,0,0,23,0,2],
+"vec_2Traits_8hpp.html#a7678d4f6ec00b41cfff96dfa7e6fabde":[4,0,0,0,23,0,4],
+"vec_2Traits_8hpp.html#abed27e1316e97fbfb281a3e13e433ec5":[4,0,0,0,23,0,3],
 "vec_2Traits_8hpp.html#ade6da97fa713fb878a183e3b1e858022":[4,0,0,0,23,0,5],
 "vec_2Traits_8hpp_source.html":[4,0,0,0,23,0],
 "version_8hpp.html":[4,0,0,0,28],

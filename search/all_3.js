@@ -64,7 +64,7 @@ var searchData=
   ['bufcpu_407',['BufCpu',['../classalpaka_1_1BufCpu.html',1,'alpaka::BufCpu&lt; TElem, TDim, TIdx &gt;'],['../classalpaka_1_1BufCpu.html#ab2a0db5aa0ccead63b575f647c9603b7',1,'alpaka::BufCpu::BufCpu()']]],
   ['bufcpu_2ehpp_408',['BufCpu.hpp',['../BufCpu_8hpp.html',1,'']]],
   ['bufcpuimpl_409',['BufCpuImpl',['../classalpaka_1_1detail_1_1BufCpuImpl.html',1,'alpaka::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt;'],['../classalpaka_1_1detail_1_1BufCpuImpl.html#adeb569361a4aefa3172e7ef8cd8515da',1,'alpaka::detail::BufCpuImpl::BufCpuImpl(BufCpuImpl &amp;&amp;)=delete'],['../classalpaka_1_1detail_1_1BufCpuImpl.html#aa11d1d4c9bb6af11f5ba92bf46f0e6ef',1,'alpaka::detail::BufCpuImpl::BufCpuImpl(DevCpu dev, TElem *pMem, std::function&lt; void(TElem *)&gt; deleter, TExtent const &amp;extent) noexcept']]],
-  ['bufcpusyclintel_2ehpp_410',['BufCpuSyclIntel.hpp',['../BufCpuSyclIntel_8hpp.html',1,'']]],
+  ['bufcpusycl_2ehpp_410',['BufCpuSycl.hpp',['../BufCpuSycl_8hpp.html',1,'']]],
   ['bufcudart_411',['BufCudaRt',['../namespacealpaka.html#ae4501d6cc83b94366a4a141ed1b504b8',1,'alpaka']]],
   ['bufcudart_2ehpp_412',['BufCudaRt.hpp',['../BufCudaRt_8hpp.html',1,'']]],
   ['bufferaccessor_413',['BufferAccessor',['../namespacealpaka_1_1experimental.html#a240177523f37bc7351981bf2161ac253',1,'alpaka::experimental']]],

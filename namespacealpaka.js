@@ -101,7 +101,7 @@ var namespacealpaka =
     [ "TagCpuOmp2Blocks", "structalpaka_1_1TagCpuOmp2Blocks.html", "structalpaka_1_1TagCpuOmp2Blocks" ],
     [ "TagCpuOmp2Threads", "structalpaka_1_1TagCpuOmp2Threads.html", "structalpaka_1_1TagCpuOmp2Threads" ],
     [ "TagCpuSerial", "structalpaka_1_1TagCpuSerial.html", "structalpaka_1_1TagCpuSerial" ],
-    [ "TagCpuSyclIntel", "structalpaka_1_1TagCpuSyclIntel.html", "structalpaka_1_1TagCpuSyclIntel" ],
+    [ "TagCpuSycl", "structalpaka_1_1TagCpuSycl.html", "structalpaka_1_1TagCpuSycl" ],
     [ "TagCpuTbbBlocks", "structalpaka_1_1TagCpuTbbBlocks.html", "structalpaka_1_1TagCpuTbbBlocks" ],
     [ "TagCpuThreads", "structalpaka_1_1TagCpuThreads.html", "structalpaka_1_1TagCpuThreads" ],
     [ "TagFpgaSyclIntel", "structalpaka_1_1TagFpgaSyclIntel.html", "structalpaka_1_1TagFpgaSyclIntel" ],

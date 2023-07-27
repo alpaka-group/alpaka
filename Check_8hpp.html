@@ -89,7 +89,8 @@ $(document).ready(function(){initNavTree('Check_8hpp.html',''); initResizable();
 <div class="title">Check.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;cstdio&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="Sycl_8hpp_source.html">alpaka/core/Sycl.hpp</a>&quot;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
 </div>
 <p><a href="Check_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -124,16 +125,16 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span>                                                                                                            \</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span>                                                                                                                \</div>
+<div class="line">    {                                                                                                                 \</div>
+<div class="line">        if(!(expression))                                                                                             \</div>
 <div class="line">        {                                                                                                             \</div>
-<div class="line">            if(!(expression))                                                                                         \</div>
-<div class="line">            {                                                                                                         \</div>
-<div class="line">                printf(<span class="stringliteral">&quot;ALPAKA_CHECK failed because &#39;!(%s)&#39;\n&quot;</span>, #expression);                                         \</div>
-<div class="line">                success = <span class="keyword">false</span>;                                                                                      \</div>
-<div class="line">            }                                                                                                         \</div>
-<div class="line">        } <span class="keywordflow">while</span>(0)</div>
+<div class="line">            printf(<span class="stringliteral">&quot;ALPAKA_CHECK failed because &#39;!(%s)&#39;\n&quot;</span>, #expression);                                             \</div>
+<div class="line">            success = <span class="keyword">false</span>;                                                                                          \</div>
+<div class="line">        }                                                                                                             \</div>
+<div class="line">    } <span class="keywordflow">while</span>(0)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="Check_8hpp_source.html#l00022">22</a> of file <a class="el" href="Check_8hpp_source.html">Check.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Check_8hpp_source.html#l00011">11</a> of file <a class="el" href="Check_8hpp_source.html">Check.hpp</a>.</p>
 
 </div>
 </div>
@@ -143,7 +144,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="Check_8hpp.html">Check.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 08:00:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 08:30:39 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

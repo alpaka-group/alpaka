@@ -69,7 +69,7 @@ var searchData=
   ['pltf_1854',['Pltf',['../namespacealpaka.html#a6b83bc07c7ca78824c9b5026f951cff4',1,'alpaka::Pltf()'],['../structalpaka_1_1test_1_1QueueTestFixture.html#a31498dfa654e0b1798e8c371c1ff3f31',1,'alpaka::test::QueueTestFixture::Pltf()']]],
   ['pltfcpu_1855',['PltfCpu',['../structalpaka_1_1PltfCpu.html',1,'alpaka']]],
   ['pltfcpu_2ehpp_1856',['PltfCpu.hpp',['../PltfCpu_8hpp.html',1,'']]],
-  ['pltfcpusyclintel_2ehpp_1857',['PltfCpuSyclIntel.hpp',['../PltfCpuSyclIntel_8hpp.html',1,'']]],
+  ['pltfcpusycl_2ehpp_1857',['PltfCpuSycl.hpp',['../PltfCpuSycl_8hpp.html',1,'']]],
   ['pltfcudart_1858',['PltfCudaRt',['../namespacealpaka.html#a2da3c226528d12baea2581aaa6fb9cd5',1,'alpaka']]],
   ['pltfcudart_2ehpp_1859',['PltfCudaRt.hpp',['../PltfCudaRt_8hpp.html',1,'']]],
   ['pltffpgasyclintel_2ehpp_1860',['PltfFpgaSyclIntel.hpp',['../PltfFpgaSyclIntel_8hpp.html',1,'']]],

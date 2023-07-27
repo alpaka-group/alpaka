@@ -24,7 +24,7 @@ var searchData=
   ['devcpu_692',['DevCpu',['../classalpaka_1_1DevCpu.html',1,'alpaka::DevCpu'],['../classalpaka_1_1DevCpu.html#acd010da121738074cde3aab4b726b11d',1,'alpaka::DevCpu::DevCpu()']]],
   ['devcpu_2ehpp_693',['DevCpu.hpp',['../DevCpu_8hpp.html',1,'']]],
   ['devcpuimpl_694',['DevCpuImpl',['../namespacealpaka_1_1cpu_1_1detail.html#a32307243b945c51f1a00dc17d96ea261',1,'alpaka::cpu::detail']]],
-  ['devcpusyclintel_2ehpp_695',['DevCpuSyclIntel.hpp',['../DevCpuSyclIntel_8hpp.html',1,'']]],
+  ['devcpusycl_2ehpp_695',['DevCpuSycl.hpp',['../DevCpuSycl_8hpp.html',1,'']]],
   ['devcudart_696',['DevCudaRt',['../namespacealpaka.html#a8dab48915b0cb9623165d122b33dd103',1,'alpaka']]],
   ['devcudart_2ehpp_697',['DevCudaRt.hpp',['../DevCudaRt_8hpp.html',1,'']]],
   ['devfpgasyclintel_2ehpp_698',['DevFpgaSyclIntel.hpp',['../DevFpgaSyclIntel_8hpp.html',1,'']]],

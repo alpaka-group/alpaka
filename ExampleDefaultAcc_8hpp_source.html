@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('ExampleDefaultAcc_8hpp_source.html',''
 <div class="title">ExampleDefaultAcc.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="ExampleDefaultAcc_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan</span></div>
+<a href="ExampleDefaultAcc_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan, Aurora Perego, Andrea Bocci</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
@@ -113,16 +113,16 @@ $(document).ready(function(){initNavTree('ExampleDefaultAcc_8hpp_source.html',''
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = <a class="code" href="classalpaka_1_1AccCpuOmp2Threads.html">alpaka::AccCpuOmp2Threads&lt;TDim, TIdx&gt;</a>;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = <a class="code" href="classalpaka_1_1AccCpuThreads.html">alpaka::AccCpuThreads&lt;TDim, TIdx&gt;</a>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = <a class="code" href="classalpaka_1_1AccCpuSerial.html">alpaka::AccCpuSerial&lt;TDim, TIdx&gt;</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_SYCL_ENABLED) &amp;&amp; defined(ALPAKA_SYCL_BACKEND_ONEAPI)</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_SYCL_ONEAPI_CPU)</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = alpaka::AccCpuSyclIntel&lt;TDim, TIdx&gt;;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#    elif defined(ALPAKA_SYCL_ONEAPI_FPGA)</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = alpaka::AccFpgaSyclIntel&lt;TDim, TIdx&gt;;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#    elif defined(ALPAKA_SYCL_ONEAPI_GPU)</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = alpaka::AccGpuSyclIntel&lt;TDim, TIdx&gt;;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_SYCL_ENABLED) &amp;&amp; defined(ALPAKA_SYCL_BACKEND_ONEAPI)</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_SYCL_ONEAPI_CPU)</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = alpaka::AccCpuSycl&lt;TDim, TIdx&gt;;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#    elif defined(ALPAKA_SYCL_ONEAPI_FPGA)</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = alpaka::AccFpgaSyclIntel&lt;TDim, TIdx&gt;;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#    elif defined(ALPAKA_SYCL_ONEAPI_GPU)</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = alpaka::AccGpuSyclIntel&lt;TDim, TIdx&gt;;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = <a class="code" href="classalpaka_1_1AccCpuSerial.html">alpaka::AccCpuSerial&lt;TDim, TIdx&gt;</a>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">class </span><a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#    warning &quot;No supported backend selected.&quot;</span></div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('ExampleDefaultAcc_8hpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_377dfb5c153ace939840c035492c19ec.html">example</a></li><li class="navelem"><a class="el" href="ExampleDefaultAcc_8hpp.html">ExampleDefaultAcc.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 08:00:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 08:30:38 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -3,7 +3,7 @@ var dir_9c737d14007cafba76b1e7c7800c2a61 =
     [ "CpuOmp2Blocks.hpp", "CpuOmp2Blocks_8hpp.html", null ],
     [ "CpuOmp2Threads.hpp", "CpuOmp2Threads_8hpp.html", null ],
     [ "CpuSerial.hpp", "CpuSerial_8hpp.html", null ],
-    [ "CpuSyclIntel.hpp", "CpuSyclIntel_8hpp.html", "CpuSyclIntel_8hpp" ],
+    [ "CpuSycl.hpp", "CpuSycl_8hpp.html", "CpuSycl_8hpp" ],
     [ "CpuTbbBlocks.hpp", "CpuTbbBlocks_8hpp.html", "CpuTbbBlocks_8hpp" ],
     [ "CpuThreads.hpp", "CpuThreads_8hpp.html", null ],
     [ "FpgaSyclIntel.hpp", "FpgaSyclIntel_8hpp.html", "FpgaSyclIntel_8hpp" ],

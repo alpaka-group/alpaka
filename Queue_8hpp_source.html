@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('Queue_8hpp_source.html',''); initResiz
 <div class="title">Queue.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="Queue_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan</span></div>
+<a href="Queue_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * SPDX-License-Identifier: MPL-2.0</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
@@ -175,23 +175,23 @@ $(document).ready(function(){initNavTree('Queue_8hpp_source.html',''); initResiz
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#        ifdef ALPAKA_SYCL_ONEAPI_CPU</span><span class="comment"></span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">        //! The default queue type trait specialization for the Intel CPU device.</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1test_1_1trait_1_1DefaultQueueType.html">DefaultQueueType</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::DevCpuSyclIntel&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1test_1_1trait_1_1DefaultQueueType.html">DefaultQueueType</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::DevCpuSycl&gt;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#            if(ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL)</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keyword">using</span> type = alpaka::QueueCpuSyclIntelBlocking;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keyword">using</span> type = alpaka::QueueCpuSyclBlocking;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#            else</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keyword">using</span> type = alpaka::QueueCpuSyclIntelNonBlocking;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keyword">using</span> type = alpaka::QueueCpuSyclNonBlocking;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#            endif</span></div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        };</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">IsBlockingQueue</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::QueueCpuSyclIntelBlocking&gt;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">IsBlockingQueue</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::QueueCpuSyclBlocking&gt;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keyword">static</span> constexpr <span class="keyword">auto</span> value = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        };</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keyword">struct </span><a class="code" href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">IsBlockingQueue</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::QueueCpuSyclIntelNonBlocking&gt;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keyword">struct </span><a class="code" href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">IsBlockingQueue</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::QueueCpuSyclNonBlocking&gt;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        {</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">static</span> constexpr <span class="keyword">auto</span> value = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        };</div>
@@ -269,8 +269,8 @@ $(document).ready(function(){initNavTree('Queue_8hpp_source.html',''); initResiz
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#    ifdef ALPAKA_SYCL_BACKEND_ONEAPI</span></div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#        ifdef ALPAKA_SYCL_ONEAPI_CPU</span></div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        ,</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        std::tuple&lt;alpaka::DevCpuSyclIntel, alpaka::QueueCpuSyclIntelBlocking&gt;,</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        std::tuple&lt;alpaka::DevCpuSyclIntel, alpaka::QueueCpuSyclIntelNonBlocking&gt;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        std::tuple&lt;alpaka::DevCpuSycl, alpaka::QueueCpuSyclBlocking&gt;,</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        std::tuple&lt;alpaka::DevCpuSycl, alpaka::QueueCpuSyclNonBlocking&gt;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#        endif</span></div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#        ifdef ALPAKA_SYCL_ONEAPI_FPGA</span></div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        ,</div>
@@ -307,7 +307,7 @@ $(document).ready(function(){initNavTree('Queue_8hpp_source.html',''); initResiz
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="dir_2c339e2f1fcd53762aa618f43207b31b.html">queue</a></li><li class="navelem"><a class="el" href="Queue_8hpp.html">Queue.hpp</a></li>
-    <li class="footer">Generated on Thu Jul 27 2023 08:00:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Jul 27 2023 08:30:38 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -39,7 +39,7 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "PltfType< AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "TagToAcc< alpaka::TagCpuSerial, TDim, TIdx >", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuSerial_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1trait_1_1TagToAcc_3_01alpaka_1_1TagCpuSerial_00_01TDim_00_01TIdx_01_4" ]
     ] ],
-    [ "AccCpuSyclIntel.hpp", "AccCpuSyclIntel_8hpp.html", null ],
+    [ "AccCpuSycl.hpp", "AccCpuSycl_8hpp.html", null ],
     [ "AccCpuTbbBlocks.hpp", "AccCpuTbbBlocks_8hpp.html", null ],
     [ "AccCpuThreads.hpp", "AccCpuThreads_8hpp.html", [
       [ "AccCpuThreads", "classalpaka_1_1AccCpuThreads.html", "classalpaka_1_1AccCpuThreads" ],

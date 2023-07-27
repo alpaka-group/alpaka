@@ -135,7 +135,7 @@ var searchData=
   ['cpuomp2blocks_2ehpp_563',['CpuOmp2Blocks.hpp',['../CpuOmp2Blocks_8hpp.html',1,'']]],
   ['cpuomp2threads_2ehpp_564',['CpuOmp2Threads.hpp',['../CpuOmp2Threads_8hpp.html',1,'']]],
   ['cpuserial_2ehpp_565',['CpuSerial.hpp',['../CpuSerial_8hpp.html',1,'']]],
-  ['cpusyclintel_2ehpp_566',['CpuSyclIntel.hpp',['../CpuSyclIntel_8hpp.html',1,'']]],
+  ['cpusycl_2ehpp_566',['CpuSycl.hpp',['../CpuSycl_8hpp.html',1,'']]],
   ['cputbbblocks_2ehpp_567',['CpuTbbBlocks.hpp',['../CpuTbbBlocks_8hpp.html',1,'']]],
   ['cputhreads_2ehpp_568',['CpuThreads.hpp',['../CpuThreads_8hpp.html',1,'']]],
   ['create_569',['create',['../structalpaka_1_1detail_1_1CreateExtent.html#ac4637b89ffc3d59a4cd3278b69fbf02a',1,'alpaka::detail::CreateExtent::create()'],['../structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html#adad2a1df042dbc8fe4ea781cc5de4396',1,'alpaka::test::CreateVecWithIdx::ForOffset::create()'],['../structalpaka_1_1detail_1_1CreateOffset.html#a34585fff4b36c26c3153ce9c2da74a70',1,'alpaka::detail::CreateOffset::create()'],['../structalpaka_1_1detail_1_1CreatePitchBytes.html#a203c556dfade01cb8859d987be817fc3',1,'alpaka::detail::CreatePitchBytes::create()'],['../structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf.html#ad7f31115da2c03025d4de193c4a54dac',1,'alpaka::test::CreateVecWithIdx::ForExtentBuf::create()'],['../structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html#aa00ad0d7a9a4757c11fcf43fce795084',1,'alpaka::test::CreateVecWithIdx::ForExtentSubView::create()']]],

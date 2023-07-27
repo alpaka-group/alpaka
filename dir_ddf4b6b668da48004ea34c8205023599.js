@@ -1,5 +1,6 @@
 var dir_ddf4b6b668da48004ea34c8205023599 =
 [
+    [ "SyclSubgroupSize.hpp", "SyclSubgroupSize_8hpp.html", null ],
     [ "TaskKernelCpuOmp2Blocks.hpp", "TaskKernelCpuOmp2Blocks_8hpp.html", "TaskKernelCpuOmp2Blocks_8hpp" ],
     [ "TaskKernelCpuOmp2Threads.hpp", "TaskKernelCpuOmp2Threads_8hpp.html", [
       [ "TaskKernelCpuOmp2Threads", "classalpaka_1_1TaskKernelCpuOmp2Threads.html", "classalpaka_1_1TaskKernelCpuOmp2Threads" ],
@@ -17,7 +18,7 @@ var dir_ddf4b6b668da48004ea34c8205023599 =
       [ "IdxType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],
       [ "PltfType< TaskKernelCpuSerial< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1trait_1_1PltfType_3_01TaskKernelCpuSerial_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ]
     ] ],
-    [ "TaskKernelCpuSyclIntel.hpp", "TaskKernelCpuSyclIntel_8hpp.html", null ],
+    [ "TaskKernelCpuSycl.hpp", "TaskKernelCpuSycl_8hpp.html", null ],
     [ "TaskKernelCpuTbbBlocks.hpp", "TaskKernelCpuTbbBlocks_8hpp.html", null ],
     [ "TaskKernelCpuThreads.hpp", "TaskKernelCpuThreads_8hpp.html", [
       [ "TaskKernelCpuThreads", "classalpaka_1_1TaskKernelCpuThreads.html", "classalpaka_1_1TaskKernelCpuThreads" ],
