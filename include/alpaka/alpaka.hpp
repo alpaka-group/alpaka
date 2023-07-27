@@ -8979,7 +8979,7 @@
 			// ============================================================================
 
 			// ============================================================================
-			// == ./include/alpaka/pltf/Traits.hpp ==
+			// == ./include/alpaka/platform/Traits.hpp ==
 			// ==
 			/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
 			 * SPDX-License-Identifier: MPL-2.0
@@ -8996,25 +8996,27 @@
 
 			namespace alpaka
 			{
-			    struct ConceptPltf
+			    struct ConceptPlatform
 			    {
 			    };
 
-			    //! True if TPltf is a platform, i.e. if it implements the ConceptPltf concept.
-			    template<typename TPltf>
-			    inline constexpr bool isPlatform = concepts::ImplementsConcept<ConceptPltf, TPltf>::value;
+			    //! True if TPlatform is a platform, i.e. if it implements the ConceptPlatform concept.
+			    template<typename TPlatform>
+			    inline constexpr bool isPlatform = concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value;
 
 			    //! The platform traits.
 			    namespace trait
 			    {
 			        //! The platform type trait.
 			        template<typename T, typename TSfinae = void>
-			        struct PltfType;
+			        struct PlatformType;
 
-			        template<typename TPltf>
-			        struct PltfType<TPltf, std::enable_if_t<concepts::ImplementsConcept<ConceptPltf, TPltf>::value>>
+			        template<typename TPlatform>
+			        struct PlatformType<
+			            TPlatform,
+			            std::enable_if_t<concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value>>
 			        {
-			            using type = typename concepts::ImplementationBase<ConceptDev, TPltf>;
+			            using type = typename concepts::ImplementationBase<ConceptDev, TPlatform>;
 			        };
 
 			        //! The device count get trait.
@@ -9028,27 +9030,27 @@
 
 			    //! The platform type trait alias template to remove the ::type.
 			    template<typename T>
-			    using Pltf = typename trait::PltfType<T>::type;
+			    using Platform = typename trait::PlatformType<T>::type;
 
 			    //! \return The device identified by its index.
-			    template<typename TPltf>
-			    ALPAKA_FN_HOST auto getDevCount(TPltf const& platform)
+			    template<typename TPlatform>
+			    ALPAKA_FN_HOST auto getDevCount(TPlatform const& platform)
 			    {
-			        return trait::GetDevCount<TPltf>::getDevCount(platform);
+			        return trait::GetDevCount<TPlatform>::getDevCount(platform);
 			    }
 
 			    //! \return The device identified by its index.
-			    template<typename TPltf>
-			    ALPAKA_FN_HOST auto getDevByIdx(TPltf const& platform, std::size_t const& devIdx) -> Dev<TPltf>
+			    template<typename TPlatform>
+			    ALPAKA_FN_HOST auto getDevByIdx(TPlatform const& platform, std::size_t const& devIdx) -> Dev<TPlatform>
 			    {
-			        return trait::GetDevByIdx<TPltf>::getDevByIdx(platform, devIdx);
+			        return trait::GetDevByIdx<TPlatform>::getDevByIdx(platform, devIdx);
 			    }
 
 			    //! \return All the devices available on this accelerator.
-			    template<typename TPltf>
-			    ALPAKA_FN_HOST auto getDevs(TPltf const& platform) -> std::vector<Dev<TPltf>>
+			    template<typename TPlatform>
+			    ALPAKA_FN_HOST auto getDevs(TPlatform const& platform) -> std::vector<Dev<TPlatform>>
 			    {
-			        std::vector<Dev<TPltf>> devs;
+			        std::vector<Dev<TPlatform>> devs;
 
 			        std::size_t const devCount = getDevCount(platform);
 			        devs.reserve(devCount);
@@ -9062,15 +9064,18 @@
 
 			    namespace trait
 			    {
-			        template<typename TPltf, typename TProperty>
-			        struct QueueType<TPltf, TProperty, std::enable_if_t<concepts::ImplementsConcept<ConceptPltf, TPltf>::value>>
+			        template<typename TPlatform, typename TProperty>
+			        struct QueueType<
+			            TPlatform,
+			            TProperty,
+			            std::enable_if_t<concepts::ImplementsConcept<ConceptPlatform, TPlatform>::value>>
 			        {
-			            using type = typename QueueType<typename alpaka::trait::DevType<TPltf>::type, TProperty>::type;
+			            using type = typename QueueType<typename alpaka::trait::DevType<TPlatform>::type, TProperty>::type;
 			        };
 			    } // namespace trait
 			} // namespace alpaka
 			// ==
-			// == ./include/alpaka/pltf/Traits.hpp ==
+			// == ./include/alpaka/platform/Traits.hpp ==
 			// ============================================================================
 
 		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
@@ -9139,7 +9144,7 @@
 		        template<typename TAcc, typename TProperty>
 		        struct QueueType<TAcc, TProperty, std::enable_if_t<concepts::ImplementsConcept<ConceptAcc, TAcc>::value>>
 		        {
-		            using type = typename QueueType<typename alpaka::trait::PltfType<TAcc>::type, TProperty>::type;
+		            using type = typename QueueType<typename alpaka::trait::PlatformType<TAcc>::type, TProperty>::type;
 		        };
 		    } // namespace trait
 		} // namespace alpaka
@@ -9150,7 +9155,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 		// ============================================================================
@@ -10270,11 +10275,11 @@
 			        };
 
 			        //! The pinned/mapped memory allocator trait.
-			        template<typename TPltf, typename TElem, typename TDim, typename TIdx>
+			        template<typename TPlatform, typename TElem, typename TDim, typename TIdx>
 			        struct BufAllocMapped;
 
 			        //! The pinned/mapped memory allocation capability trait.
-			        template<typename TPltf>
+			        template<typename TPlatform>
 			        struct HasMappedBufSupport : public std::false_type
 			        {
 			        };
@@ -10360,17 +10365,17 @@
 
 			    //! Allocates pinned/mapped host memory, accessible by all devices in the given platform.
 			    //!
-			    //! \tparam TPltf The platform from which the buffer is accessible.
+			    //! \tparam TPlatform The platform from which the buffer is accessible.
 			    //! \tparam TElem The element type of the returned buffer.
 			    //! \tparam TIdx The linear index type of the buffer.
 			    //! \tparam TExtent The extent type of the buffer.
 			    //! \param host The host device to allocate the buffer on.
 			    //! \param extent The extent of the buffer.
 			    //! \return The newly allocated buffer.
-			    template<typename TPltf, typename TElem, typename TIdx, typename TExtent>
+			    template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
 			    ALPAKA_FN_HOST auto allocMappedBuf(DevCpu const& host, TExtent const& extent = TExtent())
 			    {
-			        return trait::BufAllocMapped<TPltf, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
+			        return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
 			    }
 
 			    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
@@ -10381,9 +10386,9 @@
 			#endif
 			    //! Checks if the host can allocate a pinned/mapped host memory, accessible by all devices in the given platform.
 			    //!
-			    //! \tparam TPltf The platform from which the buffer is accessible.
-			    template<typename TPltf>
-			    constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPltf>::value;
+			    //! \tparam TPlatform The platform from which the buffer is accessible.
+			    template<typename TPlatform>
+			    constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
 			#if BOOST_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
@@ -10394,19 +10399,19 @@
 			    //! this function is provided for convenience in the cases where the difference is not relevant,
 			    //! and the pinned/mapped memory is only used as a performance optimisation.
 			    //!
-			    //! \tparam TPltf The platform from which the buffer is accessible.
+			    //! \tparam TPlatform The platform from which the buffer is accessible.
 			    //! \tparam TElem The element type of the returned buffer.
 			    //! \tparam TIdx The linear index type of the buffer.
 			    //! \tparam TExtent The extent type of the buffer.
 			    //! \param host The host device to allocate the buffer on.
 			    //! \param extent The extent of the buffer.
 			    //! \return The newly allocated buffer.
-			    template<typename TPltf, typename TElem, typename TIdx, typename TExtent>
+			    template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
 			    ALPAKA_FN_HOST auto allocMappedBufIfSupported(DevCpu const& host, TExtent const& extent = TExtent())
 			    {
-			        if constexpr(hasMappedBufSupport<TPltf>)
+			        if constexpr(hasMappedBufSupport<TPlatform>)
 			        {
-			            return allocMappedBuf<TPltf, TElem, TIdx>(host, extent);
+			            return allocMappedBuf<TPlatform, TElem, TIdx>(host, extent);
 			        }
 			        else
 			        {
@@ -10420,7 +10425,7 @@
 			// == ./include/alpaka/mem/buf/Traits.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 			// ============================================================================
 			// == ./include/alpaka/queue/Properties.hpp ==
 			// ==
@@ -11489,10 +11494,10 @@
 		    }
 		    namespace trait
 		    {
-		        template<typename TPltf, typename TSfinae>
+		        template<typename TPlatform, typename TSfinae>
 		        struct GetDevByIdx;
 		    }
-		    struct PltfCpu;
+		    struct PlatformCpu;
 
 		    //! The CPU device.
 		    namespace cpu::detail
@@ -11506,7 +11511,7 @@
 		        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevCpu>
 		        , public concepts::Implements<ConceptDev, DevCpu>
 		    {
-		        friend struct trait::GetDevByIdx<PltfCpu>;
+		        friend struct trait::GetDevByIdx<PlatformCpu>;
 
 		    protected:
 		        DevCpu() : m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
@@ -11622,9 +11627,9 @@
 
 		        //! The CPU device platform type trait specialization.
 		        template<>
-		        struct PltfType<DevCpu>
+		        struct PlatformType<DevCpu>
 		        {
-		            using type = PltfCpu;
+		            using type = PlatformCpu;
 		        };
 		    } // namespace trait
 		    using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;
@@ -11805,9 +11810,9 @@
 
 	        //! The CPU OpenMP 2.0 block execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
-	        struct PltfType<AccCpuOmp2Blocks<TDim, TIdx>>
+	        struct PlatformType<AccCpuOmp2Blocks<TDim, TIdx>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU OpenMP 2.0 block accelerator idx type trait specialization.
@@ -12505,7 +12510,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
@@ -12710,9 +12715,9 @@
 
 	        //! The CPU OpenMP 2.0 thread execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
-	        struct PltfType<AccCpuOmp2Threads<TDim, TIdx>>
+	        struct PlatformType<AccCpuOmp2Threads<TDim, TIdx>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU OpenMP 2.0 thread accelerator idx type trait specialization.
@@ -12832,7 +12837,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
@@ -12989,9 +12994,9 @@
 
 	        //! The CPU serial execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
-	        struct PltfType<AccCpuSerial<TDim, TIdx>>
+	        struct PlatformType<AccCpuSerial<TDim, TIdx>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU serial accelerator idx type trait specialization.
@@ -15492,7 +15497,7 @@
 				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
 					// ============================================================================
@@ -15874,10 +15879,10 @@
 				    } // namespace detail
 
 				    //! The SYCL device handle.
-				    template<typename TPltf>
+				    template<typename TPlatform>
 				    class DevGenericSycl
-				        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TPltf>>
-				        , public concepts::Implements<ConceptDev, DevGenericSycl<TPltf>>
+				        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevGenericSycl<TPlatform>>
+				        , public concepts::Implements<ConceptDev, DevGenericSycl<TPlatform>>
 				    {
 				    public:
 				        DevGenericSycl(sycl::device device, sycl::context context)
@@ -15907,10 +15912,10 @@
 				namespace alpaka::trait
 				{
 				    //! The SYCL device name get trait specialization.
-				    template<typename TPltf>
-				    struct GetName<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct GetName<DevGenericSycl<TPlatform>>
 				    {
-				        static auto getName(DevGenericSycl<TPltf> const& dev) -> std::string
+				        static auto getName(DevGenericSycl<TPlatform> const& dev) -> std::string
 				        {
 				            auto const device = dev.getNativeHandle().first;
 				            return device.template get_info<sycl::info::device::name>();
@@ -15918,10 +15923,10 @@
 				    };
 
 				    //! The SYCL device available memory get trait specialization.
-				    template<typename TPltf>
-				    struct GetMemBytes<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct GetMemBytes<DevGenericSycl<TPlatform>>
 				    {
-				        static auto getMemBytes(DevGenericSycl<TPltf> const& dev) -> std::size_t
+				        static auto getMemBytes(DevGenericSycl<TPlatform> const& dev) -> std::size_t
 				        {
 				            auto const device = dev.getNativeHandle().first;
 				            return device.template get_info<sycl::info::device::global_mem_size>();
@@ -15929,21 +15934,21 @@
 				    };
 
 				    //! The SYCL device free memory get trait specialization.
-				    template<typename TPltf>
-				    struct GetFreeMemBytes<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct GetFreeMemBytes<DevGenericSycl<TPlatform>>
 				    {
-				        static auto getFreeMemBytes(DevGenericSycl<TPltf> const& /* dev */) -> std::size_t
+				        static auto getFreeMemBytes(DevGenericSycl<TPlatform> const& /* dev */) -> std::size_t
 				        {
-				            static_assert(!sizeof(TPltf), "Querying free device memory not supported for SYCL devices.");
+				            static_assert(!sizeof(TPlatform), "Querying free device memory not supported for SYCL devices.");
 				            return std::size_t{};
 				        }
 				    };
 
 				    //! The SYCL device warp size get trait specialization.
-				    template<typename TPltf>
-				    struct GetWarpSizes<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct GetWarpSizes<DevGenericSycl<TPlatform>>
 				    {
-				        static auto getWarpSizes(DevGenericSycl<TPltf> const& dev) -> std::vector<std::size_t>
+				        static auto getWarpSizes(DevGenericSycl<TPlatform> const& dev) -> std::vector<std::size_t>
 				        {
 				            auto const device = dev.getNativeHandle().first;
 				            std::vector<std::size_t> warp_sizes = device.template get_info<sycl::info::device::sub_group_sizes>();
@@ -15956,61 +15961,61 @@
 				    };
 
 				    //! The SYCL device reset trait specialization.
-				    template<typename TPltf>
-				    struct Reset<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct Reset<DevGenericSycl<TPlatform>>
 				    {
-				        static auto reset(DevGenericSycl<TPltf> const&) -> void
+				        static auto reset(DevGenericSycl<TPlatform> const&) -> void
 				        {
-				            static_assert(!sizeof(TPltf), "Explicit device reset not supported for SYCL devices");
+				            static_assert(!sizeof(TPlatform), "Explicit device reset not supported for SYCL devices");
 				        }
 				    };
 
 				    //! The SYCL device native handle trait specialization.
-				    template<typename TPltf>
-				    struct NativeHandle<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct NativeHandle<DevGenericSycl<TPlatform>>
 				    {
-				        [[nodiscard]] static auto getNativeHandle(DevGenericSycl<TPltf> const& dev)
+				        [[nodiscard]] static auto getNativeHandle(DevGenericSycl<TPlatform> const& dev)
 				        {
 				            return dev.getNativeHandle();
 				        }
 				    };
 
 				    //! The SYCL device memory buffer type trait specialization.
-				    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
-				    struct BufType<DevGenericSycl<TPltf>, TElem, TDim, TIdx>
+				    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+				    struct BufType<DevGenericSycl<TPlatform>, TElem, TDim, TIdx>
 				    {
-				        using type = BufGenericSycl<TElem, TDim, TIdx, TPltf>;
+				        using type = BufGenericSycl<TElem, TDim, TIdx, TPlatform>;
 				    };
 
 				    //! The SYCL device platform type trait specialization.
-				    template<typename TPltf>
-				    struct PltfType<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct PlatformType<DevGenericSycl<TPlatform>>
 				    {
-				        using type = TPltf;
+				        using type = TPlatform;
 				    };
 
 				    //! The thread SYCL device wait specialization.
-				    template<typename TPltf>
-				    struct CurrentThreadWaitFor<DevGenericSycl<TPltf>>
+				    template<typename TPlatform>
+				    struct CurrentThreadWaitFor<DevGenericSycl<TPlatform>>
 				    {
-				        static auto currentThreadWaitFor(DevGenericSycl<TPltf> const& dev) -> void
+				        static auto currentThreadWaitFor(DevGenericSycl<TPlatform> const& dev) -> void
 				        {
 				            dev.m_impl->wait();
 				        }
 				    };
 
 				    //! The SYCL blocking queue trait specialization.
-				    template<typename TPltf>
-				    struct QueueType<DevGenericSycl<TPltf>, Blocking>
+				    template<typename TPlatform>
+				    struct QueueType<DevGenericSycl<TPlatform>, Blocking>
 				    {
-				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPltf>, true>;
+				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPlatform>, true>;
 				    };
 
 				    //! The SYCL non-blocking queue trait specialization.
-				    template<typename TPltf>
-				    struct QueueType<DevGenericSycl<TPltf>, NonBlocking>
+				    template<typename TPlatform>
+				    struct QueueType<DevGenericSycl<TPlatform>, NonBlocking>
 				    {
-				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPltf>, false>;
+				        using type = detail::QueueGenericSyclBase<DevGenericSycl<TPlatform>, false>;
 				    };
 				} // namespace alpaka::trait
 
@@ -16479,7 +16484,7 @@
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
 		// Implementation details.
@@ -16627,7 +16632,7 @@
 		// #pragma once
 		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 			// ============================================================================
-			// == ./include/alpaka/pltf/PltfCpuSycl.hpp ==
+			// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
 			// ==
 			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
@@ -16637,7 +16642,7 @@
 			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 				// ============================================================================
-				// == ./include/alpaka/pltf/PltfGenericSycl.hpp ==
+				// == ./include/alpaka/platform/PlatformGenericSycl.hpp ==
 				// ==
 				/* Copyright 2023 Jan Stephan, Luca Ferragina, Aurora Perego
 				 * SPDX-License-Identifier: MPL-2.0
@@ -16647,7 +16652,7 @@
 				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 				// #include <cstddef>    // amalgamate: file already included
 				// #include <exception>    // amalgamate: file already included
@@ -16666,9 +16671,9 @@
 				{
 				    //! The SYCL device manager.
 				    template<typename TSelector>
-				    struct PltfGenericSycl : concepts::Implements<ConceptPltf, PltfGenericSycl<TSelector>>
+				    struct PlatformGenericSycl : concepts::Implements<ConceptPlatform, PlatformGenericSycl<TSelector>>
 				    {
-				        PltfGenericSycl()
+				        PlatformGenericSycl()
 				            : platform{TSelector{}}
 				            , devices(platform.get_devices())
 				            , context{sycl::context{
@@ -16734,9 +16739,9 @@
 				{
 				    //! The SYCL platform device count get trait specialization.
 				    template<typename TSelector>
-				    struct GetDevCount<PltfGenericSycl<TSelector>>
+				    struct GetDevCount<PlatformGenericSycl<TSelector>>
 				    {
-				        static auto getDevCount(PltfGenericSycl<TSelector> const& platform) -> std::size_t
+				        static auto getDevCount(PlatformGenericSycl<TSelector> const& platform) -> std::size_t
 				        {
 				            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -16746,9 +16751,9 @@
 
 				    //! The SYCL platform device get trait specialization.
 				    template<typename TSelector>
-				    struct GetDevByIdx<alpaka::PltfGenericSycl<TSelector>>
+				    struct GetDevByIdx<alpaka::PlatformGenericSycl<TSelector>>
 				    {
-				        static auto getDevByIdx(PltfGenericSycl<TSelector> const& platform, std::size_t const& devIdx)
+				        static auto getDevByIdx(PlatformGenericSycl<TSelector> const& platform, std::size_t const& devIdx)
 				        {
 				            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -16770,7 +16775,7 @@
 				            std::cout << __func__ << sycl_dev.template get_info<sycl::info::device::name>() << '\n';
 				#    endif
 				            using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
-				            return typename DevType<SyclPltf>::type{sycl_dev, platform.syclContext()};
+				            return typename DevType<SyclPlatform>::type{sycl_dev, platform.syclContext()};
 				        }
 
 				    private:
@@ -17362,7 +17367,7 @@
 
 				#endif
 				// ==
-				// == ./include/alpaka/pltf/PltfGenericSycl.hpp ==
+				// == ./include/alpaka/platform/PlatformGenericSycl.hpp ==
 				// ============================================================================
 
 
@@ -17386,22 +17391,22 @@
 			    } // namespace detail
 
 			    //! The SYCL device manager.
-			    using PltfCpuSycl = PltfGenericSycl<detail::SyclCpuSelector>;
+			    using PlatformCpuSycl = PlatformGenericSycl<detail::SyclCpuSelector>;
 			} // namespace alpaka
 
 			namespace alpaka::trait
 			{
 			    //! The SYCL device manager device type trait specialization.
 			    template<>
-			    struct DevType<PltfCpuSycl>
+			    struct DevType<PlatformCpuSycl>
 			    {
-			        using type = DevGenericSycl<PltfCpuSycl>; // = DevCpuSycl
+			        using type = DevGenericSycl<PlatformCpuSycl>; // = DevCpuSycl
 			    };
 			} // namespace alpaka::trait
 
 			#endif
 			// ==
-			// == ./include/alpaka/pltf/PltfCpuSycl.hpp ==
+			// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
 			// ============================================================================
 
 
@@ -17409,7 +17414,7 @@
 
 		namespace alpaka
 		{
-		    using DevCpuSycl = DevGenericSycl<PltfCpuSycl>;
+		    using DevCpuSycl = DevGenericSycl<PlatformCpuSycl>;
 		} // namespace alpaka
 
 		#endif
@@ -18491,7 +18496,7 @@
 				// == ./include/alpaka/mem/buf/sycl/Accessor.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
 
@@ -18807,9 +18812,9 @@
 
 			    //! The SYCL execution task platform type trait specialization.
 			    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-			    struct PltfType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+			    struct PlatformType<TaskKernelGenericSycl<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
 			    {
-			        using type = typename PltfType<TAcc>::type;
+			        using type = typename PlatformType<TAcc>::type;
 			    };
 
 			    //! The SYCL execution task dimension getter trait specialization.
@@ -18852,8 +18857,8 @@
 		// ============================================================================
 
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/PltfCpuSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
 	// #include <cstddef>    // amalgamate: file already included
@@ -18913,9 +18918,9 @@
 
 	    //! The Intel CPU SYCL execution task platform type trait specialization.
 	    template<typename TDim, typename TIdx>
-	    struct PltfType<AccCpuSycl<TDim, TIdx>>
+	    struct PlatformType<AccCpuSycl<TDim, TIdx>>
 	    {
-	        using type = PltfCpuSycl;
+	        using type = PlatformCpuSycl;
 	    };
 
 	    template<typename TDim, typename TIdx>
@@ -19038,7 +19043,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
@@ -19192,9 +19197,9 @@
 
 	        //! The CPU TBB block execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
-	        struct PltfType<AccCpuTbbBlocks<TDim, TIdx>>
+	        struct PlatformType<AccCpuTbbBlocks<TDim, TIdx>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU TBB block accelerator idx type trait specialization.
@@ -19570,7 +19575,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
@@ -19750,9 +19755,9 @@
 
 	        //! The CPU threads execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx>
-	        struct PltfType<AccCpuThreads<TDim, TIdx>>
+	        struct PlatformType<AccCpuThreads<TDim, TIdx>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU threads accelerator idx type trait specialization.
@@ -19805,7 +19810,7 @@
 		// #pragma once
 		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 			// ============================================================================
-			// == ./include/alpaka/pltf/PltfFpgaSyclIntel.hpp ==
+			// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
 			// ==
 			/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina
 			 * SPDX-License-Identifier: MPL-2.0
@@ -19814,7 +19819,7 @@
 			// #pragma once
 			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/pltf/PltfGenericSycl.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already expanded
 
 			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
@@ -19854,22 +19859,22 @@
 			    } // namespace detail
 
 			    //! The SYCL device manager.
-			    using PltfFpgaSyclIntel = PltfGenericSycl<detail::IntelFpgaSelector>;
+			    using PlatformFpgaSyclIntel = PlatformGenericSycl<detail::IntelFpgaSelector>;
 			} // namespace alpaka
 
 			namespace alpaka::trait
 			{
 			    //! The SYCL device manager device type trait specialization.
 			    template<>
-			    struct DevType<PltfFpgaSyclIntel>
+			    struct DevType<PlatformFpgaSyclIntel>
 			    {
-			        using type = DevGenericSycl<PltfFpgaSyclIntel>; // = DevFpgaSyclIntel
+			        using type = DevGenericSycl<PlatformFpgaSyclIntel>; // = DevFpgaSyclIntel
 			    };
 			} // namespace alpaka::trait
 
 			#endif
 			// ==
-			// == ./include/alpaka/pltf/PltfFpgaSyclIntel.hpp ==
+			// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
 			// ============================================================================
 
 
@@ -19877,7 +19882,7 @@
 
 		namespace alpaka
 		{
-		    using DevFpgaSyclIntel = DevGenericSycl<PltfFpgaSyclIntel>;
+		    using DevFpgaSyclIntel = DevGenericSycl<PlatformFpgaSyclIntel>;
 		} // namespace alpaka
 
 		#endif
@@ -19915,8 +19920,8 @@
 		// ============================================================================
 
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/PltfFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
 	// #include <string>    // amalgamate: file already included
@@ -19975,9 +19980,9 @@
 
 	    //! The Intel FPGA SYCL execution task platform type trait specialization.
 	    template<typename TDim, typename TIdx>
-	    struct PltfType<AccFpgaSyclIntel<TDim, TIdx>>
+	    struct PlatformType<AccFpgaSyclIntel<TDim, TIdx>>
 	    {
-	        using type = PltfFpgaSyclIntel;
+	        using type = PlatformFpgaSyclIntel;
 	    };
 
 	    template<typename TDim, typename TIdx>
@@ -23380,7 +23385,7 @@
 				// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
 				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
@@ -23396,7 +23401,7 @@
 				{
 				    namespace trait
 				    {
-				        template<typename TPltf, typename TSfinae>
+				        template<typename TPlatform, typename TSfinae>
 				        struct GetDevByIdx;
 				    }
 
@@ -23413,7 +23418,7 @@
 				    using QueueUniformCudaHipRtNonBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, false>;
 
 				    template<typename TApi>
-				    struct PltfUniformCudaHipRt;
+				    struct PlatformUniformCudaHipRt;
 
 				    template<typename TApi, typename TElem, typename TDim, typename TIdx>
 				    class BufUniformCudaHipRt;
@@ -23424,7 +23429,7 @@
 				        : public concepts::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt<TApi>>
 				        , public concepts::Implements<ConceptDev, DevUniformCudaHipRt<TApi>>
 				    {
-				        friend struct trait::GetDevByIdx<PltfUniformCudaHipRt<TApi>>;
+				        friend struct trait::GetDevByIdx<PlatformUniformCudaHipRt<TApi>>;
 
 				    protected:
 				        DevUniformCudaHipRt() = default;
@@ -23550,9 +23555,9 @@
 
 				        //! The CUDA/HIP RT device platform type trait specialization.
 				        template<typename TApi>
-				        struct PltfType<DevUniformCudaHipRt<TApi>>
+				        struct PlatformType<DevUniformCudaHipRt<TApi>>
 				        {
-				            using type = PltfUniformCudaHipRt<TApi>;
+				            using type = PlatformUniformCudaHipRt<TApi>;
 				        };
 
 				        //! The thread CUDA/HIP device wait specialization.
@@ -24147,7 +24152,7 @@
 		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 		// Implementation details.
 		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already expanded
@@ -24408,9 +24413,9 @@
 
 		        //! The CPU CUDA execution task platform type trait specialization.
 		        template<typename TApi, typename TDim, typename TIdx>
-		        struct PltfType<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
+		        struct PlatformType<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
 		        {
-		            using type = PltfUniformCudaHipRt<TApi>;
+		            using type = PlatformUniformCudaHipRt<TApi>;
 		        };
 
 		        //! The GPU CUDA accelerator idx type trait specialization.
@@ -25338,7 +25343,7 @@
 		// #pragma once
 		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 			// ============================================================================
-			// == ./include/alpaka/pltf/PltfGpuSyclIntel.hpp ==
+			// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
 			// ==
 			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
@@ -25347,7 +25352,7 @@
 			// #pragma once
 			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
 			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/pltf/PltfGenericSycl.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already expanded
 
 			// #include <string>    // amalgamate: file already included
 
@@ -25372,22 +25377,22 @@
 			    } // namespace detail
 
 			    //! The SYCL device manager.
-			    using PltfGpuSyclIntel = PltfGenericSycl<detail::IntelGpuSelector>;
+			    using PlatformGpuSyclIntel = PlatformGenericSycl<detail::IntelGpuSelector>;
 			} // namespace alpaka
 
 			namespace alpaka::trait
 			{
 			    //! The SYCL device manager device type trait specialization.
 			    template<>
-			    struct DevType<PltfGpuSyclIntel>
+			    struct DevType<PlatformGpuSyclIntel>
 			    {
-			        using type = DevGenericSycl<PltfGpuSyclIntel>; // = DevGpuSyclIntel
+			        using type = DevGenericSycl<PlatformGpuSyclIntel>; // = DevGpuSyclIntel
 			    };
 			} // namespace alpaka::trait
 
 			#endif
 			// ==
-			// == ./include/alpaka/pltf/PltfGpuSyclIntel.hpp ==
+			// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
 			// ============================================================================
 
 
@@ -25395,7 +25400,7 @@
 
 		namespace alpaka
 		{
-		    using DevGpuSyclIntel = DevGenericSycl<PltfGpuSyclIntel>;
+		    using DevGpuSyclIntel = DevGenericSycl<PlatformGpuSyclIntel>;
 		}
 
 		#endif
@@ -25433,8 +25438,8 @@
 		// ============================================================================
 
 	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/PltfGpuSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
 	// #include <string>    // amalgamate: file already included
@@ -25491,9 +25496,9 @@
 
 	    //! The Intel GPU SYCL execution task platform type trait specialization.
 	    template<typename TDim, typename TIdx>
-	    struct PltfType<AccGpuSyclIntel<TDim, TIdx>>
+	    struct PlatformType<AccGpuSyclIntel<TDim, TIdx>>
 	    {
-	        using type = PltfGpuSyclIntel;
+	        using type = PlatformGpuSyclIntel;
 	    };
 
 	    template<typename TDim, typename TIdx>
@@ -26891,7 +26896,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/AccCpuOmp2Blocks.hpp"    // amalgamate: file already expanded
@@ -27817,9 +27822,9 @@
 
 	        //! The CPU OpenMP 2.0 grid block execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct PltfType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        struct PlatformType<TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU OpenMP 2.0 block execution task idx type trait specialization.
@@ -27849,7 +27854,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/AccCpuOmp2Threads.hpp"    // amalgamate: file already expanded
@@ -28111,9 +28116,9 @@
 
 	        //! The CPU OpenMP 2.0 block thread execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct PltfType<TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        struct PlatformType<TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU OpenMP 2.0 block thread execution task idx type trait specialization.
@@ -28143,7 +28148,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/AccCpuSerial.hpp"    // amalgamate: file already expanded
@@ -28260,9 +28265,9 @@
 
 	        //! The CPU serial execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct PltfType<TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        struct PlatformType<TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU serial execution task idx type trait specialization.
@@ -28293,7 +28298,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/AccCpuTbbBlocks.hpp"    // amalgamate: file already expanded
@@ -28422,9 +28427,9 @@
 
 	        //! The CPU TBB block execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct PltfType<TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        struct PlatformType<TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU TBB block execution task idx type trait specialization.
@@ -28454,7 +28459,7 @@
 	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 	// Implementation details.
 	// #include "alpaka/acc/AccCpuThreads.hpp"    // amalgamate: file already expanded
@@ -28634,9 +28639,9 @@
 
 	        //! The CPU threads execution task platform type trait specialization.
 	        template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-	        struct PltfType<TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+	        struct PlatformType<TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
 	        {
-	            using type = PltfCpu;
+	            using type = PlatformCpu;
 	        };
 
 	        //! The CPU threads execution task idx type trait specialization.
@@ -28686,7 +28691,7 @@
 		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
@@ -29215,9 +29220,9 @@
 
 		        //! The CPU CUDA/HIP execution task platform type trait specialization.
 		        template<typename TApi, typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-		        struct PltfType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+		        struct PlatformType<TaskKernelGpuUniformCudaHipRt<TApi, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
 		        {
-		            using type = PltfUniformCudaHipRt<TApi>;
+		            using type = PlatformUniformCudaHipRt<TApi>;
 		        };
 
 		        //! The GPU CUDA/HIP execution task idx type trait specialization.
@@ -30081,7 +30086,7 @@
 
 	        //! The pinned/mapped memory allocation trait specialization.
 	        template<typename TElem, typename TDim, typename TIdx>
-	        struct BufAllocMapped<PltfCpu, TElem, TDim, TIdx>
+	        struct BufAllocMapped<PlatformCpu, TElem, TDim, TIdx>
 	        {
 	            template<typename TExtent>
 	            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
@@ -30094,7 +30099,7 @@
 
 	        //! The pinned/mapped memory allocation capability trait specialization.
 	        template<>
-	        struct HasMappedBufSupport<PltfCpu> : public std::true_type
+	        struct HasMappedBufSupport<PlatformCpu> : public std::true_type
 	        {
 	        };
 
@@ -30705,12 +30710,12 @@
 		    };
 
 		    //! The SYCL memory allocation trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
-		    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TPltf>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+		    struct BufAlloc<TElem, TDim, TIdx, DevGenericSycl<TPlatform>>
 		    {
 		        template<typename TExtent>
-		        static auto allocBuf(DevGenericSycl<TPltf> const& dev, TExtent const& extent)
-		            -> BufGenericSycl<TElem, TDim, TIdx, TPltf>
+		        static auto allocBuf(DevGenericSycl<TPlatform> const& dev, TExtent const& extent)
+		            -> BufGenericSycl<TElem, TDim, TIdx, TPlatform>
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -30799,14 +30804,14 @@
 		    };
 
 		    //! The BufCpu pointer on SYCL device get trait specialization.
-		    template<typename TElem, typename TDim, typename TIdx, typename TPltf>
-		    struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TPltf>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+		    struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevGenericSycl<TPlatform>>
 		    {
-		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPltf> const&) -> TElem const*
+		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx> const& buf, DevGenericSycl<TPlatform> const&) -> TElem const*
 		        {
 		            return getPtrNative(buf);
 		        }
-		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPltf> const&) -> TElem*
+		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPlatform> const&) -> TElem*
 		        {
 		            return getPtrNative(buf);
 		        }
@@ -31073,8 +31078,8 @@
 			namespace alpaka::trait
 			{
 			    //! The SYCL host-to-device memory copy trait specialization.
-			    template<typename TPltf, typename TDim>
-			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltf>, DevCpu>
+			    template<typename TPlatform, typename TDim>
+			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPlatform>, DevCpu>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
 			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -31087,8 +31092,8 @@
 			    };
 
 			    //! The SYCL device-to-host memory copy trait specialization.
-			    template<typename TPltf, typename TDim>
-			    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TPltf>>
+			    template<typename TPlatform, typename TDim>
+			    struct CreateTaskMemcpy<TDim, DevCpu, DevGenericSycl<TPlatform>>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
 			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -31101,8 +31106,8 @@
 			    };
 
 			    //! The SYCL device-to-device memory copy trait specialization.
-			    template<typename TPltfDst, typename TPltfSrc, typename TDim>
-			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPltfDst>, DevGenericSycl<TPltfSrc>>
+			    template<typename TPlatformDst, typename TPlatformSrc, typename TDim>
+			    struct CreateTaskMemcpy<TDim, DevGenericSycl<TPlatformDst>, DevGenericSycl<TPlatformSrc>>
 			    {
 			        template<typename TExtent, typename TViewSrc, typename TViewDstFwd>
 			        static auto createTaskMemcpy(TViewDstFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
@@ -31323,8 +31328,8 @@
 			    namespace trait
 			    {
 			        //! The SYCL device memory set trait specialization.
-			        template<typename TDim, typename TPltf>
-			        struct CreateTaskMemset<TDim, DevGenericSycl<TPltf>>
+			        template<typename TDim, typename TPlatform>
+			        struct CreateTaskMemset<TDim, DevGenericSycl<TPlatform>>
 			        {
 			            template<typename TExtent, typename TView>
 			            static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
@@ -31676,7 +31681,7 @@
 
 		        //! The pinned/mapped memory allocation trait specialization for the CUDA/HIP devices.
 		        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-		        struct BufAllocMapped<PltfUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
+		        struct BufAllocMapped<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
 		        {
 		            template<typename TExtent>
 		            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
@@ -31699,7 +31704,7 @@
 
 		        //! The pinned/mapped memory allocation capability trait specialization.
 		        template<typename TApi>
-		        struct HasMappedBufSupport<PltfUniformCudaHipRt<TApi>> : public std::true_type
+		        struct HasMappedBufSupport<PlatformUniformCudaHipRt<TApi>> : public std::true_type
 		        {
 		        };
 
@@ -33332,7 +33337,7 @@
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
 		// ============================================================================
-		// == ./include/alpaka/pltf/PltfCpu.hpp ==
+		// == ./include/alpaka/platform/PlatformCpu.hpp ==
 		// ==
 		/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
 		 * SPDX-License-Identifier: MPL-2.0
@@ -33341,7 +33346,7 @@
 		// #pragma once
 		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
 		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 
 		// #include <sstream>    // amalgamate: file already included
 		// #include <vector>    // amalgamate: file already included
@@ -33349,7 +33354,7 @@
 		namespace alpaka
 		{
 		    //! The CPU device platform.
-		    struct PltfCpu : concepts::Implements<ConceptPltf, PltfCpu>
+		    struct PlatformCpu : concepts::Implements<ConceptPlatform, PlatformCpu>
 		    {
 		    };
 
@@ -33357,16 +33362,16 @@
 		    {
 		        //! The CPU device device type trait specialization.
 		        template<>
-		        struct DevType<PltfCpu>
+		        struct DevType<PlatformCpu>
 		        {
 		            using type = DevCpu;
 		        };
 
 		        //! The CPU platform device count get trait specialization.
 		        template<>
-		        struct GetDevCount<PltfCpu>
+		        struct GetDevCount<PlatformCpu>
 		        {
-		            ALPAKA_FN_HOST static auto getDevCount(PltfCpu const&) -> std::size_t
+		            ALPAKA_FN_HOST static auto getDevCount(PlatformCpu const&) -> std::size_t
 		            {
 		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -33376,9 +33381,9 @@
 
 		        //! The CPU platform device get trait specialization.
 		        template<>
-		        struct GetDevByIdx<PltfCpu>
+		        struct GetDevByIdx<PlatformCpu>
 		        {
-		            ALPAKA_FN_HOST static auto getDevByIdx(PltfCpu const& platform, std::size_t const& devIdx) -> DevCpu
+		            ALPAKA_FN_HOST static auto getDevByIdx(PlatformCpu const& platform, std::size_t const& devIdx) -> DevCpu
 		            {
 		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -33397,7 +33402,7 @@
 		    } // namespace trait
 		} // namespace alpaka
 		// ==
-		// == ./include/alpaka/pltf/PltfCpu.hpp ==
+		// == ./include/alpaka/platform/PlatformCpu.hpp ==
 		// ============================================================================
 
 
@@ -33420,7 +33425,7 @@
 	        {
 	            // Instantiating the CPU platform here is a hack we can do internally, because we know that the CPU
 	            // platform does not contain any data. But it generally does not apply.
-	            return getDevByIdx(PltfCpu{}, 0u);
+	            return getDevByIdx(PlatformCpu{}, 0u);
 	        }
 	    };
 
@@ -33498,7 +33503,7 @@
 	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/PltfCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already expanded
 
 	// #include <vector>    // amalgamate: file already included
 
@@ -33517,7 +33522,7 @@
 	    {
 	        ALPAKA_FN_HOST static auto getDev(std::vector<TElem, TAllocator> const& /* view */) -> DevCpu
 	        {
-	            return getDevByIdx(PltfCpu{}, 0u);
+	            return getDevByIdx(PlatformCpu{}, 0u);
 	        }
 	    };
 
@@ -34558,10 +34563,10 @@
 // offset
 // #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
 // platform
-// #include "alpaka/pltf/PltfCpu.hpp"    // amalgamate: file already expanded
-// #include "alpaka/pltf/PltfCpuSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already expanded
 	// ============================================================================
-	// == ./include/alpaka/pltf/PltfCudaRt.hpp ==
+	// == ./include/alpaka/platform/PlatformCudaRt.hpp ==
 	// ==
 	/* Copyright 2022 Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
@@ -34570,7 +34575,7 @@
 	// #pragma once
 	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
 		// ============================================================================
-		// == ./include/alpaka/pltf/PltfUniformCudaHipRt.hpp ==
+		// == ./include/alpaka/platform/PlatformUniformCudaHipRt.hpp ==
 		// ==
 		/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
 		 * SPDX-License-Identifier: MPL-2.0
@@ -34598,7 +34603,7 @@
 
 		    //! The CUDA/HIP RT platform.
 		    template<typename TApi>
-		    struct PltfUniformCudaHipRt : concepts::Implements<ConceptPltf, PltfUniformCudaHipRt<TApi>>
+		    struct PlatformUniformCudaHipRt : concepts::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
 		    {
 		    };
 
@@ -34606,16 +34611,16 @@
 		    {
 		        //! The CUDA/HIP RT platform device type trait specialization.
 		        template<typename TApi>
-		        struct DevType<PltfUniformCudaHipRt<TApi>>
+		        struct DevType<PlatformUniformCudaHipRt<TApi>>
 		        {
 		            using type = DevUniformCudaHipRt<TApi>;
 		        };
 
 		        //! The CUDA/HIP RT platform device count get trait specialization.
 		        template<typename TApi>
-		        struct GetDevCount<PltfUniformCudaHipRt<TApi>>
+		        struct GetDevCount<PlatformUniformCudaHipRt<TApi>>
 		        {
-		            ALPAKA_FN_HOST static auto getDevCount(PltfUniformCudaHipRt<TApi> const&) -> std::size_t
+		            ALPAKA_FN_HOST static auto getDevCount(PlatformUniformCudaHipRt<TApi> const&) -> std::size_t
 		            {
 		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -34630,10 +34635,10 @@
 
 		        //! The CUDA/HIP RT platform device get trait specialization.
 		        template<typename TApi>
-		        struct GetDevByIdx<PltfUniformCudaHipRt<TApi>>
+		        struct GetDevByIdx<PlatformUniformCudaHipRt<TApi>>
 		        {
 		            ALPAKA_FN_HOST static auto getDevByIdx(
-		                PltfUniformCudaHipRt<TApi> const& platform,
+		                PlatformUniformCudaHipRt<TApi> const& platform,
 		                std::size_t const& devIdx) -> DevUniformCudaHipRt<TApi>
 		            {
 		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -34830,7 +34835,7 @@
 
 		#endif
 		// ==
-		// == ./include/alpaka/pltf/PltfUniformCudaHipRt.hpp ==
+		// == ./include/alpaka/platform/PlatformUniformCudaHipRt.hpp ==
 		// ============================================================================
 
 
@@ -34839,18 +34844,18 @@
 	namespace alpaka
 	{
 	    //! The CUDA RT platform.
-	    using PltfCudaRt = PltfUniformCudaHipRt<ApiCudaRt>;
+	    using PlatformCudaRt = PlatformUniformCudaHipRt<ApiCudaRt>;
 	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
 	// ==
-	// == ./include/alpaka/pltf/PltfCudaRt.hpp ==
+	// == ./include/alpaka/platform/PlatformCudaRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/pltf/PltfFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/pltf/PltfGpuSyclIntel.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already expanded
 	// ============================================================================
-	// == ./include/alpaka/pltf/PltfHipRt.hpp ==
+	// == ./include/alpaka/platform/PlatformHipRt.hpp ==
 	// ==
 	/* Copyright 2022 Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
@@ -34858,22 +34863,22 @@
 
 	// #pragma once
 	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/pltf/PltfUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/platform/PlatformUniformCudaHipRt.hpp"    // amalgamate: file already expanded
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
 	namespace alpaka
 	{
 	    //! The HIP RT platform.
-	    using PltfHipRt = PltfUniformCudaHipRt<ApiHipRt>;
+	    using PlatformHipRt = PlatformUniformCudaHipRt<ApiHipRt>;
 	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_HIP_ENABLED
 	// ==
-	// == ./include/alpaka/pltf/PltfHipRt.hpp ==
+	// == ./include/alpaka/platform/PlatformHipRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/pltf/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 // rand
 	// ============================================================================
 	// == ./include/alpaka/rand/RandDefault.hpp ==
