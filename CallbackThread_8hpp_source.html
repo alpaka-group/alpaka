@@ -105,34 +105,34 @@ $(document).ready(function(){initNavTree('CallbackThread_8hpp_source.html',''); 
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1CallbackThread.html">   17</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalpaka_1_1core_1_1CallbackThread.html">CallbackThread</a></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">using</span> Task = std::packaged_task&lt;void()&gt;;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176">   22</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176">~CallbackThread</a>()</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                m_stop = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                m_cond.notify_one();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">if</span>(m_thread.joinable())</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="keywordflow">if</span>(std::this_thread::get_id() == m_thread.get_id())</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR in ~CallbackThread: thread joins itself&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    std::abort();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                m_thread.join();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="comment">// Note: due to different std lib implementations of packaged_task, the lifetime of the passed function either</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="comment">// ends when the packaged_task is destroyed (while the returned future is still alive) or when both are</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="comment">// destroyed. Therefore, ensure that a submitted task does not extend the lifetime of any object that</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="comment">// (transitively) holds the returned future. E.g. don&#39;t capture a shared_ptr to an alpaka object that stores</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="comment">// the returned future. This is a cyclic dependency and creates a leak.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> NullaryFunction&gt;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="comment">// std::packaged_task is used because std::function requires that the wrapped callable is copyable.</span><span class="comment"></span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">        //! \todo with C++23 std::move_only_function should be used</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"></span>        <span class="keyword">using</span> Task = std::packaged_task&lt;void()&gt;;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">using</span> TaskPackage = std::pair&lt;Task, std::promise&lt;void&gt;&gt;;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176">   25</a></span>&#160;        <a class="code" href="classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176">~CallbackThread</a>()</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                m_stop = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                m_cond.notify_one();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">if</span>(m_thread.joinable())</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                <span class="keywordflow">if</span>(std::this_thread::get_id() == m_thread.get_id())</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR in ~CallbackThread: thread joins itself&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                    std::abort();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                m_thread.join();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">        //! It is guaranteed that the task is fully destroyed before the future&#39;s result is set.</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">        //! @{</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> NullaryFunction&gt;</div>
 <div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7">   47</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7">submit</a>(NullaryFunction&amp;&amp; nf) -&gt; std::future&lt;void&gt;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            static_assert(</div>
@@ -143,67 +143,82 @@ $(document).ready(function(){initNavTree('CallbackThread_8hpp_source.html',''); 
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57">   55</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57">submit</a>(Task task) -&gt; std::future&lt;void&gt;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keyword">auto</span> f = task.get_future();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                ++m_tasksInProgress;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                m_tasks.emplace(std::move(task));</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">if</span>(!m_thread.joinable())</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    startWorkerThread();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                m_cond.notify_one();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> f;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1CallbackThread.html#a5300d61d0bcc07dbe3ab63104ad7dbd3">   70</a></span>&#160;        [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1CallbackThread.html#a5300d61d0bcc07dbe3ab63104ad7dbd3">empty</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> m_tasksInProgress == 0;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        std::thread m_thread;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        std::condition_variable m_cond;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        std::mutex m_mutex;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">bool</span> m_stop{<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        std::queue&lt;Task&gt; m_tasks;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        std::atomic&lt;int&gt; m_tasksInProgress{0};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="comment">// We do not use the future of std::packed_task because the future will keep the task alive</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="comment">// and we can not control the moment the future is set.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keyword">auto</span> tp = std::make_pair(std::move(task), std::promise&lt;void&gt;{});</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keyword">auto</span> f = tp.second.get_future();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                m_tasks.emplace(std::move(tp));</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keywordflow">if</span>(!m_thread.joinable())</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    startWorkerThread();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                m_cond.notify_one();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> f;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">        //! @}</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span><span class="comment"></span> </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">        //! @return True if queue is empty and no task is executed else false.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">        //! If only one tasks is enqueued and the task is executed the task will see the queue as not empty.</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">        //! During the destruction of this single enqueued task the queue will already be accounted as empty.</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classalpaka_1_1core_1_1CallbackThread.html#aa2dc58d74016e178f71a1247e851cc23">   77</a></span>&#160;<span class="comment"></span>        [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1core_1_1CallbackThread.html#aa2dc58d74016e178f71a1247e851cc23">empty</a>()</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">return</span> m_tasks.empty();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">auto</span> startWorkerThread() -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            m_thread = std::thread(</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                [<span class="keyword">this</span>]</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    <span class="keywordflow">while</span>(<span class="keyword">true</span>)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                        {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                            <span class="comment">// Do not move the tasks out of the loop else the lifetime could be extended until the</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                            <span class="comment">// moment where the callback thread is destructed.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                            Task task;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                            {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                m_cond.wait(lock, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> m_stop || !m_tasks.empty(); });</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                                <span class="keywordflow">if</span>(m_stop &amp;&amp; m_tasks.empty())</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                task = std::move(m_tasks.front());</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                m_tasks.pop();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                            }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        std::thread m_thread;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::condition_variable m_cond;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        std::mutex m_mutex;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">bool</span> m_stop{<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        std::queue&lt;TaskPackage&gt; m_tasks;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">auto</span> startWorkerThread() -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            m_thread = std::thread(</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                [<span class="keyword">this</span>]</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    <span class="keywordflow">while</span>(<span class="keyword">true</span>)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                        std::promise&lt;void&gt; taskPromise;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                            <span class="comment">// Task is destroyed before promise is updated but after the queue state is up to date.</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                            Task task;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                            {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                                m_cond.wait(lock, [<span class="keyword">this</span>] { <span class="keywordflow">return</span> m_stop || !m_tasks.empty(); });</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                            task();</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                        --m_tasksInProgress;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                });</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    };</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                <span class="keywordflow">if</span>(m_stop &amp;&amp; m_tasks.empty())</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                                task = std::move(m_tasks.front().first);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                                taskPromise = std::move(m_tasks.front().second);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                            }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                            task();</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                            {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                std::unique_lock&lt;std::mutex&gt; lock{m_mutex};</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                                <span class="comment">// Pop empty data from the queue, task and promise will be destroyed later in a</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                                <span class="comment">// well-defined order.</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                                m_tasks.pop();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                            }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                            <span class="comment">// Task will be destroyed here, the queue status is already updated.</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                        }</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        <span class="comment">// In case the executed tasks is the last task in the queue the waiting threads will see the</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                        <span class="comment">// queue as empty.</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                        taskPromise.set_value();</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                    }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                });</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    };</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;} <span class="comment">// namespace alpaka::core</span></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html">alpaka::core::CallbackThread</a></div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00017">CallbackThread.hpp:18</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_a5300d61d0bcc07dbe3ab63104ad7dbd3"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#a5300d61d0bcc07dbe3ab63104ad7dbd3">alpaka::core::CallbackThread::empty</a></div><div class="ttdeci">auto empty() const</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00070">CallbackThread.hpp:70</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_a568b3be7a6c054e83f687cdcf5531f57"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57">alpaka::core::CallbackThread::submit</a></div><div class="ttdeci">auto submit(Task task) -&gt; std::future&lt; void &gt;</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00055">CallbackThread.hpp:55</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_abf5e60d6c22a5866f3be4c699a6b1ba7"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7">alpaka::core::CallbackThread::submit</a></div><div class="ttdeci">auto submit(NullaryFunction &amp;&amp;nf) -&gt; std::future&lt; void &gt;</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00047">CallbackThread.hpp:47</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_affbb697e77860c257d06e6bf8249e176"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176">alpaka::core::CallbackThread::~CallbackThread</a></div><div class="ttdeci">~CallbackThread()</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00022">CallbackThread.hpp:22</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_aa2dc58d74016e178f71a1247e851cc23"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#aa2dc58d74016e178f71a1247e851cc23">alpaka::core::CallbackThread::empty</a></div><div class="ttdeci">auto empty()</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00077">CallbackThread.hpp:77</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_abf5e60d6c22a5866f3be4c699a6b1ba7"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7">alpaka::core::CallbackThread::submit</a></div><div class="ttdeci">auto submit(NullaryFunction &amp;&amp;nf) -&gt; std::future&lt; void &gt;</div><div class="ttdoc">It is guaranteed that the task is fully destroyed before the future's result is set.</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00047">CallbackThread.hpp:47</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1core_1_1CallbackThread_html_affbb697e77860c257d06e6bf8249e176"><div class="ttname"><a href="classalpaka_1_1core_1_1CallbackThread.html#affbb697e77860c257d06e6bf8249e176">alpaka::core::CallbackThread::~CallbackThread</a></div><div class="ttdeci">~CallbackThread()</div><div class="ttdef"><b>Definition:</b> <a href="CallbackThread_8hpp_source.html#l00025">CallbackThread.hpp:25</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1core_html"><div class="ttname"><a href="namespacealpaka_1_1core.html">alpaka::core</a></div><div class="ttdef"><b>Definition:</b> <a href="Align_8hpp_source.html#l00012">Align.hpp:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -211,7 +226,7 @@ $(document).ready(function(){initNavTree('CallbackThread_8hpp_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="CallbackThread_8hpp.html">CallbackThread.hpp</a></li>
-    <li class="footer">Generated on Fri Jul 28 2023 10:51:32 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Jul 28 2023 10:53:31 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
