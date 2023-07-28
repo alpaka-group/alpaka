@@ -40,6 +40,7 @@ namespace custom
         Erf,
         Exp,
         Floor,
+        Fma,
         Fmod,
         Log,
         Log2,
@@ -64,10 +65,6 @@ namespace custom
         Arg2 = 2048,
         Arg3 = 4096,
     };
-
-    // struct Custom
-    //{
-    //};
 
     ALPAKA_FN_HOST_ACC auto abs(Custom c);
     ALPAKA_FN_HOST_ACC auto abs(Custom c)
@@ -169,6 +166,12 @@ namespace custom
     ALPAKA_FN_HOST_ACC auto floor(Custom c)
     {
         return Custom::Floor | c;
+    }
+
+    ALPAKA_FN_HOST_ACC auto fma(Custom a, Custom b, Custom c);
+    ALPAKA_FN_HOST_ACC auto fma(Custom a, Custom b, Custom c)
+    {
+        return Custom::Fma | a | b | c;
     }
 
     ALPAKA_FN_HOST_ACC auto fmod(Custom a, Custom b);
@@ -343,6 +346,11 @@ struct AdlKernel
             *success,
             alpaka::math::remainder(acc, Custom::Arg1, Custom::Arg2)
                 == (Custom::Remainder | Custom::Arg1 | Custom::Arg2));
+
+        ALPAKA_CHECK(
+            *success,
+            alpaka::math::fma(acc, Custom::Arg1, Custom::Arg2, Custom::Arg3)
+                == (Custom::Fma | Custom::Arg1 | Custom::Arg2 | Custom::Arg3));
 
         Custom a, b;
         alpaka::math::sincos(acc, Custom::Arg1, a, b);

@@ -83,6 +83,22 @@ namespace alpaka
             return STD_OP(typename StdLibType<TArg1>::type(arg1), typename StdLibType<TArg2>::type(arg2));            \
         }                                                                                                             \
                                                                                                                       \
+        ALPAKA_NO_HOST_ACC_WARNING                                                                                    \
+        template<                                                                                                     \
+            typename TAcc = std::nullptr_t,                                                                           \
+            typename TArg1,                                                                                           \
+            typename TArg2,                                                                                           \
+            typename TArg3, /* SFINAE: Enables if called from host. */                                                \
+            typename std::enable_if_t<std::is_same_v<TAcc, std::nullptr_t>, int> = 0>                                 \
+        ALPAKA_FN_HOST auto execute(TAcc const& /* acc */, TArg1 const& arg1, TArg2 const& arg2, TArg3 const& arg3)   \
+            const                                                                                                     \
+        {                                                                                                             \
+            return STD_OP(                                                                                            \
+                typename StdLibType<TArg1>::type(arg1),                                                               \
+                typename StdLibType<TArg2>::type(arg2),                                                               \
+                typename StdLibType<TArg3>::type(arg3));                                                              \
+        }                                                                                                             \
+                                                                                                                      \
         /* assigns args by arity */                                                                                   \
         ALPAKA_NO_HOST_ACC_WARNING                                                                                    \
         template<typename T, typename TAcc = std::nullptr_t>                                                          \
@@ -97,6 +113,14 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto operator()(ArgsItem<T, Arity::Binary> const& args, TAcc const& acc = nullptr) const   \
         {                                                                                                             \
             return execute(acc, args.arg[0], args.arg[1]);                                                            \
+        }                                                                                                             \
+                                                                                                                      \
+        /* assigns args by arity */                                                                                   \
+        ALPAKA_NO_HOST_ACC_WARNING                                                                                    \
+        template<typename T, typename TAcc = std::nullptr_t>                                                          \
+        ALPAKA_FN_HOST_ACC auto operator()(ArgsItem<T, Arity::Ternary> const& args, TAcc const& acc = nullptr) const  \
+        {                                                                                                             \
+            return execute(acc, args.arg[0], args.arg[1], args.arg[2]);                                               \
         }                                                                                                             \
                                                                                                                       \
         friend std::ostream& operator<<(std::ostream& out, const NAME& /* op */)                                      \
@@ -275,8 +299,15 @@ namespace alpaka
                     Range::Unrestricted,
                     Range::NotZero)
 
-                // Binary functors to be used only for real types
-                using BinaryFunctorsReal = std::tuple<OpAtan2, OpFmod, OpMax, OpMin, OpPow, OpRemainder>;
+                // All ternary operators.
+                ALPAKA_TEST_MATH_OP_FUNCTOR(
+                    OpFma,
+                    Arity::Ternary,
+                    std::fma,
+                    alpaka::math::fma,
+                    Range::Unrestricted,
+                    Range::Unrestricted,
+                    Range::Unrestricted)
 
                 // Unary functors to be used only for real types
                 using UnaryFunctorsReal = std::tuple<
@@ -309,6 +340,12 @@ namespace alpaka
                     OpIsnan,
                     OpIsinf,
                     OpIsfinite>;
+
+                // Binary functors to be used only for real types
+                using BinaryFunctorsReal = std::tuple<OpAtan2, OpFmod, OpMax, OpMin, OpPow, OpRemainder>;
+
+                // Ternary functors to be used only for real types
+                using TernaryFunctorsReal = std::tuple<OpFma>;
 
                 // For complex numbers also test arithmetic operations
                 ALPAKA_TEST_MATH_OP_FUNCTOR(
@@ -356,9 +393,6 @@ namespace alpaka
                     Range::PositiveOnly,
                     Range::Unrestricted)
 
-                // Binary functors to be used for complex types
-                using BinaryFunctorsComplex = std::tuple<OpDivides, OpMinus, OpMultiplies, OpPlus, OpPowComplex>;
-
                 // Unary functors to be used for both real and complex types
                 using UnaryFunctorsComplex = std::tuple<
                     OpAbs,
@@ -381,6 +415,9 @@ namespace alpaka
                     OpSqrt,
                     OpTan,
                     OpTanh>;
+
+                // Binary functors to be used for complex types
+                using BinaryFunctorsComplex = std::tuple<OpDivides, OpMinus, OpMultiplies, OpPlus, OpPowComplex>;
 
             } // namespace math
         } // namespace unit

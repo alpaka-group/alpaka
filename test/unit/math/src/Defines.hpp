@@ -34,7 +34,8 @@ namespace alpaka
                 enum class Arity
                 {
                     Unary = 1,
-                    Binary = 2
+                    Binary = 2,
+                    Ternary = 3
                 };
 
                 template<typename T, Arity Tarity>
@@ -48,10 +49,10 @@ namespace alpaka
                     friend auto operator<<(std::ostream& os, ArgsItem const& argsItem) -> std::ostream&
                     {
                         os.precision(17);
-                        os << "[ ";
                         for(size_t i = 0; i < argsItem.arity_nr; ++i)
-                            os << std::setprecision(std::numeric_limits<T>::digits10 + 1) << argsItem.arg[i] << ", ";
-                        os << "]";
+                            os << (i == 0 ? "[ " : ", ") << std::setprecision(std::numeric_limits<T>::digits10 + 1)
+                               << argsItem.arg[i];
+                        os << " ]";
                         return os;
                     }
                 };

@@ -136,8 +136,8 @@ struct TestTemplate
 #endif
         for(size_t i = 0; i < Args::capacity; ++i)
         {
-            INFO("Idx i: " << i);
             TData std_result = functor(args(i));
+            INFO("Idx i: " << i << " computed : " << results(i) << " vs expected: " << std_result);
             REQUIRE(isApproxEqual(results(i), std_result));
         }
     }
