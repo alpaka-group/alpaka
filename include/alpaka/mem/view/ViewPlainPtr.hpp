@@ -183,11 +183,11 @@ namespace alpaka
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED)
         //! The SYCL device CreateStaticDevMemView trait specialization.
-        template<typename TPltf>
-        struct CreateStaticDevMemView<DevGenericSycl<TPltf>>
+        template<typename TPlatform>
+        struct CreateStaticDevMemView<DevGenericSycl<TPlatform>>
         {
             static_assert(
-                meta::DependentFalseType<TPltf>::value,
+                meta::DependentFalseType<TPlatform>::value,
                 "The SYCL backend does not support global device variables.");
         };
 #endif
@@ -231,21 +231,22 @@ namespace alpaka
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED)
         //! The SYCL device CreateViewPlainPtr trait specialization.
-        template<typename TPltf>
-        struct CreateViewPlainPtr<DevGenericSycl<TPltf>>
+        template<typename TPlatform>
+        struct CreateViewPlainPtr<DevGenericSycl<TPlatform>>
         {
             template<typename TElem, typename TExtent, typename TPitch>
             static auto createViewPlainPtr(
-                DevGenericSycl<TPltf> const& dev,
+                DevGenericSycl<TPlatform> const& dev,
                 TElem* pMem,
                 TExtent const& extent,
                 TPitch const& pitch)
             {
-                return alpaka::ViewPlainPtr<DevGenericSycl<TPltf>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-                    pMem,
-                    dev,
-                    extent,
-                    pitch);
+                return alpaka::
+                    ViewPlainPtr<DevGenericSycl<TPlatform>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+                        pMem,
+                        dev,
+                        extent,
+                        pitch);
             }
         };
 #endif
