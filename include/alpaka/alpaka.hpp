@@ -18975,19 +18975,16 @@
 	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
 
-	// #include <cstddef>    // amalgamate: file already included
 	// #include <string>    // amalgamate: file already included
 	// #include <utility>    // amalgamate: file already included
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
-	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
 	namespace alpaka
 	{
-	    //! The Intel CPU SYCL accelerator.
+	    //! The CPU SYCL accelerator.
 	    //!
-	    //! This accelerator allows parallel kernel execution on a oneAPI-capable Intel CPU target device.
+	    //! This accelerator allows parallel kernel execution on a oneAPI-capable CPU target device.
 	    template<typename TDim, typename TIdx>
 	    class AccCpuSycl final
 	        : public AccGenericSycl<TDim, TIdx>
@@ -19000,7 +18997,7 @@
 
 	namespace alpaka::trait
 	{
-	    //! The Intel CPU SYCL accelerator name trait specialization.
+	    //! The CPU SYCL accelerator name trait specialization.
 	    template<typename TDim, typename TIdx>
 	    struct GetAccName<AccCpuSycl<TDim, TIdx>>
 	    {
@@ -19010,14 +19007,14 @@
 	        }
 	    };
 
-	    //! The Intel CPU SYCL accelerator device type trait specialization.
+	    //! The CPU SYCL accelerator device type trait specialization.
 	    template<typename TDim, typename TIdx>
 	    struct DevType<AccCpuSycl<TDim, TIdx>>
 	    {
 	        using type = DevCpuSycl;
 	    };
 
-	    //! The Intel CPU SYCL accelerator execution task type trait specialization.
+	    //! The CPU SYCL accelerator execution task type trait specialization.
 	    template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
 	    struct CreateTaskKernel<AccCpuSycl<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
 	    {
@@ -19030,7 +19027,7 @@
 	        }
 	    };
 
-	    //! The Intel CPU SYCL execution task platform type trait specialization.
+	    //! The CPU SYCL execution task platform type trait specialization.
 	    template<typename TDim, typename TIdx>
 	    struct PlatformType<AccCpuSycl<TDim, TIdx>>
 	    {
@@ -19926,7 +19923,7 @@
 			// ============================================================================
 			// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
 			// ==
-			/* Copyright 2023 Jan Stephan, Andrea Bocci, Luca Ferragina
+			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -20012,7 +20009,6 @@
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
-
 		// #pragma once
 		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already expanded
 
@@ -20042,8 +20038,6 @@
 	// #include <utility>    // amalgamate: file already included
 
 	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
-
-	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
 	namespace alpaka
 	{
@@ -25573,7 +25567,7 @@
 		namespace alpaka
 		{
 		    using DevGpuSyclIntel = DevGenericSycl<PlatformGpuSyclIntel>;
-		}
+		} // namespace alpaka
 
 		#endif
 		// ==
@@ -25587,7 +25581,6 @@
 		/* Copyright 2022 Jan Stephan
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
-
 
 		// #pragma once
 		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already expanded
@@ -26076,16 +26069,13 @@
 			// #pragma once
 			// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already expanded
 
-			// #include <memory>    // amalgamate: file already included
-			// #include <utility>    // amalgamate: file already included
-
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
 			namespace alpaka
 			{
 			    template<typename TDev>
 			    using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TDev, true>;
-			} // namespace alpaka
+			}
 
 			#endif
 			// ==
@@ -26101,9 +26091,6 @@
 
 			// #pragma once
 			// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already expanded
-
-			// #include <memory>    // amalgamate: file already included
-			// #include <utility>    // amalgamate: file already included
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -33019,7 +33006,6 @@
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
-
 	// #pragma once
 	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
 	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already expanded
@@ -36444,7 +36430,6 @@
 	/* Copyright 2022 Jan Stephan
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
-
 
 	// #pragma once
 	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
