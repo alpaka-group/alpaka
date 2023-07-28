@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1trait_1_1Log2_3_01Log2UniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable683ba86d1b161a19b5c7b25ba70e350c =
+[
+    [ "operator()", "structalpaka_1_1math_1_1trait_1_1Log2_3_01Log2UniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable683ba86d1b161a19b5c7b25ba70e350c.html#a291aed30e079570c9f5a95fa1a7f190c", null ]
+];

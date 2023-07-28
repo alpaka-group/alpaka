@@ -184,6 +184,8 @@ var hierarchy =
     [ "alpaka::math::ConceptMathIsinf", "structalpaka_1_1math_1_1ConceptMathIsinf.html", null ],
     [ "alpaka::math::ConceptMathIsnan", "structalpaka_1_1math_1_1ConceptMathIsnan.html", null ],
     [ "alpaka::math::ConceptMathLog", "structalpaka_1_1math_1_1ConceptMathLog.html", null ],
+    [ "alpaka::math::ConceptMathLog10", "structalpaka_1_1math_1_1ConceptMathLog10.html", null ],
+    [ "alpaka::math::ConceptMathLog2", "structalpaka_1_1math_1_1ConceptMathLog2.html", null ],
     [ "alpaka::math::ConceptMathMax", "structalpaka_1_1math_1_1ConceptMathMax.html", null ],
     [ "alpaka::math::ConceptMathMin", "structalpaka_1_1math_1_1ConceptMathMin.html", null ],
     [ "alpaka::math::ConceptMathPow", "structalpaka_1_1math_1_1ConceptMathPow.html", null ],
@@ -254,6 +256,11 @@ var hierarchy =
     [ "alpaka::math::trait::Llround< T, TArg, TSfinae >", "structalpaka_1_1math_1_1trait_1_1Llround.html", null ],
     [ "alpaka::math::trait::Llround< RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point_v< TArg > > >", "structalpaka_1_1math_1_1trait_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1en50b040d364538463ab513b6a6896668a.html", null ],
     [ "alpaka::math::trait::Log< T, TArg, TSfinae >", "structalpaka_1_1math_1_1trait_1_1Log.html", null ],
+    [ "alpaka::math::trait::Log10< T, TArg, TSfinae >", "structalpaka_1_1math_1_1trait_1_1Log10.html", null ],
+    [ "alpaka::math::trait::Log10< Log10UniformCudaHipBuiltIn, Complex< T > >", "structalpaka_1_1math_1_1trait_1_1Log10_3_01Log10UniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html", null ],
+    [ "alpaka::math::trait::Log10< Log10UniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point_v< TArg > > >", "structalpaka_1_1math_1_1trait_1_1Log10_3_01Log10UniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enab65a33d695425c85fd95df2af33ef22bd.html", null ],
+    [ "alpaka::math::trait::Log2< T, TArg, TSfinae >", "structalpaka_1_1math_1_1trait_1_1Log2.html", null ],
+    [ "alpaka::math::trait::Log2< Log2UniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point_v< TArg > > >", "structalpaka_1_1math_1_1trait_1_1Log2_3_01Log2UniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable683ba86d1b161a19b5c7b25ba70e350c.html", null ],
     [ "alpaka::math::trait::Log< LogUniformCudaHipBuiltIn, Complex< T > >", "structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html", null ],
     [ "alpaka::math::trait::Log< LogUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point_v< TArg > > >", "structalpaka_1_1math_1_1trait_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable__58a8dc598c994ee681d1178d132c69a9.html", null ],
     [ "alpaka::math::trait::Lround< T, TArg, TSfinae >", "structalpaka_1_1math_1_1trait_1_1Lround.html", null ],
@@ -1418,6 +1425,26 @@ var hierarchy =
     ] ],
     [ "alpaka::concepts::Implements< ConceptMathLog, LogUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::math::LogUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1LogUniformCudaHipBuiltIn.html", [
+        [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathLog10, Log10StdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::Log10StdLib", "classalpaka_1_1math_1_1Log10StdLib.html", [
+        [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathLog10, Log10UniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::Log10UniformCudaHipBuiltIn", "classalpaka_1_1math_1_1Log10UniformCudaHipBuiltIn.html", [
+        [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathLog2, Log2StdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::Log2StdLib", "classalpaka_1_1math_1_1Log2StdLib.html", [
+        [ "alpaka::math::MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
+      ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptMathLog2, Log2UniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::math::Log2UniformCudaHipBuiltIn", "classalpaka_1_1math_1_1Log2UniformCudaHipBuiltIn.html", [
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
