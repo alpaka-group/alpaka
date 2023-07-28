@@ -1,5 +1,9 @@
 var NAVTREEINDEX7 =
 {
+"meta_2Set_8hpp.html":[4,0,0,0,15,16],
+"meta_2Set_8hpp.html#a232409af86c4d12e27e83406c7d6f6ca":[4,0,0,0,15,16,5],
+"meta_2Set_8hpp.html#a7007c16b361a3bbc1184a79223d884dc":[4,0,0,0,15,16,4],
+"meta_2Set_8hpp_source.html":[4,0,0,0,15,16],
 "namespacealpaka.html":[2,0,0],
 "namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70":[2,0,0,136],
 "namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4":[2,0,0,202],
@@ -245,9 +249,5 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1cpu_1_1detail.html#abb8c51265e5de4cb525e1dbd924ff436":[2,0,0,3,0,4],
 "namespacealpaka_1_1cpu_1_1detail.html#af2ac645a7cbcea6b028b465a34943e94":[2,0,0,3,0,5],
 "namespacealpaka_1_1cpu_1_1detail.html#af5d9967fd07396367c4f477eef019918":[2,0,0,3,0,3],
-"namespacealpaka_1_1cuda.html":[2,0,0,4],
-"namespacealpaka_1_1cuda_1_1detail.html":[2,0,0,4,0],
-"namespacealpaka_1_1cuda_1_1detail.html#ab7c0d46c5c98d6af03dd9bf203c32e48":[2,0,0,4,0,0],
-"namespacealpaka_1_1cuda_1_1trait.html":[2,0,0,4,1],
-"namespacealpaka_1_1cuda_1_1trait.html#a31ccaaa36a21f5c1e4a747122a5de53f":[2,0,0,4,1,0]
+"namespacealpaka_1_1cuda.html":[2,0,0,4]
 };

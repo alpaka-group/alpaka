@@ -135,6 +135,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathFloor.html">alpaka::math::ConceptMathFloor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathFma.html">alpaka::math::ConceptMathFma</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathFmod.html">alpaka::math::ConceptMathFmod</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathIsfinite.html">alpaka::math::ConceptMathIsfinite</a></td></tr>
@@ -224,6 +226,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Floor.html">alpaka::math::trait::Floor&lt; T, TArg, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The floor trait.  <a href="structalpaka_1_1math_1_1trait_1_1Floor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Fma.html">alpaka::math::trait::Fma&lt; T, Tx, Ty, Tz, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fma trait.  <a href="structalpaka_1_1math_1_1trait_1_1Fma.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Fmod.html">alpaka::math::trait::Fmod&lt; T, Tx, Ty, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fmod trait.  <a href="structalpaka_1_1math_1_1trait_1_1Fmod.html#details">More...</a><br /></td></tr>
@@ -377,6 +382,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a2a8c69be37b50a9af624374878e95abd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a2a8c69be37b50a9af624374878e95abd">alpaka::math::floor</a> (T const &amp;floor_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:a2a8c69be37b50a9af624374878e95abd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the largest integer value not greater than arg.  <a href="namespacealpaka_1_1math.html#a2a8c69be37b50a9af624374878e95abd">More...</a><br /></td></tr>
 <tr class="separator:a2a8c69be37b50a9af624374878e95abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1b0feb1340f02f7080c0ae293858799"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Tx , typename Ty , typename Tz &gt; </td></tr>
+<tr class="memitem:ab1b0feb1340f02f7080c0ae293858799"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#ab1b0feb1340f02f7080c0ae293858799">alpaka::math::fma</a> (T const &amp;fma_ctx, Tx const &amp;x, Ty const &amp;y, Tz const &amp;z)</td></tr>
+<tr class="memdesc:ab1b0feb1340f02f7080c0ae293858799"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes x * y + z as if to infinite precision and rounded only once to fit the result type.  <a href="namespacealpaka_1_1math.html#ab1b0feb1340f02f7080c0ae293858799">More...</a><br /></td></tr>
+<tr class="separator:ab1b0feb1340f02f7080c0ae293858799"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f9cdd368f558546e5031ca7ac2edf89"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Tx , typename Ty &gt; </td></tr>
 <tr class="memitem:a6f9cdd368f558546e5031ca7ac2edf89"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a6f9cdd368f558546e5031ca7ac2edf89">alpaka::math::fmod</a> (T const &amp;fmod_ctx, Tx const &amp;x, Ty const &amp;y)</td></tr>
 <tr class="memdesc:a6f9cdd368f558546e5031ca7ac2edf89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the floating-point remainder of the division operation x/y.  <a href="namespacealpaka_1_1math.html#a6f9cdd368f558546e5031ca7ac2edf89">More...</a><br /></td></tr>
@@ -523,7 +532,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="math_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Fri Jul 28 2023 11:59:00 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Jul 28 2023 12:47:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
