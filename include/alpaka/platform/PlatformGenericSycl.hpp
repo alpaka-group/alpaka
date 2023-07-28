@@ -129,7 +129,7 @@ namespace alpaka::trait
 #    elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
             std::cout << __func__ << sycl_dev.template get_info<sycl::info::device::name>() << '\n';
 #    endif
-            using SyclPltf = alpaka::PltfGenericSycl<TSelector>;
+            using SyclPlatform = alpaka::PlatformGenericSycl<TSelector>;
             return typename DevType<SyclPlatform>::type{sycl_dev, platform.syclContext()};
         }
 

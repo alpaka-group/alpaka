@@ -12,7 +12,7 @@
 namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx>
-    using BufCpuSycl = BufGenericSycl<TElem, TDim, TIdx, PltfCpuSycl>;
+    using BufCpuSycl = BufGenericSycl<TElem, TDim, TIdx, PlatformCpuSycl>;
 }
 
 #endif
