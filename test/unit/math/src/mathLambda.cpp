@@ -27,6 +27,7 @@ using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 // This file only has unit tests for real numbers in order to split the tests between object files
 using UnaryFunctorsReal = alpaka::test::unit::math::UnaryFunctorsReal;
 using BinaryFunctorsReal = alpaka::test::unit::math::BinaryFunctorsReal;
+using TernaryFunctorsReal = alpaka::test::unit::math::TernaryFunctorsReal;
 using UnaryFunctorsComplex = alpaka::test::unit::math::UnaryFunctorsComplex;
 using BinaryFunctorsComplex = alpaka::test::unit::math::BinaryFunctorsComplex;
 
@@ -60,6 +61,7 @@ TEMPLATE_LIST_TEST_CASE("mathOpsLambdaFloat", "[math] [operator]", TestAccs)
     auto testTemplate = LambdaMathTestTemplate<Acc, float>{};
     testTemplate.template operator()<UnaryFunctorsReal>();
     testTemplate.template operator()<BinaryFunctorsReal>();
+    testTemplate.template operator()<TernaryFunctorsReal>();
 }
 
 TEMPLATE_LIST_TEST_CASE("mathOpsLambdaDouble", "[math] [operator]", TestAccs)
@@ -68,6 +70,7 @@ TEMPLATE_LIST_TEST_CASE("mathOpsLambdaDouble", "[math] [operator]", TestAccs)
     auto testTemplate = LambdaMathTestTemplate<Acc, double>{};
     testTemplate.template operator()<UnaryFunctorsReal>();
     testTemplate.template operator()<BinaryFunctorsReal>();
+    testTemplate.template operator()<TernaryFunctorsReal>();
 }
 
 TEMPLATE_LIST_TEST_CASE("mathOpsLambdaComplexFloat", "[math] [operator]", TestAccs)
