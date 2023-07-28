@@ -5076,8 +5076,8 @@
 		// ============================================================================
 		// == ./include/alpaka/math/MathStdLib.hpp ==
 		// ==
-		/* Copyright 2022 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber,
-		 * Jeffrey Kelling, Sergei Bastrakov
+		/* Copyright 2023 Alexander Matthes, Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber,
+		 * Jeffrey Kelling, Sergei Bastrakov, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -5124,7 +5124,8 @@
 			// ============================================================================
 			// == ./include/alpaka/math/Traits.hpp ==
 			// ==
-			/* Copyright 2022 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Sergei Bastrakov
+			/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Sergei Bastrakov,
+			 * Andrea Bocci
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -5318,6 +5319,10 @@
 			    };
 
 			    struct ConceptMathFloor
+			    {
+			    };
+
+			    struct ConceptMathFma
 			    {
 			    };
 
@@ -5624,6 +5629,19 @@
 			                // backend and we could not find floor(TArg) in the namespace of your type.
 			                using std::floor;
 			                return floor(arg);
+			            }
+			        };
+
+			        //! The fma trait.
+			        template<typename T, typename Tx, typename Ty, typename Tz, typename TSfinae = void>
+			        struct Fma
+			        {
+			            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, Tx const& x, Ty const& y, Tz const& z)
+			            {
+			                // This is an ADL call. If you get a compile error here then your type is not supported by the
+			                // backend and we could not find fma(Tx, Ty, Tz) in the namespace of your type.
+			                using std::fma;
+			                return fma(x, y, z);
 			            }
 			        };
 
@@ -6190,6 +6208,24 @@
 			        return trait::Floor<ImplementationBase, TArg>{}(floor_ctx, arg);
 			    }
 
+			    //! Computes x * y + z as if to infinite precision and rounded only once to fit the result type.
+			    //!
+			    //! \tparam T The type of the object specializing Fma.
+			    //! \tparam Tx The type of the first argument.
+			    //! \tparam Ty The type of the second argument.
+			    //! \tparam Tz The type of the third argument.
+			    //! \param fma_ctx The object specializing .
+			    //! \param x The first argument.
+			    //! \param y The second argument.
+			    //! \param z The third argument.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename T, typename Tx, typename Ty, typename Tz>
+			    ALPAKA_FN_HOST_ACC auto fma(T const& fma_ctx, Tx const& x, Ty const& y, Tz const& z)
+			    {
+			        using ImplementationBase = concepts::ImplementationBase<ConceptMathFma, T>;
+			        return trait::Fma<ImplementationBase, Tx, Ty, Tz>{}(fma_ctx, x, y, z);
+			    }
+
 			    //! Computes the floating-point remainder of the division operation x/y.
 			    //!
 			    //! \tparam T The type of the object specializing Fmod.
@@ -6630,6 +6666,11 @@
 		    {
 		    };
 
+		    //! The standard library fma, implementation covered by the general template.
+		    class FmaStdLib : public concepts::Implements<ConceptMathFma, FmaStdLib>
+		    {
+		    };
+
 		    //! The standard library fmod, implementation covered by the general template.
 		    class FmodStdLib : public concepts::Implements<ConceptMathFmod, FmodStdLib>
 		    {
@@ -6749,6 +6790,7 @@
 		        , public ErfStdLib
 		        , public ExpStdLib
 		        , public FloorStdLib
+		        , public FmaStdLib
 		        , public FmodStdLib
 		        , public LogStdLib
 		        , public Log2StdLib
@@ -14907,6 +14949,11 @@
 			    {
 			    };
 
+			    //! The SYCL fma.
+			    class FmaGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFma, FmaGenericSycl>
+			    {
+			    };
+
 			    //! The SYCL fmod.
 			    class FmodGenericSycl : public concepts::Implements<alpaka::math::ConceptMathFmod, FmodGenericSycl>
 			    {
@@ -15026,6 +15073,7 @@
 			        , public ErfGenericSycl
 			        , public ExpGenericSycl
 			        , public FloorGenericSycl
+			        , public FmaGenericSycl
 			        , public FmodGenericSycl
 			        , public IsfiniteGenericSycl
 			        , public IsinfGenericSycl
@@ -15240,6 +15288,21 @@
 			        auto operator()(math::FloorGenericSycl const&, TArg const& arg)
 			        {
 			            return sycl::floor(arg);
+			        }
+			    };
+
+			    //! The SYCL fma trait specialization.
+			    template<typename Tx, typename Ty, typename Tz>
+			    struct Fma<
+			        math::FmaGenericSycl,
+			        Tx,
+			        Ty,
+			        Tz,
+			        std::enable_if_t<std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty> && std::is_floating_point_v<Tz>>>
+			    {
+			        auto operator()(math::FmaGenericSycl const&, Tx const& x, Ty const& y, Tz const& z)
+			        {
+			            return sycl::fma(x, y, z);
 			        }
 			    };
 
@@ -22158,7 +22221,7 @@
 			// ============================================================================
 			// == ./include/alpaka/math/MathUniformCudaHipBuiltIn.hpp ==
 			// ==
-			/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bert Wesarg, Valentin Gehrke, René Widera,
+			/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bert Wesarg, Valentin Gehrke, René Widera,
 			 * Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Jeffrey Kelling, Sergei Bastrakov
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
@@ -22261,6 +22324,11 @@
 
 			    //! The CUDA built in floor.
 			    class FloorUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFloor, FloorUniformCudaHipBuiltIn>
+			    {
+			    };
+
+			    //! The CUDA built in fma.
+			    class FmaUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathFma, FmaUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -22385,6 +22453,7 @@
 			        , public ErfUniformCudaHipBuiltIn
 			        , public ExpUniformCudaHipBuiltIn
 			        , public FloorUniformCudaHipBuiltIn
+			        , public FmaUniformCudaHipBuiltIn
 			        , public FmodUniformCudaHipBuiltIn
 			        , public LogUniformCudaHipBuiltIn
 			        , public Log2UniformCudaHipBuiltIn
@@ -22870,6 +22939,37 @@
 			                    static_assert(!sizeof(TArg), "Unsupported data type");
 
 			                ALPAKA_UNREACHABLE(TArg{});
+			            }
+			        };
+
+			        //! The CUDA fma trait specialization.
+			        template<typename Tx, typename Ty, typename Tz>
+			        struct Fma<
+			            FmaUniformCudaHipBuiltIn,
+			            Tx,
+			            Ty,
+			            Tz,
+			            std::enable_if_t<
+			                std::is_floating_point_v<Tx> && std::is_floating_point_v<Ty> && std::is_floating_point_v<Tz>>>
+			        {
+			            __host__ __device__ auto operator()(
+			                FmaUniformCudaHipBuiltIn const& /* fma_ctx */,
+			                Tx const& x,
+			                Ty const& y,
+			                Tz const& z)
+			            {
+			                if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float> && is_decayed_v<Tz, float>)
+			                    return ::fmaf(x, y, z);
+			                else if constexpr(is_decayed_v<Tx, double> || is_decayed_v<Ty, double> || is_decayed_v<Tz, double>)
+			                    return ::fma(x, y, z);
+			                else
+			                    static_assert(!sizeof(Tx), "Unsupported data type");
+
+			                using Ret [[maybe_unused]] = std::conditional_t<
+			                    is_decayed_v<Tx, float> && is_decayed_v<Ty, float> && is_decayed_v<Tz, float>,
+			                    float,
+			                    double>;
+			                ALPAKA_UNREACHABLE(Ret{});
 			            }
 			        };
 
