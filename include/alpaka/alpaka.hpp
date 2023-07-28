@@ -5341,6 +5341,14 @@
 			    {
 			    };
 
+			    struct ConceptMathLog2
+			    {
+			    };
+
+			    struct ConceptMathLog10
+			    {
+			    };
+
 			    struct ConceptMathMax
 			    {
 			    };
@@ -5681,6 +5689,32 @@
 			                // backend and we could not find log(TArg) in the namespace of your type.
 			                using std::log;
 			                return log(arg);
+			            }
+			        };
+
+			        //! The bas 2 log trait.
+			        template<typename T, typename TArg, typename TSfinae = void>
+			        struct Log2
+			        {
+			            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArg const& arg)
+			            {
+			                // This is an ADL call. If you get a compile error here then your type is not supported by the
+			                // backend and we could not find log2(TArg) in the namespace of your type.
+			                using std::log2;
+			                return log2(arg);
+			            }
+			        };
+
+			        //! The base 10 log trait.
+			        template<typename T, typename TArg, typename TSfinae = void>
+			        struct Log10
+			        {
+			            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TArg const& arg)
+			            {
+			                // This is an ADL call. If you get a compile error here then your type is not supported by the
+			                // backend and we could not find log10(TArg) in the namespace of your type.
+			                using std::log10;
+			                return log10(arg);
 			            }
 			        };
 
@@ -6232,6 +6266,42 @@
 			        return trait::Log<ImplementationBase, TArg>{}(log_ctx, arg);
 			    }
 
+			    //! Computes the the natural (base 2) logarithm of arg.
+			    //!
+			    //! Valid real arguments are non-negative. For other values the result
+			    //! may depend on the backend and compilation options, will likely
+			    //! be NaN.
+			    //!
+			    //! \tparam T The type of the object specializing Log2.
+			    //! \tparam TArg The arg type.
+			    //! \param log2_ctx The object specializing Log2.
+			    //! \param arg The arg.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename T, typename TArg>
+			    ALPAKA_FN_HOST_ACC auto log2(T const& log2_ctx, TArg const& arg)
+			    {
+			        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog2, T>;
+			        return trait::Log2<ImplementationBase, TArg>{}(log2_ctx, arg);
+			    }
+
+			    //! Computes the the natural (base 10) logarithm of arg.
+			    //!
+			    //! Valid real arguments are non-negative. For other values the result
+			    //! may depend on the backend and compilation options, will likely
+			    //! be NaN.
+			    //!
+			    //! \tparam T The type of the object specializing Log10.
+			    //! \tparam TArg The arg type.
+			    //! \param log10_ctx The object specializing Log10.
+			    //! \param arg The arg.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename T, typename TArg>
+			    ALPAKA_FN_HOST_ACC auto log10(T const& log10_ctx, TArg const& arg)
+			    {
+			        using ImplementationBase = concepts::ImplementationBase<ConceptMathLog10, T>;
+			        return trait::Log10<ImplementationBase, TArg>{}(log10_ctx, arg);
+			    }
+
 			    //! Returns the larger of two arguments.
 			    //! NaNs are treated as missing data (between a NaN and a numeric value, the numeric value is chosen).
 			    //!
@@ -6585,6 +6655,16 @@
 		    {
 		    };
 
+		    //! The standard library log2, implementation covered by the general template.
+		    class Log2StdLib : public concepts::Implements<ConceptMathLog2, Log2StdLib>
+		    {
+		    };
+
+		    //! The standard library log10, implementation covered by the general template.
+		    class Log10StdLib : public concepts::Implements<ConceptMathLog10, Log10StdLib>
+		    {
+		    };
+
 		    //! The standard library max.
 		    class MaxStdLib : public concepts::Implements<ConceptMathMax, MaxStdLib>
 		    {
@@ -6671,6 +6751,8 @@
 		        , public FloorStdLib
 		        , public FmodStdLib
 		        , public LogStdLib
+		        , public Log2StdLib
+		        , public Log10StdLib
 		        , public MaxStdLib
 		        , public MinStdLib
 		        , public PowStdLib
@@ -14836,6 +14918,16 @@
 			    {
 			    };
 
+			    //! The SYCL log2.
+			    class Log2GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog2, Log2GenericSycl>
+			    {
+			    };
+
+			    //! The SYCL log10.
+			    class Log10GenericSycl : public concepts::Implements<alpaka::math::ConceptMathLog10, Log10GenericSycl>
+			    {
+			    };
+
 			    //! The SYCL max.
 			    class MaxGenericSycl : public concepts::Implements<alpaka::math::ConceptMathMax, MaxGenericSycl>
 			    {
@@ -14925,6 +15017,8 @@
 			        , public IsinfGenericSycl
 			        , public IsnanGenericSycl
 			        , public LogGenericSycl
+			        , public Log2GenericSycl
+			        , public Log10GenericSycl
 			        , public MaxGenericSycl
 			        , public MinGenericSycl
 			        , public PowGenericSycl
@@ -15188,6 +15282,26 @@
 			        auto operator()(math::LogGenericSycl const&, TArg const& arg)
 			        {
 			            return sycl::log(arg);
+			        }
+			    };
+
+			    //! The SYCL log2 trait specialization.
+			    template<typename TArg>
+			    struct Log2<math::Log2GenericSycl, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+			    {
+			        auto operator()(math::Log2GenericSycl const&, TArg const& arg)
+			        {
+			            return sycl::log2(arg);
+			        }
+			    };
+
+			    //! The SYCL log10 trait specialization.
+			    template<typename TArg>
+			    struct Log10<math::Log10GenericSycl, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+			    {
+			        auto operator()(math::Log10GenericSycl const&, TArg const& arg)
+			        {
+			            return sycl::log10(arg);
 			        }
 			    };
 
@@ -22168,6 +22282,16 @@
 			    {
 			    };
 
+			    // ! The CUDA built in log2.
+			    class Log2UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog2, Log2UniformCudaHipBuiltIn>
+			    {
+			    };
+
+			    // ! The CUDA built in log10.
+			    class Log10UniformCudaHipBuiltIn : public concepts::Implements<ConceptMathLog10, Log10UniformCudaHipBuiltIn>
+			    {
+			    };
+
 			    //! The CUDA built in max.
 			    class MaxUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMax, MaxUniformCudaHipBuiltIn>
 			    {
@@ -22255,6 +22379,8 @@
 			        , public FloorUniformCudaHipBuiltIn
 			        , public FmodUniformCudaHipBuiltIn
 			        , public LogUniformCudaHipBuiltIn
+			        , public Log2UniformCudaHipBuiltIn
+			        , public Log10UniformCudaHipBuiltIn
 			        , public MaxUniformCudaHipBuiltIn
 			        , public MinUniformCudaHipBuiltIn
 			        , public PowUniformCudaHipBuiltIn
@@ -22823,6 +22949,52 @@
 			                // Branch cut along the negative real axis (same as for std::complex),
 			                // principal value of ln(z) = ln(|z|) + i * arg(z)
 			                return log(ctx, abs(ctx, argument)) + Complex<T>{0.0, 1.0} * arg(ctx, argument);
+			            }
+			        };
+
+			        //! The CUDA log2 trait specialization for real types.
+			        template<typename TArg>
+			        struct Log2<Log2UniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+			        {
+			            __host__ __device__ auto operator()(Log2UniformCudaHipBuiltIn const& /* log2_ctx */, TArg const& arg)
+			            {
+			                if constexpr(is_decayed_v<TArg, float>)
+			                    return ::log2f(arg);
+			                else if constexpr(is_decayed_v<TArg, double>)
+			                    return ::log2(arg);
+			                else
+			                    static_assert(!sizeof(TArg), "Unsupported data type");
+
+			                ALPAKA_UNREACHABLE(TArg{});
+			            }
+			        };
+
+			        //! The CUDA log10 trait specialization for real types.
+			        template<typename TArg>
+			        struct Log10<Log10UniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
+			        {
+			            __host__ __device__ auto operator()(Log10UniformCudaHipBuiltIn const& /* log10_ctx */, TArg const& arg)
+			            {
+			                if constexpr(is_decayed_v<TArg, float>)
+			                    return ::log10f(arg);
+			                else if constexpr(is_decayed_v<TArg, double>)
+			                    return ::log10(arg);
+			                else
+			                    static_assert(!sizeof(TArg), "Unsupported data type");
+
+			                ALPAKA_UNREACHABLE(TArg{});
+			            }
+			        };
+
+			        //! The CUDA log10 trait specialization for complex types.
+			        template<typename T>
+			        struct Log10<Log10UniformCudaHipBuiltIn, Complex<T>>
+			        {
+			            //! Take context as original (accelerator) type, since we call other math functions
+			            template<typename TCtx>
+			            __host__ __device__ auto operator()(TCtx const& ctx, Complex<T> const& argument)
+			            {
+			                return log(ctx, argument) / log(ctx, static_cast<T>(10));
 			            }
 			        };
 
