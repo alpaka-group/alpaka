@@ -148,7 +148,7 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
         auto const absDiff = std::abs(val - correctResult);
         if(absDiff > std::numeric_limits<Val>::epsilon() * correctResult)
         {
-            std::cout << std::setprecision(std::numeric_limits<Val>::digits10) << std::fixed;
+            std::cout << std::setprecision(std::numeric_limits<Val>::digits10 + 1) << std::fixed;
             std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
         }
