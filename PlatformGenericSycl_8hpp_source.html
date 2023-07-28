@@ -218,7 +218,7 @@ $(document).ready(function(){initNavTree('PlatformGenericSycl_8hpp_source.html',
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#    elif ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            std::cout &lt;&lt; __func__ &lt;&lt; sycl_dev.template get_info&lt;sycl::info::device::name&gt;() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keyword">using</span> SyclPltf = alpaka::PltfGenericSycl&lt;TSelector&gt;;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keyword">using</span> SyclPlatform = alpaka::PlatformGenericSycl&lt;TSelector&gt;;</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">typename</span> DevType&lt;SyclPlatform&gt;::type{sycl_dev, platform.syclContext()};</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        }</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
@@ -830,7 +830,7 @@ $(document).ready(function(){initNavTree('PlatformGenericSycl_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ca6de7bc64c9403e30034829d52eb840.html">platform</a></li><li class="navelem"><a class="el" href="PlatformGenericSycl_8hpp.html">PlatformGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Fri Jul 28 2023 12:47:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Jul 28 2023 13:02:43 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
