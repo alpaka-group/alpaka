@@ -304,8 +304,10 @@ namespace alpaka
         struct BufAllocMapped<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
         {
             template<typename TExtent>
-            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
-                -> BufCpu<TElem, TDim, TIdx>
+            ALPAKA_FN_HOST static auto allocMappedBuf(
+                DevCpu const& host,
+                PlatformUniformCudaHipRt<TApi> const& /*platform*/,
+                TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
