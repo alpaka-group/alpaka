@@ -49,6 +49,7 @@ namespace alpaka
 
                     BufHost hostBuffer;
                     BufAcc devBuffer;
+                    PlatformAcc platformAcc;
 
                     // Native pointer to access buffer.
                     TData* const pHostBuffer;
@@ -61,7 +62,10 @@ namespace alpaka
                     // Constructor needs to initialize all Buffer.
                     Buffer(DevAcc const& devAcc)
                         : devHost{alpaka::getDevByIdx(platformHost, 0)}
-                        , hostBuffer{alpaka::allocMappedBufIfSupported<PlatformAcc, TData, Idx>(devHost, Tcapacity)}
+                        , hostBuffer{alpaka::allocMappedBufIfSupported<PlatformAcc, TData, Idx>(
+                              devHost,
+                              platformAcc,
+                              Tcapacity)}
                         , devBuffer{alpaka::allocBuf<TData, Idx>(devAcc, Tcapacity)}
                         , pHostBuffer{alpaka::getPtrNative(hostBuffer)}
                         , pDevBuffer{alpaka::getPtrNative(devBuffer)}

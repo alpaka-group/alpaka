@@ -35,6 +35,8 @@ TEMPLATE_LIST_TEST_CASE("hostOnlyAPI", "[hostOnlyAPI]", TestAccs)
     using Device = alpaka::Dev<TestType>;
     using DeviceQueue = alpaka::Queue<Device, alpaka::NonBlocking>;
 
+    auto const platformAcc = alpaka::Platform<TestType>{};
+
     using Host = alpaka::DevCpu;
     using HostQueue = alpaka::Queue<Host, alpaka::Blocking>;
 
@@ -45,7 +47,8 @@ TEMPLATE_LIST_TEST_CASE("hostOnlyAPI", "[hostOnlyAPI]", TestAccs)
     HostQueue hostQueue(host);
 
     // host buffer
-    auto h_buffer1 = alpaka::allocMappedBufIfSupported<alpaka::Platform<Device>, int, Idx>(host, Vec1D{Idx{42}});
+    auto h_buffer1
+        = alpaka::allocMappedBufIfSupported<alpaka::Platform<Device>, int, Idx>(host, platformAcc, Vec1D{Idx{42}});
     INFO(
         "host buffer allocated at " << alpaka::getPtrNative(h_buffer1) << " with "
                                     << alpaka::getExtentProduct(h_buffer1) << " element(s)");
@@ -82,7 +85,6 @@ TEMPLATE_LIST_TEST_CASE("hostOnlyAPI", "[hostOnlyAPI]", TestAccs)
     CHECK(expected1 == *alpaka::getPtrNative(h_buffer1));
 
     // GPU device
-    auto const platformAcc = alpaka::Platform<TestType>{};
     auto const device = alpaka::getDevByIdx(platformAcc, 0);
     INFO("using alpaka device: " << alpaka::getName(device));
     DeviceQueue deviceQueue(device);

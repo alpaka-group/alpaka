@@ -103,9 +103,9 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
               << ", numElements:" << numElements << ")" << std::endl;
 
     // Allocate host memory buffers, potentially pinned for faster copy to/from the accelerator.
-    auto memBufHostA = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
-    auto memBufHostB = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
-    auto memBufHostC = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extent);
+    auto memBufHostA = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, platformAcc, extent);
+    auto memBufHostB = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, platformAcc, extent);
+    auto memBufHostC = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, platformAcc, extent);
 
     // Initialize the host input vectors
     for(Idx i = 0; i < numElements; ++i)
