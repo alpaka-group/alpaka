@@ -15,6 +15,7 @@
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
+#include "alpaka/platform/PlatformCpu.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <functional>
@@ -270,8 +271,10 @@ namespace alpaka
         struct BufAllocMapped<PlatformCpu, TElem, TDim, TIdx>
         {
             template<typename TExtent>
-            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
-                -> BufCpu<TElem, TDim, TIdx>
+            ALPAKA_FN_HOST static auto allocMappedBuf(
+                DevCpu const& host,
+                PlatformCpu const& /*platform*/,
+                TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
             {
                 // Allocate standard host memory.
                 return allocBuf<TElem, TIdx>(host, extent);

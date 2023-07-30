@@ -133,9 +133,12 @@ namespace alpaka
     //! \param extent The extent of the buffer.
     //! \return The newly allocated buffer.
     template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
-    ALPAKA_FN_HOST auto allocMappedBuf(DevCpu const& host, TExtent const& extent = TExtent())
+    ALPAKA_FN_HOST auto allocMappedBuf(
+        DevCpu const& host,
+        TPlatform const& platform,
+        TExtent const& extent = TExtent())
     {
-        return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
+        return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, platform, extent);
     }
 
     /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
@@ -167,11 +170,14 @@ namespace alpaka
     //! \param extent The extent of the buffer.
     //! \return The newly allocated buffer.
     template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
-    ALPAKA_FN_HOST auto allocMappedBufIfSupported(DevCpu const& host, TExtent const& extent = TExtent())
+    ALPAKA_FN_HOST auto allocMappedBufIfSupported(
+        DevCpu const& host,
+        TPlatform const& platform,
+        TExtent const& extent = TExtent())
     {
         if constexpr(hasMappedBufSupport<TPlatform>)
         {
-            return allocMappedBuf<TPlatform, TElem, TIdx>(host, extent);
+            return allocMappedBuf<TPlatform, TElem, TIdx>(host, platform, extent);
         }
         else
         {

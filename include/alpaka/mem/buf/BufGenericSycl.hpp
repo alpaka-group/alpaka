@@ -225,13 +225,14 @@ namespace alpaka::trait
     struct BufAllocMapped
     {
         template<typename TExtent>
-        static auto allocMappedBuf(DevCpu const& host, TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+        static auto allocMappedBuf(DevCpu const& host, TPlatform const& platform, TExtent const& extent)
+            -> BufCpu<TElem, TDim, TIdx>
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
             // Allocate SYCL page-locked memory on the host, mapped into the TPlatform address space and
             // accessible to all devices in the TPlatform.
-            auto ctx = TPlatform::syclContext();
+            auto ctx = platform.syclContext();
             TElem* memPtr = sycl::malloc_host<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
             auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
 
