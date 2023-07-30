@@ -217,7 +217,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     auto bufBHost = alpaka::createView(devHost, bufBHost1d.data(), extentB);
 
     // Allocate C and set it to zero.
-    auto bufCHost = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, extentC);
+    auto bufCHost = alpaka::allocMappedBufIfSupported<PlatformAcc, Val, Idx>(devHost, platformAcc, extentC);
     alpaka::memset(queueHost, bufCHost, 0u);
 
     // Allocate the buffers on the accelerator.
