@@ -1,4 +1,4 @@
-"""Copyright 2023 Simeon Ehrig
+"""Copyright 2023 Simeon Ehrig, Jan Stephan
 SPDX-License-Identifier: MPL-2.0
 
 Alpaka project specific filter rules.
@@ -12,15 +12,14 @@ from alpaka_job_coverage.util import row_check_name, row_check_version, is_in_ro
 
 
 def alpaka_post_filter(row: List) -> bool:
-    # debug builds with clang 15 as CUDA compiler produces a compiler error
+    # debug builds with clang 15 and 16 as CUDA compiler produce a compiler error
     # see here: https://github.com/llvm/llvm-project/issues/58491
     if (
         is_in_row(row, BUILD_TYPE)
         and row[param_map[BUILD_TYPE]][VERSION] == CMAKE_DEBUG
         and row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
     ):
-        # preparation to add also clang 16
-        for clang_cuda_version in ["15"]:
+        for clang_cuda_version in ["15", "16"]:
             if row_check_version(row, HOST_COMPILER, "==", clang_cuda_version):
                 return False
 

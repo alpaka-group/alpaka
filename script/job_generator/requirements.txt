@@ -1,4 +1,4 @@
-alpaka-job-coverage == 1.3.5
+alpaka-job-coverage == 1.3.6
 allpairspy == 2.5.0
 typeguard < 3.0.0
 pyaml
