@@ -218,7 +218,6 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html#a403f5da96f2198dbae6200ce78bc8526":[3,0,0,15,2,7,0],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html":[3,0,0,15,2,8],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html":[3,0,0,15,2,9],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html#a866f92ab30484d881c80adc39da04b08":[3,0,0,15,2,9,0],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html":[3,0,0,15,2,10],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html#aff4200216d2667b2797236e90dafe915":[3,0,0,15,2,10,0],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html":[3,0,0,15,2,11],
@@ -249,5 +248,6 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1AccType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,16,9],
 "structalpaka_1_1trait_1_1AccType_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a3e26b59d0981566a7703cebc95d92e02":[3,0,0,16,9,0],
 "structalpaka_1_1trait_1_1AccType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,16,10],
-"structalpaka_1_1trait_1_1AccType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a622a5fe6ea491c75378cad51dd481761":[3,0,0,16,10,0]
+"structalpaka_1_1trait_1_1AccType_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a622a5fe6ea491c75378cad51dd481761":[3,0,0,16,10,0],
+"structalpaka_1_1trait_1_1AccType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,16,11]
 };

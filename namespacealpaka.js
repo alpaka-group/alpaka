@@ -93,7 +93,7 @@ var namespacealpaka =
     [ "MemSetKernel", "classalpaka_1_1MemSetKernel.html", "classalpaka_1_1MemSetKernel" ],
     [ "PlatformCpu", "structalpaka_1_1PlatformCpu.html", null ],
     [ "PlatformUniformCudaHipRt", "structalpaka_1_1PlatformUniformCudaHipRt.html", null ],
-    [ "QueueCpuOmp2Collective", "classalpaka_1_1QueueCpuOmp2Collective.html", "classalpaka_1_1QueueCpuOmp2Collective" ],
+    [ "QueueCpuOmp2Collective", "structalpaka_1_1QueueCpuOmp2Collective.html", "structalpaka_1_1QueueCpuOmp2Collective" ],
     [ "QueueGenericThreadsBlocking", "classalpaka_1_1QueueGenericThreadsBlocking.html", "classalpaka_1_1QueueGenericThreadsBlocking" ],
     [ "QueueGenericThreadsNonBlocking", "classalpaka_1_1QueueGenericThreadsNonBlocking.html", "classalpaka_1_1QueueGenericThreadsNonBlocking" ],
     [ "remove_restrict", "structalpaka_1_1remove__restrict.html", "structalpaka_1_1remove__restrict" ],

@@ -57,7 +57,7 @@ var annotated_dup =
       ] ],
       [ "cpu", "namespacealpaka_1_1cpu.html", [
         [ "detail", "namespacealpaka_1_1cpu_1_1detail.html", [
-          [ "QueueCpuOmp2CollectiveImpl", "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html", "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl" ]
+          [ "QueueCpuOmp2CollectiveImpl", "structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html", "structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl" ]
         ] ]
       ] ],
       [ "detail", "namespacealpaka_1_1detail.html", [
@@ -613,7 +613,7 @@ var annotated_dup =
           [ "EventHostManualTriggerType< DevCpu >", "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCpu_01_4.html", "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCpu_01_4" ],
           [ "EventHostManualTriggerType< DevCudaRt >", "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html", "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4" ],
           [ "IsBlockingQueue", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html", null ],
-          [ "IsBlockingQueue< QueueCpuOmp2Collective >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4" ],
+          [ "IsBlockingQueue< QueueCpuOmp2Collective >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html", null ],
           [ "IsBlockingQueue< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ],
           [ "IsBlockingQueue< QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4" ],
           [ "IsBlockingQueue< QueueUniformCudaHipRtBlocking< TApi > >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_01_4" ],
@@ -1238,7 +1238,7 @@ var annotated_dup =
       [ "MemSetKernel", "classalpaka_1_1MemSetKernel.html", "classalpaka_1_1MemSetKernel" ],
       [ "PlatformCpu", "structalpaka_1_1PlatformCpu.html", null ],
       [ "PlatformUniformCudaHipRt", "structalpaka_1_1PlatformUniformCudaHipRt.html", null ],
-      [ "QueueCpuOmp2Collective", "classalpaka_1_1QueueCpuOmp2Collective.html", "classalpaka_1_1QueueCpuOmp2Collective" ],
+      [ "QueueCpuOmp2Collective", "structalpaka_1_1QueueCpuOmp2Collective.html", "structalpaka_1_1QueueCpuOmp2Collective" ],
       [ "QueueGenericThreadsBlocking", "classalpaka_1_1QueueGenericThreadsBlocking.html", "classalpaka_1_1QueueGenericThreadsBlocking" ],
       [ "QueueGenericThreadsNonBlocking", "classalpaka_1_1QueueGenericThreadsNonBlocking.html", "classalpaka_1_1QueueGenericThreadsNonBlocking" ],
       [ "remove_restrict", "structalpaka_1_1remove__restrict.html", "structalpaka_1_1remove__restrict" ],

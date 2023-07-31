@@ -2,9 +2,9 @@ var dir_2c339e2f1fcd53762aa618f43207b31b =
 [
     [ "Queue.hpp", "Queue_8hpp.html", "Queue_8hpp" ],
     [ "QueueCpuOmp2Collective.hpp", "QueueCpuOmp2Collective_8hpp.html", [
-      [ "QueueCpuOmp2CollectiveImpl", "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html", "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl" ],
-      [ "QueueCpuOmp2Collective", "classalpaka_1_1QueueCpuOmp2Collective.html", "classalpaka_1_1QueueCpuOmp2Collective" ],
-      [ "IsBlockingQueue< QueueCpuOmp2Collective >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4" ],
+      [ "QueueCpuOmp2CollectiveImpl", "structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html", "structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl" ],
+      [ "QueueCpuOmp2Collective", "structalpaka_1_1QueueCpuOmp2Collective.html", "structalpaka_1_1QueueCpuOmp2Collective" ],
+      [ "IsBlockingQueue< QueueCpuOmp2Collective >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html", null ],
       [ "CurrentThreadWaitFor< QueueCpuOmp2Collective >", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01QueueCpuOmp2Collective_01_4.html", "structalpaka_1_1trait_1_1CurrentThreadWaitFor_3_01QueueCpuOmp2Collective_01_4" ],
       [ "DevType< QueueCpuOmp2Collective >", "structalpaka_1_1trait_1_1DevType_3_01QueueCpuOmp2Collective_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01QueueCpuOmp2Collective_01_4" ],
       [ "Empty< QueueCpuOmp2Collective >", "structalpaka_1_1trait_1_1Empty_3_01QueueCpuOmp2Collective_01_4.html", "structalpaka_1_1trait_1_1Empty_3_01QueueCpuOmp2Collective_01_4" ],

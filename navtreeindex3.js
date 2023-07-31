@@ -179,12 +179,6 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1MemFenceUniformCudaHipBuiltIn.html":[3,0,0,85],
 "classalpaka_1_1MemSetKernel.html":[3,0,0,86],
 "classalpaka_1_1MemSetKernel.html#a2217b39dfc0bde1ccf42465334068f39":[3,0,0,86,0],
-"classalpaka_1_1QueueCpuOmp2Collective.html":[3,0,0,89],
-"classalpaka_1_1QueueCpuOmp2Collective.html#a1ccbc40a9a5c4ce81e367844bce37050":[3,0,0,89,3],
-"classalpaka_1_1QueueCpuOmp2Collective.html#a34fb32191fd8b0fc972035414d00a71e":[3,0,0,89,4],
-"classalpaka_1_1QueueCpuOmp2Collective.html#aa4f55fb5ae8d4e128f389ff399a47796":[3,0,0,89,2],
-"classalpaka_1_1QueueCpuOmp2Collective.html#aaec91f069e0863e333252767eb5ecdf0":[3,0,0,89,0],
-"classalpaka_1_1QueueCpuOmp2Collective.html#ac7592f35ee067e37b593247e66ac7a9b":[3,0,0,89,1],
 "classalpaka_1_1QueueGenericThreadsBlocking.html":[3,0,0,90],
 "classalpaka_1_1QueueGenericThreadsBlocking.html#a31e1ce7bd8d4fb142f0ba50ec8ea14c7":[3,0,0,90,3],
 "classalpaka_1_1QueueGenericThreadsBlocking.html#a5397a0b47aeacc363f32d8b6210a7072":[3,0,0,90,2],
@@ -249,5 +243,11 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1Vec.html#ac6f8d6032291bbbc27e5ea5feeff850a":[3,0,0,110,21],
 "classalpaka_1_1Vec.html#ad37faa5cabafbb63e4c497371d31569a":[3,0,0,110,30],
 "classalpaka_1_1Vec.html#ad617df99935286b9f948b9588a34f15d":[3,0,0,110,26],
-"classalpaka_1_1Vec.html#adede57b5f6210149dc4a05c16cd137c5":[3,0,0,110,8]
+"classalpaka_1_1Vec.html#adede57b5f6210149dc4a05c16cd137c5":[3,0,0,110,8],
+"classalpaka_1_1Vec.html#af0338d99e5dd2c496e634a5890182f4d":[3,0,0,110,19],
+"classalpaka_1_1Vec.html#af80841f3d79b6f60125b0941a55a9a0f":[3,0,0,110,11],
+"classalpaka_1_1ViewPlainPtr.html":[3,0,0,112],
+"classalpaka_1_1ViewPlainPtr.html#a0b6b3e7109483fc1ee554230f299b09e":[3,0,0,112,0],
+"classalpaka_1_1ViewPlainPtr.html#a15c97c5c40ec230c83bc5cf28f4cb95c":[3,0,0,112,5],
+"classalpaka_1_1ViewPlainPtr.html#a1ea73be548e7c28bbb2eca2c933bbb6f":[3,0,0,112,2]
 };

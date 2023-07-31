@@ -1,6 +1,6 @@
 var namespacealpaka_1_1cpu_1_1detail =
 [
-    [ "QueueCpuOmp2CollectiveImpl", "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html", "classalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl" ],
+    [ "QueueCpuOmp2CollectiveImpl", "structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html", "structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl" ],
     [ "DevCpuImpl", "namespacealpaka_1_1cpu_1_1detail.html#a32307243b945c51f1a00dc17d96ea261", null ],
     [ "cpuid", "namespacealpaka_1_1cpu_1_1detail.html#ab0526bd4fa319cb72d2b73b00250807a", null ],
     [ "getCpuName", "namespacealpaka_1_1cpu_1_1detail.html#af5d9967fd07396367c4f477eef019918", null ],
