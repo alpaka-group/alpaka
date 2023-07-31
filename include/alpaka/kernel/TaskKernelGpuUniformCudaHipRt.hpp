@@ -239,7 +239,7 @@ namespace alpaka
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the function attributes.
                 typename TApi::FuncAttributes_t funcAttrs;
-                TApi::funcGetAttributes(&funcAttrs, kernelName);
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
                 std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
                           << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
                           << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
@@ -347,7 +347,7 @@ namespace alpaka
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the function attributes.
                 typename TApi::FuncAttributes_t funcAttrs;
-                TApi::funcGetAttributes(&funcAttrs, kernelName);
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
                 std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
                           << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
                           << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
