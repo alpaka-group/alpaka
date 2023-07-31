@@ -17,6 +17,7 @@
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/mem/fence/MemFenceCpu.hpp"
+#include "alpaka/rand/RandDefault.hpp"
 #include "alpaka/rand/RandStdLib.hpp"
 #include "alpaka/warp/WarpSingleThread.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
@@ -44,27 +45,28 @@ namespace alpaka
     class TaskKernelCpuTbbBlocks;
 
     //! The CPU TBB block accelerator.
-    template<
-        typename TDim,
-        typename TIdx>
-    class AccCpuTbbBlocks final :
-        public WorkDivMembers<TDim, TIdx>,
-        public gb::IdxGbRef<TDim, TIdx>,
-        public bt::IdxBtZero<TDim, TIdx>,
-        public AtomicHierarchy<
-            AtomicCpu, // grid atomics
-            AtomicCpu, // block atomics
-            AtomicNoOp         // thread atomics
-        >,
-        public math::MathStdLib,
-        public BlockSharedMemDynMember<>,
-        public BlockSharedMemStMember<>,
-        public BlockSyncNoOp,
-        public IntrinsicCpu,
-        public MemFenceCpu,
-        public rand::RandStdLib,
-        public warp::WarpSingleThread,
-        public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
+    template<typename TDim, typename TIdx>
+    class AccCpuTbbBlocks final
+        : public WorkDivMembers<TDim, TIdx>
+        , public gb::IdxGbRef<TDim, TIdx>
+        , public bt::IdxBtZero<TDim, TIdx>
+        , public AtomicHierarchy<
+              AtomicCpu, // grid atomics
+              AtomicCpu, // block atomics
+              AtomicNoOp> // thread atomics
+        , public math::MathStdLib
+        , public BlockSharedMemDynMember<>
+        , public BlockSharedMemStMember<>
+        , public BlockSyncNoOp
+        , public IntrinsicCpu
+        , public MemFenceCpu
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+        , public rand::RandDefault
+#    else
+        , public rand::RandStdLib
+#    endif
+        , public warp::WarpSingleThread
+        , public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),
@@ -96,7 +98,11 @@ namespace alpaka
             , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
             , BlockSyncNoOp()
             , MemFenceCpu()
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+            , rand::RandDefault()
+#    else
             , rand::RandStdLib()
+#    endif
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {
         }

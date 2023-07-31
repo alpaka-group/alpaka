@@ -16,6 +16,7 @@
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/mem/fence/MemFenceCpu.hpp"
+#include "alpaka/rand/RandDefault.hpp"
 #include "alpaka/rand/RandStdLib.hpp"
 #include "alpaka/warp/WarpSingleThread.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
@@ -49,27 +50,28 @@ namespace alpaka
     //!
     //! This accelerator allows parallel kernel execution on a CPU device.
     //! It uses std::thread to implement the parallelism.
-    template<
-        typename TDim,
-        typename TIdx>
-    class AccCpuThreads final :
-        public WorkDivMembers<TDim, TIdx>,
-        public gb::IdxGbRef<TDim, TIdx>,
-        public bt::IdxBtRefThreadIdMap<TDim, TIdx>,
-        public AtomicHierarchy<
-            AtomicCpu, // grid atomics
-            AtomicCpu, // block atomics
-            AtomicCpu  // thread atomics
-        >,
-        public math::MathStdLib,
-        public BlockSharedMemDynMember<>,
-        public BlockSharedMemStMemberMasterSync<>,
-        public BlockSyncBarrierThread<TIdx>,
-        public IntrinsicCpu,
-        public MemFenceCpu,
-        public rand::RandStdLib,
-        public warp::WarpSingleThread,
-        public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
+    template<typename TDim, typename TIdx>
+    class AccCpuThreads final
+        : public WorkDivMembers<TDim, TIdx>
+        , public gb::IdxGbRef<TDim, TIdx>
+        , public bt::IdxBtRefThreadIdMap<TDim, TIdx>
+        , public AtomicHierarchy<
+              AtomicCpu, // grid atomics
+              AtomicCpu, // block atomics
+              AtomicCpu> // thread atomics
+        , public math::MathStdLib
+        , public BlockSharedMemDynMember<>
+        , public BlockSharedMemStMemberMasterSync<>
+        , public BlockSyncBarrierThread<TIdx>
+        , public IntrinsicCpu
+        , public MemFenceCpu
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+        , public rand::RandDefault
+#    else
+        , public rand::RandStdLib
+#    endif
+        , public warp::WarpSingleThread
+        , public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),
@@ -105,7 +107,11 @@ namespace alpaka
                   [this]() noexcept { return (m_idMasterThread == std::this_thread::get_id()); })
             , BlockSyncBarrierThread<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
             , MemFenceCpu()
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+            , rand::RandDefault()
+#    else
             , rand::RandStdLib()
+#    endif
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {
         }

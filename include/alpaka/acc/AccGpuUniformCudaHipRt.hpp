@@ -16,6 +16,7 @@
 #include "alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp"
 #include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"
 #include "alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp"
+#include "alpaka/rand/RandDefault.hpp"
 #include "alpaka/rand/RandUniformCudaHipRand.hpp"
 #include "alpaka/warp/WarpUniformCudaHipBuiltIn.hpp"
 #include "alpaka/workdiv/WorkDivUniformCudaHipBuiltIn.hpp"
@@ -45,28 +46,28 @@ namespace alpaka
     //! The GPU CUDA accelerator.
     //!
     //! This accelerator allows parallel kernel execution on devices supporting CUDA.
-    template<
-        typename TApi,
-        typename TDim,
-        typename TIdx>
-    class AccGpuUniformCudaHipRt final :
-        public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
-        public gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
-        public bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
-        public AtomicHierarchy<
-            AtomicUniformCudaHipBuiltIn, // grid atomics
-            AtomicUniformCudaHipBuiltIn, // block atomics
-            AtomicUniformCudaHipBuiltIn  // thread atomics
-        >,
-        public math::MathUniformCudaHipBuiltIn,
-        public BlockSharedMemDynUniformCudaHipBuiltIn,
-        public BlockSharedMemStUniformCudaHipBuiltIn,
-        public BlockSyncUniformCudaHipBuiltIn,
-        public IntrinsicUniformCudaHipBuiltIn,
-        public MemFenceUniformCudaHipBuiltIn,
-        public rand::RandUniformCudaHipRand<TApi>,
-        public warp::WarpUniformCudaHipBuiltIn,
-        public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
+    template<typename TApi, typename TDim, typename TIdx>
+    class AccGpuUniformCudaHipRt final
+        : public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>
+        , public gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>
+        , public bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>
+        , public AtomicHierarchy<
+              AtomicUniformCudaHipBuiltIn, // grid atomics
+              AtomicUniformCudaHipBuiltIn, // block atomics
+              AtomicUniformCudaHipBuiltIn> // thread atomics
+        , public math::MathUniformCudaHipBuiltIn
+        , public BlockSharedMemDynUniformCudaHipBuiltIn
+        , public BlockSharedMemStUniformCudaHipBuiltIn
+        , public BlockSyncUniformCudaHipBuiltIn
+        , public IntrinsicUniformCudaHipBuiltIn
+        , public MemFenceUniformCudaHipBuiltIn
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+        , public rand::RandDefault
+#    else
+        , public rand::RandUniformCudaHipRand<TApi>
+#    endif
+        , public warp::WarpUniformCudaHipBuiltIn
+        , public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),
@@ -92,7 +93,11 @@ namespace alpaka
             , BlockSharedMemStUniformCudaHipBuiltIn()
             , BlockSyncUniformCudaHipBuiltIn()
             , MemFenceUniformCudaHipBuiltIn()
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+            , rand::RandDefault()
+#    else
             , rand::RandUniformCudaHipRand<TApi>()
+#    endif
         {
         }
     };

@@ -18,6 +18,7 @@
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/mem/fence/MemFenceOmp2Blocks.hpp"
+#include "alpaka/rand/RandDefault.hpp"
 #include "alpaka/rand/RandStdLib.hpp"
 #include "alpaka/warp/WarpSingleThread.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
@@ -53,27 +54,28 @@ namespace alpaka
     //! This accelerator allows parallel kernel execution on a CPU device.
     //! It uses OpenMP 2.0 to implement the grid block parallelism.
     //! The block idx is restricted to 1x1x1.
-    template<
-        typename TDim,
-        typename TIdx>
-    class AccCpuOmp2Blocks final :
-        public WorkDivMembers<TDim, TIdx>,
-        public gb::IdxGbRef<TDim, TIdx>,
-        public bt::IdxBtZero<TDim, TIdx>,
-        public AtomicHierarchy<
-            AtomicCpu,   // grid atomics
-            AtomicOmpBuiltIn,    // block atomics
-            AtomicNoOp           // thread atomics
-        >,
-        public math::MathStdLib,
-        public BlockSharedMemDynMember<>,
-        public BlockSharedMemStMember<>,
-        public BlockSyncNoOp,
-        public IntrinsicCpu,
-        public MemFenceOmp2Blocks,
-        public rand::RandStdLib,
-        public warp::WarpSingleThread,
-        public concepts::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
+    template<typename TDim, typename TIdx>
+    class AccCpuOmp2Blocks final
+        : public WorkDivMembers<TDim, TIdx>
+        , public gb::IdxGbRef<TDim, TIdx>
+        , public bt::IdxBtZero<TDim, TIdx>
+        , public AtomicHierarchy<
+              AtomicCpu, // grid atomics
+              AtomicOmpBuiltIn, // block atomics
+              AtomicNoOp> // thread atomics
+        , public math::MathStdLib
+        , public BlockSharedMemDynMember<>
+        , public BlockSharedMemStMember<>
+        , public BlockSyncNoOp
+        , public IntrinsicCpu
+        , public MemFenceOmp2Blocks
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+        , public rand::RandDefault
+#    else
+        , public rand::RandStdLib
+#    endif
+        , public warp::WarpSingleThread
+        , public concepts::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
     {
         static_assert(
             sizeof(TIdx) >= sizeof(int),
@@ -105,7 +107,11 @@ namespace alpaka
             , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
             , BlockSyncNoOp()
             , MemFenceOmp2Blocks()
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+            , rand::RandDefault()
+#    else
             , rand::RandStdLib()
+#    endif
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {
         }
