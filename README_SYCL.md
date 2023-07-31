@@ -13,7 +13,6 @@ At the moment alpaka's SYCL back-end can only be used together with Intel oneAPI
 ### General CMake options
 
 * `alpaka_ACC_SYCL_ENABLE`: set to `ON` to enable the SYCL back-end. Requires the activation of at least one oneAPI hardware target (see below).
-* `MKL_ROOT`: always required. Set to the root of your oneMKL installation. Example: `/opt/intel/oneapi/mkl/2023.1.0`.
 * `oneDPL_DIR`: always required. Set to the CMake path of your oneDPL installation. Example: `/opt/intel/oneapi/dpl/2022.1.0/lib/cmake/oneDPL`.
 
 ### Building for x86 64-bit CPUs
