@@ -25,8 +25,6 @@
 #        pragma clang diagnostic ignored "-Wsign-compare"
 #        pragma clang diagnostic ignored "-Wundef"
 #    endif
-#    include <oneapi/mkl/rng.hpp>
-
 #    include <oneapi/dpl/random>
 #    if BOOST_COMP_CLANG
 #        pragma clang diagnostic pop

@@ -639,13 +639,9 @@ if(alpaka_ACC_SYCL_ENABLE)
         message(FATAL_ERROR "alpaka currently does not support SYCL implementations other than oneAPI.")
     endif()
 
-    # We always need oneDPL
+    # Use oneDPL random number generators
     find_package(oneDPL REQUIRED)
     target_link_libraries(alpaka INTERFACE oneDPL)
-
-    # Use MKL RNG
-    find_package(MKL REQUIRED)
-    target_link_libraries(alpaka INTERFACE MKL::MKL_DPCPP)
 
     alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
 endif()
