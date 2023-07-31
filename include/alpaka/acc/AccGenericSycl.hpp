@@ -15,6 +15,7 @@
 #include "alpaka/intrinsic/IntrinsicGenericSycl.hpp"
 #include "alpaka/math/MathGenericSycl.hpp"
 #include "alpaka/mem/fence/MemFenceGenericSycl.hpp"
+#include "alpaka/rand/RandDefault.hpp"
 #include "alpaka/rand/RandGenericSycl.hpp"
 #include "alpaka/warp/WarpGenericSycl.hpp"
 #include "alpaka/workdiv/WorkDivGenericSycl.hpp"
@@ -57,7 +58,11 @@ namespace alpaka
         , public BlockSyncGenericSycl<TDim>
         , public IntrinsicGenericSycl
         , public MemFenceGenericSycl
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+        , public rand::RandDefault
+#    else
         , public rand::RandGenericSycl<TDim>
+#    endif
         , public warp::WarpGenericSycl<TDim>
     {
         static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
@@ -85,7 +90,11 @@ namespace alpaka
             , BlockSyncGenericSycl<TDim>{work_item}
             , IntrinsicGenericSycl{}
             , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
+#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+            , rand::RandDefault{}
+#    else
             , rand::RandGenericSycl<TDim>{work_item}
+#    endif
             , warp::WarpGenericSycl<TDim>{work_item}
         {
         }

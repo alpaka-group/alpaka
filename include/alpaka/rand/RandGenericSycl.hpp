@@ -9,28 +9,30 @@
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/rand/Traits.hpp"
 
-#ifdef ALPAKA_ACC_SYCL_ENABLED
+#ifndef ALPAKA_DISABLE_VENDOR_RNG
+
+#    ifdef ALPAKA_ACC_SYCL_ENABLED
 
 // Backend specific imports.
-#    include <sycl/sycl.hpp>
-#    if BOOST_COMP_CLANG
-#        pragma clang diagnostic push
-#        pragma clang diagnostic ignored "-Wcast-align"
-#        pragma clang diagnostic ignored "-Wcast-qual"
-#        pragma clang diagnostic ignored "-Wextra-semi"
-#        pragma clang diagnostic ignored "-Wfloat-equal"
-#        pragma clang diagnostic ignored "-Wold-style-cast"
-#        pragma clang diagnostic ignored "-Wreserved-identifier"
-#        pragma clang diagnostic ignored "-Wreserved-macro-identifier"
-#        pragma clang diagnostic ignored "-Wsign-compare"
-#        pragma clang diagnostic ignored "-Wundef"
-#    endif
-#    include <oneapi/dpl/random>
-#    if BOOST_COMP_CLANG
-#        pragma clang diagnostic pop
-#    endif
+#        include <sycl/sycl.hpp>
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic push
+#            pragma clang diagnostic ignored "-Wcast-align"
+#            pragma clang diagnostic ignored "-Wcast-qual"
+#            pragma clang diagnostic ignored "-Wextra-semi"
+#            pragma clang diagnostic ignored "-Wfloat-equal"
+#            pragma clang diagnostic ignored "-Wold-style-cast"
+#            pragma clang diagnostic ignored "-Wreserved-identifier"
+#            pragma clang diagnostic ignored "-Wreserved-macro-identifier"
+#            pragma clang diagnostic ignored "-Wsign-compare"
+#            pragma clang diagnostic ignored "-Wundef"
+#        endif
+#        include <oneapi/dpl/random>
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic pop
+#        endif
 
-#    include <type_traits>
+#        include <type_traits>
 
 namespace alpaka::rand
 {
@@ -45,7 +47,7 @@ namespace alpaka::rand
         sycl::nd_item<TDim::value> m_item_rand;
     };
 
-#    if !defined(ALPAKA_HOST_ONLY)
+#        if !defined(ALPAKA_HOST_ONLY)
     namespace distribution::sycl_rand
     {
         //! The SYCL random number floating point normal distribution.
@@ -190,7 +192,9 @@ namespace alpaka::rand
             }
         };
     } // namespace engine::trait
-#    endif
+#        endif
 } // namespace alpaka::rand
+
+#    endif
 
 #endif
