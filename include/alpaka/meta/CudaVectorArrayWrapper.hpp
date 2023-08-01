@@ -13,6 +13,14 @@
 
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 
+#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#        include <cuda_runtime.h>
+#    endif
+
+#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+#        include <hip/hip_runtime.h>
+#    endif
+
 namespace alpaka::meta
 {
     namespace detail
