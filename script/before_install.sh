@@ -73,26 +73,6 @@ then
     export ALPAKA_CI_INSTALL_OMP="ON"
 fi
 
-# nvcc does not recognize GCC-9 builtins from avx512fintrin.h in Release
-#   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=76731
-#   https://github.com/tensorflow/tensorflow/issues/10220
-if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON"  ]
-then
-    if [[ "${CXX}" == "g++"* ]]
-    then
-        if (( "${ALPAKA_CI_GCC_VER_MAJOR}" == 9 ))
-        then
-            if [ "${CMAKE_CUDA_COMPILER}" == "nvcc" ]
-            then
-                if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
-                then
-                    export CMAKE_BUILD_TYPE=Debug
-                fi
-            fi
-        fi
-    fi
-fi
-
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
