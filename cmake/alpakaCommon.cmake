@@ -545,9 +545,6 @@ if(alpaka_ACC_SYCL_ENABLE)
             set_property(CACHE alpaka_SYCL_ONEAPI_FPGA_MODE PROPERTY STRINGS "emulation;simulation;hardware")
         endif()
 
-        # Enable device-side printing to stdout
-        cmake_dependent_option(alpaka_SYCL_ENABLE_IOSTREAM "Enable device-side printing to stdout" OFF "alpaka_ACC_SYCL_ENABLE" OFF)
-
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl")
         target_link_options(alpaka INTERFACE "-fsycl")
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-sycl-std=2020")
@@ -628,12 +625,6 @@ if(alpaka_ACC_SYCL_ENABLE)
 
         #-----------------------------------------------------------------------------------------------------------------
         # Generic SYCL options
-        if(alpaka_SYCL_ENABLE_IOSTREAM)
-            set(alpaka_SYCL_IOSTREAM_KIB "8" CACHE STRING "Kibibytes (1024B) of memory to allocate per block for SYCL's on-device iostream. Should be less than 64 kB.")
-
-            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_ENABLED")
-            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_KIB=${alpaka_SYCL_IOSTREAM_KIB}")
-        endif()
         alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
     else()
         message(FATAL_ERROR "alpaka currently does not support SYCL implementations other than oneAPI.")
