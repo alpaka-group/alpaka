@@ -6,11 +6,12 @@ Create GitLab-CI job description written in yaml from the job matrix."""
 from typing import List, Dict, Tuple
 from typeguard import typechecked
 import os, yaml
-from packaging import version as pk_version
+import gitlab
 
 
 from alpaka_job_coverage.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from util import print_warn, exit_error
 
 JOB_COMPILE_ONLY = "compile_only_job"
 JOB_RUNTIME = "runtime_job"
@@ -31,6 +32,9 @@ WAVE_GROUP_NAMES = [
     # JOB_CLANG_CUDA_RUNTIME,
     JOB_UNKNOWN,
 ]
+
+# is used to display missing image warning one time
+image_warning_cache = []
 
 
 @typechecked
@@ -70,44 +74,143 @@ def job_prefix_coding(job: Dict[str, Tuple[str, str]]) -> str:
 
 
 @typechecked
-def job_image(job: Dict[str, Tuple[str, str]], container_version: float) -> str:
-    """Generate the image url deppending on the host and device compiler and the selected backend
-    of the job.
+def get_images_from_registry(container_version: str) -> List[str]:
+    """Returns a list of all container images for a given tag.
+
+    Args:
+        container_version (str): Container tag
+
+    Returns:
+        List[str]: list of container images
+    """
+    # hard coding the url and project ID is fine, because there is only one
+    # container registry
+    gl = gitlab.Gitlab(url="https://codebase.helmholtz.cloud")
+    project = gl.projects.get("4742")
+    repositories = project.repositories.list(get_all=True)
+
+    # uniform data structure
+    if not isinstance(repositories, list):
+        repositories = [repositories]
+
+    images = []
+    # this process is actual pretty slow
+    # maybe it does a HTML request each time if we iterate over repo.tags.list()
+    # and get a new tag
+    for repo in repositories:
+        for tag in repo.tags.list():
+            if tag.attributes["name"] == container_version:
+                images.append(tag.attributes["location"])
+
+    return images
+
+
+@typechecked
+def job_image(
+    job: Dict[str, Tuple[str, str]],
+    container_version: float,
+    gitlab_images: List[str] = {},
+) -> str:
+    """Generates the image URL depending on the host and device compiler and the
+    job's selected back-end.
+
+    If gitlab_images is not empty only existing images are returned.
+    Otherwise, the name of the image is constructed by a set of rules. However,
+    the resulting image may not exist. In this case an image is returned that
+    best matches the software's requirements.
 
     Args:
         job (Dict[str, Tuple[str, str]]): Job dict.
         container_version (float): Container version tag.
+        gitlab_images (List[str]): List of existing container images. If the
+            list is empty, the function does not check if an image exist.
 
     Returns:
         str: Full container url, which can be used with docker pull.
     """
-    container_url = "registry.hzdr.de/crp/alpaka-group-container/"
-    container_url += "alpaka-ci-ubuntu" + job[UBUNTU][VERSION]
+
+    verified_container_url = [
+        "registry.hzdr.de/crp/alpaka-group-container/"
+        + "alpaka-ci-ubuntu"
+        + job[UBUNTU][VERSION]
+    ]
+
+    is_in_gitlab_images = lambda name: bool(
+        [i for i in gitlab_images if i.startswith(name)]
+    )
+
+    def verify_image(
+        test_url: List[str], verified_url: List[str], gitlab_images: List[str]
+    ) -> bool:
+        """Verify if the test_url is included in gitlab_images.
+
+        Args:
+            test_url (List[str]): Image URL to test. The list will be
+                concatenated with all whitespaces removed.
+            verified_url (List[str]): Working URL. Only for the warning message.
+                The Python list will be concatenated to a single string (URL)
+                without whitespaces or chars between the list elements.
+            gitlab_images (List[str]): List of existing container images.
+
+        Returns:
+            bool: Return True if images exist.
+        """
+        global image_warning_cache
+        if gitlab_images and not is_in_gitlab_images("".join(test_url)):
+            if "".join(test_url) not in image_warning_cache:
+                print_warn(
+                    f'image {"".join(test_url)} does not exist\n'
+                    f'  use instead image: {"".join(verified_url)}'
+                )
+                # append image to a cache to show the warning only one time
+                image_warning_cache.append("".join(test_url))
+            return False
+        else:
+            return True
+
+    # if the base image does not exist we have no fall back
+    if gitlab_images and not is_in_gitlab_images("".join(verified_container_url)):
+        exit_error(f'base image {"".join(verified_container_url)} does not exist')
+
+    testing_container_url = verified_container_url.copy()
 
     # If only the GCC is used, use special gcc version of the container.
-    if job[HOST_COMPILER][NAME] == GCC and job[DEVICE_COMPILER][NAME] == GCC:
-        container_url += "-gcc"
+    if job[HOST_COMPILER][NAME] == GCC:
+        testing_container_url.append("-gcc")
+
+    if not verify_image(testing_container_url, verified_container_url, gitlab_images):
+        return "".join(verified_container_url)
+    verified_container_url = testing_container_url.copy()
 
     if (
         ALPAKA_ACC_GPU_CUDA_ENABLE in job
         and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER
     ):
         # Cast cuda version shape. E.g. from 11.0 to 110
-        container_url += "-cuda" + str(
-            int(float(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]) * 10)
+        testing_container_url.insert(
+            1, "-cuda" + str(int(float(job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]) * 10))
         )
-        if job[HOST_COMPILER][NAME] == GCC:
-            container_url += "-gcc"
+
+    if not verify_image(testing_container_url, verified_container_url, gitlab_images):
+        return "".join(verified_container_url)
+    verified_container_url = testing_container_url.copy()
 
     if (
         ALPAKA_ACC_GPU_HIP_ENABLE in job
         and job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION] != OFF_VER
     ):
-        container_url += "-rocm" + job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION]
+        testing_container_url.insert(
+            1, "-rocm" + job[ALPAKA_ACC_GPU_HIP_ENABLE][VERSION]
+        )
+
+    if not verify_image(testing_container_url, verified_container_url, gitlab_images):
+        return "".join(verified_container_url)
+    verified_container_url = testing_container_url.copy()
 
     # append container tag
-    container_url += ":" + str(container_version)
-    return container_url
+    verified_container_url.append(":" + str(container_version))
+
+    return "".join(verified_container_url)
 
 
 @typechecked
@@ -316,7 +419,7 @@ def global_variables() -> Dict[str, str]:
 
 @typechecked
 def create_job(
-    job: Dict[str, Tuple[str, str]], container_version: float
+    job: Dict[str, Tuple[str, str]], container_version: float, gitlab_images: List[str]
 ) -> Dict[str, Dict]:
     """Create complete GitLab-CI yaml for a single job
 
@@ -348,7 +451,7 @@ def create_job(
     job_name += job_prefix_coding(job)
 
     job_yaml: Dict = {}
-    job_yaml["image"] = job_image(job, container_version)
+    job_yaml["image"] = job_image(job, container_version, gitlab_images)
     job_yaml["variables"] = job_variables(job)
     job_yaml["script"] = [
         "source ./script/gitlabci/print_env.sh",
@@ -364,20 +467,31 @@ def create_job(
 def generate_job_yaml_list(
     job_matrix: List[Dict[str, Tuple[str, str]]],
     container_version: float,
+    online_check: bool,
 ) -> List[Dict[str, Dict]]:
     """Generate the job yaml for each job in the job matrix.
 
     Args:
         job_matrix (List[List[Dict[str, Tuple[str, str]]]]): Job Matrix
         container_version (float): Container version tag.
+        online_check (bool): Check if the image exists in the container registry.
+            Disabling the check can produce wrong job YAMLs but speed up the
+            job generation a lot.
 
     Returns:
         List[Dict[str, Dict]]: List of GitLab-CI jobs. The key of a dict entry
         is the job name and the value is the body.
     """
     job_matrix_yaml: Dict[str, Dict] = []
+
+    if online_check:
+        gitlab_images = get_images_from_registry(str(container_version))
+    else:
+        # an empty list disables the check
+        gitlab_images = []
+
     for job in job_matrix:
-        job_matrix_yaml.append(create_job(job, container_version))
+        job_matrix_yaml.append(create_job(job, container_version, gitlab_images))
 
     return job_matrix_yaml
 

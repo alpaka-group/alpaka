@@ -32,6 +32,7 @@ from generate_job_yaml import (
 )
 from job_modifier import add_job_parameters
 from verify import verify
+from util import print_warn
 
 
 def get_args() -> argparse.Namespace:
@@ -94,6 +95,12 @@ def get_args() -> argparse.Namespace:
         "--runtime-only", action="store_true", help="Generate only runtime jobs."
     )
 
+    parser.add_argument(
+        "--no-image-check",
+        action="store_false",
+        help="Disable registry check for existing Docker image.",
+    )
+
     return parser.parse_args()
 
 
@@ -147,7 +154,9 @@ if __name__ == "__main__":
             sys.exit(1)
 
     job_matrix_yaml = generate_job_yaml_list(
-        job_matrix=job_matrix, container_version=args.version
+        job_matrix=job_matrix,
+        container_version=args.version,
+        online_check=args.no_image_check,
     )
 
     add_custom_jobs(job_matrix_yaml, args.version)
@@ -183,7 +192,7 @@ if __name__ == "__main__":
     wave_job_matrix = distribute_to_waves(job_matrix_yaml, {JOB_COMPILE_ONLY: 20})
 
     if wave_job_matrix[JOB_UNKNOWN]:
-        print('\033[33mWARNING: Generator distribute jobs of type "JOB_UNKNOWN"\033[m')
+        print_warn('Generator distributed jobs of type "JOB_UNKNOWN"')
         for wave in wave_job_matrix[JOB_UNKNOWN]:
             for job in wave:
                 print(job)
