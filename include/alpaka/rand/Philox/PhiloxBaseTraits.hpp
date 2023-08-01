@@ -4,12 +4,19 @@
 
 #pragma once
 
-#include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
 #include "alpaka/rand/Philox/PhiloxBaseCommon.hpp"
 #include "alpaka/rand/Philox/PhiloxBaseCudaArray.hpp"
 #include "alpaka/rand/Philox/PhiloxBaseStdArray.hpp"
 #include "alpaka/rand/Philox/PhiloxStateless.hpp"
 #include "alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp"
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+namespace alpaka
+{
+    template<typename TApi, typename TDim, typename TIdx>
+    class AccGpuUniformCudaHipRt;
+}
+#endif
 
 namespace alpaka::rand::engine::trait
 {
