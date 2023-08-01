@@ -108,8 +108,7 @@ auto reduce(
 
 auto main() -> int
 {
-    // select device and problem size
-    int const dev = 0;
+    // select problem size
     uint64_t n = 1 << 28;
 
     using T = uint32_t;
