@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/core/Assert.hpp"
 #include "alpaka/warp/Traits.hpp"
 
 #include <cstdint>
