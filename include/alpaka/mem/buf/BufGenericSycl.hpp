@@ -196,9 +196,7 @@ namespace alpaka::trait
                 static_cast<std::size_t>(getExtentProduct(extent)),
                 nativeDev,
                 nativeContext);
-            // captured structured bindings are a C++20 extension
-            // auto deleter = [nativeContext](TElem* ptr) { sycl::free(ptr, nativeContext); };
-            auto deleter = [&dev](TElem* ptr) { sycl::free(ptr, dev.getNativeHandle().second); };
+            auto deleter = [ctx = nativeContext](TElem* ptr) { sycl::free(ptr, ctx); };
 
             return BufGenericSycl<TElem, TDim, TIdx, TPlatform>(dev, memPtr, std::move(deleter), extent);
         }
