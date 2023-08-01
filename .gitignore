@@ -53,3 +53,7 @@ __pycache__
 
 # default name of the job_generator.py output
 jobs.yml
+
+# pipenv files
+Pipfile
+Pipfile.lock
