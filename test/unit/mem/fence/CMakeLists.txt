@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-set(_TARGET_NAME "FenceTest")
+set(_TARGET_NAME "fenceTest")
 
 append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
 
