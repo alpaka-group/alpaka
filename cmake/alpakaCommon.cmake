@@ -131,6 +131,12 @@ endif()
 
 set(alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ, SYCL)")
 
+# Random number generators
+option(alpaka_DISABLE_VENDOR_RNG "Disable the vendor specific random number generators (NVIDIA cuRAND, AMD rocRAND, Intel DPL)" OFF)
+if(alpaka_DISABLE_VENDOR_RNG)
+    target_compile_definitions(alpaka INTERFACE "ALPAKA_DISABLE_VENDOR_RNG")
+endif()
+
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
 if(${alpaka_DEBUG} GREATER 1)
@@ -472,7 +478,10 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             endif()
         endif()
 
-        target_link_libraries(alpaka INTERFACE CUDA::cudart CUDA::curand)
+        if(NOT alpaka_DISABLE_VENDOR_RNG)
+            # Use cuRAND random number generators
+            target_link_libraries(alpaka INTERFACE CUDA::cudart CUDA::curand)
+        endif()
     else()
         message(FATAL_ERROR "Optional alpaka dependency CUDA could not be found!")
     endif()
@@ -502,25 +511,27 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
             alpaka_set_compiler_options(DEVICE target alpaka "-ffast-math")
         endif()
 
-        # hiprand requires ROCm implementation of random numbers by rocrand
-        # hip::hiprand is currently not expressing this dependency
-        find_package(rocrand REQUIRED CONFIG
-                HINTS "${HIP_ROOT_DIR}/rocrand"
-                HINTS "/opt/rocm/rocrand")
-        if(rocrand_FOUND)
-            target_link_libraries(alpaka INTERFACE roc::rocrand)
-        else()
-            MESSAGE(FATAL_ERROR "Could not find rocRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/rocrand).")
-        endif()
+        if(NOT alpaka_DISABLE_VENDOR_RNG)
+            # hiprand requires ROCm implementation of random numbers by rocrand
+            # hip::hiprand is currently not expressing this dependency
+            find_package(rocrand REQUIRED CONFIG
+                    HINTS "${HIP_ROOT_DIR}/rocrand"
+                    HINTS "/opt/rocm/rocrand")
+            if(rocrand_FOUND)
+                target_link_libraries(alpaka INTERFACE roc::rocrand)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find rocRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/rocrand).")
+            endif()
 
-        # # HIP random numbers
-        find_package(hiprand REQUIRED CONFIG
-                HINTS "${HIP_ROOT_DIR}/hiprand"
-                HINTS "/opt/rocm/hiprand")
-        if(hiprand_FOUND)
-            target_link_libraries(alpaka INTERFACE hip::hiprand)
-        else()
-            MESSAGE(FATAL_ERROR "Could not find hipRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/hiprand).")
+            # HIP random numbers
+            find_package(hiprand REQUIRED CONFIG
+                    HINTS "${HIP_ROOT_DIR}/hiprand"
+                    HINTS "/opt/rocm/hiprand")
+            if(hiprand_FOUND)
+                target_link_libraries(alpaka INTERFACE hip::hiprand)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find hipRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/hiprand).")
+            endif()
         endif()
 
         alpaka_set_compiler_options(HOST_DEVICE target alpaka -std=c++${alpaka_CXX_STANDARD})
@@ -630,9 +641,11 @@ if(alpaka_ACC_SYCL_ENABLE)
         message(FATAL_ERROR "alpaka currently does not support SYCL implementations other than oneAPI.")
     endif()
 
-    # Use oneDPL random number generators
-    find_package(oneDPL REQUIRED)
-    target_link_libraries(alpaka INTERFACE oneDPL)
+    if(NOT alpaka_DISABLE_VENDOR_RNG)
+        # Use oneDPL random number generators
+        find_package(oneDPL REQUIRED)
+        target_link_libraries(alpaka INTERFACE oneDPL)
+    endif()
 
     alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
 endif()
