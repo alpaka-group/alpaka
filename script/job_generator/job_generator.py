@@ -31,7 +31,7 @@ from generate_job_yaml import (
     WAVE_GROUP_NAMES,
 )
 from job_modifier import add_job_parameters
-from verify import verify
+from verify import verify, verify_parameters
 from util import print_warn
 
 
@@ -128,6 +128,9 @@ if __name__ == "__main__":
     parameters[CXX_STANDARD] = get_sw_tuple_list(CXX_STANDARD)
     parameters[BUILD_TYPE] = get_sw_tuple_list(BUILD_TYPE)
     parameters[JOB_EXECUTION_TYPE] = get_sw_tuple_list(JOB_EXECUTION_TYPE)
+
+    # print a warning, if a parameter value is not supported by the ajc-library
+    verify_parameters(parameters)
 
     job_matrix: List[Dict[str, Tuple[str, str]]] = ajc.create_job_list(
         parameters=parameters,
