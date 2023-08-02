@@ -594,6 +594,13 @@ namespace alpaka
         {
             return traits::GetMdSpan<TView>::getMdSpanTransposed(view);
         }
+
+        template<typename TElem, typename TIdx, typename TDim>
+        using MdSpan = alpaka::experimental::mdspan<
+            TElem,
+            alpaka::experimental::dextents<TIdx, TDim::value>,
+            alpaka::experimental::layout_stride,
+            alpaka::experimental::traits::detail::ByteIndexedAccessor<TElem>>;
     } // namespace experimental
 #endif
 } // namespace alpaka
