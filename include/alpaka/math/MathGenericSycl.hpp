@@ -77,6 +77,11 @@ namespace alpaka::math
     {
     };
 
+    //! The SYCL copysign.
+    class CopysignGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCopysign, CopysignGenericSycl>
+    {
+    };
+
     //! The SYCL cos.
     class CosGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCos, CosGenericSycl>
     {
@@ -221,6 +226,7 @@ namespace alpaka::math
         , public CbrtGenericSycl
         , public CeilGenericSycl
         , public ConjGenericSycl
+        , public CopysignGenericSycl
         , public CosGenericSycl
         , public CoshGenericSycl
         , public ErfGenericSycl
@@ -391,6 +397,22 @@ namespace alpaka::math::trait
         auto operator()(math::ConjGenericSycl const&, TArg const& arg)
         {
             return Complex<TArg>{arg, TArg{0.0}};
+        }
+    };
+
+    //! The SYCL copysign trait specialization.
+    template<typename TMag, typename TSgn>
+    struct Copysign<
+        math::CopysignGenericSycl,
+        TMag,
+        TSgn,
+        std::enable_if_t<std::is_floating_point_v<TMag> && std::is_floating_point_v<TSgn>>>
+    {
+        using TCommon = std::common_type_t<TMag, TSgn>;
+
+        auto operator()(math::CopysignGenericSycl const&, TMag const& y, TSgn const& x)
+        {
+            return sycl::copysign(static_cast<TCommon>(y), static_cast<TCommon>(x));
         }
     };
 

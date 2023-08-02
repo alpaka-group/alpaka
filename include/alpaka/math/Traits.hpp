@@ -177,6 +177,10 @@ namespace alpaka::math
     {
     };
 
+    struct ConceptMathCopysign
+    {
+    };
+
     struct ConceptMathCos
     {
     };
@@ -440,6 +444,19 @@ namespace alpaka::math
                 // backend and we could not find conj(TArg) in the namespace of your type.
                 using std::conj;
                 return conj(arg);
+            }
+        };
+
+        //! The copysign trait.
+        template<typename T, typename TMag, typename TSgn, typename TSfinae = void>
+        struct Copysign
+        {
+            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TMag const& mag, TSgn const& sgn)
+            {
+                // This is an ADL call. If you get a compile error here then your type is not supported by the
+                // backend and we could not find copysign(TMag, TSgn) in the namespace of your type.
+                using std::copysign;
+                return copysign(mag, sgn);
             }
         };
 
@@ -1011,6 +1028,22 @@ namespace alpaka::math
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMathConj, T>;
         return trait::Conj<ImplementationBase, TArg>{}(conj_ctx, arg);
+    }
+
+    //! Creates a value with the magnitude of mag and the sign of sgn.
+    //!
+    //! \tparam T The type of the object specializing Copysign.
+    //! \tparam TMag The mag type.
+    //! \tparam TSgn The sgn type.
+    //! \param copysign_ctx The object specializing Copysign.
+    //! \param mag The mag.
+    //! \param sgn The sgn.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename T, typename TMag, typename TSgn>
+    ALPAKA_FN_HOST_ACC auto copysign(T const& copysign_ctx, TMag const& mag, TSgn const& sgn)
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMathCopysign, T>;
+        return trait::Copysign<ImplementationBase, TMag, TSgn>{}(copysign_ctx, mag, sgn);
     }
 
     //! Computes the cosine (measured in radians).

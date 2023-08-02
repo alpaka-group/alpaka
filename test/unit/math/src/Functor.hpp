@@ -260,6 +260,14 @@ namespace alpaka
                     Range::NotZero)
 
                 ALPAKA_TEST_MATH_OP_FUNCTOR(
+                    OpCopysign,
+                    Arity::Binary,
+                    std::copysign,
+                    alpaka::math::copysign,
+                    Range::Unrestricted,
+                    Range::Unrestricted)
+
+                ALPAKA_TEST_MATH_OP_FUNCTOR(
                     OpFmod,
                     Arity::Binary,
                     std::fmod,
@@ -342,7 +350,7 @@ namespace alpaka
                     OpIsfinite>;
 
                 // Binary functors to be used only for real types
-                using BinaryFunctorsReal = std::tuple<OpAtan2, OpFmod, OpMax, OpMin, OpPow, OpRemainder>;
+                using BinaryFunctorsReal = std::tuple<OpAtan2, OpCopysign, OpFmod, OpMax, OpMin, OpPow, OpRemainder>;
 
                 // Ternary functors to be used only for real types
                 using TernaryFunctorsReal = std::tuple<OpFma>;

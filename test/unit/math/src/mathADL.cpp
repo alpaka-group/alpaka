@@ -35,6 +35,7 @@ namespace custom
         Cbrt,
         Ceil,
         Conj,
+        Copysign,
         Cos,
         Cosh,
         Erf,
@@ -136,6 +137,12 @@ namespace custom
     ALPAKA_FN_HOST_ACC auto conj(Custom c)
     {
         return Custom::Conj | c;
+    }
+
+    ALPAKA_FN_HOST_ACC auto copysign(Custom a, Custom b);
+    ALPAKA_FN_HOST_ACC auto copysign(Custom a, Custom b)
+    {
+        return Custom::Copysign | a | b;
     }
 
     ALPAKA_FN_HOST_ACC auto cos(Custom c);
@@ -330,6 +337,10 @@ struct AdlKernel
         ALPAKA_CHECK(
             *success,
             alpaka::math::atan2(acc, Custom::Arg1, Custom::Arg2) == (Custom::Atan2 | Custom::Arg1 | Custom::Arg2));
+        ALPAKA_CHECK(
+            *success,
+            alpaka::math::copysign(acc, Custom::Arg1, Custom::Arg2)
+                == (Custom::Copysign | Custom::Arg1 | Custom::Arg2));
         ALPAKA_CHECK(
             *success,
             alpaka::math::fmod(acc, Custom::Arg1, Custom::Arg2) == (Custom::Fmod | Custom::Arg1 | Custom::Arg2));
