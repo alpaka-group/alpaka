@@ -33,6 +33,11 @@ if(NOT TARGET alpaka::alpaka)
     endif()
 endif()
 
+if (alpaka_USE_MDSPAN STREQUAL "OFF")
+    message(STATUS "The counterBasedRng example requires mdspan. Please set alpaka_USE_MDSPAN accordingly. Example disabled.")
+    return()
+endif ()
+
 #-------------------------------------------------------------------------------
 # Add executable.
 

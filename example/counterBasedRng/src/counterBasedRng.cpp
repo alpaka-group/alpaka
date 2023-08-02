@@ -24,6 +24,9 @@ public:
     template<class TAcc>
     using Counter = typename Gen<TAcc>::Counter;
 
+    template<typename TAcc, typename TElem>
+    using Mdspan = alpaka::experimental::MdSpan<TElem, alpaka::Idx<TAcc>, alpaka::Dim<TAcc>>;
+
 private:
     template<unsigned int I>
     struct ElemLoop
@@ -32,15 +35,14 @@ private:
         template<typename TAcc, typename TElem>
         static ALPAKA_FN_ACC auto elemLoop(
             TAcc const& acc,
-            alpaka::experimental::
-                BufferAccessor<TAcc, TElem, alpaka::Dim<TAcc>::value, alpaka::experimental::WriteAccess> dst,
+            Mdspan<TAcc, TElem> dst,
             Key<TAcc> const& key,
             Vec<TAcc> const& threadElemExtent,
             Vec<TAcc>& threadFirstElemIdx) -> void
         {
             auto const threadLastElemIdx = threadFirstElemIdx[I] + threadElemExtent[I];
             auto const threadLastElemIdxClipped
-                = (dst.extents[I] > threadLastElemIdx) ? threadLastElemIdx : dst.extents[I];
+                = (dst.extent(I) > threadLastElemIdx) ? threadLastElemIdx : dst.extent(I);
 
             constexpr auto Dim = alpaka::Dim<TAcc>::value;
 
@@ -63,7 +65,7 @@ private:
                     c[Dim - 1] = threadFirstElemIdx[Dim - 1];
                     auto const random = Gen<TAcc>::generate(c, key);
                     // to make use of the whole random vector we would need to ensure numElement[0] % 4 == 0
-                    dst[threadFirstElemIdx] = TElem(random[0]);
+                    dst(alpaka::toArray(threadFirstElemIdx)) = TElem(random[0]);
                 }
             }
             threadFirstElemIdx[I] = firstElem;
@@ -80,11 +82,7 @@ public:
     //! \param extent The matrix dimension in elements.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc, typename TElem>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const& acc,
-        alpaka::experimental::BufferAccessor<TAcc, TElem, alpaka::Dim<TAcc>::value, alpaka::experimental::WriteAccess>
-            dst,
-        Key<TAcc> const& key) const -> void
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, Mdspan<TAcc, TElem> dst, Key<TAcc> const& key) const -> void
     {
         constexpr auto Dim = alpaka::Dim<TAcc>::value;
         static_assert(Dim <= 4, "The CounterBasedRngKernel expects at most 4-dimensional indices!");
@@ -183,12 +181,12 @@ auto main() -> int
     auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(
         workDivAcc,
         CounterBasedRngKernel(),
-        alpaka::experimental::writeAccess(bufAcc),
+        alpaka::experimental::getMdSpan(bufAcc),
         key);
     auto const taskKernelHost = alpaka::createTaskKernel<AccHost>(
         workDivHost,
         CounterBasedRngKernel(),
-        alpaka::experimental::writeAccess(bufHost),
+        alpaka::experimental::getMdSpan(bufHost),
         key);
 
     // Enqueue the kernel execution task
@@ -206,11 +204,11 @@ auto main() -> int
     int falseResults = 0;
     int const maxPrintFalseResults = extent[2] * 2;
 
-    auto aHost = alpaka::experimental::readAccess(bufHost);
-    auto aAcc = alpaka::experimental::readAccess(bufHostDev);
-    for(Idx z = 0; z < aHost.extents[0]; ++z)
-        for(Idx y = 0; y < aHost.extents[1]; ++y)
-            for(Idx x = 0; x < aHost.extents[2]; ++x)
+    auto aHost = alpaka::experimental::getMdSpan(bufHost);
+    auto aAcc = alpaka::experimental::getMdSpan(bufHostDev);
+    for(Idx z = 0; z < aHost.extent(0); ++z)
+        for(Idx y = 0; y < aHost.extent(1); ++y)
+            for(Idx x = 0; x < aHost.extent(2); ++x)
             {
                 Data const& valHost(aHost(z, y, x));
                 Data const& valAcc(aAcc(z, y, x));
