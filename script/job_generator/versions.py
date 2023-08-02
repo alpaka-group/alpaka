@@ -26,6 +26,7 @@ sw_versions: Dict[str, List[str]] = {
         "11.8",
         "12.0",
         "12.1",
+        "12.2",
     ],
     HIPCC: ["5.0", "5.1", "5.2", "5.3", "5.4", "5.5"],
     BACKENDS: [
@@ -35,7 +36,17 @@ sw_versions: Dict[str, List[str]] = {
     ],
     UBUNTU: ["20.04"],
     CMAKE: ["3.22.6", "3.23.5", "3.24.4", "3.25.3", "3.26.4"],
-    BOOST: ["1.74.0", "1.75.0", "1.76.0", "1.77.0", "1.78.0", "1.79.0", "1.80.0", "1.81.0", "1.82.0"],
+    BOOST: [
+        "1.74.0",
+        "1.75.0",
+        "1.76.0",
+        "1.77.0",
+        "1.78.0",
+        "1.79.0",
+        "1.80.0",
+        "1.81.0",
+        "1.82.0",
+    ],
     CXX_STANDARD: ["17", "20"],
     BUILD_TYPE: BUILD_TYPES,
     # use only TEST_COMPILE_ONLY, because TEST_RUNTIME will be set manually depend on some
