@@ -61,12 +61,15 @@ def job_prefix_coding(job: Dict[str, Tuple[str, str]]) -> str:
         str: Job name Prefix.
     """
     version_str = ""
-    for sw in [CMAKE, BOOST, UBUNTU, CXX_STANDARD, BUILD_TYPE]:
+    for sw in [CMAKE, BOOST, UBUNTU, CXX_STANDARD, MDSPAN, BUILD_TYPE]:
         if sw in job:
             if job[sw][NAME] == CXX_STANDARD:
                 version_str += "_cxx" + job[sw][VERSION]
             elif job[sw][NAME] == BUILD_TYPE:
                 version_str += "_" + job[sw][VERSION]
+            elif job[sw][NAME] == MDSPAN:
+                if job[sw][VERSION] == ON_VER:
+                    version_str += "_mdspan"
             else:
                 version_str += "_" + job[sw][NAME] + job[sw][VERSION]
 
@@ -279,6 +282,10 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     variables["alpaka_ACC_GPU_CUDA_ONLY_MODE"] = "OFF"
     variables[ALPAKA_ACC_GPU_HIP_ENABLE] = "OFF"
     variables["alpaka_ACC_GPU_HIP_ONLY_MODE"] = "OFF"
+    if job[MDSPAN][VERSION] == ON_VER:
+        variables["ALPAKA_TEST_MDSPAN"] = "ON"
+    else:
+        variables["ALPAKA_TEST_MDSPAN"] = "OFF"
 
     if job[DEVICE_COMPILER][NAME] == HIPCC:
         variables[ALPAKA_ACC_GPU_HIP_ENABLE] = "ON"

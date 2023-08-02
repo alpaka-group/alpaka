@@ -33,7 +33,7 @@ def verify_parameters(
                             f"{name}-{mod_version} is not officially supported by "
                             "the alpaka-job-library."
                         )
-        elif param_name not in [BUILD_TYPE, JOB_EXECUTION_TYPE]:
+        elif param_name not in [BUILD_TYPE, JOB_EXECUTION_TYPE, MDSPAN]:
             for name, version in param_value:
                 # if we compare a minor.major.patch version with a minor.major
                 # version, the check is only true, if all three numbers matches

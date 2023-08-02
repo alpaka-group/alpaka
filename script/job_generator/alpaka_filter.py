@@ -32,4 +32,12 @@ def alpaka_post_filter(row: List) -> bool:
     ):
         return False
 
+    # because of a compiler bug, we disable mdspan for NVCC <= 11.2
+    if (
+        row_check_version(row, MDSPAN, "==", ON_VER)
+        and row_check_name(row, DEVICE_COMPILER, "==", NVCC)
+        and row_check_version(row, DEVICE_COMPILER, "<=", "11.2")
+    ):
+        return False
+
     return True

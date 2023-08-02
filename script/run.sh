@@ -133,6 +133,18 @@ then
     fi
 fi
 
+if [ -z "${ALPAKA_TEST_MDSPAN+x}" ];
+then
+    export alpaka_USE_MDSPAN=OFF
+else
+    if [ "${ALPAKA_TEST_MDSPAN}" == "ON" ];
+    then
+        export alpaka_USE_MDSPAN=FETCH
+    else
+	    export alpaka_USE_MDSPAN=OFF
+    fi
+fi
+
 ./script/run_generate.sh
 ./script/run_build.sh
 
