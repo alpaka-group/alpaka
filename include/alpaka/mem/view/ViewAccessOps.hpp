@@ -6,16 +6,32 @@
 
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/extent/Traits.hpp"
-#include "alpaka/mem/view/ViewAccessor.hpp"
+#include "alpaka/mem/view/Traits.hpp"
 
 #include <sstream>
 #include <type_traits>
 
 namespace alpaka::internal
 {
+    template<typename T, typename SFINAE = void>
+    inline constexpr bool isView = false;
+
+    // TODO(bgruber): replace this by a concept in C++20
+    template<typename TView>
+    inline constexpr bool isView<
+        TView,
+        std::void_t<
+            Idx<TView>,
+            Dim<TView>,
+            decltype(getPtrNative(std::declval<TView>())),
+            decltype(getPitchBytes<0>(std::declval<TView>())),
+            decltype(getExtent<0>(std::declval<TView>()))>> = true;
+
     template<typename TView>
     struct ViewAccessOps
     {
+        static_assert(isView<TView>);
+
     private:
         using value_type = Elem<TView>;
         using pointer = value_type*;
@@ -25,11 +41,6 @@ namespace alpaka::internal
         using Idx = alpaka::Idx<TView>;
 
     public:
-        ViewAccessOps()
-        {
-            static_assert(experimental::trait::internal::IsView<TView>::value);
-        }
-
         ALPAKA_FN_HOST auto data() -> pointer
         {
             return getPtrNative(*static_cast<TView*>(this));

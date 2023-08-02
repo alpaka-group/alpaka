@@ -5,8 +5,6 @@
 #pragma once
 
 #include "alpaka/dim/DimIntegralConst.hpp"
-#include "alpaka/mem/view/Accessor.hpp"
-#include "alpaka/mem/view/ViewAccessor.hpp"
 
 #include <cstddef>
 #include <utility>
