@@ -11,7 +11,6 @@
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/mem/buf/BufCpu.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
-#include "alpaka/mem/view/Accessor.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/vec/Vec.hpp"
 
