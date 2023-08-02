@@ -52,6 +52,7 @@ sw_versions: Dict[str, List[str]] = {
     # use only TEST_COMPILE_ONLY, because TEST_RUNTIME will be set manually depend on some
     # conditions later
     JOB_EXECUTION_TYPE: [JOB_EXECUTION_COMPILE_ONLY],
+    MDSPAN: [ON_VER, OFF_VER],
 }
 
 

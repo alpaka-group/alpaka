@@ -23,3 +23,6 @@ JOB_EXECUTION_TYPES: List[str] = [JOB_EXECUTION_COMPILE_ONLY, JOB_EXECUTION_RUNT
 # CUDA SM level of the job
 # is empty, if there is no CUDA backend enabled
 SM_LEVEL: str = "sm_level"
+
+# enable mdspan support
+MDSPAN: str = "mdspan"

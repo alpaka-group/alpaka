@@ -128,6 +128,7 @@ if __name__ == "__main__":
     parameters[CXX_STANDARD] = get_sw_tuple_list(CXX_STANDARD)
     parameters[BUILD_TYPE] = get_sw_tuple_list(BUILD_TYPE)
     parameters[JOB_EXECUTION_TYPE] = get_sw_tuple_list(JOB_EXECUTION_TYPE)
+    parameters[MDSPAN] = get_sw_tuple_list(MDSPAN)
 
     # print a warning, if a parameter value is not supported by the ajc-library
     verify_parameters(parameters)
