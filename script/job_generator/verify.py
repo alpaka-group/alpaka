@@ -4,12 +4,53 @@ SPDX-License-Identifier: MPL-2.0
 Verification of the results.
 """
 
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Union
 from typeguard import typechecked
+from packaging import version as pk_version
 
 from alpaka_job_coverage.globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
-from alpaka_job_coverage.util import strict_equal
-import versions
+from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from alpaka_job_coverage.versions import is_supported_version
+from util import print_warn
+
+
+def verify_parameters(
+    parameters: Dict[str, Union[List[Tuple[str, str]], List[List[Tuple[str, str]]]]]
+):
+    """Prints a warning for each parameter value which is not supported by the
+    alpaka-job-coverage library.
+
+    Args:
+        parameters (Dict[str, Union[List[Tuple[str, str]], List[List[Tuple[str, str]]]]]):
+            All combination parameters.
+    """
+    for param_name, param_value in parameters.items():
+        if param_name == BACKENDS:
+            for backend in param_value:
+                for name, version in backend:
+                    if not is_supported_version(name=name, version=version):
+                        print_warn(
+                            f"{name}-{mod_version} is not officially supported by "
+                            "the alpaka-job-library."
+                        )
+        elif param_name not in [BUILD_TYPE, JOB_EXECUTION_TYPE]:
+            for name, version in param_value:
+                # if we compare a minor.major.patch version with a minor.major
+                # version, the check is only true, if all three numbers matches
+                # e.g. 2.4 == 2.4.0 -> True
+                #      2.4 == 2.4.1 -> False
+                if name == CMAKE:
+                    parsed_cmake_version = pk_version.parse(version)
+                    mod_version = (
+                        f"{parsed_cmake_version.major}.{parsed_cmake_version.minor}"
+                    )
+                else:
+                    mod_version = version
+                if not is_supported_version(name=name, version=mod_version):
+                    print_warn(
+                        f"{name}-{mod_version} is not officially supported by "
+                        "the alpaka-job-library."
+                    )
 
 
 class Combination:
