@@ -70,6 +70,11 @@ namespace alpaka::math
     {
     };
 
+    //! The standard library copysign, implementation covered by the general template.
+    class CopysignStdLib : public concepts::Implements<ConceptMathCopysign, CopysignStdLib>
+    {
+    };
+
     //! The standard library cos, implementation covered by the general template.
     class CosStdLib : public concepts::Implements<ConceptMathCos, CosStdLib>
     {
@@ -214,6 +219,7 @@ namespace alpaka::math
         , public CbrtStdLib
         , public CeilStdLib
         , public ConjStdLib
+        , public CopysignStdLib
         , public CosStdLib
         , public CoshStdLib
         , public ErfStdLib

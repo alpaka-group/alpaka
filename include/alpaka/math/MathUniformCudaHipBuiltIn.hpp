@@ -80,6 +80,12 @@ namespace alpaka::math
     {
     };
 
+    //! The CUDA built in copysign.
+    class CopysignUniformCudaHipBuiltIn
+        : public concepts::Implements<ConceptMathCopysign, CopysignUniformCudaHipBuiltIn>
+    {
+    };
+
     //! The CUDA built in cos.
     class CosUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathCos, CosUniformCudaHipBuiltIn>
     {
@@ -226,6 +232,7 @@ namespace alpaka::math
         , public CbrtUniformCudaHipBuiltIn
         , public CeilUniformCudaHipBuiltIn
         , public ConjUniformCudaHipBuiltIn
+        , public CopysignUniformCudaHipBuiltIn
         , public CosUniformCudaHipBuiltIn
         , public CoshUniformCudaHipBuiltIn
         , public ErfUniformCudaHipBuiltIn
@@ -591,6 +598,30 @@ namespace alpaka::math
             __host__ __device__ auto operator()(ConjUniformCudaHipBuiltIn const& /* conj_ctx */, Complex<T> const& arg)
             {
                 return Complex<T>{arg.real(), -arg.imag()};
+            }
+        };
+
+        //! The CUDA copysign trait specialization for real types.
+        template<typename TMag, typename TSgn>
+        struct Copysign<
+            CopysignUniformCudaHipBuiltIn,
+            TMag,
+            TSgn,
+            std::enable_if_t<std::is_floating_point_v<TMag> && std::is_floating_point_v<TSgn>>>
+        {
+            __host__ __device__ auto operator()(
+                CopysignUniformCudaHipBuiltIn const& /* copysign_ctx */,
+                TMag const& mag,
+                TSgn const& sgn)
+            {
+                if constexpr(is_decayed_v<TMag, float> && is_decayed_v<TSgn, float>)
+                    return ::copysignf(mag, sgn);
+                else if constexpr(is_decayed_v<TMag, double> || is_decayed_v<TSgn, double>)
+                    return ::copysign(mag, sgn);
+                else
+                    static_assert(!sizeof(TMag), "Unsupported data type");
+
+                ALPAKA_UNREACHABLE(TMag{});
             }
         };
 
