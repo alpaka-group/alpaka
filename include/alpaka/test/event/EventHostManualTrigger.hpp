@@ -57,6 +57,8 @@ namespace alpaka::test
                     m_bIsReady = true;
                 }
                 m_conditionVariable.notify_one();
+                // Give alpaka time to update into the new state, process all events and tasks.
+                std::this_thread::sleep_for(std::chrono::milliseconds(200u));
             }
 
         public:
@@ -96,6 +98,8 @@ namespace alpaka::test
         void trigger()
         {
             m_spEventImpl->trigger();
+            // Give alpaka time to update into the new state, process all events and tasks.
+            std::this_thread::sleep_for(std::chrono::milliseconds(200u));
         }
 
     public:
@@ -282,6 +286,8 @@ namespace alpaka::test
                 // Initiate the memory set.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     cudaMemset(m_devMem, static_cast<int>(1u), static_cast<size_t>(sizeof(int32_t))));
+                // Give alpaka time to update into the new state, process all events and tasks.
+                std::this_thread::sleep_for(std::chrono::milliseconds(200u));
             }
 
         public:
@@ -315,6 +321,8 @@ namespace alpaka::test
         void trigger()
         {
             m_spEventImpl->trigger();
+            // Give alpaka time to update into the new state, process all events and tasks.
+            std::this_thread::sleep_for(std::chrono::milliseconds(200u));
         }
 
     public:
@@ -509,6 +517,8 @@ namespace alpaka::test
                 // Initiate the memory set.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     hipMemset(m_devMem, static_cast<int>(1u), static_cast<size_t>(sizeof(int32_t))));
+                // Give alpaka time to update into the new state, process all events and tasks.
+                std::this_thread::sleep_for(std::chrono::milliseconds(200u));
             }
 
         public:
@@ -542,6 +552,8 @@ namespace alpaka::test
         void trigger()
         {
             m_spEventImpl->trigger();
+            // Give alpaka time to update into the new state, process all events and tasks.
+            std::this_thread::sleep_for(std::chrono::milliseconds(200u));
         }
 
     public:

@@ -186,7 +186,7 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[eve
             REQUIRE(alpaka::isComplete(k1));
             REQUIRE(!alpaka::isComplete(k2));
             REQUIRE(!alpaka::isComplete(e1));
-            REQUIRE(!alpaka::isComplete(e2));
+            REQUIRE(alpaka::isComplete(e2));
 
             // q1 = [e1]
             k2.trigger();
@@ -203,7 +203,6 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[eve
         }
     }
 }
-
 
 // github issue #388
 TEMPLATE_LIST_TEST_CASE("waitForEventThatAlreadyFinishedShouldBeSkipped", "[event]", TestQueues)
