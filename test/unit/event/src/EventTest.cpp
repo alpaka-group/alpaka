@@ -272,3 +272,212 @@ TEMPLATE_LIST_TEST_CASE("waitForEventThatAlreadyFinishedShouldBeSkipped", "[even
         }
     }
 }
+
+TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRelease", "[event]", TestQueues)
+{
+    // A re-enqueued event will be released in the order it is recorded. The tests validate that dependencies between
+    // queues and the re-enqueued event will be correct.
+    using DevQueue = TestType;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
+    using Queue = typename Fixture::Queue;
+    using Dev = typename Fixture::Dev;
+
+    if(!alpaka::test::IsBlockingQueue<Queue>::value)
+    {
+        Fixture f1;
+        Fixture f2;
+        Fixture f3;
+        if(alpaka::test::isEventHostManualTriggerSupported(f1.m_dev)
+           && alpaka::test::isEventHostManualTriggerSupported(f2.m_dev)
+           && alpaka::test::isEventHostManualTriggerSupported(f3.m_dev))
+        {
+            auto q1 = f1.m_queue;
+            auto q2 = f2.m_queue;
+            auto q3 = f3.m_queue;
+
+            alpaka::Event<Queue> e1(f1.m_dev);
+            alpaka::Event<Queue> e2(f2.m_dev);
+            alpaka::Event<Queue> e3(f3.m_dev);
+            alpaka::test::EventHostManualTrigger<Dev> k1_0(f1.m_dev);
+            alpaka::test::EventHostManualTrigger<Dev> k1_1(f1.m_dev);
+            alpaka::test::EventHostManualTrigger<Dev> k2(f2.m_dev);
+            alpaka::test::EventHostManualTrigger<Dev> k3(f3.m_dev);
+
+            alpaka::enqueue(q1, k1_0);
+            alpaka::enqueue(q1, e1);
+            // q1 = [k1_0,e1]
+            alpaka::enqueue(q2, k2);
+            // q2 = [k2]
+            REQUIRE(!alpaka::isComplete(k1_0));
+
+            alpaka::wait(q2, e1);
+            alpaka::enqueue(q2, e2);
+            // q2 = [->e1,e2]
+            alpaka::enqueue(q1, k1_1);
+            alpaka::enqueue(q1, e1);
+            // q1 = [k1_0,e1,k1_1,e1_new]
+            alpaka::enqueue(q3, k3);
+            alpaka::wait(q3, e1);
+            alpaka::enqueue(q3, e3);
+
+            // q1 = [k1_0,e1,k1_1,e1_new]
+            // q2 = [k2,->e1,e2]
+            // q3 = [k3,->e1_new,e3]
+            REQUIRE(!alpaka::isComplete(k1_0));
+            REQUIRE(!alpaka::isComplete(k1_1));
+            REQUIRE(!alpaka::isComplete(k2));
+            REQUIRE(!alpaka::isComplete(k3));
+            REQUIRE(!alpaka::isComplete(e1));
+            REQUIRE(!alpaka::isComplete(e2));
+            REQUIRE(!alpaka::isComplete(e3));
+
+            k3.trigger();
+
+            // q1 = [k1_0,e1,k1_1,e1_new]
+            // q2 = [k2,->e1,e2]
+            // q3 = [->e1_new,e3]
+            REQUIRE(!alpaka::isComplete(k1_0));
+            REQUIRE(!alpaka::isComplete(k1_1));
+            REQUIRE(!alpaka::isComplete(k2));
+            REQUIRE(alpaka::isComplete(k3));
+            REQUIRE(!alpaka::isComplete(e1));
+            REQUIRE(!alpaka::isComplete(e2));
+            REQUIRE(!alpaka::isComplete(e3));
+
+            k2.trigger();
+
+            // q1 = [k1_0,e1,k1_1,e1_new]
+            // q2 = [->e1,e2]
+            // q3 = [->e1_new,e3]
+            REQUIRE(!alpaka::isComplete(k1_0));
+            REQUIRE(!alpaka::isComplete(k1_1));
+            REQUIRE(alpaka::isComplete(k2));
+            REQUIRE(alpaka::isComplete(k3));
+            REQUIRE(!alpaka::isComplete(e1));
+            REQUIRE(!alpaka::isComplete(e2));
+            REQUIRE(!alpaka::isComplete(e3));
+
+            // After the kernel k1_0 is released e3 is not allowed to be ready because q3 depends on the oldest e1
+            // state.
+            k1_0.trigger();
+            // q1 = [k1_1,e1_new]
+            // q2 = []
+            // q3 = [->e1_new,e3]
+
+            REQUIRE(alpaka::isComplete(k1_0));
+            REQUIRE(!alpaka::isComplete(k1_1));
+            REQUIRE(alpaka::isComplete(k2));
+            REQUIRE(alpaka::isComplete(k3));
+            REQUIRE(!alpaka::isComplete(e1));
+            REQUIRE(alpaka::isComplete(e2));
+            REQUIRE(!alpaka::isComplete(e3));
+
+            k1_1.trigger();
+            // q1 = []
+            // q2 = []
+            REQUIRE(alpaka::isComplete(k1_0));
+            REQUIRE(alpaka::isComplete(k1_1));
+            REQUIRE(alpaka::isComplete(k2));
+            REQUIRE(alpaka::isComplete(k3));
+            REQUIRE(alpaka::isComplete(e1));
+            REQUIRE(alpaka::isComplete(e2));
+            REQUIRE(alpaka::isComplete(e3));
+        }
+        else
+        {
+            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+                      << std::endl;
+        }
+    }
+}
+
+TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventOutOfOrderLifetimeRelease", "[event]", TestQueues)
+{
+    // A re-enqueued event will be released in the opposite order it is recorded.
+    // The tests validate that dependencies between queues and the re-enqueued event will be correct.
+    using DevQueue = TestType;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
+    using Queue = typename Fixture::Queue;
+    using Dev = typename Fixture::Dev;
+
+    if(!alpaka::test::IsBlockingQueue<Queue>::value)
+    {
+        Fixture f1;
+        Fixture f2;
+        Fixture f3;
+        if(alpaka::test::isEventHostManualTriggerSupported(f1.m_dev)
+           && alpaka::test::isEventHostManualTriggerSupported(f2.m_dev))
+        {
+            auto q1 = f1.m_queue;
+            auto q2 = f2.m_queue;
+            auto q3 = f3.m_queue;
+            alpaka::Event<Queue> e1(f1.m_dev);
+            alpaka::Event<Queue> e2(f2.m_dev);
+            alpaka::Event<Queue> e3(f3.m_dev);
+            alpaka::test::EventHostManualTrigger<Dev> k1_0(f1.m_dev);
+            alpaka::test::EventHostManualTrigger<Dev> k2(f2.m_dev);
+
+            alpaka::enqueue(q1, k1_0);
+            alpaka::enqueue(q1, e1);
+            // q1 = [k1_0,e1]
+            alpaka::enqueue(q2, k2);
+            // q2 = [k2]
+            REQUIRE(!alpaka::isComplete(k1_0));
+
+            alpaka::wait(q3, e1); // let wait
+            alpaka::enqueue(q3, e3);
+            // q3 = [->e1,e3]
+
+            alpaka::enqueue(q2, e1);
+            // q2 = [k2,e1(1)]
+
+            alpaka::enqueue(q2, e2);
+            // q1 = [k1_0,e1]
+            // q2 = [k2,e1_new,e3]
+            // q3 = [->e1,e3]
+
+            REQUIRE(!alpaka::isComplete(k1_0));
+            REQUIRE(!alpaka::isComplete(k2));
+            REQUIRE(!alpaka::isComplete(e1));
+            REQUIRE(!alpaka::isComplete(e2));
+            REQUIRE(!alpaka::isComplete(e3));
+
+            // We release first the kernel which is blocking the most resent enqueue of event e1.
+            // Queue q3 is not allowed to be freed because these queue depends on the oldest enqueue of e1.
+            k2.trigger();
+
+            // q1 = [k1_0,e1]
+            // q2 = []
+            // q3 = [->e1,e3]
+
+            REQUIRE(!alpaka::isComplete(k1_0));
+
+            REQUIRE(alpaka::isComplete(k2));
+            REQUIRE(alpaka::isComplete(e1));
+            REQUIRE(alpaka::isComplete(e2));
+            REQUIRE(!alpaka::isComplete(e3));
+
+
+            k1_0.trigger();
+
+            // q1 = []
+            // q2 = []
+            // q3 = []
+            REQUIRE(alpaka::isComplete(k1_0));
+
+            REQUIRE(alpaka::isComplete(k2));
+            REQUIRE(alpaka::isComplete(e1));
+            REQUIRE(alpaka::isComplete(e2));
+            REQUIRE(alpaka::isComplete(e3));
+
+            alpaka::wait(q1);
+            alpaka::wait(q2);
+            alpaka::wait(q3);
+        }
+        else
+        {
+            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+                      << std::endl;
+        }
+    }
+}
