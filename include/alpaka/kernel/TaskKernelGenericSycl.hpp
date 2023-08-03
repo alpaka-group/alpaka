@@ -114,8 +114,7 @@ namespace alpaka::detail
     template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
     inline auto require(
         sycl::handler& cgh,
-        experimental::Accessor<SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
-            acc,
+        Accessor<SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes> acc,
         special)
     {
         cgh.require(acc.m_accessor);

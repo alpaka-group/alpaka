@@ -20,14 +20,24 @@ namespace alpaka
 
     namespace detail
     {
+        //! Access tag type indicating read-only access.
+        struct ReadAccess
+        {
+        };
+
+        //! Access tag type indicating write-only access.
+        struct WriteAccess
+        {
+        };
+
         template<typename... TAlpakaAccessModes>
         inline constexpr auto sycl_access_mode = sycl::access_mode::read_write;
 
         template<>
-        inline constexpr auto sycl_access_mode<experimental::ReadAccess> = sycl::access_mode::read;
+        inline constexpr auto sycl_access_mode<ReadAccess> = sycl::access_mode::read;
 
         template<>
-        inline constexpr auto sycl_access_mode<experimental::WriteAccess> = sycl::access_mode::write;
+        inline constexpr auto sycl_access_mode<WriteAccess> = sycl::access_mode::write;
 
         template<typename TElem, int TDim, typename... TAlpakaAccessModes>
         using SyclAccessor = sycl::accessor<
@@ -38,15 +48,25 @@ namespace alpaka
             sycl::access::placeholder::true_t>;
     } // namespace detail
 
+    //! An accessor is an abstraction for accessing memory objects such as views and buffers.
+    //! @tparam TMemoryHandle A handle to a memory object.
+    //! @tparam TElem The type of the element stored by the memory object. Values and references to this type are
+    //! returned on access.
+    //! @tparam TBufferIdx The integral type used for indexing and index computations.
+    //! @tparam TDim The dimensionality of the accessed data.
+    //! @tparam TAccessModes Either a single access tag type or a `std::tuple` containing multiple access tag
+    //! types.
+    template<typename TMemoryHandle, typename TElem, typename TBufferIdx, std::size_t TDim, typename TAccessModes>
+    struct Accessor;
+
     template<typename TElem, typename TIdx, typename TAccessModes>
-    struct experimental::
-        Accessor<detail::SyclAccessor<TElem, 1, TAccessModes>, TElem, TIdx, std::size_t{1}, TAccessModes>
+    struct Accessor<detail::SyclAccessor<TElem, 1, TAccessModes>, TElem, TIdx, std::size_t{1}, TAccessModes>
     {
         static constexpr auto sycl_access_mode = detail::sycl_access_mode<TAccessModes>;
         using SyclAccessor = detail::SyclAccessor<TElem, 1, TAccessModes>;
         using VecType = Vec<DimInt<1>, TIdx>;
         using ReturnType = std::conditional_t<
-            std::is_same_v<TAccessModes, ReadAccess>,
+            std::is_same_v<TAccessModes, detail::ReadAccess>,
             typename SyclAccessor::const_reference,
             typename SyclAccessor::reference>;
 
@@ -77,14 +97,13 @@ namespace alpaka
     };
 
     template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
-    struct experimental::
-        Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
+    struct Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
     {
         static constexpr auto sycl_access_mode = detail::sycl_access_mode<TAccessModes>;
         using SyclAccessor = detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>;
         using VecType = Vec<DimInt<TDim>, TIdx>;
         using ReturnType = std::conditional_t<
-            std::is_same_v<TAccessModes, ReadAccess>,
+            std::is_same_v<TAccessModes, detail::ReadAccess>,
             typename SyclAccessor::const_reference,
             typename SyclAccessor::reference>;
 
