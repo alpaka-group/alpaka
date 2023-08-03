@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"namespacealpaka_1_1detail.html#a67dc480b31ee420646bf5c6cc9799ccf":[2,0,0,5,81],
 "namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b":[2,0,0,5,72],
 "namespacealpaka_1_1detail.html#a867e1d281e084bbeb3a56bba70306a21":[2,0,0,5,67],
 "namespacealpaka_1_1detail.html#a8889b3386f7d3a4beaa306743c0672f6":[2,0,0,5,66],
@@ -249,5 +248,6 @@ var NAVTREEINDEX8 =
 "namespacemembers_func_v.html":[2,1,1,17],
 "namespacemembers_func_w.html":[2,1,1,18],
 "namespacemembers_g.html":[2,1,0,6],
-"namespacemembers_h.html":[2,1,0,7]
+"namespacemembers_h.html":[2,1,0,7],
+"namespacemembers_i.html":[2,1,0,8]
 };

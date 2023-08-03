@@ -683,9 +683,16 @@ $(document).ready(function(){initNavTree('mem_2view_2Traits_8hpp_source.html',''
 <div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        {</div>
 <div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;            <span class="keywordflow">return</span> traits::GetMdSpan&lt;TView&gt;::getMdSpanTransposed(view);</div>
 <div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;        }</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;    } <span class="comment">// namespace experimental</span></div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160; </div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;        <span class="keyword">using</span> MdSpan = alpaka::experimental::mdspan&lt;</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;            TElem,</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;            alpaka::experimental::dextents&lt;TIdx, TDim::value&gt;,</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;            alpaka::experimental::layout_stride,</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;            alpaka::experimental::traits::detail::ByteIndexedAccessor&lt;TElem&gt;&gt;;</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;    } <span class="comment">// namespace experimental</span></div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="ttc" id="aFold_8hpp_html"><div class="ttname"><a href="Fold_8hpp.html">Fold.hpp</a></div></div>
 <div class="ttc" id="aIntegral_8hpp_html"><div class="ttname"><a href="Integral_8hpp.html">Integral.hpp</a></div></div>
 <div class="ttc" id="aUnreachable_8hpp_html"><div class="ttname"><a href="Unreachable_8hpp.html">Unreachable.hpp</a></div></div>
@@ -751,7 +758,7 @@ $(document).ready(function(){initNavTree('mem_2view_2Traits_8hpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Thu Aug 3 2023 05:45:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 3 2023 07:56:40 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
