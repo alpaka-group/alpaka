@@ -179,6 +179,9 @@ jobs:
         - name: linux_clang-13_debug
           os: ubuntu-22.04
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 13,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.79.0, ALPAKA_CI_CMAKE_VER: 3.23.5, OMP_NUM_THREADS: 3, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_EXTENSIONS: OFF}
+        - name: linux_clang-16_debug_ubsan
+          os: ubuntu-latest
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 16,     ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_BOOST_VERSION: 1.77.0, ALPAKA_CI_CMAKE_VER: 3.23.5, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:22.04", CMAKE_CXX_EXTENSIONS: OFF, ALPAKA_CI_SANITIZERS: UBSan}
 
         # icpx
         - name: linux_icpx_release
