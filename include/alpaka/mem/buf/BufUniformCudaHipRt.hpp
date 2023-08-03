@@ -1,5 +1,5 @@
-/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
- * Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
+ *                Bernhard Manfred Gruber, Antonio Di Pilato
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -16,6 +16,7 @@
 #include "alpaka/meta/DependentFalseType.hpp"
 #include "alpaka/vec/Vec.hpp"
 
+#include <cstddef>
 #include <functional>
 #include <memory>
 #include <type_traits>
@@ -48,7 +49,7 @@ namespace alpaka
             DevUniformCudaHipRt<TApi> const& dev,
             TElem* const pMem,
             Deleter deleter,
-            TIdx const& pitchBytes,
+            std::size_t pitchBytes,
             TExtent const& extent)
             : m_dev(dev)
             , m_extentElements(getExtentVecEnd<TDim>(extent))
@@ -70,7 +71,7 @@ namespace alpaka
         DevUniformCudaHipRt<TApi> m_dev;
         Vec<TDim, TIdx> m_extentElements;
         std::shared_ptr<TElem> m_spMem;
-        TIdx m_pitchBytes;
+        std::size_t m_pitchBytes;
     };
 
     namespace trait
@@ -173,9 +174,20 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getPitchBytes(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) -> TIdx
             {
-                return buf.m_pitchBytes; // TODO(bgruber): is this even correct? This reports the pitch for the TDim -
-                                         // 1 dimension, but CUDA's pitch is always the row pitch, independently of the
-                                         // buffer's dimensions.
+                constexpr auto idx = static_cast<TIdx>(TDim::value - 1u);
+                constexpr auto bufDim = TDim::value;
+                if constexpr(idx < bufDim - 1)
+                {
+                    return getExtent<idx>(buf)
+                           * GetPitchBytes<DimInt<idx + 1>, BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>::
+                               getPitchBytes(buf);
+                }
+                else if constexpr(idx == bufDim - 1)
+                    return static_cast<TIdx>(buf.m_pitchBytes);
+                else
+                    return static_cast<TIdx>(sizeof(TElem));
+
+                ALPAKA_UNREACHABLE({});
             }
         };
 
@@ -235,7 +247,7 @@ namespace alpaka
                     dev,
                     reinterpret_cast<TElem*>(memPtr),
                     [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::free(ptr)); },
-                    static_cast<TIdx>(pitchBytes),
+                    pitchBytes,
                     extent};
             }
         };

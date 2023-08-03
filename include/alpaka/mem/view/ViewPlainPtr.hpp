@@ -37,7 +37,7 @@ namespace alpaka
         }
 
         template<typename TExtent, typename TPitch>
-        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev const dev, TExtent const& extent, TPitch const& pitchBytes)
+        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev const dev, TExtent const& extent, TPitch pitchBytes)
             : m_pMem(pMem)
             , m_dev(dev)
             , m_extentElements(getExtentVecEnd<TDim>(extent))
@@ -197,7 +197,7 @@ namespace alpaka
         struct CreateViewPlainPtr<DevCpu>
         {
             template<typename TElem, typename TExtent, typename TPitch>
-            static auto createViewPlainPtr(DevCpu const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
+            static auto createViewPlainPtr(DevCpu const& dev, TElem* pMem, TExtent const& extent, TPitch pitch)
             {
                 return alpaka::ViewPlainPtr<DevCpu, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
                     pMem,
@@ -217,7 +217,7 @@ namespace alpaka
                 DevUniformCudaHipRt<TApi> const& dev,
                 TElem* pMem,
                 TExtent const& extent,
-                TPitch const& pitch)
+                TPitch pitch)
             {
                 return alpaka::
                     ViewPlainPtr<DevUniformCudaHipRt<TApi>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
@@ -239,7 +239,7 @@ namespace alpaka
                 DevGenericSycl<TPlatform> const& dev,
                 TElem* pMem,
                 TExtent const& extent,
-                TPitch const& pitch)
+                TPitch pitch)
             {
                 return alpaka::
                     ViewPlainPtr<DevGenericSycl<TPlatform>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
