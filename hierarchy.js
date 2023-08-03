@@ -1,8 +1,5 @@
 var hierarchy =
 [
-    [ "alpaka::experimental::internal::AccessReturnTypeImpl< TElem, THeadAccessMode >", "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl.html", [
-      [ "alpaka::experimental::internal::AccessReturnTypeImpl< TElem, std::tuple< THeadAccessMode, TTailAccessModes... > >", "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01std_1_1tuple_3_034ddd555de9ec988cf4be87e2575cb73.html", null ]
-    ] ],
     [ "alpaka::AccDevProps< TDim, TIdx >", "structalpaka_1_1AccDevProps.html", null ],
     [ "alpaka::ApiCudaRt", "structalpaka_1_1ApiCudaRt.html", null ],
     [ "alpaka::ApiCudaRt::HostFnAdaptor", "structalpaka_1_1ApiCudaRt_1_1HostFnAdaptor.html", null ],
@@ -136,24 +133,6 @@ var hierarchy =
     ] ],
     [ "alpaka::detail::TaskSetUniformCudaHip< TApi, TDim, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip.html", null ],
     [ "alpaka::detail::TaskSetUniformCudaHipBase< TApi, TDim, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase.html", null ],
-    [ "alpaka::experimental::Accessor< TMemoryHandle, TElem, TBufferIdx, TDim, TAccessModes >", "structalpaka_1_1experimental_1_1Accessor.html", null ],
-    [ "alpaka::experimental::Accessor< TElem *, TElem, TBufferIdx, 1, TAccessModes >", "structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_011_00_01TAccessModes_01_4.html", null ],
-    [ "alpaka::experimental::Accessor< TElem *, TElem, TBufferIdx, TDim, TAccessModes >", "structalpaka_1_1experimental_1_1Accessor_3_01TElem_01_5_00_01TElem_00_01TBufferIdx_00_01TDim_00_01TAccessModes_01_4.html", null ],
-    [ "alpaka::experimental::internal::AccessReturnTypeImpl< TElem, TAccessModes >", "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl.html", null ],
-    [ "alpaka::experimental::internal::AccessReturnTypeImpl< TElem, ReadAccess >", "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01ReadAccess_01_4.html", null ],
-    [ "alpaka::experimental::internal::AccessReturnTypeImpl< TElem, ReadWriteAccess >", "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01ReadWriteAccess_01_4.html", null ],
-    [ "alpaka::experimental::internal::AccessReturnTypeImpl< TElem, WriteAccess >", "structalpaka_1_1experimental_1_1internal_1_1AccessReturnTypeImpl_3_01TElem_00_01WriteAccess_01_4.html", null ],
-    [ "alpaka::experimental::internal::MemoryHandle< AccessorOrBuffer >", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle.html", null ],
-    [ "alpaka::experimental::internal::MemoryHandle< Accessor< TMemoryHandle, TElem, TBufferIdx, TDim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1MemoryHandle_3_01Accessor_3_01TMemoryHandle_00_01TEld2199dd1bfe1d6b8c7c32bc0d080b289.html", null ],
-    [ "alpaka::experimental::internal::WriteOnlyProxy< T >", "structalpaka_1_1experimental_1_1internal_1_1WriteOnlyProxy.html", null ],
-    [ "alpaka::experimental::ReadAccess", "structalpaka_1_1experimental_1_1ReadAccess.html", null ],
-    [ "alpaka::experimental::ReadWriteAccess", "structalpaka_1_1experimental_1_1ReadWriteAccess.html", null ],
-    [ "alpaka::experimental::trait::BuildAccessor< TMemoryObject, SFINAE >", "structalpaka_1_1experimental_1_1trait_1_1BuildAccessor.html", null ],
-    [ "alpaka::experimental::trait::BuildAccessor< TView, std::enable_if_t< internal::IsView< TView >::value > >", "structalpaka_1_1experimental_1_1trait_1_1BuildAccessor_3_01TView_00_01std_1_1enable__if__t_3_01i1266301f8d3968c14b99e035babb19b1.html", null ],
-    [ "alpaka::experimental::trait::internal::BuildAccessModeList< TAccessModes >", "structalpaka_1_1experimental_1_1trait_1_1internal_1_1BuildAccessModeList.html", null ],
-    [ "alpaka::experimental::trait::internal::BuildAccessModeList< TAccessMode >", "structalpaka_1_1experimental_1_1trait_1_1internal_1_1BuildAccessModeList_3_01TAccessMode_01_4.html", null ],
-    [ "alpaka::experimental::trait::internal::BuildAccessModeList< TAccessMode1, TAccessMode2, TAccessModes... >", "structalpaka_1_1experimental_1_1trait_1_1internal_1_1BuildAccessModeList_3_01TAccessMode1_00_01T90545f4a4e61a774f2915b3b0ffe2d8a.html", null ],
-    [ "alpaka::experimental::WriteAccess", "structalpaka_1_1experimental_1_1WriteAccess.html", null ],
     [ "alpaka::hierarchy::Blocks", "structalpaka_1_1hierarchy_1_1Blocks.html", null ],
     [ "alpaka::hierarchy::Grids", "structalpaka_1_1hierarchy_1_1Grids.html", null ],
     [ "alpaka::hierarchy::Threads", "structalpaka_1_1hierarchy_1_1Threads.html", null ],
@@ -1735,8 +1714,6 @@ var hierarchy =
       [ "alpaka::meta::detail::UniqueHelper< TList< Ts... >, U, Us... >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html", null ]
     ] ],
     [ "std::false_type", null, [
-      [ "alpaka::experimental::internal::IsAccessor< T >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor.html", null ],
-      [ "alpaka::experimental::trait::internal::IsView< T, SFINAE >", "structalpaka_1_1experimental_1_1trait_1_1internal_1_1IsView.html", null ],
       [ "alpaka::meta::Contains< List, Value >", "structalpaka_1_1meta_1_1Contains.html", null ],
       [ "alpaka::meta::DependentFalseType< T >", "structalpaka_1_1meta_1_1DependentFalseType.html", null ],
       [ "alpaka::meta::IsArrayOrVector< T >", "structalpaka_1_1meta_1_1IsArrayOrVector.html", null ],
@@ -1755,8 +1732,6 @@ var hierarchy =
       [ "std::tuple_size< alpaka::meta::CudaVectorArrayWrapper< T, N > >", "structstd_1_1tuple__size_3_01alpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
     [ "std::true_type", null, [
-      [ "alpaka::experimental::internal::IsAccessor< Accessor< TMemoryHandle, TElem, TBufferIdx, Dim, TAccessModes > >", "structalpaka_1_1experimental_1_1internal_1_1IsAccessor_3_01Accessor_3_01TMemoryHandle_00_01TElem2ee6a853bae07489e14aef9da67a07b3.html", null ],
-      [ "alpaka::experimental::trait::internal::IsView< TView, std::void_t< Idx< TView >, Dim< TView >, decltype(getPtrNative(std::declval< TView >())), decltype(getPitchBytes< 0 >(std::declval< TView >())), decltype(getExtent< 0 >(std::declval< TView >()))> >", "structalpaka_1_1experimental_1_1trait_1_1internal_1_1IsView_3_01TView_00_01std_1_1void__t_3_01Id23c947c5515c558fff4de02fce6d8fd6.html", null ],
       [ "alpaka::meta::IsArrayOrVector< CudaVectorArrayWrapper< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
@@ -1833,9 +1808,6 @@ var hierarchy =
     [ "utility::tuple::Tuple< Ts >", "structutility_1_1tuple_1_1Tuple.html", null ],
     [ "utility::tuple::Tuple< T, Ts... >", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html", null ],
     [ "alpaka::Vec< Dim, Idx >", "classalpaka_1_1Vec.html", null ],
-    [ "alpaka::Vec< DimInt< 1 >, TBufferIdx >", "classalpaka_1_1Vec.html", null ],
-    [ "alpaka::Vec< DimInt< TDim - 1 >, TBufferIdx >", "classalpaka_1_1Vec.html", null ],
-    [ "alpaka::Vec< DimInt< TDim >, TBufferIdx >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, DstSize >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, ExtentSize >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, SrcSize >", "classalpaka_1_1Vec.html", null ],

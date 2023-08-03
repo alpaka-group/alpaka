@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="idx_2Traits_8hpp.html">alpaka/idx/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="SyclSubgroupSize_8hpp.html">alpaka/kernel/SyclSubgroupSize.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kernel_2Traits_8hpp.html">alpaka/kernel/Traits.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="buf_2sycl_2Accessor_8hpp.html">alpaka/mem/buf/sycl/Accessor.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Accessor_8hpp.html">alpaka/mem/buf/sycl/Accessor.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="platform_2Traits_8hpp.html">alpaka/platform/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="queue_2Traits_8hpp.html">alpaka/queue/Traits.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="WorkDivMembers_8hpp.html">alpaka/workdiv/WorkDivMembers.hpp</a>&quot;</span></div>
@@ -444,6 +444,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="preprocessor">#    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS</span></div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aAccessor_8hpp_html"><div class="ttname"><a href="Accessor_8hpp.html">Accessor.hpp</a></div></div>
 <div class="ttc" id="aBlockSharedDynMemberAllocKiB_8hpp_html"><div class="ttname"><a href="BlockSharedDynMemberAllocKiB_8hpp.html">BlockSharedDynMemberAllocKiB.hpp</a></div></div>
 <div class="ttc" id="aBlockSharedDynMemberAllocKiB_8hpp_html_a51e00b3a9a4e35ab76e27bd30cfe9f95"><div class="ttname"><a href="BlockSharedDynMemberAllocKiB_8hpp.html#a51e00b3a9a4e35ab76e27bd30cfe9f95">ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB</a></div><div class="ttdeci">#define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedDynMemberAllocKiB_8hpp_source.html#l00012">BlockSharedDynMemberAllocKiB.hpp:12</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
@@ -453,7 +454,6 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div class="ttc" id="aTuple_8hpp_html"><div class="ttname"><a href="Tuple_8hpp.html">Tuple.hpp</a></div></div>
 <div class="ttc" id="aWorkDivMembers_8hpp_html"><div class="ttname"><a href="WorkDivMembers_8hpp.html">WorkDivMembers.hpp</a></div></div>
 <div class="ttc" id="aacc_2Traits_8hpp_html"><div class="ttname"><a href="acc_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="abuf_2sycl_2Accessor_8hpp_html"><div class="ttname"><a href="buf_2sycl_2Accessor_8hpp.html">Accessor.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1WorkDivMembers_html_a4a009b8132b692bb8b55cfd2764bcd25"><div class="ttname"><a href="classalpaka_1_1WorkDivMembers.html#a4a009b8132b692bb8b55cfd2764bcd25">alpaka::WorkDivMembers::m_blockThreadExtent</a></div><div class="ttdeci">Vec&lt; TDim, TIdx &gt; m_blockThreadExtent</div><div class="ttdef"><b>Definition:</b> <a href="WorkDivMembers_8hpp_source.html#l00077">WorkDivMembers.hpp:77</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1WorkDivMembers_html_a505994091860f2d0572f50988808a95f"><div class="ttname"><a href="classalpaka_1_1WorkDivMembers.html#a505994091860f2d0572f50988808a95f">alpaka::WorkDivMembers::m_gridBlockExtent</a></div><div class="ttdeci">Vec&lt; TDim, TIdx &gt; m_gridBlockExtent</div><div class="ttdef"><b>Definition:</b> <a href="WorkDivMembers_8hpp_source.html#l00076">WorkDivMembers.hpp:76</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1WorkDivMembers_html_a736028e849adf823aef0a6972a6b3aff"><div class="ttname"><a href="classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff">alpaka::WorkDivMembers::m_threadElemExtent</a></div><div class="ttdeci">Vec&lt; TDim, TIdx &gt; m_threadElemExtent</div><div class="ttdef"><b>Definition:</b> <a href="WorkDivMembers_8hpp_source.html#l00078">WorkDivMembers.hpp:78</a></div></div>
@@ -474,7 +474,7 @@ $(document).ready(function(){initNavTree('TaskKernelGenericSycl_8hpp_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGenericSycl_8hpp.html">TaskKernelGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Thu Aug 3 2023 11:53:59 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 3 2023 13:40:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

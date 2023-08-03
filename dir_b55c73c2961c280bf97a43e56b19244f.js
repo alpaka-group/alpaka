@@ -1,11 +1,7 @@
 var dir_b55c73c2961c280bf97a43e56b19244f =
 [
-    [ "Accessor.hpp", "view_2Accessor_8hpp.html", "view_2Accessor_8hpp" ],
     [ "Traits.hpp", "mem_2view_2Traits_8hpp.html", "mem_2view_2Traits_8hpp" ],
-    [ "ViewAccessOps.hpp", "ViewAccessOps_8hpp.html", [
-      [ "ViewAccessOps", "structalpaka_1_1internal_1_1ViewAccessOps.html", "structalpaka_1_1internal_1_1ViewAccessOps" ]
-    ] ],
-    [ "ViewAccessor.hpp", "ViewAccessor_8hpp.html", "ViewAccessor_8hpp" ],
+    [ "ViewAccessOps.hpp", "ViewAccessOps_8hpp.html", "ViewAccessOps_8hpp" ],
     [ "ViewConst.hpp", "ViewConst_8hpp.html", "ViewConst_8hpp" ],
     [ "ViewPlainPtr.hpp", "ViewPlainPtr_8hpp.html", [
       [ "CreateStaticDevMemView< DevCpu >", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1CreateStaticDevMemView_3_01DevCpu_01_4" ],

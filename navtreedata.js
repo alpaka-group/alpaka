@@ -43,7 +43,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", "functions_vars" ],
+        [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", "functions_type" ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Enumerator", "functions_eval.html", null ],
@@ -64,25 +64,24 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"DemangleTypeNames_8hpp.html#a02c3471af40bf64c77e9d599f0007954",
-"QueueCpuNonBlocking_8hpp.html",
-"WorkDivHelpers_8hpp.html#a378a4ed1bdce40639b3204d84a004d1c",
-"classalpaka_1_1ViewPlainPtr.html#a1ea73be548e7c28bbb2eca2c933bbb6f",
-"classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html",
-"event_2Traits_8hpp_source.html",
-"namespacealpaka.html#a05ded3e1760e87f4b377803a98f98885",
-"namespacealpaka_1_1detail.html#a67dc480b31ee420646bf5c6cc9799ccf",
-"namespacemembers_i.html",
-"structalpaka_1_1ApiCudaRt.html#adfefaae48b92c34ee5c7f160144bbc98",
-"structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a3dcaa85410b55923e919cd912954ff3a",
-"structalpaka_1_1math_1_1trait_1_1Conj_3_01ConjUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html",
-"structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_014_01_4.html",
-"structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html",
-"structalpaka_1_1trait_1_1DimType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a0cc8048be8b6e5682c987a547f163128",
-"structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01BufCpu_3_01TElem_00_01TDim_00_01TI93b2f6c3ac1d26767aa4dd7ae3cd4b2b.html",
-"structalpaka_1_1trait_1_1MemFence_3_01MemFenceUniformCudaHipBuiltIn_00_01memory__scope_1_1Grid_01_4.html",
-"sycl_2Copy_8hpp.html"
+"AccCpuOmp2Blocks_8hpp.html",
+"DemangleTypeNames_8hpp.html",
+"QueueCpuBlocking_8hpp_source.html",
+"WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27",
+"classalpaka_1_1ViewPlainPtr.html#ad417c183d56316125f0ee22bb3155733",
+"classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a8251b47d8e619307d4d796c51d576e98",
+"extent_2Traits_8hpp.html#acddfa0535edd4f34e9c9cbefa307957d",
+"namespacealpaka.html#a281336ade8dfb8b3a125b402b699f71e",
+"namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a",
+"offset_2Traits_8hpp.html#ae988c26c08c6d6f9a6df5b9e1b96d493",
+"structalpaka_1_1AtomicMax.html#a60857019d7be86cee38d76b13c36d2eb",
+"structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#abc99081bed812afe5341de6fe4208e25",
+"structalpaka_1_1math_1_1trait_1_1Min_3_01MinStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_049e4666dbb9a3887ecba3c8661049386.html",
+"structalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal.html",
+"structalpaka_1_1trait_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html",
+"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_11f0d24ada35ab7a45b1d245fcb2941a3.html",
+"structalpaka_1_1trait_1_1GetPitchBytes.html#aed18ecb1e48a0e00d23e91727f14561f",
+"structalpaka_1_1trait_1_1SetOffset_3_01DimInt_3_010u_01_4_00_01TOffsets_00_01TOffset_00_01std_1_9ad048db3224d7f868c9fbddba1d1c46.html#a7c34ddffea5fabb0bd711b41289eee78"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
