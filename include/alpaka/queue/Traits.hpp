@@ -41,6 +41,8 @@ namespace alpaka
     //!   If the event has previously been queued, then this call will overwrite any existing state of the event.
     //!   Any subsequent calls which examine the status of event will only examine the completion of this most recent
     //!   call to enqueue.
+    //!   If a queue is waiting for an event the event state of the recently captured state at the time of the API call
+    //!   to wait() will be used to release the queue.
     template<typename TQueue, typename TTask>
     ALPAKA_FN_HOST auto enqueue(TQueue& queue, TTask&& task) -> void
     {

@@ -26,6 +26,10 @@ namespace alpaka
     } // namespace trait
 
     //! Waits the thread for the completion of the given awaited action to complete.
+    //!
+    //! Special Handling for events:
+    //!   If the event is re-enqueued wait will terminate when the re-enqueued event will be ready and previous enqueue
+    //!   sates of the event will be ignored.
     template<typename TAwaited>
     ALPAKA_FN_HOST auto wait(TAwaited const& awaited) -> void
     {
@@ -34,6 +38,10 @@ namespace alpaka
     }
 
     //! The waiter waits for the given awaited action to complete.
+    //!
+    //! Special Handling if waiter is a queue and awaited an event:
+    //!   The waiter waits for the event state becoming ready based on the recently captured event state at the time of
+    //!   the API call even if the event is being re-enqueued later.
     template<typename TWaiter, typename TAwaited>
     ALPAKA_FN_HOST auto wait(TWaiter& waiter, TAwaited const& awaited) -> void
     {

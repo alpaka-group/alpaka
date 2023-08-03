@@ -152,7 +152,8 @@ namespace alpaka
                         // Nothing to do if it has been re-enqueued to a later position in the queue.
                         if(enqueueCount == spEventImpl->m_enqueueCount)
                         {
-                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+                            spEventImpl->m_LastReadyEnqueueCount
+                                = std::max(enqueueCount, spEventImpl->m_LastReadyEnqueueCount);
                         }
                     });
             }
@@ -294,14 +295,16 @@ namespace alpaka
 
                 if(!spEventImpl->isReady())
                 {
-                    auto const enqueueCount = spEventImpl->m_enqueueCount;
+                    auto oldFuture = spEventImpl->m_future;
 
                     // Enqueue a task that waits for the given event.
                     queueImpl.m_workerThread.submit(
-                        [spEventImpl, enqueueCount]() mutable
+                        [spEventImpl, oldFuture]() mutable
                         {
                             std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-                            spEventImpl->wait(enqueueCount, lk2);
+                            lk2.unlock();
+                            oldFuture.get();
+                            lk2.lock();
                         });
                 }
             }
