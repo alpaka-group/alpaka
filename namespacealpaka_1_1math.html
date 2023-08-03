@@ -192,6 +192,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathConj.html">ConceptMathConj</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCopysign.html">ConceptMathCopysign</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCos.html">ConceptMathCos</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCosh.html">ConceptMathCosh</a></td></tr>
@@ -249,6 +251,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1math_1_1ConjUniformCudaHipBuiltIn.html">ConjUniformCudaHipBuiltIn</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA built in conj.  <a href="classalpaka_1_1math_1_1ConjUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1math_1_1CopysignStdLib.html">CopysignStdLib</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The standard library copysign, implementation covered by the general template.  <a href="classalpaka_1_1math_1_1CopysignStdLib.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1math_1_1CopysignUniformCudaHipBuiltIn.html">CopysignUniformCudaHipBuiltIn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA built in copysign.  <a href="classalpaka_1_1math_1_1CopysignUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1math_1_1CoshStdLib.html">CoshStdLib</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The standard library cosh, implementation covered by the general template.  <a href="classalpaka_1_1math_1_1CoshStdLib.html#details">More...</a><br /></td></tr>
@@ -460,6 +468,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a6a8aed4e7f4477d91cfceebf9897e021"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021">conj</a> (T const &amp;conj_ctx, TArg const &amp;<a class="el" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</td></tr>
 <tr class="memdesc:a6a8aed4e7f4477d91cfceebf9897e021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the complex conjugate of arg.  <a href="namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021">More...</a><br /></td></tr>
 <tr class="separator:a6a8aed4e7f4477d91cfceebf9897e021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a953ab56033203ac75151471c306ed02e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TMag , typename TSgn &gt; </td></tr>
+<tr class="memitem:a953ab56033203ac75151471c306ed02e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a953ab56033203ac75151471c306ed02e">copysign</a> (T const &amp;copysign_ctx, TMag const &amp;mag, TSgn const &amp;sgn)</td></tr>
+<tr class="memdesc:a953ab56033203ac75151471c306ed02e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a value with the magnitude of mag and the sign of sgn.  <a href="namespacealpaka_1_1math.html#a953ab56033203ac75151471c306ed02e">More...</a><br /></td></tr>
+<tr class="separator:a953ab56033203ac75151471c306ed02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TArg &gt; </td></tr>
 <tr class="memitem:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a45cebc1e1e7df3d7cf1c965e290f6b2f">cos</a> (T const &amp;cos_ctx, TArg const &amp;<a class="el" href="namespacealpaka_1_1math.html#afce1d158f5771b3fd25990e3808d2a6a">arg</a>)</td></tr>
 <tr class="memdesc:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the cosine (measured in radians).  <a href="namespacealpaka_1_1math.html#a45cebc1e1e7df3d7cf1c965e290f6b2f">More...</a><br /></td></tr>
@@ -621,7 +633,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00844">844</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00861">861</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -669,7 +681,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00861">861</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00878">878</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -717,7 +729,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00878">878</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00895">895</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -765,7 +777,7 @@ template&lt;typename T , typename TArgument &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00892">892</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00909">909</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -813,7 +825,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00909">909</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00926">926</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -860,7 +872,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00922">922</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00939">939</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -907,7 +919,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00935">935</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00952">952</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -963,7 +975,7 @@ template&lt;typename T , typename Ty , typename Tx &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00968">968</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00985">985</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1022,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00952">952</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00969">969</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1058,7 +1070,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00982">982</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00999">999</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1106,7 +1118,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l00996">996</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01013">1013</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1166,63 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01010">1010</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01027">1027</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a953ab56033203ac75151471c306ed02e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a953ab56033203ac75151471c306ed02e">&#9670;&nbsp;</a></span>copysign()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TMag , typename TSgn &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::math::copysign </td>
+          <td>(</td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>copysign_ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TMag const &amp;&#160;</td>
+          <td class="paramname"><em>mag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TSgn const &amp;&#160;</td>
+          <td class="paramname"><em>sgn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a value with the magnitude of mag and the sign of sgn. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the object specializing Copysign. </td></tr>
+    <tr><td class="paramname">TMag</td><td>The mag type. </td></tr>
+    <tr><td class="paramname">TSgn</td><td>The sgn type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">copysign_ctx</td><td>The object specializing Copysign. </td></tr>
+    <tr><td class="paramname">mag</td><td>The mag. </td></tr>
+    <tr><td class="paramname">sgn</td><td>The sgn. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01043">1043</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1202,7 +1270,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01024">1024</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01057">1057</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1250,7 +1318,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01038">1038</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01071">1071</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1298,7 +1366,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01052">1052</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01085">1085</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1346,7 +1414,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01066">1066</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01099">1099</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1443,7 +1511,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01080">1080</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01113">1113</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1507,7 +1575,7 @@ template&lt;typename T , typename Tx , typename Ty , typename Tz &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01098">1098</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01131">1131</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1563,7 +1631,7 @@ template&lt;typename T , typename Tx , typename Ty &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01114">1114</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01147">1147</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1611,7 +1679,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01128">1128</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01161">1161</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1659,7 +1727,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01142">1142</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01175">1175</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1707,7 +1775,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01156">1156</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01189">1189</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1756,7 +1824,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01323">1323</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01356">1356</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1805,7 +1873,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01174">1174</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01207">1207</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1854,7 +1922,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01210">1210</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01243">1243</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1903,7 +1971,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01192">1192</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01225">1225</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1952,7 +2020,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01309">1309</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01342">1342</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2008,7 +2076,7 @@ template&lt;typename T , typename Tx , typename Ty &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01227">1227</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01260">1260</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2064,7 +2132,7 @@ template&lt;typename T , typename Tx , typename Ty &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01244">1244</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01277">1277</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2121,7 +2189,7 @@ template&lt;typename T , typename TBase , typename TExp &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01264">1264</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01297">1297</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2177,7 +2245,7 @@ template&lt;typename T , typename Tx , typename Ty &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01280">1280</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01313">1313</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2225,7 +2293,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01295">1295</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01328">1328</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2274,7 +2342,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01341">1341</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01374">1374</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2322,7 +2390,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01355">1355</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01388">1388</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2385,7 +2453,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01385">1385</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01418">1418</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2433,7 +2501,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01369">1369</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01402">1402</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2482,7 +2550,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01404">1404</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01437">1437</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2530,7 +2598,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01418">1418</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01451">1451</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2578,7 +2646,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01432">1432</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01465">1465</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2626,7 +2694,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01446">1446</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2Traits_8hpp_source.html#l01479">1479</a> of file <a class="el" href="math_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2636,7 +2704,7 @@ template&lt;typename T , typename TArg &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1math.html">math</a></li>
-    <li class="footer">Generated on Thu Aug 3 2023 05:40:11 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 3 2023 05:45:13 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

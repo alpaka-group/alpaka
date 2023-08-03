@@ -125,6 +125,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathConj.html">alpaka::math::ConceptMathConj</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCopysign.html">alpaka::math::ConceptMathCopysign</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCos.html">alpaka::math::ConceptMathCos</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1ConceptMathCosh.html">alpaka::math::ConceptMathCosh</a></td></tr>
@@ -212,6 +214,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Conj.html">alpaka::math::trait::Conj&lt; T, TArg, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The conj trait.  <a href="structalpaka_1_1math_1_1trait_1_1Conj.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Copysign.html">alpaka::math::trait::Copysign&lt; T, TMag, TSgn, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The copysign trait.  <a href="structalpaka_1_1math_1_1trait_1_1Copysign.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1math_1_1trait_1_1Cos.html">alpaka::math::trait::Cos&lt; T, TArg, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cos trait.  <a href="structalpaka_1_1math_1_1trait_1_1Cos.html#details">More...</a><br /></td></tr>
@@ -362,6 +367,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a6a8aed4e7f4477d91cfceebf9897e021"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021">alpaka::math::conj</a> (T const &amp;conj_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:a6a8aed4e7f4477d91cfceebf9897e021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the complex conjugate of arg.  <a href="namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021">More...</a><br /></td></tr>
 <tr class="separator:a6a8aed4e7f4477d91cfceebf9897e021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a953ab56033203ac75151471c306ed02e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TMag , typename TSgn &gt; </td></tr>
+<tr class="memitem:a953ab56033203ac75151471c306ed02e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a953ab56033203ac75151471c306ed02e">alpaka::math::copysign</a> (T const &amp;copysign_ctx, TMag const &amp;mag, TSgn const &amp;sgn)</td></tr>
+<tr class="memdesc:a953ab56033203ac75151471c306ed02e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a value with the magnitude of mag and the sign of sgn.  <a href="namespacealpaka_1_1math.html#a953ab56033203ac75151471c306ed02e">More...</a><br /></td></tr>
+<tr class="separator:a953ab56033203ac75151471c306ed02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TArg &gt; </td></tr>
 <tr class="memitem:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html#a45cebc1e1e7df3d7cf1c965e290f6b2f">alpaka::math::cos</a> (T const &amp;cos_ctx, TArg const &amp;arg)</td></tr>
 <tr class="memdesc:a45cebc1e1e7df3d7cf1c965e290f6b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the cosine (measured in radians).  <a href="namespacealpaka_1_1math.html#a45cebc1e1e7df3d7cf1c965e290f6b2f">More...</a><br /></td></tr>
@@ -532,7 +541,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_e50c5330781fe39f2449e5fa74719543.html">math</a></li><li class="navelem"><a class="el" href="math_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Thu Aug 3 2023 05:40:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 3 2023 05:45:13 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

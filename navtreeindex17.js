@@ -1,5 +1,14 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceUniformCudaHipBuiltIn_00_01memory__scope_1_1Grid_01_4.html":[3,0,0,16,395],
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceUniformCudaHipBuiltIn_00_01memory__scope_1_1Grid_01_4.html#a70f6f07a84fa70d1be5578be9d0750af":[3,0,0,16,395,0],
+"structalpaka_1_1trait_1_1NativeHandle.html":[3,0,0,16,396],
+"structalpaka_1_1trait_1_1NativeHandle.html#a5bd0a7077325fd9fd45c60c8133f9b3f":[3,0,0,16,396,0],
+"structalpaka_1_1trait_1_1NativeHandle_3_01DevCpu_01_4.html":[3,0,0,16,397],
+"structalpaka_1_1trait_1_1NativeHandle_3_01DevCpu_01_4.html#a875b9321f67c9514d447cfd2d3338b10":[3,0,0,16,397,0],
+"structalpaka_1_1trait_1_1NativeHandle_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,16,398],
+"structalpaka_1_1trait_1_1NativeHandle_3_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#ad744e2ce1b82589f8ba7ea33780a3a3b":[3,0,0,16,398,0],
+"structalpaka_1_1trait_1_1NativeHandle_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,16,399],
 "structalpaka_1_1trait_1_1NativeHandle_3_01EventUniformCudaHipRt_3_01TApi_01_4_01_4.html#a6b392b336d30e4726f24335d82f79456":[3,0,0,16,399,0],
 "structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_51aeb2353f20e89e7373dbbed1619e24.html":[3,0,0,16,400],
 "structalpaka_1_1trait_1_1NativeHandle_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_51aeb2353f20e89e7373dbbed1619e24.html#a4b1b3fcefa9fff539a0d8dcd34c42345":[3,0,0,16,400,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX17 =
 "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_00_01Args_8_8_8_01_4_01_4.html":[3,0,3,0,13],
 "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_00_01Args_8_8_8_01_4_01_4.html#a0380c3fc474f872479854bff680b92ea":[3,0,3,0,13,0],
 "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_01_4_01_4.html":[3,0,3,0,12],
-"structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_01_4_01_4.html#aa25ff0f6bed33c895adea52b3f5eae22":[3,0,3,0,12,0],
-"sycl_2Copy_8hpp.html":[4,0,0,0,14,1,1,2],
-"sycl_2Copy_8hpp_source.html":[4,0,0,0,14,1,1,2],
-"tinymt32_8h.html":[4,0,0,0,19,1,1],
-"tinymt32_8h.html#a04862c981ffac8f9ff6b8eb142a99da5":[4,0,0,0,19,1,1,23],
-"tinymt32_8h.html#a0560ff3e36b30d2867fcd02ad8948b11":[4,0,0,0,19,1,1,24],
-"tinymt32_8h.html#a1c04f9dcc0fe7f3513de13644783463c":[4,0,0,0,19,1,1,6],
-"tinymt32_8h.html#a1f351da820dbfe5c5e1d01b7496303cd":[4,0,0,0,19,1,1,26],
-"tinymt32_8h.html#a1fb73633dcae08b2a209674d7579c6de":[4,0,0,0,19,1,1,15],
-"tinymt32_8h.html#a27671e17b40aebc0e9aca6fcd7252e6a":[4,0,0,0,19,1,1,2]
+"structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_01_4_01_4.html#aa25ff0f6bed33c895adea52b3f5eae22":[3,0,3,0,12,0]
 };
