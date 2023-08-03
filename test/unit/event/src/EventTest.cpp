@@ -150,46 +150,56 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[eve
             alpaka::test::EventHostManualTrigger<Dev> k1(f1.m_dev);
             alpaka::test::EventHostManualTrigger<Dev> k2(f1.m_dev);
 
-            // q1 = [k1]
             alpaka::enqueue(q1, k1);
+
+            // q1 = [k1]
             REQUIRE(!alpaka::isComplete(k1));
 
-            // q1 = [k1, e1]
             alpaka::enqueue(q1, e1);
+
+            // q1 = [k1, e1]
             REQUIRE(!alpaka::isComplete(k1));
             REQUIRE(!alpaka::isComplete(e1));
 
-            // q1 = [k1, e1, k2]
             alpaka::enqueue(q1, k2);
+
+            // q1 = [k1, e1, k2]
             REQUIRE(!alpaka::isComplete(k1));
             REQUIRE(!alpaka::isComplete(e1));
             REQUIRE(!alpaka::isComplete(k2));
 
             // wait for e1
-            // q2 = [->e1]
             alpaka::wait(q2, e1);
+            // q2 = [->e1]
+
+            alpaka::enqueue(q2, e2);
 
             // q2 = [->e1, e2]
-            alpaka::enqueue(q2, e2);
             REQUIRE(!alpaka::isComplete(e2));
 
             // re-enqueue should be possible
-            // q1 = [k1, e1-old, k2, e1]
             alpaka::enqueue(q1, e1);
+
+            // q1 = [k1, e1, k2, e1_new]
+            // q2 = [->e1, e2]
             REQUIRE(!alpaka::isComplete(k1));
             REQUIRE(!alpaka::isComplete(k2));
             REQUIRE(!alpaka::isComplete(e1));
             REQUIRE(!alpaka::isComplete(e2));
 
-            // q1 = [k2, e1]
             k1.trigger();
+
+            // q1 = [k2, e1_new]
+            // q2 = []
             REQUIRE(alpaka::isComplete(k1));
             REQUIRE(!alpaka::isComplete(k2));
             REQUIRE(!alpaka::isComplete(e1));
             REQUIRE(alpaka::isComplete(e2));
 
-            // q1 = [e1]
             k2.trigger();
+
+            // q1 = []
+            // q2 = []
             REQUIRE(alpaka::isComplete(k2));
             alpaka::wait(e1);
             REQUIRE(alpaka::isComplete(e1));
@@ -226,43 +236,50 @@ TEMPLATE_LIST_TEST_CASE("waitForEventThatAlreadyFinishedShouldBeSkipped", "[even
             alpaka::Event<Queue> e1(f1.m_dev);
 
             // 1. kernel k1 is enqueued into queue q1
-            // q1 = [k1]
             alpaka::enqueue(q1, k1);
+            // q1 = [k1]
+
             // 2. kernel k2 is enqueued into queue q2
-            // q2 = [k2]
             alpaka::enqueue(q2, k2);
+            // q2 = [k2]
 
             // 3. event e1 is enqueued into queue q1
-            // q1 = [k1, e1]
             alpaka::enqueue(q1, e1);
+            // q1 = [k1, e1]
 
             // 4. q2 waits for e1
-            // q2 = [k2, ->e1]
             alpaka::wait(q2, e1);
+            // q2 = [k2, ->e1]
 
             // 5. kernel k1 finishes
-            // q1 = [e1]
             k1.trigger();
+            // q1 = [e1]
 
             // 6. e1 is finished
-            // q1 = []
             alpaka::wait(e1);
+
+            // q1 = []
+            // q2 = [k2, ->e1]
+            REQUIRE(!alpaka::isComplete(k2));
             REQUIRE(alpaka::isComplete(e1));
 
             // 7. e1 is re-enqueued again but this time into q2
-            // q2 = [k2, ->e1, e1]
             alpaka::enqueue(q2, e1);
 
+            // q2 = [k2, ->e1, e1]
+            REQUIRE(!alpaka::isComplete(k2));
+            REQUIRE(!alpaka::isComplete(e1));
+
             // 8. kernel k2 finishes
-            // q2 = [->e1, e1]
             k2.trigger();
+            // q2 = []
+            REQUIRE(alpaka::isComplete(e1));
 
             // 9. e1 had already been signaled so there should not be waited even though the event is now reused within
             // q2 and its current state is 'unfinished' again. q2 = [e1]
 
             // Both queues should successfully finish
             alpaka::wait(q1);
-            // q2 = []
             alpaka::wait(q2);
         }
         else
