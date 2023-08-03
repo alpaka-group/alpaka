@@ -14,15 +14,15 @@ linux_clang-14_debug:
   extends: .base_clang
   variables:
     ALPAKA_CI_CLANG_VER: 14
-    ALPAKA_CI_STDLIB: libstdc++ # Don't change until https://github.com/alpaka-group/alpaka/issues/1753 is resolved.
+    ALPAKA_CI_STDLIB: libstdc++ # libc++ is not compatible with TBB
     CMAKE_BUILD_TYPE: Debug
     ALPAKA_BOOST_VERSION: 1.80.0
     ALPAKA_CI_CMAKE_VER: 3.23.5
  
-linux_clang-15_relwithdebinfo_asan_c++20:
+linux_clang-16_relwithdebinfo_asan_c++20:
   extends: .base_clang
   variables:
-    ALPAKA_CI_CLANG_VER: 15
+    ALPAKA_CI_CLANG_VER: 16
     ALPAKA_CI_STDLIB: libstdc++ # Don't change until https://github.com/alpaka-group/alpaka/issues/1753 is resolved.
     CMAKE_BUILD_TYPE: RelWithDebInfo
     ALPAKA_BOOST_VERSION: 1.81.0
