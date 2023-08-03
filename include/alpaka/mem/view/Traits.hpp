@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -17,6 +17,7 @@
 #include "alpaka/vec/Vec.hpp"
 
 #include <array>
+#include <cstddef>
 #include <iosfwd>
 #include <type_traits>
 #include <vector>
@@ -352,13 +353,13 @@ namespace alpaka
     namespace detail
     {
         //! A class with a create method that returns the pitch for each index.
-        template<std::size_t Tidx>
+        template<std::size_t TIdx>
         struct CreatePitchBytes
         {
             template<typename TView>
             ALPAKA_FN_HOST static auto create(TView const& view) -> Idx<TView>
             {
-                return getPitchBytes<Tidx>(view);
+                return getPitchBytes<TIdx>(view);
             }
         };
 
@@ -370,7 +371,7 @@ namespace alpaka
             if constexpr(TDim::value > 0)
             {
                 pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
-                for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
+                for(auto i = TDim::value - 1u; i > TIdx{0}; --i)
                 {
                     pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
                 }
@@ -433,7 +434,7 @@ namespace alpaka
     //! \param pitch Pitch in bytes for each dimension. Dimensionality must be equal to extent.
     //! \return A view to device memory.
     template<typename TDev, typename TElem, typename TExtent, typename TPitch>
-    auto createView(TDev const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
+    auto createView(TDev const& dev, TElem* pMem, TExtent const& extent, TPitch pitch)
     {
         return trait::CreateViewPlainPtr<TDev>::createViewPlainPtr(dev, pMem, extent, pitch);
     }
