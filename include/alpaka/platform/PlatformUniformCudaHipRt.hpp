@@ -134,8 +134,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                constexpr std::size_t KiB{1024};
-                constexpr std::size_t MiB = kiB * kiB;
+                constexpr auto KiB = std::size_t{1024};
+                constexpr auto MiB = KiB * KiB;
                 std::cout << "name: " << devProp.name << std::endl;
                 std::cout << "totalGlobalMem: " << devProp.totalGlobalMem / MiB << " MiB" << std::endl;
                 std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock / KiB << " KiB" << std::endl;
