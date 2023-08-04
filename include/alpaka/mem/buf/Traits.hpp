@@ -1,4 +1,5 @@
-/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
+ * Christian Kaever
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -175,9 +176,10 @@ namespace alpaka
         TPlatform const& platform,
         TExtent const& extent = TExtent())
     {
-        if constexpr(hasMappedBufSupport<TPlatform>)
+        using Platform = Platform<TPlatform>;
+        if constexpr(hasMappedBufSupport<Platform>)
         {
-            return allocMappedBuf<TPlatform, TElem, TIdx>(host, platform, extent);
+            return allocMappedBuf<Platform, TElem, TIdx>(host, platform, extent);
         }
         else
         {
