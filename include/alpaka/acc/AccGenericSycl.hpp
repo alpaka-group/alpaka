@@ -77,9 +77,7 @@ namespace alpaka
             Vec<TDim, TIdx> const& threadElemExtent,
             sycl::nd_item<TDim::value> work_item,
             sycl::local_accessor<std::byte> dyn_shared_acc,
-            sycl::local_accessor<std::byte> st_shared_acc,
-            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
-            sycl::local_accessor<int> local_fence_dummy)
+            sycl::local_accessor<std::byte> st_shared_acc)
             : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
             , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
             , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
@@ -89,7 +87,7 @@ namespace alpaka
             , BlockSharedMemStGenericSycl{st_shared_acc}
             , BlockSyncGenericSycl<TDim>{work_item}
             , IntrinsicGenericSycl{}
-            , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
+            , MemFenceGenericSycl{}
 #    ifdef ALPAKA_DISABLE_VENDOR_RNG
             , rand::RandDefault{}
 #    else
