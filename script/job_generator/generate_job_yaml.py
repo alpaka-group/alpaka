@@ -19,6 +19,7 @@ JOB_ROCM_RUNTIME = "rocm_runtime_job"
 JOB_NVCC_GCC_RUNTIME = "nvcc_gcc_runtime_job"
 JOB_NVCC_CLANG_RUNTIME = "nvcc_clng_runtime_job"
 JOB_CLANG_CUDA_RUNTIME = "clang_cuda_runtime_job"
+JOB_ICPX_RUNTIME = "icpx_runtime_job"
 JOB_UNKNOWN = "unknowm_job_type"
 
 WAVE_GROUP_NAMES = [
@@ -30,6 +31,7 @@ WAVE_GROUP_NAMES = [
     # JOB_NVCC_GCC_RUNTIME,
     # JOB_NVCC_CLANG_RUNTIME,
     # JOB_CLANG_CUDA_RUNTIME,
+    # JOB_ICPX_RUNTIME,
     JOB_UNKNOWN,
 ]
 
@@ -282,6 +284,7 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     variables["alpaka_ACC_GPU_CUDA_ONLY_MODE"] = "OFF"
     variables[ALPAKA_ACC_GPU_HIP_ENABLE] = "OFF"
     variables["alpaka_ACC_GPU_HIP_ONLY_MODE"] = "OFF"
+    variables[ALPAKA_ACC_SYCL_ENABLE] = "OFF"
     if job[MDSPAN][VERSION] == ON_VER:
         variables["ALPAKA_TEST_MDSPAN"] = "ON"
     else:
@@ -358,6 +361,23 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         variables[ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE] = "OFF"
         variables[ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE] = "OFF"
 
+    # oneAPI configuration
+    if job[DEVICE_COMPILER][NAME] == ICPX:
+        variables["CC"] = "icx"
+        variables["CXX"] = "icpx"
+        if job[DEVICE_COMPILER][VERSION] == "2023.1.0":
+            variables["ALPAKA_CI_CLANG_VER"] = "16"
+        elif job[DEVICE_COMPILER][VERSION] == "2023.2.0":
+            variables["ALPAKA_CI_CLANG_VER"] = "16"
+        variables["ALPAKA_CI_STDLIB"] = "libstdc++"
+        variables["ALPAKA_CI_ONEAPI_VERSION"] = job[DEVICE_COMPILER][VERSION]
+        variables[ALPAKA_ACC_SYCL_ENABLE] = "ON"
+        variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
+        variables["alpaka_SYCL_ONEAPI_CPU_ISA"] = "avx2"
+        variables[ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE] = "OFF" # Turn off OpenMP back-ends until Intel fixes https://github.com/intel/llvm/issues/10711
+        variables[ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE] = "OFF"
+        variables[ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE] = "ON"
+
     return variables
 
 
@@ -385,6 +405,12 @@ def job_tags(job: Dict[str, Tuple[str, str]]) -> List[str]:
     ):
         return ["x86_64", "rocm"]
 
+    if (
+        ALPAKA_ACC_SYCL_ENABLE in job
+        and job[ALPAKA_ACC_SYCL_ENABLE][VERSION] != OFF_VER
+    ):
+        return ["x86_64", "cpuonly"]
+    
     # fallback
     return ["x86_64", "cpuonly"]
 
@@ -407,6 +433,7 @@ def global_variables() -> Dict[str, str]:
     variables["alpaka_ACC_GPU_CUDA_ONLY_MODE"] = "OFF"
     variables[ALPAKA_ACC_GPU_HIP_ENABLE] = "OFF"
     variables["alpaka_ACC_GPU_HIP_ONLY_MODE"] = "OFF"
+    variables[ALPAKA_ACC_SYCL_ENABLE] = "OFF"
     # If ALPAKA_CI_ANALYSIS is OFF compile and execute runtime tests else compile only.
     variables["ALPAKA_CI_ANALYSIS"] = "OFF"
     variables["ALPAKA_CI_RUN_TESTS"] = "ON"
@@ -449,7 +476,9 @@ def create_job(
             job_name + "-" + job[HOST_COMPILER][NAME] + job[HOST_COMPILER][VERSION]
         )
     # if Clang-CUDA is the device compiler, add also the CUDA SDK version to the name
-    if job[DEVICE_COMPILER][NAME] == CLANG_CUDA:
+    if (job[DEVICE_COMPILER][NAME] == CLANG_CUDA
+        and ALPAKA_ACC_GPU_CUDA_ENABLE in job
+        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER):
         job_name = job_name + "-cuda" + job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]
 
     if job[JOB_EXECUTION_TYPE][VERSION] == JOB_EXECUTION_COMPILE_ONLY:
@@ -535,6 +564,9 @@ def distribute_to_waves(
             sorted_groups[JOB_RUNTIME].append(job)
         elif job_name.startswith("linux_clang-cuda"):
             # sorted_groups[JOB_CLANG_CUDA_RUNTIME].append(job)
+            sorted_groups[JOB_RUNTIME].append(job)
+        elif job_name.startswith("linux_icpx"):
+            # sorted_groups[JOB_ICPX_RUNTIME].append(job)
             sorted_groups[JOB_RUNTIME].append(job)
         else:
             sorted_groups[JOB_UNKNOWN].append(job)
