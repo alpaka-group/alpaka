@@ -98,6 +98,10 @@ if [ ! -z "${alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE=${alpaka_ACC_CPU_B_TBB_T_SEQ_ENABLE}")
 fi
+if [ ! -z "${alpaka_ACC_SYCL_ENABLE+x}" ]
+then
+    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ACC_SYCL_ENABLE=${alpaka_ACC_SYCL_ENABLE}")
+fi
 ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_INSTALL_CUDA=${ALPAKA_CI_INSTALL_CUDA}")
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
@@ -182,6 +186,14 @@ fi
 if [ ! -z "${alpaka_ENABLE_WERROR+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ENABLE_WERROR=${alpaka_ENABLE_WERROR}")
+fi
+if [ ! -z "${alpaka_SYCL_ONEAPI_CPU+x}" ]
+then
+    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_SYCL_ONEAPI_CPU=${alpaka_SYCL_ONEAPI_CPU}")
+fi
+if [! -z "${alpaka_SYCL_ONEAPI_CPU_ISA+x}" ]
+then
+    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_SYCL_ONEAPI_CPU_ISA=${alpaka_SYCL_ONEAPI_CPU_ISA}")
 fi
 
 docker_retry docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash -c "source ./script/install.sh && ./script/run.sh"

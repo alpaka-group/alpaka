@@ -29,10 +29,12 @@ sw_versions: Dict[str, List[str]] = {
         "12.2",
     ],
     HIPCC: ["5.0", "5.1", "5.2", "5.3", "5.4", "5.5"],
+    ICPX: ["2023.1.0", "2023.2.0"],
     BACKENDS: [
         #         ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
         ALPAKA_ACC_GPU_CUDA_ENABLE,
         ALPAKA_ACC_GPU_HIP_ENABLE,
+        ALPAKA_ACC_SYCL_ENABLE,
     ],
     UBUNTU: ["20.04"],
     CMAKE: ["3.22.6", "3.23.5", "3.24.4", "3.25.3", "3.26.4"],
@@ -71,7 +73,7 @@ def get_compiler_versions(clang_cuda: bool = True) -> List[Tuple[str, str]]:
 
     # only use keys defined in sw_versions
     for compiler_name in set(sw_versions.keys()).intersection(
-        [GCC, CLANG, NVCC, HIPCC]
+        [GCC, CLANG, NVCC, HIPCC, ICPX]
     ):
         for version in sw_versions[compiler_name]:
             compilers.append((compiler_name, version))
@@ -98,6 +100,9 @@ def get_backend_matrix() -> List[List[Tuple[str, str]]]:
     if NVCC in sw_versions:
         for cuda_version in sw_versions[NVCC]:
             combination_matrix.append([(ALPAKA_ACC_GPU_CUDA_ENABLE, cuda_version)])
+
+    if ICPX in sw_versions:
+        combination_matrix.append([(ALPAKA_ACC_SYCL_ENABLE, ON_VER)])
 
     return combination_matrix
 

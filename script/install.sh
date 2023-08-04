@@ -1,7 +1,7 @@
 #!/bin/bash
-
 #
-# Copyright 2022 Benjamin Worpitz, Simeon Ehrig
+# Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Antonio Di Pilato, Bernhard Manfred Gruber,
+#                Simeon Ehrig, Jan Stephan
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -76,7 +76,7 @@ then
     if [[ "${CXX}" == "g++"* ]] ;then source ./script/install_gcc.sh ;fi
     # do not install clang if we use HIP, HIP/ROCm is shipping an own clang version
     if [[ "${CXX}" == "clang++" ]] && [ "${ALPAKA_CI_INSTALL_HIP}" != "ON" ] ;then source ./script/install_clang.sh ;fi
-    if [[ "${CXX}" == "icp"* ]] ;then source ./script/install_oneapi.sh ;fi
+    if [[ "${CXX}" == "icpx" ]] ;then source ./script/install_oneapi.sh ;fi
 elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     echo "### list all applications ###"
@@ -85,7 +85,8 @@ then
     sudo xcode-select -s "/Applications/Xcode_${ALPAKA_CI_XCODE_VER}.app/Contents/Developer"
 fi
 
-if [ "${ALPAKA_CI_INSTALL_TBB}" = "ON" ]
+# Don't install TBB for oneAPI runners - it will be installed as part of oneAPI
+if [ "${ALPAKA_CI_INSTALL_TBB}" = "ON" ] && [ "${CXX}" != "icpx" ]  
 then
     source ./script/install_tbb.sh
 fi

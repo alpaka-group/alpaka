@@ -1,7 +1,6 @@
 #!/bin/bash
-
 #
-# Copyright 2022 Axel Huebl, Simeon Ehrig
+# Copyright 2023 Axel Hübl, Simeon Ehrig, Jan Stephan
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -31,7 +30,23 @@ then
     sudo -E apt-cache pkgnames intel
     echo "################################"
 
-    travis_retry sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mkl-devel intel-oneapi-openmp intel-oneapi-tbb-devel
+    # Intel mixes different version numbers in releases. Make sure we install the versions that are compatible.
+    if [ "${ALPAKA_CI_ONEAPI_VERSION}" == "2023.1.0" ]
+    then
+        ALPAKA_CI_TBB_VERSION="2021.9.0"
+    elif [ "${ALPAKA_CI_ONEAPI_VERSION}" == "2023.2.0" ]
+    then
+        ALPAKA_CI_TBB_VERSION="2021.10.0"
+    fi
+
+    components=(
+        intel-oneapi-common-vars                                      # Contains /opt/intel/oneapi/setvars.sh - has no version number
+        intel-oneapi-compiler-dpcpp-cpp-"${ALPAKA_CI_ONEAPI_VERSION}" # Contains icpx compiler and SYCL runtime
+        intel-oneapi-openmp-"${ALPAKA_CI_ONEAPI_VERSION}"             # For OpenMP back-ends
+        intel-oneapi-runtime-opencl                                   # Required to run SYCL tests on the CPU - has no version number
+        intel-oneapi-tbb-devel-"${ALPAKA_CI_TBB_VERSION}"             # For TBB back-end
+    )
+    travis_retry sudo apt-get install -y "${components[@]}"
 
     set +eu
     source /opt/intel/oneapi/setvars.sh
@@ -42,3 +57,4 @@ which "${CXX}"
 ${CXX} -v
 which "${CC}"
 ${CC} -v
+sycl-ls
