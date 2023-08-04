@@ -86,7 +86,7 @@
 .basecfg_clang:
   image: ubuntu:${ALPAKA_CI_UBUNTU_VER}
   variables:
-    ALPAKA_CI_UBUNTU_VER: "20.04"
+    ALPAKA_CI_UBUNTU_VER: "22.04"
     CC: clang
     CXX: clang++
     ALPAKA_CI_SANITIZERS: ""
