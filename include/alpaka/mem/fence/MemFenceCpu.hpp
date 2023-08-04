@@ -54,13 +54,7 @@ namespace alpaka
                  *   a == 10 && b == 20
                  */
 
-                static auto dummy = std::atomic<int>{42};
-
-                /* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use
-                 * these dummy operations to ensure this.*/
-                auto x = dummy.load(std::memory_order_relaxed);
                 std::atomic_thread_fence(std::memory_order_acq_rel);
-                dummy.store(x, std::memory_order_relaxed);
             }
         };
     } // namespace trait

@@ -42,14 +42,7 @@ namespace alpaka
             static auto mem_fence(MemFenceCpuSerial const&, TMemScope const&)
             {
                 /* Enable device fences because we may want to synchronize with other (serial) kernels. */
-
-                static std::atomic<int> dummy{42};
-
-                /* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use
-                 * these dummy operations to ensure this.*/
-                auto x = dummy.load(std::memory_order_relaxed);
                 std::atomic_thread_fence(std::memory_order_acq_rel);
-                dummy.store(x, std::memory_order_relaxed);
             }
         };
     } // namespace trait

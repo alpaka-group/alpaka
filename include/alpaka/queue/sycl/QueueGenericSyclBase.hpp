@@ -139,7 +139,7 @@ namespace alpaka::detail
                                 cgh.depends_on(m_dependencies);
 
                             if constexpr(is_sycl_kernel<TTask>) // Kernel
-                                task(cgh, m_fence_dummy); // Will call cgh.parallel_for internally
+                                task(cgh); // Will call cgh.parallel_for internally
                             else // Host
                                 cgh.host_task(task);
                         });
@@ -159,7 +159,6 @@ namespace alpaka::detail
 
         std::vector<sycl::event> m_dependencies;
         sycl::event m_last_event;
-        sycl::buffer<int, 1> m_fence_dummy{sycl::range<1>{1}};
         std::shared_mutex mutable m_mutex;
 
     private:
