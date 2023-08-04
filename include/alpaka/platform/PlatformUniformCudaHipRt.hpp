@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
+/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato, Christian Kaever
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -134,11 +134,11 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                std::size_t constexpr kiB(1024);
-                std::size_t constexpr miB(kiB * kiB);
+                constexpr std::size_t KiB{1024};
+                constexpr std::size_t MiB = kiB * kiB;
                 std::cout << "name: " << devProp.name << std::endl;
-                std::cout << "totalGlobalMem: " << devProp.totalGlobalMem / miB << " MiB" << std::endl;
-                std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock / kiB << " KiB" << std::endl;
+                std::cout << "totalGlobalMem: " << devProp.totalGlobalMem / MiB << " MiB" << std::endl;
+                std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock / KiB << " KiB" << std::endl;
                 std::cout << "regsPerBlock: " << devProp.regsPerBlock << std::endl;
                 std::cout << "warpSize: " << devProp.warpSize << std::endl;
                 std::cout << "maxThreadsPerBlock: " << devProp.maxThreadsPerBlock << std::endl;
@@ -147,7 +147,7 @@ namespace alpaka
                 std::cout << "maxGridSize[3]: (" << devProp.maxGridSize[0] << ", " << devProp.maxGridSize[1] << ", "
                           << devProp.maxGridSize[2] << ")" << std::endl;
                 std::cout << "clockRate: " << devProp.clockRate << " kHz" << std::endl;
-                std::cout << "totalConstMem: " << devProp.totalConstMem / kiB << " KiB" << std::endl;
+                std::cout << "totalConstMem: " << devProp.totalConstMem / KiB << " KiB" << std::endl;
                 std::cout << "major: " << devProp.major << std::endl;
                 std::cout << "minor: " << devProp.minor << std::endl;
 
@@ -225,7 +225,7 @@ namespace alpaka
                 else
                 { // ApiHipRt
                     std::cout << "clockInstructionRate: " << devProp.clockInstructionRate << "kHz" << std::endl;
-                    std::cout << "maxSharedMemoryPerMultiProcessor: " << devProp.maxSharedMemoryPerMultiProcessor / kiB
+                    std::cout << "maxSharedMemoryPerMultiProcessor: " << devProp.maxSharedMemoryPerMultiProcessor / KiB
                               << " KiB" << std::endl;
                     std::cout << "gcnArch: " << devProp.gcnArch << std::endl;
                     std::cout << "arch: " << std::endl;
