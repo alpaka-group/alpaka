@@ -1,4 +1,4 @@
-/* Copyright 2022 Jan Stephan
+/* Copyright 2023 Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -7,7 +7,7 @@
 #include "alpaka/dev/DevGpuSyclIntel.hpp"
 #include "alpaka/event/EventGenericSycl.hpp"
 
-#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 namespace alpaka
 {

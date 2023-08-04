@@ -82,17 +82,16 @@ namespace alpaka::test
 #endif
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
-#    ifdef ALPAKA_SYCL_BACKEND_ONEAPI
-#        ifdef ALPAKA_SYCL_ONEAPI_CPU
+#    ifdef ALPAKA_SYCL_ONEAPI_CPU
         //! The default queue type trait specialization for the Intel CPU device.
         template<>
         struct DefaultQueueType<alpaka::DevCpuSycl>
         {
-#            if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+#        if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
             using type = alpaka::QueueCpuSyclBlocking;
-#            else
+#        else
             using type = alpaka::QueueCpuSyclNonBlocking;
-#            endif
+#        endif
         };
 
         template<>
@@ -106,17 +105,17 @@ namespace alpaka::test
         {
             static constexpr auto value = false;
         };
-#        endif
-#        ifdef ALPAKA_SYCL_ONEAPI_FPGA
+#    endif
+#    ifdef ALPAKA_SYCL_ONEAPI_FPGA
         //! The default queue type trait specialization for the Intel SYCL device.
         template<>
         struct DefaultQueueType<alpaka::DevFpgaSyclIntel>
         {
-#            if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+#        if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
             using type = alpaka::QueueFpgaSyclIntelBlocking;
-#            else
+#        else
             using type = alpaka::QueueFpgaSyclIntelNonBlocking;
-#            endif
+#        endif
         };
 
         template<>
@@ -130,17 +129,17 @@ namespace alpaka::test
         {
             static constexpr auto value = false;
         };
-#        endif
-#        ifdef ALPAKA_SYCL_ONEAPI_GPU
+#    endif
+#    ifdef ALPAKA_SYCL_ONEAPI_GPU
         //! The default queue type trait specialization for the Intel CPU device.
         template<>
         struct DefaultQueueType<alpaka::DevGpuSyclIntel>
         {
-#            if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+#        if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
             using type = alpaka::QueueGpuSyclIntelBlocking;
-#            else
+#        else
             using type = alpaka::QueueGpuSyclIntelNonBlocking;
-#            endif
+#        endif
         };
 
         template<>
@@ -154,7 +153,6 @@ namespace alpaka::test
         {
             static constexpr auto value = false;
         };
-#        endif
 #    endif
 #endif
     } // namespace trait
@@ -177,22 +175,20 @@ namespace alpaka::test
         std::tuple<DevHipRt, QueueHipRtNonBlocking>
 #endif
 #ifdef ALPAKA_ACC_SYCL_ENABLED
-#    ifdef ALPAKA_SYCL_BACKEND_ONEAPI
-#        ifdef ALPAKA_SYCL_ONEAPI_CPU
+#    ifdef ALPAKA_SYCL_ONEAPI_CPU
         ,
         std::tuple<alpaka::DevCpuSycl, alpaka::QueueCpuSyclBlocking>,
         std::tuple<alpaka::DevCpuSycl, alpaka::QueueCpuSyclNonBlocking>
-#        endif
-#        ifdef ALPAKA_SYCL_ONEAPI_FPGA
+#    endif
+#    ifdef ALPAKA_SYCL_ONEAPI_FPGA
         ,
         std::tuple<alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelBlocking>,
         std::tuple<alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelNonBlocking>
-#        endif
-#        ifdef ALPAKA_SYCL_ONEAPI_GPU
+#    endif
+#    ifdef ALPAKA_SYCL_ONEAPI_GPU
         ,
         std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelBlocking>,
         std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelNonBlocking>
-#        endif
 #    endif
 #endif
         >;

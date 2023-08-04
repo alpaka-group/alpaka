@@ -77,21 +77,21 @@ namespace alpaka::test
         template<typename TDim, typename TIdx>
         using AccGpuHipRtIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_TARGET_CPU)
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_TARGET_CPU)
         template<typename TDim, typename TIdx>
         using AccCpuSyclIfAvailableElseInt = alpaka::AccCpuSycl<TDim, TIdx>;
 #else
         template<typename TDim, typename TIdx>
         using AccCpuSyclIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_TARGET_FPGA)
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_TARGET_FPGA)
         template<typename TDim, typename TIdx>
         using AccFpgaSyclIntelIfAvailableElseInt = alpaka::AccFpgaSyclIntel<TDim, TIdx>;
 #else
         template<typename TDim, typename TIdx>
         using AccFpgaSyclIntelIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_TARGET_GPU)
+#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_TARGET_GPU)
         template<typename TDim, typename TIdx>
         using AccGpuSyclIntelIfAvailableElseInt = alpaka::AccGpuSyclIntel<TDim, TIdx>;
 #else
