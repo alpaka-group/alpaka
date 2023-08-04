@@ -1,4 +1,5 @@
-/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato, Christian Kaever
+/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato,
+ *                Christian Kaever
  * SPDX-License-Identifier: MPL-2.0
  */
 
