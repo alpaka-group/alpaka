@@ -15,7 +15,6 @@
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/SyclSubgroupSize.hpp"
 #include "alpaka/kernel/Traits.hpp"
-#include "alpaka/mem/buf/sycl/Accessor.hpp"
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
@@ -96,42 +95,6 @@
              k_func,                                                                                                  \
              k_args](sycl::nd_item<TDim::value> work_item) {});
 
-namespace alpaka::detail
-{
-    template<typename TAcc, typename TKernelFnObj, typename... TArgs>
-    struct kernel
-    {
-    }; // SYCL kernel names must be globally visible
-
-    // Helpers for assigning placeholder accessors to the command group of our kernel
-    struct general
-    {
-    };
-    struct special : general
-    {
-    };
-
-    template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
-    inline auto require(
-        sycl::handler& cgh,
-        Accessor<SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes> acc,
-        special)
-    {
-        cgh.require(acc.m_accessor);
-    }
-
-    template<typename TParam>
-    inline auto require(sycl::handler&, TParam&&, general)
-    {
-    }
-
-    template<typename... TArgs>
-    inline auto require(sycl::handler& cgh, core::Tuple<TArgs...> const& args)
-    {
-        core::apply([&](auto&&... ps) { (require(cgh, std::forward<decltype(ps)>(ps), special{}), ...); }, args);
-    }
-} // namespace alpaka::detail
-
 namespace alpaka
 {
     //! The SYCL accelerator execution task.
@@ -151,9 +114,6 @@ namespace alpaka
 
         auto operator()(sycl::handler& cgh, sycl::buffer<int, 1>& global_fence_buf) const -> void
         {
-            // Assign placeholder accessors to this command group
-            detail::require(cgh, m_args);
-
             auto const work_groups = WorkDivMembers<TDim, TIdx>::m_gridBlockExtent;
             auto const group_items = WorkDivMembers<TDim, TIdx>::m_blockThreadExtent;
             auto const item_elements = WorkDivMembers<TDim, TIdx>::m_threadElemExtent;
