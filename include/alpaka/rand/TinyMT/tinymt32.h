@@ -352,9 +352,9 @@ void tinymt32_init(tinymt32_t * random, uint32_t seed) {
  */
 void tinymt32_init_by_array(tinymt32_t * random, uint32_t init_key[],
                             int key_length) {
-    const unsigned int lag = 1;
-    const unsigned int mid = 1;
-    const unsigned int size = 4;
+    constexpr unsigned int lag = 1;
+    constexpr unsigned int mid = 1;
+    constexpr unsigned int size = 4;
     unsigned int i, j;
     unsigned int count;
     uint32_t r;
