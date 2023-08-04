@@ -229,8 +229,8 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto enqueue(QueueCpuOmp2Collective&, test::EventHostManualTriggerCpu<>&) -> void
             {
-                // EventHostManualTriggerCpu are not supported for together with the queue QueueCpuOmp2Collective
-                // but a specialization is needed to path the EventTests
+                // EventHostManualTriggerCpu are not supported for together with the queue
+                // QueueCpuOmp2Collective but a specialization is needed to path the EventTests
             }
         };
 

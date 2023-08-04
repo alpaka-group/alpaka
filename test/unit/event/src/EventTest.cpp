@@ -65,7 +65,7 @@ TEMPLATE_LIST_TEST_CASE("eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingProc
     }
     else
     {
-        std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+        std::cerr << "Cannot execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
                   << std::endl;
     }
 }
@@ -123,7 +123,8 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[even
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+            std::cerr << "Cannot execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported by "
+                         "the device!"
                       << std::endl;
         }
     }
@@ -208,7 +209,8 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[eve
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+            std::cerr << "Cannot execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported by "
+                         "the device!"
                       << std::endl;
         }
     }
@@ -284,7 +286,8 @@ TEMPLATE_LIST_TEST_CASE("waitForEventThatAlreadyFinishedShouldBeSkipped", "[even
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+            std::cerr << "Cannot execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported by "
+                         "the device!"
                       << std::endl;
         }
     }
@@ -329,7 +332,7 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRe
 
             alpaka::wait(q2, e1);
             alpaka::enqueue(q2, e2);
-            // q2 = [->e1,e2]
+            // q2 = [k2,->e1,e2]
             alpaka::enqueue(q1, k1_1);
             alpaka::enqueue(q1, e1);
             // q1 = [k1_0,e1,k1_1,e1_new]
@@ -374,7 +377,7 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRe
             REQUIRE(!alpaka::isComplete(e2));
             REQUIRE(!alpaka::isComplete(e3));
 
-            // After the kernel k1_0 is released e3 is not allowed to be ready because q3 depends on the oldest e1
+            // After the kernel k1_0 is released e3 is not allowed to be ready because q3 depends on the oldest e1_new
             // state.
             k1_0.trigger();
             // q1 = [k1_1,e1_new]
@@ -392,6 +395,7 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRe
             k1_1.trigger();
             // q1 = []
             // q2 = []
+            // q3 = []
             REQUIRE(alpaka::isComplete(k1_0));
             REQUIRE(alpaka::isComplete(k1_1));
             REQUIRE(alpaka::isComplete(k2));
@@ -402,7 +406,8 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventInOrderLifetimeRe
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+            std::cerr << "Cannot execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported by "
+                         "the device!"
                       << std::endl;
         }
     }
@@ -441,16 +446,16 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventOutOfOrderLifetim
             // q2 = [k2]
             REQUIRE(!alpaka::isComplete(k1_0));
 
-            alpaka::wait(q3, e1); // let wait
+            alpaka::wait(q3, e1);
             alpaka::enqueue(q3, e3);
             // q3 = [->e1,e3]
 
             alpaka::enqueue(q2, e1);
-            // q2 = [k2,e1(1)]
+            // q2 = [k2,e1_new]
 
             alpaka::enqueue(q2, e2);
             // q1 = [k1_0,e1]
-            // q2 = [k2,e1_new,e3]
+            // q2 = [k2,e1_new,e2]
             // q3 = [->e1,e3]
 
             REQUIRE(!alpaka::isComplete(k1_0));
@@ -459,8 +464,8 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventOutOfOrderLifetim
             REQUIRE(!alpaka::isComplete(e2));
             REQUIRE(!alpaka::isComplete(e3));
 
-            // We release first the kernel which is blocking the most resent enqueue of event e1.
-            // Queue q3 is not allowed to be freed because these queue depends on the oldest enqueue of e1.
+            // We release first the kernel which is blocking the most recent enqueue of event e1.
+            // q3 is not allowed to be freed because this queue depends on the oldest enqueue of e1.
             k2.trigger();
 
             // q1 = [k1_0,e1]
@@ -493,7 +498,8 @@ TEMPLATE_LIST_TEST_CASE("eventReEnqueueWithSomeoneWaitsForEventOutOfOrderLifetim
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+            std::cerr << "Cannot execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported by "
+                         "the device!"
                       << std::endl;
         }
     }
