@@ -297,15 +297,8 @@ namespace alpaka
                 {
                     auto oldFuture = spEventImpl->m_future;
 
-                    // Enqueue a task that waits for the given event.
-                    queueImpl.m_workerThread.submit(
-                        [spEventImpl, oldFuture]() mutable
-                        {
-                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-                            lk2.unlock();
-                            oldFuture.get();
-                            lk2.lock();
-                        });
+                    // Enqueue a task that waits for the given future of the event.
+                    queueImpl.m_workerThread.submit([oldFuture]() { oldFuture.get(); });
                 }
             }
         };
