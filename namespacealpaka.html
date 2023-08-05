@@ -1597,7 +1597,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00068">68</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00070">70</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3964,7 +3964,7 @@ template&lt;typename TQueue &gt; </div>
 <dl class="section warning"><dt>Warning</dt><dd>This function is allowed to return false negatives. An empty queue can reported as non empty because the status information are not fully propagated by the used alpaka backend. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>true queue is empty else false. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00056">56</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00058">58</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3998,9 +3998,9 @@ template&lt;typename TQueue , typename TTask &gt; </div>
 </div><div class="memdoc">
 
 <p>Queues the given task in the given queue. </p>
-<p>Special Handling for events: If the event has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. </p>
+<p>Special Handling for events: If the event has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. If a queue is waiting for an event the latter's event state at the time of the API call to <a class="el" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806" title="Waits the thread for the completion of the given awaited action to complete.">wait()</a> will be used to release the queue. </p>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00045">45</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00047">47</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8204,8 +8204,9 @@ template&lt;typename TAwaited &gt; </div>
 </div><div class="memdoc">
 
 <p>Waits the thread for the completion of the given awaited action to complete. </p>
+<p>Special Handling for events: If the event is re-enqueued <a class="el" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806" title="Waits the thread for the completion of the given awaited action to complete.">wait()</a> will terminate when the re-enqueued event will be ready and previously enqueued states of the event will be ignored. </p>
 
-<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00030">30</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00034">34</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8239,8 +8240,9 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 </div><div class="memdoc">
 
 <p>The waiter waits for the given awaited action to complete. </p>
+<p>Special Handling if <code>waiter</code> is a queue and <code>awaited</code> an event: The <code>waiter</code> waits for the event state to become ready based on the recently captured event state at the time of the API call even if the event is being re-enqueued later. </p>
 
-<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00038">38</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00046">46</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8510,7 +8512,7 @@ template&lt;typename TQueue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Aug 4 2023 14:19:31 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Aug 5 2023 11:52:35 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
