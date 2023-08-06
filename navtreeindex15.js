@@ -1,8 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_11f0d24ada35ab7a45b1d245fcb2941a3.html":[3,0,0,15,188],
-"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_11f0d24ada35ab7a45b1d245fcb2941a3.html#aac09a72802e9ace36cd704270fb058e2":[3,0,0,15,188,0],
-"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_1221170c71950e1bf1ab1b2154f668d2c.html":[3,0,0,15,184],
 "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_1221170c71950e1bf1ab1b2154f668d2c.html#a8ca211ff1890ae261198a8d4b1197758":[3,0,0,15,184,0],
 "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_13611af110461e2719cabee6eb7e6856d.html":[3,0,0,15,191],
 "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_13611af110461e2719cabee6eb7e6856d.html#a038870765c3f021e7207c5e7b396134e":[3,0,0,15,191,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX15 =
 "structalpaka_1_1trait_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html":[3,0,0,15,304],
 "structalpaka_1_1trait_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a453e1564243d8690743c3ef2f0449736":[3,0,0,15,304,0],
 "structalpaka_1_1trait_1_1GetPitchBytes.html":[3,0,0,15,310],
-"structalpaka_1_1trait_1_1GetPitchBytes.html#a43871cb631785c8dd8fdaa0cf1e60250":[3,0,0,15,310,0]
+"structalpaka_1_1trait_1_1GetPitchBytes.html#a43871cb631785c8dd8fdaa0cf1e60250":[3,0,0,15,310,0],
+"structalpaka_1_1trait_1_1GetPitchBytes.html#aed18ecb1e48a0e00d23e91727f14561f":[3,0,0,15,310,1],
+"structalpaka_1_1trait_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUniforae1a61972bf84034a69568bdf758183e.html":[3,0,0,15,311],
+"structalpaka_1_1trait_1_1GetPitchBytes_3_01DimInt_3_01TDim_1_1value_01-_011u_01_4_00_01BufUniforae1a61972bf84034a69568bdf758183e.html#a7bfc08069e66551c134413f50b22f0f3":[3,0,0,15,311,0]
 };

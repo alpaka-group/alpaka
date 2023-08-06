@@ -1,8 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"structalpaka_1_1trait_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html":[3,0,0,15,51],
-"structalpaka_1_1trait_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html#a2a38fdd12f9798a98aeea96e2f677155":[3,0,0,15,51,0],
-"structalpaka_1_1trait_1_1BufType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4.html":[3,0,0,15,52],
 "structalpaka_1_1trait_1_1BufType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4.html#ac0a57d810ba2e6a9cdb5d9b305891d81":[3,0,0,15,52,0],
 "structalpaka_1_1trait_1_1CastVec.html":[3,0,0,15,53],
 "structalpaka_1_1trait_1_1CastVec_3_01TValNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html":[3,0,0,15,54],
@@ -249,5 +246,8 @@ var NAVTREEINDEX14 =
 "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01TaskKernelc6360c0fc744d397d00b5014e3524b9c.html":[3,0,0,15,193],
 "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01TaskKernelc6360c0fc744d397d00b5014e3524b9c.html#a148631736adb9a133a5db69d73bdf8c1":[3,0,0,15,193,0],
 "structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_1005a6d32625f4e91cd7ceb009d36f0c7.html":[3,0,0,15,187],
-"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_1005a6d32625f4e91cd7ceb009d36f0c7.html#a4b4a63added509deb8f2278f6bdcd8d1":[3,0,0,15,187,0]
+"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_1005a6d32625f4e91cd7ceb009d36f0c7.html#a4b4a63added509deb8f2278f6bdcd8d1":[3,0,0,15,187,0],
+"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_11f0d24ada35ab7a45b1d245fcb2941a3.html":[3,0,0,15,188],
+"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_11f0d24ada35ab7a45b1d245fcb2941a3.html#aac09a72802e9ace36cd704270fb058e2":[3,0,0,15,188,0],
+"structalpaka_1_1trait_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_00_01alpaka_1_1221170c71950e1bf1ab1b2154f668d2c.html":[3,0,0,15,184]
 };

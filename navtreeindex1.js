@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"DemangleTypeNames_8hpp.html":[4,0,0,0,3,16],
 "DemangleTypeNames_8hpp.html#a02c3471af40bf64c77e9d599f0007954":[4,0,0,0,3,16,0],
 "DemangleTypeNames_8hpp_source.html":[4,0,0,0,3,16],
 "DependentFalseType_8hpp.html":[4,0,0,0,15,4],
@@ -80,8 +79,7 @@ var NAVTREEINDEX1 =
 "ForEachType_8hpp.html#a84fa9b71d57092b3d9da78ee5eea68b4":[4,0,0,0,15,7,2],
 "ForEachType_8hpp_source.html":[4,0,0,0,15,7],
 "FpgaSyclIntel_8hpp.html":[4,0,0,0,20,6],
-"FpgaSyclIntel_8hpp.html#a4eda7c615d8df85f3dd812707b72c3f1":[4,0,0,0,20,6,0],
-"FpgaSyclIntel_8hpp.html#aad6f7f079420dc2381f7c1328dbf3360":[4,0,0,0,20,6,1],
+"FpgaSyclIntel_8hpp.html#aad6f7f079420dc2381f7c1328dbf3360":[4,0,0,0,20,6,0],
 "FpgaSyclIntel_8hpp_source.html":[4,0,0,0,20,6],
 "Functional_8hpp.html":[4,0,0,0,15,8],
 "Functional_8hpp_source.html":[4,0,0,0,15,8],
@@ -94,8 +92,7 @@ var NAVTREEINDEX1 =
 "GpuHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468":[4,0,0,0,20,9,0],
 "GpuHipRt_8hpp_source.html":[4,0,0,0,20,9],
 "GpuSyclIntel_8hpp.html":[4,0,0,0,20,10],
-"GpuSyclIntel_8hpp.html#a072572d7eb8d3aa2cc291ef7ee66fe38":[4,0,0,0,20,10,0],
-"GpuSyclIntel_8hpp.html#af62e2e3566a37f895c4959dea50352c2":[4,0,0,0,20,10,1],
+"GpuSyclIntel_8hpp.html#af62e2e3566a37f895c4959dea50352c2":[4,0,0,0,20,10,0],
 "GpuSyclIntel_8hpp_source.html":[4,0,0,0,20,10],
 "Hip_8hpp.html":[4,0,0,0,3,17],
 "Hip_8hpp_source.html":[4,0,0,0,3,17],
@@ -249,5 +246,8 @@ var NAVTREEINDEX1 =
 "Positioning_8hpp_source.html":[4,0,0,0,3,19],
 "Properties_8hpp.html":[4,0,0,0,18,3],
 "Properties_8hpp_source.html":[4,0,0,0,18,3],
-"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4]
+"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
+"QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
+"QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
+"QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5]
 };

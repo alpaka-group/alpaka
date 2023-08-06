@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['unknown_5fcompiler_4632',['UNKNOWN_COMPILER',['../namespacealpaka_1_1cpu_1_1detail.html#a84fb47ca375df6c2f0b222b59f79dcbe',1,'alpaka::cpu::detail']]],
-  ['unknown_5fcpu_4633',['UNKNOWN_CPU',['../namespacealpaka_1_1cpu_1_1detail.html#a46231469ec522b61a9df6f64f476cff5',1,'alpaka::cpu::detail']]]
+  ['unknown_5fcompiler_4629',['UNKNOWN_COMPILER',['../namespacealpaka_1_1cpu_1_1detail.html#a84fb47ca375df6c2f0b222b59f79dcbe',1,'alpaka::cpu::detail']]],
+  ['unknown_5fcpu_4630',['UNKNOWN_CPU',['../namespacealpaka_1_1cpu_1_1detail.html#a46231469ec522b61a9df6f64f476cff5',1,'alpaka::cpu::detail']]]
 ];

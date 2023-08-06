@@ -214,8 +214,7 @@ var NAVTREEINDEX0 =
 "CpuSerial_8hpp.html":[4,0,0,0,20,2],
 "CpuSerial_8hpp_source.html":[4,0,0,0,20,2],
 "CpuSycl_8hpp.html":[4,0,0,0,20,3],
-"CpuSycl_8hpp.html#a2ee3c939647ff7e43593b83765c77aa5":[4,0,0,0,20,3,0],
-"CpuSycl_8hpp.html#ac36612a48f63161cc19600d85c6eefe5":[4,0,0,0,20,3,1],
+"CpuSycl_8hpp.html#ac36612a48f63161cc19600d85c6eefe5":[4,0,0,0,20,3,0],
 "CpuSycl_8hpp_source.html":[4,0,0,0,20,3],
 "CpuTbbBlocks_8hpp.html":[4,0,0,0,20,4],
 "CpuTbbBlocks_8hpp.html#a8e980af207c9069aefb5cdcd1a6467e3":[4,0,0,0,20,4,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "Decay_8hpp.html":[4,0,0,0,3,15],
 "Decay_8hpp.html#abd223e5dfb4b62614c25046db2a1d1de":[4,0,0,0,3,15,1],
 "Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11":[4,0,0,0,3,15,0],
-"Decay_8hpp_source.html":[4,0,0,0,3,15]
+"Decay_8hpp_source.html":[4,0,0,0,3,15],
+"DemangleTypeNames_8hpp.html":[4,0,0,0,3,16]
 };

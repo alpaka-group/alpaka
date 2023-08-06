@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('ExampleDefaultAcc_8hpp_source.html',''
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = <a class="code" href="classalpaka_1_1AccCpuOmp2Threads.html">alpaka::AccCpuOmp2Threads&lt;TDim, TIdx&gt;</a>;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = <a class="code" href="classalpaka_1_1AccCpuThreads.html">alpaka::AccCpuThreads&lt;TDim, TIdx&gt;</a>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_SYCL_ENABLED) &amp;&amp; defined(ALPAKA_SYCL_BACKEND_ONEAPI)</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#elif defined(ALPAKA_ACC_SYCL_ENABLED)</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#    if defined(ALPAKA_SYCL_ONEAPI_CPU)</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">ExampleDefaultAcc</a> = alpaka::AccCpuSycl&lt;TDim, TIdx&gt;;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#    elif defined(ALPAKA_SYCL_ONEAPI_FPGA)</span></div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('ExampleDefaultAcc_8hpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_377dfb5c153ace939840c035492c19ec.html">example</a></li><li class="navelem"><a class="el" href="ExampleDefaultAcc_8hpp.html">ExampleDefaultAcc.hpp</a></li>
-    <li class="footer">Generated on Sat Aug 5 2023 11:52:35 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Aug 6 2023 13:11:43 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
