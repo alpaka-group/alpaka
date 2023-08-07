@@ -30,21 +30,11 @@ then
     sudo -E apt-cache pkgnames intel
     echo "################################"
 
-    # Intel mixes different version numbers in releases. Make sure we install the versions that are compatible.
-    if [ "${ALPAKA_CI_ONEAPI_VERSION}" == "2023.1.0" ]
-    then
-        ALPAKA_CI_TBB_VERSION="2021.9.0"
-    elif [ "${ALPAKA_CI_ONEAPI_VERSION}" == "2023.2.0" ]
-    then
-        ALPAKA_CI_TBB_VERSION="2021.10.0"
-    fi
-
+    # The compiler will automatically pull in OpenMP and TBB as dependencies
     components=(
         intel-oneapi-common-vars                                      # Contains /opt/intel/oneapi/setvars.sh - has no version number
         intel-oneapi-compiler-dpcpp-cpp-"${ALPAKA_CI_ONEAPI_VERSION}" # Contains icpx compiler and SYCL runtime
-        intel-oneapi-openmp-"${ALPAKA_CI_ONEAPI_VERSION}"             # For OpenMP back-ends
         intel-oneapi-runtime-opencl                                   # Required to run SYCL tests on the CPU - has no version number
-        intel-oneapi-tbb-devel-"${ALPAKA_CI_TBB_VERSION}"             # For TBB back-end
     )
     travis_retry sudo apt-get install -y "${components[@]}"
 
