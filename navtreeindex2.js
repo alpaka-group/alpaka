@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"QueueCpuOmp2Collective_8hpp.html":[4,0,0,0,21,5,1],
 "QueueCpuOmp2Collective_8hpp_source.html":[4,0,0,0,21,5,1],
 "QueueCpuSyclBlocking_8hpp.html":[4,0,0,0,18,6],
 "QueueCpuSyclBlocking_8hpp_source.html":[4,0,0,0,18,6],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "WorkDivHelpers_8hpp.html#a5543b86d23164032daa056ed21ba1484":[4,0,0,0,26,2,7],
 "WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27":[4,0,0,0,26,2,0],
 "WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870":[4,0,0,0,26,2,0,2],
-"WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27a9cb04f2b32708185e3d3cb6b812912ec":[4,0,0,0,26,2,0,1]
+"WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27a9cb04f2b32708185e3d3cb6b812912ec":[4,0,0,0,26,2,0,1],
+"WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27ae79087692afdec020e4de5e524f6b8e4":[4,0,0,0,26,2,0,0]
 };

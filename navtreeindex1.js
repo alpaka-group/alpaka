@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"DemangleTypeNames_8hpp.html#a02c3471af40bf64c77e9d599f0007954":[4,0,0,0,3,16,0],
 "DemangleTypeNames_8hpp_source.html":[4,0,0,0,3,16],
 "DependentFalseType_8hpp.html":[4,0,0,0,15,4],
 "DependentFalseType_8hpp_source.html":[4,0,0,0,15,4],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
 "QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
-"QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5]
+"QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
+"QueueCpuOmp2Collective_8hpp.html":[4,0,0,0,21,5,1]
 };
