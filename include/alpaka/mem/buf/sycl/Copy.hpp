@@ -41,8 +41,8 @@ namespace alpaka::detail
         template<typename TViewFwd>
         TaskCopySyclBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
             : m_extent(getExtentVec(extent))
-#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
             , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
             , m_dstExtent(getExtentVec(viewDst))
             , m_srcExtent(getExtentVec(viewSrc))
 #    endif
@@ -69,8 +69,8 @@ namespace alpaka::detail
 #    endif
 
         Vec<TDim, ExtentSize> const m_extent;
-#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
         ExtentSize const m_extentWidthBytes;
+#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
         Vec<TDim, DstSize> const m_dstExtent;
         Vec<TDim, SrcSize> const m_srcExtent;
 #    endif
