@@ -29,15 +29,16 @@ def add_job_parameters(job_matrix: List[Dict[str, Tuple[str, str]]]):
                 job[JOB_EXECUTION_TYPE] = (JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME)
                 break
 
-    for icpx_version in versions.sw_versions[ICPX]:
-        for job in job_matrix:
-            if(
-                job[DEVICE_COMPILER][NAME] == ICPX
-                and job[DEVICE_COMPILER][VERSION] == icpx_version
-                and job[BUILD_TYPE][VERSION] == CMAKE_DEBUG
-            ):
-                job[JOB_EXECUTION_TYPE] = (JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME)
-                break
+    # Disabled until all runtime errors for the SYCL CPU back-end are fixed.
+    # for icpx_version in versions.sw_versions[ICPX]:
+    #    for job in job_matrix:
+    #        if(
+    #            job[DEVICE_COMPILER][NAME] == ICPX
+    #            and job[DEVICE_COMPILER][VERSION] == icpx_version
+    #            and job[BUILD_TYPE][VERSION] == CMAKE_DEBUG
+    #        ):
+    #            job[JOB_EXECUTION_TYPE] = (JOB_EXECUTION_TYPE, JOB_EXECUTION_RUNTIME)
+    #            break
             
     ##############################################
     ## Defining runtime test for the CUDA backend

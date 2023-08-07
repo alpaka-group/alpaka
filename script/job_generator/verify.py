@@ -130,6 +130,7 @@ def verify(combinations: List[Dict[str, Tuple[str, str]]]) -> bool:
         Combination(
             {DEVICE_COMPILER: (NVCC, "12.1"), CXX_STANDARD: (CXX_STANDARD, "20")}
         ),
+        Combination({HOST_COMPILER: (ICPX, "*"), DEVICE_COMPILER: (ICPX, "*")}),
     ]
 
     for cs in combinations_to_search:

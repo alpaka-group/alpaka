@@ -476,9 +476,7 @@ def create_job(
             job_name + "-" + job[HOST_COMPILER][NAME] + job[HOST_COMPILER][VERSION]
         )
     # if Clang-CUDA is the device compiler, add also the CUDA SDK version to the name
-    if (job[DEVICE_COMPILER][NAME] == CLANG_CUDA
-        and ALPAKA_ACC_GPU_CUDA_ENABLE in job
-        and job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION] != OFF_VER):
+    if job[DEVICE_COMPILER][NAME] == CLANG_CUDA:
         job_name = job_name + "-cuda" + job[ALPAKA_ACC_GPU_CUDA_ENABLE][VERSION]
 
     if job[JOB_EXECUTION_TYPE][VERSION] == JOB_EXECUTION_COMPILE_ONLY:
