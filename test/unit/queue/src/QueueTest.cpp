@@ -47,6 +47,29 @@ TEMPLATE_LIST_TEST_CASE("queueCallbackIsWorking", "[queue]", TestQueues)
     CHECK(promise.get_future().get());
 }
 
+TEMPLATE_LIST_TEST_CASE("queueTaskValueCategories", "[queue]", TestQueues)
+{
+    using DevQueue = TestType;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
+    Fixture f;
+
+    bool flag = false;
+    auto task = [&] { flag = true; };
+    alpaka::enqueue(f.m_queue, task); // lvalue
+    alpaka::wait(f.m_queue);
+    CHECK(flag == true);
+
+    flag = false;
+    alpaka::enqueue(f.m_queue, std::move(task)); // xvalue
+    alpaka::wait(f.m_queue);
+    CHECK(flag == true);
+
+    flag = false;
+    alpaka::enqueue(f.m_queue, [&] { flag = true; }); // prvalue
+    alpaka::wait(f.m_queue);
+    CHECK(flag == true);
+}
+
 TEMPLATE_LIST_TEST_CASE("queueWaitShouldWork", "[queue]", TestQueues)
 {
     using DevQueue = TestType;
