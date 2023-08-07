@@ -53,7 +53,7 @@ namespace alpaka::core::detail
         //!             via move then move the lambda.
         //! \return     A future to the created task.
         template<typename TFnObj, typename... TArgs>
-        auto enqueueTask(TFnObj&& task, TArgs&&... args)
+        auto enqueueTask(TFnObj&& task, TArgs&&... args) -> std::future<void>
         {
             auto ptask = Task{[=, t = std::forward<TFnObj>(task)] { t(args...); }};
             auto future = ptask.get_future();

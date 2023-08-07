@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include "alpaka/core/BoostPredef.hpp"
+
+#include <cassert>
 #include <condition_variable>
 #include <functional>
 #include <future>
@@ -16,10 +19,40 @@ namespace alpaka::core
 {
     class CallbackThread
     {
-        // std::packaged_task is used because std::function requires that the wrapped callable is copyable.
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
+        // A custom class is used because std::function<F> requires F to be copyable, and std::packaged_task provides a
+        // std::future which will keep the task alive and we cannot control the moment the future is set.
         //! \todo with C++23 std::move_only_function should be used
-        using Task = std::packaged_task<void()>;
-        using TaskPackage = std::pair<Task, std::promise<void>>;
+        struct Task
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+        {
+            virtual ~Task() = default;
+            virtual void run() = 0;
+        };
+
+        template<typename Function>
+        struct FunctionHolder : Task
+        {
+            Function m_func;
+
+            template<typename FunctionFwd>
+            explicit FunctionHolder(FunctionFwd&& func) : m_func{std::forward<FunctionFwd>(func)}
+            {
+            }
+
+            void run() override
+            {
+                // if m_func throws, let it propagate
+                m_func();
+            }
+        };
+
+        using TaskPackage = std::pair<std::unique_ptr<Task>, std::promise<void>>;
 
     public:
         ~CallbackThread()
@@ -46,17 +79,16 @@ namespace alpaka::core
         template<typename NullaryFunction>
         auto submit(NullaryFunction&& nf) -> std::future<void>
         {
+            using DecayedFunction = std::decay_t<NullaryFunction>;
             static_assert(
-                std::is_void_v<std::invoke_result_t<NullaryFunction>>,
+                std::is_void_v<std::invoke_result_t<DecayedFunction>>,
                 "Submitted function must not have any arguments and return void.");
-            return submit(Task{std::forward<NullaryFunction>(nf)});
-        }
 
-        auto submit(Task task) -> std::future<void>
-        {
-            // We do not use the future of std::packed_task because the future will keep the task alive
-            // and we can not control the moment the future is set.
-            auto tp = std::make_pair(std::move(task), std::promise<void>{});
+            // FunctionHolder stores a copy of the user's task, but may be constructed from an expiring value to avoid
+            // the copy. We do NOT store a reference to the users task, which could dangle if the user isn't careful.
+            auto tp = std::pair(
+                std::unique_ptr<Task>(new FunctionHolder<DecayedFunction>{std::forward<NullaryFunction>(nf)}),
+                std::promise<void>{});
             auto f = tp.second.get_future();
             {
                 std::unique_lock<std::mutex> lock{m_mutex};
@@ -95,9 +127,10 @@ namespace alpaka::core
                     while(true)
                     {
                         std::promise<void> taskPromise;
+                        std::exception_ptr eptr;
                         {
                             // Task is destroyed before promise is updated but after the queue state is up to date.
-                            Task task;
+                            std::unique_ptr<Task> task = nullptr;
                             {
                                 std::unique_lock<std::mutex> lock{m_mutex};
                                 m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
@@ -108,7 +141,15 @@ namespace alpaka::core
                                 task = std::move(m_tasks.front().first);
                                 taskPromise = std::move(m_tasks.front().second);
                             }
-                            task();
+                            assert(task);
+                            try
+                            {
+                                task->run();
+                            }
+                            catch(...)
+                            {
+                                eptr = std::current_exception();
+                            }
                             {
                                 std::unique_lock<std::mutex> lock{m_mutex};
                                 // Pop empty data from the queue, task and promise will be destroyed later in a
@@ -119,7 +160,10 @@ namespace alpaka::core
                         }
                         // In case the executed tasks is the last task in the queue the waiting threads will see the
                         // queue as empty.
-                        taskPromise.set_value();
+                        if(eptr)
+                            taskPromise.set_exception(std::move(eptr));
+                        else
+                            taskPromise.set_value();
                     }
                 });
         }
