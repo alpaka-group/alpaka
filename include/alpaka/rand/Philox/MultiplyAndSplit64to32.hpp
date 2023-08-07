@@ -1,10 +1,12 @@
-/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
+/* Copyright 2023 Jiří Vyskočil, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
 
 #include "alpaka/core/Common.hpp"
+
+#include <cstdint>
 
 namespace alpaka::rand
 {
