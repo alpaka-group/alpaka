@@ -90,7 +90,7 @@ var searchData=
   ['streamwaitevent_2105',['streamWaitEvent',['../structalpaka_1_1ApiCudaRt.html#a170c02adeee73a65af761b17d489c674',1,'alpaka::ApiCudaRt']]],
   ['streamwaitvalue_2106',['streamWaitValue',['../namespacealpaka_1_1trait_1_1detail.html#a103c83a3115216746d6c45d9705310fe',1,'alpaka::trait::detail']]],
   ['subdividegridelems_2107',['subDivideGridElems',['../namespacealpaka.html#a5543b86d23164032daa056ed21ba1484',1,'alpaka']]],
-  ['submit_2108',['submit',['../classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57',1,'alpaka::core::CallbackThread::submit(Task task) -&gt; std::future&lt; void &gt;'],['../classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7',1,'alpaka::core::CallbackThread::submit(NullaryFunction &amp;&amp;nf) -&gt; std::future&lt; void &gt;']]],
+  ['submit_2108',['submit',['../classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7',1,'alpaka::core::CallbackThread']]],
   ['subvecbegin_2109',['subVecBegin',['../namespacealpaka.html#abed27e1316e97fbfb281a3e13e433ec5',1,'alpaka']]],
   ['subvecend_2110',['subVecEnd',['../namespacealpaka.html#a7678d4f6ec00b41cfff96dfa7e6fabde',1,'alpaka']]],
   ['subvecfromindices_2111',['SubVecFromIndices',['../structalpaka_1_1trait_1_1SubVecFromIndices.html',1,'alpaka::trait']]],

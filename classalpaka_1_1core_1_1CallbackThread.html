@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1core_1_1CallbackThread.
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classalpaka_1_1core_1_1CallbackThread-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -104,12 +105,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf5e60d6c22a5866f3be4c699a6b1ba7"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7">submit</a> (NullaryFunction &amp;&amp;nf) -&gt; std::future&lt; void &gt;</td></tr>
 <tr class="memdesc:abf5e60d6c22a5866f3be4c699a6b1ba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is guaranteed that the task is fully destroyed before the future's result is set.  <a href="classalpaka_1_1core_1_1CallbackThread.html#abf5e60d6c22a5866f3be4c699a6b1ba7">More...</a><br /></td></tr>
 <tr class="separator:abf5e60d6c22a5866f3be4c699a6b1ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a568b3be7a6c054e83f687cdcf5531f57"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1CallbackThread.html#a568b3be7a6c054e83f687cdcf5531f57">submit</a> (Task task) -&gt; std::future&lt; void &gt;</td></tr>
-<tr class="separator:a568b3be7a6c054e83f687cdcf5531f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00017">17</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00020">20</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="affbb697e77860c257d06e6bf8249e176"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#affbb697e77860c257d06e6bf8249e176">&#9670;&nbsp;</a></span>~CallbackThread()</h2>
@@ -134,7 +133,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00025">25</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00058">58</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
 
 </div>
 </div>
@@ -163,12 +162,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>True if queue is empty and no task is executed else false. If only one tasks is enqueued and the task is executed the task will see the queue as not empty. During the destruction of this single enqueued task the queue will already be accounted as empty. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00077">77</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00109">109</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
 
 </div>
 </div>
 <a id="abf5e60d6c22a5866f3be4c699a6b1ba7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf5e60d6c22a5866f3be4c699a6b1ba7">&#9670;&nbsp;</a></span>submit() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf5e60d6c22a5866f3be4c699a6b1ba7">&#9670;&nbsp;</a></span>submit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,36 +195,7 @@ template&lt;typename NullaryFunction &gt; </div>
 
 <p>It is guaranteed that the task is fully destroyed before the future's result is set. </p>
 
-<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00047">47</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a568b3be7a6c054e83f687cdcf5531f57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a568b3be7a6c054e83f687cdcf5531f57">&#9670;&nbsp;</a></span>submit() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto alpaka::core::CallbackThread::submit </td>
-          <td>(</td>
-          <td class="paramtype">Task&#160;</td>
-          <td class="paramname"><em>task</em></td><td>)</td>
-          <td> -&gt; std::future&lt;void&gt;
-        </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00055">55</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CallbackThread_8hpp_source.html#l00080">80</a> of file <a class="el" href="CallbackThread_8hpp_source.html">CallbackThread.hpp</a>.</p>
 
 </div>
 </div>
@@ -238,7 +208,7 @@ template&lt;typename NullaryFunction &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="classalpaka_1_1core_1_1CallbackThread.html">CallbackThread</a></li>
-    <li class="footer">Generated on Mon Aug 7 2023 12:18:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 8 2023 09:41:50 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
