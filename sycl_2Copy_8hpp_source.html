@@ -130,8 +130,8 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TViewFwd&gt;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        TaskCopySyclBase(TViewFwd&amp;&amp; viewDst, TViewSrc <span class="keyword">const</span>&amp; viewSrc, TExtent <span class="keyword">const</span>&amp; extent)</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            : m_extent(<a class="code" href="namespacealpaka.html#afa7369abadff7e4f8afc89c526628e12">getExtentVec</a>(extent))</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;#    if(!defined(NDEBUG)) || (<a class="code" href="Debug_8hpp.html#a7f84384a17e301a636770e17c2951383">ALPAKA_DEBUG</a> &gt;= <a class="code" href="Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806">ALPAKA_DEBUG_FULL</a>)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast&lt;ExtentSize&gt;(sizeof(<a class="code" href="namespacealpaka.html#a807188d82118e5a640469d676853a195">Elem</a>)))</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast&lt;ExtentSize&gt;(sizeof(<a class="code" href="namespacealpaka.html#a807188d82118e5a640469d676853a195">Elem</a>)))</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;#    if(!defined(NDEBUG)) || (<a class="code" href="Debug_8hpp.html#a7f84384a17e301a636770e17c2951383">ALPAKA_DEBUG</a> &gt;= <a class="code" href="Debug_8hpp.html#adef82445ed4c0170e8a042023cec2806">ALPAKA_DEBUG_FULL</a>)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            , m_dstExtent(<a class="code" href="namespacealpaka.html#afa7369abadff7e4f8afc89c526628e12">getExtentVec</a>(viewDst))</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            , m_srcExtent(<a class="code" href="namespacealpaka.html#afa7369abadff7e4f8afc89c526628e12">getExtentVec</a>(viewSrc))</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;#    endif</div>
@@ -158,8 +158,8 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        Vec&lt;TDim, ExtentSize&gt; <span class="keyword">const</span> m_extent;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL)</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        ExtentSize <span class="keyword">const</span> m_extentWidthBytes;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        ExtentSize <span class="keyword">const</span> m_extentWidthBytes;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_FULL)</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        Vec&lt;TDim, DstSize&gt; <span class="keyword">const</span> m_dstExtent;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        Vec&lt;TDim, SrcSize&gt; <span class="keyword">const</span> m_srcExtent;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#    endif</span></div>
@@ -366,7 +366,7 @@ $(document).ready(function(){initNavTree('sycl_2Copy_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_b9e72a3c7221ce8f636c93fdfd260186.html">sycl</a></li><li class="navelem"><a class="el" href="sycl_2Copy_8hpp.html">Copy.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 8 2023 09:41:50 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 8 2023 18:08:23 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
