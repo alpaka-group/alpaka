@@ -1,6 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"namespacealpaka.html#a2a811570d2074f237f89c9910b82b44c":[2,0,0,243],
 "namespacealpaka.html#a2be994b379106bbd50e768e825321768":[2,0,0,313],
 "namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f":[2,0,0,142],
 "namespacealpaka.html#a2f6580f456ad2faecf55eaadfe145cc6":[2,0,0,224],
@@ -249,5 +248,6 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1math.html#a203339f78df48ceb4f44d82ba2c11924":[2,0,0,10,159],
 "namespacealpaka_1_1math.html#a2963260c4f112f7c2bd30c2ad43fd44f":[2,0,0,10,127],
 "namespacealpaka_1_1math.html#a2a8c69be37b50a9af624374878e95abd":[2,0,0,10,139],
-"namespacealpaka_1_1math.html#a32a005a4c29788b7c85a6796676a9cb6":[2,0,0,10,125]
+"namespacealpaka_1_1math.html#a32a005a4c29788b7c85a6796676a9cb6":[2,0,0,10,125],
+"namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df":[2,0,0,10,137]
 };
