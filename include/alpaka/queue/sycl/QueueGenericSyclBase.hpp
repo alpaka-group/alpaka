@@ -13,8 +13,6 @@
 #include <algorithm>
 #include <exception>
 #include <memory>
-#include <mutex>
-#include <shared_mutex>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -73,36 +71,9 @@ namespace alpaka::detail
             }
         }
 
-        // Don't call this without locking first!
-        auto clean_dependencies() -> void
-        {
-            // Clean up completed events
-            auto const start = std::begin(m_dependencies);
-            auto const old_end = std::end(m_dependencies);
-            auto const new_end = std::remove_if(
-                start,
-                old_end,
-                [](sycl::event ev) {
-                    return ev.get_info<sycl::info::event::command_execution_status>()
-                           == sycl::info::event_command_status::complete;
-                });
-
-            m_dependencies.erase(new_end, old_end);
-        }
-
-        auto register_dependency(sycl::event event) -> void
-        {
-            std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-            clean_dependencies();
-            m_dependencies.push_back(event);
-        }
-
         auto empty() const -> bool
         {
-            std::shared_lock<std::shared_mutex> lock{m_mutex};
-            return m_last_event.get_info<sycl::info::event::command_execution_status>()
-                   == sycl::info::event_command_status::complete;
+            return m_queue.ext_oneapi_empty();
         }
 
         auto wait() -> void
@@ -111,41 +82,26 @@ namespace alpaka::detail
             m_queue.wait_and_throw();
         }
 
-        auto get_last_event() const -> sycl::event
-        {
-            std::shared_lock<std::shared_mutex> lock{m_mutex};
-            return m_last_event;
-        }
-
         template<bool TBlocking, typename TTask>
         auto enqueue(TTask const& task) -> void
         {
             {
-                std::lock_guard<std::shared_mutex> lock{m_mutex};
-
-                clean_dependencies();
-
                 // Execute task
                 if constexpr(is_sycl_task<TTask> && !is_sycl_kernel<TTask>) // Copy / Fill
                 {
-                    m_last_event = task(m_queue, m_dependencies); // Will call queue.{copy, fill} internally
+                    task(m_queue); // Will call queue.{copy, fill} internally
                 }
                 else
                 {
-                    m_last_event = m_queue.submit(
+                    m_queue.submit(
                         [this, &task](sycl::handler& cgh)
                         {
-                            if(!m_dependencies.empty())
-                                cgh.depends_on(m_dependencies);
-
                             if constexpr(is_sycl_kernel<TTask>) // Kernel
                                 task(cgh); // Will call cgh.parallel_for internally
                             else // Host
                                 cgh.host_task(task);
                         });
                 }
-
-                m_dependencies.clear();
             }
 
             if constexpr(TBlocking)
@@ -156,10 +112,6 @@ namespace alpaka::detail
         {
             return m_queue;
         }
-
-        std::vector<sycl::event> m_dependencies;
-        sycl::event m_last_event;
-        std::shared_mutex mutable m_mutex;
 
     private:
         sycl::queue m_queue;

@@ -93,7 +93,7 @@ namespace alpaka::detail
 
         using TaskCopySyclBase<TDim, TViewDst, TViewSrc, TExtent>::TaskCopySyclBase;
 
-        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+        auto operator()(sycl::queue& queue) const -> sycl::event
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -126,8 +126,7 @@ namespace alpaka::detail
                                 this->m_srcMemNative
                                 + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost)
                                       .foldrAll(std::plus<SrcSize>())),
-                            static_cast<std::size_t>(this->m_extentWidthBytes),
-                            requirements));
+                            static_cast<std::size_t>(this->m_extentWidthBytes)));
                     });
             }
 
@@ -144,7 +143,7 @@ namespace alpaka::detail
         using TaskCopySyclBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopySyclBase;
         using Elem = alpaka::Elem<TViewSrc>;
 
-        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+        auto operator()(sycl::queue& queue) const -> sycl::event
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -156,8 +155,7 @@ namespace alpaka::detail
                 return queue.memcpy(
                     reinterpret_cast<void*>(this->m_dstMemNative),
                     reinterpret_cast<void const*>(this->m_srcMemNative),
-                    sizeof(Elem) * static_cast<std::size_t>(this->m_extent.prod()),
-                    requirements);
+                    sizeof(Elem) * static_cast<std::size_t>(this->m_extent.prod()));
             }
             else
             {
@@ -187,9 +185,9 @@ namespace alpaka::detail
             ALPAKA_ASSERT(getExtentVec(viewSrc).prod() == 1u);
         }
 
-        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+        auto operator()(sycl::queue& queue) const -> sycl::event
         {
-            return queue.memcpy(m_dstMemNative, m_srcMemNative, sizeof(Elem), requirements);
+            return queue.memcpy(m_dstMemNative, m_srcMemNative, sizeof(Elem));
         }
 
         void* m_dstMemNative;

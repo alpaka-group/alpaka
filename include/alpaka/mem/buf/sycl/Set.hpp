@@ -83,7 +83,7 @@ namespace alpaka
 
             using TaskSetSyclBase<TDim, TView, TExtent>::TaskSetSyclBase;
 
-            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+            auto operator()(sycl::queue& queue) const -> sycl::event
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -112,8 +112,7 @@ namespace alpaka
                                     + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
                                           .foldrAll(std::plus<DstSize>())),
                                 this->m_byte,
-                                static_cast<std::size_t>(this->m_extentWidthBytes),
-                                requirements));
+                                static_cast<std::size_t>(this->m_extentWidthBytes)));
                         });
                 }
 
@@ -128,7 +127,7 @@ namespace alpaka
         {
             using TaskSetSyclBase<DimInt<1u>, TView, TExtent>::TaskSetSyclBase;
 
-            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+            auto operator()(sycl::queue& queue) const -> sycl::event
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -140,8 +139,7 @@ namespace alpaka
                     return queue.memset(
                         reinterpret_cast<void*>(this->m_dstMemNative),
                         this->m_byte,
-                        static_cast<std::size_t>(this->m_extentWidthBytes),
-                        requirements);
+                        static_cast<std::size_t>(this->m_extentWidthBytes));
                 }
                 else
                 {
@@ -178,14 +176,14 @@ namespace alpaka
             }
 #    endif
 
-            auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
+            auto operator()(sycl::queue& queue) const -> sycl::event
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 printDebug();
 #    endif
-                return queue.memset(reinterpret_cast<void*>(m_dstMemNative), m_byte, sizeof(Elem), requirements);
+                return queue.memset(reinterpret_cast<void*>(m_dstMemNative), m_byte, sizeof(Elem));
             }
 
             std::uint8_t const m_byte;
