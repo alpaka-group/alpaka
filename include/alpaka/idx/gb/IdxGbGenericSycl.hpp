@@ -23,11 +23,7 @@ namespace alpaka::gb
     public:
         using IdxGbBase = IdxGbGenericSycl;
 
-        explicit IdxGbGenericSycl(sycl::nd_item<TDim::value> work_item) : m_item_gb{work_item}
-        {
-        }
-
-        sycl::nd_item<TDim::value> m_item_gb;
+        IdxGbGenericSycl() = default;
     };
 } // namespace alpaka::gb
 
@@ -46,22 +42,22 @@ namespace alpaka::trait
     {
         //! \return The index of the current block in the grid.
         template<typename TWorkDiv>
-        static auto getIdx(gb::IdxGbGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&)
+        static auto getIdx(gb::IdxGbGenericSycl<TDim, TIdx> const&, TWorkDiv const&)
         {
+            auto const item = sycl::ext::oneapi::experimental::this_nd_item<TDim::value>();
+
             if constexpr(TDim::value == 1)
-                return Vec<TDim, TIdx>(static_cast<TIdx>(idx.m_item_gb.get_group(0)));
+                return Vec<TDim, TIdx>(static_cast<TIdx>(item.get_group(0)));
             else if constexpr(TDim::value == 2)
             {
-                return Vec<TDim, TIdx>(
-                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
-                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
+                return Vec<TDim, TIdx>(static_cast<TIdx>(item.get_group(1)), static_cast<TIdx>(item.get_group(0)));
             }
             else
             {
                 return Vec<TDim, TIdx>(
-                    static_cast<TIdx>(idx.m_item_gb.get_group(2)),
-                    static_cast<TIdx>(idx.m_item_gb.get_group(1)),
-                    static_cast<TIdx>(idx.m_item_gb.get_group(0)));
+                    static_cast<TIdx>(item.get_group(2)),
+                    static_cast<TIdx>(item.get_group(1)),
+                    static_cast<TIdx>(item.get_group(0)));
             }
         }
     };

@@ -23,11 +23,7 @@ namespace alpaka::bt
     public:
         using IdxBtBase = IdxBtGenericSycl;
 
-        explicit IdxBtGenericSycl(sycl::nd_item<TDim::value> work_item) : m_item_bt{work_item}
-        {
-        }
-
-        sycl::nd_item<TDim::value> m_item_bt;
+        IdxBtGenericSycl() = default;
     };
 } // namespace alpaka::bt
 
@@ -46,22 +42,24 @@ namespace alpaka::trait
     {
         //! \return The index of the current thread in the block.
         template<typename TWorkDiv>
-        static auto getIdx(bt::IdxBtGenericSycl<TDim, TIdx> const& idx, TWorkDiv const&) -> Vec<TDim, TIdx>
+        static auto getIdx(bt::IdxBtGenericSycl<TDim, TIdx> const&, TWorkDiv const&) -> Vec<TDim, TIdx>
         {
+            auto const item = sycl::ext::oneapi::experimental::this_nd_item<TDim::value>();
+
             if constexpr(TDim::value == 1)
-                return Vec<TDim, TIdx>{static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
+                return Vec<TDim, TIdx>{static_cast<TIdx>(item.get_local_id(0))};
             else if constexpr(TDim::value == 2)
             {
                 return Vec<TDim, TIdx>{
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
+                    static_cast<TIdx>(item.get_local_id(1)),
+                    static_cast<TIdx>(item.get_local_id(0))};
             }
             else
             {
                 return Vec<TDim, TIdx>{
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(2)),
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(1)),
-                    static_cast<TIdx>(idx.m_item_bt.get_local_id(0))};
+                    static_cast<TIdx>(item.get_local_id(2)),
+                    static_cast<TIdx>(item.get_local_id(1)),
+                    static_cast<TIdx>(item.get_local_id(0))};
             }
         }
     };
