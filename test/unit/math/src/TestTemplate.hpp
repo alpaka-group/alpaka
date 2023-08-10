@@ -63,10 +63,11 @@ struct TestTemplate
     {
         std::random_device rd{};
         auto const seed = rd();
-        std::cout << "testing"
-                  << " acc:" << alpaka::core::demangled<TAcc> << " data type:"
-                  << alpaka::core::demangled<TData> << " functor:"
-                  << alpaka::core::demangled<TWrappedFunctor> << " seed:" << seed << std::endl;
+        INFO(
+            "testing"
+            << " acc:" << alpaka::core::demangled<TAcc> << " data type:"
+            << alpaka::core::demangled<TData> << " functor:" << alpaka::core::demangled<TWrappedFunctor> << " seed:"
+            << seed);
 
         // SETUP (defines and initialising)
         // DevAcc is defined in Buffer.hpp too.
