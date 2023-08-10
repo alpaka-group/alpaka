@@ -143,17 +143,11 @@ $(document).ready(function(){initNavTree('MemFenceCpu_8hpp_source.html',''); ini
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">                 *   a == 10 &amp;&amp; b == 20</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">                 */</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keyword">static</span> <span class="keyword">auto</span> dummy = std::atomic&lt;int&gt;{42};</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="comment">/* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">                 * these dummy operations to ensure this.*/</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keyword">auto</span> x = dummy.load(std::memory_order_relaxed);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                std::atomic_thread_fence(std::memory_order_acq_rel);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                dummy.store(x, std::memory_order_relaxed);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        };</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                std::atomic_thread_fence(std::memory_order_acq_rel);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        };</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1MemFenceCpu_html"><div class="ttname"><a href="classalpaka_1_1MemFenceCpu.html">alpaka::MemFenceCpu</a></div><div class="ttdoc">The default CPU memory fence.</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceCpu_8hpp_source.html#l00015">MemFenceCpu.hpp:16</a></div></div>
 <div class="ttc" id="amem_2fence_2Traits_8hpp_html"><div class="ttname"><a href="mem_2fence_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -167,7 +161,7 @@ $(document).ready(function(){initNavTree('MemFenceCpu_8hpp_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceCpu_8hpp.html">MemFenceCpu.hpp</a></li>
-    <li class="footer">Generated on Wed Aug 9 2023 14:10:45 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 10 2023 08:48:02 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

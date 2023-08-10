@@ -131,18 +131,11 @@ $(document).ready(function(){initNavTree('MemFenceCpuSerial_8hpp_source.html',''
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01TMemScope_01_4.html#a50177f580ceaf411f6bd8f33f2ade4d7">   42</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01TMemScope_01_4.html#a50177f580ceaf411f6bd8f33f2ade4d7">mem_fence</a>(<a class="code" href="classalpaka_1_1MemFenceCpuSerial.html">MemFenceCpuSerial</a> <span class="keyword">const</span>&amp;, TMemScope <span class="keyword">const</span>&amp;)</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="comment">/* Enable device fences because we may want to synchronize with other (serial) kernels. */</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keyword">static</span> std::atomic&lt;int&gt; dummy{42};</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="comment">/* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">                 * these dummy operations to ensure this.*/</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keyword">auto</span> x = dummy.load(std::memory_order_relaxed);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                std::atomic_thread_fence(std::memory_order_acq_rel);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                dummy.store(x, std::memory_order_relaxed);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        };</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                std::atomic_thread_fence(std::memory_order_acq_rel);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        };</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1MemFenceCpuSerial_html"><div class="ttname"><a href="classalpaka_1_1MemFenceCpuSerial.html">alpaka::MemFenceCpuSerial</a></div><div class="ttdoc">The serial CPU memory fence.</div><div class="ttdef"><b>Definition:</b> <a href="MemFenceCpuSerial_8hpp_source.html#l00015">MemFenceCpuSerial.hpp:16</a></div></div>
 <div class="ttc" id="amem_2fence_2Traits_8hpp_html"><div class="ttname"><a href="mem_2fence_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -160,7 +153,7 @@ $(document).ready(function(){initNavTree('MemFenceCpuSerial_8hpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b0220b247b6d146638519e84a2a8e9ad.html">fence</a></li><li class="navelem"><a class="el" href="MemFenceCpuSerial_8hpp.html">MemFenceCpuSerial.hpp</a></li>
-    <li class="footer">Generated on Wed Aug 9 2023 14:10:45 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 10 2023 08:48:02 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
