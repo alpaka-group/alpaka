@@ -79,8 +79,8 @@ auto main() -> int
 
     // Define the work division
     using Vec = alpaka::Vec<Dim, Idx>;
-    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerGrid(Vec::all(static_cast<Idx>(8)));
+    auto const elementsPerThread = Vec::all(static_cast<Idx>(1));
+    auto const threadsPerGrid = Vec{4, 2, 4};
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     WorkDiv const workDiv = alpaka::getValidWorkDiv<Acc>(
         devAcc,
