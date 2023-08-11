@@ -1,6 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1AtomicSub.html":[3,0,0,39],
 "structalpaka_1_1AtomicSub.html#af29fdb842c21c4c961627c069446a29e":[3,0,0,39,0],
 "structalpaka_1_1AtomicXor.html":[3,0,0,41],
 "structalpaka_1_1AtomicXor.html#a5c69029d73740534cdd74d8efdf65136":[3,0,0,41,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1TaskSetCpu.html":[3,0,0,4,55],
 "structalpaka_1_1detail_1_1TaskSetCpu.html#a0ad53771fd9d360cc5f2adc64371e5d2":[3,0,0,4,55,1],
 "structalpaka_1_1detail_1_1TaskSetCpu.html#a2457cb1a7a844b68d910afeb9e32208d":[3,0,0,4,55,0],
-"structalpaka_1_1detail_1_1TaskSetCpuBase.html":[3,0,0,4,58]
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html":[3,0,0,4,58],
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a19a403f873730fe1ae516423d997274c":[3,0,0,4,58,10]
 };
