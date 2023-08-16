@@ -216,7 +216,7 @@ static auto testBufferAccessorAdaptor(
     auto buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
 
     // check that the array subscript operator access the correct element
-    auto const& pitch = alpaka::getPitchBytesVec(buf);
+    auto const& pitch = alpaka::getPitchesInBytes(buf);
     INFO("buffer extent: " << extent << " elements");
     INFO("buffer pitch: " << pitch << " bytes");
     CHECK((index < extent).foldrAll(std::logical_and<bool>(), true));

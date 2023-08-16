@@ -32,7 +32,7 @@ TEMPLATE_LIST_TEST_CASE("mapIdxPitchBytes", "[idx]", alpaka::test::NonZeroTestDi
     auto const extent = Vec::all(4u);
     auto const idxNd = Vec::all(2u);
     auto view = alpaka::createSubView(parentView, extent, offset);
-    auto pitch = alpaka::getPitchBytesVec(view);
+    auto pitch = alpaka::getPitchesInBytes(view);
 
     auto const idx1d = alpaka::mapIdxPitchBytes<1u>(idxNd, pitch);
     auto const idx1dDelta = alpaka::mapIdx<1u>(idxNd + offset, extentNd) - alpaka::mapIdx<1u>(offset, extentNd);

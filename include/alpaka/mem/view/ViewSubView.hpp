@@ -39,7 +39,7 @@ namespace alpaka
             TView const& view,
             TExtent const& extentElements,
             TOffsets const& relativeOffsetsElements = TOffsets())
-            : m_viewParentView(getPtrNative(view), getDev(view), getExtents(view), getPitchBytesVec(view))
+            : m_viewParentView(getPtrNative(view), getDev(view), getExtents(view), getPitchesInBytes(view))
             , m_extentElements(getExtents(extentElements))
             , m_offsetsElements(getOffsetVec(relativeOffsetsElements))
         {
@@ -78,7 +78,7 @@ namespace alpaka
         //! \param relativeOffsetsElements The offsets in elements.
         template<typename TView, typename TOffsets, typename TExtent>
         ViewSubView(TView& view, TExtent const& extentElements, TOffsets const& relativeOffsetsElements = TOffsets())
-            : m_viewParentView(getPtrNative(view), getDev(view), getExtents(view), getPitchBytesVec(view))
+            : m_viewParentView(getPtrNative(view), getDev(view), getExtents(view), getPitchesInBytes(view))
             , m_extentElements(getExtents(extentElements))
             , m_offsetsElements(getOffsetVec(relativeOffsetsElements))
         {
@@ -215,13 +215,13 @@ namespace alpaka
             ALPAKA_FN_HOST static auto pitchedOffsetBytes(TView const& view, std::index_sequence<TIndices...> const&)
                 -> TIdx
             {
-                return meta::foldr(std::plus<TIdx>(), pitchedOffsetBytesDim<TIndices>(view)..., TIdx{0});
-            }
-
-            template<std::size_t Tidx, typename TView>
-            ALPAKA_FN_HOST static auto pitchedOffsetBytesDim(TView const& view) -> TIdx
-            {
-                return getOffsets(view)[Tidx] * getPitchBytes<Tidx + 1u>(view);
+                auto const offsets = getOffsets(view);
+                auto const pitches = getPitchesInBytes(view);
+                return (
+                    (offsets[TIndices]
+                     * (TIndices + 1 < Dim<TView>::value ? pitches[TIndices + 1]
+                                                         : static_cast<TIdx>(sizeof(Elem<TView>))))
+                    + ... + TIdx{0}); // FIXME: see comment above
             }
         };
 #if BOOST_COMP_GNUC
@@ -229,12 +229,12 @@ namespace alpaka
 #endif
 
         //! The ViewSubView pitch get trait specialization.
-        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetPitchBytes<TIdxIntegralConst, ViewSubView<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+        struct GetPitchesInBytes<ViewSubView<TDev, TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getPitchBytes(ViewSubView<TDev, TElem, TDim, TIdx> const& view) -> TIdx
+            ALPAKA_FN_HOST auto operator()(ViewSubView<TDev, TElem, TDim, TIdx> const& view) const
             {
-                return alpaka::getPitchBytes<TIdxIntegralConst::value>(view.m_viewParentView);
+                return alpaka::getPitchesInBytes(view.m_viewParentView);
             }
         };
 

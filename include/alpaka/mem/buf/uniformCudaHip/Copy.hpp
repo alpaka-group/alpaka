@@ -202,8 +202,8 @@ namespace alpaka
                 , m_dstHeight(static_cast<Idx>(getHeight(viewDst)))
                 , m_srcHeight(static_cast<Idx>(getHeight(viewSrc)))
 #    endif
-                , m_dstPitchBytes(static_cast<std::size_t>(getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst)))
-                , m_srcPitchBytes(static_cast<std::size_t>(getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc)))
+                , m_dstPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[Dim<TViewDst>::value - 1u]))
+                , m_srcPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[Dim<TViewSrc>::value - 1u]))
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {
@@ -308,12 +308,12 @@ namespace alpaka
                 , m_dstDepth(static_cast<Idx>(getDepth(viewDst)))
                 , m_srcDepth(static_cast<Idx>(getDepth(viewSrc)))
 #    endif
-                , m_dstPitchBytesX(static_cast<std::size_t>(getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst)))
-                , m_srcPitchBytesX(static_cast<std::size_t>(getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc)))
+                , m_dstPitchBytesX(static_cast<std::size_t>(getPitchesInBytes(viewDst)[Dim<TViewDst>::value - 1u]))
+                , m_srcPitchBytesX(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[Dim<TViewSrc>::value - 1u]))
                 , m_dstPitchBytesY(static_cast<std::size_t>(
-                      getPitchBytes<Dim<TViewDst>::value - (2u % Dim<TViewDst>::value)>(viewDst)))
+                      getPitchesInBytes(viewDst)[Dim<TViewDst>::value - (2u % Dim<TViewDst>::value)]))
                 , m_srcPitchBytesY(static_cast<std::size_t>(
-                      getPitchBytes<Dim<TViewSrc>::value - (2u % Dim<TViewSrc>::value)>(viewSrc)))
+                      getPitchesInBytes(viewSrc)[Dim<TViewSrc>::value - (2u % Dim<TViewDst>::value)]))
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {

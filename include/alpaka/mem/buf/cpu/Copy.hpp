@@ -42,8 +42,8 @@ namespace alpaka
                 , m_dstExtent(getExtents(viewDst))
                 , m_srcExtent(getExtents(viewSrc))
 #endif
-                , m_dstPitchBytes(getPitchBytesVec(viewDst))
-                , m_srcPitchBytes(getPitchBytesVec(viewSrc))
+                , m_dstPitchBytes(getPitchesInBytes(viewDst))
+                , m_srcPitchBytes(getPitchesInBytes(viewSrc))
                 , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
             {

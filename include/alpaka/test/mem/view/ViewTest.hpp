@@ -67,7 +67,7 @@ namespace alpaka::test
                 pitchMinimum[i - 1] = extent[i - 1] * pitchMinimum[i];
             }
 
-            auto const pitchView = getPitchBytesVec(view);
+            auto const pitchView = getPitchesInBytes(view);
 
             for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
             {

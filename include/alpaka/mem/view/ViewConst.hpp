@@ -89,12 +89,12 @@ namespace alpaka
             }
         };
 
-        template<typename I, typename TView>
-        struct GetPitchBytes<I, ViewConst<TView>>
+        template<typename TView>
+        struct GetPitchesInBytes<ViewConst<TView>>
         {
-            ALPAKA_FN_HOST static auto getPitchBytes(ViewConst<TView> const& view)
+            ALPAKA_FN_HOST auto operator()(ViewConst<TView> const& view) const
             {
-                return alpaka::getPitchBytes<I::value>(view.m_view);
+                return alpaka::getPitchesInBytes(view.m_view);
             }
         };
 

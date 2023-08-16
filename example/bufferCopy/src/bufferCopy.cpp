@@ -215,10 +215,10 @@ auto main() -> int
     // padding between rows/planes of multidimensional memory allocations.
     // Therefore the pitch (distance between consecutive rows/planes) may be
     // greater than the space required for the data.
-    Idx const deviceBuffer1Pitch(alpaka::getPitchBytes<2u>(deviceBuffer1) / sizeof(Data));
-    Idx const deviceBuffer2Pitch(alpaka::getPitchBytes<2u>(deviceBuffer2) / sizeof(Data));
-    Idx const hostBuffer1Pitch(alpaka::getPitchBytes<2u>(hostBuffer) / sizeof(Data));
-    Idx const hostViewPlainPtrPitch(alpaka::getPitchBytes<2u>(hostViewPlainPtr) / sizeof(Data));
+    Idx const deviceBuffer1Pitch(alpaka::getPitchesInBytes(deviceBuffer1)[2] / sizeof(Data));
+    Idx const deviceBuffer2Pitch(alpaka::getPitchesInBytes(deviceBuffer2)[2] / sizeof(Data));
+    Idx const hostBuffer1Pitch(alpaka::getPitchesInBytes(hostBuffer)[2] / sizeof(Data));
+    Idx const hostViewPlainPtrPitch(alpaka::getPitchesInBytes(hostViewPlainPtr)[2] / sizeof(Data));
 
     // Test device Buffer
     //
