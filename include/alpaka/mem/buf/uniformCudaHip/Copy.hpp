@@ -49,16 +49,11 @@ namespace alpaka
                 : m_uniformMemCpyKind(uniformMemCpyKind)
                 , m_iDstDevice(iDstDevice)
                 , m_iSrcDevice(iSrcDevice)
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
-                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
-#    endif
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                ALPAKA_ASSERT(Idx(1u) <= m_dstWidth);
-                ALPAKA_ASSERT(Idx(1u) <= m_srcWidth);
+                ALPAKA_ASSERT(getExtentProduct(extent) == 1);
 #    endif
             }
 
@@ -86,8 +81,8 @@ namespace alpaka
             ALPAKA_FN_HOST auto printDebug() const -> void
             {
                 std::cout << __func__ << " ddev: " << m_iDstDevice << " ew: " << Idx(1u)
-                          << " ewb: " << static_cast<Idx>(sizeof(Elem<TViewDst>)) << " dw: " << m_dstWidth
-                          << " dptr: " << m_dstMemNative << " sdev: " << m_iSrcDevice << " sw: " << m_srcWidth
+                          << " ewb: " << static_cast<Idx>(sizeof(Elem<TViewDst>)) << " dw: " << Idx(1u)
+                          << " dptr: " << m_dstMemNative << " sdev: " << m_iSrcDevice << " sw: " << Idx(1u)
                           << " sptr: " << m_srcMemNative << std::endl;
             }
 #    endif
@@ -95,10 +90,6 @@ namespace alpaka
             typename TApi::MemcpyKind_t m_uniformMemCpyKind;
             int m_iDstDevice;
             int m_iSrcDevice;
-#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            Idx m_dstWidth;
-            Idx m_srcWidth;
-#    endif
             void* m_dstMemNative;
             void const* m_srcMemNative;
         };

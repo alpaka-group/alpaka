@@ -93,14 +93,12 @@ namespace alpaka::trait
     };
 
     //! The BufGenericSycl extent get trait specialization.
-    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TPlatform>
-    struct GetExtent<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+    struct GetExtents<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
     {
-        static_assert(TDim::value > TIdxIntegralConst::value, "Requested dimension out of bounds");
-
-        static auto getExtent(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf) -> TIdx
+        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf) const
         {
-            return buf.m_extentElements[TIdxIntegralConst::value];
+            return buf.m_extentElements;
         }
     };
 
@@ -208,12 +206,12 @@ namespace alpaka::trait
     };
 
     //! The BufGenericSycl offset get trait specialization.
-    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TPlatform>
-    struct GetOffset<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+    struct GetOffsets<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
     {
-        static auto getOffset(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const&) -> TIdx
+        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const&) const -> Vec<TDim, TIdx>
         {
-            return 0u;
+            return Vec<TDim, TIdx>::zeros();
         }
     };
 

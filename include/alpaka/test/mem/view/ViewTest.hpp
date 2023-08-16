@@ -50,9 +50,9 @@ namespace alpaka::test
                 "The element type of the view has to be equal to the specified one.");
         }
 
-        // trait::GetExtent
+        // trait::GetExtents
         {
-            REQUIRE(extent == getExtentVec(view));
+            REQUIRE(extent == getExtents(view));
         }
 
         // trait::GetPitchBytes
@@ -97,9 +97,9 @@ namespace alpaka::test
             }
         }
 
-        // trait::GetOffset
+        // trait::GetOffsets
         {
-            REQUIRE(offset == getOffsetVec(view));
+            REQUIRE(offset == getOffsets(view));
         }
 
         // trait::IdxType
@@ -206,7 +206,7 @@ namespace alpaka::test
         auto const platformHost = alpaka::PlatformCpu{};
         auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
-        auto const extent = getExtentVec(view);
+        auto const extent = getExtents(view);
 
         // Init buf with increasing values
         std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
@@ -246,7 +246,7 @@ namespace alpaka::test
             using Idx = Idx<TView>;
 
             auto const devAcc = getDev(view);
-            auto const extent = getExtentVec(view);
+            auto const extent = getExtents(view);
 
             // copy into given view
             {

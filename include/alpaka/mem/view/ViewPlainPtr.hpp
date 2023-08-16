@@ -100,25 +100,19 @@ namespace alpaka
             using type = TElem;
         };
     } // namespace trait
-    namespace trait
-    {
-        //! The ViewPlainPtr width get trait specialization.
-        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetExtent<
-            TIdxIntegralConst,
-            ViewPlainPtr<TDev, TElem, TDim, TIdx>,
-            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-        {
-            ALPAKA_FN_HOST
-            static auto getExtent(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& extent) -> TIdx
-            {
-                return extent.m_extentElements[TIdxIntegralConst::value];
-            }
-        };
-    } // namespace trait
 
     namespace trait
     {
+        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+        struct GetExtents<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        {
+            ALPAKA_FN_HOST
+            auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
+            {
+                return view.m_extentElements;
+            }
+        };
+
         //! The ViewPlainPtr native pointer get trait specialization.
         template<typename TDev, typename TElem, typename TDim, typename TIdx>
         struct GetPtrNative<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
@@ -251,13 +245,13 @@ namespace alpaka
         };
 #endif
         //! The ViewPlainPtr offset get trait specialization.
-        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetOffset<TIdxIntegralConst, ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+        struct GetOffsets<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
             ALPAKA_FN_HOST
-            static auto getOffset(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) -> TIdx
+            auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
             {
-                return 0u;
+                return Vec<TDim, TIdx>::zeros();
             }
         };
 

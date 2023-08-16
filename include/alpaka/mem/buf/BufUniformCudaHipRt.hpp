@@ -109,15 +109,12 @@ namespace alpaka
         };
 
         //! The BufUniformCudaHipRt extent get trait specialization.
-        template<typename TApi, typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-        struct GetExtent<
-            TIdxIntegralConst,
-            BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>,
-            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx>
+        struct GetExtents<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getExtent(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& extent) -> TIdx
+            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buffer) const
             {
-                return extent.m_extentElements[TIdxIntegralConst::value];
+                return buffer.m_extentElements;
             }
         };
 
@@ -207,7 +204,12 @@ namespace alpaka
                 std::size_t pitchBytes = 0u;
                 if(getExtentProduct(extent) != 0)
                 {
-                    if constexpr(Dim::value <= 1)
+                    if constexpr(Dim::value == 0)
+                    {
+                        pitchBytes = sizeof(TElem);
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::malloc(&memPtr, pitchBytes));
+                    }
+                    else if constexpr(Dim::value == 1)
                     {
                         pitchBytes = static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem);
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::malloc(&memPtr, pitchBytes));
@@ -277,7 +279,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 static_assert(TDim::value == Dim<TExtent>::value, "extent must have the same dimension as the buffer");
-                auto const width = getWidth(extent);
+                auto const width = getExtentProduct(extent); // handles 1D and 0D buffers
 
                 auto const& dev = getDev(queue);
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
@@ -343,12 +345,13 @@ namespace alpaka
         };
 
         //! The BufUniformCudaHipRt offset get trait specialization.
-        template<typename TApi, typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-        struct GetOffset<TIdxIntegralConst, BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx>
+        struct GetOffsets<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getOffset(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const&) -> TIdx
+            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const&) const
+                -> Vec<TDim, TIdx>
             {
-                return 0u;
+                return Vec<TDim, TIdx>::zeros();
             }
         };
 

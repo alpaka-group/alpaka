@@ -7,6 +7,7 @@
 #include "alpaka/core/Common.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/idx/Traits.hpp"
+#include "alpaka/vec/Vec.hpp"
 
 #include <type_traits>
 
@@ -19,100 +20,168 @@ namespace alpaka
         //!
         //! If not specialized explicitly it returns 0.
         template<typename TIdx, typename TOffsets, typename TSfinae = void>
-        struct GetOffset
-        {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const&) -> Idx<TOffsets>
-            {
-                return static_cast<Idx<TOffsets>>(0);
-            }
-        };
-
-        //! The x offset set trait.
-        template<typename TIdx, typename TOffsets, typename TOffset, typename TSfinae = void>
-        struct SetOffset;
+        struct [[deprecated("Specialize GetOffsets instead")]] GetOffset{
+            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const&)
+                ->Idx<TOffsets>{return static_cast<Idx<TOffsets>>(0);
     } // namespace trait
+}; // namespace alpaka
 
-    //! \return The offset in the given dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<std::size_t Tidx, typename TOffsets>
-    ALPAKA_FN_HOST_ACC auto getOffset(TOffsets const& offsets) -> Idx<TOffsets>
-    {
-        return trait::GetOffset<DimInt<Tidx>, TOffsets>::getOffset(offsets);
-    }
-    //! \return The offset in x dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TOffsets>
-    ALPAKA_FN_HOST_ACC auto getOffsetX(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
-    {
-        return getOffset<Dim<TOffsets>::value - 1u>(offsets);
-    }
-    //! \return The offset in y dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TOffsets>
-    ALPAKA_FN_HOST_ACC auto getOffsetY(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
-    {
-        return getOffset<Dim<TOffsets>::value - 2u>(offsets);
-    }
-    //! \return The offset in z dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TOffsets>
-    ALPAKA_FN_HOST_ACC auto getOffsetZ(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
-    {
-        return getOffset<Dim<TOffsets>::value - 3u>(offsets);
-    }
+//! The GetOffsets trait for getting the offsets of an object as an alpaka::Vec.
+template<typename TExtent, typename TSfinae = void>
+struct GetOffsets;
 
-    //! Sets the offset in the given dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<std::size_t Tidx, typename TOffsets, typename TOffset>
-    ALPAKA_FN_HOST_ACC auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-    {
-        trait::SetOffset<DimInt<Tidx>, TOffsets, TOffset>::setOffset(offsets, offset);
-    }
-    //! Sets the offset in x dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TOffsets, typename TOffset>
-    ALPAKA_FN_HOST_ACC auto setOffsetX(TOffsets const& offsets, TOffset const& offset) -> void
-    {
-        setOffset<Dim<TOffsets>::value - 1u>(offsets, offset);
-    }
-    //! Sets the offset in y dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TOffsets, typename TOffset>
-    ALPAKA_FN_HOST_ACC auto setOffsetY(TOffsets const& offsets, TOffset const& offset) -> void
-    {
-        setOffset<Dim<TOffsets>::value - 2u>(offsets, offset);
-    }
-    //! Sets the offset in z dimension.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TOffsets, typename TOffset>
-    ALPAKA_FN_HOST_ACC auto setOffsetZ(TOffsets const& offsets, TOffset const& offset) -> void
-    {
-        setOffset<Dim<TOffsets>::value - 3u>(offsets, offset);
-    }
+//! The x offset set trait.
+template<typename TIdx, typename TOffsets, typename TOffset, typename TSfinae = void>
+struct SetOffset;
+} // namespace trait
 
-    // Trait specializations for unsigned integral types.
-    namespace trait
+//! \return The offset in the given dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<std::size_t Tidx, typename TOffsets>
+[[deprecated("use getOffsets(offsets)[Tidx] instead")]] ALPAKA_FN_HOST_ACC auto getOffset(TOffsets const& offsets)
+    -> Idx<TOffsets>
+{
+#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+    return trait::GetOffset<DimInt<Tidx>, TOffsets>::getOffset(offsets);
+#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+#    pragma GCC diagnostic pop
+#endif
+}
+
+//! \return The extents of the given object.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename T>
+ALPAKA_FN_HOST_ACC auto getOffsets(T const& object) -> Vec<Dim<T>, Idx<T>>
+{
+    return trait::GetOffsets<T>{}(object);
+}
+
+//! \tparam T has to specialize GetOffsets.
+//! \return The offset vector.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename T>
+ALPAKA_FN_HOST_ACC constexpr auto getOffsetVec(T const& object = {}) -> Vec<Dim<T>, Idx<T>>
+{
+    return getOffsets(object);
+}
+
+//! \tparam T has to specialize GetOffsets.
+//! \return The offset vector but only the last TDim elements.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename TDim, typename T>
+ALPAKA_FN_HOST_ACC constexpr auto getOffsetVecEnd(T const& object = {}) -> Vec<TDim, Idx<T>>
+{
+    static_assert(TDim::value <= Dim<T>::value, "Cannot get more items than the offsets hold");
+
+    auto const o = getOffsets(object);
+    Vec<TDim, Idx<T>> v;
+    for(unsigned i = 0; i < TDim::value; i++)
+        v[i] = o[(Dim<T>::value - TDim::value) + i];
+    return v;
+}
+
+//! \return The offset in x dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename TOffsets>
+ALPAKA_FN_HOST_ACC auto getOffsetX(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
+{
+    return getOffsets(offsets)[Dim<TOffsets>::value - 1u];
+}
+//! \return The offset in y dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename TOffsets>
+ALPAKA_FN_HOST_ACC auto getOffsetY(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
+{
+    return getOffsets(offsets)[Dim<TOffsets>::value - 2u];
+}
+//! \return The offset in z dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename TOffsets>
+ALPAKA_FN_HOST_ACC auto getOffsetZ(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
+{
+    return getOffsets(offsets)[Dim<TOffsets>::value - 3u];
+}
+
+//! Sets the offset in the given dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<std::size_t Tidx, typename TOffsets, typename TOffset>
+ALPAKA_FN_HOST_ACC auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
+{
+    trait::SetOffset<DimInt<Tidx>, TOffsets, TOffset>::setOffset(offsets, offset);
+}
+//! Sets the offset in x dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename TOffsets, typename TOffset>
+ALPAKA_FN_HOST_ACC auto setOffsetX(TOffsets const& offsets, TOffset const& offset) -> void
+{
+    setOffset<Dim<TOffsets>::value - 1u>(offsets, offset);
+}
+//! Sets the offset in y dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename TOffsets, typename TOffset>
+ALPAKA_FN_HOST_ACC auto setOffsetY(TOffsets const& offsets, TOffset const& offset) -> void
+{
+    setOffset<Dim<TOffsets>::value - 2u>(offsets, offset);
+}
+//! Sets the offset in z dimension.
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename TOffsets, typename TOffset>
+ALPAKA_FN_HOST_ACC auto setOffsetZ(TOffsets const& offsets, TOffset const& offset) -> void
+{
+    setOffset<Dim<TOffsets>::value - 3u>(offsets, offset);
+}
+
+namespace trait
+{
+    //! The Vec offset get trait specialization.
+    template<typename TDim, typename TVal>
+    struct GetOffsets<Vec<TDim, TVal>>
     {
-        //! The unsigned integral x offset get trait specialization.
-        template<typename TOffsets>
-        struct GetOffset<DimInt<0u>, TOffsets, std::enable_if_t<std::is_integral_v<TOffsets>>>
+        ALPAKA_NO_HOST_ACC_WARNING
+        ALPAKA_FN_HOST_ACC constexpr auto operator()(Vec<TDim, TVal> const& offsets) const -> Vec<TDim, TVal>
         {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const& offset) -> Idx<TOffsets>
-            {
-                return offset;
-            }
-        };
-        //! The unsigned integral x offset set trait specialization.
-        template<typename TOffsets, typename TOffset>
-        struct SetOffset<DimInt<0u>, TOffsets, TOffset, std::enable_if_t<std::is_integral_v<TOffsets>>>
+            return offsets;
+        }
+    };
+
+    //! The Vec offset set trait specialization.
+    template<typename TIdxIntegralConst, typename TDim, typename TVal, typename TOffset>
+    struct SetOffset<
+        TIdxIntegralConst,
+        Vec<TDim, TVal>,
+        TOffset,
+        std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+    {
+        ALPAKA_NO_HOST_ACC_WARNING
+        ALPAKA_FN_HOST_ACC static constexpr auto setOffset(Vec<TDim, TVal>& offsets, TOffset const& offset) -> void
         {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-            {
-                offsets = offset;
-            }
-        };
-    } // namespace trait
+            offsets[TIdxIntegralConst::value] = offset;
+        }
+    };
+
+    //! The unsigned integral x offset get trait specialization.
+    template<typename TIntegral>
+    struct GetOffsets<TIntegral, std::enable_if_t<std::is_integral_v<TIntegral>>>
+    {
+        ALPAKA_NO_HOST_ACC_WARNING
+        ALPAKA_FN_HOST_ACC constexpr auto operator()(TIntegral const& i) const
+        {
+            return Vec{i};
+        }
+    };
+
+    //! The unsigned integral x offset set trait specialization.
+    template<typename TIntegral, typename TOtherIntegral>
+    struct SetOffset<DimInt<0u>, TIntegral, TOtherIntegral, std::enable_if_t<std::is_integral_v<TOtherIntegral>>>
+    {
+        ALPAKA_NO_HOST_ACC_WARNING
+        ALPAKA_FN_HOST_ACC static auto setOffset(TIntegral const& offsets, TOtherIntegral const& offset) -> void
+        {
+            offsets = offset;
+        }
+    };
+} // namespace trait
 } // namespace alpaka

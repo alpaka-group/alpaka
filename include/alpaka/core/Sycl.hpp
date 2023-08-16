@@ -163,19 +163,22 @@ namespace alpaka::trait
     };
 
     //! The SYCL vectors' extent get trait specialization.
-    template<typename TExtent>
-    struct GetExtent<DimInt<Dim<TExtent>::value>, TExtent, std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
+    template<typename T>
+    struct GetExtents<T, std::enable_if_t<IsSyclBuiltInType<T>::value>>
     {
-        static auto getExtent(TExtent const& extent)
+        auto operator()(T const& value) const
         {
-            if constexpr(std::is_scalar_v<TExtent>)
-                return extent;
+            if constexpr(std::is_scalar_v<T>)
+                return value;
             else
-            {
-                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-                // to the requested dimension's vector element. Then return the element's value.
-                return extent.template swizzle<DimInt<Dim<TExtent>::value>::value>();
-            }
+                return impl(value, std::make_index_sequence<Dim<T>::value>{});
+        }
+
+    private:
+        template<std::size_t... Is>
+        auto impl(T const& value, std::index_sequence<Is...>) const
+        {
+            return Vec{value.template swizzle<Is>()...};
         }
     };
 
@@ -201,20 +204,9 @@ namespace alpaka::trait
     };
 
     //! The SYCL vectors' offset get trait specialization.
-    template<typename TOffsets>
-    struct GetOffset<DimInt<Dim<TOffsets>::value>, TOffsets, std::enable_if_t<IsSyclBuiltInType<TOffsets>::value>>
+    template<typename T>
+    struct GetOffsets<T, std::enable_if_t<IsSyclBuiltInType<T>::value>> : GetExtents<T>
     {
-        static auto getOffset(TOffsets const& offsets)
-        {
-            if constexpr(std::is_scalar_v<TOffsets>)
-                return offsets;
-            else
-            {
-                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-                // to the requested dimension's vector element. Then return the element's value.
-                return offsets.template swizzle<DimInt<Dim<TOffsets>::value>::value>();
-            }
-        }
     };
 
     //! The SYCL vectors' offset set trait specialization.

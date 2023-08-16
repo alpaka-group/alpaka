@@ -131,15 +131,12 @@ namespace alpaka
         };
 
         //! The BufCpu width get trait specialization.
-        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-        struct GetExtent<
-            TIdxIntegralConst,
-            BufCpu<TElem, TDim, TIdx>,
-            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+        template<typename TElem, typename TDim, typename TIdx>
+        struct GetExtents<BufCpu<TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getExtent(BufCpu<TElem, TDim, TIdx> const& extent) -> TIdx
+            ALPAKA_FN_HOST auto operator()(BufCpu<TElem, TDim, TIdx> const& buf)
             {
-                return extent.m_spBufCpuImpl->m_extentElements[TIdxIntegralConst::value];
+                return buf.m_spBufCpuImpl->m_extentElements;
             }
         };
 
@@ -288,12 +285,12 @@ namespace alpaka
         };
 
         //! The BufCpu offset get trait specialization.
-        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-        struct GetOffset<TIdxIntegralConst, BufCpu<TElem, TDim, TIdx>>
+        template<typename TElem, typename TDim, typename TIdx>
+        struct GetOffsets<BufCpu<TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getOffset(BufCpu<TElem, TDim, TIdx> const&) -> TIdx
+            ALPAKA_FN_HOST auto operator()(BufCpu<TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
             {
-                return 0u;
+                return Vec<TDim, TIdx>::zeros();
             }
         };
 

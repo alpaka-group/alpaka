@@ -40,11 +40,11 @@ namespace alpaka::detail
 
         template<typename TViewFwd>
         TaskCopySyclBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
-            : m_extent(getExtentVec(extent))
+            : m_extent(getExtents(extent))
             , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
 #    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            , m_dstExtent(getExtentVec(viewDst))
-            , m_srcExtent(getExtentVec(viewSrc))
+            , m_dstExtent(getExtents(viewDst))
+            , m_srcExtent(getExtents(viewSrc))
 #    endif
             , m_dstPitchBytes(getPitchBytesVec(viewDst))
             , m_srcPitchBytes(getPitchBytesVec(viewSrc))
@@ -182,9 +182,9 @@ namespace alpaka::detail
             , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
         {
             // all zero-sized extents are equivalent
-            ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
-            ALPAKA_ASSERT(getExtentVec(viewDst).prod() == 1u);
-            ALPAKA_ASSERT(getExtentVec(viewSrc).prod() == 1u);
+            ALPAKA_ASSERT(getExtents(extent).prod() == 1u);
+            ALPAKA_ASSERT(getExtents(viewDst).prod() == 1u);
+            ALPAKA_ASSERT(getExtents(viewSrc).prod() == 1u);
         }
 
         auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
