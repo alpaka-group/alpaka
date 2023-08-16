@@ -149,7 +149,7 @@ namespace alpaka
                 auto const dstWidth = getWidth(view);
                 auto const dstHeight = getHeight(view);
 #    endif
-                auto const dstPitchBytes = static_cast<std::size_t>(getPitchBytes<Dim<TView>::value - 1u>(view));
+                auto const dstPitchBytes = static_cast<std::size_t>(getPitchesInBytes(view)[Dim<TView>::value - 1u]);
                 auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
                 ALPAKA_ASSERT(extentWidth <= dstWidth);
                 ALPAKA_ASSERT(extentHeight <= dstHeight);
@@ -202,9 +202,9 @@ namespace alpaka
                 auto const dstHeight = getHeight(view);
                 auto const dstDepth = getDepth(view);
 #    endif
-                auto const dstPitchBytesX = static_cast<std::size_t>(getPitchBytes<Dim<TView>::value - 1u>(view));
+                auto const dstPitchBytesX = static_cast<std::size_t>(getPitchesInBytes(view)[Dim<TView>::value - 1u]);
                 auto const dstPitchBytesY
-                    = static_cast<std::size_t>(getPitchBytes<Dim<TView>::value - (2u % Dim<TView>::value)>(view));
+                    = static_cast<std::size_t>(getPitchesInBytes(view)[Dim<TView>::value - (2u % Dim<TView>::value)]);
                 auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
                 ALPAKA_ASSERT(extentWidth <= dstWidth);
                 ALPAKA_ASSERT(extentHeight <= dstHeight);

@@ -242,9 +242,9 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
 
     alpaka::memcpy(queueAcc, bufCAcc, bufCHost);
 
-    auto const pitchA = alpaka::getPitchBytes<1u>(bufAAcc);
-    auto const pitchB = alpaka::getPitchBytes<1u>(bufBAcc);
-    auto const pitchC = alpaka::getPitchBytes<1u>(bufCAcc);
+    auto const pitchA = alpaka::getPitchesInBytes(bufAAcc)[1];
+    auto const pitchB = alpaka::getPitchesInBytes(bufBAcc)[1];
+    auto const pitchC = alpaka::getPitchesInBytes(bufCAcc)[1];
 
     // Assumptions we make
     REQUIRE(pitchA % sizeof(Val) == 0);

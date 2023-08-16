@@ -24,7 +24,7 @@ namespace alpaka::internal
             Idx<TView>,
             Dim<TView>,
             decltype(getPtrNative(std::declval<TView>())),
-            decltype(getPitchBytes<0>(std::declval<TView>())),
+            decltype(getPitchesInBytes(std::declval<TView>())),
             decltype(getExtents(std::declval<TView>()))>> = true;
 
     template<typename TView>
@@ -99,7 +99,7 @@ namespace alpaka::internal
             auto ptr = reinterpret_cast<uintptr_t>(data());
             if constexpr(Dim::value > 0)
             {
-                auto const pitchesInBytes = getPitchBytesVec(*static_cast<TView const*>(this));
+                auto const pitchesInBytes = getPitchesInBytes(*static_cast<TView const*>(this));
                 for(std::size_t i = 0u; i < Dim::value; i++)
                 {
                     Idx const pitch

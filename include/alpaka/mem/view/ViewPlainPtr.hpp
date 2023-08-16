@@ -127,14 +127,12 @@ namespace alpaka
             }
         };
 
-        //! The ViewPlainPtr memory pitch get trait specialization.
-        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-            struct GetPitchBytes < TIdxIntegralConst,
-            ViewPlainPtr<TDev, TElem, TDim, TIdx>, std::enable_if_t<TIdxIntegralConst::value<TDim::value>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+        struct GetPitchesInBytes<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getPitchBytes(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> TIdx
+            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
             {
-                return view.m_pitchBytes[TIdxIntegralConst::value];
+                return view.m_pitchBytes;
             }
         };
 

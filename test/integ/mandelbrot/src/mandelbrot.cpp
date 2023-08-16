@@ -203,7 +203,7 @@ auto writeTgaColorImage(std::string const& fileName, TBuf const& bufRgba) -> voi
     ALPAKA_ASSERT(bufWidthColors >= 1);
     auto const bufHeightColors = alpaka::getHeight(bufRgba);
     ALPAKA_ASSERT(bufHeightColors >= 1);
-    auto const bufPitchBytes = alpaka::getPitchBytes<alpaka::Dim<TBuf>::value - 1u>(bufRgba);
+    auto const bufPitchBytes = alpaka::getPitchesInBytes(bufRgba)[alpaka::Dim<TBuf>::value - 1u];
     ALPAKA_ASSERT(bufPitchBytes >= bufWidthBytes);
 
     std::ofstream ofs(fileName, std::ofstream::out | std::ofstream::binary);
@@ -321,7 +321,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
         alpaka::getPtrNative(bufColorAcc),
         numRows,
         numCols,
-        alpaka::getPitchBytes<1u>(bufColorAcc),
+        alpaka::getPitchesInBytes(bufColorAcc)[1],
         fMinR,
         fMaxR,
         fMinI,

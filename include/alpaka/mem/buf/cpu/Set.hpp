@@ -35,7 +35,7 @@ namespace alpaka
 #if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                 , m_dstExtent(getExtents(view))
 #endif
-                , m_dstPitchBytes(getPitchBytesVec(view))
+                , m_dstPitchBytes(getPitchesInBytes(view))
                 , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
             {
                 ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));

@@ -35,7 +35,7 @@ namespace alpaka::test
                 : m_nativePtr(getPtrNative(view))
                 , m_currentIdx(idx)
                 , m_extents(getExtents(view))
-                , m_pitchBytes(getPitchBytesVec(view))
+                , m_pitchBytes(getPitchesInBytes(view))
             {
             }
 

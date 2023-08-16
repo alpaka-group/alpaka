@@ -33,11 +33,11 @@ namespace alpaka::test
     {
         alpaka::test::testViewImmutable<TElem>(view, dev, extentView, offsetView);
 
-        // alpaka::trait::GetPitchBytes
+        // alpaka::trait::GetPitchesInBytes
         // The pitch of the view has to be identical to the pitch of the underlying buffer in all dimensions.
         {
-            auto const pitchBuf = alpaka::getPitchBytesVec(buf);
-            auto const pitchView = alpaka::getPitchBytesVec(view);
+            auto const pitchBuf = alpaka::getPitchesInBytes(buf);
+            auto const pitchView = alpaka::getPitchesInBytes(view);
 
             for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
             {
@@ -51,7 +51,7 @@ namespace alpaka::test
             auto viewPtrNative = reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(buf));
             if constexpr(TDim::value > 0)
             {
-                auto const pitchBuf = alpaka::getPitchBytesVec(buf);
+                auto const pitchBuf = alpaka::getPitchesInBytes(buf);
                 for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
                 {
                     auto const pitch
