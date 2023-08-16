@@ -30,7 +30,7 @@ namespace alpaka::test
         alpaka::test::testViewImmutable<float const>(view, dev, extents, offsets);
 
         // test copying from view
-        auto dstBuf = allocBuf<float, TIdx>(dev, getExtentVec(view));
+        auto dstBuf = allocBuf<float, TIdx>(dev, getExtents(view));
         memcpy(queue, dstBuf, view);
         wait(queue);
         verifyViewsEqual<TAcc>(dstBuf, view);

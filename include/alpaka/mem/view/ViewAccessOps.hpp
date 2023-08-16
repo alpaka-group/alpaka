@@ -25,7 +25,7 @@ namespace alpaka::internal
             Dim<TView>,
             decltype(getPtrNative(std::declval<TView>())),
             decltype(getPitchBytes<0>(std::declval<TView>())),
-            decltype(getExtent<0>(std::declval<TView>()))>> = true;
+            decltype(getExtents(std::declval<TView>()))>> = true;
 
     template<typename TView>
     struct ViewAccessOps
@@ -127,7 +127,7 @@ namespace alpaka::internal
         template<std::size_t TDim, typename TIdx>
         ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) -> reference
         {
-            auto extent = getExtentVec(*static_cast<TView*>(this));
+            auto extent = getExtents(*static_cast<TView*>(this));
             if(!(index < extent).foldrAll(std::logical_and<bool>(), true))
             {
                 std::stringstream msg;
@@ -140,7 +140,7 @@ namespace alpaka::internal
         template<std::size_t TDim, typename TIdx>
         [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
         {
-            auto extent = getExtentVec(*static_cast<TView const*>(this));
+            auto extent = getExtents(*static_cast<TView const*>(this));
             if(!(index < extent).foldrAll(std::logical_and<bool>(), true))
             {
                 std::stringstream msg;

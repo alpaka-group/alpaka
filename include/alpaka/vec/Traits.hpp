@@ -5,11 +5,10 @@
 
 #pragma once
 
+#include "alpaka/core/Common.hpp"
 #include "alpaka/dim/Traits.hpp"
-#include "alpaka/extent/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/meta/IntegerSequence.hpp"
-#include "alpaka/offset/Traits.hpp"
 
 #include <utility>
 

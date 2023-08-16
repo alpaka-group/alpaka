@@ -58,9 +58,9 @@ namespace alpaka
                 constexpr auto idx = TIdx::value;
                 constexpr auto viewDim = Dim<TView>::value;
                 if constexpr(idx < viewDim - 1)
-                    return getExtent<idx>(view) * GetPitchBytes<DimInt<idx + 1>, TView>::getPitchBytes(view);
+                    return getExtents(view)[idx] * GetPitchBytes<DimInt<idx + 1>, TView>::getPitchBytes(view);
                 else if constexpr(idx == viewDim - 1)
-                    return getExtent<viewDim - 1>(view) * static_cast<ViewIdx>(sizeof(Elem<TView>));
+                    return getExtents(view)[viewDim - 1] * static_cast<ViewIdx>(sizeof(Elem<TView>));
                 else
                     return static_cast<ViewIdx>(sizeof(Elem<TView>));
                 ALPAKA_UNREACHABLE({});
@@ -185,7 +185,7 @@ namespace alpaka
     template<typename TViewFwd, typename TQueue>
     ALPAKA_FN_HOST auto memset(TQueue& queue, TViewFwd&& view, std::uint8_t const& byte) -> void
     {
-        enqueue(queue, createTaskMemset(std::forward<TViewFwd>(view), byte, getExtentVec(view)));
+        enqueue(queue, createTaskMemset(std::forward<TViewFwd>(view), byte, getExtents(view)));
     }
 
     //! Creates a memory copy task.
@@ -250,7 +250,7 @@ namespace alpaka
     template<typename TViewSrc, typename TViewDstFwd, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(TQueue& queue, TViewDstFwd&& viewDst, TViewSrc const& viewSrc) -> void
     {
-        enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), viewSrc, getExtentVec(viewSrc)));
+        enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), viewSrc, getExtents(viewSrc)));
     }
 
     namespace detail
@@ -341,7 +341,7 @@ namespace alpaka
         detail::Print<DimInt<0u>, TView>::print(
             view,
             getPtrNative(view),
-            getExtentVec(view),
+            getExtents(view),
             os,
             elementSeparator,
             rowSeparator,
@@ -447,7 +447,7 @@ namespace alpaka
     template<typename TDev, typename TContainer>
     auto createView(TDev const& dev, TContainer& con)
     {
-        return createView(dev, std::data(con), getExtentVec(con));
+        return createView(dev, std::data(con), getExtents(con));
     }
 
     //! Creates a view to a contiguous container of device-accessible memory.
@@ -531,7 +531,8 @@ namespace alpaka
                 template<typename TView, std::size_t... Is>
                 ALPAKA_FN_HOST auto makeExtents(TView const& view, std::index_sequence<Is...>)
                 {
-                    return std::experimental::dextents<Idx<TView>, Dim<TView>::value>{getExtent<Is>(view)...};
+                    auto const ex = getExtents(view);
+                    return std::experimental::dextents<Idx<TView>, Dim<TView>::value>{ex[Is]...};
                 }
 
                 template<typename TView, std::size_t... Is>

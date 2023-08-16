@@ -67,7 +67,7 @@ namespace alpaka::test
         View view(
             alpaka::getPtrNative(buf),
             alpaka::getDev(buf),
-            alpaka::getExtentVec(buf),
+            alpaka::getExtents(buf),
             alpaka::getPitchBytesVec(buf));
 
         alpaka::test::testViewPlainPtrMutable<TAcc>(view, dev, extentView, offsetView);
@@ -93,7 +93,7 @@ namespace alpaka::test
         View const view(
             alpaka::getPtrNative(buf),
             alpaka::getDev(buf),
-            alpaka::getExtentVec(buf),
+            alpaka::getExtents(buf),
             alpaka::getPitchBytesVec(buf));
 
         alpaka::test::testViewPlainPtrImmutable<TAcc>(view, dev, extentView, offsetView);
@@ -117,7 +117,7 @@ namespace alpaka::test
         View view(
             alpaka::getPtrNative(buf),
             alpaka::getDev(buf),
-            alpaka::getExtentVec(buf),
+            alpaka::getExtents(buf),
             alpaka::getPitchBytesVec(buf));
 
         // copy-constructor
@@ -159,7 +159,7 @@ TEMPLATE_TEST_CASE("createView", "[memView]", (std::array<float, 4>), std::vecto
         auto view = alpaka::createView(dev, a.data(), 4);
         STATIC_REQUIRE(std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, int>>);
         STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
-        CHECK(alpaka::getExtent<0>(view) == 4);
+        CHECK(alpaka::getExtents(view)[0] == 4);
     }
 
     // container and size overload
@@ -167,7 +167,7 @@ TEMPLATE_TEST_CASE("createView", "[memView]", (std::array<float, 4>), std::vecto
         auto view = alpaka::createView(dev, a, 4L);
         STATIC_REQUIRE(std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, long>>);
         STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
-        CHECK(alpaka::getExtent<0>(view) == 4);
+        CHECK(alpaka::getExtents(view)[0] == 4);
     }
 
     // container overload
@@ -176,7 +176,7 @@ TEMPLATE_TEST_CASE("createView", "[memView]", (std::array<float, 4>), std::vecto
         STATIC_REQUIRE(
             std::is_same_v<decltype(view), alpaka::ViewPlainPtr<Dev, float, alpaka::DimInt<1>, std::size_t>>);
         STATIC_REQUIRE(alpaka::Dim<decltype(view)>::value == 1);
-        CHECK(alpaka::getExtent<0>(view) == 4);
+        CHECK(alpaka::getExtents(view)[0] == 4);
     }
 
     alpaka::test::DefaultQueue<Dev> queue(dev);

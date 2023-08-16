@@ -9,6 +9,7 @@
 #include "alpaka/core/Common.hpp"
 #include "alpaka/core/Utility.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/extent/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
 
@@ -310,8 +311,8 @@ namespace alpaka
         }
         else
             return subDivideGridElems(
-                getExtentVec(gridElemExtent),
-                getExtentVec(threadElemExtents),
+                getExtents(gridElemExtent),
+                getExtents(threadElemExtents),
                 getAccDevProps<TAcc>(dev),
                 blockThreadMustDivideGridThreadExtent,
                 gridBlockExtentSubDivRestrictions);
