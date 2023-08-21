@@ -3,6 +3,7 @@
  */
 
 #include <alpaka/core/BoostPredef.hpp>
+#include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/mem/view/ViewSubView.hpp>
 #include <alpaka/test/Extent.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -158,4 +159,74 @@ TEMPLATE_LIST_TEST_CASE("viewSubViewOffsetTest", "[memView]", alpaka::test::Test
 TEMPLATE_LIST_TEST_CASE("viewSubViewOffsetConstTest", "[memView]", alpaka::test::TestAccs)
 {
     alpaka::test::testViewSubViewOffsetConst<TestType, float>();
+}
+
+TEST_CASE("viewSubViewExample", "[memView]")
+{
+    using Dev = alpaka::DevCpu;
+    using Dim = alpaka::DimInt<2>;
+    using Idx = int;
+    using Vec = alpaka::Vec<Dim, Idx>;
+
+    auto const platform = alpaka::PlatformCpu{};
+    auto const dev = alpaka::getDevByIdx(platform, 0);
+
+    auto const extent = Vec{4, 5};
+    auto buf = alpaka::allocBuf<int, Idx>(dev, extent);
+
+    auto checkBufContent = [&](std::vector<std::vector<int>> const& data)
+    {
+        for(std::size_t row = 0; row < 4; row++)
+            for(std::size_t j = 0; j < 5; j++)
+            {
+                CAPTURE(row, j);
+                CHECK(buf[Vec{static_cast<Idx>(row), static_cast<Idx>(j)}] == data[row][j]);
+            }
+    };
+
+    for(Idx i = 0; i < 4; i++)
+        for(Idx j = 0; j < 5; j++)
+            buf.at(Vec{i, j}) = 1;
+    checkBufContent({{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}});
+
+    {
+        // write a row
+        auto subView = alpaka::ViewSubView<Dev, int, Dim, Idx>{buf, Vec{1, 5}, Vec{2, 0}};
+        for(Idx i = 0; i < 5; i++)
+            subView.at(Vec{0, i}) = 2;
+    }
+    checkBufContent({{1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {2, 2, 2, 2, 2}, {1, 1, 1, 1, 1}});
+
+    {
+        // write part of a column
+        auto subView = alpaka::ViewSubView<Dev, int, Dim, Idx>{buf, Vec{3, 1}, Vec{0, 2}};
+        for(Idx i = 0; i < 3; i++)
+            subView.at(Vec{i, 0}) = 3;
+    }
+    checkBufContent({{1, 1, 3, 1, 1}, {1, 1, 3, 1, 1}, {2, 2, 3, 2, 2}, {1, 1, 1, 1, 1}});
+
+    {
+        // write the center without a 1-elem border
+        auto subView = alpaka::ViewSubView<Dev, int, Dim, Idx>{buf, Vec{2, 3}, Vec{1, 1}};
+        for(Idx i = 0; i < 2; i++)
+            for(Idx j = 0; j < 3; j++)
+                subView.at(Vec{i, j}) = 4;
+        checkBufContent({{1, 1, 3, 1, 1}, {1, 4, 4, 4, 1}, {2, 4, 4, 4, 2}, {1, 1, 1, 1, 1}});
+
+        {
+            // write the first column of the center region
+            auto subSubView = alpaka::ViewSubView<Dev, int, Dim, Idx>{subView, Vec{2, 1}, Vec{0, 0}};
+            for(Idx i = 0; i < 2; i++)
+                subSubView.at(Vec{i, 0}) = 5;
+        }
+        checkBufContent({{1, 1, 3, 1, 1}, {1, 5, 4, 4, 1}, {2, 5, 4, 4, 2}, {1, 1, 1, 1, 1}});
+
+        {
+            // write the second row of the center region, skipping the first
+            auto subSubView = alpaka::ViewSubView<Dev, int, Dim, Idx>{subView, Vec{1, 2}, Vec{1, 1}};
+            for(Idx i = 0; i < 2; i++)
+                subSubView.at(Vec{0, i}) = 6;
+        }
+        checkBufContent({{1, 1, 3, 1, 1}, {1, 5, 4, 4, 1}, {2, 5, 6, 6, 2}, {1, 1, 1, 1, 1}});
+    }
 }
