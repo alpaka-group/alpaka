@@ -72,11 +72,7 @@ TEMPLATE_LIST_TEST_CASE("memBufBasicTest", "[memBuf]", alpaka::test::TestAccs)
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
-
-    auto const extent
-        = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-
-    testBufferMutable<Acc>(extent);
+    testBufferMutable<Acc>(alpaka::test::extentBuf<Dim, Idx>);
 }
 
 TEMPLATE_LIST_TEST_CASE("memBufZeroSizeTest", "[memBuf]", alpaka::test::TestAccs)
@@ -98,9 +94,7 @@ TEMPLATE_LIST_TEST_CASE("memBufAsyncBasicTest", "[memBuf]", alpaka::test::TestAc
 
     if constexpr(alpaka::hasAsyncBufSupport<alpaka::Dev<Acc>, Dim>)
     {
-        auto const extent
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-        testAsyncBufferMutable<Acc>(extent);
+        testAsyncBufferMutable<Acc>(alpaka::test::extentBuf<Dim, Idx>);
     }
     else
     {
@@ -147,11 +141,7 @@ TEMPLATE_LIST_TEST_CASE("memBufConstTest", "[memBuf]", alpaka::test::TestAccs)
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
-
-    auto const extent
-        = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-
-    testBufferImmutable<Acc>(extent);
+    testBufferImmutable<Acc>(alpaka::test::extentBuf<Dim, Idx>);
 }
 
 template<typename TAcc>
@@ -199,9 +189,7 @@ TEMPLATE_LIST_TEST_CASE("memBufAsyncConstTest", "[memBuf]", alpaka::test::TestAc
 
     if constexpr(alpaka::hasAsyncBufSupport<alpaka::Dev<Acc>, Dim>)
     {
-        auto const extent
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-        testAsyncBufferImmutable<Acc>(extent);
+        testAsyncBufferImmutable<Acc>(alpaka::test::extentBuf<Dim, Idx>);
     }
     else
     {
@@ -264,11 +252,7 @@ TEMPLATE_LIST_TEST_CASE("memBufAccessorAdaptorTest", "[memBuf]", alpaka::test::T
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
-
-    auto extent = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-    auto index = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>();
-
-    testBufferAccessorAdaptor<Acc>(extent, index);
+    testBufferAccessorAdaptor<Acc>(alpaka::test::extentBuf<Dim, Idx>, alpaka::test::offset<Dim, Idx>);
 }
 
 TEMPLATE_LIST_TEST_CASE("memBufMove", "[memBuf]", alpaka::test::TestAccs)

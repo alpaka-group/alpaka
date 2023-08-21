@@ -383,17 +383,15 @@ namespace alpaka
     template<typename TView>
     auto getPitchBytesVec(TView const& view = TView()) -> Vec<Dim<TView>, Idx<TView>>
     {
-        return createVecFromIndexedFn<Dim<TView>, detail::CreatePitchBytes>(view);
+        return Vec<Dim<TView>, Idx<TView>>([&](auto ic) { return getPitchBytes<decltype(ic)::value>(view); });
     }
 
     //! \return The pitch but only the last N elements.
     template<typename TDim, typename TView>
     ALPAKA_FN_HOST auto getPitchBytesVecEnd(TView const& view = TView()) -> Vec<TDim, Idx<TView>>
     {
-        using IdxOffset = std::integral_constant<
-            std::intmax_t,
-            static_cast<std::intmax_t>(Dim<TView>::value) - static_cast<std::intmax_t>(TDim::value)>;
-        return createVecFromIndexedFnOffset<TDim, detail::CreatePitchBytes, IdxOffset>(view);
+        return Vec<TDim, Idx<TView>>(
+            [&](auto ic) { return getPitchBytes<decltype(ic)::value + Dim<TView>::value - TDim::value>(view); });
     }
 
     //! \return A view to static device memory.
