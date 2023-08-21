@@ -32,43 +32,6 @@ namespace alpaka
     template<typename TDim, typename TVal>
     class Vec;
 
-    //! Single value constructor helper.
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TDim,
-        template<std::size_t>
-        class TTFnObj,
-        typename... TArgs,
-        typename TIdxSize,
-        TIdxSize... TIndices>
-    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-        std::integer_sequence<TIdxSize, TIndices...> const& /* indices */,
-        TArgs&&... args)
-    {
-        return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
-            (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
-    }
-    //! Creator using func<idx>(args...) to initialize all values of the vector.
-    //! The idx is in the range [0, TDim].
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TDim, template<std::size_t> class TTFnObj, typename... TArgs>
-    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFn(TArgs&&... args)
-    {
-        using IdxSequence = std::make_integer_sequence<typename TDim::value_type, TDim::value>;
-        return createVecFromIndexedFnArbitrary<TDim, TTFnObj>(IdxSequence(), std::forward<TArgs>(args)...);
-    }
-
-    //! Creator using func<idx>(args...) to initialize all values of the vector.
-    //! The idx is in the range [TIdxOffset, TIdxOffset + TDim].
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TDim, template<std::size_t> class TTFnObj, typename TIdxOffset, typename... TArgs>
-    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnOffset(TArgs&&... args)
-    {
-        using IdxSubSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>;
-        using IdxSubSequence = meta::ConvertIntegerSequence<typename TIdxOffset::value_type, IdxSubSequenceSigned>;
-        return createVecFromIndexedFnArbitrary<TDim, TTFnObj>(IdxSubSequence(), std::forward<TArgs>(args)...);
-    }
-
     //! A n-dimensional vector.
     template<typename TDim, typename TVal>
     class Vec final
@@ -115,6 +78,31 @@ namespace alpaka
         }
 #endif
 
+        //! Generator constructor.
+        //! Initializes the vector with the values returned from generator(IC) in order, where IC::value runs from 0 to
+        //! TDim - 1 (inclusive).
+#if BOOST_COMP_NVCC && BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(11, 3, 0)                                              \
+    && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 4, 0)
+        template<typename F>
+        ALPAKA_FN_HOST_ACC constexpr explicit Vec(
+            F&& generator,
+            std::void_t<decltype(generator(std::integral_constant<std::size_t, 0>{}))>* ignore = nullptr)
+#else
+        template<typename F, std::enable_if_t<std::is_invocable_v<F, std::integral_constant<std::size_t, 0>>, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr explicit Vec(F&& generator)
+#endif
+            : Vec(std::forward<F>(generator), std::make_integer_sequence<TVal, TDim::value>{})
+        {
+        }
+
+    private:
+        template<typename F, TVal... Is>
+        ALPAKA_FN_HOST_ACC constexpr explicit Vec(F&& generator, std::integer_sequence<TVal, Is...>)
+            : m_data{generator(std::integral_constant<TVal, Is>{})...}
+        {
+        }
+
+    public:
         //! \brief Single value constructor.
         //!
         //! Creates a vector with all values set to val.

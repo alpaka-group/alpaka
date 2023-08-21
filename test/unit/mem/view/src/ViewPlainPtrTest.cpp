@@ -58,8 +58,7 @@ namespace alpaka::test
         auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        auto const extentBuf
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
+        auto const extentBuf = alpaka::test::extentBuf<Dim, Idx>;
         auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
 
         auto const extentView = extentBuf;
@@ -84,8 +83,7 @@ namespace alpaka::test
         auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        auto const extentBuf
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
+        auto const extentBuf = alpaka::test::extentBuf<Dim, Idx>;
         auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
 
         auto const extentView = extentBuf;
@@ -110,9 +108,7 @@ namespace alpaka::test
         auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        auto const extentBuf
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-        auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
+        auto buf = alpaka::allocBuf<TElem, Idx>(dev, alpaka::test::extentBuf<Dim, Idx>);
 
         View view(
             alpaka::getPtrNative(buf),

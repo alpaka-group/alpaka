@@ -126,12 +126,9 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingMemcpyTest", "[memBuf]", TestAccWithDataTy
     {
         TestContainer<Dim, Idx, Acc, Data> slicingTest;
 
-        auto const extents
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-        auto const extentsSubView
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView>();
-        auto const offsets
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>();
+        auto const extents = alpaka::test::extentBuf<Dim, Idx>;
+        auto const extentsSubView = alpaka::test::extentSubView<Dim, Idx>;
+        auto const offsets = alpaka::test::offset<Dim, Idx>;
 
         // This is the initial buffer.
         auto const indexedBuffer = slicingTest.createHostBuffer(extents, true);
@@ -182,12 +179,9 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingMemsetTest", "[memBuf]", TestAccWithDataTy
     {
         TestContainer<Dim, Idx, Acc, Data> slicingTest;
 
-        auto const extents
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
-        auto const extentsSubView
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView>();
-        auto const offsets
-            = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>();
+        auto const extents = alpaka::test::extentBuf<Dim, Idx>;
+        auto const extentsSubView = alpaka::test::extentSubView<Dim, Idx>;
+        auto const offsets = alpaka::test::offset<Dim, Idx>;
 
         // This is the initial buffer.
         auto const indexedBuffer = slicingTest.createHostBuffer(extents, true);
