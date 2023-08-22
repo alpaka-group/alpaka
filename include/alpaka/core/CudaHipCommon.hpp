@@ -137,62 +137,6 @@ namespace alpaka
             }
         };
 
-        //! The CUDA/HIP vectors extent set trait specialization.
-        template<typename TExtent, typename TExtentVal>
-        struct SetExtent<
-            DimInt<Dim<TExtent>::value - 1u>,
-            TExtent,
-            TExtentVal,
-            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 1)>>
-        {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-            {
-                extent.x = extentVal;
-            }
-        };
-        //! The CUDA/HIP vectors extent set trait specialization.
-        template<typename TExtent, typename TExtentVal>
-        struct SetExtent<
-            DimInt<Dim<TExtent>::value - 2u>,
-            TExtent,
-            TExtentVal,
-            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 2)>>
-        {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-            {
-                extent.y = extentVal;
-            }
-        };
-        //! The CUDA/HIP vectors extent set trait specialization.
-        template<typename TExtent, typename TExtentVal>
-        struct SetExtent<
-            DimInt<Dim<TExtent>::value - 3u>,
-            TExtent,
-            TExtentVal,
-            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 3)>>
-        {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-            {
-                extent.z = extentVal;
-            }
-        };
-        //! The CUDA/HIP vectors extent set trait specialization.
-        template<typename TExtent, typename TExtentVal>
-        struct SetExtent<
-            DimInt<Dim<TExtent>::value - 4u>,
-            TExtent,
-            TExtentVal,
-            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 4)>>
-        {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-            {
-                extent.w = extentVal;
-            }
-        };
 
         template<typename TCudaHipBuiltin>
         struct GetOffsets<TCudaHipBuiltin, std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TCudaHipBuiltin>>>
