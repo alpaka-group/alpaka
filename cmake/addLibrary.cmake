@@ -28,5 +28,12 @@ macro(alpaka_add_library libraryName)
                 set_source_files_properties(${_file} PROPERTIES LANGUAGE CUDA)
             endif()
         endforeach()
+
+        # We have to set this here since CUDA_SEPARABLE_COMPILATION is not propagated by the alpaka::alpaka target.
+        if(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL ON)
+            set_property(TARGET ${In_Name} PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+        elseif(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL OFF)
+            set_property(TARGET ${In_Name} PROPERTY CUDA_SEPARABLE_COMPILATION OFF)
+        endif()
     endif()
 endmacro()

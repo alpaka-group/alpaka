@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+# Copyright 2023 Benjamin Worpitz, Jeffrey Kelling, Bernhard Manfred Gruber, Jan Stephan
 # SPDX-License-Identifier: MPL-2.0
 #
 
@@ -86,8 +86,9 @@ cd build/
     "$(env2cmake alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE)" "$(env2cmake alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)" \
     "$(env2cmake alpaka_OFFLOAD_MAX_BLOCK_SIZE)" "$(env2cmake alpaka_DEBUG_OFFLOAD_ASSUME_HOST)" \
     "$(env2cmake TBB_DIR)" \
+    "$(env2cmake alpaka_RELOCATABLE_DEVICE_CODE)" \
     "$(env2cmake alpaka_ACC_GPU_CUDA_ENABLE)" "$(env2cmake alpaka_ACC_GPU_CUDA_ONLY_MODE)" "$(env2cmake CMAKE_CUDA_ARCHITECTURES)" "$(env2cmake CMAKE_CUDA_COMPILER)" "$(env2cmake CMAKE_CUDA_FLAGS)" \
-    "$(env2cmake alpaka_CUDA_FAST_MATH)" "$(env2cmake alpaka_CUDA_FTZ)" "$(env2cmake alpaka_CUDA_SHOW_REGISTER)" "$(env2cmake alpaka_CUDA_KEEP_FILES)" "$(env2cmake alpaka_CUDA_EXPT_EXTENDED_LAMBDA)" "$(env2cmake CMAKE_CUDA_SEPARABLE_COMPILATION)" \
+    "$(env2cmake alpaka_CUDA_FAST_MATH)" "$(env2cmake alpaka_CUDA_FTZ)" "$(env2cmake alpaka_CUDA_SHOW_REGISTER)" "$(env2cmake alpaka_CUDA_KEEP_FILES)" "$(env2cmake alpaka_CUDA_EXPT_EXTENDED_LAMBDA)" \
     "$(env2cmake GPU_TARGETS)" "$(env2cmake alpaka_ACC_GPU_HIP_ENABLE)" "$(env2cmake alpaka_ACC_GPU_HIP_ONLY_MODE)" \
     "$(env2cmake alpaka_ACC_SYCL_ENABLE)" "$(env2cmake alpaka_SYCL_ONEAPI_CPU)" "$(env2cmake alpaka_SYCL_ONEAPI_CPU_ISA)" \
     "$(env2cmake alpaka_DEBUG)" "$(env2cmake alpaka_CI)" "$(env2cmake alpaka_CHECK_HEADERS)" "$(env2cmake alpaka_CXX_STANDARD)" "$(env2cmake alpaka_USE_MDSPAN)" "$(env2cmake CMAKE_INSTALL_PREFIX)" \
