@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
+#include "alpaka/vec/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <type_traits>
@@ -136,10 +137,11 @@ namespace alpaka
 
     namespace detail
     {
-        //! Maps a linear index to a N dimensional index assuming a buffer wihtout padding.
+        //! Maps a linear index to a N dimensional index assuming a buffer without padding.
         template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TSfinae = void>
         struct MapIdxPitchBytes;
-        //! Maps a N dimensional index to the same N dimensional index assuming a buffer wihtout padding.
+
+        //! Maps a N dimensional index to the same N dimensional index assuming a buffer without padding.
         template<std::size_t TidxDim>
         struct MapIdxPitchBytes<TidxDim, TidxDim>
         {
@@ -156,7 +158,7 @@ namespace alpaka
                 return idx;
             }
         };
-        //! Maps a 1 dimensional index to a N dimensional index assuming a buffer wihtout padding.
+        //! Maps a 1 dimensional index to a N dimensional index assuming a buffer without padding.
         template<std::size_t TidxDimOut>
         struct MapIdxPitchBytes<TidxDimOut, 1u, std::enable_if_t<(TidxDimOut > 1u)>>
         {
@@ -170,15 +172,15 @@ namespace alpaka
                 Vec<DimInt<1u>, TElem> const& idx,
                 Vec<DimInt<TidxDimOut>, TElem> const& pitch) -> Vec<DimInt<TidxDimOut>, TElem>
             {
-                auto idxNd = Vec<DimInt<TidxDimOut>, TElem>::all(0u);
+                auto idxNd = Vec<DimInt<TidxDimOut>, TElem>::zeros();
 
                 constexpr std::size_t lastIdx = TidxDimOut - 1u;
 
                 TElem tmp = idx[0u];
                 for(std::size_t d(0u); d < lastIdx; ++d)
                 {
-                    idxNd[d] = static_cast<TElem>(tmp / pitch[d + 1]);
-                    tmp %= pitch[d + 1];
+                    idxNd[d] = static_cast<TElem>(tmp / pitch[d]);
+                    tmp %= pitch[d];
                 }
                 idxNd[lastIdx] = tmp;
 
@@ -199,13 +201,8 @@ namespace alpaka
                 Vec<DimInt<TidxDimIn>, TElem> const& idx,
                 Vec<DimInt<TidxDimIn>, TElem> const& pitch) -> Vec<DimInt<1u>, TElem>
             {
-                constexpr auto lastDim = TidxDimIn - 1;
-                TElem idx1d = idx[lastDim];
-                for(std::size_t d(0u); d < lastDim; ++d)
-                {
-                    idx1d = static_cast<TElem>(idx1d + pitch[d + 1] * idx[d]);
-                }
-                return {idx1d};
+                using DimMinusOne = DimInt<TidxDimIn - 1>;
+                return {idx.back() + (subVecBegin<DimMinusOne>(pitch) * subVecBegin<DimMinusOne>(idx)).sum()};
             }
         };
 
@@ -234,7 +231,7 @@ namespace alpaka
         };
     } // namespace detail
 
-    //! Maps a N dimensional index to a N dimensional position based on
+    //! Maps an N dimensional index to a N dimensional position based on
     //! pitch in a buffer without padding or a byte buffer.
     //!
     //! \tparam TidxDimOut Dimension of the index vector to map to.

@@ -182,16 +182,18 @@ namespace alpaka
         struct GetPitchesInBytes<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
         {
             ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) const
+                -> Vec<TDim, TIdx>
             {
                 Vec<TDim, TIdx> v{};
                 if constexpr(TDim::value > 0)
                 {
+                    v.back() = sizeof(TElem);
                     if constexpr(TDim::value > 1)
-                        v.back() = buf.m_rowPitchInBytes;
-                    else
-                        v.back() = buf.m_extentElements.back() * sizeof(TElem);
-                    for(int i = static_cast<int>(TDim::value) - 2; i >= 0; i--)
-                        v[i] = buf.m_extentElements[i] * v[i + 1];
+                    {
+                        v[TDim::value - 2] = static_cast<TIdx>(buf.m_rowPitchInBytes);
+                        for(TIdx i = TDim::value - 2; i > 0; i--)
+                            v[i - 1] = buf.m_extentElements[i] * v[i];
+                    }
                 }
                 return v;
             }
