@@ -192,10 +192,10 @@ var NAVTREEINDEX6 =
 "mem_2view_2Traits_8hpp.html":[4,0,0,0,14,3,0],
 "mem_2view_2Traits_8hpp.html#a0580041d23c64bdc559cf814a5789c40":[4,0,0,0,14,3,0,10],
 "mem_2view_2Traits_8hpp.html#a1f44bd5b99e7faa8d562aff41b4c8668":[4,0,0,0,14,3,0,7],
+"mem_2view_2Traits_8hpp.html#a257fa1ef994ba619a56300162c2a9dcc":[4,0,0,0,14,3,0,12],
 "mem_2view_2Traits_8hpp.html#a3e0cc673cdcdfc1f6b901a6bc09d975d":[4,0,0,0,14,3,0,6],
 "mem_2view_2Traits_8hpp.html#a420138ddf5280874ce5578b2ba294547":[4,0,0,0,14,3,0,16],
 "mem_2view_2Traits_8hpp.html#a4764e4542b9f8f9bfe0d317f4aefd165":[4,0,0,0,14,3,0,21],
-"mem_2view_2Traits_8hpp.html#a57b70a30fda25553ded3fe93739b0c95":[4,0,0,0,14,3,0,12],
 "mem_2view_2Traits_8hpp.html#a5f9c92013b75ef4c056051ce4fb100da":[4,0,0,0,14,3,0,15],
 "mem_2view_2Traits_8hpp.html#a6e4d90e1f7462d76a92f07f09a263d93":[4,0,0,0,14,3,0,24],
 "mem_2view_2Traits_8hpp.html#a7524e1a8dac8cd18d9b9e07b10e36054":[4,0,0,0,14,3,0,19],
@@ -244,10 +244,10 @@ var NAVTREEINDEX6 =
 "namespacealpaka.html#a21d637e29eec7421a73c4500aa8a16f1":[2,0,0,153],
 "namespacealpaka.html#a21e0ed18c2175f678cfbb516ffe20664":[2,0,0,151],
 "namespacealpaka.html#a24f5f15e3db738c65f2f086249940e4c":[2,0,0,287],
+"namespacealpaka.html#a257fa1ef994ba619a56300162c2a9dcc":[2,0,0,191],
 "namespacealpaka.html#a27ab73d92933109a6e66dea772fbfdbb":[2,0,0,217],
 "namespacealpaka.html#a281336ade8dfb8b3a125b402b699f71e":[2,0,0,277],
 "namespacealpaka.html#a282c76b0e23fbbe6ce912a0e4e3d7a0b":[2,0,0,276],
 "namespacealpaka.html#a28aba9f9b9c76167878d4d304943d54b":[2,0,0,317],
-"namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[2,0,0,321],
-"namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed":[2,0,0,284]
+"namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[2,0,0,321]
 };

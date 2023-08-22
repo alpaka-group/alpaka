@@ -71,7 +71,7 @@ var NAVTREEINDEX =
 "classalpaka_1_1ViewSubView.html#a0532d4d290e63387290dade8a68364ef",
 "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray.html",
 "extent_2Traits_8hpp.html#aeeb5b4689cf4dca8de2d9016a74d10e8",
-"namespacealpaka.html#a2a811570d2074f237f89c9910b82b44c",
+"namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed",
 "namespacealpaka_1_1math.html#a37d8372a12156afd5d5147542c5b72df",
 "platform_2Traits_8hpp.html#a87d64705ec25ad0c9a25a218118c0ad4",
 "structalpaka_1_1AtomicSub.html",

@@ -195,7 +195,7 @@ var namespacealpaka =
     [ "createView", "namespacealpaka.html#afac180d8eebadd1b7e96eb61517dd69f", null ],
     [ "createView", "namespacealpaka.html#a0580041d23c64bdc559cf814a5789c40", null ],
     [ "createView", "namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903", null ],
-    [ "createView", "namespacealpaka.html#a57b70a30fda25553ded3fe93739b0c95", null ],
+    [ "createView", "namespacealpaka.html#a257fa1ef994ba619a56300162c2a9dcc", null ],
     [ "declareSharedVar", "namespacealpaka.html#af7b7e7f67482b39bf05230d666dc9798", null ],
     [ "elementwise_max", "namespacealpaka.html#a05ded3e1760e87f4b377803a98f98885", null ],
     [ "elementwise_min", "namespacealpaka.html#a9ee3ba1ec1a52cf177f41bb81e03b798", null ],

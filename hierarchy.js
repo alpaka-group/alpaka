@@ -80,7 +80,7 @@ var hierarchy =
     [ "alpaka::detail::CheckFnReturnType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::detail::CreateExtent< Tidx >", "structalpaka_1_1detail_1_1CreateExtent.html", null ],
     [ "alpaka::detail::CreateOffset< Tidx >", "structalpaka_1_1detail_1_1CreateOffset.html", null ],
-    [ "alpaka::detail::CreatePitchBytes< Tidx >", "structalpaka_1_1detail_1_1CreatePitchBytes.html", null ],
+    [ "alpaka::detail::CreatePitchBytes< TIdx >", "structalpaka_1_1detail_1_1CreatePitchBytes.html", null ],
     [ "alpaka::detail::MapIdx< TidxDimOut, TidxDimIn, TSfinae >", "structalpaka_1_1detail_1_1MapIdx.html", null ],
     [ "alpaka::detail::MapIdx< 0u, TidxDimIn >", "structalpaka_1_1detail_1_1MapIdx_3_010u_00_01TidxDimIn_01_4.html", null ],
     [ "alpaka::detail::MapIdx< 1u, TidxDimIn, std::enable_if_t<(TidxDimIn > 1u)> >", "structalpaka_1_1detail_1_1MapIdx_3_011u_00_01TidxDimIn_00_01std_1_1enable__if__t_3_07TidxDimIn_01_4_011u_08_4_01_4.html", null ],

@@ -103,6 +103,7 @@ $(document).ready(function(){initNavTree('mem_2view_2Traits_8hpp.html',''); init
 <code>#include &quot;<a class="el" href="queue_2Traits_8hpp_source.html">alpaka/queue/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;iosfwd&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -111,7 +112,7 @@ $(document).ready(function(){initNavTree('mem_2view_2Traits_8hpp.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreatePitchBytes.html">alpaka::detail::CreatePitchBytes&lt; Tidx &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreatePitchBytes.html">alpaka::detail::CreatePitchBytes&lt; TIdx &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class with a create method that returns the pitch for each index.  <a href="structalpaka_1_1detail_1_1CreatePitchBytes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1Print.html">alpaka::detail::Print&lt; TDim, TView &gt;</a></td></tr>
@@ -166,10 +167,10 @@ Functions</h2></td></tr>
 <tr class="memitem:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">alpaka::createView</a> (TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent)</td></tr>
 <tr class="memdesc:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device pointer.  <a href="namespacealpaka.html#adc3e9f88cfcde81a2ac9dd27cdaae903">More...</a><br /></td></tr>
 <tr class="separator:adc3e9f88cfcde81a2ac9dd27cdaae903"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57b70a30fda25553ded3fe93739b0c95"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TExtent , typename TPitch &gt; </td></tr>
-<tr class="memitem:a57b70a30fda25553ded3fe93739b0c95"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a57b70a30fda25553ded3fe93739b0c95">alpaka::createView</a> (TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent, TPitch const &amp;pitch)</td></tr>
-<tr class="memdesc:a57b70a30fda25553ded3fe93739b0c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device pointer.  <a href="namespacealpaka.html#a57b70a30fda25553ded3fe93739b0c95">More...</a><br /></td></tr>
-<tr class="separator:a57b70a30fda25553ded3fe93739b0c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257fa1ef994ba619a56300162c2a9dcc"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TExtent , typename TPitch &gt; </td></tr>
+<tr class="memitem:a257fa1ef994ba619a56300162c2a9dcc"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a257fa1ef994ba619a56300162c2a9dcc">alpaka::createView</a> (TDev const &amp;dev, TElem *pMem, TExtent const &amp;extent, TPitch pitch)</td></tr>
+<tr class="memdesc:a257fa1ef994ba619a56300162c2a9dcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view to a device pointer.  <a href="namespacealpaka.html#a257fa1ef994ba619a56300162c2a9dcc">More...</a><br /></td></tr>
+<tr class="separator:a257fa1ef994ba619a56300162c2a9dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdc0b05e890e9bee36dcb3d229f00efb"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TView &gt; </td></tr>
 <tr class="memitem:acdc0b05e890e9bee36dcb3d229f00efb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#acdc0b05e890e9bee36dcb3d229f00efb">alpaka::getPitchBytes</a> (TView const &amp;view) -&gt; Idx&lt; TView &gt;</td></tr>
 <tr class="separator:acdc0b05e890e9bee36dcb3d229f00efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,7 +223,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 22 2023 06:17:54 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 22 2023 12:09:07 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
