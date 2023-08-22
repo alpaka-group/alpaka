@@ -304,6 +304,12 @@ TEST_CASE("basicVecTraits", "[vec]")
                     sum += e; // read
                 return sum == Dim::value;
             }());
+
+        // front/back
+        STATIC_REQUIRE(vec3.front() == 47); // const overload
+        STATIC_REQUIRE(vec3.back() == 3); // const overload
+        STATIC_REQUIRE(Vec{1, 2, 3}.front() == 1); // non-const overload
+        STATIC_REQUIRE(Vec{1, 2, 3}.back() == 3); // non-const overload
     }
 }
 

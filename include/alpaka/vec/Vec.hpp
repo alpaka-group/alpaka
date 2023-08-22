@@ -150,6 +150,26 @@ namespace alpaka
             return m_data + TDim::value;
         }
 
+        ALPAKA_FN_HOST_ACC constexpr auto front() -> TVal&
+        {
+            return m_data[0];
+        }
+
+        ALPAKA_FN_HOST_ACC constexpr auto front() const -> TVal const&
+        {
+            return m_data[0];
+        }
+
+        ALPAKA_FN_HOST_ACC constexpr auto back() -> TVal&
+        {
+            return m_data[Dim::value - 1];
+        }
+
+        ALPAKA_FN_HOST_ACC constexpr auto back() const -> TVal const&
+        {
+            return m_data[Dim::value - 1];
+        }
+
         //! Value reference accessor at the given non-unsigned integer index.
         //! \return A reference to the value at the given index.
         ALPAKA_NO_HOST_ACC_WARNING
