@@ -11,8 +11,8 @@
 #include <tuple>
 
 unsigned constexpr NUM_CALCULATIONS = 256;
-unsigned constexpr NUM_X = 1237;
-unsigned constexpr NUM_Y = 2131;
+unsigned constexpr NUM_X = 127;
+unsigned constexpr NUM_Y = 211;
 
 /// Selected PRNG engine for single-value operation
 template<typename TAcc>
