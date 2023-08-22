@@ -182,27 +182,6 @@ namespace alpaka::trait
         }
     };
 
-    //! The SYCL vectors' extent set trait specialization.
-    template<typename TExtent, typename TExtentVal>
-    struct SetExtent<
-        DimInt<Dim<TExtent>::value>,
-        TExtent,
-        TExtentVal,
-        std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
-    {
-        static auto setExtent(TExtent const& extent, TExtentVal const& extentVal)
-        {
-            if constexpr(std::is_scalar_v<TExtent>)
-                extent = extentVal;
-            else
-            {
-                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-                // to the requested dimension's vector element. Then set the element's value.
-                extent.template swizzle<DimInt<Dim<TExtent>::value>::value>() = extentVal;
-            }
-        }
-    };
-
     //! The SYCL vectors' offset get trait specialization.
     template<typename T>
     struct GetOffsets<T, std::enable_if_t<IsSyclBuiltInType<T>::value>> : GetExtents<T>
