@@ -202,8 +202,8 @@ namespace alpaka
                 , m_dstHeight(static_cast<Idx>(getHeight(viewDst)))
                 , m_srcHeight(static_cast<Idx>(getHeight(viewSrc)))
 #    endif
-                , m_dstPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[Dim<TViewDst>::value - 1u]))
-                , m_srcPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[Dim<TViewSrc>::value - 1u]))
+                , m_dstRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[0]))
+                , m_srcRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[0]))
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {
@@ -212,8 +212,8 @@ namespace alpaka
                 ALPAKA_ASSERT(m_extentHeight <= m_dstHeight);
                 ALPAKA_ASSERT(m_extentWidth <= m_srcWidth);
                 ALPAKA_ASSERT(m_extentHeight <= m_srcHeight);
-                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes);
-                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcPitchBytes);
+                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstRowPitchBytes);
+                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcRowPitchBytes);
 #    endif
             }
 
@@ -236,9 +236,9 @@ namespace alpaka
                 // Initiate the memory copy.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memcpy2DAsync(
                     m_dstMemNative,
-                    m_dstPitchBytes,
+                    m_dstRowPitchBytes,
                     m_srcMemNative,
-                    m_srcPitchBytes,
+                    m_srcRowPitchBytes,
                     m_extentWidthBytes,
                     static_cast<std::size_t>(m_extentHeight),
                     m_uniformMemCpyKind,
@@ -251,9 +251,9 @@ namespace alpaka
             {
                 std::cout << __func__ << " ew: " << m_extentWidth << " eh: " << m_extentHeight
                           << " ewb: " << m_extentWidthBytes << " ddev: " << m_iDstDevice << " dw: " << m_dstWidth
-                          << " dh: " << m_dstHeight << " dptr: " << m_dstMemNative << " dpitchb: " << m_dstPitchBytes
+                          << " dh: " << m_dstHeight << " dptr: " << m_dstMemNative << " dpitch: " << m_dstRowPitchBytes
                           << " sdev: " << m_iSrcDevice << " sw: " << m_srcWidth << " sh: " << m_srcHeight
-                          << " sptr: " << m_srcMemNative << " spitchb: " << m_srcPitchBytes << std::endl;
+                          << " sptr: " << m_srcMemNative << " spitch: " << m_srcRowPitchBytes << std::endl;
             }
 #    endif
 
@@ -272,8 +272,8 @@ namespace alpaka
             Idx m_dstHeight;
             Idx m_srcHeight;
 #    endif
-            std::size_t m_dstPitchBytes;
-            std::size_t m_srcPitchBytes;
+            std::size_t m_dstRowPitchBytes;
+            std::size_t m_srcRowPitchBytes;
 
             void* m_dstMemNative;
             void const* m_srcMemNative;
@@ -308,12 +308,10 @@ namespace alpaka
                 , m_dstDepth(static_cast<Idx>(getDepth(viewDst)))
                 , m_srcDepth(static_cast<Idx>(getDepth(viewSrc)))
 #    endif
-                , m_dstPitchBytesX(static_cast<std::size_t>(getPitchesInBytes(viewDst)[Dim<TViewDst>::value - 1u]))
-                , m_srcPitchBytesX(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[Dim<TViewSrc>::value - 1u]))
-                , m_dstPitchBytesY(static_cast<std::size_t>(
-                      getPitchesInBytes(viewDst)[Dim<TViewDst>::value - (2u % Dim<TViewDst>::value)]))
-                , m_srcPitchBytesY(static_cast<std::size_t>(
-                      getPitchesInBytes(viewSrc)[Dim<TViewSrc>::value - (2u % Dim<TViewDst>::value)]))
+                , m_dstRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[1]))
+                , m_srcRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[1]))
+                , m_dstSlicePitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[0]))
+                , m_srcSlicePitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[0]))
                 , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
                 , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
             {
@@ -324,8 +322,8 @@ namespace alpaka
                 ALPAKA_ASSERT(m_extentWidth <= m_srcWidth);
                 ALPAKA_ASSERT(m_extentHeight <= m_srcHeight);
                 ALPAKA_ASSERT(m_extentDepth <= m_srcDepth);
-                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes);
-                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcPitchBytes);
+                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstRowPitchBytes);
+                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcRowPitchBytes);
 #    endif
             }
 
@@ -359,21 +357,17 @@ namespace alpaka
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 // Fill CUDA/HIP parameter structure.
-                typename TApi::Memcpy3DParms_t memCpy3DParms;
-                memCpy3DParms.srcArray = nullptr; // Either srcArray or srcPtr.
-                memCpy3DParms.srcPos = TApi::makePos(0, 0, 0); // Optional. Offset in bytes.
+                typename TApi::Memcpy3DParms_t memCpy3DParms{}; // zero-init required per CUDA documentation
                 memCpy3DParms.srcPtr = TApi::makePitchedPtr(
                     const_cast<void*>(m_srcMemNative),
-                    m_srcPitchBytesX,
+                    m_srcRowPitchBytes,
                     static_cast<std::size_t>(m_srcWidth),
-                    m_srcPitchBytesY / m_srcPitchBytesX);
-                memCpy3DParms.dstArray = nullptr; // Either dstArray or dstPtr.
-                memCpy3DParms.dstPos = TApi::makePos(0, 0, 0); // Optional. Offset in bytes.
+                    m_srcSlicePitchBytes / m_srcRowPitchBytes);
                 memCpy3DParms.dstPtr = TApi::makePitchedPtr(
                     m_dstMemNative,
-                    m_dstPitchBytesX,
+                    m_dstRowPitchBytes,
                     static_cast<std::size_t>(m_dstWidth),
-                    m_dstPitchBytesY / m_dstPitchBytesX);
+                    m_dstSlicePitchBytes / m_dstRowPitchBytes);
                 memCpy3DParms.extent = TApi::makeExtent(
                     m_extentWidthBytes,
                     static_cast<std::size_t>(m_extentHeight),
@@ -388,10 +382,11 @@ namespace alpaka
                 std::cout << __func__ << " ew: " << m_extentWidth << " eh: " << m_extentHeight
                           << " ed: " << m_extentDepth << " ewb: " << m_extentWidthBytes << " ddev: " << m_iDstDevice
                           << " dw: " << m_dstWidth << " dh: " << m_dstHeight << " dd: " << m_dstDepth
-                          << " dptr: " << m_dstMemNative << " dpitchb: " << m_dstPitchBytes
-                          << " sdev: " << m_iSrcDevice << " sw: " << m_srcWidth << " sh: " << m_srcHeight
-                          << " sd: " << m_srcDepth << " sptr: " << m_srcMemNative << " spitchb: " << m_srcPitchBytes
-                          << std::endl;
+                          << " dptr: " << m_dstMemNative << " drowpitch: " << m_dstRowPitchBytes
+                          << " dslicepitch: " << m_dstSlicePitchBytes << " sdev: " << m_iSrcDevice
+                          << " sw: " << m_srcWidth << " sh: " << m_srcHeight << " sd: " << m_srcDepth
+                          << " sptr: " << m_srcMemNative << " srowpitch: " << m_srcRowPitchBytes
+                          << " sslicepitch: " << m_srcSlicePitchBytes << std::endl;
             }
 #    endif
             typename TApi::MemcpyKind_t m_uniformMemCpyKind;
@@ -411,10 +406,10 @@ namespace alpaka
             Idx m_dstDepth;
             Idx m_srcDepth;
 #    endif
-            std::size_t m_dstPitchBytesX;
-            std::size_t m_srcPitchBytesX;
-            std::size_t m_dstPitchBytesY;
-            std::size_t m_srcPitchBytesY;
+            std::size_t m_dstRowPitchBytes;
+            std::size_t m_srcRowPitchBytes;
+            std::size_t m_dstSlicePitchBytes;
+            std::size_t m_srcSlicePitchBytes;
 
             void* m_dstMemNative;
             void const* m_srcMemNative;

@@ -14,7 +14,7 @@
 #include <iostream>
 #include <typeinfo>
 
-//#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
+// #define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
 
 //! Complex Number.
 template<typename T>
@@ -87,7 +87,7 @@ public:
     //! \param pColors The output image.
     //! \param numRows The number of rows in the image
     //! \param numCols The number of columns in the image.
-    //! \param pitchBytes The pitch in bytes.
+    //! \param rowPitchBytes The row pitch in bytes.
     //! \param fMinR The left border.
     //! \param fMaxR The right border.
     //! \param fMinI The bottom border.
@@ -100,7 +100,7 @@ public:
         std::uint32_t* const pColors,
         std::uint32_t const& numRows,
         std::uint32_t const& numCols,
-        std::uint32_t const& pitchBytes,
+        std::uint32_t const& rowPitchBytes,
         float const& fMinR,
         float const& fMaxR,
         float const& fMinI,
@@ -109,10 +109,7 @@ public:
     {
         static_assert(alpaka::Dim<TAcc>::value == 2, "The MandelbrotKernel expects 2-dimensional indices!");
 
-        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const& gridThreadIdxX = gridThreadIdx[1u];
-        auto const& gridThreadIdxY = gridThreadIdx[0u];
-
+        auto const [gridThreadIdxY, gridThreadIdxX] = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         if((gridThreadIdxY < numRows) && (gridThreadIdxX < numCols))
         {
             SimpleComplex<float> c(
@@ -121,7 +118,7 @@ public:
 
             auto const iterationCount = iterateMandelbrot(c, maxIterations);
 
-            auto const pColorsRow = pColors + ((gridThreadIdxY * pitchBytes) / sizeof(std::uint32_t));
+            auto const pColorsRow = pColors + ((gridThreadIdxY * rowPitchBytes) / sizeof(std::uint32_t));
             pColorsRow[gridThreadIdxX] =
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
                 iterationCountToContinousColor(iterationCount, maxIterations);
@@ -203,8 +200,8 @@ auto writeTgaColorImage(std::string const& fileName, TBuf const& bufRgba) -> voi
     ALPAKA_ASSERT(bufWidthColors >= 1);
     auto const bufHeightColors = alpaka::getHeight(bufRgba);
     ALPAKA_ASSERT(bufHeightColors >= 1);
-    auto const bufPitchBytes = alpaka::getPitchesInBytes(bufRgba)[alpaka::Dim<TBuf>::value - 1u];
-    ALPAKA_ASSERT(bufPitchBytes >= bufWidthBytes);
+    auto const bufRowPitchBytes = alpaka::getPitchesInBytes(bufRgba)[0];
+    ALPAKA_ASSERT(bufRowPitchBytes >= bufWidthBytes);
 
     std::ofstream ofs(fileName, std::ofstream::out | std::ofstream::binary);
     if(!ofs.is_open())
@@ -235,7 +232,7 @@ auto writeTgaColorImage(std::string const& fileName, TBuf const& bufRgba) -> voi
     // Write the data.
     char const* pData(reinterpret_cast<char const*>(alpaka::getPtrNative(bufRgba)));
     // If there is no padding, we can directly write the whole buffer data ...
-    if(bufPitchBytes == bufWidthBytes)
+    if(bufRowPitchBytes == bufWidthBytes)
     {
         ofs.write(pData, static_cast<std::streamsize>(bufWidthBytes * bufHeightColors));
     }
@@ -244,7 +241,7 @@ auto writeTgaColorImage(std::string const& fileName, TBuf const& bufRgba) -> voi
     {
         for(auto row = decltype(bufHeightColors)(0); row < bufHeightColors; ++row)
         {
-            ofs.write(pData + bufPitchBytes * row, static_cast<std::streamsize>(bufWidthBytes));
+            ofs.write(pData + bufRowPitchBytes * row, static_cast<std::streamsize>(bufWidthBytes));
         }
     }
 }
@@ -315,13 +312,15 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
     alpaka::memcpy(queue, bufColorAcc, bufColorHost);
 
     // Create the kernel execution task.
+    auto const [rowPitch, _] = alpaka::getPitchesInBytes(bufColorAcc);
+    CHECK(rowPitch % sizeof(Val) == 0);
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
         alpaka::getPtrNative(bufColorAcc),
         numRows,
         numCols,
-        alpaka::getPitchesInBytes(bufColorAcc)[1],
+        rowPitch,
         fMinR,
         fMaxR,
         fMinI,

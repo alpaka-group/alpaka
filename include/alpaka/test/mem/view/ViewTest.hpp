@@ -57,16 +57,7 @@ namespace alpaka::test
 
         // trait::GetPitchBytes
         {
-            // The pitches have to be at least as large as the values we calculate here.
-            auto pitchMinimum = Vec<DimInt<TDim::value + 1u>, TIdx>::ones();
-            // Initialize the pitch between two elements of the X dimension ...
-            pitchMinimum[TDim::value] = sizeof(TElem);
-            // ... and fill all the other dimensions.
-            for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
-            {
-                pitchMinimum[i - 1] = extent[i - 1] * pitchMinimum[i];
-            }
-
+            auto const pitchMinimum = alpaka::detail::calculatePitchesFromExtents<TElem>(extent);
             auto const pitchView = getPitchesInBytes(view);
 
             for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)

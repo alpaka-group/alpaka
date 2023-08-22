@@ -212,32 +212,16 @@ static auto testBufferAccessorAdaptor(
     auto const platformAcc = alpaka::Platform<TAcc>{};
     auto const dev = alpaka::getDevByIdx(platformAcc, 0);
 
-    // alpaka::malloc
     auto buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
 
     // check that the array subscript operator access the correct element
     auto const& pitch = alpaka::getPitchesInBytes(buf);
     INFO("buffer extent: " << extent << " elements");
     INFO("buffer pitch: " << pitch << " bytes");
-    CHECK((index < extent).foldrAll(std::logical_and<bool>(), true));
+    CHECK((index < extent).all());
 
-    auto base = reinterpret_cast<uintptr_t>(std::data(buf));
-    uintptr_t expected = base;
-    if constexpr(Dim::value > 1)
-    {
-        expected += static_cast<uintptr_t>(pitch[1] * index[0]);
-    }
-    if constexpr(Dim::value > 2)
-    {
-        expected += static_cast<uintptr_t>(pitch[2] * index[1]);
-    }
-    if constexpr(Dim::value > 3)
-    {
-        expected += static_cast<uintptr_t>(pitch[3] * index[2]);
-    }
-    if constexpr(Dim::value > 0)
-        expected += sizeof(Elem) * static_cast<std::size_t>(index[Dim::value - 1]);
-
+    auto const base = reinterpret_cast<uintptr_t>(std::data(buf));
+    auto const expected = base + static_cast<uintptr_t>((pitch * index).sum());
     INFO("element " << index << " expected at offset " << expected - base);
     INFO("element " << index << " returned at offset " << reinterpret_cast<uintptr_t>(&buf[index]) - base);
     CHECK(reinterpret_cast<Elem*>(expected) == &buf[index]);

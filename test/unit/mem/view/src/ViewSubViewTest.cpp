@@ -36,14 +36,10 @@ namespace alpaka::test
 
         // alpaka::trait::GetPitchesInBytes
         // The pitch of the view has to be identical to the pitch of the underlying buffer in all dimensions.
+        auto const pitchBuf = alpaka::getPitchesInBytes(buf);
         {
-            auto const pitchBuf = alpaka::getPitchesInBytes(buf);
             auto const pitchView = alpaka::getPitchesInBytes(view);
-
-            for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
-            {
-                REQUIRE(pitchBuf[i - static_cast<TIdx>(1u)] == pitchView[i - static_cast<TIdx>(1u)]);
-            }
+            CHECK(pitchBuf == pitchView);
         }
 
         // alpaka::trait::GetPtrNative
@@ -51,15 +47,7 @@ namespace alpaka::test
         {
             auto viewPtrNative = reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(buf));
             if constexpr(TDim::value > 0)
-            {
-                auto const pitchBuf = alpaka::getPitchesInBytes(buf);
-                for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
-                {
-                    auto const pitch
-                        = (i < static_cast<TIdx>(TDim::value)) ? pitchBuf[i] : static_cast<TIdx>(sizeof(TElem));
-                    viewPtrNative += offsetView[i - static_cast<TIdx>(1u)] * pitch;
-                }
-            }
+                viewPtrNative += (offsetView * pitchBuf).sum();
             REQUIRE(reinterpret_cast<TElem*>(viewPtrNative) == alpaka::getPtrNative(view));
         }
     }
@@ -177,10 +165,10 @@ TEST_CASE("viewSubViewExample", "[memView]")
     auto checkBufContent = [&](std::vector<std::vector<int>> const& data)
     {
         for(std::size_t row = 0; row < 4; row++)
-            for(std::size_t j = 0; j < 5; j++)
+            for(std::size_t col = 0; col < 5; col++)
             {
-                CAPTURE(row, j);
-                CHECK(buf[Vec{static_cast<Idx>(row), static_cast<Idx>(j)}] == data[row][j]);
+                CAPTURE(row, col);
+                CHECK(buf[Vec{static_cast<Idx>(row), static_cast<Idx>(col)}] == data[row][col]);
             }
     };
 
@@ -229,4 +217,11 @@ TEST_CASE("viewSubViewExample", "[memView]")
         }
         checkBufContent({{1, 1, 3, 1, 1}, {1, 5, 4, 4, 1}, {2, 5, 6, 6, 2}, {1, 1, 1, 1, 1}});
     }
+}
+
+TEST_CASE("calculatePitchesFromExtents", "[memView]")
+{
+    CHECK((alpaka::detail::calculatePitchesFromExtents<float>(alpaka::Vec{1, 1, 1}) == alpaka::Vec{4, 4, 4}));
+    CHECK((alpaka::detail::calculatePitchesFromExtents<float>(alpaka::Vec{2, 2, 2}) == alpaka::Vec{16, 8, 4}));
+    CHECK((alpaka::detail::calculatePitchesFromExtents<float>(alpaka::Vec{42, 10, 2}) == alpaka::Vec{80, 8, 4}));
 }

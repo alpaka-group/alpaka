@@ -149,7 +149,7 @@ namespace alpaka
                 auto const dstWidth = getWidth(view);
                 auto const dstHeight = getHeight(view);
 #    endif
-                auto const dstPitchBytes = static_cast<std::size_t>(getPitchesInBytes(view)[Dim<TView>::value - 1u]);
+                auto const dstRowPitchBytes = static_cast<std::size_t>(getPitchesInBytes(view)[0]);
                 auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
                 ALPAKA_ASSERT(extentWidth <= dstWidth);
                 ALPAKA_ASSERT(extentHeight <= dstHeight);
@@ -157,7 +157,7 @@ namespace alpaka
                 // Initiate the memory set.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memset2DAsync(
                     dstNativePtr,
-                    dstPitchBytes,
+                    dstRowPitchBytes,
                     static_cast<int>(this->m_byte),
                     extentWidthBytes,
                     static_cast<std::size_t>(extentHeight),
@@ -202,9 +202,7 @@ namespace alpaka
                 auto const dstHeight = getHeight(view);
                 auto const dstDepth = getDepth(view);
 #    endif
-                auto const dstPitchBytesX = static_cast<std::size_t>(getPitchesInBytes(view)[Dim<TView>::value - 1u]);
-                auto const dstPitchBytesY
-                    = static_cast<std::size_t>(getPitchesInBytes(view)[Dim<TView>::value - (2u % Dim<TView>::value)]);
+                auto const [dstSlicePitchBytes, dstRowPitchBytes, _] = getPitchesInBytes(view);
                 auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
                 ALPAKA_ASSERT(extentWidth <= dstWidth);
                 ALPAKA_ASSERT(extentHeight <= dstHeight);
@@ -213,9 +211,9 @@ namespace alpaka
                 // Fill CUDA parameter structures.
                 typename TApi::PitchedPtr_t const pitchedPtrVal = TApi::makePitchedPtr(
                     dstNativePtr,
-                    dstPitchBytesX,
+                    static_cast<std::size_t>(dstRowPitchBytes),
                     static_cast<std::size_t>(dstWidth) * sizeof(Elem),
-                    dstPitchBytesY / dstPitchBytesX);
+                    static_cast<std::size_t>(dstSlicePitchBytes / dstRowPitchBytes));
 
                 typename TApi::Extent_t const extentVal = TApi::makeExtent(
                     static_cast<std::size_t>(extentWidth) * sizeof(Elem),
