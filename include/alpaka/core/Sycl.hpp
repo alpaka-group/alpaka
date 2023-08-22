@@ -188,27 +188,6 @@ namespace alpaka::trait
     {
     };
 
-    //! The SYCL vectors' offset set trait specialization.
-    template<typename TOffsets, typename TOffset>
-    struct SetOffset<
-        DimInt<Dim<TOffsets>::value>,
-        TOffsets,
-        TOffset,
-        std::enable_if_t<IsSyclBuiltInType<TOffsets>::value>>
-    {
-        static auto setOffset(TOffsets const& offsets, TOffset const& offset)
-        {
-            if constexpr(std::is_scalar_v<TOffsets>)
-                offsets = offset;
-            else
-            {
-                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-                // to the requested dimension's vector element. Then set the element's value.
-                offsets.template swizzle<DimInt<Dim<TOffsets>::value>::value>() = offset;
-            }
-        }
-    };
-
     //! The SYCL vectors' idx type trait specialization.
     template<typename TIdx>
     struct IdxType<TIdx, std::enable_if_t<IsSyclBuiltInType<TIdx>::value>>
