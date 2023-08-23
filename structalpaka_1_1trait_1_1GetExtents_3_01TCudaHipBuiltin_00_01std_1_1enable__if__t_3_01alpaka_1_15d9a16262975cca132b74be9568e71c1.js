@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetExtents_3_01TCudaHipBuiltin_00_01std_1_1enable__if__t_3_01alpaka_1_15d9a16262975cca132b74be9568e71c1 =
+[
+    [ "operator()", "structalpaka_1_1trait_1_1GetExtents_3_01TCudaHipBuiltin_00_01std_1_1enable__if__t_3_01alpaka_1_15d9a16262975cca132b74be9568e71c1.html#a43c95283e9970c9b871a941f9f26da70", null ]
+];

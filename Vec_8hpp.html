@@ -86,7 +86,8 @@ $(document).ready(function(){initNavTree('Vec_8hpp.html',''); initResizable(); }
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Vec.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -98,15 +99,14 @@ $(document).ready(function(){initNavTree('Vec_8hpp.html',''); initResizable(); }
 <code>#include &quot;<a class="el" href="Unreachable_8hpp_source.html">alpaka/core/Unreachable.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DimIntegralConst_8hpp_source.html">alpaka/dim/DimIntegralConst.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="extent_2Traits_8hpp_source.html">alpaka/extent/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="idx_2Traits_8hpp_source.html">alpaka/idx/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Fold_8hpp_source.html">alpaka/meta/Fold.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Functional_8hpp_source.html">alpaka/meta/Functional.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="IntegerSequence_8hpp_source.html">alpaka/meta/IntegerSequence.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="offset_2Traits_8hpp_source.html">alpaka/offset/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vec_2Traits_8hpp_source.html">alpaka/vec/Traits.hpp</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
 <code>#include &lt;ostream&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
@@ -117,12 +117,6 @@ $(document).ready(function(){initNavTree('Vec_8hpp.html',''); initResizable(); }
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateExtent.html">alpaka::detail::CreateExtent&lt; Tidx &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the extent for each index.  <a href="structalpaka_1_1detail_1_1CreateExtent.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1CreateOffset.html">alpaka::detail::CreateOffset&lt; Tidx &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function object that returns the offsets for each index.  <a href="structalpaka_1_1detail_1_1CreateOffset.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1CastVec_3_01TValNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html">alpaka::trait::CastVec&lt; TValNew, Vec&lt; TDim, TVal &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1ConcatVec_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4.html">alpaka::trait::ConcatVec&lt; Vec&lt; TDimL, TVal &gt;, Vec&lt; TDimR, TVal &gt; &gt;</a></td></tr>
@@ -131,23 +125,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1DimType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html">alpaka::trait::DimType&lt; Vec&lt; TDim, TVal &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> dimension get trait specialization.  <a href="structalpaka_1_1trait_1_1DimType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01s6056b2842e4438764a552fc19eb35c4d.html">alpaka::trait::GetExtent&lt; TIdxIntegralConst, Vec&lt; TDim, TVal &gt;, std::enable_if_t&lt;(TDim::value &gt; TIdxIntegralConst::value)&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> extent get trait specialization.  <a href="structalpaka_1_1trait_1_1GetExtent_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01s6056b2842e4438764a552fc19eb35c4d.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01s4e82e7e9a49f17d64e8b05a91ab4dfa2.html">alpaka::trait::GetOffset&lt; TIdxIntegralConst, Vec&lt; TDim, TVal &gt;, std::enable_if_t&lt;(TDim::value &gt; TIdxIntegralConst::value)&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> offset get trait specialization.  <a href="structalpaka_1_1trait_1_1GetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01s4e82e7e9a49f17d64e8b05a91ab4dfa2.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1IdxType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html">alpaka::trait::IdxType&lt; Vec&lt; TDim, TVal &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> idx type trait specialization.  <a href="structalpaka_1_1trait_1_1IdxType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1ReverseVec_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html">alpaka::trait::ReverseVec&lt; Vec&lt; TDim, TVal &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structalpaka_1_1trait_1_1ReverseVec.html" title="Trait for reversing a vector.">ReverseVec</a> specialization for <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a>.  <a href="structalpaka_1_1trait_1_1ReverseVec_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1SetExtent_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01T820df002ffaa05fb6d9c43b212cf64a9.html">alpaka::trait::SetExtent&lt; TIdxIntegralConst, Vec&lt; TDim, TVal &gt;, TExtentVal, std::enable_if_t&lt;(TDim::value &gt; TIdxIntegralConst::value)&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> extent set trait specialization.  <a href="structalpaka_1_1trait_1_1SetExtent_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01T820df002ffaa05fb6d9c43b212cf64a9.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1SetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01T445dd3fe66441dbb87c15e447ff1f18b.html">alpaka::trait::SetOffset&lt; TIdxIntegralConst, Vec&lt; TDim, TVal &gt;, TOffset, std::enable_if_t&lt;(TDim::value &gt; TIdxIntegralConst::value)&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> offset set trait specialization.  <a href="structalpaka_1_1trait_1_1SetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01T445dd3fe66441dbb87c15e447ff1f18b.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1index__se78f918b7837165a592a73f43ee4db2b8.html">alpaka::trait::SubVecFromIndices&lt; Vec&lt; TDim, TVal &gt;, std::index_sequence&lt; TIndices... &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization for selecting a sub-vector.  <a href="structalpaka_1_1trait_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1index__se78f918b7837165a592a73f43ee4db2b8.html#details">More...</a><br /></td></tr>
@@ -164,8 +146,6 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka accelerator library. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html">alpaka::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1trait"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1trait.html">alpaka::trait</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1trait"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator traits. <br /></td></tr>
@@ -191,18 +171,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a9ee3ba1ec1a52cf177f41bb81e03b798"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal , typename... Vecs, typename  = std::enable_if_t&lt;(std::is_same_v&lt;Vec&lt;TDim, TVal&gt;, Vecs&gt; &amp;&amp; ...)&gt;&gt; </td></tr>
 <tr class="memitem:a9ee3ba1ec1a52cf177f41bb81e03b798"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9ee3ba1ec1a52cf177f41bb81e03b798">alpaka::elementwise_min</a> (Vec&lt; TDim, TVal &gt; const &amp;p, Vecs const &amp;... qs) -&gt; Vec&lt; TDim, TVal &gt;</td></tr>
 <tr class="separator:a9ee3ba1ec1a52cf177f41bb81e03b798"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa7369abadff7e4f8afc89c526628e12"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
-<tr class="memitem:afa7369abadff7e4f8afc89c526628e12"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#afa7369abadff7e4f8afc89c526628e12">alpaka::getExtentVec</a> (TExtent const &amp;extent={}) -&gt; Vec&lt; Dim&lt; TExtent &gt;, Idx&lt; TExtent &gt;&gt;</td></tr>
-<tr class="separator:afa7369abadff7e4f8afc89c526628e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a864a91f6b0565f1d0ecf2e3e23e3b868"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TExtent &gt; </td></tr>
-<tr class="memitem:a864a91f6b0565f1d0ecf2e3e23e3b868"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a864a91f6b0565f1d0ecf2e3e23e3b868">alpaka::getExtentVecEnd</a> (TExtent const &amp;extent={}) -&gt; Vec&lt; TDim, Idx&lt; TExtent &gt;&gt;</td></tr>
-<tr class="separator:a864a91f6b0565f1d0ecf2e3e23e3b868"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32cb8ca9b95af8c8dea8d84f37a0ec90"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
-<tr class="memitem:a32cb8ca9b95af8c8dea8d84f37a0ec90"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a32cb8ca9b95af8c8dea8d84f37a0ec90">alpaka::getOffsetVec</a> (TOffsets const &amp;offsets={}) -&gt; Vec&lt; Dim&lt; TOffsets &gt;, Idx&lt; TOffsets &gt;&gt;</td></tr>
-<tr class="separator:a32cb8ca9b95af8c8dea8d84f37a0ec90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab564786b8330a1fc3848753d31316938"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TOffsets &gt; </td></tr>
-<tr class="memitem:ab564786b8330a1fc3848753d31316938"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab564786b8330a1fc3848753d31316938">alpaka::getOffsetVecEnd</a> (TOffsets const &amp;offsets={}) -&gt; Vec&lt; TDim, Idx&lt; TOffsets &gt;&gt;</td></tr>
-<tr class="separator:ab564786b8330a1fc3848753d31316938"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63c859c606d0495e06f07eaaedec8b43"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
 <tr class="memitem:a63c859c606d0495e06f07eaaedec8b43"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a63c859c606d0495e06f07eaaedec8b43">alpaka::toArray</a> (Vec&lt; TDim, TVal &gt; const &amp;v) -&gt; std::array&lt; TVal, TDim::value &gt;</td></tr>
 <tr class="memdesc:a63c859c606d0495e06f07eaaedec8b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> to a std::array.  <a href="namespacealpaka.html#a63c859c606d0495e06f07eaaedec8b43">More...</a><br /></td></tr>
@@ -210,6 +178,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplParams" colspan="2">template&lt;typename TFirstIndex , typename... TRestIndices&gt; </td></tr>
 <tr class="memitem:ab339d2982f7e28701dd0c359855ffa74"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab339d2982f7e28701dd0c359855ffa74">alpaka::Vec</a> (TFirstIndex &amp;&amp;, TRestIndices &amp;&amp;...) -&gt; Vec&lt; DimInt&lt; 1+sizeof...(TRestIndices)&gt;, std::decay_t&lt; TFirstIndex &gt;&gt;</td></tr>
 <tr class="separator:ab339d2982f7e28701dd0c359855ffa74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a6703cc95ff0ca87f388b702c93018b95"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6703cc95ff0ca87f388b702c93018b95"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6703cc95ff0ca87f388b702c93018b95">alpaka::isVec</a> = false</td></tr>
+<tr class="separator:a6703cc95ff0ca87f388b702c93018b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ebdbe15a3b59640abcfb7bd5a82d85"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:af4ebdbe15a3b59640abcfb7bd5a82d85"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af4ebdbe15a3b59640abcfb7bd5a82d85">alpaka::isVec&lt; Vec&lt; TDim, TVal &gt; &gt;</a> = true</td></tr>
+<tr class="separator:af4ebdbe15a3b59640abcfb7bd5a82d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -217,7 +194,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7056b9f7cd8b764aedbfcd44587c0438.html">vec</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 22 2023 12:09:07 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Aug 23 2023 08:33:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

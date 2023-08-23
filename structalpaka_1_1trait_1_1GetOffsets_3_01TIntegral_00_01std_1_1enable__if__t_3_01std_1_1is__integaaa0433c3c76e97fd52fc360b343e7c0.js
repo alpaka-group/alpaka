@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetOffsets_3_01TIntegral_00_01std_1_1enable__if__t_3_01std_1_1is__integaaa0433c3c76e97fd52fc360b343e7c0 =
+[
+    [ "operator()", "structalpaka_1_1trait_1_1GetOffsets_3_01TIntegral_00_01std_1_1enable__if__t_3_01std_1_1is__integaaa0433c3c76e97fd52fc360b343e7c0.html#a0b95c88b62d4b94d22a9b022b553fcce", null ]
+];
