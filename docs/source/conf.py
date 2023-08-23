@@ -46,7 +46,7 @@ exclude_patterns = ["Thumbs.db", ".DS_Store"]
 
 source_suffix = ['.rst']
 master_doc = 'index'
-language = None
+language = "en"
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx' #'default'
