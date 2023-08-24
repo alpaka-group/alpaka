@@ -94,8 +94,6 @@ namespace alpaka
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
-                using Idx = Idx<TExtent>;
-
                 auto& view = this->m_view;
                 auto const& extent = this->m_extent;
 
@@ -134,8 +132,6 @@ namespace alpaka
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
-                using Idx = Idx<TExtent>;
-
                 auto& view = this->m_view;
                 auto const& extent = this->m_extent;
 
@@ -187,7 +183,6 @@ namespace alpaka
             auto enqueue(TQueue& queue) const -> void
             {
                 using Elem = alpaka::Elem<TView>;
-                using Idx = Idx<TExtent>;
 
                 auto& view = this->m_view;
                 auto const& extent = this->m_extent;
