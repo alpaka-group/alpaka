@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1AtomicInc.html#ab5e0a2977f237320876c3b6cc8f5f0dc":[3,0,0,33,0],
 "structalpaka_1_1AtomicMax.html":[3,0,0,34],
 "structalpaka_1_1AtomicMax.html#a60857019d7be86cee38d76b13c36d2eb":[3,0,0,34,0],
 "structalpaka_1_1AtomicMin.html":[3,0,0,35],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a05a3da4a17cec729ceee3e382c607401":[3,0,0,4,52,2],
 "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a2e8a3391044814bb66a9f332d58a2406":[3,0,0,4,52,1],
 "structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#abc99081bed812afe5341de6fe4208e25":[3,0,0,4,52,0],
-"structalpaka_1_1detail_1_1TaskSetCpu.html":[3,0,0,4,53],
-"structalpaka_1_1detail_1_1TaskSetCpu.html#a0ad53771fd9d360cc5f2adc64371e5d2":[3,0,0,4,53,1]
+"structalpaka_1_1detail_1_1TaskSetCpu.html":[3,0,0,4,53]
 };

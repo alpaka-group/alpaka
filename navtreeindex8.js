@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"namespacealpaka_1_1math.html#a203339f78df48ceb4f44d82ba2c11924":[2,0,0,10,159],
 "namespacealpaka_1_1math.html#a2963260c4f112f7c2bd30c2ad43fd44f":[2,0,0,10,127],
 "namespacealpaka_1_1math.html#a2a8c69be37b50a9af624374878e95abd":[2,0,0,10,139],
 "namespacealpaka_1_1math.html#a32a005a4c29788b7c85a6796676a9cb6":[2,0,0,10,125],
@@ -168,9 +169,9 @@ var NAVTREEINDEX8 =
 "namespacealpaka_1_1uniform__cuda__hip.html":[2,0,0,19],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,19,0],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a1133404607a47b93d80cd9a0312272bd":[2,0,0,19,0,5],
+"namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a193ccd0ed5573a36cb64ccf8f457f132":[2,0,0,19,0,6],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974":[2,0,0,19,0,4],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#aadbc4c37adaf4a8dee896d831b707b54":[2,0,0,19,0,7],
-"namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac9873f7dc899a466c5648661e37bc682":[2,0,0,19,0,6],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#af9741bdf6dda9699e1dd8ca18d81d16a":[2,0,0,19,0,3],
 "namespacealpaka_1_1unit.html":[2,0,0,20],
 "namespacealpaka_1_1warp.html":[2,0,0,21],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "offset_2Traits_8hpp.html#a4ab29380ee728427c2c29fcefccfcce4":[4,0,0,0,16,0,5],
 "offset_2Traits_8hpp.html#a60a51cbc574fd2141b8716abe68e5ec0":[4,0,0,0,16,0,15],
 "offset_2Traits_8hpp.html#a7161c6b4d50766e033dbbbb7b2917dee":[4,0,0,0,16,0,7],
-"offset_2Traits_8hpp.html#aa9094d40cfed2a7f9d3814132da9191b":[4,0,0,0,16,0,10],
-"offset_2Traits_8hpp.html#aad3250749364775ac179a94e58580bcf":[4,0,0,0,16,0,6]
+"offset_2Traits_8hpp.html#aa9094d40cfed2a7f9d3814132da9191b":[4,0,0,0,16,0,10]
 };

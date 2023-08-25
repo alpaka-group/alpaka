@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"offset_2Traits_8hpp.html#aad3250749364775ac179a94e58580bcf":[4,0,0,0,16,0,6],
 "offset_2Traits_8hpp.html#ab87ab913e56eabcc06c02a5d5356dbd2":[4,0,0,0,16,0,8],
 "offset_2Traits_8hpp.html#ae988c26c08c6d6f9a6df5b9e1b96d493":[4,0,0,0,16,0,14],
 "offset_2Traits_8hpp_source.html":[4,0,0,0,16,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1AtomicDec.html#aebc09cbda5fe57cd1c04e9416f6f6ebb":[3,0,0,31,0],
 "structalpaka_1_1AtomicExch.html":[3,0,0,32],
 "structalpaka_1_1AtomicExch.html#a1cb49528bb3e0f800c5d5851b57d9c63":[3,0,0,32,0],
-"structalpaka_1_1AtomicInc.html":[3,0,0,33],
-"structalpaka_1_1AtomicInc.html#ab5e0a2977f237320876c3b6cc8f5f0dc":[3,0,0,33,0]
+"structalpaka_1_1AtomicInc.html":[3,0,0,33]
 };
