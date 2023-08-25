@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"namespacealpaka_1_1math.html#a6f9cdd368f558546e5031ca7ac2edf89":[2,0,0,10,141],
 "namespacealpaka_1_1math.html#a7ff19157e0e93951341f87a62327e62f":[2,0,0,10,126],
 "namespacealpaka_1_1math.html#a860ad56456e1868026f833d9168cc5ce":[2,0,0,10,148],
 "namespacealpaka_1_1math.html#a870c86f26ec22dc2b10627f861c7120e":[2,0,0,10,162],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "queue_2Traits_8hpp.html":[4,0,0,0,18,22],
 "queue_2Traits_8hpp.html#a0a2fa6435cfd735679b6c5f1ac7561aa":[4,0,0,0,18,22,0],
 "queue_2Traits_8hpp.html#a8b01aa67d992572f8812a47813269bfa":[4,0,0,0,18,22,3],
-"queue_2Traits_8hpp.html#ab2b5f410b7b40fd9e91a9c6478e2e085":[4,0,0,0,18,22,1],
-"queue_2Traits_8hpp.html#ab768cb4d64d49fbd5c722aea7c00d835":[4,0,0,0,18,22,2]
+"queue_2Traits_8hpp.html#ab2b5f410b7b40fd9e91a9c6478e2e085":[4,0,0,0,18,22,1]
 };

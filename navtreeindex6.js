@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"files.html":[4,0],
 "functions.html":[3,2,0],
 "functions.html":[3,2,0,0],
 "functions_a.html":[3,2,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "namespacealpaka.html#a28aba9f9b9c76167878d4d304943d54b":[2,0,0,311],
 "namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[2,0,0,315],
 "namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed":[2,0,0,286],
-"namespacealpaka.html#a2a811570d2074f237f89c9910b82b44c":[2,0,0,245],
-"namespacealpaka.html#a2be994b379106bbd50e768e825321768":[2,0,0,307]
+"namespacealpaka.html#a2a811570d2074f237f89c9910b82b44c":[2,0,0,245]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1trait_1_1Round.html":[3,0,0,9,0,83],
 "structalpaka_1_1math_1_1trait_1_1Round.html#a719f1f61db7c0840f78f04200b569714":[3,0,0,9,0,83,0],
 "structalpaka_1_1math_1_1trait_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabf21f961167a24690dbda5a225958194f.html":[3,0,0,9,0,84],
 "structalpaka_1_1math_1_1trait_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabf21f961167a24690dbda5a225958194f.html#a9686c7f93e039b4847485283ebd6345e":[3,0,0,9,0,84,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandStdLib_00_01T_00_01stde941c312bc1108adc15e02a337e6c863.html":[3,0,0,13,0,2,2],
 "structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandStdLib_00_01T_00_01stde941c312bc1108adc15e02a337e6c863.html#a9b5410ee01f1b05a1a70caaa26ea5b8f":[3,0,0,13,0,2,2,0],
 "structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandUniformCudaHipRand_3_0df518e9b654bd428d7301d740b48ae2e.html":[3,0,0,13,0,2,3],
-"structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandUniformCudaHipRand_3_0df518e9b654bd428d7301d740b48ae2e.html#ab449a7211e354246e0c5d45cba29e3d1":[3,0,0,13,0,2,3,0],
-"structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateUniformReal.html":[3,0,0,13,0,2,4]
+"structalpaka_1_1rand_1_1distribution_1_1trait_1_1CreateNormalReal_3_01RandUniformCudaHipRand_3_0df518e9b654bd428d7301d740b48ae2e.html#ab449a7211e354246e0c5d45cba29e3d1":[3,0,0,13,0,2,3,0]
 };
