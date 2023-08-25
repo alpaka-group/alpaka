@@ -110,12 +110,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1GetOffsets_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html">alpaka::trait::GetOffsets&lt; Vec&lt; TDim, TVal &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> offset get trait specialization.  <a href="structalpaka_1_1trait_1_1GetOffsets_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1SetOffset_3_01DimInt_3_010u_01_4_00_01TIntegral_00_01TOtherIntegral_00_b221485aa4afba9e7043a7e940e50736.html">alpaka::trait::SetOffset&lt; DimInt&lt; 0u &gt;, TIntegral, TOtherIntegral, std::enable_if_t&lt; std::is_integral_v&lt; TOtherIntegral &gt; &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unsigned integral x offset set trait specialization.  <a href="structalpaka_1_1trait_1_1SetOffset_3_01DimInt_3_010u_01_4_00_01TIntegral_00_01TOtherIntegral_00_b221485aa4afba9e7043a7e940e50736.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1SetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01T445dd3fe66441dbb87c15e447ff1f18b.html">alpaka::trait::SetOffset&lt; TIdxIntegralConst, Vec&lt; TDim, TVal &gt;, TOffset, std::enable_if_t&lt;(TDim::value &gt; TIdxIntegralConst::value)&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector.">Vec</a> offset set trait specialization.  <a href="structalpaka_1_1trait_1_1SetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_01_4_00_01T445dd3fe66441dbb87c15e447ff1f18b.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -149,22 +143,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
 <tr class="memitem:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3f52e0b422b1c94d37ce259fc671ad8e">alpaka::getOffsetZ</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; Idx&lt; TOffsets &gt;</td></tr>
 <tr class="separator:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42ad0da49e9edcf34619f6a61505373e"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TOffsets , typename TOffset &gt; </td></tr>
-<tr class="memitem:a42ad0da49e9edcf34619f6a61505373e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a42ad0da49e9edcf34619f6a61505373e">alpaka::setOffset</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:a42ad0da49e9edcf34619f6a61505373e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in the given dimension.  <a href="namespacealpaka.html#a42ad0da49e9edcf34619f6a61505373e">More...</a><br /></td></tr>
-<tr class="separator:a42ad0da49e9edcf34619f6a61505373e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48ccf4bbc8805a239f9296f4ed995598"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TOffset &gt; </td></tr>
-<tr class="memitem:a48ccf4bbc8805a239f9296f4ed995598"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a48ccf4bbc8805a239f9296f4ed995598">alpaka::setOffsetX</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:a48ccf4bbc8805a239f9296f4ed995598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in x dimension.  <a href="namespacealpaka.html#a48ccf4bbc8805a239f9296f4ed995598">More...</a><br /></td></tr>
-<tr class="separator:a48ccf4bbc8805a239f9296f4ed995598"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae988c26c08c6d6f9a6df5b9e1b96d493"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TOffset &gt; </td></tr>
-<tr class="memitem:ae988c26c08c6d6f9a6df5b9e1b96d493"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae988c26c08c6d6f9a6df5b9e1b96d493">alpaka::setOffsetY</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:ae988c26c08c6d6f9a6df5b9e1b96d493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in y dimension.  <a href="namespacealpaka.html#ae988c26c08c6d6f9a6df5b9e1b96d493">More...</a><br /></td></tr>
-<tr class="separator:ae988c26c08c6d6f9a6df5b9e1b96d493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60a51cbc574fd2141b8716abe68e5ec0"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TOffset &gt; </td></tr>
-<tr class="memitem:a60a51cbc574fd2141b8716abe68e5ec0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a60a51cbc574fd2141b8716abe68e5ec0">alpaka::setOffsetZ</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:a60a51cbc574fd2141b8716abe68e5ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in z dimension.  <a href="namespacealpaka.html#a60a51cbc574fd2141b8716abe68e5ec0">More...</a><br /></td></tr>
-<tr class="separator:a60a51cbc574fd2141b8716abe68e5ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -172,7 +150,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd2a33bf37bb9d804931f787b573f1a.html">offset</a></li><li class="navelem"><a class="el" href="offset_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Fri Aug 25 2023 07:12:40 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Aug 25 2023 09:50:27 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
