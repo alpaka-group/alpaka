@@ -135,8 +135,8 @@ $(document).ready(function(){initNavTree('RandPhilox_8hpp_source.html',''); init
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classalpaka_1_1rand_1_1Philox4x32x10.html#a8f0895485cd7d46fe5f49795edab9d8d">   46</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="code" href="classalpaka_1_1rand_1_1Philox4x32x10.html#a8f0895485cd7d46fe5f49795edab9d8d">Philox4x32x10</a>(</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            std::uint64_t <span class="keyword">const</span> seed = 0,</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            std::uint64_t <span class="keyword">const</span> subsequence = 0,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            std::uint64_t <span class="keyword">const</span> offset = 0)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            : engineVariant(seed, subsequence, offset)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            std::uint64_t <span class="keyword">const</span> <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a> = 0)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            : engineVariant(seed, subsequence, <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a>)</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
@@ -189,8 +189,8 @@ $(document).ready(function(){initNavTree('RandPhilox_8hpp_source.html',''); init
 <div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a3d9b558762e6546607b731a5e203c06a">  100</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="code" href="classalpaka_1_1rand_1_1Philox4x32x10Vector.html#a3d9b558762e6546607b731a5e203c06a">Philox4x32x10Vector</a>(</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            std::uint32_t <span class="keyword">const</span> seed = 0,</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            std::uint32_t <span class="keyword">const</span> subsequence = 0,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            std::uint32_t <span class="keyword">const</span> offset = 0)</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            : engineVariant(seed, subsequence, offset)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            std::uint32_t <span class="keyword">const</span> <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a> = 0)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            : engineVariant(seed, subsequence, <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a>)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
@@ -315,6 +315,7 @@ $(document).ready(function(){initNavTree('RandPhilox_8hpp_source.html',''); init
 <div class="ttc" id="anamespacealpaka_1_1math_html_a1c8270a0ce32a1ee8f28e9184988e57a"><div class="ttname"><a href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">alpaka::math::max</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto max(T const &amp;max_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the larger of two arguments. NaNs are treated as missing data (between a NaN and a numeric va...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01260">Traits.hpp:1260</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_ad1a3c72853dc08a5e54e532f25a08988"><div class="ttname"><a href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">alpaka::math::min</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto min(T const &amp;min_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the smaller of two arguments. NaNs are treated as missing data (between a NaN and a numeric v...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01277">Traits.hpp:1277</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1rand_html"><div class="ttname"><a href="namespacealpaka_1_1rand.html">alpaka::rand</a></div><div class="ttdef"><b>Definition:</b> <a href="MultiplyAndSplit64to32_8hpp_source.html#l00011">MultiplyAndSplit64to32.hpp:12</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1test_html_ac57b0d74f76c2d03f10f7871408b4106"><div class="ttname"><a href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">alpaka::test::offset</a></div><div class="ttdeci">constexpr auto offset</div><div class="ttdef"><b>Definition:</b> <a href="Extent_8hpp_source.html#l00032">Extent.hpp:32</a></div></div>
 <div class="ttc" id="arand_2Traits_8hpp_html"><div class="ttname"><a href="rand_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00014">Concepts.hpp:15</a></div></div>
 <div class="ttc" id="astructalpaka_1_1meta_1_1IsArrayOrVector_html"><div class="ttname"><a href="structalpaka_1_1meta_1_1IsArrayOrVector.html">alpaka::meta::IsArrayOrVector</a></div><div class="ttdef"><b>Definition:</b> <a href="IsArrayOrVector_8hpp_source.html#l00021">IsArrayOrVector.hpp:22</a></div></div>
@@ -327,7 +328,7 @@ $(document).ready(function(){initNavTree('RandPhilox_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="RandPhilox_8hpp.html">RandPhilox.hpp</a></li>
-    <li class="footer">Generated on Fri Aug 25 2023 12:05:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Aug 25 2023 12:35:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

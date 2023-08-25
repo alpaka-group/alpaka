@@ -10,16 +10,7 @@ var dir_2fd35556c93caeee8f10f5719f6806ac =
       [ "Array", "structalpaka_1_1test_1_1Array.html", "structalpaka_1_1test_1_1Array" ]
     ] ],
     [ "Check.hpp", "Check_8hpp.html", "Check_8hpp" ],
-    [ "Extent.hpp", "Extent_8hpp.html", [
-      [ "CreateVecWithIdx", "structalpaka_1_1test_1_1CreateVecWithIdx.html", [
-        [ "ForExtentBuf", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf" ],
-        [ "ForExtentSubView", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView" ],
-        [ "ForOffset", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset" ]
-      ] ],
-      [ "ForExtentBuf", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf" ],
-      [ "ForExtentSubView", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView" ],
-      [ "ForOffset", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset" ]
-    ] ],
+    [ "Extent.hpp", "Extent_8hpp.html", "Extent_8hpp" ],
     [ "KernelExecutionFixture.hpp", "KernelExecutionFixture_8hpp.html", [
       [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html", "classalpaka_1_1test_1_1KernelExecutionFixture" ]
     ] ],

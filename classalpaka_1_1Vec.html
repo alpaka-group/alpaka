@@ -110,6 +110,10 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b28e4f55e2d24291409d1b1b4ca3e5b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a9b28e4f55e2d24291409d1b1b4ca3e5b">Vec</a> ()</td></tr>
 <tr class="separator:a9b28e4f55e2d24291409d1b1b4ca3e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8054f251327c0b38cdf04d0e4a92c3f"><td class="memTemplParams" colspan="2">template&lt;typename F , std::enable_if_t&lt; std::is_invocable_v&lt; F, std::integral_constant&lt; std::size_t, 0 &gt;&gt;, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:aa8054f251327c0b38cdf04d0e4a92c3f"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#aa8054f251327c0b38cdf04d0e4a92c3f">Vec</a> (F &amp;&amp;generator)</td></tr>
+<tr class="memdesc:aa8054f251327c0b38cdf04d0e4a92c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generator constructor. Initializes the vector with the values returned from generator(IC) in order, where IC::value runs from 0 to TDim - 1 (inclusive).  <a href="classalpaka_1_1Vec.html#aa8054f251327c0b38cdf04d0e4a92c3f">More...</a><br /></td></tr>
+<tr class="separator:aa8054f251327c0b38cdf04d0e4a92c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b6b1a4bfbc7a6b7a28fbc8f15a97755"><td class="memTemplParams" colspan="2">template&lt;typename... TArgs, typename  = std::enable_if_t&lt;                sizeof...(TArgs) == TDim::value &amp;&amp; (std::is_convertible_v&lt;std::decay_t&lt;TArgs&gt;, TVal&gt; &amp;&amp; ...)&gt;&gt; </td></tr>
 <tr class="memitem:a7b6b1a4bfbc7a6b7a28fbc8f15a97755"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a7b6b1a4bfbc7a6b7a28fbc8f15a97755">Vec</a> (TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a7b6b1a4bfbc7a6b7a28fbc8f15a97755"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value constructor. This constructor is only available if the number of parameters matches the vector idx.  <a href="classalpaka_1_1Vec.html#a7b6b1a4bfbc7a6b7a28fbc8f15a97755">More...</a><br /></td></tr>
@@ -118,6 +122,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8698fac84793b50ba4b3178229440733"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2105ff93e428adbadc7b5761f425d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a3b2105ff93e428adbadc7b5761f425d2">any</a> () const -&gt; bool</td></tr>
 <tr class="separator:a3b2105ff93e428adbadc7b5761f425d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb63a0172a52d635d81beeb615fb79a2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#abb63a0172a52d635d81beeb615fb79a2">back</a> () -&gt; TVal &amp;</td></tr>
+<tr class="separator:abb63a0172a52d635d81beeb615fb79a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10fddf7a9da3de122eabe075102c5f52"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a10fddf7a9da3de122eabe075102c5f52">back</a> () const -&gt; TVal const &amp;</td></tr>
+<tr class="separator:a10fddf7a9da3de122eabe075102c5f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a11451f61b3919f3a2d95619e5ed738"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a4a11451f61b3919f3a2d95619e5ed738">begin</a> () -&gt; TVal *</td></tr>
 <tr class="separator:a4a11451f61b3919f3a2d95619e5ed738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adede57b5f6210149dc4a05c16cd137c5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#adede57b5f6210149dc4a05c16cd137c5">begin</a> () const -&gt; TVal const *</td></tr>
@@ -138,6 +146,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa56ec8221dda198946f2fe0cbbc07813"><td class="memTemplParams" colspan="2">template&lt;typename TFnObj , std::size_t... TIndices&gt; </td></tr>
 <tr class="memitem:aa56ec8221dda198946f2fe0cbbc07813"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#aa56ec8221dda198946f2fe0cbbc07813">foldrByIndices</a> (TFnObj const &amp;f, std::integer_sequence&lt; std::size_t, TIndices... &gt;, TVal initial) const</td></tr>
 <tr class="separator:aa56ec8221dda198946f2fe0cbbc07813"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80c41135c9332e89909608e1c64ccfed"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a80c41135c9332e89909608e1c64ccfed">front</a> () -&gt; TVal &amp;</td></tr>
+<tr class="separator:a80c41135c9332e89909608e1c64ccfed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a020106a85f93927147ea4c0af3c3c3d4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a020106a85f93927147ea4c0af3c3c3d4">front</a> () const -&gt; TVal const &amp;</td></tr>
+<tr class="separator:a020106a85f93927147ea4c0af3c3c3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d990088fb03ebaa8198be3025543790"><td class="memTemplParams" colspan="2">template&lt;size_t I&gt; </td></tr>
 <tr class="memitem:a6d990088fb03ebaa8198be3025543790"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html#a6d990088fb03ebaa8198be3025543790">get</a> () -&gt; TVal &amp;</td></tr>
 <tr class="separator:a6d990088fb03ebaa8198be3025543790"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,7 +224,7 @@ class alpaka::Vec&lt; TDim, TVal &gt;</h3>
 
 <p>A n-dimensional vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00074">74</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00037">37</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a79cd10bdf0f58e103e43275a258399fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79cd10bdf0f58e103e43275a258399fd">&#9670;&nbsp;</a></span>Dim</h2>
@@ -228,7 +240,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00079">79</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00042">42</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -246,13 +258,13 @@ template&lt;typename TDim , typename TVal &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00080">80</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00043">43</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9b28e4f55e2d24291409d1b1b4ca3e5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b28e4f55e2d24291409d1b1b4ca3e5b">&#9670;&nbsp;</a></span>Vec() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b28e4f55e2d24291409d1b1b4ca3e5b">&#9670;&nbsp;</a></span>Vec() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -276,12 +288,12 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00088">88</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00051">51</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
 <a id="a7b6b1a4bfbc7a6b7a28fbc8f15a97755"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b6b1a4bfbc7a6b7a28fbc8f15a97755">&#9670;&nbsp;</a></span>Vec() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b6b1a4bfbc7a6b7a28fbc8f15a97755">&#9670;&nbsp;</a></span>Vec() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -310,7 +322,41 @@ template&lt;typename... TArgs, typename  = std::enable_if_t&lt;                s
 
 <p>Value constructor. This constructor is only available if the number of parameters matches the vector idx. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00113">113</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00076">76</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa8054f251327c0b38cdf04d0e4a92c3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8054f251327c0b38cdf04d0e4a92c3f">&#9670;&nbsp;</a></span>Vec() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+<div class="memtemplate">
+template&lt;typename F , std::enable_if_t&lt; std::is_invocable_v&lt; F, std::integral_constant&lt; std::size_t, 0 &gt;&gt;, int &gt;  = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TVal &gt;::<a class="el" href="classalpaka_1_1Vec.html">Vec</a> </td>
+          <td>(</td>
+          <td class="paramtype">F &amp;&amp;&#160;</td>
+          <td class="paramname"><em>generator</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generator constructor. Initializes the vector with the values returned from generator(IC) in order, where IC::value runs from 0 to TDim - 1 (inclusive). </p>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00092">92</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -342,7 +388,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>True if all values are true, i.e., the "logical and" of all values. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00259">259</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00267">267</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +427,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00123">123</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00111">111</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -412,7 +458,67 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>True if any value is true, i.e., the "logical or" of all values. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00266">266</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00274">274</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="abb63a0172a52d635d81beeb615fb79a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb63a0172a52d635d81beeb615fb79a2">&#9670;&nbsp;</a></span>back() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TVal &gt;::back </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; TVal&amp;
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00163">163</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a10fddf7a9da3de122eabe075102c5f52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10fddf7a9da3de122eabe075102c5f52">&#9670;&nbsp;</a></span>back() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TVal &gt;::back </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; TVal const&amp;
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00168">168</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -442,7 +548,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00145">145</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00133">133</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -472,7 +578,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00150">150</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00138">138</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -502,7 +608,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00155">155</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00143">143</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -532,7 +638,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00160">160</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00148">148</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -564,7 +670,7 @@ template&lt;typename TFnObj &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00210">210</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00218">218</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -606,7 +712,7 @@ template&lt;typename TFnObj &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00217">217</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00225">225</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -648,7 +754,7 @@ template&lt;typename TFnObj , std::size_t... TIndices&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00191">191</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00199">199</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -696,7 +802,67 @@ template&lt;typename TFnObj , std::size_t... TIndices&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00200">200</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00208">208</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a80c41135c9332e89909608e1c64ccfed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80c41135c9332e89909608e1c64ccfed">&#9670;&nbsp;</a></span>front() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TVal &gt;::front </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; TVal&amp;
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00153">153</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a020106a85f93927147ea4c0af3c3c3d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a020106a85f93927147ea4c0af3c3c3d4">&#9670;&nbsp;</a></span>front() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TVal &gt;::front </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; TVal const&amp;
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00158">158</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -728,7 +894,7 @@ template&lt;size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00293">293</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00301">301</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -760,7 +926,7 @@ template&lt;size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00299">299</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00307">307</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -791,7 +957,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The max of all values. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00252">252</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00260">260</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -822,7 +988,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The index of the maximal element. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00286">286</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00294">294</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -853,7 +1019,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The min of all values. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00245">245</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00253">253</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -884,7 +1050,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The index of the minimal element. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00279">279</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00287">287</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -915,7 +1081,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>True if none of the values are true </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00273">273</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00281">281</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -947,7 +1113,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 
 <p>One value constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00140">140</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00128">128</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -983,7 +1149,7 @@ template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral_v&l
 <p>Value reference accessor at the given non-unsigned integer index. </p>
 <dl class="section return"><dt>Returns</dt><dd>A reference to the value at the given index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00169">169</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00177">177</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1019,7 +1185,7 @@ template&lt;typename TIdx , typename  = std::enable_if_t&lt;std::is_integral_v&l
 <p>Value accessor at the given non-unsigned integer index. </p>
 <dl class="section return"><dt>Returns</dt><dd>The value at the given index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00181">181</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00189">189</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1050,7 +1216,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The product of all values. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00229">229</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00237">237</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +1247,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The sum of all values. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00238">238</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00246">246</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1113,7 +1279,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 
 <p>Zero value constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00133">133</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00121">121</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1155,7 +1321,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00386">386</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00394">394</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1363,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise logical and relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00461">461</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00469">469</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1239,7 +1405,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise product of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00346">346</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00354">354</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1281,7 +1447,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise sum of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00306">306</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00314">314</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1323,7 +1489,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise difference of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00323">323</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00331">331</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1365,7 +1531,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise less than relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00393">393</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00401">401</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1406,7 +1572,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00493">493</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00501">501</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1448,7 +1614,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise less than relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00410">410</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00418">418</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1489,7 +1655,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00362">362</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00370">370</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1531,7 +1697,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise greater than relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00427">427</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00435">435</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1573,7 +1739,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise greater equal than relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00444">444</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00452">452</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1615,7 +1781,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise logical or relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00478">478</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00486">486</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -1628,7 +1794,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1Vec.html">Vec</a></li>
-    <li class="footer">Generated on Fri Aug 25 2023 12:05:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Aug 25 2023 12:35:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

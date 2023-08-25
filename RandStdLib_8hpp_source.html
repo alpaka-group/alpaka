@@ -135,9 +135,9 @@ $(document).ready(function(){initNavTree('RandStdLib_8hpp_source.html',''); init
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1MersenneTwister.html#a63ec28b2d538588e9e619912552426d5">   46</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1MersenneTwister.html#a63ec28b2d538588e9e619912552426d5">MersenneTwister</a>(</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; seed,</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; subsequence = 0,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; offset = 0)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a> = 0)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                : <span class="comment">// NOTE: XOR the seed and the subsequence to generate a unique seed.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                state((seed ^ subsequence) + offset)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                state((seed ^ subsequence) + <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a>)</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            {</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
@@ -177,9 +177,9 @@ $(document).ready(function(){initNavTree('RandStdLib_8hpp_source.html',''); init
 <div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ae9c390e0adc0fee34e962ae7e05698f4">   88</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ae9c390e0adc0fee34e962ae7e05698f4">TinyMersenneTwister</a>(</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; seed,</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; subsequence = 0,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; offset = 0)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a> = 0)</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                : <span class="comment">// NOTE: XOR the seed and the subsequence to generate a unique seed.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                state((seed ^ subsequence) + offset)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                state((seed ^ subsequence) + <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a>)</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            {</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
@@ -321,9 +321,9 @@ $(document).ready(function(){initNavTree('RandStdLib_8hpp_source.html',''); init
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                <a class="code" href="classalpaka_1_1rand_1_1TinyMersenneTwister.html">TinyMersenneTwister</a> <span class="keyword">const</span>&amp; <span class="comment">/* rand */</span>,</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; seed = 0,</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; subsequence = 0,</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; offset = 0) -&gt; <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html">cpu::TinyMersenneTwister</a></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a> = 0) -&gt; <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html">cpu::TinyMersenneTwister</a></div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            {</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                <span class="keywordflow">return</span> {seed, subsequence, offset};</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                <span class="keywordflow">return</span> {seed, subsequence, <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a>};</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            }</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        };</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
@@ -334,9 +334,9 @@ $(document).ready(function(){initNavTree('RandStdLib_8hpp_source.html',''); init
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                <a class="code" href="classalpaka_1_1rand_1_1MersenneTwister.html">MersenneTwister</a> <span class="keyword">const</span>&amp; <span class="comment">/* rand */</span>,</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; seed = 0,</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; subsequence = 0,</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; offset = 0) -&gt; <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1MersenneTwister.html">cpu::MersenneTwister</a></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a> = 0) -&gt; <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1MersenneTwister.html">cpu::MersenneTwister</a></div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            {</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                <span class="keywordflow">return</span> {seed, subsequence, offset};</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                <span class="keywordflow">return</span> {seed, subsequence, <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a>};</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            }</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        };</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
@@ -347,9 +347,9 @@ $(document).ready(function(){initNavTree('RandStdLib_8hpp_source.html',''); init
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                <a class="code" href="classalpaka_1_1rand_1_1RandomDevice.html">RandomDevice</a> <span class="keyword">const</span>&amp; <span class="comment">/* rand */</span>,</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; seed = 0,</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; subsequence = 0,</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; offset = 0) -&gt; <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html">cpu::RandomDevice</a></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                std::uint32_t <span class="keyword">const</span>&amp; <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a> = 0) -&gt; <a class="code" href="classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html">cpu::RandomDevice</a></div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">return</span> {seed, subsequence, offset};</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">return</span> {seed, subsequence, <a class="code" href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">offset</a>};</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            }</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        };</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    } <span class="comment">// namespace engine::trait</span></div>
@@ -384,6 +384,7 @@ $(document).ready(function(){initNavTree('RandStdLib_8hpp_source.html',''); init
 <div class="ttc" id="anamespacealpaka_1_1math_html_a1c8270a0ce32a1ee8f28e9184988e57a"><div class="ttname"><a href="namespacealpaka_1_1math.html#a1c8270a0ce32a1ee8f28e9184988e57a">alpaka::math::max</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto max(T const &amp;max_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the larger of two arguments. NaNs are treated as missing data (between a NaN and a numeric va...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01260">Traits.hpp:1260</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_ad1a3c72853dc08a5e54e532f25a08988"><div class="ttname"><a href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">alpaka::math::min</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto min(T const &amp;min_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the smaller of two arguments. NaNs are treated as missing data (between a NaN and a numeric v...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01277">Traits.hpp:1277</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1rand_html"><div class="ttname"><a href="namespacealpaka_1_1rand.html">alpaka::rand</a></div><div class="ttdef"><b>Definition:</b> <a href="MultiplyAndSplit64to32_8hpp_source.html#l00011">MultiplyAndSplit64to32.hpp:12</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1test_html_ac57b0d74f76c2d03f10f7871408b4106"><div class="ttname"><a href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">alpaka::test::offset</a></div><div class="ttdeci">constexpr auto offset</div><div class="ttdef"><b>Definition:</b> <a href="Extent_8hpp_source.html#l00032">Extent.hpp:32</a></div></div>
 <div class="ttc" id="arand_2Traits_8hpp_html"><div class="ttname"><a href="rand_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00014">Concepts.hpp:15</a></div></div>
 <div class="ttc" id="astructalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal_html"><div class="ttname"><a href="structalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal.html">alpaka::rand::distribution::cpu::NormalReal</a></div><div class="ttdoc">The CPU random number normal distribution.</div><div class="ttdef"><b>Definition:</b> <a href="RandStdLib_8hpp_source.html#l00151">RandStdLib.hpp:152</a></div></div>
@@ -412,7 +413,7 @@ $(document).ready(function(){initNavTree('RandStdLib_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="RandStdLib_8hpp.html">RandStdLib.hpp</a></li>
-    <li class="footer">Generated on Fri Aug 25 2023 12:05:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Aug 25 2023 12:35:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

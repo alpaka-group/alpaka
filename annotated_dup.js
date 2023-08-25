@@ -601,11 +601,6 @@ var annotated_dup =
           ] ]
         ] ],
         [ "Array", "structalpaka_1_1test_1_1Array.html", "structalpaka_1_1test_1_1Array" ],
-        [ "CreateVecWithIdx", "structalpaka_1_1test_1_1CreateVecWithIdx.html", [
-          [ "ForExtentBuf", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf" ],
-          [ "ForExtentSubView", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView" ],
-          [ "ForOffset", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset" ]
-        ] ],
         [ "EventHostManualTriggerCpu", "classalpaka_1_1test_1_1EventHostManualTriggerCpu.html", "classalpaka_1_1test_1_1EventHostManualTriggerCpu" ],
         [ "EventHostManualTriggerCuda", "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html", "classalpaka_1_1test_1_1EventHostManualTriggerCuda" ],
         [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html", "classalpaka_1_1test_1_1KernelExecutionFixture" ],

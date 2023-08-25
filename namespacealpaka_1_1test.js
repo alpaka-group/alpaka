@@ -9,11 +9,6 @@ var namespacealpaka_1_1test =
     [ "trait", "namespacealpaka_1_1test_1_1trait.html", "namespacealpaka_1_1test_1_1trait" ],
     [ "uniform_cuda_hip", "namespacealpaka_1_1test_1_1uniform__cuda__hip.html", "namespacealpaka_1_1test_1_1uniform__cuda__hip" ],
     [ "Array", "structalpaka_1_1test_1_1Array.html", "structalpaka_1_1test_1_1Array" ],
-    [ "CreateVecWithIdx", "structalpaka_1_1test_1_1CreateVecWithIdx.html", [
-      [ "ForExtentBuf", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentBuf" ],
-      [ "ForExtentSubView", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForExtentSubView" ],
-      [ "ForOffset", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset.html", "structalpaka_1_1test_1_1CreateVecWithIdx_1_1ForOffset" ]
-    ] ],
     [ "EventHostManualTriggerCpu", "classalpaka_1_1test_1_1EventHostManualTriggerCpu.html", "classalpaka_1_1test_1_1EventHostManualTriggerCpu" ],
     [ "EventHostManualTriggerCuda", "classalpaka_1_1test_1_1EventHostManualTriggerCuda.html", "classalpaka_1_1test_1_1EventHostManualTriggerCuda" ],
     [ "KernelExecutionFixture", "classalpaka_1_1test_1_1KernelExecutionFixture.html", "classalpaka_1_1test_1_1KernelExecutionFixture" ],
@@ -38,5 +33,8 @@ var namespacealpaka_1_1test =
     [ "testViewMutable", "namespacealpaka_1_1test.html#a4113677614d29718ffb0ce7c82d5d851", null ],
     [ "verifyBytesSet", "namespacealpaka_1_1test.html#a2da61c4004c9b54c965c74f9b28155f2", null ],
     [ "verifyViewsEqual", "namespacealpaka_1_1test.html#a490d7ae473e2c0ed15d387d265d5c5dc", null ],
-    [ "writeEnabledAccs", "namespacealpaka_1_1test.html#af491ce4563849a712e3a22fcc3f7a2cc", null ]
+    [ "writeEnabledAccs", "namespacealpaka_1_1test.html#af491ce4563849a712e3a22fcc3f7a2cc", null ],
+    [ "extentBuf", "namespacealpaka_1_1test.html#aa4fb1480c3db6660b29bb8025b067e92", null ],
+    [ "extentSubView", "namespacealpaka_1_1test.html#ab3a43d26dbc8c59dcad7569f56f9e425", null ],
+    [ "offset", "namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106", null ]
 ];
