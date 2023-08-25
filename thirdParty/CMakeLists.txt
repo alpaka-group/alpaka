@@ -20,6 +20,12 @@ if(BUILD_TESTING)
         # Workaround for STL atomic issue: https://forums.developer.nvidia.com/t/support-for-atomic-in-libstdc-missing/135403/2
         # still appears in NVHPC 20.7
         add_compile_definitions($<$<CXX_COMPILER_ID:PGI>:__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1>)
+
+        # Silence icpx remark:
+        # Note that use of '-g' without any optimization-level option will turn off most compiler optimizations similar to use of '-O0'
+        # Remarks are not treated as warnings so we need to disable them manually. 
+        add_compile_options($<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:IntelLLVM>>:-Rno-debug-disables-optimization>)
+
         add_subdirectory(catch2)
 
         # hide Catch2 cmake variables by default in cmake gui
