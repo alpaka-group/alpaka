@@ -121,6 +121,7 @@ var namespacealpaka =
     [ "WorkDivUniformCudaHipBuiltIn", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn" ],
     [ "Acc", "namespacealpaka.html#ae3a0f745fcf8e6ac0125e5ba7911e11a", null ],
     [ "AccGpuCudaRt", "namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d", null ],
+    [ "AccToTag", "namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc", null ],
     [ "AtomicCpu", "namespacealpaka.html#a0bad0e6d480fa2fafe60330f304067b5", null ],
     [ "AtomicHierarchy", "namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff", null ],
     [ "AtomicHierarchyConcept", "namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52", null ],
@@ -147,6 +148,7 @@ var namespacealpaka =
     [ "QueueUniformCudaHipRtBlocking", "namespacealpaka.html#a13646f485ddbe5f1809a3d24f77429eb", null ],
     [ "QueueUniformCudaHipRtNonBlocking", "namespacealpaka.html#af493861b6c8c71c887690654c4943238", null ],
     [ "remove_restrict_t", "namespacealpaka.html#a78675a272ead29bbbf706b20727fa209", null ],
+    [ "TagToAcc", "namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a", null ],
     [ "TaskKernelGpuCudaRt", "namespacealpaka.html#aa48aeb76936551ea2dc5c4fe4759eb35", null ],
     [ "GridBlockExtentSubDivRestrictions", "namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27", [
       [ "EqualExtent", "namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27ae79087692afdec020e4de5e524f6b8e4", null ],

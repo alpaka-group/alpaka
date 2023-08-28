@@ -140,17 +140,19 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a503e1b034d84e42b00504644b8623948"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:a503e1b034d84e42b00504644b8623948"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1trait.html#a503e1b034d84e42b00504644b8623948">alpaka::trait::AccToTagType</a> = typename AccToTag&lt; TAcc &gt;::type</td></tr>
-<tr class="separator:a503e1b034d84e42b00504644b8623948"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24b5d6fa444921ebd3bb7eb7a688ff80"><td class="memTemplParams" colspan="2">template&lt;typename TTag , typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:a24b5d6fa444921ebd3bb7eb7a688ff80"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1trait.html#a24b5d6fa444921ebd3bb7eb7a688ff80">alpaka::trait::TagToAccType</a> = typename TagToAcc&lt; TTag, TDim, TIdx &gt;::type</td></tr>
-<tr class="separator:a24b5d6fa444921ebd3bb7eb7a688ff80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">alpaka::AccToTag</a> = typename trait::AccToTag&lt; TAcc &gt;::type</td></tr>
+<tr class="memdesc:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps an acc type to a tag type  <a href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">More...</a><br /></td></tr>
+<tr class="separator:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memTemplParams" colspan="2">template&lt;typename TTag , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">alpaka::TagToAcc</a> = typename trait::TagToAcc&lt; TTag, TDim, TIdx &gt;::type</td></tr>
+<tr class="memdesc:affc8849a6a5b20ced64d3f1248e24a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps a tag type to an acc type  <a href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">More...</a><br /></td></tr>
+<tr class="separator:affc8849a6a5b20ced64d3f1248e24a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename... TTag&gt; </td></tr>
-<tr class="memitem:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1">alpaka::accMatchesTags</a> = (std::is_same_v&lt;<a class="el" href="namespacealpaka_1_1trait.html#a503e1b034d84e42b00504644b8623948">alpaka::trait::AccToTagType</a>&lt;TAcc&gt;, TTag&gt; || ...)</td></tr>
+<tr class="memitem:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1">alpaka::accMatchesTags</a> = (std::is_same_v&lt;<a class="el" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">alpaka::AccToTag</a>&lt;TAcc&gt;, TTag&gt; || ...)</td></tr>
 <tr class="separator:ac7dc6f9301a777fe3a25be17ac1d60b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -187,7 +189,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="Tag_8hpp.html">Tag.hpp</a></li>
-    <li class="footer">Generated on Fri Aug 25 2023 16:19:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Aug 28 2023 08:27:42 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

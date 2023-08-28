@@ -166,13 +166,13 @@ $(document).ready(function(){initNavTree('AccFpgaSyclIntel_8hpp_source.html','')
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    };</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">struct </span>AccToTag&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::AccFpgaSyclIntel&lt;TDim, TIdx&gt;&gt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">AccToTag</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::AccFpgaSyclIntel&lt;TDim, TIdx&gt;&gt;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">using</span> type = <a class="code" href="structalpaka_1_1TagFpgaSyclIntel.html">alpaka::TagFpgaSyclIntel</a>;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    };</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">struct </span>TagToAcc&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::TagFpgaSyclIntel, TDim, TIdx&gt;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">struct </span><a class="code" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">TagToAcc</a>&lt;<a class="code" href="namespacealpaka.html">alpaka</a>::TagFpgaSyclIntel, TDim, TIdx&gt;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    {</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">using</span> type = alpaka::AccFpgaSyclIntel&lt;TDim, TIdx&gt;;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    };</div>
@@ -193,6 +193,8 @@ $(document).ready(function(){initNavTree('AccFpgaSyclIntel_8hpp_source.html','')
 <div class="ttc" id="anamespacealpaka_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1trait.html">alpaka::trait</a></div><div class="ttdoc">The accelerator traits.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00124">AccCpuOmp2Blocks.hpp:125</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00047">AccCpuOmp2Blocks.hpp:48</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a64392e68c8cc7a290aec236751415cf3"><div class="ttname"><a href="namespacealpaka.html#a64392e68c8cc7a290aec236751415cf3">alpaka::createTaskKernel</a></div><div class="ttdeci">ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args)</div><div class="ttdoc">Creates a kernel execution task.</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2Traits_8hpp_source.html#l00230">Traits.hpp:230</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_af5f5caddacfd0c5a7584d88a0a6c85dc"><div class="ttname"><a href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">alpaka::AccToTag</a></div><div class="ttdeci">typename trait::AccToTag&lt; TAcc &gt;::type AccToTag</div><div class="ttdoc">maps an acc type to a tag type</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00047">Tag.hpp:47</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_affc8849a6a5b20ced64d3f1248e24a0a"><div class="ttname"><a href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">alpaka::TagToAcc</a></div><div class="ttdeci">typename trait::TagToAcc&lt; TTag, TDim, TIdx &gt;::type TagToAcc</div><div class="ttdoc">maps a tag type to an acc type</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00054">Tag.hpp:54</a></div></div>
 <div class="ttc" id="aplatform_2Traits_8hpp_html"><div class="ttname"><a href="platform_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="astructalpaka_1_1TagFpgaSyclIntel_html"><div class="ttname"><a href="structalpaka_1_1TagFpgaSyclIntel.html">alpaka::TagFpgaSyclIntel</a></div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00029">Tag.hpp:29</a></div></div>
 <div class="ttc" id="astructalpaka_1_1trait_1_1GetAccName_html_a89be9c6144a1fd916731d19c5aa9d507"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetAccName.html#a89be9c6144a1fd916731d19c5aa9d507">alpaka::trait::GetAccName::getAccName</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getAccName() -&gt; std::string</div><div class="ttdef"><b>Definition:</b> <a href="acc_2Traits_8hpp_source.html#l00049">Traits.hpp:49</a></div></div>
@@ -202,7 +204,7 @@ $(document).ready(function(){initNavTree('AccFpgaSyclIntel_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccFpgaSyclIntel_8hpp.html">AccFpgaSyclIntel.hpp</a></li>
-    <li class="footer">Generated on Fri Aug 25 2023 16:19:14 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Aug 28 2023 08:27:41 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
