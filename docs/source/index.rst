@@ -6,7 +6,7 @@
 
 .. only:: latex
 
-  .. image:: ../logo/alpaka.pdf
+  .. image:: ../logo/alpaka.png
 
 *alpaka - An Abstraction Library for Parallel Kernel Acceleration*
 
