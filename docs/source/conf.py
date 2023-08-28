@@ -99,7 +99,7 @@ latex_elements = {
     #
     # 'figure_align': 'htbp',
 }
-latex_logo = "../logo/alpaka.pdf"
+latex_logo = "../logo/alpaka.png"
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
