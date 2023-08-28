@@ -668,10 +668,7 @@ namespace alpaka
                 ALPAKA_UNREACHABLE({});
             }
         };
-    } // namespace trait
 
-    namespace trait
-    {
         //! ReverseVec specialization for Vec.
         template<typename TDim, typename TVal>
         struct ReverseVec<Vec<TDim, TVal>>
