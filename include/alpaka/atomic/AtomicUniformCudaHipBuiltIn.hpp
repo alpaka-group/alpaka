@@ -76,7 +76,7 @@ namespace alpaka
                     T const& value) -> T
                 {
                     auto* const addressAsIntegralType = reinterpretAddress(addr);
-                    using EmulatedType = ALPAKA_DECAY_T(decltype(*addressAsIntegralType));
+                    using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
 
                     // Emulating atomics with atomicCAS is mentioned in the programming guide too.
                     // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
@@ -117,7 +117,7 @@ namespace alpaka
                     T const& value) -> T
                 {
                     auto* const addressAsIntegralType = reinterpretAddress(addr);
-                    using EmulatedType = ALPAKA_DECAY_T(decltype(*addressAsIntegralType));
+                    using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
                     EmulatedType reinterpretedCompare = reinterpretValue(compare);
                     EmulatedType reinterpretedValue = reinterpretValue(value);
 

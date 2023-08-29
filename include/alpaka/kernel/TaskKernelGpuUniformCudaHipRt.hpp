@@ -219,7 +219,7 @@ namespace alpaka
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes = std::apply(
-                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
+                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
                             blockThreadExtent,
@@ -257,7 +257,7 @@ namespace alpaka
                 // (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the
                 // value location.
                 std::apply(
-                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
+                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
                     {
                         kernelName<<<
                             gridDim,
@@ -327,7 +327,7 @@ namespace alpaka
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes = std::apply(
-                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
+                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
                             blockThreadExtent,
@@ -361,7 +361,7 @@ namespace alpaka
 
                 // Enqueue the kernel execution.
                 std::apply(
-                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
+                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
                     {
                         kernelName<<<
                             gridDim,
