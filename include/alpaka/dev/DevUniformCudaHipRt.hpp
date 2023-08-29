@@ -45,7 +45,7 @@ namespace alpaka
     struct PlatformUniformCudaHipRt;
 
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
-    class BufUniformCudaHipRt;
+    struct BufUniformCudaHipRt;
 
     //! The CUDA/HIP RT device handle.
     template<typename TApi>
