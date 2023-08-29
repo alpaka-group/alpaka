@@ -129,11 +129,20 @@ namespace alpaka::test
                 auto const pBytes = reinterpret_cast<std::uint8_t const*>(&elem);
                 for(std::size_t i = 0u; i < elemSizeInByte; ++i)
                 {
-                    ALPAKA_CHECK(*success, pBytes[i] == byte);
+                    if(pBytes[i] != byte)
+                    {
+                        printf(
+                            "Byte at offset %lu is different: %u != %u\n",
+                            static_cast<long unsigned>(i),
+                            static_cast<unsigned>(pBytes[i]),
+                            static_cast<unsigned>(byte));
+                        *success = false;
+                    }
                 }
             }
         }
     };
+
     template<typename TAcc, typename TView>
     ALPAKA_FN_HOST auto verifyBytesSet(TView const& view, std::uint8_t const& byte) -> void
     {
