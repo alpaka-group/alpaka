@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"WorkDivHelpers_8hpp_source.html":[4,0,0,0,26,2],
 "WorkDivMembers_8hpp.html":[4,0,0,0,26,3],
 "WorkDivMembers_8hpp_source.html":[4,0,0,0,26,3],
 "WorkDivUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,26,4],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1ViewPlainPtr.html#a740a31f8ece699753696478e858add8f":[3,0,0,111,8],
 "classalpaka_1_1ViewPlainPtr.html#a937ca83df1d176d3b781234e7b291543":[3,0,0,111,4],
 "classalpaka_1_1ViewPlainPtr.html#ad417c183d56316125f0ee22bb3155733":[3,0,0,111,7],
-"classalpaka_1_1ViewPlainPtr.html#aeb2754f391e036d15e170ac645e5dd7e":[3,0,0,111,6]
+"classalpaka_1_1ViewPlainPtr.html#aeb2754f391e036d15e170ac645e5dd7e":[3,0,0,111,6],
+"classalpaka_1_1ViewPlainPtr.html#af1eaf448d146968155ee533125c93239":[3,0,0,111,3]
 };

@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Threads_8hpp_source.h
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                [&amp;](<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs) <span class="keyword">const</span>&amp;... args)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                [&amp;](std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args)</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;AccCpuOmp2Threads&lt;TDim, TIdx&gt;&gt;(</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                        m_kernelFnObj,</div>
@@ -288,7 +288,6 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Threads_8hpp_source.h
 <div class="ttc" id="aAccCpuOmp2Threads_8hpp_html"><div class="ttname"><a href="AccCpuOmp2Threads_8hpp.html">AccCpuOmp2Threads.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac556c317f934c69c8c8c083c5068f681"><div class="ttname"><a href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00053">Debug.hpp:53</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html"><div class="ttname"><a href="Decay_8hpp.html">Decay.hpp</a></div></div>
-<div class="ttc" id="aDecay_8hpp_html_afba6dfdddd358c0ee5a1c6406afd2c11"><div class="ttname"><a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a></div><div class="ttdeci">#define ALPAKA_DECAY_T(Type)</div><div class="ttdoc">Wrapper around std::decay_t for parameter pack expansion expressions.</div><div class="ttdef"><b>Definition:</b> <a href="Decay_8hpp_source.html#l00025">Decay.hpp:25</a></div></div>
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
 <div class="ttc" id="aNdLoop_8hpp_html"><div class="ttname"><a href="NdLoop_8hpp.html">NdLoop.hpp</a></div></div>
 <div class="ttc" id="aWorkDivMembers_8hpp_html"><div class="ttname"><a href="WorkDivMembers_8hpp.html">WorkDivMembers.hpp</a></div></div>
@@ -325,7 +324,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Threads_8hpp_source.h
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuOmp2Threads_8hpp.html">TaskKernelCpuOmp2Threads.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 29 2023 15:06:47 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 29 2023 18:15:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -896,7 +896,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160; </div>
 <div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;            <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
 <div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;                [&amp;](<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs) <span class="keyword">const</span>&amp;... args)</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;                [&amp;](std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args)</div>
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;                {</div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;                    <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;AccCpuOmp2Blocks&lt;TDim, TIdx&gt;&gt;(</div>
 <div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;                        m_kernelFnObj,</div>
@@ -920,7 +920,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
 <div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;            <span class="comment">// Get the OpenMP schedule information for the given kernel and parameter types</span></div>
 <div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> schedule = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;                [&amp;](<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs) <span class="keyword">const</span>&amp;... args) {</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;                [&amp;](std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;                    <span class="keywordflow">return</span> getOmpSchedule&lt;AccCpuOmp2Blocks&lt;TDim, TIdx&gt;&gt;(</div>
 <div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;                        m_kernelFnObj,</div>
 <div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;                        blockThreadExtent,</div>
@@ -1042,7 +1042,6 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div class="ttc" id="aAccCpuOmp2Blocks_8hpp_html"><div class="ttname"><a href="AccCpuOmp2Blocks_8hpp.html">AccCpuOmp2Blocks.hpp</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac556c317f934c69c8c8c083c5068f681"><div class="ttname"><a href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00053">Debug.hpp:53</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html"><div class="ttname"><a href="Decay_8hpp.html">Decay.hpp</a></div></div>
-<div class="ttc" id="aDecay_8hpp_html_afba6dfdddd358c0ee5a1c6406afd2c11"><div class="ttname"><a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a></div><div class="ttdeci">#define ALPAKA_DECAY_T(Type)</div><div class="ttdoc">Wrapper around std::decay_t for parameter pack expansion expressions.</div><div class="ttdef"><b>Definition:</b> <a href="Decay_8hpp_source.html#l00025">Decay.hpp:25</a></div></div>
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
 <div class="ttc" id="aMapIdx_8hpp_html"><div class="ttname"><a href="MapIdx_8hpp.html">MapIdx.hpp</a></div></div>
 <div class="ttc" id="aOmpSchedule_8hpp_html"><div class="ttname"><a href="OmpSchedule_8hpp.html">OmpSchedule.hpp</a></div></div>
@@ -1117,7 +1116,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuOmp2Blocks_8hpp.html">TaskKernelCpuOmp2Blocks.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 29 2023 15:06:47 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 29 2023 18:15:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

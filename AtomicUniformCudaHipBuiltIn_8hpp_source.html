@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('AtomicUniformCudaHipBuiltIn_8hpp_sourc
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                    T <span class="keyword">const</span>&amp; value) -&gt; T</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                {</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                    <span class="keyword">auto</span>* <span class="keyword">const</span> addressAsIntegralType = <a class="code" href="structalpaka_1_1trait_1_1detail_1_1EmulationBase.html#ad3c642482c315b2d52111f97113f17e8">reinterpretAddress</a>(addr);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    <span class="keyword">using</span> EmulatedType = <a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(decltype(*addressAsIntegralType));</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    <span class="keyword">using</span> EmulatedType = std::decay_t&lt;decltype(*addressAsIntegralType)&gt;;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    <span class="comment">// Emulating atomics with atomicCAS is mentioned in the programming guide too.</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    <span class="comment">// http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions</span></div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('AtomicUniformCudaHipBuiltIn_8hpp_sourc
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                    T <span class="keyword">const</span>&amp; value) -&gt; T</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                {</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    <span class="keyword">auto</span>* <span class="keyword">const</span> addressAsIntegralType = <a class="code" href="structalpaka_1_1trait_1_1detail_1_1EmulationBase.html#ad3c642482c315b2d52111f97113f17e8">reinterpretAddress</a>(addr);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    <span class="keyword">using</span> EmulatedType = <a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(decltype(*addressAsIntegralType));</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    <span class="keyword">using</span> EmulatedType = std::decay_t&lt;decltype(*addressAsIntegralType)&gt;;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                    EmulatedType reinterpretedCompare = <a class="code" href="structalpaka_1_1trait_1_1detail_1_1EmulationBase.html#a3ad0704ab84a6c92e747ebc77f411fb6">reinterpretValue</a>(compare);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                    EmulatedType reinterpretedValue = <a class="code" href="structalpaka_1_1trait_1_1detail_1_1EmulationBase.html#a3ad0704ab84a6c92e747ebc77f411fb6">reinterpretValue</a>(value);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
@@ -422,7 +422,6 @@ $(document).ready(function(){initNavTree('AtomicUniformCudaHipBuiltIn_8hpp_sourc
 <div class="ttc" id="aAtomicUniformCudaHip_8hpp_html"><div class="ttname"><a href="AtomicUniformCudaHip_8hpp.html">AtomicUniformCudaHip.hpp</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html"><div class="ttname"><a href="Decay_8hpp.html">Decay.hpp</a></div></div>
-<div class="ttc" id="aDecay_8hpp_html_afba6dfdddd358c0ee5a1c6406afd2c11"><div class="ttname"><a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a></div><div class="ttdeci">#define ALPAKA_DECAY_T(Type)</div><div class="ttdoc">Wrapper around std::decay_t for parameter pack expansion expressions.</div><div class="ttdef"><b>Definition:</b> <a href="Decay_8hpp_source.html#l00025">Decay.hpp:25</a></div></div>
 <div class="ttc" id="aOp_8hpp_html"><div class="ttname"><a href="Op_8hpp.html">Op.hpp</a></div></div>
 <div class="ttc" id="aUnreachable_8hpp_html"><div class="ttname"><a href="Unreachable_8hpp.html">Unreachable.hpp</a></div></div>
 <div class="ttc" id="aatomic_2Traits_8hpp_html"><div class="ttname"><a href="atomic_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -459,7 +458,7 @@ $(document).ready(function(){initNavTree('AtomicUniformCudaHipBuiltIn_8hpp_sourc
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="AtomicUniformCudaHipBuiltIn_8hpp.html">AtomicUniformCudaHipBuiltIn.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 29 2023 15:06:47 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 29 2023 18:15:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

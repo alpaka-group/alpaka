@@ -1,6 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"platform_2Traits_8hpp_source.html":[4,0,0,0,17,8],
 "queue_2Traits_8hpp.html":[4,0,0,0,18,22],
 "queue_2Traits_8hpp.html#a0a2fa6435cfd735679b6c5f1ac7561aa":[4,0,0,0,18,22,0],
 "queue_2Traits_8hpp.html#a8b01aa67d992572f8812a47813269bfa":[4,0,0,0,18,22,3],
@@ -100,8 +99,8 @@ var NAVTREEINDEX9 =
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,1,19],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,23,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,1,19,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,1,22],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,26],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,1,22],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html#a1752844dcbe0855d0965ded8720f12a9":[3,0,26,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html#a1752844dcbe0855d0965ded8720f12a9":[3,0,1,22,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01alpaka_1_1hierarch049c63322bc711b14738c82138def244.html":[3,0,1,21],
@@ -249,5 +248,6 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1AtomicSub.html":[3,0,0,39],
 "structalpaka_1_1AtomicSub.html#af29fdb842c21c4c961627c069446a29e":[3,0,0,39,0],
 "structalpaka_1_1AtomicXor.html":[3,0,0,41],
-"structalpaka_1_1AtomicXor.html#a5c69029d73740534cdd74d8efdf65136":[3,0,0,41,0]
+"structalpaka_1_1AtomicXor.html#a5c69029d73740534cdd74d8efdf65136":[3,0,0,41,0],
+"structalpaka_1_1BlockAnd.html":[3,0,0,42]
 };

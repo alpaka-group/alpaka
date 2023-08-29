@@ -308,7 +308,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args) {</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                        <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;TAcc&gt;(</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                            task.m_kernelFnObj,</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                            blockThreadExtent,</div>
@@ -346,7 +346,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="comment">// (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the</span></div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                <span class="comment">// value location.</span></div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args)</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args)</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                    {</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                        kernelName&lt;&lt;&lt;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                            gridDim,</div>
@@ -416,7 +416,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args) {</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                        <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;TAcc&gt;(</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                            task.m_kernelFnObj,</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                            blockThreadExtent,</div>
@@ -450,7 +450,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                <span class="comment">// Enqueue the kernel execution.</span></div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;<a class="code" href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a>(TArgs)&gt; <span class="keyword">const</span>&amp;... args)</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args)</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                    {</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                        kernelName&lt;&lt;&lt;</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                            gridDim,</div>
@@ -485,7 +485,6 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="ttc" id="aDebug_8hpp_html_a7f84384a17e301a636770e17c2951383"><div class="ttname"><a href="Debug_8hpp.html#a7f84384a17e301a636770e17c2951383">ALPAKA_DEBUG</a></div><div class="ttdeci">#define ALPAKA_DEBUG</div><div class="ttdoc">Set the minimum log level if it is not defined.</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00022">Debug.hpp:22</a></div></div>
 <div class="ttc" id="aDebug_8hpp_html_ac556c317f934c69c8c8c083c5068f681"><div class="ttname"><a href="Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00053">Debug.hpp:53</a></div></div>
 <div class="ttc" id="aDecay_8hpp_html"><div class="ttname"><a href="Decay_8hpp.html">Decay.hpp</a></div></div>
-<div class="ttc" id="aDecay_8hpp_html_afba6dfdddd358c0ee5a1c6406afd2c11"><div class="ttname"><a href="Decay_8hpp.html#afba6dfdddd358c0ee5a1c6406afd2c11">ALPAKA_DECAY_T</a></div><div class="ttdeci">#define ALPAKA_DECAY_T(Type)</div><div class="ttdoc">Wrapper around std::decay_t for parameter pack expansion expressions.</div><div class="ttdef"><b>Definition:</b> <a href="Decay_8hpp_source.html#l00025">Decay.hpp:25</a></div></div>
 <div class="ttc" id="aDemangleTypeNames_8hpp_html"><div class="ttname"><a href="DemangleTypeNames_8hpp.html">DemangleTypeNames.hpp</a></div></div>
 <div class="ttc" id="aDevUniformCudaHipRt_8hpp_html"><div class="ttname"><a href="DevUniformCudaHipRt_8hpp.html">DevUniformCudaHipRt.hpp</a></div></div>
 <div class="ttc" id="aHip_8hpp_html"><div class="ttname"><a href="Hip_8hpp.html">Hip.hpp</a></div></div>
@@ -539,7 +538,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp.html">TaskKernelGpuUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Tue Aug 29 2023 15:06:47 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Aug 29 2023 18:15:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
