@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetPitchesInBytes_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
+[
+    [ "operator()", "structalpaka_1_1trait_1_1GetPitchesInBytes_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#abe08d5de5634cebe8ec8230e52207e10", null ]
+];

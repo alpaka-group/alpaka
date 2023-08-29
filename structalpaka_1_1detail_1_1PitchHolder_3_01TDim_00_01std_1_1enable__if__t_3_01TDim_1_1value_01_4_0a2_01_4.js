@@ -1,0 +1,4 @@
+var structalpaka_1_1detail_1_1PitchHolder_3_01TDim_00_01std_1_1enable__if__t_3_01TDim_1_1value_01_4_0a2_01_4 =
+[
+    [ "m_rowPitchInBytes", "structalpaka_1_1detail_1_1PitchHolder_3_01TDim_00_01std_1_1enable__if__t_3_01TDim_1_1value_01_4_0a2_01_4.html#a54b5a4b577131129ae8ce781557a6a01", null ]
+];

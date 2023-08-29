@@ -6,7 +6,7 @@ var ViewConst_8hpp =
     [ "GetDev< ViewConst< TView > >", "structalpaka_1_1trait_1_1GetDev_3_01ViewConst_3_01TView_01_4_01_4.html", "structalpaka_1_1trait_1_1GetDev_3_01ViewConst_3_01TView_01_4_01_4" ],
     [ "GetExtents< ViewConst< TView > >", "structalpaka_1_1trait_1_1GetExtents_3_01ViewConst_3_01TView_01_4_01_4.html", "structalpaka_1_1trait_1_1GetExtents_3_01ViewConst_3_01TView_01_4_01_4" ],
     [ "GetOffsets< ViewConst< TView > >", "structalpaka_1_1trait_1_1GetOffsets_3_01ViewConst_3_01TView_01_4_01_4.html", "structalpaka_1_1trait_1_1GetOffsets_3_01ViewConst_3_01TView_01_4_01_4" ],
-    [ "GetPitchBytes< I, ViewConst< TView > >", "structalpaka_1_1trait_1_1GetPitchBytes_3_01I_00_01ViewConst_3_01TView_01_4_01_4.html", "structalpaka_1_1trait_1_1GetPitchBytes_3_01I_00_01ViewConst_3_01TView_01_4_01_4" ],
+    [ "GetPitchesInBytes< ViewConst< TView > >", "structalpaka_1_1trait_1_1GetPitchesInBytes_3_01ViewConst_3_01TView_01_4_01_4.html", "structalpaka_1_1trait_1_1GetPitchesInBytes_3_01ViewConst_3_01TView_01_4_01_4" ],
     [ "GetPtrNative< ViewConst< TView > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01ViewConst_3_01TView_01_4_01_4.html", "structalpaka_1_1trait_1_1GetPtrNative_3_01ViewConst_3_01TView_01_4_01_4" ],
     [ "IdxType< ViewConst< TView > >", "structalpaka_1_1trait_1_1IdxType_3_01ViewConst_3_01TView_01_4_01_4.html", null ],
     [ "ViewConst", "structalpaka_1_1ViewConst.html", "structalpaka_1_1ViewConst" ],

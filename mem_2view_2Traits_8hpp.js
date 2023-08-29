@@ -1,10 +1,10 @@
 var mem_2view_2Traits_8hpp =
 [
-    [ "CreatePitchBytes", "structalpaka_1_1detail_1_1CreatePitchBytes.html", "structalpaka_1_1detail_1_1CreatePitchBytes" ],
     [ "Print", "structalpaka_1_1detail_1_1Print.html", "structalpaka_1_1detail_1_1Print" ],
     [ "Print< DimInt< Dim< TView >::value - 1u >, TView >", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4.html", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4" ],
     [ "GetPitchBytes", "structalpaka_1_1trait_1_1GetPitchBytes.html", "structalpaka_1_1trait_1_1GetPitchBytes" ],
-    [ "calculatePitchesFromExtents", "mem_2view_2Traits_8hpp.html#a97da91c88a5fe4706fa3747b0e6c8cc9", null ],
+    [ "GetPitchesInBytes", "structalpaka_1_1trait_1_1GetPitchesInBytes.html", "structalpaka_1_1trait_1_1GetPitchesInBytes" ],
+    [ "calculatePitchesFromExtents", "mem_2view_2Traits_8hpp.html#a3b07818baa764a1d6df4fe203143a038", null ],
     [ "createStaticDevMemView", "mem_2view_2Traits_8hpp.html#adedb8c0a11a3096bccbd7d37481798b0", null ],
     [ "createSubView", "mem_2view_2Traits_8hpp.html#a3e0cc673cdcdfc1f6b901a6bc09d975d", null ],
     [ "createTaskMemcpy", "mem_2view_2Traits_8hpp.html#a1f44bd5b99e7faa8d562aff41b4c8668", null ],
@@ -14,8 +14,9 @@ var mem_2view_2Traits_8hpp =
     [ "createView", "mem_2view_2Traits_8hpp.html#adc3e9f88cfcde81a2ac9dd27cdaae903", null ],
     [ "createView", "mem_2view_2Traits_8hpp.html#a257fa1ef994ba619a56300162c2a9dcc", null ],
     [ "getPitchBytes", "mem_2view_2Traits_8hpp.html#acdc0b05e890e9bee36dcb3d229f00efb", null ],
-    [ "getPitchBytesVec", "mem_2view_2Traits_8hpp.html#af6f776157c5223186419fd80a87d45c5", null ],
+    [ "getPitchBytesVec", "mem_2view_2Traits_8hpp.html#aa2b9dfffcb003752bce0bc4193176490", null ],
     [ "getPitchBytesVecEnd", "mem_2view_2Traits_8hpp.html#a5f9c92013b75ef4c056051ce4fb100da", null ],
+    [ "getPitchesInBytes", "mem_2view_2Traits_8hpp.html#a542bd81fb86be02c87d0a40008e32922", null ],
     [ "getPtrDev", "mem_2view_2Traits_8hpp.html#a420138ddf5280874ce5578b2ba294547", null ],
     [ "getPtrDev", "mem_2view_2Traits_8hpp.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd", null ],
     [ "getPtrNative", "mem_2view_2Traits_8hpp.html#ab0892f9211160310c93d8ffef300d3c1", null ],
