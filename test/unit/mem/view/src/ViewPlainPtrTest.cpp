@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -17,37 +17,13 @@
 
 #if BOOST_COMP_GNUC
 #    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored                                                                                    \
-        "-Wcast-align" // "cast from 'std::uint8_t*' to 'Elem*' increases required alignment of target type"
+// "cast from 'std::uint8_t*' to 'Elem*' increases required alignment of target type"
+#    pragma GCC diagnostic ignored "-Wcast-align"
 #endif
 
 namespace alpaka::test
 {
-    template<typename TAcc, typename TDev, typename TElem, typename TDim, typename TIdx>
-    auto testViewPlainPtrImmutable(
-        alpaka::ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view,
-        TDev const& dev,
-        alpaka::Vec<TDim, TIdx> const& extentView,
-        alpaka::Vec<TDim, TIdx> const& offsetView) -> void
-    {
-        alpaka::test::testViewImmutable<TElem>(view, dev, extentView, offsetView);
-    }
-
-    template<typename TAcc, typename TDev, typename TElem, typename TDim, typename TIdx>
-    auto testViewPlainPtrMutable(
-        alpaka::ViewPlainPtr<TDev, TElem, TDim, TIdx>& view,
-        TDev const& dev,
-        alpaka::Vec<TDim, TIdx> const& extentView,
-        alpaka::Vec<TDim, TIdx> const& offsetView) -> void
-    {
-        testViewPlainPtrImmutable<TAcc>(view, dev, extentView, offsetView);
-
-        using Queue = alpaka::test::DefaultQueue<TDev>;
-        Queue queue(dev);
-        alpaka::test::testViewMutable<TAcc>(queue, view);
-    }
-
-    template<typename TAcc, typename TElem>
+    template<typename TAcc, typename TElem, bool Const>
     auto testViewPlainPtr() -> void
     {
         using Dev = alpaka::Dev<TAcc>;
@@ -69,32 +45,13 @@ namespace alpaka::test
             alpaka::getExtents(buf),
             alpaka::getPitchesInBytes(buf));
 
-        alpaka::test::testViewPlainPtrMutable<TAcc>(view, dev, extentView, offsetView);
-    }
-
-    template<typename TAcc, typename TElem>
-    auto testViewPlainPtrConst() -> void
-    {
-        using Dev = alpaka::Dev<TAcc>;
-        using Dim = alpaka::Dim<TAcc>;
-        using Idx = alpaka::Idx<TAcc>;
-        using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
-
-        auto const platform = alpaka::Platform<TAcc>{};
-        auto const dev = alpaka::getDevByIdx(platform, 0);
-
-        auto const extentBuf = alpaka::test::extentBuf<Dim, Idx>;
-        auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
-
-        auto const extentView = extentBuf;
-        auto const offsetView = alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0));
-        View const view(
-            alpaka::getPtrNative(buf),
-            alpaka::getDev(buf),
-            alpaka::getExtents(buf),
-            alpaka::getPitchesInBytes(buf));
-
-        alpaka::test::testViewPlainPtrImmutable<TAcc>(view, dev, extentView, offsetView);
+        alpaka::test::testViewImmutable<TElem>(std::as_const(view), dev, extentView, offsetView);
+        if constexpr(!Const)
+        {
+            using Queue = alpaka::test::DefaultQueue<Dev>;
+            Queue queue(dev);
+            alpaka::test::testViewMutable<TAcc>(queue, view);
+        }
     }
 
     template<typename TAcc, typename TElem>
@@ -109,18 +66,28 @@ namespace alpaka::test
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
         auto buf = alpaka::allocBuf<TElem, Idx>(dev, alpaka::test::extentBuf<Dim, Idx>);
-
-        View view(
-            alpaka::getPtrNative(buf),
-            alpaka::getDev(buf),
-            alpaka::getExtents(buf),
-            alpaka::getPitchesInBytes(buf));
+        auto nativePtr = alpaka::getPtrNative(buf);
+        View view(nativePtr, alpaka::getDev(buf), alpaka::getExtents(buf), alpaka::getPitchesInBytes(buf));
 
         // copy-constructor
         View viewCopy(view);
+        CHECK(alpaka::getPtrNative(viewCopy) == nativePtr);
 
         // move-constructor
         View viewMove(std::move(viewCopy));
+        CHECK(alpaka::getPtrNative(viewMove) == nativePtr);
+
+        auto buf2 = alpaka::allocBuf<TElem, Idx>(dev, alpaka::test::extentBuf<Dim, Idx>);
+        auto nativePtr2 = alpaka::getPtrNative(buf);
+        View view2(nativePtr2, alpaka::getDev(buf2), alpaka::getExtents(buf2), alpaka::getPitchBytesVec(buf2));
+
+        // copy-assign
+        viewCopy = view2;
+        CHECK(alpaka::getPtrNative(viewCopy) == nativePtr2);
+
+        // move-assign
+        viewMove = std::move(view2);
+        CHECK(alpaka::getPtrNative(viewMove) == nativePtr2);
     }
 } // namespace alpaka::test
 #if BOOST_COMP_GNUC
@@ -129,12 +96,12 @@ namespace alpaka::test
 
 TEMPLATE_LIST_TEST_CASE("viewPlainPtrTest", "[memView]", alpaka::test::TestAccs)
 {
-    alpaka::test::testViewPlainPtr<TestType, float>();
+    alpaka::test::testViewPlainPtr<TestType, float, false>();
 }
 
 TEMPLATE_LIST_TEST_CASE("viewPlainPtrConstTest", "[memView]", alpaka::test::TestAccs)
 {
-    alpaka::test::testViewPlainPtrConst<TestType, float>();
+    alpaka::test::testViewPlainPtr<TestType, float, true>();
 }
 
 TEMPLATE_LIST_TEST_CASE("viewPlainPtrOperatorTest", "[memView]", alpaka::test::TestAccs)

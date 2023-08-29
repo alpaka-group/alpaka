@@ -20,50 +20,29 @@ namespace alpaka
 {
     //! The memory view to wrap plain pointers.
     template<typename TDev, typename TElem, typename TDim, typename TIdx>
-    class ViewPlainPtr final : public internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+    struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
     {
         static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 
-        using Dev = alpaka::Dev<TDev>;
-
-    public:
         template<typename TExtent>
-        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev dev, TExtent const& extent = TExtent())
-            : m_pMem(pMem)
-            , m_dev(std::move(dev))
-            , m_extentElements(getExtentVecEnd<TDim>(extent))
-            , m_pitchBytes(detail::calculatePitchesFromExtents<TElem>(m_extentElements))
+        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent = TExtent())
+            : ViewPlainPtr(pMem, std::move(dev), extent, detail::calculatePitchesFromExtents<TElem>(extent))
         {
         }
 
         template<typename TExtent, typename TPitch>
-        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev const dev, TExtent const& extent, TPitch pitchBytes)
+        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent, TPitch pitchBytes)
             : m_pMem(pMem)
-            , m_dev(dev)
-            , m_extentElements(getExtentVecEnd<TDim>(extent))
-            , m_pitchBytes(subVecEnd<TDim>(static_cast<Vec<TDim, TIdx>>(pitchBytes)))
+            , m_dev(std::move(dev))
+            , m_extentElements(extent)
+            , m_pitchBytes(static_cast<Vec<TDim, TIdx>>(pitchBytes))
         {
         }
 
-        ViewPlainPtr(ViewPlainPtr const&) = default;
-        ALPAKA_FN_HOST
-        ViewPlainPtr(ViewPlainPtr&& other) noexcept
-            : m_pMem(other.m_pMem)
-            , m_dev(other.m_dev)
-            , m_extentElements(other.m_extentElements)
-            , m_pitchBytes(other.m_pitchBytes)
-        {
-        }
-        ALPAKA_FN_HOST
-        auto operator=(ViewPlainPtr const&) -> ViewPlainPtr& = delete;
-        ALPAKA_FN_HOST
-        auto operator=(ViewPlainPtr&&) -> ViewPlainPtr& = delete;
-
-    public:
-        TElem* const m_pMem;
-        Dev const m_dev;
-        Vec<TDim, TIdx> const m_extentElements;
-        Vec<TDim, TIdx> const m_pitchBytes;
+        TElem* m_pMem;
+        TDev m_dev;
+        Vec<TDim, TIdx> m_extentElements;
+        Vec<TDim, TIdx> m_pitchBytes;
     };
 
     // Trait specializations for ViewPlainPtr.
