@@ -300,12 +300,26 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     variables[ALPAKA_ACC_GPU_HIP_ENABLE] = "OFF"
     variables["alpaka_ACC_GPU_HIP_ONLY_MODE"] = "OFF"
     variables[ALPAKA_ACC_SYCL_ENABLE] = "OFF"
+    # TODO(SimeonEhrig): set libstdc++ for all backends
+    # support for different standard c++ libraries is planed
+    # https://github.com/alpaka-group/alpaka-job-matrix-library/issues/9
+    variables["ALPAKA_CI_STDLIB"] = "libstdc++"
     if job[MDSPAN][VERSION] == ON_VER:
         variables["ALPAKA_TEST_MDSPAN"] = "ON"
     else:
         variables["ALPAKA_TEST_MDSPAN"] = "OFF"
 
     append_backend_variables(variables, job)
+
+    if job[DEVICE_COMPILER][NAME] == GCC:
+        variables["CC"] = "gcc"
+        variables["CXX"] = "g++"
+        variables["ALPAKA_CI_GCC_VER"] = job[HOST_COMPILER][VERSION]
+        if (
+            ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE in job
+            and job[ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE][VERSION] == ON_VER
+        ):
+            variables["ALPAKA_CI_TBB_VERSION"] = "2021.10.0"
 
     if job[DEVICE_COMPILER][NAME] == HIPCC:
         variables["CC"] = "clang"
