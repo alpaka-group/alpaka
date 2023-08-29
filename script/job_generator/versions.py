@@ -33,6 +33,14 @@ sw_versions: Dict[str, List[str]] = {
     # There are special cases for ALPAKA_ACC_GPU_CUDA_ENABLE and ALPAKA_ACC_GPU_HIP_ENABLE
     # which have to be combined with nvcc and hipcc versions.
     BACKENDS: [
+        # gcc and clang
+        [
+            ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE,
+            ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+            ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
+        ],
         # ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
         # nvcc
         [

@@ -112,11 +112,11 @@ if __name__ == "__main__":
     enable_clang_cuda = True
     parameters[HOST_COMPILER] = get_compiler_versions(clang_cuda=enable_clang_cuda)
     parameters[DEVICE_COMPILER] = get_compiler_versions(clang_cuda=enable_clang_cuda)
-    # TODO(SimeonEhrig): remove GCC and Clang from DEVICE_COMPILER to disable CPU accelerator
+    # TODO(SimeonEhrig): remove Clang from DEVICE_COMPILER to disable CPU accelerator
     # Backends
     parameters[DEVICE_COMPILER] = list(
         filter(
-            lambda compiler: compiler[NAME] != GCC and compiler[NAME] != CLANG,
+            lambda compiler: compiler[NAME] != CLANG,
             parameters[DEVICE_COMPILER],
         )
     )
