@@ -366,14 +366,14 @@ namespace alpaka
                     const_cast<void*>(m_srcMemNative),
                     m_srcPitchBytesX,
                     static_cast<std::size_t>(m_srcWidth),
-                    static_cast<std::size_t>(m_srcPitchBytesY / m_srcPitchBytesX));
+                    m_srcPitchBytesY / m_srcPitchBytesX);
                 memCpy3DParms.dstArray = nullptr; // Either dstArray or dstPtr.
                 memCpy3DParms.dstPos = TApi::makePos(0, 0, 0); // Optional. Offset in bytes.
                 memCpy3DParms.dstPtr = TApi::makePitchedPtr(
                     m_dstMemNative,
                     m_dstPitchBytesX,
                     static_cast<std::size_t>(m_dstWidth),
-                    static_cast<std::size_t>(m_dstPitchBytesY / m_dstPitchBytesX));
+                    m_dstPitchBytesY / m_dstPitchBytesX);
                 memCpy3DParms.extent = TApi::makeExtent(
                     m_extentWidthBytes,
                     static_cast<std::size_t>(m_extentHeight),
