@@ -1156,7 +1156,7 @@ var annotated_dup =
       [ "BlockSyncNoOp", "classalpaka_1_1BlockSyncNoOp.html", null ],
       [ "BlockSyncUniformCudaHipBuiltIn", "classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html", null ],
       [ "BufCpu", "classalpaka_1_1BufCpu.html", "classalpaka_1_1BufCpu" ],
-      [ "BufUniformCudaHipRt", "classalpaka_1_1BufUniformCudaHipRt.html", "classalpaka_1_1BufUniformCudaHipRt" ],
+      [ "BufUniformCudaHipRt", "structalpaka_1_1BufUniformCudaHipRt.html", "structalpaka_1_1BufUniformCudaHipRt" ],
       [ "Complex", "classalpaka_1_1Complex.html", "classalpaka_1_1Complex" ],
       [ "ConceptAcc", "structalpaka_1_1ConceptAcc.html", null ],
       [ "ConceptAtomicBlocks", "structalpaka_1_1ConceptAtomicBlocks.html", null ],

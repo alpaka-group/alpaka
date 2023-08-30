@@ -38,5 +38,5 @@ var searchData=
   ['buftype_2552',['BufType',['../structalpaka_1_1trait_1_1BufType.html',1,'alpaka::trait']]],
   ['buftype_3c_20devcpu_2c_20telem_2c_20tdim_2c_20tidx_20_3e_2553',['BufType&lt; DevCpu, TElem, TDim, TIdx &gt;',['../structalpaka_1_1trait_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::trait']]],
   ['buftype_3c_20devuniformcudahiprt_3c_20tapi_20_3e_2c_20telem_2c_20tdim_2c_20tidx_20_3e_2554',['BufType&lt; DevUniformCudaHipRt&lt; TApi &gt;, TElem, TDim, TIdx &gt;',['../structalpaka_1_1trait_1_1BufType_3_01DevUniformCudaHipRt_3_01TApi_01_4_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::trait']]],
-  ['bufuniformcudahiprt_2555',['BufUniformCudaHipRt',['../classalpaka_1_1BufUniformCudaHipRt.html',1,'alpaka']]]
+  ['bufuniformcudahiprt_2555',['BufUniformCudaHipRt',['../structalpaka_1_1BufUniformCudaHipRt.html',1,'alpaka']]]
 ];

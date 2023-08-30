@@ -113,7 +113,7 @@ var hierarchy =
     ] ],
     [ "alpaka::detail::ParallelForStaticImpl< TKernel, TSchedule, HasScheduleChunkSize< TKernel > >", "structalpaka_1_1detail_1_1ParallelForStaticImpl_3_01TKernel_00_01TSchedule_00_01HasScheduleChunkSize_3_01TKernel_01_4_01_4.html", null ],
     [ "alpaka::detail::PitchHolder< TDim, SFINAE >", "structalpaka_1_1detail_1_1PitchHolder.html", [
-      [ "alpaka::BufUniformCudaHipRt< TApi, TElem, TDim, TIdx >", "classalpaka_1_1BufUniformCudaHipRt.html", null ]
+      [ "alpaka::BufUniformCudaHipRt< TApi, TElem, TDim, TIdx >", "structalpaka_1_1BufUniformCudaHipRt.html", null ]
     ] ],
     [ "alpaka::detail::PitchHolder< TDim, std::enable_if_t< TDim::value >=2 >", "structalpaka_1_1detail_1_1PitchHolder_3_01TDim_00_01std_1_1enable__if__t_3_01TDim_1_1value_01_4_0a2_01_4.html", null ],
     [ "alpaka::detail::Print< TDim, TView >", "structalpaka_1_1detail_1_1Print.html", null ],
@@ -1798,7 +1798,7 @@ var hierarchy =
       [ "alpaka::BufCpu< TElem, TDim, TIdx >", "classalpaka_1_1BufCpu.html", null ]
     ] ],
     [ "alpaka::internal::ViewAccessOps< BufUniformCudaHipRt< TApi, TElem, TDim, TIdx > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
-      [ "alpaka::BufUniformCudaHipRt< TApi, TElem, TDim, TIdx >", "classalpaka_1_1BufUniformCudaHipRt.html", null ]
+      [ "alpaka::BufUniformCudaHipRt< TApi, TElem, TDim, TIdx >", "structalpaka_1_1BufUniformCudaHipRt.html", null ]
     ] ],
     [ "alpaka::internal::ViewAccessOps< ViewConst< TView > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
       [ "alpaka::ViewConst< TView >", "structalpaka_1_1ViewConst.html", null ]

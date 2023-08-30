@@ -28,7 +28,7 @@ var dir_e9c63de0e8709741f56550be53020686 =
     [ "BufGpuSyclIntel.hpp", "BufGpuSyclIntel_8hpp.html", null ],
     [ "BufHipRt.hpp", "BufHipRt_8hpp.html", null ],
     [ "BufUniformCudaHipRt.hpp", "BufUniformCudaHipRt_8hpp.html", [
-      [ "BufUniformCudaHipRt", "classalpaka_1_1BufUniformCudaHipRt.html", "classalpaka_1_1BufUniformCudaHipRt" ],
+      [ "BufUniformCudaHipRt", "structalpaka_1_1BufUniformCudaHipRt.html", "structalpaka_1_1BufUniformCudaHipRt" ],
       [ "PitchHolder", "structalpaka_1_1detail_1_1PitchHolder.html", "structalpaka_1_1detail_1_1PitchHolder" ],
       [ "PitchHolder< TDim, std::enable_if_t< TDim::value >=2 >", "structalpaka_1_1detail_1_1PitchHolder_3_01TDim_00_01std_1_1enable__if__t_3_01TDim_1_1value_01_4_0a2_01_4.html", "structalpaka_1_1detail_1_1PitchHolder_3_01TDim_00_01std_1_1enable__if__t_3_01TDim_1_1value_01_4_0a2_01_4" ],
       [ "AsyncBufAlloc< TElem, TDim, TIdx, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", "structalpaka_1_1trait_1_1AsyncBufAlloc_3_01TElem_00_01TDim_00_01TIdx_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4" ],
