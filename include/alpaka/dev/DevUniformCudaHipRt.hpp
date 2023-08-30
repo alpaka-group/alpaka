@@ -8,10 +8,12 @@
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Hip.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/dev/common/QueueRegistry.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Properties.hpp"
 #include "alpaka/queue/Traits.hpp"
+#include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
 #include "alpaka/traits/Traits.hpp"
 #include "alpaka/wait/Traits.hpp"
 
@@ -55,8 +57,10 @@ namespace alpaka
     {
         friend struct trait::GetDevByIdx<PlatformUniformCudaHipRt<TApi>>;
 
+        using IDeviceQueue = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
+
     protected:
-        DevUniformCudaHipRt() = default;
+        DevUniformCudaHipRt() : m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()){};
 
     public:
         ALPAKA_FN_HOST auto operator==(DevUniformCudaHipRt const& rhs) const -> bool
@@ -73,11 +77,27 @@ namespace alpaka
             return m_iDevice;
         }
 
+        [[nodiscard]] ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IDeviceQueue>>
+        {
+            return m_QueueRegistry->getAllExistingQueues();
+        }
+
+        //! Registers the given queue on this device.
+        //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IDeviceQueue> spQueue) const -> void
+        {
+            m_QueueRegistry->registerQueue(spQueue);
+        }
+
     private:
-        DevUniformCudaHipRt(int iDevice) : m_iDevice(iDevice)
+        DevUniformCudaHipRt(int iDevice)
+            : m_iDevice(iDevice)
+            , m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>())
         {
         }
         int m_iDevice;
+
+        std::shared_ptr<alpaka::detail::QueueRegistry<IDeviceQueue>> m_QueueRegistry;
     };
 
     namespace trait
