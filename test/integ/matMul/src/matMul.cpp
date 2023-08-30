@@ -240,8 +240,6 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
               << alpaka::test::integ::measureRunTimeMs([&] { alpaka::memcpy(queueAcc, bufCAcc, bufCHost); }) << " ms"
               << std::endl;
 
-    alpaka::memcpy(queueAcc, bufCAcc, bufCHost);
-
     auto const pitchA = alpaka::getPitchesInBytes(bufAAcc)[1];
     auto const pitchB = alpaka::getPitchesInBytes(bufBAcc)[1];
     auto const pitchC = alpaka::getPitchesInBytes(bufCAcc)[1];
