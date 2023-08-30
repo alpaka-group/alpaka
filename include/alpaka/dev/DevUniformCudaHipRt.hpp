@@ -1,4 +1,5 @@
-/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato, Jan Stephan
+/* Copyright 2023 Benjamin Worpitz, Jakob Krude, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+ *                Antonio Di Pilato, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -45,7 +46,7 @@ namespace alpaka
     struct PlatformUniformCudaHipRt;
 
     template<typename TApi, typename TElem, typename TDim, typename TIdx>
-    class BufUniformCudaHipRt;
+    struct BufUniformCudaHipRt;
 
     //! The CUDA/HIP RT device handle.
     template<typename TApi>
