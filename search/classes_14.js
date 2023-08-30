@@ -15,7 +15,7 @@ var searchData=
   ['viewaccessops_3c_20viewplainptr_3c_20tdev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e_3666',['ViewAccessOps&lt; ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1internal_1_1ViewAccessOps.html',1,'alpaka::internal']]],
   ['viewaccessops_3c_20viewsubview_3c_20tdev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e_3667',['ViewAccessOps&lt; ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1internal_1_1ViewAccessOps.html',1,'alpaka::internal']]],
   ['viewconst_3668',['ViewConst',['../structalpaka_1_1ViewConst.html',1,'alpaka']]],
-  ['viewplainptr_3669',['ViewPlainPtr',['../classalpaka_1_1ViewPlainPtr.html',1,'alpaka']]],
-  ['viewplainptr_3c_20dev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_3670',['ViewPlainPtr&lt; Dev, TElem, TDim, TIdx &gt;',['../classalpaka_1_1ViewPlainPtr.html',1,'alpaka']]],
+  ['viewplainptr_3669',['ViewPlainPtr',['../structalpaka_1_1ViewPlainPtr.html',1,'alpaka']]],
+  ['viewplainptr_3c_20dev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_3670',['ViewPlainPtr&lt; Dev, TElem, TDim, TIdx &gt;',['../structalpaka_1_1ViewPlainPtr.html',1,'alpaka']]],
   ['viewsubview_3671',['ViewSubView',['../classalpaka_1_1ViewSubView.html',1,'alpaka']]]
 ];

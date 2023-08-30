@@ -1,15 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"namespacealpaka_1_1math.html#a63e794a800776397a11cf35310626250":[2,0,0,10,147],
-"namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021":[2,0,0,10,132],
-"namespacealpaka_1_1math.html#a6dbd8f303dc354787697c47301eb7a1c":[2,0,0,10,145],
-"namespacealpaka_1_1math.html#a6f9cdd368f558546e5031ca7ac2edf89":[2,0,0,10,141],
-"namespacealpaka_1_1math.html#a7ff19157e0e93951341f87a62327e62f":[2,0,0,10,126],
-"namespacealpaka_1_1math.html#a860ad56456e1868026f833d9168cc5ce":[2,0,0,10,148],
-"namespacealpaka_1_1math.html#a870c86f26ec22dc2b10627f861c7120e":[2,0,0,10,162],
-"namespacealpaka_1_1math.html#a8ce518d7587dd645a3bbf943ef36db9c":[2,0,0,10,160],
-"namespacealpaka_1_1math.html#a953ab56033203ac75151471c306ed02e":[2,0,0,10,133],
-"namespacealpaka_1_1math.html#a9d7d883a65e97eda50c085d8126e3e83":[2,0,0,10,143],
 "namespacealpaka_1_1math.html#a9f97256e49a2b505699d60c0f125b3bd":[2,0,0,10,129],
 "namespacealpaka_1_1math.html#aa0a98ac2a832e07982ac7edc92e74c6f":[2,0,0,10,131],
 "namespacealpaka_1_1math.html#aab46c7252772bedb6798b33155240936":[2,0,0,10,149],
@@ -249,5 +239,15 @@ var NAVTREEINDEX8 =
 "platform_2Traits_8hpp.html#aa3eb41a0009d08e6e466c14424280971":[4,0,0,0,17,8,4],
 "platform_2Traits_8hpp.html#ae3425c31d35deb9045bc65b21a9bfe0f":[4,0,0,0,17,8,6],
 "platform_2Traits_8hpp.html#aec2e8bbefd54fa3bcb2da600f5184f96":[4,0,0,0,17,8,3],
-"platform_2Traits_8hpp_source.html":[4,0,0,0,17,8]
+"platform_2Traits_8hpp_source.html":[4,0,0,0,17,8],
+"queue_2Traits_8hpp.html":[4,0,0,0,18,22],
+"queue_2Traits_8hpp.html#a0a2fa6435cfd735679b6c5f1ac7561aa":[4,0,0,0,18,22,0],
+"queue_2Traits_8hpp.html#a8b01aa67d992572f8812a47813269bfa":[4,0,0,0,18,22,3],
+"queue_2Traits_8hpp.html#ab2b5f410b7b40fd9e91a9c6478e2e085":[4,0,0,0,18,22,1],
+"queue_2Traits_8hpp.html#ab768cb4d64d49fbd5c722aea7c00d835":[4,0,0,0,18,22,2],
+"queue_2Traits_8hpp_source.html":[4,0,0,0,18,22],
+"rand_2Traits_8hpp.html":[4,0,0,0,19,8],
+"rand_2Traits_8hpp.html#a05557b7b8f9ce17f7433d8da47645dd7":[4,0,0,0,19,8,1],
+"rand_2Traits_8hpp.html#a3d2a8e74bda83320942609c09c227f46":[4,0,0,0,19,8,2],
+"rand_2Traits_8hpp.html#a8cef848378b79fc7f8f522531198723f":[4,0,0,0,19,8,4]
 };

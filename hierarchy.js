@@ -143,7 +143,7 @@ var hierarchy =
       [ "alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html", null ]
     ] ],
     [ "alpaka::internal::ViewAccessOps< TView >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
-      [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "classalpaka_1_1ViewPlainPtr.html", null ]
+      [ "alpaka::ViewPlainPtr< Dev, TElem, TDim, TIdx >", "structalpaka_1_1ViewPlainPtr.html", null ]
     ] ],
     [ "alpaka::math::ConceptMathAbs", "structalpaka_1_1math_1_1ConceptMathAbs.html", null ],
     [ "alpaka::math::ConceptMathAcos", "structalpaka_1_1math_1_1ConceptMathAcos.html", null ],
@@ -1804,7 +1804,7 @@ var hierarchy =
       [ "alpaka::ViewConst< TView >", "structalpaka_1_1ViewConst.html", null ]
     ] ],
     [ "alpaka::internal::ViewAccessOps< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
-      [ "alpaka::ViewPlainPtr< TDev, TElem, TDim, TIdx >", "classalpaka_1_1ViewPlainPtr.html", null ]
+      [ "alpaka::ViewPlainPtr< TDev, TElem, TDim, TIdx >", "structalpaka_1_1ViewPlainPtr.html", null ]
     ] ],
     [ "alpaka::internal::ViewAccessOps< ViewSubView< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1internal_1_1ViewAccessOps.html", [
       [ "alpaka::ViewSubView< TDev, TElem, TDim, TIdx >", "classalpaka_1_1ViewSubView.html", null ]

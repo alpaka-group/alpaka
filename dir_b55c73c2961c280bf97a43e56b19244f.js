@@ -17,7 +17,7 @@ var dir_b55c73c2961c280bf97a43e56b19244f =
       [ "GetPitchesInBytes< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPitchesInBytes_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetPitchesInBytes_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "GetPtrNative< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "IdxType< ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1trait_1_1IdxType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1IdxType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html", "classalpaka_1_1ViewPlainPtr" ]
+      [ "ViewPlainPtr", "structalpaka_1_1ViewPlainPtr.html", "structalpaka_1_1ViewPlainPtr" ]
     ] ],
     [ "ViewStdArray.hpp", "ViewStdArray_8hpp.html", [
       [ "DevType< std::array< TElem, Tsize > >", "structalpaka_1_1trait_1_1DevType_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html", "structalpaka_1_1trait_1_1DevType_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4" ],

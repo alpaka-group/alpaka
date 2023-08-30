@@ -1,15 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1BlockAnd.html#a6691bec07b43e1d4c47d39e0d6a1b2c7":[3,0,0,42,0],
-"structalpaka_1_1BlockCount.html":[3,0,0,43],
-"structalpaka_1_1BlockCount.html#a7a3619fe6cf8f84e8975884966629ee2":[3,0,0,43,0],
-"structalpaka_1_1BlockOr.html":[3,0,0,44],
-"structalpaka_1_1BlockOr.html#a9b67de7e6209681ef5cf306d88780ef6":[3,0,0,44,0],
-"structalpaka_1_1ConceptAcc.html":[3,0,0,57],
-"structalpaka_1_1ConceptAtomicBlocks.html":[3,0,0,58],
-"structalpaka_1_1ConceptAtomicGrids.html":[3,0,0,59],
-"structalpaka_1_1ConceptAtomicThreads.html":[3,0,0,60],
-"structalpaka_1_1ConceptBlockSharedDyn.html":[3,0,0,61],
 "structalpaka_1_1ConceptBlockSharedSt.html":[3,0,0,62],
 "structalpaka_1_1ConceptBlockSync.html":[3,0,0,63],
 "structalpaka_1_1ConceptCurrentThreadWaitFor.html":[3,0,0,64],
@@ -53,6 +43,13 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1ViewConst.html#a6e82e524869375f62f4a18ba01715aa8":[3,0,0,110,0],
 "structalpaka_1_1ViewConst.html#a7b0adf7a525e842b4da71f88a76930fd":[3,0,0,110,2],
 "structalpaka_1_1ViewConst.html#ad3f8f2bf1bed8ddad05d3d5bd10249f9":[3,0,0,110,1],
+"structalpaka_1_1ViewPlainPtr.html":[3,0,0,111],
+"structalpaka_1_1ViewPlainPtr.html#a046fb24160a7e6c776fe6a4fffd2b66d":[3,0,0,111,0],
+"structalpaka_1_1ViewPlainPtr.html#a36a49db84214a94cc95d59a4dc63f161":[3,0,0,111,3],
+"structalpaka_1_1ViewPlainPtr.html#a6b7f677aa46dd811ca76f8a786346e42":[3,0,0,111,5],
+"structalpaka_1_1ViewPlainPtr.html#ab3ba7c5c06b0657d805fcff01794dda2":[3,0,0,111,1],
+"structalpaka_1_1ViewPlainPtr.html#adaabaaaad93768283b66b0a500d3c311":[3,0,0,111,4],
+"structalpaka_1_1ViewPlainPtr.html#afe5baf6b96870c5578165a7e8c4df270":[3,0,0,111,2],
 "structalpaka_1_1concepts_1_1Implements.html":[3,0,0,1,1],
 "structalpaka_1_1concepts_1_1ImplementsConcept.html":[3,0,0,1,2],
 "structalpaka_1_1concepts_1_1ImplementsConcept.html#a2d20969b814a4a787a48a138c3d4fe89":[3,0,0,1,2,1],
@@ -249,5 +246,8 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a6b03cd362ed68e5d5f0bf5ab6d85b25f":[3,0,0,4,57,6],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a77dd8c0c4571bc855f48f7d5bfc3a516":[3,0,0,4,57,2],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#a81e10b6e1c89680ee620c9bb968ad889":[3,0,0,4,57,7],
-"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a8ab5121c0fd7dd6a8a95f6670beedda1":[3,0,0,4,57,9]
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a8ab5121c0fd7dd6a8a95f6670beedda1":[3,0,0,4,57,9],
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a950042e48b666cd16d6565fe1e47480d":[3,0,0,4,57,0],
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#aa09740cbb36ae3cb0956a28568a07596":[3,0,0,4,57,3],
+"structalpaka_1_1detail_1_1TaskSetCpuBase.html#af3077f62b288305b8c9d4a6227b279f5":[3,0,0,4,57,1]
 };

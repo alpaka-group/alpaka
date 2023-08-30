@@ -1,15 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[2,0,0,315],
-"namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed":[2,0,0,286],
-"namespacealpaka.html#a2a811570d2074f237f89c9910b82b44c":[2,0,0,245],
-"namespacealpaka.html#a2be994b379106bbd50e768e825321768":[2,0,0,307],
-"namespacealpaka.html#a2e8b3978a69f4844792b91f2632ea66f":[2,0,0,143],
-"namespacealpaka.html#a2f6580f456ad2faecf55eaadfe145cc6":[2,0,0,224],
-"namespacealpaka.html#a2fb86f3938fa9423296e522fb77cf639":[2,0,0,211],
-"namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c":[2,0,0,253],
-"namespacealpaka.html#a320a89eae40575cf2114d933faa11e5d":[2,0,0,204],
-"namespacealpaka.html#a32355d5c313b0846505aeaf5d42484be":[2,0,0,127],
 "namespacealpaka.html#a32ea951bb9c42fbe7032d6fe8625b183":[2,0,0,180],
 "namespacealpaka.html#a336492ddbb304d87f082dd90164f8f30":[2,0,0,242],
 "namespacealpaka.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5":[2,0,0,243],
@@ -249,5 +239,15 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1math.html#a3d1ddbc775ff478f6686d86b6a443785":[2,0,0,10,142],
 "namespacealpaka_1_1math.html#a45cebc1e1e7df3d7cf1c965e290f6b2f":[2,0,0,10,134],
 "namespacealpaka_1_1math.html#a469b3c9f385a10cc3ab9085a7b438582":[2,0,0,10,122],
-"namespacealpaka_1_1math.html#a59e57652a8773318b4ab8f1caf702131":[2,0,0,10,123]
+"namespacealpaka_1_1math.html#a59e57652a8773318b4ab8f1caf702131":[2,0,0,10,123],
+"namespacealpaka_1_1math.html#a63e794a800776397a11cf35310626250":[2,0,0,10,147],
+"namespacealpaka_1_1math.html#a6a8aed4e7f4477d91cfceebf9897e021":[2,0,0,10,132],
+"namespacealpaka_1_1math.html#a6dbd8f303dc354787697c47301eb7a1c":[2,0,0,10,145],
+"namespacealpaka_1_1math.html#a6f9cdd368f558546e5031ca7ac2edf89":[2,0,0,10,141],
+"namespacealpaka_1_1math.html#a7ff19157e0e93951341f87a62327e62f":[2,0,0,10,126],
+"namespacealpaka_1_1math.html#a860ad56456e1868026f833d9168cc5ce":[2,0,0,10,148],
+"namespacealpaka_1_1math.html#a870c86f26ec22dc2b10627f861c7120e":[2,0,0,10,162],
+"namespacealpaka_1_1math.html#a8ce518d7587dd645a3bbf943ef36db9c":[2,0,0,10,160],
+"namespacealpaka_1_1math.html#a953ab56033203ac75151471c306ed02e":[2,0,0,10,133],
+"namespacealpaka_1_1math.html#a9d7d883a65e97eda50c085d8126e3e83":[2,0,0,10,143]
 };

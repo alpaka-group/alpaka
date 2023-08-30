@@ -115,7 +115,7 @@ var namespacealpaka =
     [ "TaskKernelGpuUniformCudaHipRt", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt.html", "classalpaka_1_1TaskKernelGpuUniformCudaHipRt" ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ],
     [ "ViewConst", "structalpaka_1_1ViewConst.html", "structalpaka_1_1ViewConst" ],
-    [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html", "classalpaka_1_1ViewPlainPtr" ],
+    [ "ViewPlainPtr", "structalpaka_1_1ViewPlainPtr.html", "structalpaka_1_1ViewPlainPtr" ],
     [ "ViewSubView", "classalpaka_1_1ViewSubView.html", "classalpaka_1_1ViewSubView" ],
     [ "WorkDivMembers", "classalpaka_1_1WorkDivMembers.html", "classalpaka_1_1WorkDivMembers" ],
     [ "WorkDivUniformCudaHipBuiltIn", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn" ],
