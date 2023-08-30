@@ -9,11 +9,11 @@
 #include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Hip.hpp"
-#include "alpaka/dev/DevUniformCudaHipRt.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/event/Traits.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
 #include "alpaka/queue/Traits.hpp"
+#include "alpaka/traits/Traits.hpp"
 #include "alpaka/wait/Traits.hpp"
 
 #include <condition_variable>
@@ -29,6 +29,9 @@ namespace alpaka
 {
     template<typename TApi>
     class EventUniformCudaHipRt;
+
+    template<typename TApi>
+    class DevUniformCudaHipRt;
 
     namespace uniform_cuda_hip::detail
     {
@@ -94,6 +97,7 @@ namespace alpaka
             ALPAKA_FN_HOST QueueUniformCudaHipRt(DevUniformCudaHipRt<TApi> const& dev)
                 : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(dev))
             {
+                dev.registerQueue(m_spQueueImpl);
             }
             ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRt const& rhs) const -> bool
             {

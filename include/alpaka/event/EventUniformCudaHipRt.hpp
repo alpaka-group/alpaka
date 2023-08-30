@@ -227,7 +227,14 @@ namespace alpaka
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
 
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamWaitEvent(nullptr, event.getNativeHandle(), 0));
+                // Get all the queues on the device at the time of invocation.
+                // All queues added afterwards are ignored.
+                auto vQueues = dev.getAllQueues();
+                for(auto&& spQueue : vQueues)
+                {
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        TApi::streamWaitEvent(spQueue->getNativeHandle(), event.getNativeHandle(), 0));
+                }
             }
         };
         //! The CUDA/HIP RT event native handle trait specialization.
