@@ -236,7 +236,7 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto prod() const -> TVal
         {
-            return foldrAll(std::multiplies<TVal>{}, TVal(1));
+            return foldrAll(std::multiplies<TVal>{}, TVal{1});
         }
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 #    pragma warning(pop)
@@ -245,7 +245,7 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto sum() const -> TVal
         {
-            return foldrAll(std::plus<TVal>{}, TVal(0));
+            return foldrAll(std::plus<TVal>{}, TVal{0});
         }
 
         //! \return The min of all values.

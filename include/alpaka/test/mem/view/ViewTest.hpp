@@ -112,25 +112,16 @@ namespace alpaka::test
             TIter const& end,
             std::uint8_t const& byte) const
         {
-            constexpr auto elemSizeInByte = sizeof(decltype(*begin));
+            constexpr auto elemSizeInByte = static_cast<unsigned>(sizeof(decltype(*begin)));
             for(auto it = begin; it != end; ++it)
             {
                 auto const& elem = *it;
                 auto const pBytes = reinterpret_cast<std::uint8_t const*>(&elem);
-                for(std::size_t i = 0u; i < elemSizeInByte; ++i)
+                for(unsigned i = 0; i < elemSizeInByte; ++i)
                 {
                     if(pBytes[i] != byte)
                     {
-#if BOOST_COMP_NVCC
-                        // nvcc doesn't support %zu and %hhu so we have to improvise
-                        printf(
-                            "Byte at offset %ull is different: %hu != %hu\n",
-                            static_cast<unsigned long long>(i),
-                            static_cast<unsigned short>(pBytes[i]),
-                            static_cast<unsigned short>(byte));
-#else
-                        printf("Byte at offset %zu is different: %hhu != %hhu\n", i, pBytes[i], byte);
-#endif
+                        printf("Byte at offset %u is different: %u != %u\n", i, unsigned{pBytes[i]}, unsigned{byte});
                         *success = false;
                     }
                 }

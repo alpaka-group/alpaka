@@ -90,7 +90,7 @@ TEST_CASE("basicVecTraits", "[vec]")
     // alpaka::subVecBegin
     {
         using DimSubVecEnd = alpaka::DimInt<2u>;
-        static constexpr auto vecSubBegin(alpaka::subVecBegin<DimSubVecEnd>(vec));
+        [[maybe_unused]] static constexpr auto vecSubBegin(alpaka::subVecBegin<DimSubVecEnd>(vec));
 
         foreach
             <DimSubVecEnd::value>(
@@ -104,7 +104,7 @@ TEST_CASE("basicVecTraits", "[vec]")
     // alpaka::subVecEnd
     {
         using DimSubVecEnd = alpaka::DimInt<2u>;
-        static constexpr auto vecSubEnd(alpaka::subVecEnd<DimSubVecEnd>(vec));
+        [[maybe_unused]] static constexpr auto vecSubEnd(alpaka::subVecEnd<DimSubVecEnd>(vec));
 
         foreach
             <DimSubVecEnd::value>(
@@ -118,7 +118,7 @@ TEST_CASE("basicVecTraits", "[vec]")
     // alpaka::castVec
     {
         using SizeCast = std::uint16_t;
-        static constexpr auto vecCast(alpaka::castVec<SizeCast>(vec));
+        [[maybe_unused]] static constexpr auto vecCast(alpaka::castVec<SizeCast>(vec));
 
         /*using VecCastConst = decltype(vecCast);
         using VecCast = std::decay_t<VecCastConst>;
@@ -139,7 +139,7 @@ TEST_CASE("basicVecTraits", "[vec]")
 
     // alpaka::reverseVec
     {
-        static constexpr auto vecReverse(alpaka::reverseVec(vec));
+        [[maybe_unused]] static constexpr auto vecReverse(alpaka::reverseVec(vec));
 
         foreach
             <Dim::value>(
@@ -155,7 +155,7 @@ TEST_CASE("basicVecTraits", "[vec]")
         using Dim2 = alpaka::DimInt<2u>;
         static constexpr alpaka::Vec<Dim2, Idx> vec2(static_cast<Idx>(47u), static_cast<Idx>(11u));
 
-        static constexpr auto vecConcat(alpaka::concatVec(vec, vec2));
+        [[maybe_unused]] static constexpr auto vecConcat(alpaka::concatVec(vec, vec2));
         STATIC_REQUIRE(std::is_same_v<alpaka::Dim<std::decay_t<decltype(vecConcat)>>, alpaka::DimInt<5u>>);
 
         foreach

@@ -61,9 +61,9 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     #list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wconversion")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsign-conversion")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wvector-operation-performance")
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wzero-as-null-pointer-constant")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Wzero-as-null-pointer-constant>) # occurs in nvcc generated code
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wdate-time")
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wuseless-cast")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Wuseless-cast>) # occurs in nvcc generated code
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wlogical-op")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-aggressive-loop-optimizations")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wmissing-declarations")
@@ -91,7 +91,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsign-promo")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wconditionally-supported")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wnoexcept")
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wold-style-cast")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Wold-style-cast>) # occurs in nvcc generated code
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsuggest-final-types")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsuggest-final-methods")
     # This does not work correctly as it suggests override to methods that are already marked with final.
