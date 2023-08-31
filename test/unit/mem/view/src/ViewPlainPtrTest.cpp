@@ -1,4 +1,4 @@
-/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -79,7 +79,7 @@ namespace alpaka::test
 
         auto buf2 = alpaka::allocBuf<TElem, Idx>(dev, alpaka::test::extentBuf<Dim, Idx>);
         auto nativePtr2 = alpaka::getPtrNative(buf);
-        View view2(nativePtr2, alpaka::getDev(buf2), alpaka::getExtents(buf2), alpaka::getPitchBytesVec(buf2));
+        View view2(nativePtr2, alpaka::getDev(buf2), alpaka::getExtents(buf2), alpaka::getPitchesInBytes(buf2));
 
         // copy-assign
         viewCopy = view2;
