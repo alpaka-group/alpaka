@@ -120,7 +120,7 @@ It enables a simple and straightforward way of porting existing CUDA application
 The CI creates a single-header version of alpaka on each commit,
 which you can find on the [single-header branch](https://github.com/alpaka-group/alpaka/tree/single-header).
 
-This is especially useful, if you would like to play with alpaka on [Compiler explorer](https://godbolt.org/z/3KE13dcKv).
+This is especially useful, if you would like to play with alpaka on [Compiler explorer](https://godbolt.org/z/hzPnhnna9).
 Just include alpaka like
 ```c++
 #include <https://raw.githubusercontent.com/alpaka-group/alpaka/single-header/include/alpaka/alpaka.hpp>
