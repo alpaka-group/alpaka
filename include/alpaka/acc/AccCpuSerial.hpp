@@ -90,22 +90,8 @@ namespace alpaka
         ALPAKA_FN_HOST AccCpuSerial(TWorkDiv const& workDiv, size_t const& blockSharedMemDynSizeBytes)
             : WorkDivMembers<TDim, TIdx>(workDiv)
             , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
-            , bt::IdxBtZero<TDim, TIdx>()
-            , AtomicHierarchy<
-                  AtomicCpu, // atomics between grids
-                  AtomicNoOp, // atomics between blocks
-                  AtomicNoOp // atomics between threads
-                  >()
-            , math::MathStdLib()
             , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
             , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
-            , BlockSyncNoOp()
-            , MemFenceCpuSerial()
-#    ifdef ALPAKA_DISABLE_VENDOR_RNG
-            , rand::RandDefault()
-#    else
-            , rand::RandStdLib()
-#    endif
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {
         }
