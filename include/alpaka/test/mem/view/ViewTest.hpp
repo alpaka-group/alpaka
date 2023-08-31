@@ -1,5 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Antonio Di
- * Pilato
+/* Copyright 2023 Benjamin Worpitz, Sergei Bastrakov, René Widera, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -131,11 +130,16 @@ namespace alpaka::test
                 {
                     if(pBytes[i] != byte)
                     {
+#if BOOST_COMP_NVCC
+                        // nvcc doesn't support %zu and %hhu so we have to improvise
                         printf(
-                            "Byte at offset %lu is different: %u != %u\n",
-                            static_cast<long unsigned>(i),
-                            static_cast<unsigned>(pBytes[i]),
-                            static_cast<unsigned>(byte));
+                            "Byte at offset %ull is different: %hu != %hu\n",
+                            static_cast<unsigned long long>(i),
+                            static_cast<unsigned short>(pBytes[i]),
+                            static_cast<unsigned short>(byte));
+#else
+                        printf("Byte at offset %zu is different: %hhu != %hhu\n", i, pBytes[i], byte);
+#endif
                         *success = false;
                     }
                 }
