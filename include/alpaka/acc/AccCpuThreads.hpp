@@ -93,12 +93,6 @@ namespace alpaka
             : WorkDivMembers<TDim, TIdx>(workDiv)
             , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
             , bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap)
-            , AtomicHierarchy<
-                  AtomicCpu, // atomics between grids
-                  AtomicCpu, // atomics between blocks
-                  AtomicCpu // atomics between threads
-                  >()
-            , math::MathStdLib()
             , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
             , BlockSharedMemStMemberMasterSync<>(
                   staticMemBegin(),
@@ -106,12 +100,6 @@ namespace alpaka
                   [this]() { syncBlockThreads(*this); },
                   [this]() noexcept { return (m_idMasterThread == std::this_thread::get_id()); })
             , BlockSyncBarrierThread<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
-            , MemFenceCpu()
-#    ifdef ALPAKA_DISABLE_VENDOR_RNG
-            , rand::RandDefault()
-#    else
-            , rand::RandStdLib()
-#    endif
             , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {
         }
