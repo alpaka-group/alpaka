@@ -7,7 +7,7 @@
 // "On Windows, the enclosing parent function ("C_A_T_C_H_T_E_M_P_L_A_T_E_T_E_S_T_F_U_N_C_...") for an extended
 // __host__
 // __device__ lambda cannot have internal or no linkage"
-#if(!defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__) && !BOOST_COMP_MSVC))
+#if(!defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__) && !defined(_MSC_VER)))
 
 #    include "Functor.hpp"
 #    include "TestTemplate.hpp"

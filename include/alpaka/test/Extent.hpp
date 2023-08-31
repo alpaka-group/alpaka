@@ -14,8 +14,9 @@ namespace alpaka::test
     inline constexpr auto extentBuf = []
     {
         Vec<TDim, TVal> v;
-        for(TVal i = 0; i < TVal{TDim::value}; i++)
-            v[i] = 11 - i;
+        if constexpr(TDim::value > 0)
+            for(TVal i = 0; i < TVal{TDim::value}; i++)
+                v[i] = 11 - i;
         return v;
     }();
 
@@ -23,8 +24,9 @@ namespace alpaka::test
     inline constexpr auto extentSubView = []
     {
         Vec<TDim, TVal> v;
-        for(TVal i = 0; i < TVal{TDim::value}; i++)
-            v[i] = 8 - i * 2;
+        if constexpr(TDim::value > 0)
+            for(TVal i = 0; i < TVal{TDim::value}; i++)
+                v[i] = 8 - i * 2;
         return v;
     }();
 
@@ -32,8 +34,9 @@ namespace alpaka::test
     inline constexpr auto offset = []
     {
         Vec<TDim, TVal> v;
-        for(TVal i = 0; i < TVal{TDim::value}; i++)
-            v[i] = 2 + i;
+        if constexpr(TDim::value > 0)
+            for(TVal i = 0; i < TVal{TDim::value}; i++)
+                v[i] = 2 + i;
         return v;
     }();
 } // namespace alpaka::test

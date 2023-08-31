@@ -340,7 +340,7 @@ namespace alpaka::test
         template<>
         struct IsEventHostManualTriggerSupported<DevCudaRt>
         {
-            ALPAKA_FN_HOST static auto isSupported(DevCudaRt const& dev) -> bool
+            ALPAKA_FN_HOST static auto isSupported([[maybe_unused]] DevCudaRt const& dev) -> bool
             {
 #    if CUDA_VERSION < 11070
                 int result = 0;
