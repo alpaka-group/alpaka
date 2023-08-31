@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -6,6 +6,8 @@
 
 #include "alpaka/block/sync/Traits.hpp"
 #include "alpaka/core/Common.hpp"
+
+#include <cstdint>
 
 #ifdef _OPENMP
 
