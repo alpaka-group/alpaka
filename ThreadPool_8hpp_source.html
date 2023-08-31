@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('ThreadPool_8hpp_source.html',''); init
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TFnObj, <span class="keyword">typename</span>... TArgs&gt;</div>
 <div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a9b86df90395fee792bedb478fcf9b09d">   56</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a9b86df90395fee792bedb478fcf9b09d">enqueueTask</a>(TFnObj&amp;&amp; task, TArgs&amp;&amp;... args) -&gt; std::future&lt;void&gt;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keyword">auto</span> ptask = <a class="code" href="structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a049fef3549faf571737621ed9f86322d">Task</a>{[=, t = std::forward&lt;TFnObj&gt;(task)] { t(args...); }};</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keyword">auto</span> ptask = <a class="code" href="structalpaka_1_1core_1_1detail_1_1ThreadPool.html#a049fef3549faf571737621ed9f86322d">Task</a>{[=, t = std::forward&lt;TFnObj&gt;(task)]() noexcept(noexcept(task(args...))) { t(args...); }};</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keyword">auto</span> future = ptask.get_future();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                std::lock_guard&lt;std::mutex&gt; lock{m_mutex};</div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('ThreadPool_8hpp_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="ThreadPool_8hpp.html">ThreadPool.hpp</a></li>
-    <li class="footer">Generated on Thu Aug 31 2023 17:23:32 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Aug 31 2023 18:25:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
