@@ -8,6 +8,7 @@
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Common.hpp"
 #include "alpaka/mem/view/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 namespace alpaka
 {
