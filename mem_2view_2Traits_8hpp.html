@@ -101,6 +101,7 @@ $(document).ready(function(){initNavTree('mem_2view_2Traits_8hpp.html',''); init
 <code>#include &quot;<a class="el" href="Integral_8hpp_source.html">alpaka/meta/Integral.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="offset_2Traits_8hpp_source.html">alpaka/offset/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="queue_2Traits_8hpp_source.html">alpaka/queue/Traits.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vec_2Traits_8hpp_source.html">alpaka/vec/Traits.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
@@ -120,7 +121,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pitch in bytes. This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx-1).  <a href="structalpaka_1_1trait_1_1GetPitchBytes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1GetPitchesInBytes.html">alpaka::trait::GetPitchesInBytes&lt; TView, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pitches in bytes. This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx-1).  <a href="structalpaka_1_1trait_1_1GetPitchesInBytes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Customization point for <a class="el" href="namespacealpaka.html#a542bd81fb86be02c87d0a40008e32922">getPitchesInBytes</a>. The default implementation uses the extent to calculate the pitches.  <a href="structalpaka_1_1trait_1_1GetPitchesInBytes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -226,7 +227,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Thu Aug 31 2023 21:55:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 1 2023 07:59:41 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
