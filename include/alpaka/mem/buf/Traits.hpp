@@ -177,7 +177,7 @@ namespace alpaka
         TPlatform const& platform,
         TExtent const& extent = TExtent())
     {
-        using PlatformForMappedAlloc = Platform<TPlatform>;
+        using PlatformForMappedAlloc = alpaka::Platform<TPlatform>;
         if constexpr(hasMappedBufSupport<PlatformForMappedAlloc>)
         {
             return allocMappedBuf<PlatformForMappedAlloc, TElem, TIdx>(host, platform, extent);
