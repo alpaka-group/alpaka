@@ -1,4 +1,4 @@
-/* Copyright 2022 Andrea Bocci
+/* Copyright 2023 Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -8,8 +8,11 @@
 #include "alpaka/extent/Traits.hpp"
 #include "alpaka/mem/view/Traits.hpp"
 
+#include <cstdint>
 #include <sstream>
+#include <stdexcept>
 #include <type_traits>
+#include <utility>
 
 namespace alpaka::internal
 {
@@ -96,9 +99,12 @@ namespace alpaka::internal
                 std::is_convertible_v<TIdx, Idx>,
                 "the index type must be convertible to the index of the Buffer or View");
 
-            auto ptr = reinterpret_cast<uintptr_t>(data());
+            auto ptr = reinterpret_cast<std::uintptr_t>(data());
             if constexpr(Dim::value > 0)
-                ptr += (getPitchesInBytes(*static_cast<TView const*>(this)) * castVec<Idx>(index)).sum();
+            {
+                ptr += static_cast<std::uintptr_t>(
+                    (getPitchesInBytes(*static_cast<TView const*>(this)) * castVec<Idx>(index)).sum());
+            }
             return reinterpret_cast<const_pointer>(ptr);
         }
 
