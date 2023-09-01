@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('structalpaka_1_1detail_1_1QueueRegistr
 </div><!--header-->
 <div class="contents">
 
-<p>The CPU device implementation.  
+<p>The CPU/GPU device queue registry implementation.  
  <a href="structalpaka_1_1detail_1_1QueueRegistry.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="QueueRegistry_8hpp_source.html">QueueRegistry.hpp</a>&gt;</code></p>
@@ -108,9 +108,15 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><h3>template&lt;typename TQueue&gt;<br />
 struct alpaka::detail::QueueRegistry&lt; TQueue &gt;</h3>
 
-<p>The CPU device implementation. </p>
+<p>The CPU/GPU device queue registry implementation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TQueue</td><td>queue implementation </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="QueueRegistry_8hpp_source.html#l00018">18</a> of file <a class="el" href="QueueRegistry_8hpp_source.html">QueueRegistry.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QueueRegistry_8hpp_source.html#l00020">20</a> of file <a class="el" href="QueueRegistry_8hpp_source.html">QueueRegistry.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae307d49484041bc95c9a57dd87a9f2bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae307d49484041bc95c9a57dd87a9f2bb">&#9670;&nbsp;</a></span>getAllExistingQueues()</h2>
@@ -138,7 +144,7 @@ template&lt;typename TQueue &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QueueRegistry_8hpp_source.html#l00020">20</a> of file <a class="el" href="QueueRegistry_8hpp_source.html">QueueRegistry.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QueueRegistry_8hpp_source.html#l00022">22</a> of file <a class="el" href="QueueRegistry_8hpp_source.html">QueueRegistry.hpp</a>.</p>
 
 </div>
 </div>
@@ -171,7 +177,7 @@ template&lt;typename TQueue &gt; </div>
 
 <p>Registers the given queue on this device. NOTE: Every queue has to be registered for correct functionality of device wait operations! </p>
 
-<p class="definition">Definition at line <a class="el" href="QueueRegistry_8hpp_source.html#l00045">45</a> of file <a class="el" href="QueueRegistry_8hpp_source.html">QueueRegistry.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QueueRegistry_8hpp_source.html#l00047">47</a> of file <a class="el" href="QueueRegistry_8hpp_source.html">QueueRegistry.hpp</a>.</p>
 
 </div>
 </div>
@@ -184,7 +190,7 @@ template&lt;typename TQueue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1detail_1_1QueueRegistry.html">QueueRegistry</a></li>
-    <li class="footer">Generated on Fri Sep 1 2023 07:59:42 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 1 2023 08:16:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

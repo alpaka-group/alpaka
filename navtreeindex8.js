@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"namespacealpaka_1_1math.html#aab46c7252772bedb6798b33155240936":[2,0,0,10,149],
+"namespacealpaka_1_1math.html#aadc2de727af26c295aeccdba85fa56c9":[2,0,0,10,157],
+"namespacealpaka_1_1math.html#ab1b0feb1340f02f7080c0ae293858799":[2,0,0,10,140],
 "namespacealpaka_1_1math.html#ab54ec7868626e9207baaeb20acf5a54c":[2,0,0,10,153],
 "namespacealpaka_1_1math.html#ac70a72b94c69c350f82218ab4fce5554":[2,0,0,10,144],
 "namespacealpaka_1_1math.html#ac912156a7f5e29a248953312eb8e2a0f":[2,0,0,10,130],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "rand_2Traits_8hpp.html#a3d2a8e74bda83320942609c09c227f46":[4,0,0,0,19,8,2],
 "rand_2Traits_8hpp.html#a8cef848378b79fc7f8f522531198723f":[4,0,0,0,19,8,4],
 "rand_2Traits_8hpp.html#af6fb809c7467ff1d92f3983e7f621991":[4,0,0,0,19,8,3],
-"rand_2Traits_8hpp_source.html":[4,0,0,0,19,8],
-"structTINYMT32__T.html":[3,0,27],
-"structTINYMT32__T.html#a0e43df3eee3e3829d517bcba2f0ebc9b":[3,0,27,3],
-"structTINYMT32__T.html#a483a2a359c18dd5315396958bb694eb6":[3,0,27,2]
+"rand_2Traits_8hpp_source.html":[4,0,0,0,19,8]
 };

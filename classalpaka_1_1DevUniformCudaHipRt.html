@@ -112,17 +112,22 @@ $(document).ready(function(){initNavTree('classalpaka_1_1DevUniformCudaHipRt.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ad1dfd533ca25153d9eb0ec26e1fb42a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#ad1dfd533ca25153d9eb0ec26e1fb42a4">getAllQueues</a> () const -&gt; std::vector&lt; std::shared_ptr&lt; <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html">IDeviceQueue</a> &gt;&gt;</td></tr>
+<tr class="separator:ad1dfd533ca25153d9eb0ec26e1fb42a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24ea73afe71618eef57a61741e983d37"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#a24ea73afe71618eef57a61741e983d37">getNativeHandle</a> () const noexcept -&gt; int</td></tr>
 <tr class="separator:a24ea73afe71618eef57a61741e983d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41753fef7c824e763570c58cad6fc955"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#a41753fef7c824e763570c58cad6fc955">operator!=</a> (<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a> const &amp;rhs) const -&gt; bool</td></tr>
 <tr class="separator:a41753fef7c824e763570c58cad6fc955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2929f8b8e0017ac27e344f2a7be4b40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#aa2929f8b8e0017ac27e344f2a7be4b40">operator==</a> (<a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a> const &amp;rhs) const -&gt; bool</td></tr>
 <tr class="separator:aa2929f8b8e0017ac27e344f2a7be4b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ba7679e62ac79878fc136f0a9c4a140"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#a5ba7679e62ac79878fc136f0a9c4a140">registerQueue</a> (std::shared_ptr&lt; <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html">IDeviceQueue</a> &gt; spQueue) const -&gt; void</td></tr>
+<tr class="memdesc:a5ba7679e62ac79878fc136f0a9c4a140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the given queue on this device. NOTE: Every queue has to be registered for correct functionality of device wait operations!  <a href="classalpaka_1_1DevUniformCudaHipRt.html#a5ba7679e62ac79878fc136f0a9c4a140">More...</a><br /></td></tr>
+<tr class="separator:a5ba7679e62ac79878fc136f0a9c4a140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a7c7fc6122feaa29a20dc7d761cb00972"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#a7c7fc6122feaa29a20dc7d761cb00972">DevUniformCudaHipRt</a> ()=default</td></tr>
-<tr class="separator:a7c7fc6122feaa29a20dc7d761cb00972"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a491ef41ba88edbd760ed5c50c8d6e7bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html#a491ef41ba88edbd760ed5c50c8d6e7bc">DevUniformCudaHipRt</a> ()</td></tr>
+<tr class="separator:a491ef41ba88edbd760ed5c50c8d6e7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -135,10 +140,10 @@ class alpaka::DevUniformCudaHipRt&lt; TApi &gt;</h3>
 
 <p>The CUDA/HIP RT device handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00053">53</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00055">55</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7c7fc6122feaa29a20dc7d761cb00972"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c7fc6122feaa29a20dc7d761cb00972">&#9670;&nbsp;</a></span>DevUniformCudaHipRt()</h2>
+<a id="a491ef41ba88edbd760ed5c50c8d6e7bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a491ef41ba88edbd760ed5c50c8d6e7bc">&#9670;&nbsp;</a></span>DevUniformCudaHipRt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,14 +162,46 @@ template&lt;typename TApi &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00064">64</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad1dfd533ca25153d9eb0ec26e1fb42a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1dfd533ca25153d9eb0ec26e1fb42a4">&#9670;&nbsp;</a></span>getAllQueues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a>&lt; TApi &gt;::getAllQueues </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; std::vector&lt;std::shared_ptr&lt;<a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html">IDeviceQueue</a>&gt;&gt;
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00081">81</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a24ea73afe71618eef57a61741e983d37"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a24ea73afe71618eef57a61741e983d37">&#9670;&nbsp;</a></span>getNativeHandle()</h2>
 
@@ -191,7 +228,7 @@ template&lt;typename TApi &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00072">72</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00076">76</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -222,7 +259,7 @@ template&lt;typename TApi &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00067">67</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00071">71</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -253,7 +290,40 @@ template&lt;typename TApi &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00063">63</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00067">67</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a5ba7679e62ac79878fc136f0a9c4a140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ba7679e62ac79878fc136f0a9c4a140">&#9670;&nbsp;</a></span>registerQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a>&lt; TApi &gt;::registerQueue </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html">IDeviceQueue</a> &gt;&#160;</td>
+          <td class="paramname"><em>spQueue</em></td><td>)</td>
+          <td> const -&gt; void
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers the given queue on this device. NOTE: Every queue has to be registered for correct functionality of device wait operations! </p>
+
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00088">88</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -293,7 +363,7 @@ template&lt;typename TApi &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a></li>
-    <li class="footer">Generated on Fri Sep 1 2023 07:59:41 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 1 2023 08:16:09 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
