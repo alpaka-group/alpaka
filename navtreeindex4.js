@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classalpaka_1_1WorkDivMembers.html#a4907d4628832e373ca736c03a6b2df13":[3,0,0,113,0],
 "classalpaka_1_1WorkDivMembers.html#a4a009b8132b692bb8b55cfd2764bcd25":[3,0,0,113,10],
 "classalpaka_1_1WorkDivMembers.html#a505994091860f2d0572f50988808a95f":[3,0,0,113,11],
 "classalpaka_1_1WorkDivMembers.html#a736028e849adf823aef0a6972a6b3aff":[3,0,0,113,12],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a61d2aa5cc6a2bd45b0a7fc3b0b8f256a":[3,0,0,13,1,6,5],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a79cd12fa4232d4e749242202ab229eea":[3,0,0,13,1,6,1],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#abe568beee804198ccd1d5a29835c7c11":[3,0,0,13,1,6,3],
-"classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#ac359a3cabbf1c16a7052e65430cdfd0f":[3,0,0,13,1,6,0]
+"classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#ac359a3cabbf1c16a7052e65430cdfd0f":[3,0,0,13,1,6,0],
+"classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html":[3,0,0,13,1,8]
 };

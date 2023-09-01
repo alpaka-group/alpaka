@@ -1,6 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1detail_1_1TaskSetCpuBase.html#a950042e48b666cd16d6565fe1e47480d":[3,0,0,4,57,0],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#aa09740cbb36ae3cb0956a28568a07596":[3,0,0,4,57,3],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#af3077f62b288305b8c9d4a6227b279f5":[3,0,0,4,57,1],
 "structalpaka_1_1detail_1_1TaskSetCpuBase.html#afd44d2cf9e9b5295172be8d008f0898c":[3,0,0,4,57,8],
@@ -249,5 +248,6 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_00_01U_01_4.html":[3,0,0,9,0,78],
 "structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_00_01U_01_4.html#a1bff944b4f0b946c7d68a933c02c54d0":[3,0,0,9,0,78,0],
 "structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01TBase_00_01TExp_00_01std_b30f2b4387785793cb8484f02d20cd5b.html":[3,0,0,9,0,80],
-"structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01TBase_00_01TExp_00_01std_b30f2b4387785793cb8484f02d20cd5b.html#a901a1e4c95c0202a3477734bb5654864":[3,0,0,9,0,80,0]
+"structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01TBase_00_01TExp_00_01std_b30f2b4387785793cb8484f02d20cd5b.html#a901a1e4c95c0202a3477734bb5654864":[3,0,0,9,0,80,0],
+"structalpaka_1_1math_1_1trait_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01T_00_01Complex_3_01U_01_4_01_4.html":[3,0,0,9,0,79]
 };
