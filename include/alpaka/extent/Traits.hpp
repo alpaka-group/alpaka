@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -76,11 +76,13 @@ ALPAKA_FN_HOST_ACC auto constexpr getExtentVecEnd(T const& object = {}) -> Vec<T
 {
     static_assert(TDim::value <= Dim<T>::value, "Cannot get more items than the extent holds");
 
-    auto const e = getExtents(object);
+    [[maybe_unused]] auto const e = getExtents(object);
     Vec<TDim, Idx<T>> v{};
     if constexpr(TDim::value > 0)
+    {
         for(unsigned i = 0; i < TDim::value; i++)
             v[i] = e[(Dim<T>::value - TDim::value) + i];
+    }
     return v;
 }
 
