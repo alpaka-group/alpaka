@@ -40,10 +40,10 @@
 #    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-                sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]                  \
+            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](sycl::nd_item<TDim::value>)      \
+                [[intel::reqd_sub_group_size(sub_group_size)]]                                                        \
             {                                                                                                         \
-                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+                auto acc = TAcc{item_elements, dyn_shared_accessor, st_shared_accessor};                              \
                 core::apply(                                                                                          \
                     [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
                     k_args);                                                                                          \
@@ -52,10 +52,9 @@
 #    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-                sycl::nd_item<TDim::value> work_item)                                                                 \
+            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](sycl::nd_item<TDim::value>)      \
             {                                                                                                         \
-                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+                auto acc = TAcc{item_elements, dyn_shared_accessor, st_shared_accessor};                              \
                 core::apply(                                                                                          \
                     [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
                     k_args);                                                                                          \
@@ -65,8 +64,7 @@
         throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
-                sycl::nd_item<TDim::value> work_item) {});
+            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](sycl::nd_item<TDim::value>) {});
 
 namespace alpaka
 {

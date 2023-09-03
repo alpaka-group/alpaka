@@ -75,25 +75,11 @@ namespace alpaka
 
         AccGenericSycl(
             Vec<TDim, TIdx> const& threadElemExtent,
-            sycl::nd_item<TDim::value> work_item,
             sycl::local_accessor<std::byte> dyn_shared_acc,
             sycl::local_accessor<std::byte> st_shared_acc)
-            : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
-            , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
-            , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
-            , AtomicHierarchy<AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl>{}
-            , math::MathGenericSycl{}
+            : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent}
             , BlockSharedMemDynGenericSycl{dyn_shared_acc}
             , BlockSharedMemStGenericSycl{st_shared_acc}
-            , BlockSyncGenericSycl<TDim>{work_item}
-            , IntrinsicGenericSycl{}
-            , MemFenceGenericSycl{}
-#    ifdef ALPAKA_DISABLE_VENDOR_RNG
-            , rand::RandDefault{}
-#    else
-            , rand::RandGenericSycl<TDim>{work_item}
-#    endif
-            , warp::WarpGenericSycl<TDim>{work_item}
         {
         }
     };
