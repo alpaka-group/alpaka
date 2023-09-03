@@ -87,7 +87,7 @@ namespace alpaka::trait
     {
         static auto enqueue(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
         {
-            event.setEvent(queue.m_spQueueImpl->get_last_event());
+            event.setEvent(queue.getNativeHandle().ext_oneapi_submit_barrier());
         }
     };
 
@@ -97,7 +97,7 @@ namespace alpaka::trait
     {
         static auto enqueue(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev>& event)
         {
-            event.setEvent(queue.m_spQueueImpl->get_last_event());
+            event.setEvent(queue.getNativeHandle().ext_oneapi_submit_barrier());
         }
     };
 
@@ -120,7 +120,7 @@ namespace alpaka::trait
     {
         static auto waiterWaitFor(QueueGenericSyclNonBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
         {
-            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
+            queue.getNativeHandle().ext_oneapi_submit_barrier({event.getNativeHandle()});
         }
     };
 
@@ -130,7 +130,7 @@ namespace alpaka::trait
     {
         static auto waiterWaitFor(QueueGenericSyclBlocking<TDev>& queue, EventGenericSycl<TDev> const& event)
         {
-            queue.m_spQueueImpl->register_dependency(event.getNativeHandle());
+            queue.getNativeHandle().ext_oneapi_submit_barrier({event.getNativeHandle()});
         }
     };
 

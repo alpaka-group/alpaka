@@ -70,7 +70,7 @@ namespace alpaka
                 for(auto& q_ptr : m_queues)
                 {
                     if(auto ptr = q_ptr.lock(); ptr != nullptr)
-                        ptr->register_dependency(event);
+                        ptr->getNativeHandle().ext_oneapi_submit_barrier({event});
                 }
             }
 
