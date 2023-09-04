@@ -117,7 +117,7 @@ namespace alpaka
                 if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
                 {
                     std::memset(
-                        reinterpret_cast<void*>(this->m_dstMemNative),
+                        this->m_dstMemNative,
                         this->m_byte,
                         static_cast<std::size_t>(this->m_extentWidthBytes));
                 }
@@ -159,7 +159,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 printDebug();
 #endif
-                std::memset(reinterpret_cast<void*>(m_dstMemNative), m_byte, sizeof(Elem));
+                std::memset(m_dstMemNative, m_byte, sizeof(Elem));
             }
 
             std::uint8_t const m_byte;

@@ -40,7 +40,7 @@ namespace alpaka
             TaskSetSyclBase(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
                 : m_byte(byte)
                 , m_extent(getExtents(extent))
-                , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+                , m_extentWidthBytes(m_extent.back() * static_cast<ExtentSize>(sizeof(Elem)))
 #    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                 , m_dstExtent(getExtents(view))
 #    endif
@@ -49,8 +49,9 @@ namespace alpaka
                 , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
 
             {
-                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
+                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+                if constexpr(TDim::value > 1)
+                    ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 2]);
             }
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -93,8 +94,7 @@ namespace alpaka
                 // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
                 // iteration.
                 Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
-                // [z, y, x] -> [y, x] because the z pitch (the full idx of the buffer) is not required.
-                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
+                Vec<DimMin1, DstSize> const dstPitchBytesWithoutInnermost(subVecBegin<DimMin1>(this->m_dstPitchBytes));
 
                 // Record an event for each memcpy call
                 std::vector<sycl::event> events;
@@ -107,10 +107,7 @@ namespace alpaka
                         [&](Vec<DimMin1, ExtentSize> const& idx)
                         {
                             events.push_back(queue.memset(
-                                reinterpret_cast<void*>(
-                                    this->m_dstMemNative
-                                    + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
-                                          .foldrAll(std::plus<DstSize>())),
+                                this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutInnermost).sum(),
                                 this->m_byte,
                                 static_cast<std::size_t>(this->m_extentWidthBytes),
                                 requirements));

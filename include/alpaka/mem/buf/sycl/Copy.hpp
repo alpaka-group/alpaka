@@ -41,7 +41,7 @@ namespace alpaka::detail
         template<typename TViewFwd>
         TaskCopySyclBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
             : m_extent(getExtents(extent))
-            , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+            , m_extentWidthBytes(m_extent.back() * static_cast<ExtentSize>(sizeof(Elem)))
 #    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
             , m_dstExtent(getExtents(viewDst))
             , m_srcExtent(getExtents(viewSrc))
@@ -53,8 +53,8 @@ namespace alpaka::detail
         {
             if constexpr(TDim::value > 0)
             {
-                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-                ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).foldrAll(std::logical_or<bool>()));
+                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+                ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).all());
             }
         }
 
@@ -103,9 +103,8 @@ namespace alpaka::detail
             // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
             // iteration.
             Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
-            // [z, y, x] -> [y, x] because the z pitch (the full size of the buffer) is not required.
-            Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
-            Vec<DimMin1, SrcSize> const srcPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_srcPitchBytes));
+            Vec<DimMin1, DstSize> const dstPitchBytesWithoutInnermost(subVecBegin<DimMin1>(this->m_dstPitchBytes));
+            Vec<DimMin1, SrcSize> const srcPitchBytesWithoutInnermost(subVecBegin<DimMin1>(this->m_srcPitchBytes));
 
             // Record an event for each memcpy call
             std::vector<sycl::event> events;
@@ -118,14 +117,8 @@ namespace alpaka::detail
                     [&](Vec<DimMin1, ExtentSize> const& idx)
                     {
                         events.push_back(queue.memcpy(
-                            reinterpret_cast<void*>(
-                                this->m_dstMemNative
-                                + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
-                                      .foldrAll(std::plus<DstSize>())),
-                            reinterpret_cast<void const*>(
-                                this->m_srcMemNative
-                                + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost)
-                                      .foldrAll(std::plus<SrcSize>())),
+                            this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutInnermost).sum(),
+                            this->m_srcMemNative + (castVec<SrcSize>(idx) * srcPitchBytesWithoutInnermost).sum(),
                             static_cast<std::size_t>(this->m_extentWidthBytes),
                             requirements));
                     });
@@ -154,8 +147,8 @@ namespace alpaka::detail
             if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
             {
                 return queue.memcpy(
-                    reinterpret_cast<void*>(this->m_dstMemNative),
-                    reinterpret_cast<void const*>(this->m_srcMemNative),
+                    this->m_dstMemNative,
+                    this->m_srcMemNative,
                     sizeof(Elem) * static_cast<std::size_t>(this->m_extent.prod()),
                     requirements);
             }
