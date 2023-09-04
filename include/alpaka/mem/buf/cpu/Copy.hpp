@@ -106,8 +106,10 @@ namespace alpaka
                 // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
                 // iteration.
                 Vec<DimMin1, ExtentSize> const extentWithoutInnermost = subVecBegin<DimMin1>(this->m_extent);
-                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost = subVecBegin<DimMin1>(this->m_dstPitchBytes);
-                Vec<DimMin1, SrcSize> const srcPitchBytesWithoutOutmost = subVecBegin<DimMin1>(this->m_srcPitchBytes);
+                Vec<DimMin1, DstSize> const dstPitchBytesWithoutInnermost
+                    = subVecBegin<DimMin1>(this->m_dstPitchBytes);
+                Vec<DimMin1, SrcSize> const srcPitchBytesWithoutInnermost
+                    = subVecBegin<DimMin1>(this->m_srcPitchBytes);
 
                 if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
                 {
@@ -116,8 +118,8 @@ namespace alpaka
                         [&](Vec<DimMin1, ExtentSize> const& idx)
                         {
                             std::memcpy(
-                                this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost).sum(),
-                                this->m_srcMemNative + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost).sum(),
+                                this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutInnermost).sum(),
+                                this->m_srcMemNative + (castVec<SrcSize>(idx) * srcPitchBytesWithoutInnermost).sum(),
                                 static_cast<std::size_t>(this->m_extentWidthBytes));
                         });
                 }
