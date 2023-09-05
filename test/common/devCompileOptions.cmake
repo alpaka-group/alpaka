@@ -7,7 +7,16 @@
 # Compiler settings.
 #-------------------------------------------------------------------------------
 if(alpaka_ACC_GPU_CUDA_ENABLE AND (CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA"))
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:-Wdefault-stream-launch -Werror=default-stream-launch>)
+    if(alpaka_ENABLE_WERROR)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wreorder>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wdefault-stream-launch>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wmissing-launch-bounds>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wext-lambda-captures-this>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Werror all-warnings>)
+    else()
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wdefault-stream-launch>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Werror default-stream-launch>)
+    endif()
     if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 11.3)
         # supress error in Catch: 'error #177-D: variable "<unnamed>::autoRegistrar1" was declared but never referenced'
         list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=177>)
@@ -39,7 +48,8 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     # Turn off -pedantic when compiling CUDA code, otherwise the CI logs are flooded with warnings. gcc doesn't like nvcc's code transformations.
     list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-pedantic> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-Wno-pedantic>)
     if(alpaka_ENABLE_WERROR)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Werror")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Werror>
+                                               $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler -Werror>)
     endif()
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wdouble-promotion")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wmissing-include-dirs")
@@ -113,7 +123,7 @@ endif()
 # Clang, AppleClang, ICPX
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
     if(alpaka_ENABLE_WERROR)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Werror")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<IF:$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>,-Xcompiler -Werror,-Werror>>)
     endif()
     # Weverything really means everything (including Wall, Wextra, pedantic, ...)
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Weverything")
