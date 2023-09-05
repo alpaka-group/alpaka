@@ -14,7 +14,8 @@ from alpaka_globals import *  # pylint: disable=wildcard-import,unused-wildcard-
 from util import print_warn, exit_error
 
 JOB_COMPILE_ONLY = "compile_only_job"
-JOB_RUNTIME = "runtime_job"
+JOB_RUNTIME = "runtime_job_gpu"
+JOB_CPU_RUNTIME = "runtime_job_cpu"
 JOB_ROCM_RUNTIME = "rocm_runtime_job"
 JOB_NVCC_GCC_RUNTIME = "nvcc_gcc_runtime_job"
 JOB_NVCC_CLANG_RUNTIME = "nvcc_clng_runtime_job"
@@ -25,8 +26,8 @@ JOB_UNKNOWN = "unknowm_job_type"
 WAVE_GROUP_NAMES = [
     JOB_COMPILE_ONLY,
     JOB_RUNTIME,
+    JOB_CPU_RUNTIME,
     # can be enabled again, if fine granular scheduling is required
-    # JOB_CPU_RUNTIME,
     # JOB_ROCM_RUNTIME,
     # JOB_NVCC_GCC_RUNTIME,
     # JOB_NVCC_CLANG_RUNTIME,
@@ -562,12 +563,13 @@ def distribute_to_waves(
         job_name: str = next(iter(job))
         if "_compile_only_" in job_name:
             sorted_groups[JOB_COMPILE_ONLY].append(job)
+        elif job_name.startswith("linux_gcc"):
+            sorted_groups[JOB_CPU_RUNTIME].append(job)
         # Clang as C++ compiler without CUDA backend
         elif job_name.startswith("linux_clang") and not job_name.startswith(
             "linux_clang-cuda"
         ):
-            # sorted_groups[JOB_CPU_RUNTIME].append(job)
-            sorted_groups[JOB_COMPILE_ONLY].append(job)
+            sorted_groups[JOB_CPU_RUNTIME].append(job)
         elif job_name.startswith("linux_hipcc"):
             # sorted_groups[JOB_ROCM_RUNTIME].append(job)
             sorted_groups[JOB_RUNTIME].append(job)
