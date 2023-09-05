@@ -160,7 +160,9 @@ namespace alpaka::trait
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            if constexpr(TDim::value == 0 || TDim::value == 1)
+            if constexpr(TDim::value == 0)
+                std::cout << __func__ << " ewb: " << sizeof(TElem) << '\n';
+            else if constexpr(TDim::value == 1)
             {
                 auto const width = getWidth(extent);
 
