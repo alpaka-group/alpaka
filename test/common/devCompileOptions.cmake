@@ -146,7 +146,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Inte
 
     if(${CMAKE_CXX_COMPILER_ID} STREQUAL "IntelLLVM")
         # fast math is turned on by default with ICPX, which breaks our unit tests
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS "-ffp-model=precise")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "-fp-model=precise")
 
         if (alpaka_ACC_SYCL_ENABLE)
             # avoid: warning: disabled expansion of recursive macro

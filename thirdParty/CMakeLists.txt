@@ -26,6 +26,9 @@ if(BUILD_TESTING)
         # Remarks are not treated as warnings so we need to disable them manually. 
         add_compile_options($<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:IntelLLVM>>:-Rno-debug-disables-optimization>)
 
+        # Turn off fast math to prevent warnings inside Catch2 (icpx defaults to -fp-model=fast)
+        add_compile_options($<$<CXX_COMPILER_ID:IntelLLVM>:-fp-model=precise>)
+        
         add_subdirectory(catch2)
 
         # hide Catch2 cmake variables by default in cmake gui
