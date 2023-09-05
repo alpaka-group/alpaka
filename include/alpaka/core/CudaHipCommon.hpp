@@ -1,4 +1,5 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+                  Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -134,6 +135,8 @@ namespace alpaka
                     return {value.w, value.z, value.y, value.x};
                 else
                     static_assert(sizeof(value) == 0, "Not implemented");
+
+                ALPAKA_UNREACHABLE({});
             }
         };
 
