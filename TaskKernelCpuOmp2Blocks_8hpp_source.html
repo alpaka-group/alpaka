@@ -895,7 +895,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> threadElemExtent = getWorkDiv&lt;Thread, Elems&gt;(*<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160; </div>
 <div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;            <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = std::apply(</div>
 <div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;                [&amp;](std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args)</div>
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;                {</div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;                    <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;AccCpuOmp2Blocks&lt;TDim, TIdx&gt;&gt;(</div>
@@ -919,7 +919,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;            }</div>
 <div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
 <div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;            <span class="comment">// Get the OpenMP schedule information for the given kernel and parameter types</span></div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> schedule = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> schedule = std::apply(</div>
 <div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;                [&amp;](std::decay_t&lt;TArgs&gt; <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;                    <span class="keywordflow">return</span> getOmpSchedule&lt;AccCpuOmp2Blocks&lt;TDim, TIdx&gt;&gt;(</div>
 <div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;                        m_kernelFnObj,</div>
@@ -986,7 +986,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;                acc.m_gridBlockIdx = mapIdx&lt;TDim::value&gt;(index, gridBlockExtent);</div>
 <div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160; </div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;                std::apply(m_kernelFnObj, std::tuple_cat(std::tie(acc), m_args));</div>
 <div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160; </div>
 <div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;                <span class="comment">// After a block has been processed, the shared memory has to be deleted.</span></div>
 <div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;                <a class="code" href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">freeSharedVars</a>(acc);</div>
@@ -1060,7 +1060,6 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div class="ttc" id="adim_2Traits_8hpp_html"><div class="ttname"><a href="dim_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aidx_2Traits_8hpp_html"><div class="ttname"><a href="idx_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="akernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1core_html_a3bc48ef7c999409550fcbe1a948d6f31"><div class="ttname"><a href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">alpaka::core::apply</a></div><div class="ttdeci">constexpr auto apply(TFunc &amp;&amp;f, Tuple&lt; TArgs... &gt; t)</div><div class="ttdef"><b>Definition:</b> <a href="Tuple_8hpp_source.html#l00026">Tuple.hpp:26</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1detail_html_a52d018fd0b09628f87378514527b6bbe"><div class="ttname"><a href="namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe">alpaka::detail::HasScheduleChunkSize</a></div><div class="ttdeci">std::void_t&lt; decltype(TKernel::ompScheduleChunkSize)&gt; HasScheduleChunkSize</div><div class="ttdoc">Helper type to check if TKernel has member ompScheduleChunkSize.</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00190">TaskKernelCpuOmp2Blocks.hpp:190</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1detail_html_a6b4a2d062279ca9b90a390b97b8c260b"><div class="ttname"><a href="namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b">alpaka::detail::IsOmpScheduleTraitSpecialized</a></div><div class="ttdeci">std::integral_constant&lt; bool, std::is_same&lt; TSchedule, omp::Schedule &gt;::value &gt; IsOmpScheduleTraitSpecialized</div><div class="ttdoc">Helper type to check if TSchedule is a type originating from OmpSchedule trait definition.</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00709">TaskKernelCpuOmp2Blocks.hpp:710</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1detail_html_a93cfb90319ccb5e30631f043aff3cfdf"><div class="ttname"><a href="namespacealpaka_1_1detail.html#a93cfb90319ccb5e30631f043aff3cfdf">alpaka::detail::parallelFor</a></div><div class="ttdeci">ALPAKA_FN_HOST ALPAKA_FN_INLINE void parallelFor(TKernel const &amp;kernel, TLoopBody &amp;&amp;loopBody, TIdx const numIterations, TSchedule const &amp;schedule)</div><div class="ttdoc">Run parallel OpenMP loop.</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelCpuOmp2Blocks_8hpp_source.html#l00771">TaskKernelCpuOmp2Blocks.hpp:771</a></div></div>
@@ -1116,7 +1115,7 @@ $(document).ready(function(){initNavTree('TaskKernelCpuOmp2Blocks_8hpp_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelCpuOmp2Blocks_8hpp.html">TaskKernelCpuOmp2Blocks.hpp</a></li>
-    <li class="footer">Generated on Tue Sep 5 2023 08:38:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 5 2023 09:09:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

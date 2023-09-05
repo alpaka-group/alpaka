@@ -1683,9 +1683,6 @@ var hierarchy =
     ] ],
     [ "alpaka::rand::engine::PhiloxStateSingle< Counter, Key >", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html", null ],
     [ "alpaka::rand::engine::PhiloxStateVector< Counter, Key >", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html", null ],
-    [ "RangeBuilder::type", null, [
-      [ "utility::tuple::IndexRange< MIN, MAX >", "structutility_1_1tuple_1_1IndexRange.html", null ]
-    ] ],
     [ "std::bool_constant", null, [
       [ "alpaka::meta::detail::NonZeroImpl< std::integral_constant< T, TValue > >", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl_3_01std_1_1integral__constant_3_01T_00_01TValue_01_4_01_4.html", null ]
     ] ],
@@ -1771,24 +1768,6 @@ var hierarchy =
       [ "alpaka::trait::HasAsyncBufSupport< TDim, DevUniformCudaHipRt< TApi > >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html", null ]
     ] ],
     [ "TINYMT32_T", "structTINYMT32__T.html", null ],
-    [ "utility::tuple::Tuple< Ts... >", "structutility_1_1tuple_1_1Tuple.html", null ],
-    [ "utility::tuple::concat_tuple< typename, typename >", "structutility_1_1tuple_1_1concat__tuple.html", null ],
-    [ "utility::tuple::concat_tuple< Tuple< Ts... >, Tuple< Us... > >", "structutility_1_1tuple_1_1concat__tuple_3_01Tuple_3_01Ts_8_8_8_01_4_00_01Tuple_3_01Us_8_8_8_01_4_01_4.html", null ],
-    [ "utility::tuple::ElemTypeHolder< size_t, class >", "structutility_1_1tuple_1_1ElemTypeHolder.html", null ],
-    [ "utility::tuple::ElemTypeHolder< 0, Tuple< T, Ts... > >", "structutility_1_1tuple_1_1ElemTypeHolder_3_010_00_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html", null ],
-    [ "utility::tuple::ElemTypeHolder< k, Tuple< T, Ts... > >", "structutility_1_1tuple_1_1ElemTypeHolder_3_01k_00_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html", null ],
-    [ "utility::tuple::IndexList< Is >", "structutility_1_1tuple_1_1IndexList.html", null ],
-    [ "utility::tuple::RangeBuilder< MIN, N, Is >", "structutility_1_1tuple_1_1RangeBuilder.html", null ],
-    [ "utility::tuple::RangeBuilder< MIN, MIN, Is... >", "structutility_1_1tuple_1_1RangeBuilder_3_01MIN_00_01MIN_00_01Is_8_8_8_01_4.html", null ],
-    [ "utility::tuple::remove_first_type< T >", "structutility_1_1tuple_1_1remove__first__type.html", null ],
-    [ "utility::tuple::remove_first_type< Tuple< T, Ts... > >", "structutility_1_1tuple_1_1remove__first__type_3_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html", null ],
-    [ "utility::tuple::remove_last_type< T >", "structutility_1_1tuple_1_1remove__last__type.html", null ],
-    [ "utility::tuple::remove_last_type< Tuple< T > >", "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_01_4_01_4.html", null ],
-    [ "utility::tuple::remove_last_type< Tuple< T, Args... > >", "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_00_01Args_8_8_8_01_4_01_4.html", null ],
-    [ "utility::tuple::StaticIf< bool, T >", "structutility_1_1tuple_1_1StaticIf.html", null ],
-    [ "utility::tuple::StaticIf< true, T >", "structutility_1_1tuple_1_1StaticIf_3_01true_00_01T_01_4.html", null ],
-    [ "utility::tuple::Tuple< Ts >", "structutility_1_1tuple_1_1Tuple.html", null ],
-    [ "utility::tuple::Tuple< T, Ts... >", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html", null ],
     [ "alpaka::Vec< Dim, Idx >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, DstSize >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, ExtentSize >", "classalpaka_1_1Vec.html", null ],

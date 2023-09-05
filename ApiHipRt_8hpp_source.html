@@ -336,14 +336,14 @@ $(document).ready(function(){initNavTree('ApiHipRt_8hpp_source.html',''); initRe
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            return ::hipHostFree(ptr);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        }</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostMalloc(<span class="keywordtype">void</span>** ptr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, Flag_t flags)</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostMalloc(<span class="keywordtype">void</span>** ptr, <span class="keywordtype">size_t</span> size, Flag_t flags)</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            return ::hipHostMalloc(ptr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, flags);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            return ::hipHostMalloc(ptr, size, flags);</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        }</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostRegister(<span class="keywordtype">void</span>* ptr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, Flag_t flags)</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostRegister(<span class="keywordtype">void</span>* ptr, <span class="keywordtype">size_t</span> size, Flag_t flags)</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        {</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            return ::hipHostRegister(ptr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, flags);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            return ::hipHostRegister(ptr, size, flags);</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        }</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t hostUnregister(<span class="keywordtype">void</span>* ptr)</div>
@@ -363,9 +363,9 @@ $(document).ready(function(){initNavTree('ApiHipRt_8hpp_source.html',''); initRe
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t <a class="code" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">malloc</a>(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>)</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t <a class="code" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">malloc</a>(<span class="keywordtype">void</span>** devPtr, <span class="keywordtype">size_t</span> size)</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            return ::hipMalloc(devPtr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            return ::hipMalloc(devPtr, size);</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t malloc3D(PitchedPtr_t* pitchedDevPtr, Extent_t extent)</div>
@@ -375,12 +375,12 @@ $(document).ready(function(){initNavTree('ApiHipRt_8hpp_source.html',''); initRe
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keyword">static</span> <span class="keyword">inline</span> Error_t mallocAsync(</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            [[maybe_unused]] <span class="keywordtype">void</span>** devPtr,</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            [[maybe_unused]] <span class="keywordtype">size_t</span> <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>,</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            [[maybe_unused]] <span class="keywordtype">size_t</span> size,</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            [[maybe_unused]] Stream_t stream)</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        {</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="comment">// hipMallocAsync is implemented only in ROCm 5.2.0 and later.</span></div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor">#    if HIP_VERSION &gt;= 50200000</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            return ::hipMallocAsync(devPtr, <a class="code" href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">size</a>, stream);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            return ::hipMallocAsync(devPtr, size, stream);</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="preprocessor">#    else</span></div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <span class="comment">// Not implemented.</span></div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            <span class="keywordflow">return</span> errorUnknown;</div>
@@ -504,14 +504,13 @@ $(document).ready(function(){initNavTree('ApiHipRt_8hpp_source.html',''); initRe
 <div class="ttc" id="anamespacealpaka_html_a04896bbcd53fbb9da78612f51a4e1cf4"><div class="ttname"><a href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">alpaka::free</a></div><div class="ttdeci">ALPAKA_FN_HOST auto free(TAlloc const &amp;alloc, T const *const ptr) -&gt; void</div><div class="ttdoc">Frees the memory identified by the given pointer.</div><div class="ttdef"><b>Definition:</b> <a href="mem_2alloc_2Traits_8hpp_source.html#l00041">Traits.hpp:41</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a30687ca1eaba239c74afd1bb2f26831c"><div class="ttname"><a href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">alpaka::malloc</a></div><div class="ttdeci">ALPAKA_FN_HOST auto malloc(TAlloc const &amp;alloc, std::size_t const &amp;sizeElems) -&gt; T *</div><div class="ttdef"><b>Definition:</b> <a href="mem_2alloc_2Traits_8hpp_source.html#l00033">Traits.hpp:33</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a4764e4542b9f8f9bfe0d317f4aefd165"><div class="ttname"><a href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDstFwd &amp;&amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory from a part of viewSrc to viewDst, described by extent. Possibly copies between differe...</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00297">Traits.hpp:297</a></div></div>
-<div class="ttc" id="anamespaceutility_1_1tuple_html_a3ee33aa9c095eefbb760200218a320fc"><div class="ttname"><a href="namespaceutility_1_1tuple.html#a3ee33aa9c095eefbb760200218a320fc">utility::tuple::size</a></div><div class="ttdeci">static constexpr size_t size(Tuple&lt; Args... &gt; &amp;)</div><div class="ttdoc">size</div><div class="ttdef"><b>Definition:</b> <a href="STLTuple_8hpp_source.html#l00190">STLTuple.hpp:190</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="ApiHipRt_8hpp.html">ApiHipRt.hpp</a></li>
-    <li class="footer">Generated on Tue Sep 5 2023 08:38:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 5 2023 09:09:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -1247,28 +1247,6 @@ var annotated_dup =
       [ "tuple_size< alpaka::meta::CudaVectorArrayWrapper< T, N > >", "structstd_1_1tuple__size_3_01alpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ],
       [ "tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ]
     ] ],
-    [ "utility", "namespaceutility.html", [
-      [ "tuple", "namespaceutility_1_1tuple.html", [
-        [ "concat_tuple", "structutility_1_1tuple_1_1concat__tuple.html", null ],
-        [ "concat_tuple< Tuple< Ts... >, Tuple< Us... > >", "structutility_1_1tuple_1_1concat__tuple_3_01Tuple_3_01Ts_8_8_8_01_4_00_01Tuple_3_01Us_8_8_8_01_4_01_4.html", "structutility_1_1tuple_1_1concat__tuple_3_01Tuple_3_01Ts_8_8_8_01_4_00_01Tuple_3_01Us_8_8_8_01_4_01_4" ],
-        [ "ElemTypeHolder", "structutility_1_1tuple_1_1ElemTypeHolder.html", null ],
-        [ "ElemTypeHolder< 0, Tuple< T, Ts... > >", "structutility_1_1tuple_1_1ElemTypeHolder_3_010_00_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html", "structutility_1_1tuple_1_1ElemTypeHolder_3_010_00_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4" ],
-        [ "ElemTypeHolder< k, Tuple< T, Ts... > >", "structutility_1_1tuple_1_1ElemTypeHolder_3_01k_00_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html", "structutility_1_1tuple_1_1ElemTypeHolder_3_01k_00_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4" ],
-        [ "IndexList", "structutility_1_1tuple_1_1IndexList.html", null ],
-        [ "IndexRange", "structutility_1_1tuple_1_1IndexRange.html", null ],
-        [ "RangeBuilder", "structutility_1_1tuple_1_1RangeBuilder.html", null ],
-        [ "RangeBuilder< MIN, MIN, Is... >", "structutility_1_1tuple_1_1RangeBuilder_3_01MIN_00_01MIN_00_01Is_8_8_8_01_4.html", "structutility_1_1tuple_1_1RangeBuilder_3_01MIN_00_01MIN_00_01Is_8_8_8_01_4" ],
-        [ "remove_first_type", "structutility_1_1tuple_1_1remove__first__type.html", null ],
-        [ "remove_first_type< Tuple< T, Ts... > >", "structutility_1_1tuple_1_1remove__first__type_3_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html", "structutility_1_1tuple_1_1remove__first__type_3_01Tuple_3_01T_00_01Ts_8_8_8_01_4_01_4" ],
-        [ "remove_last_type", "structutility_1_1tuple_1_1remove__last__type.html", null ],
-        [ "remove_last_type< Tuple< T > >", "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_01_4_01_4.html", "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_01_4_01_4" ],
-        [ "remove_last_type< Tuple< T, Args... > >", "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_00_01Args_8_8_8_01_4_01_4.html", "structutility_1_1tuple_1_1remove__last__type_3_01Tuple_3_01T_00_01Args_8_8_8_01_4_01_4" ],
-        [ "StaticIf", "structutility_1_1tuple_1_1StaticIf.html", null ],
-        [ "StaticIf< true, T >", "structutility_1_1tuple_1_1StaticIf_3_01true_00_01T_01_4.html", "structutility_1_1tuple_1_1StaticIf_3_01true_00_01T_01_4" ],
-        [ "Tuple", "structutility_1_1tuple_1_1Tuple.html", null ],
-        [ "Tuple< T, Ts... >", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4.html", "structutility_1_1tuple_1_1Tuple_3_01T_00_01Ts_8_8_8_01_4" ]
-      ] ]
-    ] ],
     [ "AlpakaBuiltInAtomic", "structalpakaGlobal_1_1AlpakaBuiltInAtomic.html", null ],
     [ "AlpakaBuiltInAtomic< alpaka::AtomicAdd, T, alpaka::hierarchy::Threads, typename std::void_t< decltype(atomicAdd_block(alpaka::core::declval< T * >(), alpaka::core::declval< T >()))> >", "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb.html", "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01alpaka_1_1hierarch40eb69df18b859d53bec8a03e2a0f9cb" ],
     [ "AlpakaBuiltInAtomic< alpaka::AtomicAdd, T, THierarchy, typename std::void_t< decltype(atomicAdd(alpaka::core::declval< T * >(), alpaka::core::declval< T >()))> >", "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01THierarchy_00_01tyf014699f259ef2883f1093a17ac973a1.html", "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicAdd_00_01T_00_01THierarchy_00_01tyf014699f259ef2883f1093a17ac973a1" ],

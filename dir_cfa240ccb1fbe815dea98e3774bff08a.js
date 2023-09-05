@@ -1,6 +1,5 @@
 var dir_cfa240ccb1fbe815dea98e3774bff08a =
 [
-    [ "STLTuple", "dir_298dd4d75e7796bf73b504e1b19e1883.html", "dir_298dd4d75e7796bf73b504e1b19e1883" ],
     [ "Align.hpp", "Align_8hpp.html", "Align_8hpp" ],
     [ "AlignedAlloc.hpp", "AlignedAlloc_8hpp.html", "AlignedAlloc_8hpp" ],
     [ "ApiCudaRt.hpp", "ApiCudaRt_8hpp.html", [
@@ -40,7 +39,6 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "ThreadPool.hpp", "ThreadPool_8hpp.html", [
       [ "ThreadPool", "structalpaka_1_1core_1_1detail_1_1ThreadPool.html", "structalpaka_1_1core_1_1detail_1_1ThreadPool" ]
     ] ],
-    [ "Tuple.hpp", "Tuple_8hpp.html", "Tuple_8hpp" ],
     [ "UniformCudaHip.hpp", "UniformCudaHip_8hpp.html", "UniformCudaHip_8hpp" ],
     [ "Unreachable.hpp", "Unreachable_8hpp.html", "Unreachable_8hpp" ],
     [ "Unroll.hpp", "Unroll_8hpp.html", "Unroll_8hpp" ],

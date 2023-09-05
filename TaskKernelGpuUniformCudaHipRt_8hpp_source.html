@@ -307,7 +307,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="preprocessor">#        endif</span></div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = std::apply(</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                        <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;TAcc&gt;(</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                            task.m_kernelFnObj,</div>
@@ -345,7 +345,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <span class="comment">// with std::forward to this function to be of type float instead of e.g. &quot;float const &amp; __ptr64&quot;</span></div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="comment">// (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the</span></div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                <span class="comment">// value location.</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                std::apply(</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args)</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                    {</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                        kernelName&lt;&lt;&lt;</div>
@@ -415,7 +415,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="preprocessor">#        endif</span></div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                <span class="comment">// Get the size of the block shared dynamic memory.</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> blockSharedMemDynSizeBytes = std::apply(</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args) {</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                        <span class="keywordflow">return</span> getBlockSharedMemDynSizeBytes&lt;TAcc&gt;(</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                            task.m_kernelFnObj,</div>
@@ -449,7 +449,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                <a class="code" href="UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a>(TApi::setDevice(queue.m_spQueueImpl-&gt;m_dev.getNativeHandle()));</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                <span class="comment">// Enqueue the kernel execution.</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                <a class="code" href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">std::apply</a>(</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                std::apply(</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                    [&amp;](<a class="code" href="namespacealpaka.html#a78675a272ead29bbbf706b20727fa209">remove_restrict_t</a>&lt;std::decay_t&lt;TArgs&gt;&gt; <span class="keyword">const</span>&amp;... args)</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                    {</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                        kernelName&lt;&lt;&lt;</div>
@@ -509,7 +509,6 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div class="ttc" id="adim_2Traits_8hpp_html"><div class="ttname"><a href="dim_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aidx_2Traits_8hpp_html"><div class="ttname"><a href="idx_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="akernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1core_html_a3bc48ef7c999409550fcbe1a948d6f31"><div class="ttname"><a href="namespacealpaka_1_1core.html#a3bc48ef7c999409550fcbe1a948d6f31">alpaka::core::apply</a></div><div class="ttdeci">constexpr auto apply(TFunc &amp;&amp;f, Tuple&lt; TArgs... &gt; t)</div><div class="ttdef"><b>Definition:</b> <a href="Tuple_8hpp_source.html#l00026">Tuple.hpp:26</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1detail_html_a64053dbfaaaefdf2572ec83b38b30623"><div class="ttname"><a href="namespacealpaka_1_1detail.html#a64053dbfaaaefdf2572ec83b38b30623">alpaka::detail::gpuKernel</a></div><div class="ttdeci">__global__ void gpuKernel(Vec&lt; TDim, TIdx &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs... args)</div><div class="ttdoc">The GPU CUDA/HIP kernel entry point.</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00058">TaskKernelGpuUniformCudaHipRt.hpp:58</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1math_html_ad1a3c72853dc08a5e54e532f25a08988"><div class="ttname"><a href="namespacealpaka_1_1math.html#ad1a3c72853dc08a5e54e532f25a08988">alpaka::math::min</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto min(T const &amp;min_ctx, Tx const &amp;x, Ty const &amp;y)</div><div class="ttdoc">Returns the smaller of two arguments. NaNs are treated as missing data (between a NaN and a numeric v...</div><div class="ttdef"><b>Definition:</b> <a href="math_2Traits_8hpp_source.html#l01277">Traits.hpp:1277</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1uniform__cuda__hip_1_1detail_html_a552124cfd6ee8654baa53bc1710c0974"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">alpaka::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a></div><div class="ttdeci">ALPAKA_FN_HOST auto convertVecToUniformCudaHipDim(Vec&lt; TDim, TIdx &gt; const &amp;vec) -&gt; dim3</div><div class="ttdef"><b>Definition:</b> <a href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00101">TaskKernelGpuUniformCudaHipRt.hpp:101</a></div></div>
@@ -538,7 +537,7 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp_sou
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp.html">TaskKernelGpuUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Tue Sep 5 2023 08:38:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 5 2023 09:09:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
