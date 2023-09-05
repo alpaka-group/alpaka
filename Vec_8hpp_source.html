@@ -325,7 +325,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
 <div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#a9b0c1d6931737351bbb2563ba673fd51">  237</a></span>&#160;        [[nodiscard]] <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#a9b0c1d6931737351bbb2563ba673fd51">prod</a>() const -&gt; TVal</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        {</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            <span class="keywordflow">return</span> foldrAll(std::multiplies&lt;TVal&gt;{}, TVal(1));</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            <span class="keywordflow">return</span> foldrAll(std::multiplies&lt;TVal&gt;{}, TVal{1});</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        }</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="preprocessor">#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)</span></div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="preprocessor">#    pragma warning(pop)</span></div>
@@ -334,7 +334,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment"></span>        <a class="code" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
 <div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="classalpaka_1_1Vec.html#ad617df99935286b9f948b9588a34f15d">  246</a></span>&#160;        [[nodiscard]] <a class="code" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> constexpr <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1Vec.html#ad617df99935286b9f948b9588a34f15d">sum</a>() const -&gt; TVal</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        {</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordflow">return</span> foldrAll(std::plus&lt;TVal&gt;{}, TVal(0));</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordflow">return</span> foldrAll(std::plus&lt;TVal&gt;{}, TVal{0});</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        }</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">        //! \return The min of all values.</span></div>
@@ -924,7 +924,7 @@ $(document).ready(function(){initNavTree('Vec_8hpp_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7056b9f7cd8b764aedbfcd44587c0438.html">vec</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Mon Sep 4 2023 20:56:11 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 5 2023 08:09:23 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

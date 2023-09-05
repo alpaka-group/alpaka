@@ -135,7 +135,7 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCpu_01_4.html":[3,0,0,14,2,15],
 "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCpu_01_4.html#a242ec7e175b2a222e903c184f1e8254d":[3,0,0,14,2,15,0],
 "structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCudaRt_01_4.html":[3,0,0,14,2,16],
-"structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCudaRt_01_4.html#a2d5caacc6d512fb3ad7663524be71689":[3,0,0,14,2,16,0],
+"structalpaka_1_1test_1_1trait_1_1IsEventHostManualTriggerSupported_3_01DevCudaRt_01_4.html#ad8f5a926d75d3ca52062df43a1f91a26":[3,0,0,14,2,16,0],
 "structalpaka_1_1trait_1_1AccToTag.html":[3,0,0,15,1],
 "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,2],
 "structalpaka_1_1trait_1_1AccToTag_3_01alpaka_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#a1ceee62aa9fbb4e7ab98a91c300315e1":[3,0,0,15,2,0],

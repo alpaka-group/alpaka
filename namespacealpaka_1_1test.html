@@ -484,7 +484,7 @@ template&lt;typename TView , typename TQueue &gt; </div>
 
 <p>Fills the given view with increasing values starting at 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00206">206</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00197">197</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -585,7 +585,7 @@ template&lt;typename TAcc , typename TView , typename TQueue &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00227">227</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00218">218</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -618,7 +618,7 @@ template&lt;typename TAcc , typename TView &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00142">142</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00133">133</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -651,7 +651,7 @@ template&lt;typename TAcc , typename TViewB , typename TViewA &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00188">188</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ViewTest_8hpp_source.html#l00179">179</a> of file <a class="el" href="ViewTest_8hpp_source.html">ViewTest.hpp</a>.</p>
 
 </div>
 </div>
@@ -705,8 +705,9 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= []</div>
 <div class="line">    {</div>
 <div class="line">        Vec&lt;TDim, TVal&gt; v;</div>
-<div class="line">        <span class="keywordflow">for</span>(TVal i = 0; i &lt; TVal{TDim::value}; i++)</div>
-<div class="line">            v[i] = 11 - i;</div>
+<div class="line">        <span class="keywordflow">if</span> constexpr(TDim::value &gt; 0)</div>
+<div class="line">            for(TVal i = 0; i &lt; TVal{TDim::value}; i++)</div>
+<div class="line">                v[i] = 11 - i;</div>
 <div class="line">        <span class="keywordflow">return</span> v;</div>
 <div class="line">    }()</div>
 </div><!-- fragment -->
@@ -738,12 +739,13 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= []</div>
 <div class="line">    {</div>
 <div class="line">        Vec&lt;TDim, TVal&gt; v;</div>
-<div class="line">        <span class="keywordflow">for</span>(TVal i = 0; i &lt; TVal{TDim::value}; i++)</div>
-<div class="line">            v[i] = 8 - i * 2;</div>
+<div class="line">        <span class="keywordflow">if</span> constexpr(TDim::value &gt; 0)</div>
+<div class="line">            for(TVal i = 0; i &lt; TVal{TDim::value}; i++)</div>
+<div class="line">                v[i] = 8 - i * 2;</div>
 <div class="line">        <span class="keywordflow">return</span> v;</div>
 <div class="line">    }()</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="Extent_8hpp_source.html#l00023">23</a> of file <a class="el" href="Extent_8hpp_source.html">Extent.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Extent_8hpp_source.html#l00024">24</a> of file <a class="el" href="Extent_8hpp_source.html">Extent.hpp</a>.</p>
 
 </div>
 </div>
@@ -771,12 +773,13 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= []</div>
 <div class="line">    {</div>
 <div class="line">        Vec&lt;TDim, TVal&gt; v;</div>
-<div class="line">        <span class="keywordflow">for</span>(TVal i = 0; i &lt; TVal{TDim::value}; i++)</div>
-<div class="line">            v[i] = 2 + i;</div>
+<div class="line">        <span class="keywordflow">if</span> constexpr(TDim::value &gt; 0)</div>
+<div class="line">            for(TVal i = 0; i &lt; TVal{TDim::value}; i++)</div>
+<div class="line">                v[i] = 2 + i;</div>
 <div class="line">        <span class="keywordflow">return</span> v;</div>
 <div class="line">    }()</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="Extent_8hpp_source.html#l00032">32</a> of file <a class="el" href="Extent_8hpp_source.html">Extent.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Extent_8hpp_source.html#l00034">34</a> of file <a class="el" href="Extent_8hpp_source.html">Extent.hpp</a>.</p>
 
 </div>
 </div>
@@ -786,7 +789,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1test.html">test</a></li>
-    <li class="footer">Generated on Mon Sep 4 2023 20:56:13 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Sep 5 2023 08:09:25 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
