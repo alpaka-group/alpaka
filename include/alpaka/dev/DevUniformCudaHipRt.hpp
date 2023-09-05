@@ -61,7 +61,9 @@ namespace alpaka
         using IDeviceQueue = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
 
     protected:
-        DevUniformCudaHipRt() : m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()){};
+        DevUniformCudaHipRt() : m_QueueRegistry{std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()}
+        {
+        }
 
     public:
         ALPAKA_FN_HOST auto operator==(DevUniformCudaHipRt const& rhs) const -> bool
