@@ -1,4 +1,4 @@
-/* Copyright 2022 Sergei Bastrakov, Bernhard Manfred Gruber
+/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -10,7 +10,10 @@
 
 #include <bitset>
 #include <climits>
-#if __has_include(<bit>)
+#if __has_include(<version>) // Not part of the C++17 standard but all major standard libraries include this
+#    include <version>
+#endif
+#ifdef __cpp_lib_bitops
 #    include <bit>
 #endif
 

@@ -1,5 +1,5 @@
 /* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Sergei Bastrakov,
- * Andrea Bocci
+ *                Andrea Bocci, René Widera
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -10,7 +10,10 @@
 
 #include <cmath>
 #include <complex>
-#if __has_include(<numbers>)
+#if __has_include(<version>) // Not part of the C++17 standard but all major standard libraries include this
+#    include <version>
+#endif
+#ifdef __cpp_lib_math_constants
 #    include <numbers>
 #endif
 
