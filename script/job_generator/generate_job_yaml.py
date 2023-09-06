@@ -315,7 +315,17 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     if job[DEVICE_COMPILER][NAME] == GCC:
         variables["CC"] = "gcc"
         variables["CXX"] = "g++"
-        variables["ALPAKA_CI_GCC_VER"] = job[HOST_COMPILER][VERSION]
+        variables["ALPAKA_CI_GCC_VER"] = job[DEVICE_COMPILER][VERSION]
+        if (
+            ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE in job
+            and job[ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE][VERSION] == ON_VER
+        ):
+            variables["ALPAKA_CI_TBB_VERSION"] = "2021.10.0"
+
+    if job[DEVICE_COMPILER][NAME] == CLANG:
+        variables["CC"] = "clang"
+        variables["CXX"] = "clang++"
+        variables["ALPAKA_CI_CLANG_VER"] = job[DEVICE_COMPILER][VERSION]
         if (
             ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE in job
             and job[ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE][VERSION] == ON_VER
