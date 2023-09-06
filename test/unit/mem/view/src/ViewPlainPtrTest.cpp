@@ -34,18 +34,18 @@ namespace alpaka::test
         auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        auto const extentBuf = alpaka::test::extentBuf<Dim, Idx>;
-        auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
+        auto const bufExtent = alpaka::test::extentBuf<Dim, Idx>;
+        auto buf = alpaka::allocBuf<TElem, Idx>(dev, bufExtent);
 
-        auto const extentView = extentBuf;
-        auto const offsetView = alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0));
+        auto const viewExtent = bufExtent;
+        auto const viewOffset = alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0));
         View view(
             alpaka::getPtrNative(buf),
             alpaka::getDev(buf),
             alpaka::getExtents(buf),
             alpaka::getPitchesInBytes(buf));
 
-        alpaka::test::testViewImmutable<TElem>(std::as_const(view), dev, extentView, offsetView);
+        alpaka::test::testViewImmutable<TElem>(std::as_const(view), dev, viewExtent, viewOffset);
         if constexpr(!Const)
         {
             using Queue = alpaka::test::DefaultQueue<Dev>;
