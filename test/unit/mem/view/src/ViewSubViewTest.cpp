@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -78,14 +78,14 @@ namespace alpaka::test
         auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        auto const extentBuf = alpaka::test::extentBuf<Dim, Idx>;
-        auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
+        auto const bufExtent = alpaka::test::extentBuf<Dim, Idx>;
+        auto buf = alpaka::allocBuf<TElem, Idx>(dev, bufExtent);
 
-        auto const extentView = extentBuf;
-        auto const offsetView = alpaka::Vec<Dim, Idx>::zeros();
+        auto const viewExtent = bufExtent;
+        auto const viewOffset = alpaka::Vec<Dim, Idx>::zeros();
         View view(buf);
 
-        alpaka::test::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
+        alpaka::test::testViewSubViewMutable<TAcc>(view, buf, dev, viewExtent, viewOffset);
     }
 
     template<typename TAcc, typename TElem>
@@ -99,14 +99,14 @@ namespace alpaka::test
         auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        auto const extentBuf = alpaka::test::extentBuf<Dim, Idx>;
-        auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
+        auto const bufExtent = alpaka::test::extentBuf<Dim, Idx>;
+        auto buf = alpaka::allocBuf<TElem, Idx>(dev, bufExtent);
 
-        auto const extentView = alpaka::test::extentSubView<Dim, Idx>;
-        auto const offsetView = alpaka::test::offset<Dim, Idx>;
-        View view(buf, extentView, offsetView);
+        auto const viewExtent = alpaka::test::extentSubView<Dim, Idx>;
+        auto const viewOffset = alpaka::test::offset<Dim, Idx>;
+        View view(buf, viewExtent, viewOffset);
 
-        alpaka::test::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
+        alpaka::test::testViewSubViewMutable<TAcc>(view, buf, dev, viewExtent, viewOffset);
     }
 
     template<typename TAcc, typename TElem>
@@ -120,14 +120,14 @@ namespace alpaka::test
         auto const platform = alpaka::Platform<TAcc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        auto const extentBuf = alpaka::test::extentBuf<Dim, Idx>;
-        auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
+        auto const bufExtent = alpaka::test::extentBuf<Dim, Idx>;
+        auto buf = alpaka::allocBuf<TElem, Idx>(dev, bufExtent);
 
-        auto const extentView = alpaka::test::extentSubView<Dim, Idx>;
-        auto const offsetView = alpaka::test::offset<Dim, Idx>;
-        View const view(buf, extentView, offsetView);
+        auto const viewExtent = alpaka::test::extentSubView<Dim, Idx>;
+        auto const viewOffset = alpaka::test::offset<Dim, Idx>;
+        View const view(buf, viewExtent, viewOffset);
 
-        alpaka::test::testViewSubViewImmutable<TAcc>(view, buf, dev, extentView, offsetView);
+        alpaka::test::testViewSubViewImmutable<TAcc>(view, buf, dev, viewExtent, viewOffset);
     }
 } // namespace alpaka::test
 #if BOOST_COMP_GNUC
