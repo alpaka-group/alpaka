@@ -8,48 +8,54 @@
 #-------------------------------------------------------------------------------
 if(alpaka_ACC_GPU_CUDA_ENABLE AND (CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA"))
     if(alpaka_ENABLE_WERROR)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wreorder>)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wdefault-stream-launch>)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wmissing-launch-bounds>)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wext-lambda-captures-this>)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Werror all-warnings>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--Wreorder>")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--Wdefault-stream-launch>")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--Wmissing-launch-bounds>")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--Wext-lambda-captures-this>")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--Werror all-warnings>")
     else()
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Wdefault-stream-launch>)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:--Werror default-stream-launch>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--Wdefault-stream-launch>")
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--Werror default-stream-launch>")
     endif()
     if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 11.3)
         # supress error in Catch: 'error #177-D: variable "<unnamed>::autoRegistrar1" was declared but never referenced'
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=177>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:--diag-suppress 177>")
     endif()
 endif()
 
 if(MSVC)
     # Force to always compile with W4
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:/W4> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/W4>)
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:/W4>"
+                                           "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler /W4>")
     if(alpaka_ENABLE_WERROR)
         # WX treats warnings as errors
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:/WX> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/WX>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:/WX>"
+                                               "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler /WX>")
     endif()
     # Improve debugging.
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CXX>>:/Zo>
-                                           $<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CUDA>>:-Xcompiler=/Zo>)
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CXX>>:SHELL:/Zo>"
+                                           "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CUDA>>:-Xcompiler /Zo>")
 
     # Flags added in Visual Studio 2013
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:/Zc:throwingNew> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/Zc:throwingNew>)
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:/Zc:strictStrings> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/Zc:strictStrings>)
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:/Zc:throwingNew>"
+                                           "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler /Zc:throwingNew>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:/Zc:strictStrings>"
+                                           "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler /Zc:strictStrings>")
 
     # Flags added in Visual Studio 2015
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:/permissive-> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/permissive->)
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:/permissive->"
+                                           "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler /permissive->")
 endif()
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wall")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wextra")
     # Turn off -pedantic when compiling CUDA code, otherwise the CI logs are flooded with warnings. gcc doesn't like nvcc's code transformations.
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-pedantic> $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-Wno-pedantic>)
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-pedantic>" 
+                                           "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler -Wno-pedantic>")
     if(alpaka_ENABLE_WERROR)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Werror>
-                                               $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler -Werror>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-Werror>"
+                                               "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler -Werror>")
     endif()
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wdouble-promotion")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wmissing-include-dirs")
@@ -71,9 +77,9 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     #list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wconversion")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsign-conversion")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wvector-operation-performance")
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Wzero-as-null-pointer-constant>) # occurs in nvcc generated code
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-Wzero-as-null-pointer-constant>") # occurs in nvcc-generated code
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wdate-time")
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Wuseless-cast>) # occurs in nvcc generated code
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-Wuseless-cast>") # occurs in nvcc-generated code
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wlogical-op")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-aggressive-loop-optimizations")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wmissing-declarations")
@@ -101,7 +107,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsign-promo")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wconditionally-supported")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wnoexcept")
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<COMPILE_LANGUAGE:CXX>:-Wold-style-cast>) # occurs in nvcc generated code
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-Wold-style-cast>") # occurs in nvcc-generated code
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsuggest-final-types")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wsuggest-final-methods")
     # This does not work correctly as it suggests override to methods that are already marked with final.
@@ -123,7 +129,7 @@ endif()
 # Clang, AppleClang, ICPX
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
     if(alpaka_ENABLE_WERROR)
-        list(APPEND alpaka_DEV_COMPILE_OPTIONS $<$<IF:$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>,-Xcompiler -Werror,-Werror>>)
+        list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<IF:$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>,SHELL:-Xcompiler -Werror,-Werror>")
     endif()
     # Weverything really means everything (including Wall, Wextra, pedantic, ...)
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Weverything")
