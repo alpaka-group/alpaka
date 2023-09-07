@@ -91,24 +91,30 @@ ALPAKA_NO_HOST_ACC_WARNING
 template<typename TExtent>
 ALPAKA_FN_HOST_ACC auto getWidth(TExtent const& extent = TExtent()) -> Idx<TExtent>
 {
-    static_assert(Dim<TExtent>::value >= 1);
-    return getExtents(extent)[Dim<TExtent>::value - 1u];
+    if constexpr(Dim<TExtent>::value >= 1)
+        return getExtents(extent)[Dim<TExtent>::value - 1u];
+    else
+        return 1;
 }
 //! \return The height.
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename TExtent>
 ALPAKA_FN_HOST_ACC auto getHeight(TExtent const& extent = TExtent()) -> Idx<TExtent>
 {
-    static_assert(Dim<TExtent>::value >= 2);
-    return getExtents(extent)[Dim<TExtent>::value - 2u];
+    if constexpr(Dim<TExtent>::value >= 2)
+        return getExtents(extent)[Dim<TExtent>::value - 2u];
+    else
+        return 1;
 }
 //! \return The depth.
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename TExtent>
 ALPAKA_FN_HOST_ACC auto getDepth(TExtent const& extent = TExtent()) -> Idx<TExtent>
 {
-    static_assert(Dim<TExtent>::value >= 3);
-    return getExtents(extent)[Dim<TExtent>::value - 3u];
+    if constexpr(Dim<TExtent>::value >= 3)
+        return getExtents(extent)[Dim<TExtent>::value - 3u];
+    else
+        return 1;
 }
 
 //! \return The product of the extents of the given object.
