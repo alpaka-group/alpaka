@@ -23,7 +23,7 @@
 #            pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
 #        endif
 
-#        if HIP_VERSION >= 50200000
+#        if HIP_VERSION >= 50'200'000
 #            include <hiprand/hiprand_kernel.h>
 #        else
 #            include <hiprand_kernel.h>
@@ -113,14 +113,16 @@ namespace alpaka::rand
 #        else
             using result_type = decltype(hiprand(&state));
 #        endif
-            ALPAKA_FN_HOST_ACC constexpr static result_type min()
+            ALPAKA_FN_HOST_ACC static constexpr result_type min()
             {
                 return std::numeric_limits<result_type>::min();
             }
-            ALPAKA_FN_HOST_ACC constexpr static result_type max()
+
+            ALPAKA_FN_HOST_ACC static constexpr result_type max()
             {
                 return std::numeric_limits<result_type>::max();
             }
+
             __device__ result_type operator()()
             {
 #        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED

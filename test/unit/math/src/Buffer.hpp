@@ -86,20 +86,17 @@ namespace alpaka
                         alpaka::memcpy(queue, hostBuffer, devBuffer);
                     }
 
-                    ALPAKA_FN_ACC
-                    auto operator()(size_t idx, TAcc const& /* acc */) const -> TData&
+                    ALPAKA_FN_ACC auto operator()(size_t idx, TAcc const& /* acc */) const -> TData&
                     {
                         return pDevBuffer[idx];
                     }
 
-                    ALPAKA_FN_HOST
-                    auto operator()(size_t idx) const -> TData&
+                    ALPAKA_FN_HOST auto operator()(size_t idx) const -> TData&
                     {
                         return pHostBuffer[idx];
                     }
 
-                    ALPAKA_FN_HOST
-                    friend auto operator<<(std::ostream& os, Buffer const& buffer) -> std::ostream&
+                    ALPAKA_FN_HOST friend auto operator<<(std::ostream& os, Buffer const& buffer) -> std::ostream&
                     {
                         os << "capacity: " << capacity << "\n";
                         for(size_t i = 0; i < capacity; ++i)

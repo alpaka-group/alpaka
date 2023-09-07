@@ -89,10 +89,12 @@ namespace alpaka::rand
             {
                 return std::numeric_limits<result_type>::min();
             }
+
             ALPAKA_FN_HOST_ACC static result_type max()
             {
                 return std::numeric_limits<result_type>::max();
             }
+
             result_type operator()()
             {
                 oneapi::dpl::uniform_real_distribution<float> distr;

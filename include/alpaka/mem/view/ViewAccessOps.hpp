@@ -28,7 +28,8 @@ namespace alpaka::internal
             Dim<TView>,
             decltype(getPtrNative(std::declval<TView>())),
             decltype(getPitchesInBytes(std::declval<TView>())),
-            decltype(getExtents(std::declval<TView>()))>> = true;
+            decltype(getExtents(std::declval<TView>()))>>
+        = true;
 
     template<typename TView>
     struct ViewAccessOps

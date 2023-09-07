@@ -120,6 +120,7 @@ namespace alpaka
         {
             using type = AccCpuTbbBlocks<TDim, TIdx>;
         };
+
         //! The CPU TBB block accelerator device properties get trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>
@@ -144,6 +145,7 @@ namespace alpaka
                         static_cast<size_t>(AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes())};
             }
         };
+
         //! The CPU TBB block accelerator name trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccName<AccCpuTbbBlocks<TDim, TIdx>>

@@ -81,9 +81,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
-    - uses: DoozyX/clang-format-lint-action@v0.14
+    - uses: DoozyX/clang-format-lint-action@v0.16.2
       with:
-        clangFormatVersion: 14
+        clangFormatVersion: 16
         exclude: './thirdParty'
         inplace: True
     - run: |

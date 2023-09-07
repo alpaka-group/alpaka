@@ -29,15 +29,17 @@
 namespace alpaka
 {
     class DevCpu;
+
     namespace cpu
     {
         using ICpuQueue = IGenericThreadsQueue<DevCpu>;
-    }
+    } // namespace cpu
+
     namespace trait
     {
         template<typename TPlatform, typename TSfinae>
         struct GetDevByIdx;
-    }
+    } // namespace trait
     struct PlatformCpu;
 
     //! The CPU device.
@@ -64,6 +66,7 @@ namespace alpaka
         {
             return true;
         }
+
         auto operator!=(DevCpu const& rhs) const -> bool
         {
             return !((*this) == rhs);
@@ -173,6 +176,7 @@ namespace alpaka
             using type = PlatformCpu;
         };
     } // namespace trait
+
     using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;
     using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
 

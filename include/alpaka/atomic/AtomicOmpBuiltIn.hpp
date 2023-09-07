@@ -301,6 +301,7 @@ namespace alpaka
                 }
                 return old;
             }
+
             ALPAKA_FN_HOST static auto atomicOp(
                 AtomicOmpBuiltIn const&,
                 T* const addr,

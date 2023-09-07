@@ -92,7 +92,7 @@ namespace alpaka
     //! \tparam TDev The type of device to allocate the buffer on.
     //! \tparam TDim The dimensionality of the buffer to allocate.
     template<typename TDev, typename TDim>
-    constexpr inline bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
+    inline constexpr bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
@@ -153,7 +153,7 @@ namespace alpaka
     //!
     //! \tparam TPlatform The platform from which the buffer is accessible.
     template<typename TPlatform>
-    constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
+    inline constexpr bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif

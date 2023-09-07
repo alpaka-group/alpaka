@@ -25,7 +25,6 @@ struct PrintBufferKernel
     }
 };
 
-
 //! Tests if the value of the buffer on index i is equal to i.
 struct TestBufferKernel
 {

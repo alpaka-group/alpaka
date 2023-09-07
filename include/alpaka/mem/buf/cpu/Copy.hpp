@@ -17,7 +17,7 @@
 namespace alpaka
 {
     class DevCpu;
-}
+} // namespace alpaka
 
 namespace alpaka
 {

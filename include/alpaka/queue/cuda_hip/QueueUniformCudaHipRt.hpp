@@ -60,8 +60,10 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                     TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
             }
+
             QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl&&) = default;
             auto operator=(QueueUniformCudaHipRtImpl&&) -> QueueUniformCudaHipRtImpl& = delete;
+
             ALPAKA_FN_HOST ~QueueUniformCudaHipRtImpl()
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -99,10 +101,12 @@ namespace alpaka
             {
                 dev.registerQueue(m_spQueueImpl);
             }
+
             ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRt const& rhs) const -> bool
             {
                 return (m_spQueueImpl == rhs.m_spQueueImpl);
             }
+
             ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRt const& rhs) const -> bool
             {
                 return !((*this) == rhs);
@@ -112,6 +116,7 @@ namespace alpaka
             {
                 return m_spQueueImpl->getNativeHandle();
             }
+
             auto getCallbackThread() -> core::CallbackThread&
             {
                 return m_spQueueImpl->m_callbackThread;

@@ -129,6 +129,7 @@ namespace alpaka
         {
             using type = AccCpuOmp2Blocks<TDim, TIdx>;
         };
+
         //! The CPU OpenMP 2.0 block accelerator device properties get trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>
@@ -153,6 +154,7 @@ namespace alpaka
                         static_cast<size_t>(AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes())};
             }
         };
+
         //! The CPU OpenMP 2.0 block accelerator name trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccName<AccCpuOmp2Blocks<TDim, TIdx>>

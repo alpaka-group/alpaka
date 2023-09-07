@@ -91,18 +91,21 @@ namespace alpaka
         {
             using type = DimInt<1u>;
         };
+
         //! The CUDA/HIP vectors 2D dimension get trait specialization.
         template<typename T>
         struct DimType<T, std::enable_if_t<meta::Contains<alpaka::detail::CudaHipBuiltinTypes2, T>::value>>
         {
             using type = DimInt<2u>;
         };
+
         //! The CUDA/HIP vectors 3D dimension get trait specialization.
         template<typename T>
         struct DimType<T, std::enable_if_t<meta::Contains<alpaka::detail::CudaHipBuiltinTypes3, T>::value>>
         {
             using type = DimInt<3u>;
         };
+
         //! The CUDA/HIP vectors 4D dimension get trait specialization.
         template<typename T>
         struct DimType<T, std::enable_if_t<meta::Contains<alpaka::detail::CudaHipBuiltinTypes4, T>::value>>
@@ -140,13 +143,11 @@ namespace alpaka
             }
         };
 
-
         template<typename TCudaHipBuiltin>
         struct GetOffsets<TCudaHipBuiltin, std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TCudaHipBuiltin>>>
             : GetExtents<TCudaHipBuiltin>
         {
         };
-
 
         //! The CUDA/HIP vectors idx type trait specialization.
         template<typename TIdx>

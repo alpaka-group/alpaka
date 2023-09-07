@@ -30,13 +30,13 @@ namespace alpaka
     {
         template<typename TPlatform, typename TSfinae>
         struct GetDevByIdx;
-    }
+    } // namespace trait
 
     namespace uniform_cuda_hip::detail
     {
         template<typename TApi, bool TBlocking>
         class QueueUniformCudaHipRt;
-    }
+    } // namespace uniform_cuda_hip::detail
 
     template<typename TApi>
     using QueueUniformCudaHipRtBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, true>;
@@ -70,6 +70,7 @@ namespace alpaka
         {
             return m_iDevice == rhs.m_iDevice;
         }
+
         ALPAKA_FN_HOST auto operator!=(DevUniformCudaHipRt const& rhs) const -> bool
         {
             return !((*this) == rhs);
@@ -98,6 +99,7 @@ namespace alpaka
             , m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>())
         {
         }
+
         int m_iDevice;
 
         std::shared_ptr<alpaka::detail::QueueRegistry<IDeviceQueue>> m_QueueRegistry;

@@ -38,7 +38,6 @@ public:
     virtual void read_arrays(std::vector<T>& a, std::vector<T>& b, std::vector<T>& c) = 0;
 };
 
-
 // Implementation specific device functions
 void listDevices(void);
 std::string getDeviceName(int const);

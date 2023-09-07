@@ -79,7 +79,7 @@ namespace alpaka
         static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::hipDeviceAttributeMaxThreadsPerBlock;
         static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::hipDeviceAttributeMultiprocessorCount;
 
-#    if HIP_VERSION >= 40500000
+#    if HIP_VERSION >= 40'500'000
         static constexpr Limit_t limitPrintfFifoSize = ::hipLimitPrintfFifoSize;
 #    else
         static constexpr Limit_t limitPrintfFifoSize
@@ -118,7 +118,7 @@ namespace alpaka
 
         static inline Error_t deviceGetLimit(size_t* pValue, Limit_t limit)
         {
-#    if HIP_VERSION < 40500000
+#    if HIP_VERSION < 40'500'000
             if(limit == limitPrintfFifoSize)
             {
                 // Implemented only in ROCm 4.5.0 and later.
@@ -182,7 +182,7 @@ namespace alpaka
         static inline Error_t freeAsync([[maybe_unused]] void* devPtr, [[maybe_unused]] Stream_t stream)
         {
             // hipFreeAsync is implemented only in ROCm 5.2.0 and later.
-#    if HIP_VERSION >= 50200000
+#    if HIP_VERSION >= 50'200'000
             return ::hipFreeAsync(devPtr, stream);
 #    else
             // Not implemented.
@@ -265,7 +265,7 @@ namespace alpaka
         static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
         {
             // hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.
-#    if HIP_VERSION >= 50400000
+#    if HIP_VERSION >= 50'400'000
             // Wrap the host function using the proper calling convention.
             return ::hipLaunchHostFunc(stream, HostFnAdaptor::hostFunction, new HostFnAdaptor{fn, userData});
 #    else
@@ -290,7 +290,7 @@ namespace alpaka
             [[maybe_unused]] Stream_t stream)
         {
             // hipMallocAsync is implemented only in ROCm 5.2.0 and later.
-#    if HIP_VERSION >= 50200000
+#    if HIP_VERSION >= 50'200'000
             return ::hipMallocAsync(devPtr, size, stream);
 #    else
             // Not implemented.

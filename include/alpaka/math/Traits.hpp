@@ -1333,6 +1333,7 @@ namespace alpaka::math
         using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
         return trait::Round<ImplementationBase, TArg>{}(round_ctx, arg);
     }
+
     //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
     //! regardless of the current rounding mode.
     //!
@@ -1347,6 +1348,7 @@ namespace alpaka::math
         using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
         return trait::Lround<ImplementationBase, TArg>{}(lround_ctx, arg);
     }
+
     //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
     //! regardless of the current rounding mode.
     //!
@@ -1423,7 +1425,6 @@ namespace alpaka::math
         using ImplementationBase = concepts::ImplementationBase<ConceptMathSinCos, T>;
         trait::SinCos<ImplementationBase, TArg>{}(sincos_ctx, arg, result_sin, result_cos);
     }
-
 
     //! Computes the square root of arg.
     //!

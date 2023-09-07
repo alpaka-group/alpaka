@@ -123,6 +123,7 @@ namespace alpaka
         {
             using type = AccCpuSerial<TDim, TIdx>;
         };
+
         //! The CPU serial accelerator device properties get trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccCpuSerial<TDim, TIdx>>
@@ -147,6 +148,7 @@ namespace alpaka
                         static_cast<size_t>(AccCpuSerial<TDim, TIdx>::staticAllocBytes())};
             }
         };
+
         //! The CPU serial accelerator name trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccName<AccCpuSerial<TDim, TIdx>>

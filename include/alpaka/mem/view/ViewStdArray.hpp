@@ -67,6 +67,7 @@ namespace alpaka::trait
         {
             return std::data(view);
         }
+
         ALPAKA_FN_HOST static auto getPtrNative(std::array<TElem, Tsize>& view) -> TElem*
         {
             return std::data(view);
