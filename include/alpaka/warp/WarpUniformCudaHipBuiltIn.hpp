@@ -126,6 +126,7 @@ namespace alpaka::warp
                 return __shfl(val, srcLane, width);
 #        endif
             }
+
             //-------------------------------------------------------------
             __device__ static auto shfl(
                 [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,

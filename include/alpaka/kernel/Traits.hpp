@@ -216,6 +216,7 @@ namespace alpaka
             }
         };
     } // namespace detail
+
     //! Creates a kernel execution task.
     //!
     //! \tparam TAcc The accelerator type.
@@ -251,8 +252,8 @@ namespace alpaka
             "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-        std::cout << __func__ << " workDiv: " << workDiv
-                  << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)> << std::endl;
+        std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)>
+                  << std::endl;
 #endif
         return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
             workDiv,

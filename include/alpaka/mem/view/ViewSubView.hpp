@@ -163,6 +163,7 @@ namespace alpaka
             {
                 return view.m_nativePtr;
             }
+
             ALPAKA_FN_HOST static auto getPtrNative(ViewSubView<TDev, TElem, TDim, TIdx>& view) -> TElem*
             {
                 return view.m_nativePtr;

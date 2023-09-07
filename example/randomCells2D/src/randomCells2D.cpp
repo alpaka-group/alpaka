@@ -10,9 +10,9 @@
 #include <iostream>
 #include <tuple>
 
-unsigned constexpr NUM_CALCULATIONS = 256;
-unsigned constexpr NUM_X = 127;
-unsigned constexpr NUM_Y = 211;
+constexpr unsigned NUM_CALCULATIONS = 256;
+constexpr unsigned NUM_X = 127;
+constexpr unsigned NUM_Y = 211;
 
 /// Selected PRNG engine for single-value operation
 template<typename TAcc>
@@ -121,7 +121,7 @@ struct RunTimestepKernelVector
             using DistributionResult =
                 typename RandomEngineVector<TAcc>::template ResultContainer<float>; // Container type which will store
                                                                                     // the distribution results
-            unsigned constexpr resultVectorSize = std::tuple_size_v<DistributionResult>; // Size of the result vector
+            constexpr unsigned resultVectorSize = std::tuple_size_v<DistributionResult>; // Size of the result vector
             alpaka::rand::UniformReal<DistributionResult> dist; // Vector-aware distribution function
 
 

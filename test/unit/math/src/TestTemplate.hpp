@@ -65,9 +65,8 @@ struct TestTemplate
         auto const seed = rd();
         INFO(
             "testing"
-            << " acc:" << alpaka::core::demangled<TAcc> << " data type:"
-            << alpaka::core::demangled<TData> << " functor:" << alpaka::core::demangled<TWrappedFunctor> << " seed:"
-            << seed);
+            << " acc:" << alpaka::core::demangled<TAcc> << " data type:" << alpaka::core::demangled<TData>
+            << " functor:" << alpaka::core::demangled<TWrappedFunctor> << " seed:" << seed);
 
         // SETUP (defines and initialising)
         // DevAcc is defined in Buffer.hpp too.

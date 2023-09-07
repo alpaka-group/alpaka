@@ -32,7 +32,7 @@ namespace alpaka
     {
         //! Calculate the pitches purely from the extents.
         template<typename TElem, typename TDim, typename TIdx>
-        ALPAKA_FN_HOST_ACC constexpr inline auto calculatePitchesFromExtents(Vec<TDim, TIdx> const& extent)
+        ALPAKA_FN_HOST_ACC inline constexpr auto calculatePitchesFromExtents(Vec<TDim, TIdx> const& extent)
         {
             Vec<TDim, TIdx> pitchBytes{};
             constexpr auto dim = TIdx{TDim::value};
@@ -66,13 +66,13 @@ namespace alpaka
         {
             using ViewIdx = Idx<TView>;
 
-            ALPAKA_FN_HOST static auto getPitchBytes(TView const& view)->ViewIdx
+            ALPAKA_FN_HOST static auto getPitchBytes(TView const& view) -> ViewIdx
             {
                 return getPitchBytesDefault(view);
             }
 
         private:
-            static auto getPitchBytesDefault(TView const& view)->ViewIdx
+            static auto getPitchBytesDefault(TView const& view) -> ViewIdx
             {
                 constexpr auto idx = TIdx::value;
                 constexpr auto viewDim = Dim<TView>::value;
@@ -353,6 +353,7 @@ namespace alpaka
                 os << rowSuffix;
             }
         };
+
         template<typename TView>
         struct Print<DimInt<Dim<TView>::value - 1u>, TView>
         {
@@ -385,6 +386,7 @@ namespace alpaka
             }
         };
     } // namespace detail
+
     //! Prints the content of the view to the given queue.
     // \TODO: Add precision flag.
     // \TODO: Add column alignment flag.
@@ -535,14 +537,12 @@ namespace alpaka
 
                     constexpr ByteIndexedAccessor() noexcept = default;
 
-                    ALPAKA_FN_HOST_ACC
-                    constexpr data_handle_type offset(data_handle_type p, size_t i) const noexcept
+                    ALPAKA_FN_HOST_ACC constexpr data_handle_type offset(data_handle_type p, size_t i) const noexcept
                     {
                         return p + i;
                     }
 
-                    ALPAKA_FN_HOST_ACC
-                    constexpr reference access(data_handle_type p, size_t i) const noexcept
+                    ALPAKA_FN_HOST_ACC constexpr reference access(data_handle_type p, size_t i) const noexcept
                     {
                         assert(i % alignof(ElementType) == 0);
 #    if BOOST_COMP_GNUC

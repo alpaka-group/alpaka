@@ -252,6 +252,7 @@ namespace alpaka::trait
         {
             return getPtrNative(buf);
         }
+
         static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPlatform> const&) -> TElem*
         {
             return getPtrNative(buf);

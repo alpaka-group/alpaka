@@ -25,26 +25,31 @@ public:
     ALPAKA_FN_HOST_ACC SimpleComplex(T const& a, T const& b) : r(a), i(b)
     {
     }
+
     ALPAKA_NO_HOST_ACC_WARNING
     [[nodiscard]] ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto absSq() const -> T
     {
         return r * r + i * i;
     }
+
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(SimpleComplex const& a) -> SimpleComplex
     {
         return SimpleComplex(r * a.r - i * a.i, i * a.r + r * a.i);
     }
+
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(float const& a) -> SimpleComplex
     {
         return SimpleComplex(r * a, i * a);
     }
+
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(SimpleComplex const& a) -> SimpleComplex
     {
         return SimpleComplex(r + a.r, i + a.i);
     }
+
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(float const& a) -> SimpleComplex
     {
@@ -127,6 +132,7 @@ public:
 #endif
         }
     }
+
     //! \return The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value
     //! of 2.
     //!     Only does maxIterations steps and returns maxIterations if the value would be higher.
@@ -150,7 +156,7 @@ public:
         std::uint32_t const& g,
         std::uint32_t const& b) -> std::uint32_t
     {
-        return 0xFF000000 | (r << 16) | (g << 8) | b;
+        return 0xFF00'0000 | (r << 16) | (g << 8) | b;
     }
 
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING

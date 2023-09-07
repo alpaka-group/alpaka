@@ -15,7 +15,6 @@
 
 #include <type_traits>
 
-
 class SinCosTestKernel
 {
 public:

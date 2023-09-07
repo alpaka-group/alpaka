@@ -192,7 +192,6 @@ namespace alpaka
 
     } // namespace detail
 
-
     namespace trait
     {
         //! The SYCL device memory set trait specialization.

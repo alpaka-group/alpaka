@@ -140,6 +140,7 @@ namespace alpaka
             {
                 return buf.m_spMem.get();
             }
+
             ALPAKA_FN_HOST static auto getPtrNative(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf) -> TElem*
             {
                 return buf.m_spMem.get();
@@ -163,6 +164,7 @@ namespace alpaka
                     throw std::runtime_error("The buffer is not accessible from the given device!");
                 }
             }
+
             ALPAKA_FN_HOST static auto getPtrDev(
                 BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf,
                 DevUniformCudaHipRt<TApi> const& dev) -> TElem*
@@ -393,6 +395,7 @@ namespace alpaka
 
                 return pDev;
             }
+
             ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevUniformCudaHipRt<TApi> const&)
                 -> TElem*
             {

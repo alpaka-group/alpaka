@@ -85,8 +85,7 @@ namespace alpaka
         template<typename TDev, typename TElem, typename TDim, typename TIdx>
         struct GetExtents<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST
-            auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
+            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
             {
                 return view.m_extentElements;
             }
@@ -100,6 +99,7 @@ namespace alpaka
             {
                 return view.m_pMem;
             }
+
             static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx>& view) -> TElem*
             {
                 return view.m_pMem;
@@ -225,8 +225,7 @@ namespace alpaka
         template<typename TDev, typename TElem, typename TDim, typename TIdx>
         struct GetOffsets<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            ALPAKA_FN_HOST
-            auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
+            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
             {
                 return Vec<TDim, TIdx>::zeros();
             }

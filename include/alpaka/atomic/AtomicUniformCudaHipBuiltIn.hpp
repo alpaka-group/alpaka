@@ -57,6 +57,7 @@ namespace alpaka
                     return *reinterpretAddress(&value);
                 }
             };
+
             //! Emulate atomic
             //
             // The default implementation will emulate all atomic functions with atomicCAS.

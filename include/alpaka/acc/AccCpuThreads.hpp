@@ -135,6 +135,7 @@ namespace alpaka
         {
             using type = AccCpuThreads<TDim, TIdx>;
         };
+
         //! The CPU threads accelerator device properties get trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccCpuThreads<TDim, TIdx>>
@@ -169,6 +170,7 @@ namespace alpaka
                         getMemBytes(dev)};
             }
         };
+
         //! The CPU threads accelerator name trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccName<AccCpuThreads<TDim, TIdx>>

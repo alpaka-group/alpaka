@@ -103,17 +103,18 @@ std::string specialized_function_2(TTag)
 
 // is required because of -Werror=missing-declarations
 std::string specialized_function_2(alpaka::TagCpuSerial);
+
 std::string specialized_function_2(alpaka::TagCpuSerial)
 {
     return "Serial";
 }
 
 std::string specialized_function_2(alpaka::TagGpuCudaRt);
+
 std::string specialized_function_2(alpaka::TagGpuCudaRt)
 {
     return "CUDA";
 }
-
 
 TEMPLATE_LIST_TEST_CASE("specialization of functions with tags", "[acc][tag]", TestAccs)
 {

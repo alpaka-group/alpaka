@@ -59,6 +59,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 return 5;
             }
         } s;
+
         STATIC_REQUIRE(std::is_convertible_v<S, Idx>);
 
         [[maybe_unused]] constexpr Vec v(s, s, s);
@@ -331,6 +332,7 @@ struct NonAlpakaVec
 
         return result;
     }
+
     auto operator[](TIdx /*idx*/) const -> TIdx
     {
         return static_cast<TIdx>(0);

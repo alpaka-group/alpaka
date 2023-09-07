@@ -134,6 +134,7 @@ namespace alpaka
         {
             using type = AccCpuOmp2Threads<TDim, TIdx>;
         };
+
         //! The CPU OpenMP 2.0 thread accelerator device properties get trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccCpuOmp2Threads<TDim, TIdx>>
@@ -163,6 +164,7 @@ namespace alpaka
                         getMemBytes(dev)};
             }
         };
+
         //! The CPU OpenMP 2.0 thread accelerator name trait specialization.
         template<typename TDim, typename TIdx>
         struct GetAccName<AccCpuOmp2Threads<TDim, TIdx>>
