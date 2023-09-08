@@ -9,7 +9,16 @@
 
 #include <cstdint>
 
-#ifdef _OPENMP
+#if defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
+
+/* clang doesn't define the _OPENMP macro when compiling in CUDA mode. We need to turn off -Wundef so clang doesn't
+   complain about our preprocessor guards.*/
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wundef"
+
+#    if(_OPENMP < 200203) && !defined(BOOST_COMP_CLANG_CUDA)
+#        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+#    endif
 
 namespace alpaka
 {
@@ -105,5 +114,7 @@ namespace alpaka
         };
     } // namespace trait
 } // namespace alpaka
+
+#    pragma clang diagnostic pop
 
 #endif

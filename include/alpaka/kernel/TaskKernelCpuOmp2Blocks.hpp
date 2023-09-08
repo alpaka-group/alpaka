@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber
+/* Copyright 2023 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -31,7 +31,12 @@
 
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 
-#    if _OPENMP < 200203
+/* clang doesn't define the _OPENMP macro when compiling in CUDA mode. We need to turn off -Wundef so clang doesn't
+   complain about our preprocessor guards.*/
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wundef"
+
+#    if _OPENMP < 200203 && !defined(BOOST_COMP_CLANG_CUDA)
 #        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
 
@@ -515,7 +520,7 @@ namespace alpaka
         {
         };
 
-#    if _OPENMP >= 200805
+#    if _OPENMP >= 200805 || BOOST_COMP_CLANG_CUDA
         //! Executor of parallel OpenMP loop with auto schedule set
         //!
         //! Does not use chunk size.
@@ -682,7 +687,7 @@ namespace alpaka
                         numIterations,
                         schedule);
                     break;
-#    if _OPENMP >= 200805
+#    if _OPENMP >= 200805 || BOOST_COMP_CLANG_CUDA
                 case omp::Schedule::Auto:
                     ParallelForImpl<TKernel, omp::Schedule, omp::Schedule::Auto>{}(
                         kernel,
@@ -948,5 +953,7 @@ namespace alpaka
         };
     } // namespace trait
 } // namespace alpaka
+
+#    pragma clang diagnostic pop
 
 #endif

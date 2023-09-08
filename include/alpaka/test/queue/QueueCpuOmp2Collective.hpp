@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -21,7 +21,12 @@
 
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 
-#    if _OPENMP < 200203
+/* clang doesn't define the _OPENMP macro when compiling in CUDA mode. We need to turn off -Wundef so clang doesn't
+   complain about our preprocessor guards.*/
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wundef"
+
+#    if _OPENMP < 200203 && !defined(BOOST_COMP_CLANG_CUDA)
 #        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
 
@@ -291,6 +296,8 @@ namespace alpaka
     {
     };
 } // namespace alpaka
+
+#    pragma clang diagnostic pop
 
 #    include "alpaka/event/EventCpu.hpp"
 
