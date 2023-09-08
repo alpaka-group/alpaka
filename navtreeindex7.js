@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"namespacealpaka.html#a512283aaade3fb1f8c8be26870c33cdf":[2,0,0,251],
 "namespacealpaka.html#a52a183b4a85128a90c040667353b5294":[2,0,0,261],
 "namespacealpaka.html#a542bd81fb86be02c87d0a40008e32922":[2,0,0,237],
 "namespacealpaka.html#a5543b86d23164032daa056ed21ba1484":[2,0,0,297],
@@ -8,7 +9,7 @@ var NAVTREEINDEX7 =
 "namespacealpaka.html#a5ad78249cee4204531842783fbc021c9":[2,0,0,134],
 "namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42":[2,0,0,141],
 "namespacealpaka.html#a5b8921f282f78ef0a61385a9e3e3b213":[2,0,0,266],
-"namespacealpaka.html#a5cf0e326e8641a96114183da0b7baaa6":[2,0,0,214],
+"namespacealpaka.html#a5e4f3eebac028c24779d98ed72d06f9a":[2,0,0,214],
 "namespacealpaka.html#a5f9c92013b75ef4c056051ce4fb100da":[2,0,0,236],
 "namespacealpaka.html#a6039fd484be080c6a83c76514823ae98":[2,0,0,294],
 "namespacealpaka.html#a6049156c92d1112a3e7cfb96f09b153e":[2,0,0,216],
@@ -68,7 +69,6 @@ var NAVTREEINDEX7 =
 "namespacealpaka.html#aa2b9dfffcb003752bce0bc4193176490":[2,0,0,235],
 "namespacealpaka.html#aa3eb41a0009d08e6e466c14424280971":[2,0,0,207],
 "namespacealpaka.html#aa42c7647b06666f0502bfc55cd08c41b":[2,0,0,287],
-"namespacealpaka.html#aa46fe9ade792998430233e009a79d8ea":[2,0,0,215],
 "namespacealpaka.html#aa48aeb76936551ea2dc5c4fe4759eb35":[2,0,0,149],
 "namespacealpaka.html#aa4fe5980725182b3306caf3167053a75":[2,0,0,206],
 "namespacealpaka.html#aa56ad4ba3f41bcea4e804b88d05c9ac0":[2,0,0,225],
@@ -128,6 +128,7 @@ var NAVTREEINDEX7 =
 "namespacealpaka.html#aeeb5b4689cf4dca8de2d9016a74d10e8":[2,0,0,244],
 "namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041":[2,0,0,174],
 "namespacealpaka.html#af2d9f4c8c50a62252b5579333b424940":[2,0,0,265],
+"namespacealpaka.html#af48a79794dce8158c698521c1b727146":[2,0,0,215],
 "namespacealpaka.html#af493861b6c8c71c887690654c4943238":[2,0,0,146],
 "namespacealpaka.html#af4ebdbe15a3b59640abcfb7bd5a82d85":[2,0,0,320],
 "namespacealpaka.html#af5719a162262c1411456eee5dca4f390":[2,0,0,282],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1math_1_1constants.html":[2,0,0,10,0],
 "namespacealpaka_1_1math_1_1constants.html#a0404ebc7713dd7791198ea70dacee212":[2,0,0,10,0,7],
 "namespacealpaka_1_1math_1_1constants.html#a49b601f677cc0e47cd9b51b5d5405bda":[2,0,0,10,0,2],
-"namespacealpaka_1_1math_1_1constants.html#a56eedc1d1ffa0ce7c2a222a08f041a83":[2,0,0,10,0,15],
-"namespacealpaka_1_1math_1_1constants.html#a617db05f0367dfbb9398370b7e7f5e91":[2,0,0,10,0,8]
+"namespacealpaka_1_1math_1_1constants.html#a56eedc1d1ffa0ce7c2a222a08f041a83":[2,0,0,10,0,15]
 };

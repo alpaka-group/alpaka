@@ -7,8 +7,8 @@ var extent_2Traits_8hpp =
     [ "getExtent", "extent_2Traits_8hpp.html#a2fb86f3938fa9423296e522fb77cf639", null ],
     [ "getExtentProduct", "extent_2Traits_8hpp.html#a016a833f79132d97e61ac8166f85a12a", null ],
     [ "getExtents", "extent_2Traits_8hpp.html#a474dbbe33477452e10d16908da9f58b0", null ],
-    [ "getExtentVec", "extent_2Traits_8hpp.html#a5cf0e326e8641a96114183da0b7baaa6", null ],
-    [ "getExtentVecEnd", "extent_2Traits_8hpp.html#aa46fe9ade792998430233e009a79d8ea", null ],
+    [ "getExtentVec", "extent_2Traits_8hpp.html#a5e4f3eebac028c24779d98ed72d06f9a", null ],
+    [ "getExtentVecEnd", "extent_2Traits_8hpp.html#af48a79794dce8158c698521c1b727146", null ],
     [ "getHeight", "extent_2Traits_8hpp.html#a27ab73d92933109a6e66dea772fbfdbb", null ],
     [ "getWidth", "extent_2Traits_8hpp.html#aeeb5b4689cf4dca8de2d9016a74d10e8", null ]
 ];

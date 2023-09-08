@@ -175,32 +175,33 @@ $(document).ready(function(){initNavTree('AtomicStdLibLock_8hpp_source.html','')
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                std::lock_guard&lt;std::mutex&gt; lock(atomic.getMutex(addr));</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keywordflow">return</span> TOp()(addr, value);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a>(</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                AtomicStdLibLock&lt;THashTableSize&gt; <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                T <span class="keyword">const</span>&amp; compare,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                T <span class="keyword">const</span>&amp; value) -&gt; T</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                std::lock_guard&lt;std::mutex&gt; lock(atomic.getMutex(addr));</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="keywordflow">return</span> TOp()(addr, compare, value);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        };</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a>(</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                AtomicStdLibLock&lt;THashTableSize&gt; <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                T <span class="keyword">const</span>&amp; compare,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                T <span class="keyword">const</span>&amp; value) -&gt; T</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                std::lock_guard&lt;std::mutex&gt; lock(atomic.getMutex(addr));</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keywordflow">return</span> TOp()(addr, compare, value);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        };</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aatomic_2Traits_8hpp_html"><div class="ttname"><a href="atomic_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="acore_2Common_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00040">Common.hpp:40</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00047">AccCpuOmp2Blocks.hpp:48</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_afc0cabb316d5524d381a35c8c67edf81"><div class="ttname"><a href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00071">Traits.hpp:71</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_afc0cabb316d5524d381a35c8c67edf81"><div class="ttname"><a href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00073">Traits.hpp:73</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="AtomicStdLibLock_8hpp.html">AtomicStdLibLock.hpp</a></li>
-    <li class="footer">Generated on Fri Sep 8 2023 09:28:57 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 8 2023 23:29:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

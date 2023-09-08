@@ -6,5 +6,5 @@ var structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4 =
     [ "operator std::array< value_type, size >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#ae749e1c60d24ac2619f5f26d54769152", null ],
     [ "operator[]", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a777bc82929fb26e8020c6b9f5f13b6b5", null ],
     [ "operator[]", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#abefb94f77518716a675e72590684b089", null ],
-    [ "size", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#aec6de5589bd0ec66372f9a9ad3a90a98", null ]
+    [ "size", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a4852c38b1c60c3a9f15e9d8a6cafc9df", null ]
 ];

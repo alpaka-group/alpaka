@@ -101,49 +101,50 @@ $(document).ready(function(){initNavTree('idx_2Traits_8hpp_source.html',''); ini
 <div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="structalpaka_1_1ConceptIdxBt.html">   12</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalpaka_1_1ConceptIdxBt.html">ConceptIdxBt</a></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    };</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="structalpaka_1_1ConceptIdxGb.html">   15</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalpaka_1_1ConceptIdxGb.html">ConceptIdxGb</a></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    };</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">    //! The idx trait.</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">        //! The idx type trait.</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType.html">   24</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">   28</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1IdxType.html">trait::IdxType&lt;T&gt;::type</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">namespace </span>trait</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {<span class="comment"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">        //! The arithmetic idx type trait specialization.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html">   34</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>&lt;T, std::enable_if_t&lt;std::is_arithmetic_v&lt;T&gt;&gt;&gt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html#a791836edf57d068d26e32640caa165c8">   36</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html#a791836edf57d068d26e32640caa165c8">type</a> = std::decay_t&lt;T&gt;;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        };</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">        //! The index get trait.</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TOrigin, <span class="keyword">typename</span> TUnit, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx.html">   41</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1GetIdx.html">GetIdx</a>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    } <span class="comment">// namespace trait</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="structalpaka_1_1ConceptIdxGb.html">   16</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalpaka_1_1ConceptIdxGb.html">ConceptIdxGb</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    };</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">    //! The idx trait.</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">        //! The idx type trait.</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType.html">   25</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">   29</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">Idx</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1IdxType.html">trait::IdxType&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">namespace </span>trait</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">        //! The arithmetic idx type trait specialization.</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html">   35</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1IdxType.html">IdxType</a>&lt;T, std::enable_if_t&lt;std::is_arithmetic_v&lt;T&gt;&gt;&gt;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html#a791836edf57d068d26e32640caa165c8">   37</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html#a791836edf57d068d26e32640caa165c8">type</a> = std::decay_t&lt;T&gt;;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        };</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">        //! The index get trait.</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TOrigin, <span class="keyword">typename</span> TUnit, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx.html">   42</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1GetIdx.html">GetIdx</a>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00047">AccCpuOmp2Blocks.hpp:48</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a0163f6f6c406d381013f117fdbe7ef70"><div class="ttname"><a href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">alpaka::Idx</a></div><div class="ttdeci">typename trait::IdxType&lt; T &gt;::type Idx</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00028">Traits.hpp:28</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a0163f6f6c406d381013f117fdbe7ef70"><div class="ttname"><a href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">alpaka::Idx</a></div><div class="ttdeci">typename trait::IdxType&lt; T &gt;::type Idx</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00029">Traits.hpp:29</a></div></div>
 <div class="ttc" id="astructalpaka_1_1ConceptIdxBt_html"><div class="ttname"><a href="structalpaka_1_1ConceptIdxBt.html">alpaka::ConceptIdxBt</a></div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00012">Traits.hpp:13</a></div></div>
-<div class="ttc" id="astructalpaka_1_1ConceptIdxGb_html"><div class="ttname"><a href="structalpaka_1_1ConceptIdxGb.html">alpaka::ConceptIdxGb</a></div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00015">Traits.hpp:16</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1GetIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetIdx.html">alpaka::trait::GetIdx</a></div><div class="ttdoc">The index get trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00041">Traits.hpp:41</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4_html_a791836edf57d068d26e32640caa165c8"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html#a791836edf57d068d26e32640caa165c8">alpaka::trait::IdxType&lt; T, std::enable_if_t&lt; std::is_arithmetic_v&lt; T &gt; &gt; &gt;::type</a></div><div class="ttdeci">std::decay_t&lt; T &gt; type</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00036">Traits.hpp:36</a></div></div>
-<div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType.html">alpaka::trait::IdxType</a></div><div class="ttdoc">The idx type trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
+<div class="ttc" id="astructalpaka_1_1ConceptIdxGb_html"><div class="ttname"><a href="structalpaka_1_1ConceptIdxGb.html">alpaka::ConceptIdxGb</a></div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00016">Traits.hpp:17</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1GetIdx_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1GetIdx.html">alpaka::trait::GetIdx</a></div><div class="ttdoc">The index get trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00042">Traits.hpp:42</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4_html_a791836edf57d068d26e32640caa165c8"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html#a791836edf57d068d26e32640caa165c8">alpaka::trait::IdxType&lt; T, std::enable_if_t&lt; std::is_arithmetic_v&lt; T &gt; &gt; &gt;::type</a></div><div class="ttdeci">std::decay_t&lt; T &gt; type</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00037">Traits.hpp:37</a></div></div>
+<div class="ttc" id="astructalpaka_1_1trait_1_1IdxType_html"><div class="ttname"><a href="structalpaka_1_1trait_1_1IdxType.html">alpaka::trait::IdxType</a></div><div class="ttdoc">The idx type trait.</div><div class="ttdef"><b>Definition:</b> <a href="idx_2Traits_8hpp_source.html#l00025">Traits.hpp:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="idx_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Fri Sep 8 2023 09:28:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 8 2023 23:29:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

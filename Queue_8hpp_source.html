@@ -244,57 +244,58 @@ $(document).ready(function(){initNavTree('Queue_8hpp_source.html',''); initResiz
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        };</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#    endif</span></div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    } <span class="comment">// namespace trait</span><span class="comment"></span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">    //! The queue type that should be used for the given accelerator.</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TQueue&gt;</div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">  161</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">IsBlockingQueue</a> = <a class="code" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">trait::IsBlockingQueue&lt;TQueue&gt;</a>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">    //! A std::tuple holding tuples of devices and corresponding queue types.</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822">  164</a></span>&#160;<span class="comment"></span>    <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822">TestQueues</a> = std::tuple&lt;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        std::tuple&lt;DevCpu, QueueCpuBlocking&gt;,</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        std::tuple&lt;DevCpu, QueueCpuNonBlocking&gt;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        ,</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        std::tuple&lt;DevCudaRt, QueueCudaRtBlocking&gt;,</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        std::tuple&lt;DevCudaRt, QueueCudaRtNonBlocking&gt;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_HIP_ENABLED</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        ,</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        std::tuple&lt;DevHipRt, QueueHipRtBlocking&gt;,</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        std::tuple&lt;DevHipRt, QueueHipRtNonBlocking&gt;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_SYCL_ENABLED</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#    ifdef ALPAKA_SYCL_ONEAPI_CPU</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        ,</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        std::tuple&lt;alpaka::DevCpuSycl, alpaka::QueueCpuSyclBlocking&gt;,</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        std::tuple&lt;alpaka::DevCpuSycl, alpaka::QueueCpuSyclNonBlocking&gt;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#    ifdef ALPAKA_SYCL_ONEAPI_FPGA</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        ,</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        std::tuple&lt;alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelBlocking&gt;,</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        std::tuple&lt;alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelNonBlocking&gt;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">#    ifdef ALPAKA_SYCL_ONEAPI_GPU</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        ,</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        std::tuple&lt;alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelBlocking&gt;,</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        std::tuple&lt;alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelNonBlocking&gt;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        &gt;;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;} <span class="comment">// namespace alpaka::test</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    } <span class="comment">// namespace trait</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">    //! The queue type that should be used for the given accelerator.</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TQueue&gt;</div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">  162</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">IsBlockingQueue</a> = <a class="code" href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">trait::IsBlockingQueue&lt;TQueue&gt;</a>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    //! A std::tuple holding tuples of devices and corresponding queue types.</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822">  165</a></span>&#160;<span class="comment"></span>    <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822">TestQueues</a> = std::tuple&lt;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        std::tuple&lt;DevCpu, QueueCpuBlocking&gt;,</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        std::tuple&lt;DevCpu, QueueCpuNonBlocking&gt;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        ,</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        std::tuple&lt;DevCudaRt, QueueCudaRtBlocking&gt;,</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        std::tuple&lt;DevCudaRt, QueueCudaRtNonBlocking&gt;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_GPU_HIP_ENABLED</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        ,</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        std::tuple&lt;DevHipRt, QueueHipRtBlocking&gt;,</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        std::tuple&lt;DevHipRt, QueueHipRtNonBlocking&gt;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_SYCL_ENABLED</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#    ifdef ALPAKA_SYCL_ONEAPI_CPU</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        ,</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        std::tuple&lt;alpaka::DevCpuSycl, alpaka::QueueCpuSyclBlocking&gt;,</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        std::tuple&lt;alpaka::DevCpuSycl, alpaka::QueueCpuSyclNonBlocking&gt;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="preprocessor">#    ifdef ALPAKA_SYCL_ONEAPI_FPGA</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        ,</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        std::tuple&lt;alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelBlocking&gt;,</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        std::tuple&lt;alpaka::DevFpgaSyclIntel, alpaka::QueueFpgaSyclIntelNonBlocking&gt;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#    ifdef ALPAKA_SYCL_ONEAPI_GPU</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        ,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        std::tuple&lt;alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelBlocking&gt;,</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        std::tuple&lt;alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelNonBlocking&gt;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        &gt;;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;} <span class="comment">// namespace alpaka::test</span></div>
 <div class="ttc" id="aalpaka_8hpp_html"><div class="ttname"><a href="alpaka_8hpp.html">alpaka.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1DevCpu_html"><div class="ttname"><a href="classalpaka_1_1DevCpu.html">alpaka::DevCpu</a></div><div class="ttdoc">The CPU device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00051">DevCpu.hpp:54</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1DevCpu_html"><div class="ttname"><a href="classalpaka_1_1DevCpu.html">alpaka::DevCpu</a></div><div class="ttdoc">The CPU device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00053">DevCpu.hpp:56</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1DevUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1DevUniformCudaHipRt.html">alpaka::DevUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevUniformCudaHipRt_8hpp_source.html#l00055">DevUniformCudaHipRt.hpp:58</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1QueueGenericThreadsBlocking_html"><div class="ttname"><a href="classalpaka_1_1QueueGenericThreadsBlocking.html">alpaka::QueueGenericThreadsBlocking&lt; DevCpu &gt;</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1QueueGenericThreadsNonBlocking_html"><div class="ttname"><a href="classalpaka_1_1QueueGenericThreadsNonBlocking.html">alpaka::QueueGenericThreadsNonBlocking</a></div><div class="ttdoc">The CPU device queue.</div><div class="ttdef"><b>Definition:</b> <a href="QueueGenericThreadsNonBlocking_8hpp_source.html#l00077">QueueGenericThreadsNonBlocking.hpp:81</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT queue.</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00091">QueueUniformCudaHipRt.hpp:95</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1QueueGenericThreadsNonBlocking_html"><div class="ttname"><a href="classalpaka_1_1QueueGenericThreadsNonBlocking.html">alpaka::QueueGenericThreadsNonBlocking</a></div><div class="ttdoc">The CPU device queue.</div><div class="ttdef"><b>Definition:</b> <a href="QueueGenericThreadsNonBlocking_8hpp_source.html#l00079">QueueGenericThreadsNonBlocking.hpp:83</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_html"><div class="ttname"><a href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt.html">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRt</a></div><div class="ttdoc">The CUDA/HIP RT queue.</div><div class="ttdef"><b>Definition:</b> <a href="QueueUniformCudaHipRt_8hpp_source.html#l00093">QueueUniformCudaHipRt.hpp:97</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html"><div class="ttname"><a href="namespacealpaka_1_1test.html">alpaka::test</a></div><div class="ttdoc">The test specifics.</div><div class="ttdef"><b>Definition:</b> <a href="TestAccs_8hpp_source.html#l00025">TestAccs.hpp:26</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1test_html_abf76f887cb2963d7524fcb09c865354e"><div class="ttname"><a href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">alpaka::test::IsBlockingQueue</a></div><div class="ttdeci">trait::IsBlockingQueue&lt; TQueue &gt; IsBlockingQueue</div><div class="ttdoc">The queue type that should be used for the given accelerator.</div><div class="ttdef"><b>Definition:</b> <a href="Queue_8hpp_source.html#l00161">Queue.hpp:161</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1test_html_ac14638de19dd76bcfa76bd89e9a72822"><div class="ttname"><a href="namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822">alpaka::test::TestQueues</a></div><div class="ttdeci">std::tuple&lt; std::tuple&lt; DevCpu, QueueCpuBlocking &gt;, std::tuple&lt; DevCpu, QueueCpuNonBlocking &gt;, std::tuple&lt; DevCudaRt, QueueCudaRtBlocking &gt;, std::tuple&lt; DevCudaRt, QueueCudaRtNonBlocking &gt; &gt; TestQueues</div><div class="ttdoc">A std::tuple holding tuples of devices and corresponding queue types.</div><div class="ttdef"><b>Definition:</b> <a href="Queue_8hpp_source.html#l00164">Queue.hpp:194</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1test_html_abf76f887cb2963d7524fcb09c865354e"><div class="ttname"><a href="namespacealpaka_1_1test.html#abf76f887cb2963d7524fcb09c865354e">alpaka::test::IsBlockingQueue</a></div><div class="ttdeci">trait::IsBlockingQueue&lt; TQueue &gt; IsBlockingQueue</div><div class="ttdoc">The queue type that should be used for the given accelerator.</div><div class="ttdef"><b>Definition:</b> <a href="Queue_8hpp_source.html#l00162">Queue.hpp:162</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1test_html_ac14638de19dd76bcfa76bd89e9a72822"><div class="ttname"><a href="namespacealpaka_1_1test.html#ac14638de19dd76bcfa76bd89e9a72822">alpaka::test::TestQueues</a></div><div class="ttdeci">std::tuple&lt; std::tuple&lt; DevCpu, QueueCpuBlocking &gt;, std::tuple&lt; DevCpu, QueueCpuNonBlocking &gt;, std::tuple&lt; DevCudaRt, QueueCudaRtBlocking &gt;, std::tuple&lt; DevCudaRt, QueueCudaRtNonBlocking &gt; &gt; TestQueues</div><div class="ttdoc">A std::tuple holding tuples of devices and corresponding queue types.</div><div class="ttdef"><b>Definition:</b> <a href="Queue_8hpp_source.html#l00165">Queue.hpp:195</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html_ae9ab01ad1c3b482470d65373a1e90fc5"><div class="ttname"><a href="namespacealpaka_1_1test.html#ae9ab01ad1c3b482470d65373a1e90fc5">alpaka::test::DefaultQueue</a></div><div class="ttdeci">typename trait::DefaultQueueType&lt; TDev &gt;::type DefaultQueue</div><div class="ttdoc">The queue type that should be used for the given device.</div><div class="ttdef"><b>Definition:</b> <a href="Queue_8hpp_source.html#l00045">Queue.hpp:45</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00047">AccCpuOmp2Blocks.hpp:48</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a5b74cbab627401664d95c8a91c859a42"><div class="ttname"><a href="namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42">alpaka::QueueCpuBlocking</a></div><div class="ttdeci">QueueGenericThreadsBlocking&lt; DevCpu &gt; QueueCpuBlocking</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00177">DevCpu.hpp:177</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a8a11334697bff8a6fb14559535908633"><div class="ttname"><a href="namespacealpaka.html#a8a11334697bff8a6fb14559535908633">alpaka::QueueCpuNonBlocking</a></div><div class="ttdeci">QueueGenericThreadsNonBlocking&lt; DevCpu &gt; QueueCpuNonBlocking</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00176">DevCpu.hpp:176</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a5b74cbab627401664d95c8a91c859a42"><div class="ttname"><a href="namespacealpaka.html#a5b74cbab627401664d95c8a91c859a42">alpaka::QueueCpuBlocking</a></div><div class="ttdeci">QueueGenericThreadsBlocking&lt; DevCpu &gt; QueueCpuBlocking</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00181">DevCpu.hpp:181</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a8a11334697bff8a6fb14559535908633"><div class="ttname"><a href="namespacealpaka.html#a8a11334697bff8a6fb14559535908633">alpaka::QueueCpuNonBlocking</a></div><div class="ttdeci">QueueGenericThreadsNonBlocking&lt; DevCpu &gt; QueueCpuNonBlocking</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00180">DevCpu.hpp:180</a></div></div>
 <div class="ttc" id="astructalpaka_1_1test_1_1trait_1_1DefaultQueueType_html"><div class="ttname"><a href="structalpaka_1_1test_1_1trait_1_1DefaultQueueType.html">alpaka::test::trait::DefaultQueueType</a></div><div class="ttdoc">The default queue type trait for devices.</div><div class="ttdef"><b>Definition:</b> <a href="Queue_8hpp_source.html#l00015">Queue.hpp:15</a></div></div>
 <div class="ttc" id="astructalpaka_1_1test_1_1trait_1_1IsBlockingQueue_html"><div class="ttname"><a href="structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html">alpaka::test::trait::IsBlockingQueue</a></div><div class="ttdoc">The blocking queue trait.</div><div class="ttdef"><b>Definition:</b> <a href="Queue_8hpp_source.html#l00051">Queue.hpp:51</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -303,7 +304,7 @@ $(document).ready(function(){initNavTree('Queue_8hpp_source.html',''); initResiz
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_2fd35556c93caeee8f10f5719f6806ac.html">test</a></li><li class="navelem"><a class="el" href="dir_2c339e2f1fcd53762aa618f43207b31b.html">queue</a></li><li class="navelem"><a class="el" href="Queue_8hpp.html">Queue.hpp</a></li>
-    <li class="footer">Generated on Fri Sep 8 2023 09:28:57 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 8 2023 23:29:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

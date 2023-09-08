@@ -97,26 +97,25 @@ $(document).ready(function(){initNavTree('PhiloxStatelessVector_8hpp_source.html
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1rand_1_1engine.html">alpaka::rand::engine</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{<span class="comment"></span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">    /** Philox-stateless engine generating a vector of numbers</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">     * This engine&#39;s operator() will return a vector of numbers corresponding to the full size of its counter.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">     * This is a convenience vs. memory size tradeoff since the user has to deal with the output array</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">     * themselves, but the internal state comprises only of a single counter and a key.</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">     * @tparam TAcc Accelerator type as defined in alpaka/acc</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">     * @tparam TParams Basic parameters for the Philox algorithm</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TParams&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html">   24</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html">PhiloxStatelessVector</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html">trait::PhiloxStatelessBaseTraits</a>&lt;TAcc, TParams&gt;::Base</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    };</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;} <span class="comment">// namespace alpaka::rand::engine</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka_1_1rand_1_1engine.html">alpaka::rand::engine</a></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">    /** Philox-stateless engine generating a vector of numbers</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">     * This engine&#39;s operator() will return a vector of numbers corresponding to the full size of its counter.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">     * This is a convenience vs. memory size tradeoff since the user has to deal with the output array</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">     * themselves, but the internal state comprises only of a single counter and a key.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">     * @tparam TAcc Accelerator type as defined in alpaka/acc</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">     * @tparam TParams Basic parameters for the Philox algorithm</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAcc, <span class="keyword">typename</span> TParams&gt;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html">   23</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html">PhiloxStatelessVector</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html">trait::PhiloxStatelessBaseTraits</a>&lt;TAcc, TParams&gt;::Base</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    };</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;} <span class="comment">// namespace alpaka::rand::engine</span></div>
 <div class="ttc" id="aPhiloxBaseTraits_8hpp_html"><div class="ttname"><a href="PhiloxBaseTraits_8hpp.html">PhiloxBaseTraits.hpp</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector_html"><div class="ttname"><a href="classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html">alpaka::rand::engine::PhiloxStatelessVector</a></div><div class="ttdef"><b>Definition:</b> <a href="PhiloxStatelessVector_8hpp_source.html#l00024">PhiloxStatelessVector.hpp:25</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1rand_1_1engine_html"><div class="ttname"><a href="namespacealpaka_1_1rand_1_1engine.html">alpaka::rand::engine</a></div><div class="ttdoc">The random number generator engine specifics.</div><div class="ttdef"><b>Definition:</b> <a href="PhiloxBaseCommon_8hpp_source.html#l00012">PhiloxBaseCommon.hpp:13</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector_html"><div class="ttname"><a href="classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html">alpaka::rand::engine::PhiloxStatelessVector</a></div><div class="ttdef"><b>Definition:</b> <a href="PhiloxStatelessVector_8hpp_source.html#l00023">PhiloxStatelessVector.hpp:24</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1rand_1_1engine_html"><div class="ttname"><a href="namespacealpaka_1_1rand_1_1engine.html">alpaka::rand::engine</a></div><div class="ttdoc">The random number generator engine specifics.</div><div class="ttdef"><b>Definition:</b> <a href="PhiloxBaseCommon_8hpp_source.html#l00011">PhiloxBaseCommon.hpp:12</a></div></div>
 <div class="ttc" id="astructalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits_html"><div class="ttname"><a href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html">alpaka::rand::engine::trait::PhiloxStatelessBaseTraits</a></div><div class="ttdef"><b>Definition:</b> <a href="PhiloxBaseTraits_8hpp_source.html#l00041">PhiloxBaseTraits.hpp:42</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -124,7 +123,7 @@ $(document).ready(function(){initNavTree('PhiloxStatelessVector_8hpp_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_192cbe7214f78dcbefe56af07355e2bc.html">rand</a></li><li class="navelem"><a class="el" href="dir_3fed8e0f808af832c9a01894efdb4599.html">Philox</a></li><li class="navelem"><a class="el" href="PhiloxStatelessVector_8hpp.html">PhiloxStatelessVector.hpp</a></li>
-    <li class="footer">Generated on Fri Sep 8 2023 09:28:57 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 8 2023 23:29:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

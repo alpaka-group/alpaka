@@ -14,7 +14,7 @@ var namespacealpaka_1_1rand =
     [ "TinyMersenneTwister", "classalpaka_1_1rand_1_1TinyMersenneTwister.html", null ],
     [ "UniformReal", "classalpaka_1_1rand_1_1UniformReal.html", "classalpaka_1_1rand_1_1UniformReal" ],
     [ "RandStdLib", "namespacealpaka_1_1rand.html#a93da771a5926ecbf71428adf07417ac8", null ],
-    [ "high32Bits", "namespacealpaka_1_1rand.html#a49e7ac2f6ba3fb99df75a808146f1dab", null ],
-    [ "low32Bits", "namespacealpaka_1_1rand.html#a27924e14b2e5aa8a3213f77c3bd70ef8", null ],
-    [ "multiplyAndSplit64to32", "namespacealpaka_1_1rand.html#a78260ac74587972ea7408fa1305054c9", null ]
+    [ "high32Bits", "namespacealpaka_1_1rand.html#a4af6e6abe6bf85dcceb33de88168a1fc", null ],
+    [ "low32Bits", "namespacealpaka_1_1rand.html#a29a41556da38e0bd58c3443ed3de8523", null ],
+    [ "multiplyAndSplit64to32", "namespacealpaka_1_1rand.html#a7dee3cd95537c8c2d0c72ee38d4255d6", null ]
 ];

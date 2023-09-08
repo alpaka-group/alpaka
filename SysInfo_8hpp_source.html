@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="comment">// Get extended ids.</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        std::uint32_t ex[4] = {0};</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="namespacealpaka_1_1cpu_1_1detail.html#ab0526bd4fa319cb72d2b73b00250807a">cpuid</a>(0x80000000, 0, ex);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="namespacealpaka_1_1cpu_1_1detail.html#ab0526bd4fa319cb72d2b73b00250807a">cpuid</a>(0x8000&#39;0000, 0, ex);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        std::uint32_t <span class="keyword">const</span> nExIds(ex[0]);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">if</span>(!nExIds)</div>
@@ -185,20 +185,20 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#if BOOST_ARCH_X86</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="comment">// Get the information associated with each extended ID.</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordtype">char</span> cpuBrandString[0x40] = {0};</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">for</span>(std::uint32_t i(0x80000000); i &lt;= nExIds; ++i)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">for</span>(std::uint32_t i(0x8000&#39;0000); i &lt;= nExIds; ++i)</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <a class="code" href="namespacealpaka_1_1cpu_1_1detail.html#ab0526bd4fa319cb72d2b73b00250807a">cpuid</a>(i, 0, ex);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="comment">// Interpret CPU brand string and cache information.</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">if</span>(i == 0x80000002)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">if</span>(i == 0x8000&#39;0002)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            {</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">std::memcpy</a>(cpuBrandString, ex, <span class="keyword">sizeof</span>(ex));</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i == 0x80000003)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i == 0x8000&#39;0003)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            {</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">std::memcpy</a>(cpuBrandString + 16, ex, <span class="keyword">sizeof</span>(ex));</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i == 0x80000004)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i == 0x8000&#39;0004)</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            {</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">std::memcpy</a>(cpuBrandString + 32, ex, <span class="keyword">sizeof</span>(ex));</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            }</div>
@@ -341,7 +341,7 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="dir_c201f7a35756f890108797586165839d.html">cpu</a></li><li class="navelem"><a class="el" href="SysInfo_8hpp.html">SysInfo.hpp</a></li>
-    <li class="footer">Generated on Fri Sep 8 2023 09:28:57 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 8 2023 23:29:34 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

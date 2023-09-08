@@ -5,6 +5,6 @@ var searchData=
   ['log_4136',['log',['../namespacealpaka.html#a512283aaade3fb1f8c8be26870c33cdf',1,'alpaka::log()'],['../namespacealpaka_1_1math.html#af697280cd49cb87e757965cecf5bfcb5',1,'alpaka::math::log()']]],
   ['log10_4137',['log10',['../namespacealpaka.html#aeb529e37fbca6cd64bdcc0f89031697d',1,'alpaka::log10()'],['../namespacealpaka_1_1math.html#a63e794a800776397a11cf35310626250',1,'alpaka::math::log10(T const &amp;log10_ctx, TArg const &amp;arg)']]],
   ['log2_4138',['log2',['../namespacealpaka_1_1math.html#a860ad56456e1868026f833d9168cc5ce',1,'alpaka::math']]],
-  ['low32bits_4139',['low32Bits',['../namespacealpaka_1_1rand.html#a27924e14b2e5aa8a3213f77c3bd70ef8',1,'alpaka::rand']]],
+  ['low32bits_4139',['low32Bits',['../namespacealpaka_1_1rand.html#a29a41556da38e0bd58c3443ed3de8523',1,'alpaka::rand']]],
   ['lround_4140',['lround',['../namespacealpaka_1_1math.html#aab46c7252772bedb6798b33155240936',1,'alpaka::math']]]
 ];
