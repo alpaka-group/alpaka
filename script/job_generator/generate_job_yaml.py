@@ -335,7 +335,8 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     if job[DEVICE_COMPILER][NAME] == HIPCC:
         variables["CC"] = "clang"
         variables["CXX"] = "clang++"
-        variables["GPU_TARGETS"] = "${CI_GPU_ARCH}"
+        variables["CMAKE_HIP_COMPILER"] = "clang++"
+        variables["CMAKE_HIP_ARCHITECTURES"] = "${CI_GPU_ARCH}"
         # TODO(SimeonEhrig) check, if we can remove this variable:
         if job[DEVICE_COMPILER][VERSION] == "5.0":
             variables["ALPAKA_CI_CLANG_VER"] = "14"

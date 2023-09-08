@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
+include(CheckLanguage) # check for CUDA/HIP language support
 include(CMakePrintHelpers) # for easier printing of variables and properties
 include(CMakeDependentOption) # Make options depend on other options
 
@@ -357,7 +358,7 @@ endif()
 if(alpaka_ACC_GPU_CUDA_ENABLE)
     # Save the user-defined host compiler (if any)
     set(_alpaka_CUDA_HOST_COMPILER ${CMAKE_CUDA_HOST_COMPILER})
-    include(CheckLanguage)
+    
     check_language(CUDA)
 
     if(CMAKE_CUDA_COMPILER)
@@ -506,31 +507,20 @@ endif()
 # Find HIP.
 if(alpaka_ACC_GPU_HIP_ENABLE)
 
-    # supported HIP version range
-    set(_alpaka_HIP_MIN_VER 5.0)
-    set(_alpaka_HIP_MAX_VER 5.7)
-    set(_alpaka_HIP_NEXT_MAJOR_MIN_VER 6.0)
+    check_language(HIP)
 
-    find_package(hip "${_alpaka_HIP_MIN_VER}...${_alpaka_HIP_MAX_VER}")
-
-    if(NOT TARGET hip)
-        message(WARNING "Could not find HIP <=v${_alpaka_HIP_MAX_VER}. Now searching for unsupported HIP >v${_alpaka_HIP_MAX_VER}")
-        find_package(hip "${_alpaka_HIP_MAX_VER}")
-        if(NOT TARGET hip)
-            message(WARNING "Could not find HIP >=v${_alpaka_HIP_MAX_VER}. Now searching for unsupported HIP >v${_alpaka_HIP_NEXT_MAJOR_MIN_VER}")
-            find_package(hip "${_alpaka_HIP_NEXT_MAJOR_MIN_VER}")
-        endif()
-    endif()
-
-    if(NOT TARGET hip)
-        message(FATAL_ERROR "Optional alpaka dependency HIP could not be found!")
-    else()
-        target_link_libraries(alpaka INTERFACE hip::host hip::device)
+    if(CMAKE_HIP_COMPILER)
+        enable_language(HIP)
+        find_package(hip REQUIRED)
+        target_link_libraries(alpaka INTERFACE "$<$<LINK_LANGUAGE:CXX>:hip::host")
 
         alpaka_compiler_option(HIP_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" OFF)
+        if(alpaka_HIP_KEEP_FILES)
+            alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-save-temps>")
+        endif()
 
-        if(alpaka_FAST_MATH STREQUAL ON)
-            alpaka_set_compiler_options(DEVICE target alpaka "-ffast-math")
+        if(alpaka_FAST_MATH)
+            alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-ffast-math>")
         endif()
 
         if(NOT alpaka_DISABLE_VENDOR_RNG)
@@ -557,17 +547,13 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
         endif()
 
         if(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL ON)
-            alpaka_set_compiler_options(DEVICE target alpaka "-fgpu-rdc")
-            target_link_options(alpaka INTERFACE "-fgpu-rdc" "--hip-link")
+            alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL-fgpu-rdc>")
+            target_link_options(alpaka INTERFACE "$<$<LINK_LANGUAGE:HIP>:SHELL:-fgpu-rdc --hip-link>")
         elseif(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL OFF)
-            alpaka_set_compiler_options(DEVICE target alpaka "-fno-gpu-rdc")
+            alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-fno-gpu-rdc>")
         endif()
-
-        alpaka_set_compiler_options(HOST_DEVICE target alpaka -std=c++${alpaka_CXX_STANDARD})
-
-        if(alpaka_HIP_KEEP_FILES STREQUAL ON)
-            alpaka_set_compiler_options(HOST_DEVICE target alpaka -save-temps)
-        endif()
+    else()
+        message(FATAL_ERROR "Optional alpaka dependency HIP could not be found!")
     endif()
 endif() # HIP
 
