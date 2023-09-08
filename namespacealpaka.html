@@ -853,14 +853,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAlloc &gt; </td></tr>
 <tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">malloc</a> (TAlloc const &amp;alloc, std::size_t const &amp;sizeElems) -&gt; T *</td></tr>
 <tr class="separator:a30687ca1eaba239c74afd1bb2f26831c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af498aa377b6512269907da289680aa80"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, std::size_t TidxDimExtents, typename TElem &gt; </td></tr>
-<tr class="memitem:af498aa377b6512269907da289680aa80"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af498aa377b6512269907da289680aa80">mapIdx</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimExtents &gt;, TElem &gt; const &amp;extent) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
-<tr class="memdesc:af498aa377b6512269907da289680aa80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="namespacealpaka.html#af498aa377b6512269907da289680aa80">More...</a><br /></td></tr>
-<tr class="separator:af498aa377b6512269907da289680aa80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a468a18f6893809e590a2f46760bc240a"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, std::size_t TidxDimPitch, typename TElem &gt; </td></tr>
-<tr class="memitem:a468a18f6893809e590a2f46760bc240a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a468a18f6893809e590a2f46760bc240a">mapIdxPitchBytes</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimPitch &gt;, TElem &gt; const &amp;pitch) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
-<tr class="memdesc:a468a18f6893809e590a2f46760bc240a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an N dimensional index to a N dimensional position based on pitch in a buffer without padding or a byte buffer.  <a href="namespacealpaka.html#a468a18f6893809e590a2f46760bc240a">More...</a><br /></td></tr>
-<tr class="separator:a468a18f6893809e590a2f46760bc240a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a675e9f010dd8e9d3389dd17475efc804"><td class="memTemplParams" colspan="2">template&lt;std::size_t TDimOut, std::size_t TDimIn, std::size_t TDimExtents, typename TElem &gt; </td></tr>
+<tr class="memitem:a675e9f010dd8e9d3389dd17475efc804"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a675e9f010dd8e9d3389dd17475efc804">mapIdx</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimIn &gt;, TElem &gt; const &amp;in, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimExtents &gt;, TElem &gt; const &amp;extent) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimOut &gt;, TElem &gt;</td></tr>
+<tr class="memdesc:a675e9f010dd8e9d3389dd17475efc804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an N-dimensional index to an N-dimensional position. At least one dimension must always be 1 or zero.  <a href="namespacealpaka.html#a675e9f010dd8e9d3389dd17475efc804">More...</a><br /></td></tr>
+<tr class="separator:a675e9f010dd8e9d3389dd17475efc804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8020a38667511010d65ab4e322100b5d"><td class="memTemplParams" colspan="2">template&lt;std::size_t TDimOut, std::size_t TDimIn, std::size_t TidxDimPitch, typename TElem &gt; </td></tr>
+<tr class="memitem:a8020a38667511010d65ab4e322100b5d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8020a38667511010d65ab4e322100b5d">mapIdxPitchBytes</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimIn &gt;, TElem &gt; const &amp;in, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimPitch &gt;, TElem &gt; const &amp;pitches) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimOut &gt;, TElem &gt;</td></tr>
+<tr class="memdesc:a8020a38667511010d65ab4e322100b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an N dimensional index to a N dimensional position based on the pitches of a view without padding or a byte view. At least one dimension must always be 1 or zero.  <a href="namespacealpaka.html#a8020a38667511010d65ab4e322100b5d">More...</a><br /></td></tr>
+<tr class="separator:a8020a38667511010d65ab4e322100b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a1c027320c9d7a10df1ae7bc87fcb46"><td class="memTemplParams" colspan="2">template&lt;typename TMemFence , typename TMemScope &gt; </td></tr>
 <tr class="memitem:a8a1c027320c9d7a10df1ae7bc87fcb46"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8a1c027320c9d7a10df1ae7bc87fcb46">mem_fence</a> (TMemFence const &amp;fence, TMemScope const &amp;scope) -&gt; void</td></tr>
 <tr class="memdesc:a8a1c027320c9d7a10df1ae7bc87fcb46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Issues memory fence instructions.  <a href="namespacealpaka.html#a8a1c027320c9d7a10df1ae7bc87fcb46">More...</a><br /></td></tr>
@@ -5854,89 +5854,99 @@ template&lt;typename T , typename TAlloc &gt; </div>
 
 </div>
 </div>
-<a id="af498aa377b6512269907da289680aa80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af498aa377b6512269907da289680aa80">&#9670;&nbsp;</a></span>mapIdx()</h2>
+<a id="a675e9f010dd8e9d3389dd17475efc804"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a675e9f010dd8e9d3389dd17475efc804">&#9670;&nbsp;</a></span>mapIdx()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, std::size_t TidxDimExtents, typename TElem &gt; </div>
+template&lt;std::size_t TDimOut, std::size_t TDimIn, std::size_t TDimExtents, typename TElem &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::mapIdx </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>idx</em>, </td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimIn &gt;, TElem &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimExtents &gt;, TElem &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimExtents &gt;, TElem &gt; const &amp;&#160;</td>
           <td class="paramname"><em>extent</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt;TidxDimOut&gt;, TElem&gt;
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt;TDimOut&gt;, TElem&gt;
     </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Maps a N dimensional index to a N dimensional position. </p>
+<p>Maps an N-dimensional index to an N-dimensional position. At least one dimension must always be 1 or zero. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">TidxDimOut</td><td>Dimension of the index vector to map to. </td></tr>
-    <tr><td class="paramname">TidxDimIn</td><td>Dimension of the index vector to map from. </td></tr>
-    <tr><td class="paramname">TElem</td><td>Type of the elements of the index vector to map from. </td></tr>
+    <tr><td class="paramname">TDimOut</td><td>Dimension of the index vector to map to. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The index vector to map from. </td></tr>
+    <tr><td class="paramname">extent</td><td>The extents of the input or output space, whichever has more than 1 dimensions. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00131">131</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00025">25</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a468a18f6893809e590a2f46760bc240a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a468a18f6893809e590a2f46760bc240a">&#9670;&nbsp;</a></span>mapIdxPitchBytes()</h2>
+<a id="a8020a38667511010d65ab4e322100b5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8020a38667511010d65ab4e322100b5d">&#9670;&nbsp;</a></span>mapIdxPitchBytes()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, std::size_t TidxDimPitch, typename TElem &gt; </div>
+template&lt;std::size_t TDimOut, std::size_t TDimIn, std::size_t TidxDimPitch, typename TElem &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::mapIdxPitchBytes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>idx</em>, </td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TDimIn &gt;, TElem &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt; TidxDimPitch &gt;, TElem &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>pitch</em>&#160;</td>
+          <td class="paramname"><em>pitches</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt;TidxDimOut&gt;, TElem&gt;
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt</a>&lt;TDimOut&gt;, TElem&gt;
     </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Maps an N dimensional index to a N dimensional position based on pitch in a buffer without padding or a byte buffer. </p>
+<p>Maps an N dimensional index to a N dimensional position based on the pitches of a view without padding or a byte view. At least one dimension must always be 1 or zero. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">TidxDimOut</td><td>Dimension of the index vector to map to. </td></tr>
-    <tr><td class="paramname">TidxDimIn</td><td>Dimension of the index vector to map from. </td></tr>
-    <tr><td class="paramname">TElem</td><td>Type of the elements of the index vector to map from. </td></tr>
+    <tr><td class="paramname">TDimOut</td><td>Dimension of the index vector to map to. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The index vector to map from. </td></tr>
+    <tr><td class="paramname">pitches</td><td>The pitches of the input or output space, whichever has more than 1 dimensions. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00242">242</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00063">63</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
 
 </div>
 </div>
@@ -8307,7 +8317,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Thu Sep 7 2023 14:48:02 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 8 2023 06:50:48 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

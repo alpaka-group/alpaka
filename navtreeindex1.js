@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"DependentFalseType_8hpp.html":[4,0,0,0,15,4],
 "DependentFalseType_8hpp_source.html":[4,0,0,0,15,4],
 "DevCpuSycl_8hpp.html":[4,0,0,0,4,3],
 "DevCpuSycl_8hpp_source.html":[4,0,0,0,4,3],
@@ -158,8 +157,8 @@ var NAVTREEINDEX1 =
 "KernelExecutionFixture_8hpp.html":[4,0,0,0,21,9],
 "KernelExecutionFixture_8hpp_source.html":[4,0,0,0,21,9],
 "MapIdx_8hpp.html":[4,0,0,0,10,3],
-"MapIdx_8hpp.html#a468a18f6893809e590a2f46760bc240a":[4,0,0,0,10,3,11],
-"MapIdx_8hpp.html#af498aa377b6512269907da289680aa80":[4,0,0,0,10,3,10],
+"MapIdx_8hpp.html#a675e9f010dd8e9d3389dd17475efc804":[4,0,0,0,10,3,0],
+"MapIdx_8hpp.html#a8020a38667511010d65ab4e322100b5d":[4,0,0,0,10,3,1],
 "MapIdx_8hpp_source.html":[4,0,0,0,10,3],
 "MathGenericSycl_8hpp.html":[4,0,0,0,13,2],
 "MathGenericSycl_8hpp_source.html":[4,0,0,0,13,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "Properties_8hpp_source.html":[4,0,0,0,18,3],
 "QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
-"QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5]
+"QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
+"QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5]
 };
