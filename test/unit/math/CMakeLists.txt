@@ -23,12 +23,6 @@ target_include_directories(
 target_link_libraries(
     ${_TARGET_NAME}
     PRIVATE common)
-target_compile_options(
-    ${_TARGET_NAME}
-    PRIVATE
-    # ffp-contract: https://llvm.org/docs/CompileCudaWithLLVM.html#flags-that-control-numerical-code
-    "$<$<COMPILE_LANG_AND_ID:CUDA,AppleClang,Clang,IntelLLVM>:SHELL:-ffp-contract=off>"
-    )
 
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
 target_compile_definitions(${_TARGET_NAME} PRIVATE "-DTEST_UNIT_MATH")
