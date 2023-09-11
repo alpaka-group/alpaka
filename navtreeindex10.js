@@ -1,6 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1TagFpgaSyclIntel.html#ad99868a5e100a239473d7b1fa2a64fa2":[3,0,0,99,0],
 "structalpaka_1_1TagGenericSycl.html":[3,0,0,100],
 "structalpaka_1_1TagGenericSycl.html#a8208407cd2b4d7de6be4b20a7319b4df":[3,0,0,100,0],
 "structalpaka_1_1TagGpuCudaRt.html":[3,0,0,101],
@@ -249,5 +248,6 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1ConceptMathAbs.html":[3,0,0,9,23],
 "structalpaka_1_1math_1_1ConceptMathAcos.html":[3,0,0,9,24],
 "structalpaka_1_1math_1_1ConceptMathAcosh.html":[3,0,0,9,25],
-"structalpaka_1_1math_1_1ConceptMathArg.html":[3,0,0,9,26]
+"structalpaka_1_1math_1_1ConceptMathArg.html":[3,0,0,9,26],
+"structalpaka_1_1math_1_1ConceptMathAsin.html":[3,0,0,9,27]
 };
