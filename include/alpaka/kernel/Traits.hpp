@@ -222,7 +222,7 @@ namespace alpaka
         inline void assertKernelArgIsTriviallyCopyable()
         {
             static_assert(
-                std::is_empty<T> || std::is_trivially_copyable_v<T>,
+                std::is_empty_v<T> || std::is_trivially_copyable_v<T>,
                 "The kernel argument T must be trivially copyable!");
         }
 
