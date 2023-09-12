@@ -222,6 +222,8 @@ namespace alpaka
         inline void assertKernelArgIsTriviallyCopyable()
         {
             static_assert(
+                // it's implementation defined whether the closure type of a lambda is trivially copyable. But they
+                // should be at least empty then (stateless).
                 std::is_empty_v<T> || std::is_trivially_copyable_v<T>,
                 "The kernel argument T must be trivially copyable!");
         }
