@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
+#include "alpaka/core/Unreachable.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/meta/Fold.hpp"
@@ -97,6 +98,8 @@ namespace alpaka
             return getExtents(extent)[Dim<TExtent>::value - 1u];
         else
             return 1;
+
+        ALPAKA_UNREACHABLE({});
     }
 
     //! \return The height.
@@ -108,6 +111,8 @@ namespace alpaka
             return getExtents(extent)[Dim<TExtent>::value - 2u];
         else
             return 1;
+
+        ALPAKA_UNREACHABLE({});
     }
 
     //! \return The depth.
@@ -119,6 +124,8 @@ namespace alpaka
             return getExtents(extent)[Dim<TExtent>::value - 3u];
         else
             return 1;
+
+        ALPAKA_UNREACHABLE({});
     }
 
     //! \return The product of the extents of the given object.
