@@ -45,8 +45,6 @@ struct TestContainer
     DevHost devHost{alpaka::getDevByIdx(platformHost, 0u)};
     DevQueue devQueue{devAcc};
 
-    TestContainer() = default;
-
     auto createHostBuffer(Vec extents, bool indexed) -> BufHost
     {
         BufHost bufHost(alpaka::allocBuf<TData, TIdx>(devHost, extents));
