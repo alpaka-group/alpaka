@@ -1,4 +1,4 @@
-/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Jakob Krude, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Jakob Krude, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -20,6 +20,12 @@
 template<typename TDim, typename TIdx, typename TAcc, typename TData, typename Vec = alpaka::Vec<TDim, TIdx>>
 struct TestContainer
 {
+#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
+    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
+// g++-11 (wrongly) believes that platformHost is used in an uninitialized state.
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
     using AccQueueProperty = alpaka::Blocking;
     using DevQueue = alpaka::Queue<TAcc, AccQueueProperty>;
     using DevAcc = alpaka::Dev<TAcc>;
@@ -33,19 +39,13 @@ struct TestContainer
 
     using SubView = alpaka::ViewSubView<DevAcc, TData, TDim, TIdx>;
 
-    PlatformAcc const platformAcc{};
-    DevAcc const devAcc;
-    PlatformHost const platformHost{};
-    DevHost const devHost;
-    DevQueue devQueue;
+    PlatformAcc platformAcc{};
+    DevAcc devAcc{alpaka::getDevByIdx(platformAcc, 0)};
+    PlatformHost platformHost{};
+    DevHost devHost{alpaka::getDevByIdx(platformHost, 0u)};
+    DevQueue devQueue{devAcc};
 
-    // Constructor
-    TestContainer()
-        : devAcc(alpaka::getDevByIdx(platformAcc, 0))
-        , devHost(alpaka::getDevByIdx(platformHost, 0u))
-        , devQueue(devAcc)
-    {
-    }
+    TestContainer() = default;
 
     auto createHostBuffer(Vec extents, bool indexed) -> BufHost
     {
@@ -108,6 +108,10 @@ struct TestContainer
             REQUIRE(ptrA[i] == Catch::Approx(ptrB[i]));
         }
     }
+#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
+    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
+#    pragma GCC diagnostic pop
+#endif
 };
 
 using DataTypes = std::tuple<int, float, double>;
