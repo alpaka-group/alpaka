@@ -62,6 +62,7 @@ var namespacealpaka_1_1detail =
     [ "IsOmpScheduleTraitSpecialized", "namespacealpaka_1_1detail.html#a6b4a2d062279ca9b90a390b97b8c260b", null ],
     [ "UseScheduleKind", "namespacealpaka_1_1detail.html#aa4d5063ec3f3e7b763fc5fc02617e8f5", null ],
     [ "allDivisorsLessOrEqual", "namespacealpaka_1_1detail.html#ab1d31914161c1f5c4cf6f71e7d1bfe50", null ],
+    [ "assertKernelArgIsTriviallyCopyable", "namespacealpaka_1_1detail.html#ab69b48b973a42833a0aafb65f098d0b5", null ],
     [ "calculatePitchesFromExtents", "namespacealpaka_1_1detail.html#a3b07818baa764a1d6df4fe203143a038", null ],
     [ "ffsFallback", "namespacealpaka_1_1detail.html#adceeaf4e5d3925a71381d74cd1e78bad", null ],
     [ "gpuKernel", "namespacealpaka_1_1detail.html#a64053dbfaaaefdf2572ec83b38b30623", null ],
