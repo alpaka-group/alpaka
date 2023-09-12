@@ -35,7 +35,7 @@ var searchData=
   ['queueimpl_1913',['QueueImpl',['../structalpaka_1_1trait_1_1Enqueue_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRt_3_01T9dbb58e551c44567a74899d54e5680a4.html#a46e4a4f91c197ee5da23d41669a60f9b',1,'alpaka::trait::Enqueue&lt; uniform_cuda_hip::detail::QueueUniformCudaHipRt&lt; TApi, TBlocking &gt;, TTask &gt;']]],
   ['queueregistry_1914',['QueueRegistry',['../structalpaka_1_1detail_1_1QueueRegistry.html',1,'alpaka::detail']]],
   ['queueregistry_2ehpp_1915',['QueueRegistry.hpp',['../QueueRegistry_8hpp.html',1,'']]],
-  ['queuetestfixture_1916',['QueueTestFixture',['../structalpaka_1_1test_1_1QueueTestFixture.html',1,'alpaka::test::QueueTestFixture&lt; TDevQueue &gt;'],['../structalpaka_1_1test_1_1QueueTestFixture.html#ae7e4406a653bd5fc2e6625c5e39c5637',1,'alpaka::test::QueueTestFixture::QueueTestFixture()']]],
+  ['queuetestfixture_1916',['QueueTestFixture',['../structalpaka_1_1test_1_1QueueTestFixture.html',1,'alpaka::test::QueueTestFixture&lt; TDevQueue &gt;'],['../structalpaka_1_1test_1_1QueueTestFixture.html#acee9eb3a153cf9d0ca96fded0f39f712',1,'alpaka::test::QueueTestFixture::QueueTestFixture()']]],
   ['queuetestfixture_2ehpp_1917',['QueueTestFixture.hpp',['../QueueTestFixture_8hpp.html',1,'']]],
   ['queuetype_1918',['QueueType',['../structalpaka_1_1trait_1_1QueueType.html',1,'alpaka::trait']]],
   ['queuetype_3c_20devcpu_2c_20blocking_20_3e_1919',['QueueType&lt; DevCpu, Blocking &gt;',['../structalpaka_1_1trait_1_1QueueType_3_01DevCpu_00_01Blocking_01_4.html',1,'alpaka::trait']]],
