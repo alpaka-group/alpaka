@@ -22,8 +22,6 @@ namespace alpaka::test
         using Queue = std::tuple_element_t<1, TDevQueue>;
         using Platform = alpaka::Platform<Dev>;
 
-        QueueTestFixture() = default;
-
         Platform m_platform{};
         Dev m_dev{getDevByIdx(m_platform, 0)};
         Queue m_queue{m_dev};
