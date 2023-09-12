@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/Common.hpp"
+#include "alpaka/core/Unreachable.hpp"
 #include "alpaka/vec/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
 
@@ -50,6 +51,8 @@ namespace alpaka
         }
         else
             static_assert(!sizeof(TElem), "Not implemented");
+
+        ALPAKA_UNREACHABLE({});
     }
 
     //! Maps an N dimensional index to a N dimensional position based on the pitches of a view without padding or a
@@ -89,5 +92,7 @@ namespace alpaka
         }
         else
             static_assert(!sizeof(TElem), "Not implemented");
+
+        ALPAKA_UNREACHABLE({});
     }
 } // namespace alpaka
