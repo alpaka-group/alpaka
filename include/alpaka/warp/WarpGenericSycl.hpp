@@ -49,16 +49,22 @@ namespace alpaka::warp::trait
         // Restrict to warpSize <= 32 for now.
         static auto activemask(warp::WarpGenericSycl<TDim> const& warp) -> std::uint32_t
         {
-            // SYCL has no way of querying this. Since sub-group functions have to be executed in convergent code
-            // regions anyway we return the full mask.
-            auto const sub_group = warp.m_item_warp.get_sub_group();
-            auto const mask = sycl::ext::oneapi::group_ballot(sub_group, true);
-            // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
-            // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
-            // Restrict to warpSize <= 32 for now.
-            std::uint32_t bits = 0;
-            mask.extract_bits(bits);
-            return bits;
+            static_assert(!sizeof(warp), "activemask is not supported on SYCL");
+            // SYCL does not have an API to get the activemask. It is also questionable (to me, bgruber) whether an
+            // "activemask" even exists on some hardware architectures, since the idea is bound to threads being
+            // "turned off" when they take different control flow in a warp. A SYCL implementation could run each
+            // thread as a SIMD lane, in which cause the "thread" is always active, but some SIMD lanes are either
+            // predicated off, or side-effects are masked out when writing them back.
+            //
+            // An implementation via oneAPI's sycl::ext::oneapi::group_ballot causes UB, because activemask is expected
+            // to be callable when less than all threads are active in a warp (CUDA). But SYCL requires all threads of
+            // a group to call the function.
+            //
+            // Intel's CUDA -> SYCL migration tool also suggests that there is no direct equivalent and the user must
+            // rewrite their kernel logic. See also:
+            // https://oneapi-src.github.io/SYCLomatic/dev_guide/diagnostic_ref/dpct1086.html
+
+            return ~std::uint32_t{0};
         }
     };
 
