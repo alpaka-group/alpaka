@@ -146,9 +146,15 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Inte
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-extra-semi-stmt")
 
     # Silence warnings caused by nvcc-generated code and -Weverything
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-reserved-id-macro>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-missing-noreturn>")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-missing-variable-declarations>")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-old-style-cast>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-overlength-strings>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-reserved-identifier>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-reserved-id-macro>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-unused-macros>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-used-but-marked-unused>")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler -Wno-zero-as-null-pointer-constant>")
 
     if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12.0)
         list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-poison-system-directories")
