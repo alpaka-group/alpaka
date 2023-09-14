@@ -62,10 +62,7 @@ namespace alpaka
                     // Constructor needs to initialize all Buffer.
                     Buffer(DevAcc const& devAcc)
                         : devHost{alpaka::getDevByIdx(platformHost, 0)}
-                        , hostBuffer{alpaka::allocMappedBufIfSupported<PlatformAcc, TData, Idx>(
-                              devHost,
-                              platformAcc,
-                              Tcapacity)}
+                        , hostBuffer{alpaka::allocMappedBufIfSupported<TData, Idx>(devHost, platformAcc, Tcapacity)}
                         , devBuffer{alpaka::allocBuf<TData, Idx>(devAcc, Tcapacity)}
                         , pHostBuffer{alpaka::getPtrNative(hostBuffer)}
                         , pDevBuffer{alpaka::getPtrNative(devBuffer)}
