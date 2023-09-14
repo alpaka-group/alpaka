@@ -50,6 +50,10 @@ namespace alpaka
 {
     namespace detail
     {
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic push
+#            pragma clang diagnostic ignored "-Wunused-template"
+#        endif
         //! The GPU CUDA/HIP kernel entry point.
         // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
         // We have put the function into a shallow namespace and gave it a short name, so the mangled name in the
@@ -74,6 +78,9 @@ namespace alpaka
 #        endif
             kernelFnObj(const_cast<TAcc const&>(acc), args...);
         }
+#        if BOOST_COMP_CLANG
+#            pragma clang diagnostic pop
+#        endif
     } // namespace detail
 
     namespace uniform_cuda_hip
