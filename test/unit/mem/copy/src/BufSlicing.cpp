@@ -20,12 +20,6 @@
 template<typename TDim, typename TIdx, typename TAcc, typename TData, typename Vec = alpaka::Vec<TDim, TIdx>>
 struct TestContainer
 {
-#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
-    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
-// g++-11 (wrongly) believes that platformHost is used in an uninitialized state.
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#endif
     using AccQueueProperty = alpaka::Blocking;
     using DevQueue = alpaka::Queue<TAcc, AccQueueProperty>;
     using DevAcc = alpaka::Dev<TAcc>;
@@ -106,10 +100,6 @@ struct TestContainer
             REQUIRE(ptrA[i] == Catch::Approx(ptrB[i]));
         }
     }
-#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
-    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
-#    pragma GCC diagnostic pop
-#endif
 };
 
 using DataTypes = std::tuple<int, float, double>;
