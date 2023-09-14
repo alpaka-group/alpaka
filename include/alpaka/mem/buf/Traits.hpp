@@ -164,14 +164,14 @@ namespace alpaka
     //! this function is provided for convenience in the cases where the difference is not relevant,
     //! and the pinned/mapped memory is only used as a performance optimisation.
     //!
-    //! \tparam TPlatform The platform from which the buffer is accessible.
     //! \tparam TElem The element type of the returned buffer.
     //! \tparam TIdx The linear index type of the buffer.
     //! \tparam TExtent The extent type of the buffer.
+    //! \tparam TPlatform The platform from which the buffer is accessible.
     //! \param host The host device to allocate the buffer on.
     //! \param extent The extent of the buffer.
     //! \return The newly allocated buffer.
-    template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
+    template<typename TElem, typename TIdx, typename TExtent, typename TPlatform>
     ALPAKA_FN_HOST auto allocMappedBufIfSupported(
         DevCpu const& host,
         TPlatform const& platform,
