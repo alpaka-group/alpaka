@@ -253,14 +253,14 @@ $(document).ready(function(){initNavTree('mem_2buf_2Traits_8hpp_source.html','')
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    //! this function is provided for convenience in the cases where the difference is not relevant,</span></div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">    //! and the pinned/mapped memory is only used as a performance optimisation.</span></div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    //! \tparam TPlatform The platform from which the buffer is accessible.</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">    //! \tparam TElem The element type of the returned buffer.</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    //! \tparam TIdx The linear index type of the buffer.</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    //! \tparam TExtent The extent type of the buffer.</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    //! \tparam TElem The element type of the returned buffer.</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">    //! \tparam TIdx The linear index type of the buffer.</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    //! \tparam TExtent The extent type of the buffer.</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    //! \tparam TPlatform The platform from which the buffer is accessible.</span></div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">    //! \param host The host device to allocate the buffer on.</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">    //! \param extent The extent of the buffer.</span></div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    //! \return The newly allocated buffer.</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPlatform, <span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TExtent&gt;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TElem, <span class="keyword">typename</span> TIdx, <span class="keyword">typename</span> TExtent, <span class="keyword">typename</span> TPlatform&gt;</div>
 <div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="namespacealpaka.html#aaf22f873dbc3540ac101569e8637f25f">  175</a></span>&#160;    <a class="code" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#aaf22f873dbc3540ac101569e8637f25f">allocMappedBufIfSupported</a>(</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a> <span class="keyword">const</span>&amp; host,</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        TPlatform <span class="keyword">const</span>&amp; platform,</div>
@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('mem_2buf_2Traits_8hpp_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed Sep 13 2023 19:49:29 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Sep 14 2023 22:51:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
