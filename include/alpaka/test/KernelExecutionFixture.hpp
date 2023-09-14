@@ -25,13 +25,6 @@ namespace alpaka::test
     template<typename TAcc>
     class KernelExecutionFixture
     {
-#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
-    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
-// g++-11 (wrongly) believes that m_platformHost is used in an uninitialized state.
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#endif
-
     public:
         using Acc = TAcc;
         using Dim = alpaka::Dim<Acc>;
@@ -82,9 +75,5 @@ namespace alpaka::test
         Device m_device{getDevByIdx(m_platform, 0)};
         Queue m_queue{m_device};
         WorkDiv m_workDiv;
-#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
-    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
-#    pragma GCC diagnostic pop
-#endif
     };
 } // namespace alpaka::test
