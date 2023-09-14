@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/BoostPredef.hpp"
+#include "alpaka/core/Unreachable.hpp"
 #include "alpaka/intrinsic/IntrinsicFallback.hpp"
 #include "alpaka/intrinsic/Traits.hpp"
 
@@ -52,6 +53,7 @@ namespace alpaka
                 // Fallback to standard library
                 return static_cast<std::int32_t>(std::bitset<sizeof(UnsignedIntegral) * CHAR_BIT>(value).count());
 #endif
+                ALPAKA_UNREACHABLE(0);
             }
         };
 
@@ -79,6 +81,7 @@ namespace alpaka
 #else
                 return alpaka::detail::ffsFallback(value);
 #endif
+                ALPAKA_UNREACHABLE(0);
             }
         };
     } // namespace trait
