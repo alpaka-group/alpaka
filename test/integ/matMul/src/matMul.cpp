@@ -162,8 +162,6 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
 
     using Val = std::uint32_t;
     using Vec2 = alpaka::Vec<Dim, Idx>;
-    using DevAcc = alpaka::Dev<Acc>;
-    using PlatformAcc = alpaka::Platform<DevAcc>;
     using QueueAcc = alpaka::test::DefaultQueue<alpaka::Dev<Acc>>;
     using QueueHost = alpaka::QueueCpuNonBlocking;
 
