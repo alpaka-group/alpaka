@@ -123,6 +123,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Walloc-zero")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Walloca")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wcast-align=strict")
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler -Wno-unused-value>") # occurs in nvcc-generated code
 endif()
 
 # Clang, AppleClang, ICPX
