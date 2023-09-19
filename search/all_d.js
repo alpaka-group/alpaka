@@ -147,6 +147,6 @@ var searchData=
   ['minuniformcudahipbuiltin_1700',['MinUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1MinUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
   ['multipliter_5f4x32_5f0_1701',['MULTIPLITER_4x32_0',['../classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#ac359a3cabbf1c16a7052e65430cdfd0f',1,'alpaka::rand::engine::PhiloxConstants']]],
   ['multipliter_5f4x32_5f1_1702',['MULTIPLITER_4x32_1',['../classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a79cd12fa4232d4e749242202ab229eea',1,'alpaka::rand::engine::PhiloxConstants']]],
-  ['multiplyandsplit64to32_1703',['multiplyAndSplit64to32',['../namespacealpaka_1_1rand.html#a7dee3cd95537c8c2d0c72ee38d4255d6',1,'alpaka::rand']]],
+  ['multiplyandsplit64to32_1703',['multiplyAndSplit64to32',['../namespacealpaka_1_1rand.html#a0eb1ae99725265b1fdd38048e3a69666',1,'alpaka::rand']]],
   ['multiplyandsplit64to32_2ehpp_1704',['MultiplyAndSplit64to32.hpp',['../MultiplyAndSplit64to32_8hpp.html',1,'']]]
 ];

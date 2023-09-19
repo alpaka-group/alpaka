@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['high32bits_4106',['high32Bits',['../namespacealpaka_1_1rand.html#a4af6e6abe6bf85dcceb33de88168a1fc',1,'alpaka::rand']]],
+  ['high32bits_4106',['high32Bits',['../namespacealpaka_1_1rand.html#a66ceaea1b604b015a8398938bea1268b',1,'alpaka::rand']]],
   ['hostfree_4107',['hostFree',['../structalpaka_1_1ApiCudaRt.html#a52883cb2a35bedf75db003e693834f23',1,'alpaka::ApiCudaRt']]],
   ['hostfunction_4108',['hostFunction',['../structalpaka_1_1ApiCudaRt_1_1HostFnAdaptor.html#ae0a1602dd50ae9976f33d701a12ba701',1,'alpaka::ApiCudaRt::HostFnAdaptor']]],
   ['hostgetdevicepointer_4109',['hostGetDevicePointer',['../structalpaka_1_1ApiCudaRt.html#a7286886bff8cdb11108cd591e343c635',1,'alpaka::ApiCudaRt']]],

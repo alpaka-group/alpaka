@@ -28,5 +28,5 @@ var searchData=
   ['minelem_4168',['minElem',['../classalpaka_1_1Vec.html#a2da81d997cdcdbf9bdbfdd797f7aad30',1,'alpaka::Vec']]],
   ['multipliter_5f4x32_5f0_4169',['MULTIPLITER_4x32_0',['../classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#ac359a3cabbf1c16a7052e65430cdfd0f',1,'alpaka::rand::engine::PhiloxConstants']]],
   ['multipliter_5f4x32_5f1_4170',['MULTIPLITER_4x32_1',['../classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a79cd12fa4232d4e749242202ab229eea',1,'alpaka::rand::engine::PhiloxConstants']]],
-  ['multiplyandsplit64to32_4171',['multiplyAndSplit64to32',['../namespacealpaka_1_1rand.html#a7dee3cd95537c8c2d0c72ee38d4255d6',1,'alpaka::rand']]]
+  ['multiplyandsplit64to32_4171',['multiplyAndSplit64to32',['../namespacealpaka_1_1rand.html#a0eb1ae99725265b1fdd38048e3a69666',1,'alpaka::rand']]]
 ];

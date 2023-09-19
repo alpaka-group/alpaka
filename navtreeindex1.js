@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"DependentFalseType_8hpp.html":[4,0,0,0,15,4],
 "DependentFalseType_8hpp_source.html":[4,0,0,0,15,4],
 "DevCpuSycl_8hpp.html":[4,0,0,0,4,3],
 "DevCpuSycl_8hpp_source.html":[4,0,0,0,4,3],
@@ -183,9 +184,9 @@ var NAVTREEINDEX1 =
 "MemFenceUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,14,2,5],
 "MemFenceUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,14,2,5],
 "MultiplyAndSplit64to32_8hpp.html":[4,0,0,0,19,0,0],
-"MultiplyAndSplit64to32_8hpp.html#a29a41556da38e0bd58c3443ed3de8523":[4,0,0,0,19,0,0,1],
-"MultiplyAndSplit64to32_8hpp.html#a4af6e6abe6bf85dcceb33de88168a1fc":[4,0,0,0,19,0,0,0],
-"MultiplyAndSplit64to32_8hpp.html#a7dee3cd95537c8c2d0c72ee38d4255d6":[4,0,0,0,19,0,0,2],
+"MultiplyAndSplit64to32_8hpp.html#a0eb1ae99725265b1fdd38048e3a69666":[4,0,0,0,19,0,0,2],
+"MultiplyAndSplit64to32_8hpp.html#a66ceaea1b604b015a8398938bea1268b":[4,0,0,0,19,0,0,0],
+"MultiplyAndSplit64to32_8hpp.html#aa4ff2b4b6d2fa337d88f656408e136d8":[4,0,0,0,19,0,0,1],
 "MultiplyAndSplit64to32_8hpp_source.html":[4,0,0,0,19,0,0],
 "NdLoop_8hpp.html":[4,0,0,0,15,14],
 "NdLoop_8hpp.html#a506c39189d46d44efa87e74169f88c22":[4,0,0,0,15,14,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "Properties_8hpp_source.html":[4,0,0,0,18,3],
 "QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
-"QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
-"QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5]
+"QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5]
 };

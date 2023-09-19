@@ -9,7 +9,7 @@ var searchData=
   ['hasmappedbufsupport_3c_20platformcpu_20_3e_1181',['HasMappedBufSupport&lt; PlatformCpu &gt;',['../structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PlatformCpu_01_4.html',1,'alpaka::trait']]],
   ['hasmappedbufsupport_3c_20platformuniformcudahiprt_3c_20tapi_20_3e_20_3e_1182',['HasMappedBufSupport&lt; PlatformUniformCudaHipRt&lt; TApi &gt; &gt;',['../structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html',1,'alpaka::trait']]],
   ['hasschedulechunksize_1183',['HasScheduleChunkSize',['../namespacealpaka_1_1detail.html#a52d018fd0b09628f87378514527b6bbe',1,'alpaka::detail']]],
-  ['high32bits_1184',['high32Bits',['../namespacealpaka_1_1rand.html#a4af6e6abe6bf85dcceb33de88168a1fc',1,'alpaka::rand']]],
+  ['high32bits_1184',['high32Bits',['../namespacealpaka_1_1rand.html#a66ceaea1b604b015a8398938bea1268b',1,'alpaka::rand']]],
   ['highermax_1185',['HigherMax',['../namespacealpaka_1_1meta.html#a2977de255e74797d3699121598066dd2',1,'alpaka::meta']]],
   ['highermin_1186',['HigherMin',['../namespacealpaka_1_1meta.html#abf03afba38c7ce1e0f5ffd122cbed958',1,'alpaka::meta']]],
   ['hip_2ehpp_1187',['Hip.hpp',['../Hip_8hpp.html',1,'']]],
