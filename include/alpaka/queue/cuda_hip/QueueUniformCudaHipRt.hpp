@@ -212,7 +212,7 @@ namespace alpaka
             {
                 auto data = std::unique_ptr<HostFuncData>(reinterpret_cast<HostFuncData*>(arg));
                 auto& queue = data->q;
-                auto f = queue.m_callbackThread.submit([data = std::move(data)] { data->t(); });
+                auto f = queue.m_callbackThread.submit([d = std::move(data)] { d->t(); });
                 f.wait();
             }
 

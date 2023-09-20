@@ -310,8 +310,8 @@ namespace alpaka
                 return {
                     dev,
                     reinterpret_cast<TElem*>(memPtr),
-                    [queue = std::move(queue)](TElem* ptr)
-                    { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::freeAsync(ptr, queue.getNativeHandle())); },
+                    [q = std::move(queue)](TElem* ptr)
+                    { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::freeAsync(ptr, q.getNativeHandle())); },
                     extent,
                     static_cast<std::size_t>(width) * sizeof(TElem)};
             }
