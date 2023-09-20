@@ -24,7 +24,7 @@ def alpaka_post_filter(row: List) -> bool:
         and row[param_map[BUILD_TYPE]][VERSION] == CMAKE_DEBUG
         and row_check_name(row, DEVICE_COMPILER, "==", CLANG_CUDA)
     ):
-        for clang_cuda_version in ["15", "16"]:
+        for clang_cuda_version in ["15", "16", "17"]:
             if row_check_version(row, HOST_COMPILER, "==", clang_cuda_version):
                 return False
 
