@@ -1,6 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1math_1_1ConceptMathAcosh.html":[3,0,0,9,25],
 "structalpaka_1_1math_1_1ConceptMathArg.html":[3,0,0,9,26],
 "structalpaka_1_1math_1_1ConceptMathAsin.html":[3,0,0,9,27],
 "structalpaka_1_1math_1_1ConceptMathAsinh.html":[3,0,0,9,28],
@@ -249,5 +248,6 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1math_1_1trait_1_1Tanh_3_01TanhUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a3a8b8e534bc58ed21e9c097b26c3fa48":[3,0,0,9,0,104,0],
 "structalpaka_1_1math_1_1trait_1_1Tanh_3_01TanhUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable88e67383c78ba2fa5b2d55996becdaf0.html":[3,0,0,9,0,105],
 "structalpaka_1_1math_1_1trait_1_1Tanh_3_01TanhUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable88e67383c78ba2fa5b2d55996becdaf0.html#a444c84cd4d901d71c57f2a74c735f634":[3,0,0,9,0,105,0],
-"structalpaka_1_1math_1_1trait_1_1Trunc.html":[3,0,0,9,0,106]
+"structalpaka_1_1math_1_1trait_1_1Trunc.html":[3,0,0,9,0,106],
+"structalpaka_1_1math_1_1trait_1_1Trunc.html#a7e126cff40e52afc7de71b43eb67a6a4":[3,0,0,9,0,106,0]
 };

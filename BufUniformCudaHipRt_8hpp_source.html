@@ -399,8 +399,8 @@ $(document).ready(function(){initNavTree('BufUniformCudaHipRt_8hpp_source.html',
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                <span class="keywordflow">return</span> {</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    dev,</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                    <span class="keyword">reinterpret_cast&lt;</span>TElem*<span class="keyword">&gt;</span>(memPtr),</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                    [queue = std::move(queue)](TElem* ptr)</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    { <a class="code" href="UniformCudaHip_8hpp.html#a22859ac71d0dd3e9e1f743a8f70ec323">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT</a>(TApi::freeAsync(ptr, queue.getNativeHandle())); },</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                    [q = std::move(queue)](TElem* ptr)</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    { <a class="code" href="UniformCudaHip_8hpp.html#a22859ac71d0dd3e9e1f743a8f70ec323">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT</a>(TApi::freeAsync(ptr, q.getNativeHandle())); },</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    extent,</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                    <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(width) * <span class="keyword">sizeof</span>(TElem)};</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            }</div>
@@ -584,7 +584,7 @@ $(document).ready(function(){initNavTree('BufUniformCudaHipRt_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufUniformCudaHipRt_8hpp.html">BufUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Wed Sep 20 2023 13:11:02 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 08:17:55 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
