@@ -114,7 +114,6 @@ namespace alpaka::warp::trait
         static auto shfl(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t srcLane, std::int32_t width)
         {
             ALPAKA_ASSERT_OFFLOAD(width > 0);
-            ALPAKA_ASSERT_OFFLOAD(srcLane < width);
             ALPAKA_ASSERT_OFFLOAD(srcLane >= 0);
 
             /* If width < srcLane the sub-group needs to be split into assumed subdivisions. The first item of each
@@ -129,6 +128,68 @@ namespace alpaka::warp::trait
             auto const actual_src_id = static_cast<std::size_t>(srcLane + actual_group_id * width);
             auto const src = sycl::id<1>{actual_src_id};
 
+            return sycl::select_from_group(actual_group, value, src);
+        }
+    };
+
+    template<typename TDim>
+    struct ShflUp<warp::WarpGenericSycl<TDim>>
+    {
+        template<typename T>
+        static auto shfl_up(
+            warp::WarpGenericSycl<TDim> const& warp,
+            T value,
+            std::uint32_t offset, /* must be the same for all work-items in the group */
+            std::int32_t width)
+        {
+            std::int32_t offset_int = static_cast<std::int32_t>(offset);
+            auto const actual_group = warp.m_item_warp.get_sub_group();
+            auto actual_item_id = static_cast<std::int32_t>(actual_group.get_local_linear_id());
+            auto const actual_group_id = actual_item_id / width;
+            auto const actual_src_id = actual_item_id - offset_int;
+            auto const src = actual_src_id >= actual_group_id * width
+                                 ? sycl::id<1>{static_cast<std::size_t>(actual_src_id)}
+                                 : sycl::id<1>{static_cast<std::size_t>(actual_item_id)};
+            return sycl::select_from_group(actual_group, value, src);
+        }
+    };
+
+    template<typename TDim>
+    struct ShflDown<warp::WarpGenericSycl<TDim>>
+    {
+        template<typename T>
+        static auto shfl_down(
+            warp::WarpGenericSycl<TDim> const& warp,
+            T value,
+            std::uint32_t offset,
+            std::int32_t width)
+        {
+            std::int32_t offset_int = static_cast<std::int32_t>(offset);
+            auto const actual_group = warp.m_item_warp.get_sub_group();
+            auto actual_item_id = static_cast<std::int32_t>(actual_group.get_local_linear_id());
+            auto const actual_group_id = actual_item_id / width;
+            auto const actual_src_id = actual_item_id + offset_int;
+            auto const src = actual_src_id < (actual_group_id + 1) * width
+                                 ? sycl::id<1>{static_cast<std::size_t>(actual_src_id)}
+                                 : sycl::id<1>{static_cast<std::size_t>(actual_item_id)};
+            return sycl::select_from_group(actual_group, value, src);
+        }
+    };
+
+    template<typename TDim>
+    struct ShflXor<warp::WarpGenericSycl<TDim>>
+    {
+        template<typename T>
+        static auto shfl_xor(
+            warp::WarpGenericSycl<TDim> const& warp,
+            T value,
+            std::int32_t mask,
+            std::int32_t /*width*/)
+        {
+            auto const actual_group = warp.m_item_warp.get_sub_group();
+            auto actual_item_id = static_cast<std::int32_t>(actual_group.get_local_linear_id());
+            auto const actual_src_id = actual_item_id ^ mask;
+            auto const src = sycl::id<1>{static_cast<std::size_t>(actual_src_id)};
             return sycl::select_from_group(actual_group, value, src);
         }
     };
