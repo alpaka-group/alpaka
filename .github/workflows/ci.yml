@@ -105,8 +105,17 @@ jobs:
         name: format.patch
         path: format.patch
 
+  reuse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: REUSE compliance check
+        uses: fsfe/reuse-action@v2
+        with:
+          args: --suppress-deprecation lint
+
   ci:
-    needs: clang-format
+    needs: [clang-format, reuse]
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     env: ${{ matrix.env }}
