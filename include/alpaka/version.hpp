@@ -1,4 +1,12 @@
-/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Jan Stephan
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ * SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ * SPDX-FileContributor: Erik Zenker <erikzenker@posteo.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

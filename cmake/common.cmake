@@ -1,7 +1,8 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
 #
-# Copyright 2014-2019 Benjamin Worpitz
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 #------------------------------------------------------------------------------
 # Gets all recursive files with the given ending in the given directory and recursively below.

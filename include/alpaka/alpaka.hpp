@@ -1,5 +1,26 @@
-/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Bernhard Manfred Gruber,
- *                Jan Stephan, Antonio Di Pilato, Luca Ferragina, Aurora Perego, Andrea Bocci
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ * SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
+ * SPDX-FileContributor: Sergei Bastrakov <s.bastrakov@hzdr.de>
+ * SPDX-FileContributor: Andrea Bocci <andrea.bocci@cern.ch>
+ * SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+ * SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+ * SPDX-FileContributor: Luca Ferragina <luca.ferragina@cern.ch>
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+ * SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+ * SPDX-FileContributor: Jakob Krude <jakob.krude@hotmail.com>
+ * SPDX-FileContributor: Felice Pantaleo <felice.pantaleo@cern.ch>
+ * SPDX-FileContributor: Aurora Perego <aurora.perego@cern.ch>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: Jiří Vyskočil <jiri@vyskocil.com>
+ * SPDX-FileContributor: Matthias Werner <Matthias.Werner1@tu-dresden.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ * SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ * SPDX-FileContributor: Erik Zenker <erikzenker@posteo.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

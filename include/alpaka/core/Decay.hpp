@@ -1,4 +1,12 @@
-/* Copyright 2023 Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Sergei Bastrakov <s.bastrakov@hzdr.de>
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

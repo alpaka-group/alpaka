@@ -1,7 +1,12 @@
-"""Copyright 2023 Simeon Ehrig
+"""
+SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+
+SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+
 SPDX-License-Identifier: MPL-2.0
 
-Add custom jobs. For example loaded from a yaml file."""
+Add custom jobs. For example loaded from a yaml file.
+"""
 
 from genericpath import isfile
 import os, yaml

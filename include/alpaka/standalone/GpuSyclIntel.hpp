@@ -1,4 +1,8 @@
-/* Copyright 2023 Jan Stephan
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ *
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

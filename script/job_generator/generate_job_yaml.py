@@ -1,7 +1,14 @@
-"""Copyright 2023 Simeon Ehrig, Jan Stephan
+"""
+SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+
+SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+
 SPDX-License-Identifier: MPL-2.0
 
-Create GitLab-CI job description written in yaml from the job matrix."""
+Create GitLab-CI job description written in yaml from the job matrix.
+"""
 
 from typing import List, Dict, Tuple
 from typeguard import typechecked

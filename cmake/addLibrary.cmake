@@ -1,7 +1,15 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Technische Universität Dresden <https://www.tu-dresden.de>
+# 
+# SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+# SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+# SPDX-FileContributor: Maximilian Knespel <maximilian.knespel@mailbox.tu-dresden.de>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: Matthias Werner <Matthias.Werner1@tu-dresden.de>
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
 #
-# Copyright 2023 Benjamin Worpitz, Maximilian Knespel, Jan Stephan
 # SPDX-License-Identifier: MPL-2.0
-#
 
 #------------------------------------------------------------------------------
 #

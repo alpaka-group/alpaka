@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhard.manfred.gruber@cern.ch>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
 
 name: Publish documentation to gh-pages

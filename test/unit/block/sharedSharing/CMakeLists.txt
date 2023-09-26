@@ -1,7 +1,8 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
 #
-# Copyright 2022 Benjamin Worpitz, Axel Huebl, Jan Stephan, Jeffrey Kelling
+# SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 set(_TARGET_NAME "blockSharedSharingTest")
 

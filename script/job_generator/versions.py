@@ -1,7 +1,16 @@
-"""Copyright 2023 Simeon Ehrig, Jan Stephan, René Widera
+"""
+SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+
+SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+
 SPDX-License-Identifier: MPL-2.0
 
-Used software in the CI tests."""
+Used software in the CI tests.
+"""
 
 from typing import Dict, List, Tuple
 from typeguard import typechecked

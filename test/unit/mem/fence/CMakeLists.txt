@@ -1,7 +1,12 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
 #
-# Copyright 2023 Jan Stephan, Bernhard Manfred Gruber
+# SPDX-FileContributor: Andrea Bocci <andrea.bocci@cern.ch>
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+# SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 if (CMAKE_CXX_FLAGS MATCHES ".*-fsanitize=thread.*")
     message(WARNING "TSan does not support memory fences yet. The fenceTest has been disabled. See also: https://github.com/google/sanitizers/issues/1352")

@@ -12,6 +12,7 @@ starting_header = os.path.join(root_path, 'catch2', 'catch_all.hpp')
 output_header = os.path.join(catchPath, 'extras', 'catch_amalgamated.hpp')
 output_cpp = os.path.join(catchPath, 'extras', 'catch_amalgamated.cpp')
 
+# REUSE-IgnoreStart
 # These are the copyright comments in each file, we want to ignore them
 copyright_lines = [
 '//              Copyright Catch2 Authors\n',
@@ -38,6 +39,7 @@ file_header = '''\
 //  You probably shouldn't edit it directly.
 //  ----------------------------------------------------------
 '''
+# REUSE-IgnoreEnd
 
 # Returns file header with proper version string and generation time
 def formatted_file_header(version):

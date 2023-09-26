@@ -1,4 +1,14 @@
-/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Jakob Krude, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Andrea Bocci <andrea.bocci@cern.ch>
+ * SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Jakob Krude <jakob.krude@hotmail.com>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

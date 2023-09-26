@@ -1,7 +1,8 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
 #
-# Copyright 2023 Erik Zenker, Benjamin Worpitz, Jan Stephan, Sergei Bastrakov
+# SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+#
 # SPDX-License-Identifier: ISC
-#
 
 # ###############################################################################
 # Required CMake version.

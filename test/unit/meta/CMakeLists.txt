@@ -1,7 +1,15 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+# SPDX-FileCopyrightText: Technische Universität Dresden <https://www.tu-dresden.de>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
 #
-# Copyright 2014-2020 Benjamin Worpitz, Axel Huebl, Jan Stephan
+# SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+# SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 set(_TARGET_NAME "metaTest")
 

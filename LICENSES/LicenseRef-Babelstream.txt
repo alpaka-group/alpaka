@@ -1,7 +1,7 @@
 *==============================================================================
 *------------------------------------------------------------------------------
 * Copyright 2015-16: Tom Deakin, Simon McIntosh-Smith, University of Bristol HPC
-* Based on John D. McCalpin’s original STREAM benchmark for CPUs
+* Based on John D. McCalpinâ€™s original STREAM benchmark for CPUs
 *------------------------------------------------------------------------------
 * License:
 *  1. You are free to use this program and/or to redistribute
@@ -32,4 +32,4 @@
 *  4. Use of this program or creation of derived works based on this
 *     program constitutes acceptance of these licensing restrictions.
 *  5. Absolutely no warranty is expressed or implied.
-*———————————————————————————————————-------------------------------------------
+*â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”-------------------------------------------

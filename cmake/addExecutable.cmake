@@ -1,7 +1,13 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+# 
+# SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: Matthias Werner <Matthias.Werner1@tu-dresden.de>
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
 #
-# Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan
 # SPDX-License-Identifier: MPL-2.0
-#
 
 #------------------------------------------------------------------------------
 #

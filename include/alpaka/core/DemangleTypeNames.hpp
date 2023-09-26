@@ -1,4 +1,8 @@
-/* Copyright 2022 Andrea Bocci, Antonio Di Pilato
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ *
+ * SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+#
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+#
+# SPDX-License-Identifier: MPL-2.0
 
 workingcopy_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )/.."
 dst=${1:-$workingcopy_dir/single-header/include/alpaka/alpaka.hpp}

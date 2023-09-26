@@ -1,9 +1,15 @@
-
-// Copyright (c) 2015-16 Tom Deakin, Simon McIntosh-Smith,
-// University of Bristol HPC
-//
-// For full license terms please see the LICENSE file distributed with this
-// source code
+/*
+ * SPDX-FileCopyrightText: University of Bristol <https://www.bristol.ac.uk>
+ * SPDX-FileCopyrightText: Georgia Institute of Technology <https://www.gatech.edu>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Tom Deakin <tom.deakin@bristol.ac.uk>
+ * SPDX-FileContributor: Simon McIntosh-Smith <s.mcintosh-smith@bristol.ac.uk>
+ * SPDX-FileContributor: Jeffrey Young <jyoung9@gatech.edu>
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ *
+ * SPDX-License-Identifier: LicenseRef-Babelstream
+ */
 
 #include <algorithm>
 #include <chrono>

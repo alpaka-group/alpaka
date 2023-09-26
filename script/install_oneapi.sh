@@ -1,8 +1,15 @@
 #!/bin/bash
 #
-# Copyright 2023 Axel Hübl, Simeon Ehrig, Jan Stephan
-# SPDX-License-Identifier: MPL-2.0
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+# SPDX-FileCopyrightText: Axel Hübl <a.huebl@plasma.ninja>
 #
+# SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+# SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+#
+# SPDX-License-Identifier: MPL-2.0
 
 source ./script/travis_retry.sh
 

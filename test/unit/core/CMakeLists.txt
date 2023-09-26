@@ -1,6 +1,12 @@
-# Copyright 2023 Benjamin Worpitz, Jan Stephan, Antonio Di Pilato
-# SPDX-License-Identifier: MPL-2.0
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
 #
+# SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+# SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
+# SPDX-License-Identifier: MPL-2.0
 
 set(_TARGET_NAME "coreTest")
 

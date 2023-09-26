@@ -1,4 +1,8 @@
-/* Copyright 2023 Andrea Bocci, Aurora Perego
+/*
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Aurora Perego <aurora.perego@cern.ch>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

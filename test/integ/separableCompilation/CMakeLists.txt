@@ -1,7 +1,13 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
 #
-# Copyright 2023 Benjamin Worpitz, Axel Hübl, Jan Stephan
+# SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+# SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 if((NOT alpaka_ACC_GPU_CUDA_ENABLE AND NOT alpaka_ACC_GPU_HIP_ENABLE AND NOT alpaka_ACC_SYCL_ENABLE) OR
    (alpaka_ACC_GPU_CUDA_ENABLE AND (alpaka_RELOCATABLE_DEVICE_CODE STREQUAL ON)) OR # OFF by default

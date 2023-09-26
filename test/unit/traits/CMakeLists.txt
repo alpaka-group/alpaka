@@ -1,7 +1,8 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
 #
-# Copyright 2017-2022 Benjamin Worpitz, Axel Huebl, Jan Stephan, Antonio Di Pilato
+# SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 set(_TARGET_NAME "traitsTest")
 
