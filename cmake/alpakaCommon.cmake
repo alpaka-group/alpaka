@@ -614,7 +614,6 @@ if(alpaka_ACC_SYCL_ENABLE)
 
         if(alpaka_SYCL_ONEAPI_FPGA)
             target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_FPGA")
-            alpaka_set_compiler_options(DEVICE target alpaka "-fintelfpga")
 
             if(alpaka_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
                 target_compile_definitions(alpaka INTERFACE "ALPAKA_FPGA_EMULATION")
