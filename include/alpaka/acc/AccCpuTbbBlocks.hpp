@@ -212,6 +212,12 @@ namespace alpaka
         {
             using type = alpaka::AccCpuTbbBlocks<TDim, TIdx>;
         };
+
+        template<typename TDim, typename TIdx>
+        struct MemVisibility<alpaka::AccCpuSerial<TDim, TIdx>>
+        {
+            using type = alpaka::MemVisibleCPU;
+        };
     } // namespace trait
 } // namespace alpaka
 

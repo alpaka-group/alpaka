@@ -13,6 +13,12 @@ namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx>
     using BufFpgaSyclIntel = BufGenericSycl<TElem, TDim, TIdx, DevFpgaSyclIntel>;
+
+    template<typename TElem, typename TDim, typename TIdx>
+    struct MemVisibility<BufFpgaSyclIntel<TElem, TDim, TIdx>>
+    {
+        using type = std::tuple<alpaka::MemVisibleFpgaSyclIntel>;
+    };
 } // namespace alpaka
 
 #endif

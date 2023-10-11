@@ -13,6 +13,12 @@ namespace alpaka
 {
     template<typename TElem, typename TDim, typename TIdx>
     using BufCudaRt = BufUniformCudaHipRt<ApiCudaRt, TElem, TDim, TIdx>;
+
+    template<typename TElem, typename TDim, typename TIdx>
+    struct MemVisibility<BufCudaRt<TElem, TDim, TIdx>>
+    {
+        using type = std::tuple<alpaka::MemVisibleGpuCudaRt>;
+    };
 } // namespace alpaka
 
 #endif // ALPAKA_ACC_GPU_CUDA_ENABLED

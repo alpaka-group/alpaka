@@ -258,6 +258,12 @@ namespace alpaka::trait
             return getPtrNative(buf);
         }
     };
+
+    template<typename TElem, typename TDim, typename TIdx>
+    struct MemVisibility<BufGenericSycl<TElem, TDim, TIdx>>
+    {
+        using type = std::tuple<alpaka::MemVisibleGenericSycl>;
+    };
 } // namespace alpaka::trait
 
 #    include "alpaka/mem/buf/sycl/Copy.hpp"
