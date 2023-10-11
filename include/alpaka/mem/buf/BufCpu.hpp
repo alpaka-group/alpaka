@@ -11,6 +11,7 @@
 #include "alpaka/core/Vectorize.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/alloc/AllocCpuAligned.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
@@ -307,6 +308,13 @@ namespace alpaka
         {
             using type = TIdx;
         };
+
+        template<typename TElem, typename TDim, typename TIdx>
+        struct MemVisibility<BufCpu<TElem, TDim, TIdx>>
+        {
+            using type = std::tuple<alpaka::MemVisibleCPU>;
+        };
+
     } // namespace trait
 } // namespace alpaka
 
