@@ -8,6 +8,11 @@
       "orcid": "0000-0003-3396-6154"
     },
     {
+      "name": "Bastrakova, Kseniia",
+      "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
+      "orcid": "0000-0001-8970-5098"
+    },
+    {
       "name": "Bocci, Andrea",
       "affiliation": "CERN",
       "orcid": "0000-0002-6515-5666"
@@ -23,14 +28,17 @@
       "orcid": "0000-0002-8218-3116"
     },
     {
+      "name": "Ferragina, Luca",
+      "affiliation": "CERN"
+    },
+    {
       "name": "Gruber, Bernhard Manfred",
       "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf, CERN",
       "orcid": "0000-0001-7848-1690"
     },
     {
-      "name": "Huebl, Axel",
-      "affiliation": "Lawrence Berkeley National Laboratory",
-      "orcid": "0000-0003-1943-7141"
+      "name": "Kaever, Christian",
+      "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf"
     },
     {
       "name": "Kelling, Jeffrey",
@@ -38,9 +46,14 @@
       "orcid": "0000-0003-1761-2591"
     },
     {
-      "name": "Pantaleo, Felice",
+      "name": "Martin-Haugh, Stewart",
+      "affiliation": "STFC Rutherford Appleton Laboratory",
+      "orcid": "0000-0001-9457-1928"
+    },
+    {
+      "name": "Perego, Aurora",
       "affiliation": "CERN",
-      "orcid": "0000-0003-3266-4357"
+      "orcid": "0000-0003-1576-6757"
     },
     {
       "name": "Stephan, Jan",
@@ -48,18 +61,14 @@
       "orcid": "0000-0001-7839-4386"
     },
     {
-      "name": "Vyskočil, Jiří",
-      "affiliation":"CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
-      "orcid": "0000-0001-8822-0929"
-    },
-    {
       "name": "Widera, René",
       "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
       "orcid": "0000-0003-1642-0459"
     },
     {
-      "name": "Worpitz, Benjamin",
-      "affiliation": "LogMeIn Inc."
+      "name": "Young, Jeffrey",
+      "affiliation": "Georgia Institute of Technology",
+      "orcid": "0000-0001-9841-4057"
     }
   ],
   "contributors": [
@@ -71,6 +80,12 @@
     {
       "name": "Gehrke, Valentin",
       "affiliation": "TU Dresden",
+      "type": "Other"
+    },
+    {
+      "name": "Hübl, Axel",
+      "affiliation": "Lawrence Berkeley National Laboratory",
+      "orcid": "0000-0003-1943-7141",
       "type": "Other"
     },
     {
@@ -100,6 +115,12 @@
       "type": "Other"
     },
     {
+      "name": "Pantaleo, Felice",
+      "affiliation": "CERN",
+      "orcid": "0000-0003-3266-4357",
+      "type": "Other"
+    },
+    {
       "name": "Rogers, David M.",
       "affiliation": "Oak Ridge National Laboratory",
       "orcid": "0000-0002-5187-1768",
@@ -121,6 +142,12 @@
       "type": "Other"
     },
     {
+      "name": "Vyskočil, Jiří",
+      "affiliation": "CASUS, Helmholtz-Zentrum Dresden-Rossendorf",
+      "orcid": "0000-0001-8822-0929",
+      "type": "Other"
+    },
+    {
       "name": "Werner, Matthias",
       "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
       "type": "Other"
@@ -128,6 +155,11 @@
     {
       "name":"Wesarg, Bert",
       "affiliation":"TU Dresden",
+      "type": "Other"
+    },
+    {
+      "name": "Worpitz, Benjamin",
+      "affiliation": "LogMeIn Inc.",
       "type": "Other"
     },
     {
