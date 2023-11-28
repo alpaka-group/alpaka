@@ -181,9 +181,17 @@ namespace alpaka
 
         static inline Error_t freeAsync([[maybe_unused]] void* devPtr, [[maybe_unused]] Stream_t stream)
         {
-            // hipFreeAsync is implemented only in ROCm 5.2.0 and later.
-#    if HIP_VERSION >= 50'200'000
-            return ::hipFreeAsync(devPtr, stream);
+            // stream-ordered memory operations are fully implemented only in ROCm 5.3.0 and later.
+#    if HIP_VERSION >= 50'300'000
+            // hipFreeAsync fails on a null pointer deallocation
+            if(devPtr)
+            {
+                return ::hipFreeAsync(devPtr, stream);
+            }
+            else
+            {
+                return ::hipSuccess;
+            }
 #    else
             // Not implemented.
             return errorUnknown;
@@ -289,9 +297,21 @@ namespace alpaka
             [[maybe_unused]] size_t size,
             [[maybe_unused]] Stream_t stream)
         {
-            // hipMallocAsync is implemented only in ROCm 5.2.0 and later.
-#    if HIP_VERSION >= 50'200'000
+            // stream-ordered memory operations are fully implemented only in ROCm 5.3.0 and later.
+#    if HIP_VERSION >= 50'600'000
             return ::hipMallocAsync(devPtr, size, stream);
+#    elif HIP_VERSION >= 50'300'000
+            // before ROCm 5.6.0, hipMallocAsync fails for an allocation of 0 bytes
+            if(size > 0)
+            {
+                return ::hipMallocAsync(devPtr, size, stream);
+            }
+            else
+            {
+                // make sure the pointer can safely be passed to hipFreeAsync
+                *devPtr = nullptr;
+                return ::hipSuccess;
+            }
 #    else
             // Not implemented.
             return errorUnknown;
