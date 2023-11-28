@@ -8,5 +8,6 @@ var dev_2Traits_8hpp =
     [ "getName", "dev_2Traits_8hpp.html#a2f6580f456ad2faecf55eaadfe145cc6", null ],
     [ "getWarpSizes", "dev_2Traits_8hpp.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5", null ],
     [ "reset", "dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943", null ],
+    [ "trim", "dev_2Traits_8hpp.html#a464861d2e07520fe1048d7accc018433", null ],
     [ "isDevice", "dev_2Traits_8hpp.html#ac46c96dc95e8410d4ae3ef85e79d8dbf", null ]
 ];

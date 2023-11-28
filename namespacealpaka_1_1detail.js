@@ -69,5 +69,6 @@ var namespacealpaka_1_1detail =
     [ "nextDivisorLowerOrEqual", "namespacealpaka_1_1detail.html#a36eeeef4bfe30fe8892e2ca2c2aa682a", null ],
     [ "parallelFor", "namespacealpaka_1_1detail.html#a93cfb90319ccb5e30631f043aff3cfdf", null ],
     [ "popcountFallback", "namespacealpaka_1_1detail.html#a67dc480b31ee420646bf5c6cc9799ccf", null ],
+    [ "trim", "namespacealpaka_1_1detail.html#a464861d2e07520fe1048d7accc018433", null ],
     [ "isCudaHipBuiltInType", "namespacealpaka_1_1detail.html#a53d974be85b2025188d0033093f92cd4", null ]
 ];

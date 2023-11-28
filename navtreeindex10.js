@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1TagCpuThreads.html":[3,0,0,98],
+"structalpaka_1_1TagCpuThreads.html#a0e70cbb5e39d9a334b82401cfbac95e3":[3,0,0,98,0],
 "structalpaka_1_1TagFpgaSyclIntel.html":[3,0,0,99],
 "structalpaka_1_1TagFpgaSyclIntel.html#ad99868a5e100a239473d7b1fa2a64fa2":[3,0,0,99,0],
 "structalpaka_1_1TagGenericSycl.html":[3,0,0,100],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1internal_1_1ViewAccessOps.html#aec19df26decf41d5adfe9d0784ffd126":[3,0,0,8,0,7],
 "structalpaka_1_1internal_1_1ViewAccessOps.html#af903091a86ee5f4b5e05fb7788deb600":[3,0,0,8,0,5],
 "structalpaka_1_1internal_1_1ViewAccessOps.html#afb8e1e39f8c6b099aac820fa84126e11":[3,0,0,8,0,1],
-"structalpaka_1_1math_1_1ConceptMathAbs.html":[3,0,0,9,23],
-"structalpaka_1_1math_1_1ConceptMathAcos.html":[3,0,0,9,24],
-"structalpaka_1_1math_1_1ConceptMathAcosh.html":[3,0,0,9,25]
+"structalpaka_1_1math_1_1ConceptMathAbs.html":[3,0,0,9,23]
 };
