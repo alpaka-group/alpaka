@@ -280,8 +280,8 @@ namespace alpaka
 #    endif
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
             static_assert(
-                !std::is_same_v<TApi, ApiHipRt>,
-                "HIP devices do not support stream-ordered memory buffers.");
+                std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0),
+                "Support for stream-ordered memory buffers requires HIP/ROCm 5.3 or higher.");
 #    endif
             static_assert(
                 TDim::value <= 1,
@@ -317,16 +317,22 @@ namespace alpaka
             }
         };
 
-#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
         //! The CUDA/HIP stream-ordered memory allocation capability trait specialization.
         template<typename TApi, typename TDim>
         struct HasAsyncBufSupport<TDim, DevUniformCudaHipRt<TApi>>
             : std::bool_constant<
-                  std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0)
-                  && TDim::value <= 1>
+                  TDim::value <= 1
+                  && (
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                      std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0)
+#    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+                      std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0)
+#    else
+                      false
+#    endif
+                          )>
         {
         };
-#    endif
 
         //! The pinned/mapped memory allocation trait specialization for the CUDA/HIP devices.
         template<typename TApi, typename TElem, typename TDim, typename TIdx>
