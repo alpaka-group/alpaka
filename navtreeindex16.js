@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,348],
 "structalpaka_1_1trait_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html#a6e1fde5821b8ff209f5c74ba266dbe38":[3,0,0,15,348,0],
 "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,354],
 "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#ae8976182061c0a119a855c479a0bac29":[3,0,0,15,354,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "structalpaka_1_1warp_1_1trait_1_1Activemask_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,0,2],
 "structalpaka_1_1warp_1_1trait_1_1Activemask_3_01WarpUniformCudaHipBuiltIn_01_4.html#a557a5835e96eda6b4422242e932021e9":[3,0,0,17,0,2,0],
 "structalpaka_1_1warp_1_1trait_1_1All.html":[3,0,0,17,0,3],
-"structalpaka_1_1warp_1_1trait_1_1All_3_01WarpSingleThread_01_4.html":[3,0,0,17,0,4],
-"structalpaka_1_1warp_1_1trait_1_1All_3_01WarpSingleThread_01_4.html#a094257d87058a0c219d5d88e93f24c5f":[3,0,0,17,0,4,0]
+"structalpaka_1_1warp_1_1trait_1_1All_3_01WarpSingleThread_01_4.html":[3,0,0,17,0,4]
 };

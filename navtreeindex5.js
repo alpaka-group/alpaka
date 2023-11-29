@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ac351480b3ffaa811d92407a0cbbfb52d":[3,0,0,13,1,9,3],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html":[3,0,0,13,1,11],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html":[3,0,0,13,1,14],
 "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a0fab2dd85d39350c937b291ef3c26c58":[3,0,0,13,1,14,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "functions_func_n.html":[3,2,1,12],
 "functions_func_o.html":[3,2,1,13],
 "functions_func_p.html":[3,2,1,14],
-"functions_func_q.html":[3,2,1,15],
-"functions_func_r.html":[3,2,1,16]
+"functions_func_q.html":[3,2,1,15]
 };
