@@ -78,14 +78,6 @@ if [ ! -z "${alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE}")
 fi
-if [ ! -z "${alpaka_OFFLOAD_MAX_BLOCK_SIZE+x}" ]
-then
-    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_OFFLOAD_MAX_BLOCK_SIZE=${alpaka_OFFLOAD_MAX_BLOCK_SIZE}")
-fi
-if [ ! -z "${alpaka_DEBUG_OFFLOAD_ASSUME_HOST+x}" ]
-then
-    ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_DEBUG_OFFLOAD_ASSUME_HOST=${alpaka_DEBUG_OFFLOAD_ASSUME_HOST}")
-fi
 if [ ! -z "${alpaka_ACC_GPU_CUDA_ENABLE+x}" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "alpaka_ACC_GPU_CUDA_ENABLE=${alpaka_ACC_GPU_CUDA_ENABLE}")
