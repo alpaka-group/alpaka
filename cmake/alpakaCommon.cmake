@@ -139,6 +139,12 @@ if(alpaka_DISABLE_VENDOR_RNG)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_DISABLE_VENDOR_RNG")
 endif()
 
+# Device side assert
+option(alpaka_ASSERT_ACC_ENABLE "Enable device side asserts. In case  value is OFF device side asserts will be disabled even if NDEBUG is not defined." ON)
+if(!alpaka_ASSERT_ACC_ENABLE)
+    target_compile_definitions(alpaka INTERFACE "ALPAKA_DISABLE_ASSERT_ACC")
+endif()
+
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
 if(${alpaka_DEBUG} GREATER 1)
@@ -731,9 +737,6 @@ if(alpaka_ACC_SYCL_ENABLE)
 endif()
 
 target_compile_definitions(alpaka INTERFACE "ALPAKA_DEBUG=${alpaka_DEBUG}")
-if(alpaka_DEBUG_OFFLOAD_ASSUME_HOST)
-   target_compile_definitions(alpaka INTERFACE "ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST")
-endif()
 
 target_compile_definitions(alpaka INTERFACE "ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB=${alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB}")
 

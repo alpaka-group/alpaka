@@ -119,8 +119,8 @@ namespace alpaka::warp::trait
         template<typename T>
         static auto shfl(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t srcLane, std::int32_t width)
         {
-            ALPAKA_ASSERT_OFFLOAD(width > 0);
-            ALPAKA_ASSERT_OFFLOAD(srcLane >= 0);
+            ALPAKA_ASSERT_ACC(width > 0);
+            ALPAKA_ASSERT_ACC(srcLane >= 0);
 
             /* If width < srcLane the sub-group needs to be split into assumed subdivisions. The first item of each
                subdivision has the assumed index 0. The srcLane index is relative to the subdivisions.
