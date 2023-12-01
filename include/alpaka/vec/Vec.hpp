@@ -170,6 +170,60 @@ namespace alpaka
             return m_data[Dim::value - 1];
         }
 
+        //! access elements by name
+        //!
+        //! names: x,y,z,w
+        //! @{
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 1, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) x() const
+        {
+            return m_data[Dim::value - 1];
+        }
+
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 1, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) x()
+        {
+            return m_data[Dim::value - 1];
+        }
+
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 2, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) y() const
+        {
+            return m_data[Dim::value - 2];
+        }
+
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 2, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) y()
+        {
+            return m_data[Dim::value - 2];
+        }
+
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 3, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) z() const
+        {
+            return m_data[Dim::value - 3];
+        }
+
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 3, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) z()
+        {
+            return m_data[Dim::value - 3];
+        }
+
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 4, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) w() const
+        {
+            return m_data[Dim::value - 4];
+        }
+
+        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 4, int> = 0>
+        ALPAKA_FN_HOST_ACC constexpr decltype(auto) w()
+        {
+            return m_data[Dim::value - 4];
+        }
+
+        //! @}
+
         //! Value reference accessor at the given non-unsigned integer index.
         //! \return A reference to the value at the given index.
         ALPAKA_NO_HOST_ACC_WARNING
