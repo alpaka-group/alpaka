@@ -202,6 +202,29 @@ namespace alpaka
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
 
+
+    //! Check if a type used as kernel argument is trivially copyable
+    //!
+    //! \attention In case this trait is specialized for a user type the user should be sure that the result of calling
+    //! the copy constructor is equal to use memcpy to duplicate the object. An existing destructor should be free
+    //! of side effects.
+    //!
+    //! It's implementation defined whether the closure type of a lambda is trivially copyable.
+    //! Therefor the default implementation is true for trivially copyable or empty (stateless) types.
+    //!
+    //! @tparam T type to check
+    //! @{
+    template<typename T, typename = void>
+    struct IsKernelArgumentTriviallyCopyable
+        : std::bool_constant<std::is_empty_v<T> || std::is_trivially_copyable_v<T>>
+    {
+    };
+
+    template<typename T>
+    inline constexpr bool isKernelArgumentTriviallyCopyable = IsKernelArgumentTriviallyCopyable<T>::value;
+
+    //! @}
+
     namespace detail
     {
         //! Check that the return of TKernelFnObj is void
@@ -221,13 +244,8 @@ namespace alpaka
         template<typename T>
         inline void assertKernelArgIsTriviallyCopyable()
         {
-            static_assert(
-                // it's implementation defined whether the closure type of a lambda is trivially copyable. But they
-                // should be at least empty then (stateless).
-                std::is_empty_v<T> || std::is_trivially_copyable_v<T>,
-                "The kernel argument T must be trivially copyable!");
+            static_assert(isKernelArgumentTriviallyCopyable<T>, "The kernel argument T must be trivially copyable!");
         }
-
     } // namespace detail
 
 //! Creates a kernel execution task.
