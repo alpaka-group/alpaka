@@ -39,7 +39,7 @@ struct TestBufferKernel
         for(size_t z = idx[0]; z < data.extent(0); z += gridSize[0])
             for(size_t y = idx[1]; y < data.extent(1); y += gridSize[1])
                 for(size_t x = idx[2]; x < data.extent(2); x += gridSize[2])
-                    ALPAKA_ASSERT_OFFLOAD(
+                    ALPAKA_ASSERT_ACC(
                         data(z, y, x)
                         == alpaka::mapIdx<1u>(Vec{z, y, x}, Vec{data.extent(0), data.extent(1), data.extent(2)})[0]);
     }
