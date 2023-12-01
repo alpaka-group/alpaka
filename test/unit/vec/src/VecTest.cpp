@@ -388,3 +388,83 @@ TEST_CASE("deductionGuide", "[vec]")
     [[maybe_unused]] auto v3l = alpaka::Vec{1L, 2L, 3L};
     STATIC_REQUIRE(std::is_same_v<decltype(v3l), alpaka::Vec<alpaka::DimInt<3>, long>>);
 }
+
+TEST_CASE("accessByName", "[vec]")
+{
+    // dim == 1
+    auto v1 = alpaka::Vec{1};
+    CHECK(v1.x() == 1); // non-const overload
+    CHECK(std::as_const(v1).x() == 1); // const overload
+    v1.x() += 42;
+    CHECK(v1.x() == 43); // check if value is changes correctly
+
+    // dim == 2
+    auto v2 = alpaka::Vec{2, 1};
+    CHECK(v2.x() == 1); // non-const overload
+    CHECK(v2.y() == 2); // non-const overload
+    CHECK(std::as_const(v2).x() == 1); // const overload
+    CHECK(std::as_const(v2).y() == 2); // const overload
+    v2.x() += 42;
+    v2.y() += 43;
+    CHECK(v2.x() == 43); // check if value is changes correctly
+    CHECK(v2.y() == 45); // check if value is changes correctly
+
+    // dim == 3
+    auto v3 = alpaka::Vec{3, 2, 1};
+    CHECK(v3.x() == 1); // non-const overload
+    CHECK(v3.y() == 2); // non-const overload
+    CHECK(v3.z() == 3); // non-const overload
+    CHECK(std::as_const(v3).x() == 1); // const overload
+    CHECK(std::as_const(v3).y() == 2); // const overload
+    CHECK(std::as_const(v3).z() == 3); // const overload
+    v3.x() += 42;
+    v3.y() += 43;
+    v3.z() += 44;
+    CHECK(v3.x() == 43); // check if value is changes correctly
+    CHECK(v3.y() == 45); // check if value is changes correctly
+    CHECK(v3.z() == 47); // check if value is changes correctly
+
+    // dim == 4
+    auto v4 = alpaka::Vec{4, 3, 2, 1};
+    CHECK(v4.x() == 1); // non-const overload
+    CHECK(v4.y() == 2); // non-const overload
+    CHECK(v4.z() == 3); // non-const overload
+    CHECK(v4.w() == 4); // non-const overload
+    CHECK(std::as_const(v4).x() == 1); // const overload
+    CHECK(std::as_const(v4).y() == 2); // const overload
+    CHECK(std::as_const(v4).z() == 3); // const overload
+    CHECK(std::as_const(v4).w() == 4); // const overload
+    v4.x() += 42;
+    v4.y() += 43;
+    v4.z() += 44;
+    v4.w() += 45;
+    CHECK(v4.x() == 43); // check if value is changes correctly
+    CHECK(v4.y() == 45); // check if value is changes correctly
+    CHECK(v4.z() == 47); // check if value is changes correctly
+    CHECK(v4.w() == 49); // check if value is changes correctly
+}
+
+TEST_CASE("accessByNameConstexpr", "[vec]")
+{
+    // dim == 1
+    constexpr auto v1 = alpaka::Vec{1};
+    STATIC_REQUIRE(v1.x() == 1);
+
+    // dim == 2
+    constexpr auto v2 = alpaka::Vec{2, 1};
+    STATIC_REQUIRE(v2.x() == 1);
+    STATIC_REQUIRE(v2.y() == 2);
+
+    // dim == 3
+    constexpr auto v3 = alpaka::Vec{3, 2, 1};
+    STATIC_REQUIRE(v3.x() == 1);
+    STATIC_REQUIRE(v3.y() == 2);
+    STATIC_REQUIRE(v3.z() == 3);
+
+    // dim == 4
+    constexpr auto v4 = alpaka::Vec{4, 3, 2, 1};
+    STATIC_REQUIRE(v4.x() == 1);
+    STATIC_REQUIRE(v4.y() == 2);
+    STATIC_REQUIRE(v4.z() == 3);
+    STATIC_REQUIRE(v4.w() == 4);
+}
