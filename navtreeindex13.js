@@ -1,15 +1,18 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html":[3,0,0,13,1,1,12],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#a20903af5b7dd3607ea8c4985389ab74c":[3,0,0,13,1,1,12,1],
+"structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#a46ebf6237c90c1683b027190447d2ed1":[3,0,0,13,1,1,12,3],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#a472b95647db21af4f87bc6509d71f231":[3,0,0,13,1,1,12,2],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#a50284fb0a6c2f466076bd4f28f30b9ae":[3,0,0,13,1,1,12,4],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#ac616a608626b38cea7c91556d911fdfd":[3,0,0,13,1,1,12,0],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessKeyedBaseTraits.html":[3,0,0,13,1,1,13],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessKeyedBaseTraits.html#a8762d50b2fdbb4bceb0c86f849578512":[3,0,0,13,1,1,13,1],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessKeyedBaseTraits.html#ab9e5de708718068a6133d4c9aa64ff61":[3,0,0,13,1,1,13,0],
-"structalpaka_1_1remove__restrict.html":[3,0,0,91],
-"structalpaka_1_1remove__restrict.html#a233efb391b9f8e5682ea92b7e3cbf9bc":[3,0,0,91,0],
-"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html":[3,0,0,92],
-"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html#a971c39c6152c1229ed7290d50b25f0f2":[3,0,0,92,0],
+"structalpaka_1_1remove__restrict.html":[3,0,0,92],
+"structalpaka_1_1remove__restrict.html#a233efb391b9f8e5682ea92b7e3cbf9bc":[3,0,0,92,0],
+"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html":[3,0,0,93],
+"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html#a971c39c6152c1229ed7290d50b25f0f2":[3,0,0,93,0],
 "structalpaka_1_1test_1_1Array.html":[3,0,0,14,4],
 "structalpaka_1_1test_1_1Array.html#a04628f2285009616a68d1498cfe7e9ec":[3,0,0,14,4,2],
 "structalpaka_1_1test_1_1Array.html#a6cf2b8d9e5fbbb2ab22f6bb12e97893c":[3,0,0,14,4,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1DevType_3_01PlatformCpu_01_4.html":[3,0,0,15,102],
 "structalpaka_1_1trait_1_1DevType_3_01PlatformCpu_01_4.html#ad95d8aa9fc4ee97446f575ecd1657c60":[3,0,0,15,102,0],
 "structalpaka_1_1trait_1_1DevType_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,15,103],
-"structalpaka_1_1trait_1_1DevType_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html#a150122d4858880b02a40a73131252502":[3,0,0,15,103,0],
-"structalpaka_1_1trait_1_1DevType_3_01QueueCpuOmp2Collective_01_4.html":[3,0,0,15,104],
-"structalpaka_1_1trait_1_1DevType_3_01QueueCpuOmp2Collective_01_4.html#ae193cfefdcb1761a365d290d24c9f4c5":[3,0,0,15,104,0],
-"structalpaka_1_1trait_1_1DevType_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html":[3,0,0,15,105]
+"structalpaka_1_1trait_1_1DevType_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html#a150122d4858880b02a40a73131252502":[3,0,0,15,103,0]
 };

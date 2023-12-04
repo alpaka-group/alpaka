@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1math_1_1ConceptMathLog2.html":[3,0,0,9,48],
+"structalpaka_1_1math_1_1ConceptMathMax.html":[3,0,0,9,49],
+"structalpaka_1_1math_1_1ConceptMathMin.html":[3,0,0,9,50],
 "structalpaka_1_1math_1_1ConceptMathPow.html":[3,0,0,9,51],
 "structalpaka_1_1math_1_1ConceptMathRemainder.html":[3,0,0,9,52],
 "structalpaka_1_1math_1_1ConceptMathRound.html":[3,0,0,9,53],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a33f4aba1ebdea6f92d74595e1b1dfc23":[3,0,0,11,5,1],
 "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a4852c38b1c60c3a9f15e9d8a6cafc9df":[3,0,0,11,5,6],
 "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a777bc82929fb26e8020c6b9f5f13b6b5":[3,0,0,11,5,4],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a99011c2ea78451b7f7ece5c2034c1506":[3,0,0,11,5,2],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#aa8abbf9905db1f78226aaa9642f4127f":[3,0,0,11,5,0],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#abefb94f77518716a675e72590684b089":[3,0,0,11,5,5],
-"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#ae749e1c60d24ac2619f5f26d54769152":[3,0,0,11,5,3]
+"structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html#a99011c2ea78451b7f7ece5c2034c1506":[3,0,0,11,5,2]
 };
