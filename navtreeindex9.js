@@ -1,11 +1,10 @@
 var NAVTREEINDEX9 =
 {
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01THierarchy_00_01tyf2ec80094f6b8911ba98dcbd979b992c.html":[3,0,1,14],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01THierarchy_00_01tyf2ec80094f6b8911ba98dcbd979b992c.html":[3,0,17],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01THierarchy_00_01tyf2ec80094f6b8911ba98dcbd979b992c.html#a96064d270fe6879f6e13a91d80fa88a3":[3,0,1,14,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01THierarchy_00_01tyf2ec80094f6b8911ba98dcbd979b992c.html#a96064d270fe6879f6e13a91d80fa88a3":[3,0,17,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01alpaka_1_1hierarch3e8d0dfe19204ec9f1dcfe295f70b275.html":[3,0,16],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01alpaka_1_1hierarch3e8d0dfe19204ec9f1dcfe295f70b275.html":[3,0,1,13],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01alpaka_1_1hierarch3e8d0dfe19204ec9f1dcfe295f70b275.html":[3,0,16],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01alpaka_1_1hierarch3e8d0dfe19204ec9f1dcfe295f70b275.html#a4a3e0124a058e564d487f38dd34475ea":[3,0,1,13,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMax_00_01T_00_01alpaka_1_1hierarch3e8d0dfe19204ec9f1dcfe295f70b275.html#a4a3e0124a058e564d487f38dd34475ea":[3,0,16,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicMin_00_01T_00_01THierarchy_00_01ty5553f8677877b5fbc39290170cd5e03a.html":[3,0,1,16],
@@ -24,12 +23,12 @@ var NAVTREEINDEX9 =
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicOr_00_01T_00_01alpaka_1_1hierarchy15bc3d69d172b44b0c617724aebf90b2.html":[3,0,20],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicOr_00_01T_00_01alpaka_1_1hierarchy15bc3d69d172b44b0c617724aebf90b2.html#a04dba2cc5767eded9b0dc933dae3e497":[3,0,1,17,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicOr_00_01T_00_01alpaka_1_1hierarchy15bc3d69d172b44b0c617724aebf90b2.html#a04dba2cc5767eded9b0dc933dae3e497":[3,0,20,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html":[3,0,23],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html":[3,0,1,20],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html":[3,0,23],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html#a14ba3c14fd15f81f4b41a1d85bb2c57c":[3,0,1,20,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01THierarchy_00_01tyfd2ea479306001f6629c4b2bd42c393b.html#a14ba3c14fd15f81f4b41a1d85bb2c57c":[3,0,23,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,22],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,1,19],
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html":[3,0,22],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,1,19,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicSub_00_01T_00_01alpaka_1_1hierarch7a984d3f71dc137150cb8c421d9d638f.html#a7787725da9b0dcb20e5ce1e6d85c02e1":[3,0,22,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicXor_00_01T_00_01THierarchy_00_01ty56da9bc4788a1b57fe11bafcb671bd71.html":[3,0,1,22],
@@ -164,8 +163,8 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1AtomicAnd.html":[3,0,0,28],
 "structalpaka_1_1AtomicAnd.html#aa85005d679f8e05433faa9ed834615a7":[3,0,0,28,0],
 "structalpaka_1_1AtomicCas.html":[3,0,0,30],
-"structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,30,1],
 "structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,30,0],
+"structalpaka_1_1AtomicCas.html#a659a2909b5e83ee07fce35775d4c240c":[3,0,0,30,1],
 "structalpaka_1_1AtomicDec.html":[3,0,0,31],
 "structalpaka_1_1AtomicDec.html#aebc09cbda5fe57cd1c04e9416f6f6ebb":[3,0,0,31,0],
 "structalpaka_1_1AtomicExch.html":[3,0,0,32],
@@ -249,5 +248,6 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1ViewPlainPtr.html#ab3ba7c5c06b0657d805fcff01794dda2":[3,0,0,112,1],
 "structalpaka_1_1ViewPlainPtr.html#adaabaaaad93768283b66b0a500d3c311":[3,0,0,112,4],
 "structalpaka_1_1ViewPlainPtr.html#afe5baf6b96870c5578165a7e8c4df270":[3,0,0,112,2],
-"structalpaka_1_1concepts_1_1Implements.html":[3,0,0,1,1]
+"structalpaka_1_1concepts_1_1Implements.html":[3,0,0,1,1],
+"structalpaka_1_1concepts_1_1ImplementsConcept.html":[3,0,0,1,2]
 };
