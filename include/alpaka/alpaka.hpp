@@ -83,7 +83,8 @@
 						// ============================================================================
 						// == ./include/alpaka/core/BoostPredef.hpp ==
 						// ==
-						/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan
+						/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Jeffrey Kelling,
+						 *                Bernhard Manfred Gruber, Jan Stephan
 						 * SPDX-License-Identifier: MPL-2.0
 						 */
 
@@ -96,18 +97,16 @@
 						#endif
 
 						//---------------------------------------HIP-----------------------------------
-						// __HIPCC__ is defined by hipcc (if either __CUDACC__ is defined)
+						// __HIP__ is defined by both hip-clang and vanilla clang in HIP mode.
 						// https://github.com/ROCm-Developer-Tools/HIP/blob/master/docs/markdown/hip_porting_guide.md#compiler-defines-summary
 						#if !defined(BOOST_LANG_HIP)
-						#    if defined(__HIPCC__) && (defined(__CUDACC__) || defined(__HIP__))
-						#        include <hip/hip_runtime.h>
-						// HIP defines "abort()" as "{asm("trap;");}", which breaks some kernels
-						#        undef abort
+						#    if defined(__HIP__)
+						/* BOOST_LANG_CUDA is enabled when either __CUDACC__ (nvcc) or __CUDA__ (clang) are defined. This occurs when
+						   nvcc / clang encounter a CUDA source file. Since there are no HIP source files we treat every source file
+						   as HIP when we are using a HIP-capable compiler. */
+						#        include <hip/hip_version.h>
+						// HIP doesn't give us a patch level for the last entry, just a gitdate
 						#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
-						#        if defined(BOOST_LANG_CUDA) && BOOST_LANG_CUDA
-						#            undef BOOST_LANG_CUDA
-						#            define BOOST_LANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
-						#        endif
 						#    else
 						#        define BOOST_LANG_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
 						#    endif
@@ -124,10 +123,12 @@
 						#    endif
 						#endif
 
-						// hip compiler detection
+						// HIP compiler detection
 						#if !defined(BOOST_COMP_HIP)
-						#    if defined(__HIP__)
-						#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER_AVAILABLE
+						#    if defined(__HIP__) // Defined by hip-clang and vanilla clang in HIP mode.
+						// #        include <hip/hip_version.h>    // amalgamate: file already included
+						// HIP doesn't give us a patch level for the last entry, just a gitdate
+						#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER(HIP_VERSION_MAJOR, HIP_VERSION_MINOR, 0)
 						#    else
 						#        define BOOST_COMP_HIP BOOST_VERSION_NUMBER_NOT_AVAILABLE
 						#    endif
@@ -172,7 +173,7 @@
 						 */
 
 						// #pragma once
-						// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+						// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 							// ============================================================================
 							// == ./include/alpaka/core/Debug.hpp ==
 							// ==
@@ -181,7 +182,7 @@
 							 */
 
 							// #pragma once
-							// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+							// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 							#include <iostream>
 							#include <string>
@@ -209,10 +210,12 @@
 							        {
 							            std::cout << "[+] " << m_sScope << std::endl;
 							        }
+
 							        ScopeLogStdOut(ScopeLogStdOut const&) = delete;
 							        ScopeLogStdOut(ScopeLogStdOut&&) = delete;
 							        auto operator=(ScopeLogStdOut const&) -> ScopeLogStdOut& = delete;
 							        auto operator=(ScopeLogStdOut&&) -> ScopeLogStdOut& = delete;
+
 							        ~ScopeLogStdOut()
 							        {
 							            std::cout << "[-] " << m_sScope << std::endl;
@@ -245,7 +248,7 @@
 							#        define ALPAKA_DEBUG_BREAK ::__debugbreak()
 							#    else
 							#        define ALPAKA_DEBUG_BREAK
-							  //#error debug-break for current compiler not implemented!
+							  // #error debug-break for current compiler not implemented!
 							#    endif
 							#else
 							#    define ALPAKA_DEBUG_BREAK
@@ -260,12 +263,20 @@
 						#    include <intrin.h>
 						#endif
 
+						#if BOOST_LANG_HIP
+						// HIP defines some keywords like __forceinline__ in header files.
+						#    include <hip/hip_runtime.h>
+						#endif
+
 						//! All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC.
 						//!
+						//! \code{.cpp}
 						//! Usage:
 						//! ALPAKA_FN_ACC
 						//! auto add(std::int32_t a, std::int32_t b)
 						//! -> std::int32_t;
+						//! \endcode
+						//! @{
 						#if BOOST_LANG_CUDA || BOOST_LANG_HIP
 						#    if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) || defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
 						#        define ALPAKA_FN_ACC __device__
@@ -279,6 +290,7 @@
 						#    define ALPAKA_FN_HOST_ACC
 						#    define ALPAKA_FN_HOST
 						#endif
+						//! @}
 
 						//! All functions marked with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC that are exported to / imported from different
 						//! translation units have to be attributed with ALPAKA_FN_EXTERN. Note that this needs to be applied to both the
@@ -322,6 +334,8 @@
 						#endif
 
 						//! Macro defining the inline function attribute.
+						//!
+						//! The macro should stay on the left hand side of keywords, e.g. 'static', 'constexpr', 'explicit' or the return type.
 						#if BOOST_LANG_CUDA || BOOST_LANG_HIP
 						#    define ALPAKA_FN_INLINE __forceinline__
 						#elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
@@ -430,7 +444,6 @@
 					#include <algorithm>
 					#include <type_traits>
 
-
 					namespace alpaka
 					{
 					    //! The addition function object.
@@ -454,6 +467,7 @@
 					#endif
 					        }
 					    };
+
 					    //! The subtraction function object.
 					    struct AtomicSub
 					    {
@@ -475,6 +489,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The minimum function object.
 					    struct AtomicMin
 					    {
@@ -489,6 +504,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The maximum function object.
 					    struct AtomicMax
 					    {
@@ -503,6 +519,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The exchange function object.
 					    struct AtomicExch
 					    {
@@ -517,6 +534,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The increment function object.
 					    struct AtomicInc
 					    {
@@ -533,6 +551,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The decrement function object.
 					    struct AtomicDec
 					    {
@@ -549,6 +568,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The and function object.
 					    struct AtomicAnd
 					    {
@@ -563,6 +583,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The or function object.
 					    struct AtomicOr
 					    {
@@ -577,6 +598,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The exclusive or function object.
 					    struct AtomicXor
 					    {
@@ -591,6 +613,7 @@
 					            return old;
 					        }
 					    };
+
 					    //! The compare and swap function object.
 					    struct AtomicCas
 					    {
@@ -616,6 +639,7 @@
 					#endif
 					            return old;
 					        }
+
 					        //! AtomicCas for floating point values
 					        // \return The old value of addr.
 					        ALPAKA_NO_HOST_ACC_WARNING
@@ -661,7 +685,7 @@
 					// == ./include/alpaka/atomic/Op.hpp ==
 					// ============================================================================
 
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/core/Concepts.hpp ==
 					// ==
@@ -760,6 +784,7 @@
 					        {
 					        };
 					    } // namespace hierarchy
+
 					    //! Defines the origins available for getting extent and indices of kernel executions.
 					    namespace origin
 					    {
@@ -770,6 +795,7 @@
 					        //! This type is used to get the extents relative to the thread.
 					        struct Thread;
 					    } // namespace origin
+
 					    //! Defines the units available for getting extent and indices of kernel executions.
 					    namespace unit
 					    {
@@ -796,9 +822,11 @@
 				    struct ConceptAtomicGrids
 				    {
 				    };
+
 				    struct ConceptAtomicBlocks
 				    {
 				    };
+
 				    struct ConceptAtomicThreads
 				    {
 				    };
@@ -1084,7 +1112,7 @@
 				// == ./include/alpaka/atomic/Traits.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 			#include <array>
 			#include <atomic>
@@ -1107,6 +1135,7 @@
 			        using atomic_ref = boost::atomic_ref<T>;
 			#    endif
 			    } // namespace detail
+
 			    //! The atomic ops based on atomic_ref for CPU accelerators.
 			    //
 			    //  Atomics can be used in the grids, blocks and threads hierarchy levels.
@@ -1318,8 +1347,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 			// #include <array>    // amalgamate: file already included
 			#include <mutex>
@@ -1400,6 +1429,7 @@
 			                std::lock_guard<std::mutex> lock(atomic.getMutex(addr));
 			                return TOp()(addr, value);
 			            }
+
 			            ALPAKA_FN_HOST static auto atomicOp(
 			                AtomicStdLibLock<THashTableSize> const& atomic,
 			                T* const addr,
@@ -1440,7 +1470,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/meta/InheritFromList.hpp ==
 			// ==
@@ -1547,7 +1577,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
 
 		namespace alpaka
 		{
@@ -1590,9 +1620,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 		#ifdef _OPENMP
 
@@ -1773,7 +1803,8 @@
 		#        pragma omp atomic capture compare
 		                {
 		                    old = ref;
-		                    ref = (ref <= value) ? ref : value;
+		                    if(value < ref)
+		                        ref = value;
 		                }
 		                return old;
 		            }
@@ -1791,7 +1822,8 @@
 		#        pragma omp atomic capture compare
 		                {
 		                    old = ref;
-		                    ref = (ref >= value) ? ref : value;
+		                    if(value > ref)
+		                        ref = value;
 		                }
 		                return old;
 		            }
@@ -1803,21 +1835,12 @@
 		        {
 		            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
 		            {
+		                // TODO(bgruber): atomic increment with wrap around is not implementable in OpenMP 5.1
 		                T old;
-		                auto& ref(*addr);
-		// atomically update ref, but capture the original value in old
-		#        if BOOST_COMP_GNUC
-		#            pragma GCC diagnostic push
-		#            pragma GCC diagnostic ignored "-Wconversion"
-		#        endif
-		#        pragma omp atomic capture compare
+		#        pragma omp critical(AlpakaOmpAtomicOp)
 		                {
-		                    old = ref;
-		                    ref = ((ref >= value) ? 0 : (ref + 1));
+		                    old = AtomicInc{}(addr, value);
 		                }
-		#        if BOOST_COMP_GNUC
-		#            pragma GCC diagnostic pop
-		#        endif
 		                return old;
 		            }
 		        };
@@ -1828,21 +1851,12 @@
 		        {
 		            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
 		            {
+		                // TODO(bgruber): atomic decrement with wrap around is not implementable in OpenMP 5.1
 		                T old;
-		                auto& ref(*addr);
-		// atomically update ref, but capture the original value in old
-		#        if BOOST_COMP_GNUC
-		#            pragma GCC diagnostic push
-		#            pragma GCC diagnostic ignored "-Wconversion"
-		#        endif
-		#        pragma omp atomic capture compare
+		#        pragma omp critical(AlpakaOmpAtomicOp)
 		                {
-		                    old = ref;
-		                    ref = ((ref == 0) || (ref > value)) ? value : (ref - 1);
+		                    old = AtomicDec{}(addr, value);
 		                }
-		#        if BOOST_COMP_GNUC
-		#            pragma GCC diagnostic pop
-		#        endif
 		                return old;
 		            }
 		        };
@@ -1879,14 +1893,15 @@
 		            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
 		            {
 		                T old;
-		// \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all
-		// threads.
+		                // \TODO: Currently not only the access to the same memory location is protected by a mutex but all
+		                // atomic ops on all threads.
 		#        pragma omp critical(AlpakaOmpAtomicOp)
 		                {
 		                    old = TOp()(addr, value);
 		                }
 		                return old;
 		            }
+
 		            ALPAKA_FN_HOST static auto atomicOp(
 		                AtomicOmpBuiltIn const&,
 		                T* const addr,
@@ -1894,8 +1909,8 @@
 		                T const& value) -> T
 		            {
 		                T old;
-		// \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all
-		// threads.
+		                // \TODO: Currently not only the access to the same memory location is protected by a mutex but all
+		                // atomic ops on all threads.
 		#        pragma omp critical(AlpakaOmpAtomicOp2)
 		                {
 		                    old = TOp()(addr, compare, value);
@@ -1951,8 +1966,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
@@ -2001,7 +2016,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 			#include <cassert>
 			// #include <type_traits>    // amalgamate: file already included
@@ -2087,7 +2102,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 			#include <cstddef>
 			// #include <cstdint>    // amalgamate: file already included
@@ -2161,6 +2176,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<float>
@@ -2189,6 +2205,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::int8_t>
@@ -2222,6 +2239,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::uint8_t>
@@ -2255,6 +2273,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::int16_t>
@@ -2288,6 +2307,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::uint16_t>
@@ -2321,6 +2341,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::int32_t>
@@ -2349,6 +2370,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::uint32_t>
@@ -2377,6 +2399,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::int64_t>
@@ -2403,6 +2426,7 @@
 			            1u;
 			#endif
 			    };
+
 			    // Number of elements of the given type that can be processed in parallel in a vector register.
 			    template<>
 			    struct GetVectorizationSizeElems<std::uint64_t>
@@ -2557,8 +2581,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
@@ -2622,9 +2646,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already inlined
 
 			// #include <algorithm>    // amalgamate: file already included
 			// #include <cstdint>    // amalgamate: file already included
@@ -2765,8 +2789,8 @@
 			// == ./include/alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already inlined
 
 		// #include <algorithm>    // amalgamate: file already included
 		// #include <cstdint>    // amalgamate: file already included
@@ -2805,6 +2829,7 @@
 		                return *data;
 		            }
 		        };
+
 		        template<std::size_t TDataAlignBytes>
 		        struct FreeSharedVars<BlockSharedMemStMember<TDataAlignBytes>>
 		        {
@@ -2835,8 +2860,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
@@ -2885,6 +2910,7 @@
 			            return currentResult + static_cast<T>(value != static_cast<T>(0));
 			        }
 			    };
+
 			    //! The logical and function object.
 			    struct BlockAnd
 			    {
@@ -2900,6 +2926,7 @@
 			            return static_cast<T>(currentResult && (value != static_cast<T>(0)));
 			        }
 			    };
+
 			    //! The logical or function object.
 			    struct BlockOr
 			    {
@@ -2938,7 +2965,7 @@
 			// == ./include/alpaka/block/sync/Traits.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 		namespace alpaka
 		{
@@ -2983,7 +3010,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 		#include <boost/core/demangle.hpp>
 
@@ -3012,8 +3039,8 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/idx/Traits.hpp ==
 			// ==
@@ -3030,6 +3057,7 @@
 			    struct ConceptIdxBt
 			    {
 			    };
+
 			    struct ConceptIdxGb
 			    {
 			    };
@@ -3080,7 +3108,7 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 				// #include <cstddef>    // amalgamate: file already included
 				// #include <type_traits>    // amalgamate: file already included
@@ -3100,6 +3128,7 @@
 				        struct RoundUpToPowerOfTwoHelper : std::integral_constant<std::size_t, N>
 				        {
 				        };
+
 				        //! Case for N not being a power of two.
 				        // We could just use NextVal = N+1, but this converges faster.  N|(N-1) sets
 				        // the right-most zero bits to one all at once, e.g. 0b0011000 -> 0b0011111.
@@ -3109,6 +3138,7 @@
 				        {
 				        };
 				    } // namespace detail
+
 				    template<std::size_t N>
 				    struct RoundUpToPowerOfTwo
 				        : std::integral_constant<std::size_t, detail::RoundUpToPowerOfTwoHelper<N, (N & (N - 1)) == 0>::value>
@@ -3141,9 +3171,9 @@
 				// == ./include/alpaka/core/Align.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/Unreachable.hpp ==
 				// ==
@@ -3152,7 +3182,7 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 				//! Before CUDA 11.5 nvcc is unable to correctly identify return statements in 'if constexpr' branches. It will issue
 				//! a false warning about a missing return statement unless it is told that the following code section is unreachable.
@@ -3222,185 +3252,38 @@
 				// == ./include/alpaka/dim/DimIntegralConst.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
-				// == ./include/alpaka/extent/Traits.hpp ==
+				// == ./include/alpaka/meta/Fold.hpp ==
 				// ==
-				/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+				/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-					// ============================================================================
-					// == ./include/alpaka/meta/Fold.hpp ==
-					// ==
-					/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
-					// #pragma once
-					// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-
-					namespace alpaka::meta
-					{
-					    ALPAKA_NO_HOST_ACC_WARNING
-					    template<typename TFnObj, typename T>
-					    ALPAKA_FN_HOST_ACC constexpr auto foldr(TFnObj const& /* f */, T const& t) -> T
-					    {
-					        return t;
-					    }
-					    ALPAKA_NO_HOST_ACC_WARNING
-					    template<typename TFnObj, typename T0, typename T1, typename... Ts>
-					    ALPAKA_FN_HOST_ACC constexpr auto foldr(TFnObj const& f, T0 const& t0, T1 const& t1, Ts const&... ts)
-					    {
-					        return f(t0, foldr(f, t1, ts...));
-					    }
-					} // namespace alpaka::meta
-					// ==
-					// == ./include/alpaka/meta/Fold.hpp ==
-					// ============================================================================
-
-
-				// #include <functional>    // amalgamate: file already included
-				// #include <type_traits>    // amalgamate: file already included
-				// #include <utility>    // amalgamate: file already included
-
-				namespace alpaka
+				namespace alpaka::meta
 				{
-				    //! The extent traits.
-				    namespace trait
-				    {
-				        //! The extent get trait.
-				        //!
-				        //! If not specialized explicitly it returns 1.
-				        template<typename TIdxIntegralConst, typename TExtent, typename TSfinae = void>
-				        struct GetExtent
-				        {
-				            ALPAKA_NO_HOST_ACC_WARNING
-				            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const&) -> Idx<TExtent>
-				            {
-				                return static_cast<Idx<TExtent>>(1);
-				            }
-				        };
-
-				        //! The extent set trait.
-				        template<typename TIdxIntegralConst, typename TExtent, typename TExtentVal, typename TSfinae = void>
-				        struct SetExtent;
-				    } // namespace trait
-
-				    //! \return The extent in the given dimension.
 				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<std::size_t Tidx, typename TExtent>
-				    ALPAKA_FN_HOST_ACC auto getExtent(TExtent const& extent = TExtent()) -> Idx<TExtent>
+				    template<typename TFnObj, typename T>
+				    ALPAKA_FN_HOST_ACC constexpr auto foldr(TFnObj const& /* f */, T const& t) -> T
 				    {
-				        return trait::GetExtent<DimInt<Tidx>, TExtent>::getExtent(extent);
-				    }
-				    //! \return The width.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TExtent>
-				    ALPAKA_FN_HOST_ACC auto getWidth(TExtent const& extent = TExtent()) -> Idx<TExtent>
-				    {
-				        return getExtent<Dim<TExtent>::value - 1u>(extent);
-				    }
-				    //! \return The height.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TExtent>
-				    ALPAKA_FN_HOST_ACC auto getHeight(TExtent const& extent = TExtent()) -> Idx<TExtent>
-				    {
-				        return getExtent<Dim<TExtent>::value - 2u>(extent);
-				    }
-				    //! \return The depth.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TExtent>
-				    ALPAKA_FN_HOST_ACC auto getDepth(TExtent const& extent = TExtent()) -> Idx<TExtent>
-				    {
-				        return getExtent<Dim<TExtent>::value - 3u>(extent);
+				        return t;
 				    }
 
-				    namespace detail
-				    {
-				        ALPAKA_NO_HOST_ACC_WARNING
-				        template<typename TExtent, size_t... TIndices>
-				        ALPAKA_FN_HOST_ACC auto getExtentProductInternal(
-				            TExtent const& extent,
-				            std::index_sequence<TIndices...> const& /* indices */) -> Idx<TExtent>
-				        {
-				            return (getExtent<TIndices>(extent) * ... * Idx<TExtent>(1u));
-				        }
-				    } // namespace detail
-
-				    //! \return The product of the extent.
 				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TExtent>
-				    ALPAKA_FN_HOST_ACC auto getExtentProduct(TExtent const& extent = TExtent()) -> Idx<TExtent>
+				    template<typename TFnObj, typename T0, typename T1, typename... Ts>
+				    ALPAKA_FN_HOST_ACC constexpr auto foldr(TFnObj const& f, T0 const& t0, T1 const& t1, Ts const&... ts)
 				    {
-				        using IdxSequence = std::make_index_sequence<Dim<TExtent>::value>;
-				        return detail::getExtentProductInternal(extent, IdxSequence());
+				        return f(t0, foldr(f, t1, ts...));
 				    }
-
-				    //! Sets the extent in the given dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<std::size_t Tidx, typename TExtent, typename TExtentVal>
-				    ALPAKA_FN_HOST_ACC auto setExtent(TExtent& extent, TExtentVal const& extentVal) -> void
-				    {
-				        trait::SetExtent<DimInt<Tidx>, TExtent, TExtentVal>::setExtent(extent, extentVal);
-				    }
-				    //! Sets the width.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TExtent, typename TWidth>
-				    ALPAKA_FN_HOST_ACC auto setWidth(TExtent& extent, TWidth const& width) -> void
-				    {
-				        setExtent<Dim<TExtent>::value - 1u>(extent, width);
-				    }
-				    //! Sets the height.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TExtent, typename THeight>
-				    ALPAKA_FN_HOST_ACC auto setHeight(TExtent& extent, THeight const& height) -> void
-				    {
-				        setExtent<Dim<TExtent>::value - 2u>(extent, height);
-				    }
-				    //! Sets the depth.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TExtent, typename TDepth>
-				    ALPAKA_FN_HOST_ACC auto setDepth(TExtent& extent, TDepth const& depth) -> void
-				    {
-				        setExtent<Dim<TExtent>::value - 3u>(extent, depth);
-				    }
-
-				    // Trait specializations for unsigned integral types.
-				    namespace trait
-				    {
-				        //! The unsigned integral width get trait specialization.
-				        template<typename TExtent>
-				        struct GetExtent<DimInt<0u>, TExtent, std::enable_if_t<std::is_integral_v<TExtent>>>
-				        {
-				            ALPAKA_NO_HOST_ACC_WARNING
-				            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent) -> Idx<TExtent>
-				            {
-				                return extent;
-				            }
-				        };
-				        //! The unsigned integral width set trait specialization.
-				        template<typename TExtent, typename TExtentVal>
-				        struct SetExtent<DimInt<0u>, TExtent, TExtentVal, std::enable_if_t<std::is_integral_v<TExtent>>>
-				        {
-				            ALPAKA_NO_HOST_ACC_WARNING
-				            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-				            {
-				                extent = extentVal;
-				            }
-				        };
-				    } // namespace trait
-				} // namespace alpaka
+				} // namespace alpaka::meta
 				// ==
-				// == ./include/alpaka/extent/Traits.hpp ==
+				// == ./include/alpaka/meta/Fold.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/meta/Fold.hpp"    // amalgamate: file already expanded
 				// ============================================================================
 				// == ./include/alpaka/meta/Functional.hpp ==
 				// ==
@@ -3409,7 +3292,7 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 				namespace alpaka::meta
 				{
@@ -3417,8 +3300,7 @@
 				    struct min
 				    {
 				        ALPAKA_NO_HOST_ACC_WARNING
-				        ALPAKA_FN_HOST_ACC
-				        constexpr auto operator()(const T& lhs, const T& rhs) const
+				        ALPAKA_FN_HOST_ACC constexpr auto operator()(T const& lhs, T const& rhs) const
 				        {
 				            return (lhs < rhs) ? lhs : rhs;
 				        }
@@ -3428,8 +3310,7 @@
 				    struct max
 				    {
 				        ALPAKA_NO_HOST_ACC_WARNING
-				        ALPAKA_FN_HOST_ACC
-				        constexpr auto operator()(const T& lhs, const T& rhs) const
+				        ALPAKA_FN_HOST_ACC constexpr auto operator()(T const& lhs, T const& rhs) const
 				        {
 				            return (lhs > rhs) ? lhs : rhs;
 				        }
@@ -3469,11 +3350,13 @@
 
 					        template<typename... Ts>
 					        struct IsParameterPackSetImpl;
+
 					        template<>
 					        struct IsParameterPackSetImpl<>
 					        {
 					            static constexpr bool value = true;
 					        };
+
 					        // Based on code by Roland Bock: https://gist.github.com/rbock/ad8eedde80c060132a18
 					        // Linearly inherits from empty<T> and checks if it has already inherited from this type.
 					        template<typename T, typename... Ts>
@@ -3486,6 +3369,7 @@
 					            static constexpr bool value = Base::value && !std::is_base_of_v<Empty<T>, Base>;
 					        };
 					    } // namespace detail
+
 					    //! Trait that tells if the parameter pack contains only unique (no equal) types.
 					    template<typename... Ts>
 					    using IsParameterPackSet = detail::IsParameterPackSetImpl<Ts...>;
@@ -3494,12 +3378,14 @@
 					    {
 					        template<typename TList>
 					        struct IsSetImpl;
+
 					        template<template<typename...> class TList, typename... Ts>
 					        struct IsSetImpl<TList<Ts...>>
 					        {
 					            static constexpr bool value = IsParameterPackSet<Ts...>::value;
 					        };
 					    } // namespace detail
+
 					    //! Trait that tells if the template contains only unique (no equal) types.
 					    template<typename TList>
 					    using IsSet = detail::IsSetImpl<TList>;
@@ -3519,12 +3405,14 @@
 				    {
 				        template<typename TDstType, typename TIntegerSequence>
 				        struct ConvertIntegerSequence;
+
 				        template<typename TDstType, typename T, T... Tvals>
 				        struct ConvertIntegerSequence<TDstType, std::integer_sequence<T, Tvals...>>
 				        {
 				            using type = std::integer_sequence<TDstType, static_cast<TDstType>(Tvals)...>;
 				        };
 				    } // namespace detail
+
 				    template<typename TDstType, typename TIntegerSequence>
 				    using ConvertIntegerSequence = typename detail::ConvertIntegerSequence<TDstType, TIntegerSequence>::type;
 
@@ -3535,6 +3423,7 @@
 				        {
 				            static_assert(!TisSizeNegative, "MakeIntegerSequence<T, N> requires N to be non-negative.");
 				        };
+
 				        template<typename T, T Tbegin, T... Tvals>
 				        struct MakeIntegerSequenceHelper<
 				            false,
@@ -3546,6 +3435,7 @@
 				        {
 				            using type = std::integer_sequence<T, Tvals...>;
 				        };
+
 				        template<typename T, T Tbegin, T TIdx, T... Tvals>
 				        struct MakeIntegerSequenceHelper<
 				            false,
@@ -3584,6 +3474,7 @@
 				    //! Checks if the values in the index sequence are unique.
 				    template<typename TIntegerSequence>
 				    struct IntegerSequenceValuesUnique;
+
 				    //! Checks if the values in the index sequence are unique.
 				    template<typename T, T... Tvals>
 				    struct IntegerSequenceValuesUnique<std::integer_sequence<T, Tvals...>>
@@ -3594,12 +3485,14 @@
 				    //! Checks if the integral values are within the given range.
 				    template<typename T, T Tmin, T Tmax, T... Tvals>
 				    struct IntegralValuesInRange;
+
 				    //! Checks if the integral values are within the given range.
 				    template<typename T, T Tmin, T Tmax>
 				    struct IntegralValuesInRange<T, Tmin, Tmax>
 				    {
 				        static constexpr bool value = true;
 				    };
+
 				    //! Checks if the integral values are within the given range.
 				    template<typename T, T Tmin, T Tmax, T I, T... Tvals>
 				    struct IntegralValuesInRange<T, Tmin, Tmax, I, Tvals...>
@@ -3611,6 +3504,7 @@
 				    //! Checks if the values in the index sequence are within the given range.
 				    template<typename TIntegerSequence, typename T, T Tmin, T Tmax>
 				    struct IntegerSequenceValuesInRange;
+
 				    //! Checks if the values in the index sequence are within the given range.
 				    template<typename T, T... Tvals, T Tmin, T Tmax>
 				    struct IntegerSequenceValuesInRange<std::integer_sequence<T, Tvals...>, T, Tmin, Tmax>
@@ -3623,130 +3517,6 @@
 				// ============================================================================
 
 				// ============================================================================
-				// == ./include/alpaka/offset/Traits.hpp ==
-				// ==
-				/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-
-				// #include <type_traits>    // amalgamate: file already included
-
-				namespace alpaka
-				{
-				    //! The offset traits.
-				    namespace trait
-				    {
-				        //! The x offset get trait.
-				        //!
-				        //! If not specialized explicitly it returns 0.
-				        template<typename TIdx, typename TOffsets, typename TSfinae = void>
-				        struct GetOffset
-				        {
-				            ALPAKA_NO_HOST_ACC_WARNING
-				            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const&) -> Idx<TOffsets>
-				            {
-				                return static_cast<Idx<TOffsets>>(0);
-				            }
-				        };
-
-				        //! The x offset set trait.
-				        template<typename TIdx, typename TOffsets, typename TOffset, typename TSfinae = void>
-				        struct SetOffset;
-				    } // namespace trait
-
-				    //! \return The offset in the given dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<std::size_t Tidx, typename TOffsets>
-				    ALPAKA_FN_HOST_ACC auto getOffset(TOffsets const& offsets) -> Idx<TOffsets>
-				    {
-				        return trait::GetOffset<DimInt<Tidx>, TOffsets>::getOffset(offsets);
-				    }
-				    //! \return The offset in x dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TOffsets>
-				    ALPAKA_FN_HOST_ACC auto getOffsetX(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
-				    {
-				        return getOffset<Dim<TOffsets>::value - 1u>(offsets);
-				    }
-				    //! \return The offset in y dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TOffsets>
-				    ALPAKA_FN_HOST_ACC auto getOffsetY(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
-				    {
-				        return getOffset<Dim<TOffsets>::value - 2u>(offsets);
-				    }
-				    //! \return The offset in z dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TOffsets>
-				    ALPAKA_FN_HOST_ACC auto getOffsetZ(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
-				    {
-				        return getOffset<Dim<TOffsets>::value - 3u>(offsets);
-				    }
-
-				    //! Sets the offset in the given dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<std::size_t Tidx, typename TOffsets, typename TOffset>
-				    ALPAKA_FN_HOST_ACC auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-				    {
-				        trait::SetOffset<DimInt<Tidx>, TOffsets, TOffset>::setOffset(offsets, offset);
-				    }
-				    //! Sets the offset in x dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TOffsets, typename TOffset>
-				    ALPAKA_FN_HOST_ACC auto setOffsetX(TOffsets const& offsets, TOffset const& offset) -> void
-				    {
-				        setOffset<Dim<TOffsets>::value - 1u>(offsets, offset);
-				    }
-				    //! Sets the offset in y dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TOffsets, typename TOffset>
-				    ALPAKA_FN_HOST_ACC auto setOffsetY(TOffsets const& offsets, TOffset const& offset) -> void
-				    {
-				        setOffset<Dim<TOffsets>::value - 2u>(offsets, offset);
-				    }
-				    //! Sets the offset in z dimension.
-				    ALPAKA_NO_HOST_ACC_WARNING
-				    template<typename TOffsets, typename TOffset>
-				    ALPAKA_FN_HOST_ACC auto setOffsetZ(TOffsets const& offsets, TOffset const& offset) -> void
-				    {
-				        setOffset<Dim<TOffsets>::value - 3u>(offsets, offset);
-				    }
-
-				    // Trait specializations for unsigned integral types.
-				    namespace trait
-				    {
-				        //! The unsigned integral x offset get trait specialization.
-				        template<typename TOffsets>
-				        struct GetOffset<DimInt<0u>, TOffsets, std::enable_if_t<std::is_integral_v<TOffsets>>>
-				        {
-				            ALPAKA_NO_HOST_ACC_WARNING
-				            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const& offset) -> Idx<TOffsets>
-				            {
-				                return offset;
-				            }
-				        };
-				        //! The unsigned integral x offset set trait specialization.
-				        template<typename TOffsets, typename TOffset>
-				        struct SetOffset<DimInt<0u>, TOffsets, TOffset, std::enable_if_t<std::is_integral_v<TOffsets>>>
-				        {
-				            ALPAKA_NO_HOST_ACC_WARNING
-				            ALPAKA_FN_HOST_ACC static auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-				            {
-				                offsets = offset;
-				            }
-				        };
-				    } // namespace trait
-				} // namespace alpaka
-				// ==
-				// == ./include/alpaka/offset/Traits.hpp ==
-				// ============================================================================
-
-				// ============================================================================
 				// == ./include/alpaka/vec/Traits.hpp ==
 				// ==
 				/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
@@ -3755,11 +3525,10 @@
 
 
 				// #pragma once
-				// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/meta/IntegerSequence.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/meta/IntegerSequence.hpp"    // amalgamate: file already inlined
 
 				// #include <utility>    // amalgamate: file already included
 
@@ -3794,6 +3563,7 @@
 				    {
 				        return trait::SubVecFromIndices<TVec, TIndexSequence>::subVecFromIndices(vec);
 				    }
+
 				    //! \tparam TVec has to specialize SubVecFromIndices.
 				    //! \return The sub-vector consisting of the first N elements of the source vector.
 				    ALPAKA_NO_HOST_ACC_WARNING
@@ -3808,6 +3578,7 @@
 				        using IdxSubSequence = std::make_integer_sequence<std::size_t, TSubDim::value>;
 				        return subVecFromIndices<IdxSubSequence>(vec);
 				    }
+
 				    //! \tparam TVec has to specialize SubVecFromIndices.
 				    //! \return The sub-vector consisting of the last N elements of the source vector.
 				    ALPAKA_NO_HOST_ACC_WARNING
@@ -3856,6 +3627,7 @@
 
 			// #include <algorithm>    // amalgamate: file already included
 			// #include <cstdint>    // amalgamate: file already included
+			// #include <functional>    // amalgamate: file already included
 			// #include <limits>    // amalgamate: file already included
 			#include <ostream>
 			// #include <tuple>    // amalgamate: file already included
@@ -3866,43 +3638,6 @@
 			{
 			    template<typename TDim, typename TVal>
 			    class Vec;
-
-			    //! Single value constructor helper.
-			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<
-			        typename TDim,
-			        template<std::size_t>
-			        class TTFnObj,
-			        typename... TArgs,
-			        typename TIdxSize,
-			        TIdxSize... TIndices>
-			    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-			        std::integer_sequence<TIdxSize, TIndices...> const& /* indices */,
-			        TArgs&&... args)
-			    {
-			        return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
-			            (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
-			    }
-			    //! Creator using func<idx>(args...) to initialize all values of the vector.
-			    //! The idx is in the range [0, TDim].
-			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TDim, template<std::size_t> class TTFnObj, typename... TArgs>
-			    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFn(TArgs&&... args)
-			    {
-			        using IdxSequence = std::make_integer_sequence<typename TDim::value_type, TDim::value>;
-			        return createVecFromIndexedFnArbitrary<TDim, TTFnObj>(IdxSequence(), std::forward<TArgs>(args)...);
-			    }
-
-			    //! Creator using func<idx>(args...) to initialize all values of the vector.
-			    //! The idx is in the range [TIdxOffset, TIdxOffset + TDim].
-			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TDim, template<std::size_t> class TTFnObj, typename TIdxOffset, typename... TArgs>
-			    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnOffset(TArgs&&... args)
-			    {
-			        using IdxSubSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>;
-			        using IdxSubSequence = meta::ConvertIntegerSequence<typename TIdxOffset::value_type, IdxSubSequenceSigned>;
-			        return createVecFromIndexedFnArbitrary<TDim, TTFnObj>(IdxSubSequence(), std::forward<TArgs>(args)...);
-			    }
 
 			    //! A n-dimensional vector.
 			    template<typename TDim, typename TVal>
@@ -3950,6 +3685,31 @@
 			        }
 			#endif
 
+			        //! Generator constructor.
+			        //! Initializes the vector with the values returned from generator(IC) in order, where IC::value runs from 0 to
+			        //! TDim - 1 (inclusive).
+			#if BOOST_COMP_NVCC && BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(11, 3, 0)                                              \
+			    && BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(11, 4, 0)
+			        template<typename F>
+			        ALPAKA_FN_HOST_ACC constexpr explicit Vec(
+			            F&& generator,
+			            std::void_t<decltype(generator(std::integral_constant<std::size_t, 0>{}))>* ignore = nullptr)
+			#else
+			        template<typename F, std::enable_if_t<std::is_invocable_v<F, std::integral_constant<std::size_t, 0>>, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr explicit Vec(F&& generator)
+			#endif
+			            : Vec(std::forward<F>(generator), std::make_integer_sequence<TVal, TDim::value>{})
+			        {
+			        }
+
+			    private:
+			        template<typename F, TVal... Is>
+			        ALPAKA_FN_HOST_ACC constexpr explicit Vec(F&& generator, std::integer_sequence<TVal, Is...>)
+			            : m_data{generator(std::integral_constant<TVal, Is>{})...}
+			        {
+			        }
+
+			    public:
 			        //! \brief Single value constructor.
 			        //!
 			        //! Creates a vector with all values set to val.
@@ -3996,6 +3756,80 @@
 			        {
 			            return m_data + TDim::value;
 			        }
+
+			        ALPAKA_FN_HOST_ACC constexpr auto front() -> TVal&
+			        {
+			            return m_data[0];
+			        }
+
+			        ALPAKA_FN_HOST_ACC constexpr auto front() const -> TVal const&
+			        {
+			            return m_data[0];
+			        }
+
+			        ALPAKA_FN_HOST_ACC constexpr auto back() -> TVal&
+			        {
+			            return m_data[Dim::value - 1];
+			        }
+
+			        ALPAKA_FN_HOST_ACC constexpr auto back() const -> TVal const&
+			        {
+			            return m_data[Dim::value - 1];
+			        }
+
+			        //! access elements by name
+			        //!
+			        //! names: x,y,z,w
+			        //! @{
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 1, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) x() const
+			        {
+			            return m_data[Dim::value - 1];
+			        }
+
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 1, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) x()
+			        {
+			            return m_data[Dim::value - 1];
+			        }
+
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 2, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) y() const
+			        {
+			            return m_data[Dim::value - 2];
+			        }
+
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 2, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) y()
+			        {
+			            return m_data[Dim::value - 2];
+			        }
+
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 3, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) z() const
+			        {
+			            return m_data[Dim::value - 3];
+			        }
+
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 3, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) z()
+			        {
+			            return m_data[Dim::value - 3];
+			        }
+
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 4, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) w() const
+			        {
+			            return m_data[Dim::value - 4];
+			        }
+
+			        template<typename TDefer = Dim, std::enable_if_t<std::is_same_v<TDefer, Dim> && Dim::value >= 4, int> = 0>
+			        ALPAKA_FN_HOST_ACC constexpr decltype(auto) w()
+			        {
+			            return m_data[Dim::value - 4];
+			        }
+
+			        //! @}
 
 			        //! Value reference accessor at the given non-unsigned integer index.
 			        //! \return A reference to the value at the given index.
@@ -4063,7 +3897,7 @@
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto prod() const -> TVal
 			        {
-			            return foldrAll(std::multiplies<TVal>(), TVal(1));
+			            return foldrAll(std::multiplies<TVal>{}, TVal{1});
 			        }
 			#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 			#    pragma warning(pop)
@@ -4072,42 +3906,42 @@
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto sum() const -> TVal
 			        {
-			            return foldrAll(std::plus<TVal>(), TVal(0));
+			            return foldrAll(std::plus<TVal>{}, TVal{0});
 			        }
 
 			        //! \return The min of all values.
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto min() const -> TVal
 			        {
-			            return foldrAll(meta::min<TVal>(), std::numeric_limits<TVal>::max());
+			            return foldrAll(meta::min<TVal>{}, std::numeric_limits<TVal>::max());
 			        }
 
 			        //! \return The max of all values.
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto max() const -> TVal
 			        {
-			            return foldrAll(meta::max<TVal>(), std::numeric_limits<TVal>::min());
+			            return foldrAll(meta::max<TVal>{}, std::numeric_limits<TVal>::min());
 			        }
 
 			        //! \return True if all values are true, i.e., the "logical and" of all values.
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto all() const -> bool
 			        {
-			            return foldrAll(std::logical_and<TVal>(), true);
+			            return foldrAll(std::logical_and<TVal>{}, true);
 			        }
 
 			        //! \return True if any value is true, i.e., the "logical or" of all values.
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto any() const -> bool
 			        {
-			            return foldrAll(std::logical_or<TVal>(), false);
+			            return foldrAll(std::logical_or<TVal>{}, false);
 			        }
 
 			        //! \return True if none of the values are true
 			        ALPAKA_NO_HOST_ACC_WARNING
 			        [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto none() const -> bool
 			        {
-			            return !foldrAll(std::logical_or<TVal>(), false);
+			            return !foldrAll(std::logical_or<TVal>{}, false);
 			        }
 
 			        //! \return The index of the minimal element.
@@ -4362,6 +4196,12 @@
 			    template<typename TFirstIndex, typename... TRestIndices>
 			    Vec(TFirstIndex&&, TRestIndices&&...) -> Vec<DimInt<1 + sizeof...(TRestIndices)>, std::decay_t<TFirstIndex>>;
 
+			    template<typename T>
+			    inline constexpr bool isVec = false;
+
+			    template<typename TDim, typename TVal>
+			    inline constexpr bool isVec<Vec<TDim, TVal>> = true;
+
 			    //! Converts a Vec to a std::array
 			    template<typename TDim, typename TVal>
 			    ALPAKA_FN_HOST_ACC constexpr auto toArray(Vec<TDim, TVal> const& v) -> std::array<TVal, TDim::value>
@@ -4489,10 +4329,7 @@
 			                ALPAKA_UNREACHABLE({});
 			            }
 			        };
-			    } // namespace trait
 
-			    namespace trait
-			    {
 			        //! ReverseVec specialization for Vec.
 			        template<typename TDim, typename TVal>
 			        struct ReverseVec<Vec<TDim, TVal>>
@@ -4536,143 +4373,6 @@
 			                        r[TDimL::value + i] = vecR[i];
 			                }
 			                return r;
-			            }
-			        };
-			    } // namespace trait
-
-			    namespace detail
-			    {
-			        //! A function object that returns the extent for each index.
-			        template<std::size_t Tidx>
-			        struct CreateExtent
-			        {
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TExtent>
-			            ALPAKA_FN_HOST_ACC static constexpr auto create(TExtent const& extent) -> Idx<TExtent>
-			            {
-			                return getExtent<Tidx>(extent);
-			            }
-			        };
-			    } // namespace detail
-
-			    //! \tparam TExtent has to specialize GetExtent.
-			    //! \return The extent vector.
-			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TExtent>
-			    ALPAKA_FN_HOST_ACC auto constexpr getExtentVec(TExtent const& extent = {}) -> Vec<Dim<TExtent>, Idx<TExtent>>
-			    {
-			        return createVecFromIndexedFn<Dim<TExtent>, detail::CreateExtent>(extent);
-			    }
-
-			    //! \tparam TExtent has to specialize GetExtent.
-			    //! \return The extent but only the last TDim elements.
-			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TDim, typename TExtent>
-			    ALPAKA_FN_HOST_ACC auto constexpr getExtentVecEnd(TExtent const& extent = {}) -> Vec<TDim, Idx<TExtent>>
-			    {
-			        static_assert(TDim::value <= Dim<TExtent>::value, "Cannot get more items than the extent holds");
-
-			        using IdxOffset = std::integral_constant<
-			            std::intmax_t,
-			            static_cast<std::intmax_t>(Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
-			        return createVecFromIndexedFnOffset<TDim, detail::CreateExtent, IdxOffset>(extent);
-			    }
-
-			    namespace detail
-			    {
-			        //! A function object that returns the offsets for each index.
-			        template<std::size_t Tidx>
-			        struct CreateOffset
-			        {
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TOffsets>
-			            ALPAKA_FN_HOST_ACC static constexpr auto create(TOffsets const& offsets) -> Idx<TOffsets>
-			            {
-			                return getOffset<Tidx>(offsets);
-			            }
-			        };
-			    } // namespace detail
-
-			    //! \tparam TOffsets has to specialize GetOffset.
-			    //! \return The offset vector.
-			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TOffsets>
-			    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVec(TOffsets const& offsets = {}) -> Vec<Dim<TOffsets>, Idx<TOffsets>>
-			    {
-			        return createVecFromIndexedFn<Dim<TOffsets>, detail::CreateOffset>(offsets);
-			    }
-
-			    //! \tparam TOffsets has to specialize GetOffset.
-			    //! \return The offset vector but only the last TDim elements.
-			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TDim, typename TOffsets>
-			    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVecEnd(TOffsets const& offsets = {}) -> Vec<TDim, Idx<TOffsets>>
-			    {
-			        static_assert(TDim::value <= Dim<TOffsets>::value, "Cannot get more items than the offsets hold");
-
-			        using IdxOffset = std::integral_constant<
-			            std::size_t,
-			            static_cast<std::size_t>(
-			                static_cast<std::intmax_t>(Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
-			        return createVecFromIndexedFnOffset<TDim, detail::CreateOffset, IdxOffset>(offsets);
-			    }
-
-			    namespace trait
-			    {
-			        //! The Vec extent get trait specialization.
-			        template<typename TIdxIntegralConst, typename TDim, typename TVal>
-			        struct GetExtent<
-			            TIdxIntegralConst,
-			            Vec<TDim, TVal>,
-			            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-			        {
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            ALPAKA_FN_HOST_ACC static constexpr auto getExtent(Vec<TDim, TVal> const& extent) -> TVal
-			            {
-			                return extent[TIdxIntegralConst::value];
-			            }
-			        };
-			        //! The Vec extent set trait specialization.
-			        template<typename TIdxIntegralConst, typename TDim, typename TVal, typename TExtentVal>
-			        struct SetExtent<
-			            TIdxIntegralConst,
-			            Vec<TDim, TVal>,
-			            TExtentVal,
-			            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-			        {
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            ALPAKA_FN_HOST_ACC static constexpr auto setExtent(Vec<TDim, TVal>& extent, TExtentVal const& extentVal)
-			                -> void
-			            {
-			                extent[TIdxIntegralConst::value] = extentVal;
-			            }
-			        };
-
-			        //! The Vec offset get trait specialization.
-			        template<typename TIdxIntegralConst, typename TDim, typename TVal>
-			        struct GetOffset<
-			            TIdxIntegralConst,
-			            Vec<TDim, TVal>,
-			            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-			        {
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            ALPAKA_FN_HOST_ACC static constexpr auto getOffset(Vec<TDim, TVal> const& offsets) -> TVal
-			            {
-			                return offsets[TIdxIntegralConst::value];
-			            }
-			        };
-			        //! The Vec offset set trait specialization.
-			        template<typename TIdxIntegralConst, typename TDim, typename TVal, typename TOffset>
-			        struct SetOffset<
-			            TIdxIntegralConst,
-			            Vec<TDim, TVal>,
-			            TOffset,
-			            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-			        {
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            ALPAKA_FN_HOST_ACC static constexpr auto setOffset(Vec<TDim, TVal>& offsets, TOffset const& offset) -> void
-			            {
-			                offsets[TIdxIntegralConst::value] = offset;
 			            }
 			        };
 			    } // namespace trait
@@ -4757,11 +4457,11 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 		namespace alpaka
 		{
@@ -4817,12 +4517,13 @@
 		// ============================================================================
 		// == ./include/alpaka/intrinsic/IntrinsicCpu.hpp ==
 		// ==
-		/* Copyright 2022 Sergei Bastrakov, Bernhard Manfred Gruber
+		/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/intrinsic/IntrinsicFallback.hpp ==
 			// ==
@@ -4839,8 +4540,8 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 				// #include <cstdint>    // amalgamate: file already included
 				// #include <type_traits>    // amalgamate: file already included
@@ -4995,11 +4696,14 @@
 			// == ./include/alpaka/intrinsic/IntrinsicFallback.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already inlined
 
 		#include <bitset>
 		#include <climits>
-		#if __has_include(<bit>)
+		#if __has_include(<version>) // Not part of the C++17 standard but all major standard libraries include this
+		#    include <version>
+		#endif
+		#ifdef __cpp_lib_bitops
 		#    include <bit>
 		#endif
 
@@ -5038,6 +4742,7 @@
 		                // Fallback to standard library
 		                return static_cast<std::int32_t>(std::bitset<sizeof(UnsignedIntegral) * CHAR_BIT>(value).count());
 		#endif
+		                ALPAKA_UNREACHABLE(0);
 		            }
 		        };
 
@@ -5065,6 +4770,7 @@
 		#else
 		                return alpaka::detail::ffsFallback(value);
 		#endif
+		                ALPAKA_UNREACHABLE(0);
 		            }
 		        };
 		    } // namespace trait
@@ -5085,37 +4791,20 @@
 			// ============================================================================
 			// == ./include/alpaka/core/Decay.hpp ==
 			// ==
-			/* Copyright 2022 Sergei Bastrakov, Jan Stephan
+			/* Copyright 2023 Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
-
-			//! Wrapper around std::decay_t for parameter pack expansion expressions
-			//
-			// Works around PGI compiler internal error when used in empty template pack
-			// extension as discussed in #995. It seems not possible to make a workaround
-			// with pure C++ tools, like an alias template, so macro it is. Note that
-			// there is no known issue outside of empty parameter pack expansions,
-			// so the normal std::decay_t can and should be used there.
-			//
-			// The choice of macro over writing typename std::decay<Type>::type explicitly
-			// in parameter pack expansion expressions is to avoid warnings from diagnostic
-			// tools, and also for brevity.
-			#if BOOST_COMP_PGI
-			#    define ALPAKA_DECAY_T(Type) typename std::decay<Type>::type
-			#else
-			#    define ALPAKA_DECAY_T(Type) std::decay_t<Type>
-			#endif
 
 			namespace alpaka
 			{
 			    //! Provides a decaying wrapper around std::is_same. Example: is_decayed_v<volatile float, float> returns true.
 			    template<typename T, typename U>
-			    inline constexpr auto is_decayed_v = std::is_same_v<ALPAKA_DECAY_T(T), ALPAKA_DECAY_T(U)>;
+			    inline constexpr auto is_decayed_v = std::is_same_v<std::decay_t<T>, std::decay_t<U>>;
 			} // namespace alpaka
 			// ==
 			// == ./include/alpaka/core/Decay.hpp ==
@@ -5125,17 +4814,20 @@
 			// == ./include/alpaka/math/Traits.hpp ==
 			// ==
 			/* Copyright 2023 Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber, Sergei Bastrakov,
-			 * Andrea Bocci
+			 *                Andrea Bocci, René Widera
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			#include <cmath>
 			#include <complex>
-			#if __has_include(<numbers>)
+			#if __has_include(<version>) // Not part of the C++17 standard but all major standard libraries include this
+			// #    include <version>    // amalgamate: file already included
+			#endif
+			#ifdef __cpp_lib_math_constants
 			#    include <numbers>
 			#endif
 
@@ -5299,6 +4991,10 @@
 			    };
 
 			    struct ConceptMathConj
+			    {
+			    };
+
+			    struct ConceptMathCopysign
 			    {
 			    };
 
@@ -5565,6 +5261,19 @@
 			                // backend and we could not find conj(TArg) in the namespace of your type.
 			                using std::conj;
 			                return conj(arg);
+			            }
+			        };
+
+			        //! The copysign trait.
+			        template<typename T, typename TMag, typename TSgn, typename TSfinae = void>
+			        struct Copysign
+			        {
+			            ALPAKA_FN_HOST_ACC auto operator()(T const& /* ctx */, TMag const& mag, TSgn const& sgn)
+			            {
+			                // This is an ADL call. If you get a compile error here then your type is not supported by the
+			                // backend and we could not find copysign(TMag, TSgn) in the namespace of your type.
+			                using std::copysign;
+			                return copysign(mag, sgn);
 			            }
 			        };
 
@@ -6138,6 +5847,22 @@
 			        return trait::Conj<ImplementationBase, TArg>{}(conj_ctx, arg);
 			    }
 
+			    //! Creates a value with the magnitude of mag and the sign of sgn.
+			    //!
+			    //! \tparam T The type of the object specializing Copysign.
+			    //! \tparam TMag The mag type.
+			    //! \tparam TSgn The sgn type.
+			    //! \param copysign_ctx The object specializing Copysign.
+			    //! \param mag The mag.
+			    //! \param sgn The sgn.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename T, typename TMag, typename TSgn>
+			    ALPAKA_FN_HOST_ACC auto copysign(T const& copysign_ctx, TMag const& mag, TSgn const& sgn)
+			    {
+			        using ImplementationBase = concepts::ImplementationBase<ConceptMathCopysign, T>;
+			        return trait::Copysign<ImplementationBase, TMag, TSgn>{}(copysign_ctx, mag, sgn);
+			    }
+
 			    //! Computes the cosine (measured in radians).
 			    //!
 			    //! \tparam T The type of the object specializing Cos.
@@ -6422,6 +6147,7 @@
 			        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
 			        return trait::Round<ImplementationBase, TArg>{}(round_ctx, arg);
 			    }
+
 			    //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
 			    //! regardless of the current rounding mode.
 			    //!
@@ -6436,6 +6162,7 @@
 			        using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
 			        return trait::Lround<ImplementationBase, TArg>{}(lround_ctx, arg);
 			    }
+
 			    //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
 			    //! regardless of the current rounding mode.
 			    //!
@@ -6512,7 +6239,6 @@
 			        using ImplementationBase = concepts::ImplementationBase<ConceptMathSinCos, T>;
 			        trait::SinCos<ImplementationBase, TArg>{}(sincos_ctx, arg, result_sin, result_cos);
 			    }
-
 
 			    //! Computes the square root of arg.
 			    //!
@@ -6638,6 +6364,11 @@
 
 		    //! The standard library conj, implementation covered by the general template.
 		    class ConjStdLib : public concepts::Implements<ConceptMathConj, ConjStdLib>
+		    {
+		    };
+
+		    //! The standard library copysign, implementation covered by the general template.
+		    class CopysignStdLib : public concepts::Implements<ConceptMathCopysign, CopysignStdLib>
 		    {
 		    };
 
@@ -6785,6 +6516,7 @@
 		        , public CbrtStdLib
 		        , public CeilStdLib
 		        , public ConjStdLib
+		        , public CopysignStdLib
 		        , public CosStdLib
 		        , public CoshStdLib
 		        , public ErfStdLib
@@ -6828,9 +6560,8 @@
 		                if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
 		                    return max(x, y);
 		                else if constexpr(
-		                    is_decayed_v<
-		                        Tx,
-		                        float> || is_decayed_v<Ty, float> || is_decayed_v<Tx, double> || is_decayed_v<Ty, double>)
+		                    is_decayed_v<Tx, float> || is_decayed_v<Ty, float> || is_decayed_v<Tx, double>
+		                    || is_decayed_v<Ty, double>)
 		                    return fmax(x, y);
 		                else
 		                    static_assert(!sizeof(Tx), "Unsupported data type");
@@ -6851,9 +6582,8 @@
 		                if constexpr(std::is_integral_v<Tx> && std::is_integral_v<Ty>)
 		                    return min(x, y);
 		                else if constexpr(
-		                    is_decayed_v<
-		                        Tx,
-		                        float> || is_decayed_v<Ty, float> || is_decayed_v<Tx, double> || is_decayed_v<Ty, double>)
+		                    is_decayed_v<Tx, float> || is_decayed_v<Ty, float> || is_decayed_v<Tx, double>
+		                    || is_decayed_v<Ty, double>)
 		                    return fmin(x, y);
 		                else
 		                    static_assert(!sizeof(Tx), "Unsupported data type");
@@ -6876,7 +6606,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/mem/fence/Traits.hpp ==
 			// ==
@@ -6885,8 +6615,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			namespace alpaka
 			{
@@ -7000,6 +6730,1806 @@
 		// ============================================================================
 
 		// ============================================================================
+		// == ./include/alpaka/rand/RandDefault.hpp ==
+		// ==
+		/* Copyright 2022 Jeffrey Kelling, Jan Stephan, Bernhard Manfred Gruber
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/math/Traits.hpp"    // amalgamate: file already inlined
+			// ============================================================================
+			// == ./include/alpaka/rand/RandPhilox.hpp ==
+			// ==
+			/* Copyright 2022 Jiří Vyskočil, Jan Stephan, Bernhard Manfred Gruber
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// ============================================================================
+				// == ./include/alpaka/meta/IsArrayOrVector.hpp ==
+				// ==
+				/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+					// ============================================================================
+					// == ./include/alpaka/meta/CudaVectorArrayWrapper.hpp ==
+					// ==
+					/* Copyright 2022 Jiří Vyskočil, Jan Stephan, Bernhard Manfred Gruber
+					 * SPDX-License-Identifier: MPL-2.0
+					 */
+
+					// #pragma once
+					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+
+					// #include <functional>    // amalgamate: file already included
+					#include <initializer_list>
+					#include <numeric>
+					// #include <type_traits>    // amalgamate: file already included
+
+					#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+
+					#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+					#        include <cuda_runtime.h>
+					#    endif
+
+					#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+					// #        include <hip/hip_runtime.h>    // amalgamate: file already included
+					#    endif
+
+					namespace alpaka::meta
+					{
+					    namespace detail
+					    {
+					        template<typename TScalar, unsigned N>
+					        struct CudaVectorArrayTypeTraits;
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<float, 1>
+					        {
+					            using type = float1;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<float, 2>
+					        {
+					            using type = float2;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<float, 3>
+					        {
+					            using type = float3;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<float, 4>
+					        {
+					            using type = float4;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<double, 1>
+					        {
+					            using type = double1;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<double, 2>
+					        {
+					            using type = double2;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<double, 3>
+					        {
+					            using type = double3;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<double, 4>
+					        {
+					            using type = double4;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<unsigned, 1>
+					        {
+					            using type = uint1;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<unsigned, 2>
+					        {
+					            using type = uint2;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<unsigned, 3>
+					        {
+					            using type = uint3;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<unsigned, 4>
+					        {
+					            using type = uint4;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<int, 1>
+					        {
+					            using type = int1;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<int, 2>
+					        {
+					            using type = int2;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<int, 3>
+					        {
+					            using type = int3;
+					        };
+
+					        template<>
+					        struct CudaVectorArrayTypeTraits<int, 4>
+					        {
+					            using type = int4;
+					        };
+					    } // namespace detail
+
+					    /// Helper struct providing [] subscript access to CUDA vector types
+					    template<typename TScalar, unsigned N>
+					    struct CudaVectorArrayWrapper;
+
+					    template<typename TScalar>
+					    struct CudaVectorArrayWrapper<TScalar, 4> : public detail::CudaVectorArrayTypeTraits<TScalar, 4>::type
+					    {
+					        using value_type = TScalar;
+					        static constexpr unsigned size = 4;
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
+					        {
+					            auto it = std::begin(init);
+					            this->x = *it++;
+					            this->y = *it++;
+					            this->z = *it++;
+					            this->w = *it++;
+					        }
+
+					        template<class Other>
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
+					        {
+					            static_assert(std::tuple_size_v<Other> == size, "Can only convert between vectors of same size.");
+					            static_assert(
+					                std::is_same_v<typename Other::value_type, value_type>,
+					                "Can only convert between vectors of same element type.");
+					            this->x = o[0];
+					            this->y = o[1];
+					            this->z = o[2];
+					            this->w = o[3];
+					        }
+
+					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
+					        {
+					            std::array<value_type, size> ret;
+					            ret[0] = this->x;
+					            ret[1] = this->y;
+					            ret[2] = this->z;
+					            ret[3] = this->w;
+					            return ret;
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
+					        {
+					            assert(k >= 0 && k < 4);
+					            return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
+					        {
+					            assert(k >= 0 && k < 4);
+					            return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
+					        }
+					    };
+
+					    template<typename TScalar>
+					    struct CudaVectorArrayWrapper<TScalar, 3> : public detail::CudaVectorArrayTypeTraits<TScalar, 3>::type
+					    {
+					        using value_type = TScalar;
+					        static constexpr unsigned size = 3;
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
+					        {
+					            auto it = std::begin(init);
+					            this->x = *it++;
+					            this->y = *it++;
+					            this->z = *it++;
+					        }
+
+					        template<class Other>
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
+					        {
+					            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
+					            static_assert(
+					                std::is_same<typename Other::value_type, value_type>::value,
+					                "Can only convert between vectors of same element type.");
+					            this->x = o[0];
+					            this->y = o[1];
+					            this->z = o[2];
+					        }
+
+					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
+					        {
+					            std::array<value_type, size> ret;
+					            ret[0] = this->x;
+					            ret[1] = this->y;
+					            ret[2] = this->z;
+					            return ret;
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
+					        {
+					            assert(k >= 0 && k < 3);
+					            return k == 0 ? this->x : (k == 1 ? this->y : this->z);
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
+					        {
+					            assert(k >= 0 && k < 3);
+					            return k == 0 ? this->x : (k == 1 ? this->y : this->z);
+					        }
+					    };
+
+					    template<typename TScalar>
+					    struct CudaVectorArrayWrapper<TScalar, 2> : public detail::CudaVectorArrayTypeTraits<TScalar, 2>::type
+					    {
+					        using value_type = TScalar;
+					        static constexpr unsigned size = 2;
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
+					        {
+					            auto it = std::begin(init);
+					            this->x = *it++;
+					            this->y = *it++;
+					        }
+
+					        template<class Other>
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
+					        {
+					            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
+					            static_assert(
+					                std::is_same<typename Other::value_type, value_type>::value,
+					                "Can only convert between vectors of same element type.");
+					            this->x = o[0];
+					            this->y = o[1];
+					        }
+
+					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
+					        {
+					            std::array<value_type, size> ret;
+					            ret[0] = this->x;
+					            ret[1] = this->y;
+					            return ret;
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
+					        {
+					            assert(k >= 0 && k < 2);
+					            return k == 0 ? this->x : this->y;
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
+					        {
+					            assert(k >= 0 && k < 2);
+					            return k == 0 ? this->x : this->y;
+					        }
+					    };
+
+					    template<typename TScalar>
+					    struct CudaVectorArrayWrapper<TScalar, 1> : public detail::CudaVectorArrayTypeTraits<TScalar, 1>::type
+					    {
+					        using value_type = TScalar;
+					        static constexpr unsigned size = 1;
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
+					        {
+					            auto it = std::begin(init);
+					            this->x = *it;
+					        }
+
+					        template<class Other>
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
+					        {
+					            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
+					            static_assert(
+					                std::is_same<typename Other::value_type, value_type>::value,
+					                "Can only convert between vectors of same element type.");
+					            this->x = o[0];
+					        }
+
+					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
+					        {
+					            std::array<value_type, size> ret;
+					            ret[0] = this->x;
+					            return ret;
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[]([[maybe_unused]] int const k) noexcept
+					        {
+					            assert(k == 0);
+					            return this->x;
+					        }
+
+					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](
+					            [[maybe_unused]] int const k) const noexcept
+					        {
+					            assert(k == 0);
+					            return this->x;
+					        }
+					    };
+					} // namespace alpaka::meta
+
+					namespace std
+					{
+					    /// Specialization of std::tuple_size for \a float4_array
+					    template<typename T, unsigned N>
+					    struct tuple_size<alpaka::meta::CudaVectorArrayWrapper<T, N>> : integral_constant<size_t, N>
+					    {
+					    };
+					} // namespace std
+
+					#endif
+					// ==
+					// == ./include/alpaka/meta/CudaVectorArrayWrapper.hpp ==
+					// ============================================================================
+
+
+				// #include <functional>    // amalgamate: file already included
+				// #include <numeric>    // amalgamate: file already included
+				// #include <type_traits>    // amalgamate: file already included
+				#include <vector>
+
+				namespace alpaka::meta
+				{
+				    /** Checks whether T is an array or a vector type
+				     *
+				     * @tparam T a type to check
+				     */
+				    template<typename T>
+				    struct IsArrayOrVector : std::false_type
+				    {
+				    };
+
+				    /** Specialization of \a IsArrayOrVector for vector types
+				     *
+				     * @tparam T inner type held in the vector
+				     * @tparam A vector allocator
+				     */
+				    template<typename T, typename A>
+				    struct IsArrayOrVector<std::vector<T, A>> : std::true_type
+				    {
+				    };
+
+				    /** Specialization of \a IsArrayOrVector for plain arrays
+				     *
+				     * @tparam T inner type held in the array
+				     * @tparam N size of the array
+				     */
+				    template<typename T, std::size_t N>
+				    struct IsArrayOrVector<T[N]> : std::true_type
+				    {
+				    };
+
+				    /** Specialization of \a IsArrayOrVector for std::array
+				     *
+				     * @tparam T inner type held in the array
+				     * @tparam N size of the array
+				     */
+				    template<typename T, std::size_t N>
+				    struct IsArrayOrVector<std::array<T, N>> : std::true_type
+				    {
+				    };
+
+				#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+				    /// Specialization of \a IsArrayOrVector for CUDA vector array wrapper
+				    template<typename T, unsigned N>
+				    struct IsArrayOrVector<CudaVectorArrayWrapper<T, N>> : std::true_type
+				    {
+				    };
+				#endif
+				} // namespace alpaka::meta
+				// ==
+				// == ./include/alpaka/meta/IsArrayOrVector.hpp ==
+				// ============================================================================
+
+				// ============================================================================
+				// == ./include/alpaka/rand/Philox/PhiloxSingle.hpp ==
+				// ==
+				/* Copyright 2022 Jiri Vyskocil, Rene Widera, Bernhard Manfred Gruber
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+					// ============================================================================
+					// == ./include/alpaka/rand/Philox/MultiplyAndSplit64to32.hpp ==
+					// ==
+					/* Copyright 2023 Jiří Vyskočil, Bernhard Manfred Gruber, Jan Stephan
+					 * SPDX-License-Identifier: MPL-2.0
+					 */
+
+					// #pragma once
+					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+
+					// #include <cstdint>    // amalgamate: file already included
+
+					namespace alpaka::rand
+					{
+					    /// Get high 32 bits of a 64-bit number
+					    ALPAKA_FN_HOST_ACC inline constexpr auto high32Bits(std::uint64_t const x) -> std::uint32_t
+					    {
+					        return static_cast<std::uint32_t>(x >> 32);
+					    }
+
+					    /// Get low 32 bits of a 64-bit number
+					    ALPAKA_FN_HOST_ACC inline constexpr auto low32Bits(std::uint64_t const x) -> std::uint32_t
+					    {
+					        return static_cast<std::uint32_t>(x & 0xffff'ffff);
+					    }
+
+					    /** Multiply two 64-bit numbers and split the result into high and low 32 bits, also known as "mulhilo32"
+					     *
+					     * @param a first 64-bit multiplier
+					     * @param b second 64-bit multiplier
+					     * @param resultHigh high 32 bits of the product a*b
+					     * @param resultLow low 32 bits of the product a*b
+					     */
+					    // TODO: See single-instruction implementations in original Philox source code
+					    ALPAKA_FN_HOST_ACC inline constexpr void multiplyAndSplit64to32(
+					        std::uint64_t const a,
+					        std::uint64_t const b,
+					        std::uint32_t& resultHigh,
+					        std::uint32_t& resultLow)
+					    {
+					        std::uint64_t res64 = a * b;
+					        resultHigh = high32Bits(res64);
+					        resultLow = low32Bits(res64);
+					    }
+					} // namespace alpaka::rand
+					// ==
+					// == ./include/alpaka/rand/Philox/MultiplyAndSplit64to32.hpp ==
+					// ============================================================================
+
+					// ============================================================================
+					// == ./include/alpaka/rand/Philox/PhiloxBaseTraits.hpp ==
+					// ==
+					/* Copyright 2022 Jiří Vyskočil, Bernhard Manfred Gruber, Jeffrey Kelling, Jan Stephan
+					 * SPDX-License-Identifier: MPL-2.0
+					 */
+
+					// #pragma once
+						// ============================================================================
+						// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
+						// ==
+						/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber, Jeffrey Kelling
+						 * SPDX-License-Identifier: MPL-2.0
+						 */
+
+						// #pragma once
+							// ============================================================================
+							// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
+							// ==
+							/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber, Jeffrey Kelling
+							 * SPDX-License-Identifier: MPL-2.0
+							 */
+
+							// #pragma once
+								// ============================================================================
+								// == ./include/alpaka/core/Unroll.hpp ==
+								// ==
+								/* Copyright 2021 Benjamin Worpitz, Bernhard Manfred Gruber
+								 * SPDX-License-Identifier: MPL-2.0
+								 */
+
+								// #pragma once
+								// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+
+								//! Suggests unrolling of the directly following loop to the compiler.
+								//!
+								//! Usage:
+								//!  `ALPAKA_UNROLL
+								//!  for(...){...}`
+								// \TODO: Implement for other compilers.
+								#if BOOST_ARCH_PTX
+								#    define ALPAKA_UNROLL_STRINGIFY(x) #x
+								#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll __VA_ARGS__))
+								#elif BOOST_COMP_IBM || BOOST_COMP_SUNPRO || BOOST_COMP_HPACC
+								#    define ALPAKA_UNROLL_STRINGIFY(x) #x
+								#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll(__VA_ARGS__)))
+								#elif BOOST_COMP_PGI
+								#    define ALPAKA_UNROLL(...) _Pragma("unroll")
+								#else
+								#    define ALPAKA_UNROLL(...)
+								#endif
+								// ==
+								// == ./include/alpaka/core/Unroll.hpp ==
+								// ============================================================================
+
+							// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already inlined
+								// ============================================================================
+								// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
+								// ==
+								/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
+								 * SPDX-License-Identifier: MPL-2.0
+								 */
+
+								// #pragma once
+								// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already inlined
+
+								// #include <cstdint>    // amalgamate: file already included
+								// #include <utility>    // amalgamate: file already included
+
+								namespace alpaka::rand::engine
+								{
+								    /** Constants used in the Philox algorithm
+								     *
+								     * The numbers are taken from the reference Philox implementation:
+								     *
+								     * J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
+								     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking,
+								     * Storage and Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
+								     *
+								     * @tparam TParams basic Philox algorithm parameters
+								     *
+								     * static const data members are transformed into functions, because GCC
+								     * assumes types with static data members to be not mappable and makes not
+								     * exception for constexpr ones. This is a valid interpretation of the
+								     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
+								     * data member are mappable.
+								     */
+								    template<typename TParams>
+								    class PhiloxConstants
+								    {
+								    public:
+								        static constexpr std::uint64_t WEYL_64_0()
+								        {
+								            return 0x9E37'79B9'7F4A'7C15; ///< First Weyl sequence parameter: the golden ratio
+								        }
+
+								        static constexpr std::uint64_t WEYL_64_1()
+								        {
+								            return 0xBB67'AE85'84CA'A73B; ///< Second Weyl sequence parameter: \f$ \sqrt{3}-1 \f$
+								        }
+
+								        static constexpr std::uint32_t WEYL_32_0()
+								        {
+								            return high32Bits(WEYL_64_0()); ///< 1st Weyl sequence parameter, 32 bits
+								        }
+
+								        static constexpr std::uint32_t WEYL_32_1()
+								        {
+								            return high32Bits(WEYL_64_1()); ///< 2nd Weyl sequence parameter, 32 bits
+								        }
+
+								        static constexpr std::uint32_t MULTIPLITER_4x32_0()
+								        {
+								            return 0xCD9E'8D57; ///< First Philox S-box multiplier
+								        }
+
+								        static constexpr std::uint32_t MULTIPLITER_4x32_1()
+								        {
+								            return 0xD251'1F53; ///< Second Philox S-box multiplier
+								        }
+								    };
+								} // namespace alpaka::rand::engine
+								// ==
+								// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
+								// ============================================================================
+
+
+							// #include <utility>    // amalgamate: file already included
+
+							namespace alpaka::rand::engine
+							{
+							    /** Philox algorithm parameters
+							     *
+							     * @tparam TCounterSize number of elements in the counter
+							     * @tparam TWidth width of one counter element (in bits)
+							     * @tparam TRounds number of S-box rounds
+							     */
+							    template<unsigned TCounterSize, unsigned TWidth, unsigned TRounds>
+							    struct PhiloxParams
+							    {
+							        static constexpr unsigned counterSize = TCounterSize;
+							        static constexpr unsigned width = TWidth;
+							        static constexpr unsigned rounds = TRounds;
+							    };
+
+							    /** Class basic Philox family counter-based PRNG
+							     *
+							     * Checks the validity of passed-in parameters and calls the \a TBackend methods to perform N rounds of the
+							     * Philox shuffle.
+							     *
+							     * @tparam TBackend device-dependent backend, specifies the array types
+							     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
+							     */
+							    template<typename TBackend, typename TParams>
+							    class PhiloxStateless : public PhiloxConstants<TParams>
+							    {
+							        static constexpr unsigned numRounds()
+							        {
+							            return TParams::rounds;
+							        }
+
+							        static constexpr unsigned vectorSize()
+							        {
+							            return TParams::counterSize;
+							        }
+
+							        static constexpr unsigned numberWidth()
+							        {
+							            return TParams::width;
+							        }
+
+							        static_assert(numRounds() > 0, "Number of Philox rounds must be > 0.");
+							        static_assert(vectorSize() % 2 == 0, "Philox counter size must be an even number.");
+							        static_assert(vectorSize() <= 16, "Philox SP network is not specified for sizes > 16.");
+							        static_assert(numberWidth() % 8 == 0, "Philox number width in bits must be a multiple of 8.");
+
+							        static_assert(numberWidth() == 32, "Philox implemented only for 32 bit numbers.");
+
+							    public:
+							        using Counter = typename TBackend::Counter;
+							        using Key = typename TBackend::Key;
+							        using Constants = PhiloxConstants<TParams>;
+
+							    protected:
+							        /** Single round of the Philox shuffle
+							         *
+							         * @param counter state of the counter
+							         * @param key value of the key
+							         * @return shuffled counter
+							         */
+							        static ALPAKA_FN_HOST_ACC auto singleRound(Counter const& counter, Key const& key)
+							        {
+							            std::uint32_t H0, L0, H1, L1;
+							            multiplyAndSplit64to32(counter[0], Constants::MULTIPLITER_4x32_0(), H0, L0);
+							            multiplyAndSplit64to32(counter[2], Constants::MULTIPLITER_4x32_1(), H1, L1);
+							            return Counter{H1 ^ counter[1] ^ key[0], L1, H0 ^ counter[3] ^ key[1], L0};
+							        }
+
+							        /** Bump the \a key by the Weyl sequence step parameter
+							         *
+							         * @param key the key to be bumped
+							         * @return the bumped key
+							         */
+							        static ALPAKA_FN_HOST_ACC auto bumpKey(Key const& key)
+							        {
+							            return Key{key[0] + Constants::WEYL_32_0(), key[1] + Constants::WEYL_32_1()};
+							        }
+
+							        /** Performs N rounds of the Philox shuffle
+							         *
+							         * @param counter_in initial state of the counter
+							         * @param key_in initial state of the key
+							         * @return result of the PRNG shuffle; has the same size as the counter
+							         */
+							        static ALPAKA_FN_HOST_ACC auto nRounds(Counter const& counter_in, Key const& key_in) -> Counter
+							        {
+							            Key key{key_in};
+							            Counter counter = singleRound(counter_in, key);
+
+							            ALPAKA_UNROLL(numRounds())
+							            for(unsigned int n = 0; n < numRounds(); ++n)
+							            {
+							                key = bumpKey(key);
+							                counter = singleRound(counter, key);
+							            }
+
+							            return counter;
+							        }
+
+							    public:
+							        /** Generates a random number (\p TCounterSize x32-bit)
+							         *
+							         * @param counter initial state of the counter
+							         * @param key initial state of the key
+							         * @return result of the PRNG shuffle; has the same size as the counter
+							         */
+							        static ALPAKA_FN_HOST_ACC auto generate(Counter const& counter, Key const& key) -> Counter
+							        {
+							            return nRounds(counter, key);
+							        }
+							    };
+							} // namespace alpaka::rand::engine
+							// ==
+							// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
+							// ============================================================================
+
+
+						// #include <utility>    // amalgamate: file already included
+
+						namespace alpaka::rand::engine
+						{
+						    /** Common class for Philox family engines
+						     *
+						     * Relies on `PhiloxStateless` to provide the PRNG and adds state to handling the counting.
+						     *
+						     * @tparam TBackend device-dependent backend, specifies the array types
+						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
+						     * @tparam TImpl engine type implementation (CRTP)
+						     *
+						     * static const data members are transformed into functions, because GCC
+						     * assumes types with static data members to be not mappable and makes not
+						     * exception for constexpr ones. This is a valid interpretation of the
+						     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
+						     * data member are mappable.
+						     */
+						    template<typename TBackend, typename TParams, typename TImpl>
+						    class PhiloxBaseCommon
+						        : public TBackend
+						        , public PhiloxStateless<TBackend, TParams>
+						    {
+						    public:
+						        using Counter = typename PhiloxStateless<TBackend, TParams>::Counter;
+						        using Key = typename PhiloxStateless<TBackend, TParams>::Key;
+
+						    protected:
+						        /** Advance the \a counter to the next state
+						         *
+						         * Increments the passed-in \a counter by one with a 128-bit carry.
+						         *
+						         * @param counter reference to the counter which is to be advanced
+						         */
+						        ALPAKA_FN_HOST_ACC void advanceCounter(Counter& counter)
+						        {
+						            counter[0]++;
+						            /* 128-bit carry */
+						            if(counter[0] == 0)
+						            {
+						                counter[1]++;
+						                if(counter[1] == 0)
+						                {
+						                    counter[2]++;
+						                    if(counter[2] == 0)
+						                    {
+						                        counter[3]++;
+						                    }
+						                }
+						            }
+						        }
+
+						        /** Advance the internal state counter by \a offset N-vectors (N = counter size)
+						         *
+						         * Advances the internal value of this->state.counter
+						         *
+						         * @param offset number of N-vectors to skip
+						         */
+						        ALPAKA_FN_HOST_ACC void skip4(uint64_t offset)
+						        {
+						            Counter& counter = static_cast<TImpl*>(this)->state.counter;
+						            Counter temp = counter;
+						            counter[0] += low32Bits(offset);
+						            counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
+						            counter[2] += (counter[0] < temp[1] ? 1u : 0u);
+						            counter[3] += (counter[0] < temp[2] ? 1u : 0u);
+						        }
+
+						        /** Advance the counter by the length of \a subsequence
+						         *
+						         * Advances the internal value of this->state.counter
+						         *
+						         * @param subsequence number of subsequences to skip
+						         */
+						        ALPAKA_FN_HOST_ACC void skipSubsequence(uint64_t subsequence)
+						        {
+						            Counter& counter = static_cast<TImpl*>(this)->state.counter;
+						            Counter temp = counter;
+						            counter[2] += low32Bits(subsequence);
+						            counter[3] += high32Bits(subsequence) + (counter[2] < temp[2] ? 1 : 0);
+						        }
+						    };
+						} // namespace alpaka::rand::engine
+						// ==
+						// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
+						// ============================================================================
+
+						// ============================================================================
+						// == ./include/alpaka/rand/Philox/PhiloxBaseCudaArray.hpp ==
+						// ==
+						/* Copyright 2022 Jiri Vyskocil
+						 * SPDX-License-Identifier: MPL-2.0
+						 */
+
+						// #pragma once
+						// #include "alpaka/meta/CudaVectorArrayWrapper.hpp"    // amalgamate: file already inlined
+
+						#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+
+						namespace alpaka::rand::engine
+						{
+						    namespace trait
+						    {
+						        template<typename TScalar>
+						        struct PhiloxResultContainerTraits;
+
+						        template<>
+						        struct PhiloxResultContainerTraits<float>
+						        {
+						            using type = meta::CudaVectorArrayWrapper<float, 4>;
+						        };
+
+						        template<>
+						        struct PhiloxResultContainerTraits<double>
+						        {
+						            using type = meta::CudaVectorArrayWrapper<double, 4>;
+						        };
+
+						        template<>
+						        struct PhiloxResultContainerTraits<int>
+						        {
+						            using type = meta::CudaVectorArrayWrapper<int, 4>;
+						        };
+
+						        template<>
+						        struct PhiloxResultContainerTraits<unsigned>
+						        {
+						            using type = meta::CudaVectorArrayWrapper<unsigned, 4>;
+						        };
+
+						        template<typename TScalar>
+						        using PhiloxResultContainer = typename PhiloxResultContainerTraits<TScalar>::type;
+						    } // namespace trait
+
+						    /** Philox backend using array-like interface to CUDA uintN types for the storage of Key and Counter
+						     *
+						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
+						     */
+						    template<typename TParams>
+						    class PhiloxBaseCudaArray
+						    {
+						        static_assert(TParams::counterSize == 4, "GPU Philox implemented only for counters of width == 4");
+
+						    public:
+						        using Counter
+						            = meta::CudaVectorArrayWrapper<unsigned, 4>; ///< Counter type = array-like interface to CUDA uint4
+						        using Key = meta::CudaVectorArrayWrapper<unsigned, 2>; ///< Key type = array-like interface to CUDA uint2
+						        template<typename TDistributionResultScalar>
+						        using ResultContainer = trait::PhiloxResultContainer<TDistributionResultScalar>; ///< Vector template for
+						                                                                                         ///< distribution results
+						    };
+						} // namespace alpaka::rand::engine
+
+						#endif
+						// ==
+						// == ./include/alpaka/rand/Philox/PhiloxBaseCudaArray.hpp ==
+						// ============================================================================
+
+						// ============================================================================
+						// == ./include/alpaka/rand/Philox/PhiloxBaseStdArray.hpp ==
+						// ==
+						/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
+						 * SPDX-License-Identifier: MPL-2.0
+						 */
+
+						// #pragma once
+						// #include <array>    // amalgamate: file already included
+						// #include <cstdint>    // amalgamate: file already included
+
+						namespace alpaka::rand::engine
+						{
+						    /** Philox backend using std::array for Key and Counter storage
+						     *
+						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
+						     */
+						    template<typename TParams>
+						    class PhiloxBaseStdArray
+						    {
+						    public:
+						        using Counter = std::array<std::uint32_t, TParams::counterSize>; ///< Counter type = std::array
+						        using Key = std::array<std::uint32_t, TParams::counterSize / 2>; ///< Key type = std::array
+						        template<typename TScalar>
+						        using ResultContainer
+						            = std::array<TScalar, TParams::counterSize>; ///< Vector template for distribution results
+						    };
+						} // namespace alpaka::rand::engine
+						// ==
+						// == ./include/alpaka/rand/Philox/PhiloxBaseStdArray.hpp ==
+						// ============================================================================
+
+					// #include "alpaka/rand/Philox/PhiloxStateless.hpp"    // amalgamate: file already inlined
+						// ============================================================================
+						// == ./include/alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp ==
+						// ==
+						/* Copyright 2022 Jeffrey Kelling
+						 * SPDX-License-Identifier: MPL-2.0
+						 */
+
+						// #pragma once
+						// #include "alpaka/rand/Philox/PhiloxStateless.hpp"    // amalgamate: file already inlined
+
+						namespace alpaka::rand::engine
+						{
+						    /** Common class for Philox family engines
+						     *
+						     * Checks the validity of passed-in parameters and calls the \a TBackend methods to perform N rounds of the
+						     * Philox shuffle.
+						     *
+						     * @tparam TBackend device-dependent backend, specifies the array types
+						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
+						     */
+						    template<typename TBackend, typename TParams>
+						    struct PhiloxStatelessKeyedBase : public PhiloxStateless<TBackend, TParams>
+						    {
+						    public:
+						        using Counter = typename PhiloxStateless<TBackend, TParams>::Counter;
+						        using Key = typename PhiloxStateless<TBackend, TParams>::Key;
+
+						        const Key m_key;
+
+						        PhiloxStatelessKeyedBase(Key&& key) : m_key(std::move(key))
+						        {
+						        }
+
+						        ALPAKA_FN_HOST_ACC auto operator()(Counter const& counter) const
+						        {
+						            return this->generate(counter, m_key);
+						        }
+						    };
+						} // namespace alpaka::rand::engine
+						// ==
+						// == ./include/alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp ==
+						// ============================================================================
+
+
+					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+					namespace alpaka
+					{
+					    template<typename TApi, typename TDim, typename TIdx>
+					    class AccGpuUniformCudaHipRt;
+					} // namespace alpaka
+					#endif
+
+					namespace alpaka::rand::engine::trait
+					{
+					    template<typename TAcc>
+					    inline constexpr bool isGPU = false;
+
+					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+					    template<typename TApi, typename TDim, typename TIdx>
+					    inline constexpr bool isGPU<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>> = true;
+					#endif
+
+					    /** Selection of default backend
+					     *
+					     * Selects the data backend based on the accelerator device type. As of now, different backends operate
+					     * on different array types.
+					     *
+					     * @tparam TAcc the accelerator as defined in alpaka/acc
+					     * @tparam TParams Philox algorithm parameters
+					     * @tparam TSfinae internal parameter to stop substitution search and provide the default
+					     */
+					    template<typename TAcc, typename TParams, typename TSfinae = void>
+					    struct PhiloxStatelessBaseTraits
+					    {
+					        // template <typename Acc, typename TParams, typename TImpl>
+					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+					        using Backend = std::conditional_t<isGPU<TAcc>, PhiloxBaseCudaArray<TParams>, PhiloxBaseStdArray<TParams>>;
+					#else
+					        using Backend = PhiloxBaseStdArray<TParams>;
+					#endif
+					        using Counter = typename Backend::Counter; ///< Counter array type
+					        using Key = typename Backend::Key; ///< Key array type
+					        template<typename TDistributionResultScalar>
+					        using ResultContainer =
+					            typename Backend::template ResultContainer<TDistributionResultScalar>; ///< Distribution
+					                                                                                   ///< container type
+					        /// Base type to be inherited from by stateless keyed engine
+					        using Base = PhiloxStateless<Backend, TParams>;
+					    };
+
+					    /** Selection of default backend
+					     *
+					     * Selects the data backend based on the accelerator device type. As of now, different backends operate
+					     * on different array types.
+					     *
+					     * @tparam TAcc the accelerator as defined in alpaka/acc
+					     * @tparam TParams Philox algorithm parameters
+					     * @tparam TSfinae internal parameter to stop substitution search and provide the default
+					     */
+					    template<typename TAcc, typename TParams, typename TSfinae = void>
+					    struct PhiloxStatelessKeyedBaseTraits : public PhiloxStatelessBaseTraits<TAcc, TParams>
+					    {
+					        using Backend = typename PhiloxStatelessBaseTraits<TAcc, TParams>::Backend;
+					        /// Base type to be inherited from by counting engines
+					        using Base = PhiloxStatelessKeyedBase<Backend, TParams>;
+					    };
+
+					    /** Selection of default backend
+					     *
+					     * Selects the data backend based on the accelerator device type. As of now, different backends operate
+					     * on different array types.
+					     *
+					     * @tparam TAcc the accelerator as defined in alpaka/acc
+					     * @tparam TParams Philox algorithm parameters
+					     * @tparam TImpl engine type implementation (CRTP)
+					     * @tparam TSfinae internal parameter to stop substitution search and provide the default
+					     */
+					    template<typename TAcc, typename TParams, typename TImpl, typename TSfinae = void>
+					    struct PhiloxBaseTraits : public PhiloxStatelessBaseTraits<TAcc, TParams>
+					    {
+					        using Backend = typename PhiloxStatelessBaseTraits<TAcc, TParams>::Backend;
+					        /// Base type to be inherited from by counting engines
+					        using Base = PhiloxBaseCommon<Backend, TParams, TImpl>;
+					    };
+					} // namespace alpaka::rand::engine::trait
+					// ==
+					// == ./include/alpaka/rand/Philox/PhiloxBaseTraits.hpp ==
+					// ============================================================================
+
+
+				// #include <utility>    // amalgamate: file already included
+
+				namespace alpaka::rand::engine
+				{
+				    /** Philox state for single value engine
+				     *
+				     * @tparam TCounter Type of the Counter array
+				     * @tparam TKey Type of the Key array
+				     */
+				    template<typename TCounter, typename TKey>
+				    struct PhiloxStateSingle
+				    {
+				        using Counter = TCounter;
+				        using Key = TKey;
+
+				        Counter counter; ///< Counter array
+				        Key key; ///< Key array
+				        Counter result; ///< Intermediate result array
+				        std::uint32_t position; ///< Pointer to the active intermediate result element
+				        // TODO: Box-Muller states
+				    };
+
+				    /** Philox engine generating a single number
+				     *
+				     * This engine's operator() will return a single number. Since the result is the same size as the counter,
+				     * and so it contains more than one number, it has to be stored between individual invocations of
+				     * operator(). Additionally a pointer has to be stored indicating which part of the result array is to be
+				     * returned next.
+				     *
+				     * @tparam TAcc Accelerator type as defined in alpaka/acc
+				     * @tparam TParams Basic parameters for the Philox algorithm
+				     */
+				    template<typename TAcc, typename TParams>
+				    class PhiloxSingle : public trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>::Base
+				    {
+				    public:
+				        /// Specialization for different TAcc backends
+				        using Traits = typename trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>;
+
+				        using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
+				        using Key = typename Traits::Key; ///< Backend-dependent Key type
+				        using State = PhiloxStateSingle<Counter, Key>; ///< Backend-dependent State type
+
+				        State state; ///< Internal engine state
+
+				    protected:
+				        /** Advance internal counter to the next value
+				         *
+				         * Advances the full internal counter array, resets the position pointer and stores the intermediate
+				         * result to be recalled when the user requests a number.
+				         */
+				        ALPAKA_FN_HOST_ACC void advanceState()
+				        {
+				            this->advanceCounter(state.counter);
+				            state.result = this->nRounds(state.counter, state.key);
+				            state.position = 0;
+				        }
+
+				        /** Get the next random number and advance internal state
+				         *
+				         * The intermediate result stores N = TParams::counterSize numbers. Check if we've already given out
+				         * all of them. If so, generate a new intermediate result (this also resets the pointer to the position
+				         * of the actual number). Finally, we return the actual number.
+				         *
+				         * @return The next random number
+				         */
+				        ALPAKA_FN_HOST_ACC auto nextNumber()
+				        {
+				            // Element zero will always contain the next valid random number.
+				            auto result = state.result[0];
+				            state.position++;
+				            if(state.position == TParams::counterSize)
+				            {
+				                advanceState();
+				            }
+				            else
+				            {
+				                // Shift state results to allow hard coded access to element zero.
+				                // This will avoid high register usage on NVIDIA devices.
+				                // \todo Check if this shifting of the result vector is decreasing CPU performance.
+				                //       If so this optimization for GPUs (mostly NVIDIA) should be moved into
+				                //       PhiloxBaseCudaArray.
+				                state.result[0] = state.result[1];
+				                state.result[1] = state.result[2];
+				                state.result[2] = state.result[3];
+				            }
+
+				            return result;
+				        }
+
+				        /// Skips the next \a offset numbers
+				        ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
+				        {
+				            static_assert(TParams::counterSize == 4, "Only counterSize is supported.");
+				            state.position = static_cast<decltype(state.position)>(state.position + (offset & 3));
+				            offset += state.position < 4 ? 0 : 4;
+				            state.position -= state.position < 4 ? 0 : 4u;
+				            for(auto numShifts = state.position; numShifts > 0; --numShifts)
+				            {
+				                // Shift state results to allow hard coded access to element zero.
+				                // This will avoid high register usage on NVIDIA devices.
+				                state.result[0] = state.result[1];
+				                state.result[1] = state.result[2];
+				                state.result[2] = state.result[3];
+				            }
+				            this->skip4(offset / 4);
+				        }
+
+				    public:
+				        /** Construct a new Philox engine with single-value output
+				         *
+				         * @param seed Set the Philox generator key
+				         * @param subsequence Select a subsequence of size 2^64
+				         * @param offset Skip \a offset numbers form the start of the subsequence
+				         */
+				        ALPAKA_FN_HOST_ACC PhiloxSingle(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
+				            : state{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}, {0, 0, 0, 0}, 0}
+				        {
+				            this->skipSubsequence(subsequence);
+				            skip(offset);
+				            advanceState();
+				        }
+
+				        /** Get the next random number
+				         *
+				         * @return The next random number
+				         */
+				        ALPAKA_FN_HOST_ACC auto operator()()
+				        {
+				            return nextNumber();
+				        }
+				    };
+				} // namespace alpaka::rand::engine
+				// ==
+				// == ./include/alpaka/rand/Philox/PhiloxSingle.hpp ==
+				// ============================================================================
+
+				// ============================================================================
+				// == ./include/alpaka/rand/Philox/PhiloxVector.hpp ==
+				// ==
+				/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/rand/Philox/PhiloxBaseTraits.hpp"    // amalgamate: file already inlined
+
+				// #include <utility>    // amalgamate: file already included
+
+				namespace alpaka::rand::engine
+				{
+				    /** Philox state for vector generator
+				     *
+				     * @tparam TCounter Type of the Counter array
+				     * @tparam TKey Type of the Key array
+				     */
+				    template<typename TCounter, typename TKey>
+				    struct PhiloxStateVector
+				    {
+				        using Counter = TCounter;
+				        using Key = TKey;
+
+				        Counter counter; ///< Counter array
+				        Key key; ///< Key array
+				    };
+
+				    /** Philox engine generating a vector of numbers
+				     *
+				     * This engine's operator() will return a vector of numbers corresponding to the full size of its counter.
+				     * This is a convenience vs. memory size tradeoff since the user has to deal with the output array
+				     * themselves, but the internal state comprises only of a single counter and a key.
+				     *
+				     * @tparam TAcc Accelerator type as defined in alpaka/acc
+				     * @tparam TParams Basic parameters for the Philox algorithm
+				     */
+				    template<typename TAcc, typename TParams>
+				    class PhiloxVector : public trait::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>::Base
+				    {
+				    public:
+				        /// Specialization for different TAcc backends
+				        using Traits = trait::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>;
+
+				        using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
+				        using Key = typename Traits::Key; ///< Backend-dependent Key type
+				        using State = PhiloxStateVector<Counter, Key>; ///< Backend-dependent State type
+				        template<typename TDistributionResultScalar>
+				        using ResultContainer = typename Traits::template ResultContainer<TDistributionResultScalar>;
+
+				        State state;
+
+				    protected:
+				        /** Get the next array of random numbers and advance internal state
+				         *
+				         * @return The next array of random numbers
+				         */
+				        ALPAKA_FN_HOST_ACC auto nextVector()
+				        {
+				            this->advanceCounter(state.counter);
+				            return this->nRounds(state.counter, state.key);
+				        }
+
+				        /** Skips the next \a offset vectors
+				         *
+				         * Unlike its counterpart in \a PhiloxSingle, this function advances the state in multiples of the
+				         * counter size thus skipping the entire array of numbers.
+				         */
+				        ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
+				        {
+				            this->skip4(offset);
+				        }
+
+				    public:
+				        /** Construct a new Philox engine with vector output
+				         *
+				         * @param seed Set the Philox generator key
+				         * @param subsequence Select a subsequence of size 2^64
+				         * @param offset Skip \a offset numbers form the start of the subsequence
+				         */
+				        ALPAKA_FN_HOST_ACC PhiloxVector(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
+				            : state{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}}
+				        {
+				            this->skipSubsequence(subsequence);
+				            skip(offset);
+				            nextVector();
+				        }
+
+				        /** Get the next vector of random numbers
+				         *
+				         * @return The next vector of random numbers
+				         */
+				        ALPAKA_FN_HOST_ACC auto operator()()
+				        {
+				            return nextVector();
+				        }
+				    };
+				} // namespace alpaka::rand::engine
+				// ==
+				// == ./include/alpaka/rand/Philox/PhiloxVector.hpp ==
+				// ============================================================================
+
+				// ============================================================================
+				// == ./include/alpaka/rand/Traits.hpp ==
+				// ==
+				/* Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+				 * SPDX-License-Identifier: MPL-2.0
+				 */
+
+				// #pragma once
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+
+				// #include <cstdint>    // amalgamate: file already included
+				// #include <type_traits>    // amalgamate: file already included
+
+				namespace alpaka::rand
+				{
+				    struct ConceptRand
+				    {
+				    };
+
+				    //! The random number generator distribution specifics.
+				    namespace distribution
+				    {
+				        //! The random number generator distribution trait.
+				        namespace trait
+				        {
+				            //! The random number float normal distribution get trait.
+				            template<typename TRand, typename T, typename TSfinae = void>
+				            struct CreateNormalReal;
+
+				            //! The random number float uniform distribution get trait.
+				            template<typename TRand, typename T, typename TSfinae = void>
+				            struct CreateUniformReal;
+
+				            //! The random number integer uniform distribution get trait.
+				            template<typename TRand, typename T, typename TSfinae = void>
+				            struct CreateUniformUint;
+				        } // namespace trait
+
+				        //! \return A normal float distribution with mean 0.0f and standard deviation 1.0f.
+				        ALPAKA_NO_HOST_ACC_WARNING
+				        template<typename T, typename TRand>
+				        ALPAKA_FN_HOST_ACC auto createNormalReal(TRand const& rand)
+				        {
+				            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
+
+				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            return trait::CreateNormalReal<ImplementationBase, T>::createNormalReal(rand);
+				        }
+
+				        //! \return A uniform floating point distribution [0.0, 1.0).
+				        ALPAKA_NO_HOST_ACC_WARNING
+				        template<typename T, typename TRand>
+				        ALPAKA_FN_HOST_ACC auto createUniformReal(TRand const& rand)
+				        {
+				            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
+
+				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            return trait::CreateUniformReal<ImplementationBase, T>::createUniformReal(rand);
+				        }
+
+				        //! \return A uniform integer distribution [0, UINT_MAX].
+				        ALPAKA_NO_HOST_ACC_WARNING
+				        template<typename T, typename TRand>
+				        ALPAKA_FN_HOST_ACC auto createUniformUint(TRand const& rand)
+				        {
+				            static_assert(
+				                std::is_integral_v<T> && std::is_unsigned_v<T>,
+				                "The value type T has to be a unsigned integral type!");
+
+				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            return trait::CreateUniformUint<ImplementationBase, T>::createUniformUint(rand);
+				        }
+				    } // namespace distribution
+
+				    //! The random number generator engine specifics.
+				    namespace engine
+				    {
+				        //! The random number generator engine trait.
+				        namespace trait
+				        {
+				            //! The random number default generator engine get trait.
+				            template<typename TRand, typename TSfinae = void>
+				            struct CreateDefault;
+				        } // namespace trait
+
+				        //! \return A default random number generator engine. Its type is guaranteed to be trivially copyable.
+				        //!         Except HIP accelerator for HIP versions below 5.2 as its internal state was not trivially copyable.
+				        //!         The limitation was discussed in PR #1778.
+				        ALPAKA_NO_HOST_ACC_WARNING
+				        template<typename TRand>
+				        ALPAKA_FN_HOST_ACC auto createDefault(
+				            TRand const& rand,
+				            std::uint32_t const& seed = 0,
+				            std::uint32_t const& subsequence = 0,
+				            std::uint32_t const& offset = 0)
+				        {
+				            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
+				            return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
+				        }
+				    } // namespace engine
+				} // namespace alpaka::rand
+				// ==
+				// == ./include/alpaka/rand/Traits.hpp ==
+				// ============================================================================
+
+
+			// #include <cstdint>    // amalgamate: file already included
+			// #include <limits>    // amalgamate: file already included
+			#include <random>
+			// #include <type_traits>    // amalgamate: file already included
+
+			namespace alpaka::rand
+			{
+			    /** Most common Philox engine variant, outputs single number
+			     *
+			     * This is a variant of the Philox engine generator which outputs a single float. The counter size is \f$4
+			     * \times 32 = 128\f$ bits. Since the engine returns a single number, the generated result, which has the same
+			     * size as the counter, has to be stored between invocations. Additionally a 32 bit pointer is stored. The
+			     * total size of the state is 352 bits = 44 bytes.
+			     *
+			     * Ref.: J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
+			     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
+			     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
+			     *
+			     * @tparam TAcc Accelerator type as defined in alpaka/acc
+			     */
+			    template<typename TAcc>
+			    class Philox4x32x10 : public concepts::Implements<ConceptRand, Philox4x32x10<TAcc>>
+			    {
+			    public:
+			        using EngineParams = engine::PhiloxParams<4, 32, 10>; ///< Philox algorithm: 10 rounds, 4 numbers of size 32.
+			        using EngineVariant = engine::PhiloxSingle<TAcc, EngineParams>; ///< Engine outputs a single number
+
+			        /** Initialize a new Philox engine
+			         *
+			         * @param seed Set the Philox generator key
+			         * @param subsequence Select a subsequence of size 2^64
+			         * @param offset Skip \a offset numbers form the start of the subsequence
+			         */
+			        ALPAKA_FN_HOST_ACC Philox4x32x10(
+			            std::uint64_t const seed = 0,
+			            std::uint64_t const subsequence = 0,
+			            std::uint64_t const offset = 0)
+			            : engineVariant(seed, subsequence, offset)
+			        {
+			        }
+
+			        // STL UniformRandomBitGenerator concept
+			        // https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator
+			        using result_type = std::uint32_t;
+
+			        ALPAKA_FN_HOST_ACC constexpr auto min() -> result_type
+			        {
+			            return 0;
+			        }
+
+			        ALPAKA_FN_HOST_ACC constexpr auto max() -> result_type
+			        {
+			            return std::numeric_limits<result_type>::max();
+			        }
+
+			        ALPAKA_FN_HOST_ACC auto operator()() -> result_type
+			        {
+			            return engineVariant();
+			        }
+
+			    private:
+			        EngineVariant engineVariant;
+			    };
+
+			    /** Most common Philox engine variant, outputs a 4-vector of floats
+			     *
+			     * This is a variant of the Philox engine generator which outputs a vector containing 4 floats. The counter
+			     * size is \f$4 \times 32 = 128\f$ bits. Since the engine returns the whole generated vector, it is up to the
+			     * user to extract individual floats as they need. The benefit is smaller state size since the state does not
+			     * contain the intermediate results. The total size of the state is 192 bits = 24 bytes.
+			     *
+			     * Ref.: J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
+			     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
+			     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
+			     *
+			     * @tparam TAcc Accelerator type as defined in alpaka/acc
+			     */
+			    template<typename TAcc>
+			    class Philox4x32x10Vector : public concepts::Implements<ConceptRand, Philox4x32x10Vector<TAcc>>
+			    {
+			    public:
+			        using EngineParams = engine::PhiloxParams<4, 32, 10>;
+			        using EngineVariant = engine::PhiloxVector<TAcc, EngineParams>;
+
+			        /** Initialize a new Philox engine
+			         *
+			         * @param seed Set the Philox generator key
+			         * @param subsequence Select a subsequence of size 2^64
+			         * @param offset Number of numbers to skip form the start of the subsequence.
+			         */
+			        ALPAKA_FN_HOST_ACC Philox4x32x10Vector(
+			            std::uint32_t const seed = 0,
+			            std::uint32_t const subsequence = 0,
+			            std::uint32_t const offset = 0)
+			            : engineVariant(seed, subsequence, offset)
+			        {
+			        }
+
+			        template<typename TScalar>
+			        using ResultContainer = typename EngineVariant::template ResultContainer<TScalar>;
+
+			        using ResultInt = std::uint32_t;
+			        using ResultVec = decltype(std::declval<EngineVariant>()());
+
+			        ALPAKA_FN_HOST_ACC constexpr auto min() -> ResultInt
+			        {
+			            return 0;
+			        }
+
+			        ALPAKA_FN_HOST_ACC constexpr auto max() -> ResultInt
+			        {
+			            return std::numeric_limits<ResultInt>::max();
+			        }
+
+			        ALPAKA_FN_HOST_ACC auto operator()() -> ResultVec
+			        {
+			            return engineVariant();
+			        }
+
+			    private:
+			        EngineVariant engineVariant;
+			    };
+
+			    // The following exists because you "cannot call __device__ function from a __host__ __device__ function"
+			    // directly, but wrapping that call in a struct is just fine.
+			    template<typename TEngine>
+			    struct EngineCallHostAccProxy
+			    {
+			        ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> decltype(engine())
+			        {
+			            return engine();
+			        }
+			    };
+
+			    /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
+			    template<typename TResult, typename TSfinae = void>
+			    class UniformReal : public concepts::Implements<ConceptRand, UniformReal<TResult>>
+			    {
+			        template<typename TRes, typename TEnable = void>
+			        struct ResultType
+			        {
+			            using type = TRes;
+			        };
+
+			        template<typename TRes>
+			        struct ResultType<TRes, std::enable_if_t<meta::IsArrayOrVector<TRes>::value>>
+			        {
+			            using type = typename TRes::value_type;
+			        };
+
+			        using T = typename ResultType<TResult>::type;
+			        static_assert(std::is_floating_point_v<T>, "Only floating-point types are supported");
+
+			    public:
+			        ALPAKA_FN_HOST_ACC UniformReal() : UniformReal(0, 1)
+			        {
+			        }
+
+			        ALPAKA_FN_HOST_ACC UniformReal(T min, T max) : _min(min), _max(max), _range(_max - _min)
+			        {
+			        }
+
+			        template<typename TEngine>
+			        ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> TResult
+			        {
+			            if constexpr(meta::IsArrayOrVector<TResult>::value)
+			            {
+			                auto result = engine();
+			                T scale = static_cast<T>(1) / engine.max() * _range;
+			                TResult ret{
+			                    static_cast<T>(result[0]) * scale + _min,
+			                    static_cast<T>(result[1]) * scale + _min,
+			                    static_cast<T>(result[2]) * scale + _min,
+			                    static_cast<T>(result[3]) * scale + _min};
+			                return ret;
+			            }
+			            else
+			            {
+			                // Since it's possible to get a host-only engine here, the call has to go through proxy
+			                return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / engine.max() * _range + _min;
+			            }
+
+			            ALPAKA_UNREACHABLE(TResult{});
+			        }
+
+			    private:
+			        const T _min;
+			        const T _max;
+			        const T _range;
+			    };
+			} // namespace alpaka::rand
+			// ==
+			// == ./include/alpaka/rand/RandPhilox.hpp ==
+			// ============================================================================
+
+		// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
+
+		// #include <algorithm>    // amalgamate: file already included
+		// #include <limits>    // amalgamate: file already included
+		// #include <type_traits>    // amalgamate: file already included
+
+		namespace alpaka::rand
+		{
+		    class RandDefault : public concepts::Implements<ConceptRand, RandDefault>
+		    {
+		    };
+
+		    namespace distribution::gpu
+		    {
+		        namespace detail
+		        {
+		            template<typename TFloat>
+		            struct BitsType;
+
+		            template<>
+		            struct BitsType<float>
+		            {
+		                using type = std::uint32_t;
+		            };
+
+		            template<>
+		            struct BitsType<double>
+		            {
+		                using type = std::uint64_t;
+		            };
+		        } // namespace detail
+
+		        //! The GPU random number normal distribution.
+		        template<typename T>
+		        class UniformUint
+		        {
+		            static_assert(std::is_integral_v<T>, "Return type of UniformUint must be integral.");
+
+		        public:
+		            UniformUint() = default;
+
+		            template<typename TEngine>
+		            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
+		            {
+		                using BitsT = typename TEngine::result_type;
+		                T ret = 0;
+		                constexpr auto N = sizeof(T) / sizeof(BitsT);
+		                for(unsigned int a = 0; a < N; ++a)
+		                {
+		                    ret
+		                        ^= (static_cast<T>(engine())
+		                            << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
+		                }
+		                return ret;
+		            }
+		        };
+
+		        //! The GPU random number uniform distribution.
+		        template<typename T>
+		        class UniformReal
+		        {
+		            static_assert(std::is_floating_point_v<T>, "Return type of UniformReal must be floating point.");
+
+		            using BitsT = typename detail::BitsType<T>::type;
+
+		        public:
+		            UniformReal() = default;
+
+		            template<typename TEngine>
+		            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
+		            {
+		                constexpr BitsT limit = static_cast<BitsT>(1) << std::numeric_limits<T>::digits;
+		                const BitsT b = UniformUint<BitsT>()(engine);
+		                auto const ret = static_cast<T>(b & (limit - 1)) / limit;
+		                return ret;
+		            }
+		        };
+
+		        /*! The GPU random number normal distribution.
+		         *
+		         * \note
+		         * This type contains state and is not thread-safe: To be used
+		         * per thread, not shared.
+		         *
+		         * \note When reproducibility is a concern, each instance of
+		         * this class should be used with only on random engine
+		         * instance, or two consecutive number should be generated with
+		         * each engine used. This is due to the implicit caching of one
+		         * Gaussian random number.
+		         */
+		        template<typename Acc, typename T>
+		        class NormalReal
+		        {
+		            static_assert(std::is_floating_point_v<T>, "Return type of NormalReal must be floating point.");
+
+		            Acc const* m_acc;
+		            T m_cache = std::numeric_limits<T>::quiet_NaN();
+
+		        public:
+		            /*! \warning Retains a reference to \p acc, thus must not outlive it.
+		             */
+		            ALPAKA_FN_HOST_ACC constexpr NormalReal(Acc const& acc) : m_acc(&acc)
+		            {
+		            }
+
+		            // All copy operations (and thus also move since we don't declare those and they fall back to copy) do NOT
+		            // copy m_cache. This way we can ensure that the following holds:
+		            // NormalReal<Acc> a(acc), b(acc);
+		            // Engine<Acc> e(acc);
+		            // assert(a(e) != b(e)); // because of two engine invocations
+		            // b = a;
+		            // assert(a(e) != b(e)); // because of two engine invocations
+
+		            ALPAKA_FN_HOST_ACC constexpr NormalReal(NormalReal const& other) : m_acc(other.m_acc)
+		            {
+		            }
+
+		            ALPAKA_FN_HOST_ACC constexpr auto operator=(NormalReal const& other) -> NormalReal&
+		            {
+		                m_acc = other.m_acc;
+		                return *this;
+		            }
+
+		            template<typename TEngine>
+		            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
+		            {
+		                constexpr auto sigma = T{1};
+		                constexpr auto mu = T{0};
+		                if(math::isnan(*m_acc, m_cache))
+		                {
+		                    UniformReal<T> uni;
+
+		                    T u1, u2;
+		                    do
+		                    {
+		                        u1 = uni(engine);
+		                        u2 = uni(engine);
+		                    } while(u1 <= std::numeric_limits<T>::epsilon());
+
+		                    // compute z0 and z1
+		                    const T mag = sigma * math::sqrt(*m_acc, static_cast<T>(-2.) * math::log(*m_acc, u1));
+		                    constexpr T twoPi = static_cast<T>(2. * math::constants::pi);
+		                    // getting two normal number out of this, store one for later
+		                    m_cache = mag * static_cast<T>(math::cos(*m_acc, twoPi * u2)) + mu;
+
+		                    return mag * static_cast<T>(math::sin(*m_acc, twoPi * u2)) + mu;
+		                }
+
+		                const T ret = m_cache;
+		                m_cache = std::numeric_limits<T>::quiet_NaN();
+		                return ret;
+		            }
+		        };
+		    } // namespace distribution::gpu
+
+		    namespace distribution::trait
+		    {
+		        //! The GPU device random number float normal distribution get trait specialization.
+		        template<typename T>
+		        struct CreateNormalReal<RandDefault, T, std::enable_if_t<std::is_floating_point_v<T>>>
+		        {
+		            template<typename TAcc>
+		            ALPAKA_FN_HOST_ACC static auto createNormalReal(TAcc const& acc) -> gpu::NormalReal<TAcc, T>
+		            {
+		                return {acc};
+		            }
+		        };
+
+		        //! The GPU device random number float uniform distribution get trait specialization.
+		        template<typename T>
+		        struct CreateUniformReal<RandDefault, T, std::enable_if_t<std::is_floating_point_v<T>>>
+		        {
+		            ALPAKA_FN_HOST_ACC static auto createUniformReal(RandDefault const& /* rand */) -> gpu::UniformReal<T>
+		            {
+		                return {};
+		            }
+		        };
+
+		        //! The GPU device random number integer uniform distribution get trait specialization.
+		        template<typename T>
+		        struct CreateUniformUint<RandDefault, T, std::enable_if_t<std::is_integral_v<T>>>
+		        {
+		            ALPAKA_FN_HOST_ACC static auto createUniformUint(RandDefault const& /* rand */) -> gpu::UniformUint<T>
+		            {
+		                return {};
+		            }
+		        };
+		    } // namespace distribution::trait
+
+		    namespace engine::trait
+		    {
+		        //! The GPU device random number default generator get trait specialization.
+		        template<>
+		        struct CreateDefault<RandDefault>
+		        {
+		            template<typename TAcc>
+		            ALPAKA_FN_HOST_ACC static auto createDefault(
+		                TAcc const& /* acc */,
+		                std::uint32_t const& seed,
+		                std::uint32_t const& subsequence,
+		                std::uint32_t const& offset) -> Philox4x32x10<TAcc>
+		            {
+		                return {seed, subsequence, offset};
+		            }
+		        };
+		    } // namespace engine::trait
+		} // namespace alpaka::rand
+		// ==
+		// == ./include/alpaka/rand/RandDefault.hpp ==
+		// ============================================================================
+
+		// ============================================================================
 		// == ./include/alpaka/rand/RandStdLib.hpp ==
 		// ==
 		/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
@@ -7007,7 +8537,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/rand/TinyMT/Engine.hpp ==
 			// ==
@@ -7041,7 +8571,7 @@
 				 * LICENSE.txt
 				 */
 
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 				// #include <cstdint>    // amalgamate: file already included
 				/* work-around for glibc < 2.18 according to bug
@@ -7058,6 +8588,7 @@
 				#if BOOST_COMP_CLANG
 				#   pragma clang diagnostic push
 				#   pragma clang diagnostic ignored "-Wold-style-cast"
+				#   pragma clang diagnostic ignored "-Wunused-function"
 				#endif
 				#if BOOST_COMP_GNUC
 				#   pragma GCC diagnostic push
@@ -7469,9 +9000,9 @@
 			        void seed(result_type value = default_seed())
 			        {
 			            // parameters from TinyMT/jump/sample.c
-			            prng.mat1 = 0x8f7011ee;
-			            prng.mat2 = 0xfc78ff1f;
-			            prng.tmat = 0x3793fdff;
+			            prng.mat1 = 0x8f70'11ee;
+			            prng.mat2 = 0xfc78'ff1f;
+			            prng.tmat = 0x3793'fdff;
 
 			            tinymt32_init(&prng, value);
 			        }
@@ -7514,113 +9045,11 @@
 			// == ./include/alpaka/rand/TinyMT/Engine.hpp ==
 			// ============================================================================
 
-			// ============================================================================
-			// == ./include/alpaka/rand/Traits.hpp ==
-			// ==
-			/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-
-			// #include <cstdint>    // amalgamate: file already included
-			// #include <type_traits>    // amalgamate: file already included
-
-			namespace alpaka::rand
-			{
-			    struct ConceptRand
-			    {
-			    };
-
-			    //! The random number generator distribution specifics.
-			    namespace distribution
-			    {
-			        //! The random number generator distribution trait.
-			        namespace trait
-			        {
-			            //! The random number float normal distribution get trait.
-			            template<typename TRand, typename T, typename TSfinae = void>
-			            struct CreateNormalReal;
-
-			            //! The random number float uniform distribution get trait.
-			            template<typename TRand, typename T, typename TSfinae = void>
-			            struct CreateUniformReal;
-
-			            //! The random number integer uniform distribution get trait.
-			            template<typename TRand, typename T, typename TSfinae = void>
-			            struct CreateUniformUint;
-			        } // namespace trait
-
-			        //! \return A normal float distribution with mean 0.0f and standard deviation 1.0f.
-			        ALPAKA_NO_HOST_ACC_WARNING
-			        template<typename T, typename TRand>
-			        ALPAKA_FN_HOST_ACC auto createNormalReal(TRand const& rand)
-			        {
-			            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
-
-			            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-			            return trait::CreateNormalReal<ImplementationBase, T>::createNormalReal(rand);
-			        }
-			        //! \return A uniform floating point distribution [0.0, 1.0).
-			        ALPAKA_NO_HOST_ACC_WARNING
-			        template<typename T, typename TRand>
-			        ALPAKA_FN_HOST_ACC auto createUniformReal(TRand const& rand)
-			        {
-			            static_assert(std::is_floating_point_v<T>, "The value type T has to be a floating point type!");
-
-			            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-			            return trait::CreateUniformReal<ImplementationBase, T>::createUniformReal(rand);
-			        }
-			        //! \return A uniform integer distribution [0, UINT_MAX].
-			        ALPAKA_NO_HOST_ACC_WARNING
-			        template<typename T, typename TRand>
-			        ALPAKA_FN_HOST_ACC auto createUniformUint(TRand const& rand)
-			        {
-			            static_assert(
-			                std::is_integral_v<T> && std::is_unsigned_v<T>,
-			                "The value type T has to be a unsigned integral type!");
-
-			            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-			            return trait::CreateUniformUint<ImplementationBase, T>::createUniformUint(rand);
-			        }
-			    } // namespace distribution
-
-			    //! The random number generator engine specifics.
-			    namespace engine
-			    {
-			        //! The random number generator engine trait.
-			        namespace trait
-			        {
-			            //! The random number default generator engine get trait.
-			            template<typename TRand, typename TSfinae = void>
-			            struct CreateDefault;
-			        } // namespace trait
-			        //! \return A default random number generator engine. Its type is guaranteed to be trivially copyable.
-			        //!         Except HIP accelerator for HIP versions below 5.2 as its internal state was not trivially copyable.
-			        //!         The limitation was discussed in PR #1778.
-			        ALPAKA_NO_HOST_ACC_WARNING
-			        template<typename TRand>
-			        ALPAKA_FN_HOST_ACC auto createDefault(
-			            TRand const& rand,
-			            std::uint32_t const& seed = 0,
-			            std::uint32_t const& subsequence = 0,
-			            std::uint32_t const& offset = 0)
-			        {
-			            using ImplementationBase = concepts::ImplementationBase<ConceptRand, TRand>;
-			            return trait::CreateDefault<ImplementationBase>::createDefault(rand, seed, subsequence, offset);
-			        }
-			    } // namespace engine
-			} // namespace alpaka::rand
-			// ==
-			// == ./include/alpaka/rand/Traits.hpp ==
-			// ============================================================================
-
+		// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <cstdint>    // amalgamate: file already included
 		// #include <limits>    // amalgamate: file already included
-		#include <random>
+		// #include <random>    // amalgamate: file already included
 		// #include <type_traits>    // amalgamate: file already included
 
 		namespace alpaka::rand
@@ -7629,6 +9058,7 @@
 		    class TinyMersenneTwister : public concepts::Implements<ConceptRand, TinyMersenneTwister>
 		    {
 		    };
+
 		    using RandStdLib = TinyMersenneTwister;
 
 		    //! The standard library mersenne twister implementation.
@@ -7664,14 +9094,17 @@
 
 		            // STL UniformRandomBitGenerator concept interface
 		            using result_type = std::mt19937::result_type;
-		            ALPAKA_FN_HOST constexpr static auto min() -> result_type
+
+		            ALPAKA_FN_HOST static constexpr auto min() -> result_type
 		            {
 		                return std::mt19937::min();
 		            }
-		            ALPAKA_FN_HOST constexpr static auto max() -> result_type
+
+		            ALPAKA_FN_HOST static constexpr auto max() -> result_type
 		            {
 		                return std::mt19937::max();
 		            }
+
 		            ALPAKA_FN_HOST auto operator()() -> result_type
 		            {
 		                return state();
@@ -7706,14 +9139,17 @@
 
 		            // STL UniformRandomBitGenerator concept interface
 		            using result_type = TinyMTengine::result_type;
-		            ALPAKA_FN_HOST constexpr static auto min() -> result_type
+
+		            ALPAKA_FN_HOST static constexpr auto min() -> result_type
 		            {
 		                return TinyMTengine::min();
 		            }
-		            ALPAKA_FN_HOST constexpr static auto max() -> result_type
+
+		            ALPAKA_FN_HOST static constexpr auto max() -> result_type
 		            {
 		                return TinyMTengine::max();
 		            }
+
 		            ALPAKA_FN_HOST auto operator()() -> result_type
 		            {
 		                return state();
@@ -7739,14 +9175,17 @@
 
 		            // STL UniformRandomBitGenerator concept interface
 		            using result_type = std::random_device::result_type;
-		            ALPAKA_FN_HOST constexpr static auto min() -> result_type
+
+		            ALPAKA_FN_HOST static constexpr auto min() -> result_type
 		            {
 		                return std::random_device::min();
 		            }
-		            ALPAKA_FN_HOST constexpr static auto max() -> result_type
+
+		            ALPAKA_FN_HOST static constexpr auto max() -> result_type
 		            {
 		                return std::random_device::max();
 		            }
+
 		            ALPAKA_FN_HOST auto operator()() -> result_type
 		            {
 		                return state();
@@ -7812,6 +9251,7 @@
 		                return {};
 		            }
 		        };
+
 		        //! The CPU device random number float uniform distribution get trait specialization.
 		        template<typename T>
 		        struct CreateUniformReal<RandStdLib, T, std::enable_if_t<std::is_floating_point_v<T>>>
@@ -7821,6 +9261,7 @@
 		                return {};
 		            }
 		        };
+
 		        //! The CPU device random number integer uniform distribution get trait specialization.
 		        template<typename T>
 		        struct CreateUniformUint<RandStdLib, T, std::enable_if_t<std::is_integral_v<T>>>
@@ -7895,8 +9336,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
 			// #include <type_traits>    // amalgamate: file already included
@@ -8185,9 +9626,177 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// ============================================================================
+			// == ./include/alpaka/extent/Traits.hpp ==
+			// ==
+			/* Copyright 2023 Benjamin Worpitz, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+			 * SPDX-License-Identifier: MPL-2.0
+			 */
+
+			// #pragma once
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/meta/Fold.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+
+			// #include <functional>    // amalgamate: file already included
+			// #include <type_traits>    // amalgamate: file already included
+			// #include <utility>    // amalgamate: file already included
+
+			namespace alpaka
+			{
+			    //! The extent traits.
+			    namespace trait
+			    {
+			        //! The extent get trait.
+			        //!
+			        //! If not specialized explicitly it returns 1.
+			        template<typename TIdxIntegralConst, typename TExtent, typename TSfinae = void>
+			        struct [[deprecated("Specialize GetExtents instead")]] GetExtent
+			        {
+			            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const&) -> Idx<TExtent>
+			            {
+			                return static_cast<Idx<TExtent>>(1);
+			            } // namespace trait
+			        }; // namespace alpaka
+
+			        //! The GetExtents trait for getting the extents of an object as an alpaka::Vec.
+			        template<typename TExtent, typename TSfinae = void>
+			        struct GetExtents;
+			    } // namespace trait
+
+			    //! \return The extent in the given dimension.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<std::size_t Tidx, typename TExtent>
+			    [[deprecated("use getExtents(extent)[Tidx] instead")]] ALPAKA_FN_HOST_ACC auto getExtent(
+			        TExtent const& extent = TExtent()) -> Idx<TExtent>
+			    {
+			#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+			#    pragma GCC diagnostic push
+			#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+			#endif
+			        return trait::GetExtent<DimInt<Tidx>, TExtent>::getExtent(extent);
+			#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+			#    pragma GCC diagnostic pop
+			#endif
+			    }
+
+			    //! \return The extents of the given object.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename T>
+			    ALPAKA_FN_HOST_ACC auto getExtents(T const& object) -> Vec<Dim<T>, Idx<T>>
+			    {
+			        return trait::GetExtents<T>{}(object);
+			    }
+
+			    //! \tparam T has to specialize GetExtent.
+			    //! \return The extents of the given object.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename T>
+			    [[deprecated("use getExtents() instead")]] ALPAKA_FN_HOST_ACC constexpr auto getExtentVec(T const& object = {})
+			        -> Vec<Dim<T>, Idx<T>>
+			    {
+			        return getExtents(object);
+			    }
+
+			    //! \tparam T has to specialize GetExtent.
+			    //! \return The extent but only the last TDim elements.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TDim, typename T>
+			    ALPAKA_FN_HOST_ACC constexpr auto getExtentVecEnd(T const& object = {}) -> Vec<TDim, Idx<T>>
+			    {
+			        static_assert(TDim::value <= Dim<T>::value, "Cannot get more items than the extent holds");
+
+			        [[maybe_unused]] auto const e = getExtents(object);
+			        Vec<TDim, Idx<T>> v{};
+			        if constexpr(TDim::value > 0)
+			        {
+			            for(unsigned i = 0; i < TDim::value; i++)
+			                v[i] = e[(Dim<T>::value - TDim::value) + i];
+			        }
+			        return v;
+			    }
+
+			    //! \return The width.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TExtent>
+			    ALPAKA_FN_HOST_ACC auto getWidth(TExtent const& extent = TExtent()) -> Idx<TExtent>
+			    {
+			        if constexpr(Dim<TExtent>::value >= 1)
+			            return getExtents(extent)[Dim<TExtent>::value - 1u];
+			        else
+			            return 1;
+
+			        ALPAKA_UNREACHABLE({});
+			    }
+
+			    //! \return The height.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TExtent>
+			    ALPAKA_FN_HOST_ACC auto getHeight(TExtent const& extent = TExtent()) -> Idx<TExtent>
+			    {
+			        if constexpr(Dim<TExtent>::value >= 2)
+			            return getExtents(extent)[Dim<TExtent>::value - 2u];
+			        else
+			            return 1;
+
+			        ALPAKA_UNREACHABLE({});
+			    }
+
+			    //! \return The depth.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TExtent>
+			    ALPAKA_FN_HOST_ACC auto getDepth(TExtent const& extent = TExtent()) -> Idx<TExtent>
+			    {
+			        if constexpr(Dim<TExtent>::value >= 3)
+			            return getExtents(extent)[Dim<TExtent>::value - 3u];
+			        else
+			            return 1;
+
+			        ALPAKA_UNREACHABLE({});
+			    }
+
+			    //! \return The product of the extents of the given object.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename T>
+			    ALPAKA_FN_HOST_ACC auto getExtentProduct(T const& object) -> Idx<T>
+			    {
+			        return getExtents(object).prod();
+			    }
+
+			    namespace trait
+			    {
+			        //! The Vec extent get trait specialization.
+			        template<typename TDim, typename TVal>
+			        struct GetExtents<Vec<TDim, TVal>>
+			        {
+			            ALPAKA_NO_HOST_ACC_WARNING
+			            ALPAKA_FN_HOST_ACC constexpr auto operator()(Vec<TDim, TVal> const& extent) const -> Vec<TDim, TVal>
+			            {
+			                return extent;
+			            }
+			        };
+
+			        template<typename Integral>
+			        struct GetExtents<Integral, std::enable_if_t<std::is_integral_v<Integral>>>
+			        {
+			            ALPAKA_NO_HOST_ACC_WARNING
+			            ALPAKA_FN_HOST_ACC auto operator()(Integral i) const
+			            {
+			                return Vec{i};
+			            }
+			        };
+			    } // namespace trait
+			} // namespace alpaka
+			// ==
+			// == ./include/alpaka/extent/Traits.hpp ==
+			// ============================================================================
+
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/workdiv/Traits.hpp ==
 			// ==
@@ -8196,11 +9805,11 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 			// #include <utility>    // amalgamate: file already included
@@ -8241,6 +9850,7 @@
 			                       * alpaka::getWorkDiv<origin::Block, unit::Threads>(workDiv);
 			            }
 			        };
+
 			        //! The work div grid element extent trait specialization.
 			        template<typename TWorkDiv>
 			        struct GetWorkDiv<TWorkDiv, origin::Grid, unit::Elems>
@@ -8252,6 +9862,7 @@
 			                       * alpaka::getWorkDiv<origin::Thread, unit::Elems>(workDiv);
 			            }
 			        };
+
 			        //! The work div block element extent trait specialization.
 			        template<typename TWorkDiv>
 			        struct GetWorkDiv<TWorkDiv, origin::Block, unit::Elems>
@@ -8280,6 +9891,7 @@
 		    {
 		    public:
 		        ALPAKA_FN_HOST_ACC WorkDivMembers() = delete;
+
 		        ALPAKA_NO_HOST_ACC_WARNING
 		        template<typename TGridBlockExtent, typename TBlockThreadExtent, typename TThreadElemExtent>
 		        ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
@@ -8291,6 +9903,7 @@
 		            , m_threadElemExtent(getExtentVecEnd<TDim>(threadElemExtent))
 		        {
 		        }
+
 		        ALPAKA_NO_HOST_ACC_WARNING
 		        ALPAKA_FN_HOST_ACC WorkDivMembers(WorkDivMembers const& other)
 		            : m_gridBlockExtent(other.m_gridBlockExtent)
@@ -8298,6 +9911,7 @@
 		            , m_threadElemExtent(other.m_threadElemExtent)
 		        {
 		        }
+
 		        ALPAKA_NO_HOST_ACC_WARNING
 		        template<typename TWorkDiv>
 		        ALPAKA_FN_HOST_ACC explicit WorkDivMembers(TWorkDiv const& other)
@@ -8310,6 +9924,7 @@
 		        WorkDivMembers(WorkDivMembers&&) = default;
 		        auto operator=(WorkDivMembers const&) -> WorkDivMembers& = default;
 		        auto operator=(WorkDivMembers&&) -> WorkDivMembers& = default;
+
 		        ALPAKA_NO_HOST_ACC_WARNING
 		        template<typename TWorkDiv>
 		        ALPAKA_FN_HOST_ACC auto operator=(TWorkDiv const& other) -> WorkDivMembers<TDim, TIdx>&
@@ -8414,11 +10029,11 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			// #include <string>    // amalgamate: file already included
-			#include <vector>
+			// #include <vector>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -8432,6 +10047,7 @@
 			        static_assert(
 			            sizeof(TIdx) >= sizeof(int),
 			            "Index type is not supported, consider using int or a larger type.");
+
 			        ALPAKA_FN_HOST AccDevProps(
 			            TIdx const& multiProcessorCount,
 			            Vec<TDim, TIdx> const& gridBlockExtentMax,
@@ -8470,9 +10086,9 @@
 			// == ./include/alpaka/acc/AccDevProps.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/dev/Traits.hpp ==
 			// ==
@@ -8481,9 +10097,11 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
+			// #include <algorithm>    // amalgamate: file already included
+			#include <cctype>
 			// #include <cstddef>    // amalgamate: file already included
 			// #include <string>    // amalgamate: file already included
 			// #include <vector>    // amalgamate: file already included
@@ -8542,11 +10160,22 @@
 			        return trait::GetDev<ImplementationBase>::getDev(t);
 			    }
 
-			    //! \return The device name.
+			    namespace detail
+			    {
+			        inline auto trim(std::string s) -> std::string
+			        {
+			            auto const pred = [](char c) { return !std::isspace(c); };
+			            s.erase(std::find_if(rbegin(s), rend(s), pred).base(), end(s));
+			            s.erase(begin(s), std::find_if(begin(s), end(s), pred));
+			            return s;
+			        }
+			    } // namespace detail
+
+			    //! \return The device name with leading/trailing space characters trimmed off.
 			    template<typename TDev>
 			    ALPAKA_FN_HOST auto getName(TDev const& dev) -> std::string
 			    {
-			        return trait::GetName<TDev>::getName(dev);
+			        return detail::trim(trait::GetName<TDev>::getName(dev));
 			    }
 
 			    //! \return The memory on the device in Bytes. Returns 0 if querying memory
@@ -8595,8 +10224,8 @@
 			// == ./include/alpaka/dev/Traits.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/kernel/Traits.hpp ==
 			// ==
@@ -8606,10 +10235,10 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/OmpSchedule.hpp ==
 				// ==
@@ -8618,14 +10247,13 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 				#ifdef _OPENMP
 				#    include <omp.h>
 				#endif
 
 				// #include <cstdint>    // amalgamate: file already included
-
 
 				namespace alpaka::omp
 				{
@@ -8705,8 +10333,8 @@
 				// == ./include/alpaka/core/OmpSchedule.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/queue/Traits.hpp ==
 				// ==
@@ -8715,8 +10343,8 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/wait/Traits.hpp ==
 					// ==
@@ -8725,8 +10353,8 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 					namespace alpaka
 					{
@@ -8747,6 +10375,10 @@
 					    } // namespace trait
 
 					    //! Waits the thread for the completion of the given awaited action to complete.
+					    //!
+					    //! Special Handling for events:
+					    //!   If the event is re-enqueued wait() will terminate when the re-enqueued event will be ready and previously
+					    //!   enqueued states of the event will be ignored.
 					    template<typename TAwaited>
 					    ALPAKA_FN_HOST auto wait(TAwaited const& awaited) -> void
 					    {
@@ -8755,6 +10387,10 @@
 					    }
 
 					    //! The waiter waits for the given awaited action to complete.
+					    //!
+					    //! Special Handling if \p waiter is a queue and \p awaited an event:
+					    //!   The \p waiter waits for the event state to become ready based on the recently captured event state at the
+					    //!   time of the API call even if the event is being re-enqueued later.
 					    template<typename TWaiter, typename TAwaited>
 					    ALPAKA_FN_HOST auto wait(TWaiter& waiter, TAwaited const& awaited) -> void
 					    {
@@ -8799,6 +10435,8 @@
 				    //!   If the event has previously been queued, then this call will overwrite any existing state of the event.
 				    //!   Any subsequent calls which examine the status of event will only examine the completion of this most recent
 				    //!   call to enqueue.
+				    //!   If a queue is waiting for an event the latter's event state at the time of the API call to wait() will be
+				    //!   used to release the queue.
 				    template<typename TQueue, typename TTask>
 				    ALPAKA_FN_HOST auto enqueue(TQueue& queue, TTask&& task) -> void
 				    {
@@ -8829,8 +10467,8 @@
 				// == ./include/alpaka/queue/Traits.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
@@ -9018,6 +10656,29 @@
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 			#endif
 
+
+			    //! Check if a type used as kernel argument is trivially copyable
+			    //!
+			    //! \attention In case this trait is specialized for a user type the user should be sure that the result of calling
+			    //! the copy constructor is equal to use memcpy to duplicate the object. An existing destructor should be free
+			    //! of side effects.
+			    //!
+			    //! It's implementation defined whether the closure type of a lambda is trivially copyable.
+			    //! Therefor the default implementation is true for trivially copyable or empty (stateless) types.
+			    //!
+			    //! @tparam T type to check
+			    //! @{
+			    template<typename T, typename = void>
+			    struct IsKernelArgumentTriviallyCopyable
+			        : std::bool_constant<std::is_empty_v<T> || std::is_trivially_copyable_v<T>>
+			    {
+			    };
+
+			    template<typename T>
+			    inline constexpr bool isKernelArgumentTriviallyCopyable = IsKernelArgumentTriviallyCopyable<T>::value;
+
+			    //! @}
+
 			    namespace detail
 			    {
 			        //! Check that the return of TKernelFnObj is void
@@ -9031,14 +10692,23 @@
 			                static_assert(std::is_same_v<Result, void>, "The TKernelFnObj is required to return void!");
 			            }
 			        };
+
+			        // asserts that T is trivially copyable. We put this in a separate function so we can see which T would fail
+			        // the test, when called from a fold expression.
+			        template<typename T>
+			        inline void assertKernelArgIsTriviallyCopyable()
+			        {
+			            static_assert(isKernelArgumentTriviallyCopyable<T>, "The kernel argument T must be trivially copyable!");
+			        }
 			    } // namespace detail
-			    //! Creates a kernel execution task.
-			    //!
-			    //! \tparam TAcc The accelerator type.
-			    //! \param workDiv The index domain work division.
-			    //! \param kernelFnObj The kernel function object which should be executed.
-			    //! \param args,... The kernel invocation arguments.
-			    //! \return The kernel execution task.
+
+			//! Creates a kernel execution task.
+			//!
+			//! \tparam TAcc The accelerator type.
+			//! \param workDiv The index domain work division.
+			//! \param kernelFnObj The kernel function object which should be executed.
+			//! \param args,... The kernel invocation arguments.
+			//! \return The kernel execution task.
 			#if BOOST_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
@@ -9056,9 +10726,7 @@
 			#else
 			        static_assert(std::is_trivially_copyable_v<TKernelFnObj>, "Kernels must be trivially copyable!");
 			#endif
-			        static_assert(
-			            (std::is_trivially_copyable_v<std::decay_t<TArgs>> && ...),
-			            "Kernel arguments must be trivially copyable!");
+			        (detail::assertKernelArgIsTriviallyCopyable<std::decay_t<TArgs>>(), ...);
 			        static_assert(
 			            Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
 			            "The dimensions of TAcc and TWorkDiv have to be identical!");
@@ -9067,8 +10735,8 @@
 			            "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
 			#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-			        std::cout << __func__ << " workDiv: " << workDiv
-			                  << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)> << std::endl;
+			        std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)>
+			                  << std::endl;
 			#endif
 			        return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
 			            workDiv,
@@ -9081,13 +10749,13 @@
 			#    pragma clang diagnostic ignored                                                                                  \
 			        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 			#endif
-			    //! Executes the given kernel in the given queue.
-			    //!
-			    //! \tparam TAcc The accelerator type.
-			    //! \param queue The queue to enqueue the view copy task into.
-			    //! \param workDiv The index domain work division.
-			    //! \param kernelFnObj The kernel function object which should be executed.
-			    //! \param args,... The kernel invocation arguments.
+			//! Executes the given kernel in the given queue.
+			//!
+			//! \tparam TAcc The accelerator type.
+			//! \param queue The queue to enqueue the view copy task into.
+			//! \param workDiv The index domain work division.
+			//! \param kernelFnObj The kernel function object which should be executed.
+			//! \param args,... The kernel invocation arguments.
 			#if BOOST_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
@@ -9110,10 +10778,10 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 			// #include <vector>    // amalgamate: file already included
@@ -9202,7 +10870,7 @@
 			// == ./include/alpaka/platform/Traits.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <string>    // amalgamate: file already included
 		// #include <type_traits>    // amalgamate: file already included
@@ -9276,10 +10944,10 @@
 		// == ./include/alpaka/acc/Traits.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
 		// ============================================================================
@@ -9290,7 +10958,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 		// #include <iostream>    // amalgamate: file already included
 		// #include <type_traits>    // amalgamate: file already included
@@ -9323,24 +10991,30 @@
 		        template<typename TAcc>
 		        struct AccToTag;
 
-		        template<typename TAcc>
-		        using AccToTagType = typename AccToTag<TAcc>::type;
-
 		        template<typename TTag, typename TDim, typename TIdx>
 		        struct TagToAcc;
-
-		        template<typename TTag, typename TDim, typename TIdx>
-		        using TagToAccType = typename TagToAcc<TTag, TDim, TIdx>::type;
 		    } // namespace trait
 
+		    /// @brief maps an acc type to a tag type
+		    /// @tparam TAcc alpaka acc type
+		    template<typename TAcc>
+		    using AccToTag = typename trait::AccToTag<TAcc>::type;
+
+		    /// @brief maps a tag type to an acc type
+		    /// @tparam TTag alpaka tag type
+		    /// @tparam TDim dimension of the mapped acc type
+		    /// @tparam TIdx index type of the mapped acc type
+		    template<typename TTag, typename TDim, typename TIdx>
+		    using TagToAcc = typename trait::TagToAcc<TTag, TDim, TIdx>::type;
+
 		    template<typename TAcc, typename... TTag>
-		    inline constexpr bool accMatchesTags = (std::is_same_v<alpaka::trait::AccToTagType<TAcc>, TTag> || ...);
+		    inline constexpr bool accMatchesTags = (std::is_same_v<alpaka::AccToTag<TAcc>, TTag> || ...);
 		} // namespace alpaka
 		// ==
 		// == ./include/alpaka/acc/Tag.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/dev/DevCpu.hpp ==
 		// ==
@@ -9350,7 +11024,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/dev/common/QueueRegistry.hpp ==
 			// ==
@@ -9359,7 +11033,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 			#include <deque>
 			// #include <functional>    // amalgamate: file already included
@@ -9368,7 +11042,9 @@
 
 			namespace alpaka::detail
 			{
-			    //! The CPU device implementation.
+			    //! The CPU/GPU device queue registry implementation.
+			    //!
+			    //! @tparam TQueue queue implementation
 			    template<typename TQueue>
 			    struct QueueRegistry
 			    {
@@ -9422,7 +11098,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 			#if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
 			#    ifndef NOMINMAX
@@ -9496,7 +11172,7 @@
 			    {
 			        // Get extended ids.
 			        std::uint32_t ex[4] = {0};
-			        cpuid(0x80000000, 0, ex);
+			        cpuid(0x8000'0000, 0, ex);
 			        std::uint32_t const nExIds(ex[0]);
 
 			        if(!nExIds)
@@ -9514,20 +11190,20 @@
 			#if BOOST_ARCH_X86
 			        // Get the information associated with each extended ID.
 			        char cpuBrandString[0x40] = {0};
-			        for(std::uint32_t i(0x80000000); i <= nExIds; ++i)
+			        for(std::uint32_t i(0x8000'0000); i <= nExIds; ++i)
 			        {
 			            cpuid(i, 0, ex);
 
 			            // Interpret CPU brand string and cache information.
-			            if(i == 0x80000002)
+			            if(i == 0x8000'0002)
 			            {
 			                std::memcpy(cpuBrandString, ex, sizeof(ex));
 			            }
-			            else if(i == 0x80000003)
+			            else if(i == 0x8000'0003)
 			            {
 			                std::memcpy(cpuBrandString + 16, ex, sizeof(ex));
 			            }
-			            else if(i == 0x80000004)
+			            else if(i == 0x8000'0004)
 			            {
 			                std::memcpy(cpuBrandString + 32, ex, sizeof(ex));
 			            }
@@ -9660,25 +11336,26 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/Traits.hpp ==
 			// ==
-			/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan
+			/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan,
+			 *                Christian Kaever
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/mem/view/Traits.hpp ==
 				// ==
-				/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+				/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/elem/Traits.hpp ==
 					// ==
@@ -9718,8 +11395,8 @@
 					// == ./include/alpaka/elem/Traits.hpp ==
 					// ============================================================================
 
-				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/meta/Fold.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/meta/Fold.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/meta/Integral.hpp ==
 					// ==
@@ -9739,11 +11416,11 @@
 					        std::is_integral_v<TSuperset> && std::is_integral_v<TSubset>
 					            && (
 					                // If the signdness is equal, the sizes have to be greater or equal to be a superset.
-					                ((std::is_unsigned_v<TSuperset> == std::is_unsigned_v<TSubset>)
-					                 && (sizeof(TSuperset) >= sizeof(TSubset)))
+					                ((std::is_unsigned_v<TSuperset>
+					                  == std::is_unsigned_v<TSubset>) &&(sizeof(TSuperset) >= sizeof(TSubset)))
 					                // If the signdness is non-equal, the superset has to have at least one bit more.
-					                || ((std::is_unsigned_v<TSuperset> != std::is_unsigned_v<TSubset>)
-					                    && (sizeof(TSuperset) > sizeof(TSubset))))>;
+					                || ((std::is_unsigned_v<TSuperset> != std::is_unsigned_v<TSubset>) &&(
+					                    sizeof(TSuperset) > sizeof(TSubset))))>;
 
 					    //! The type that has the higher max value.
 					    template<typename T0, typename T1>
@@ -9782,11 +11459,150 @@
 					// == ./include/alpaka/meta/Integral.hpp ==
 					// ============================================================================
 
-				// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+					// ============================================================================
+					// == ./include/alpaka/offset/Traits.hpp ==
+					// ==
+					/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
+					 * SPDX-License-Identifier: MPL-2.0
+					 */
+
+					// #pragma once
+					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+
+					// #include <type_traits>    // amalgamate: file already included
+
+					namespace alpaka
+					{
+					    //! The offset traits.
+					    namespace trait
+					    {
+					        //! The x offset get trait.
+					        //!
+					        //! If not specialized explicitly it returns 0.
+					        template<typename TIdx, typename TOffsets, typename TSfinae = void>
+					        struct [[deprecated("Specialize GetOffsets instead")]] GetOffset
+					        {
+					            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const&) -> Idx<TOffsets>
+					            {
+					                return static_cast<Idx<TOffsets>>(0);
+					            } // namespace trait
+					        }; // namespace alpaka
+
+					        //! The GetOffsets trait for getting the offsets of an object as an alpaka::Vec.
+					        template<typename TExtent, typename TSfinae = void>
+					        struct GetOffsets;
+					    } // namespace trait
+
+					    //! \return The offset in the given dimension.
+					    ALPAKA_NO_HOST_ACC_WARNING
+					    template<std::size_t Tidx, typename TOffsets>
+					    [[deprecated("use getOffsets(offsets)[Tidx] instead")]] ALPAKA_FN_HOST_ACC auto getOffset(TOffsets const& offsets)
+					        -> Idx<TOffsets>
+					    {
+					#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+					#    pragma GCC diagnostic push
+					#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+					#endif
+					        return trait::GetOffset<DimInt<Tidx>, TOffsets>::getOffset(offsets);
+					#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+					#    pragma GCC diagnostic pop
+					#endif
+					    }
+
+					    //! \return The extents of the given object.
+					    ALPAKA_NO_HOST_ACC_WARNING
+					    template<typename T>
+					    ALPAKA_FN_HOST_ACC auto getOffsets(T const& object) -> Vec<Dim<T>, Idx<T>>
+					    {
+					        return trait::GetOffsets<T>{}(object);
+					    }
+
+					    //! \tparam T has to specialize GetOffsets.
+					    //! \return The offset vector.
+					    ALPAKA_NO_HOST_ACC_WARNING
+					    template<typename T>
+					    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVec(T const& object = {}) -> Vec<Dim<T>, Idx<T>>
+					    {
+					        return getOffsets(object);
+					    }
+
+					    //! \tparam T has to specialize GetOffsets.
+					    //! \return The offset vector but only the last TDim elements.
+					    ALPAKA_NO_HOST_ACC_WARNING
+					    template<typename TDim, typename T>
+					    ALPAKA_FN_HOST_ACC constexpr auto getOffsetVecEnd(T const& object = {}) -> Vec<TDim, Idx<T>>
+					    {
+					        static_assert(TDim::value <= Dim<T>::value, "Cannot get more items than the offsets hold");
+
+					        auto const o = getOffsets(object);
+					        Vec<TDim, Idx<T>> v;
+					        for(unsigned i = 0; i < TDim::value; i++)
+					            v[i] = o[(Dim<T>::value - TDim::value) + i];
+					        return v;
+					    }
+
+					    //! \return The offset in x dimension.
+					    ALPAKA_NO_HOST_ACC_WARNING
+					    template<typename TOffsets>
+					    ALPAKA_FN_HOST_ACC auto getOffsetX(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
+					    {
+					        return getOffsets(offsets)[Dim<TOffsets>::value - 1u];
+					    }
+
+					    //! \return The offset in y dimension.
+					    ALPAKA_NO_HOST_ACC_WARNING
+					    template<typename TOffsets>
+					    ALPAKA_FN_HOST_ACC auto getOffsetY(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
+					    {
+					        return getOffsets(offsets)[Dim<TOffsets>::value - 2u];
+					    }
+
+					    //! \return The offset in z dimension.
+					    ALPAKA_NO_HOST_ACC_WARNING
+					    template<typename TOffsets>
+					    ALPAKA_FN_HOST_ACC auto getOffsetZ(TOffsets const& offsets = TOffsets()) -> Idx<TOffsets>
+					    {
+					        return getOffsets(offsets)[Dim<TOffsets>::value - 3u];
+					    }
+
+					    namespace trait
+					    {
+					        //! The Vec offset get trait specialization.
+					        template<typename TDim, typename TVal>
+					        struct GetOffsets<Vec<TDim, TVal>>
+					        {
+					            ALPAKA_NO_HOST_ACC_WARNING
+					            ALPAKA_FN_HOST_ACC constexpr auto operator()(Vec<TDim, TVal> const& offsets) const -> Vec<TDim, TVal>
+					            {
+					                return offsets;
+					            }
+					        };
+
+					        //! The unsigned integral x offset get trait specialization.
+					        template<typename TIntegral>
+					        struct GetOffsets<TIntegral, std::enable_if_t<std::is_integral_v<TIntegral>>>
+					        {
+					            ALPAKA_NO_HOST_ACC_WARNING
+					            ALPAKA_FN_HOST_ACC constexpr auto operator()(TIntegral const& i) const
+					            {
+					                return Vec{i};
+					            }
+					        };
+					    } // namespace trait
+					} // namespace alpaka
+					// ==
+					// == ./include/alpaka/offset/Traits.hpp ==
+					// ============================================================================
+
+				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/vec/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 				// #include <array>    // amalgamate: file already included
+				// #include <cstddef>    // amalgamate: file already included
 				// #include <iosfwd>    // amalgamate: file already included
 				// #include <type_traits>    // amalgamate: file already included
 				// #include <vector>    // amalgamate: file already included
@@ -9796,6 +11612,23 @@
 
 				namespace alpaka
 				{
+				    namespace detail
+				    {
+				        //! Calculate the pitches purely from the extents.
+				        template<typename TElem, typename TDim, typename TIdx>
+				        ALPAKA_FN_HOST_ACC inline constexpr auto calculatePitchesFromExtents(Vec<TDim, TIdx> const& extent)
+				        {
+				            Vec<TDim, TIdx> pitchBytes{};
+				            constexpr auto dim = TIdx{TDim::value};
+				            if constexpr(dim > 0)
+				                pitchBytes.back() = static_cast<TIdx>(sizeof(TElem));
+				            if constexpr(dim > 1)
+				                for(TIdx i = TDim::value - 1; i > 0; i--)
+				                    pitchBytes[i - 1] = extent[i] * pitchBytes[i];
+				            return pitchBytes;
+				        }
+				    } // namespace detail
+
 				    //! The view traits.
 				    namespace trait
 				    {
@@ -9813,7 +11646,7 @@
 				        //!
 				        //! The default implementation uses the extent to calculate the pitch.
 				        template<typename TIdx, typename TView, typename TSfinae = void>
-				        struct GetPitchBytes
+				        struct [[deprecated("Use GetPitchesInBytes instead")]] GetPitchBytes
 				        {
 				            using ViewIdx = Idx<TView>;
 
@@ -9828,12 +11661,32 @@
 				                constexpr auto idx = TIdx::value;
 				                constexpr auto viewDim = Dim<TView>::value;
 				                if constexpr(idx < viewDim - 1)
-				                    return getExtent<idx>(view) * GetPitchBytes<DimInt<idx + 1>, TView>::getPitchBytes(view);
+				                {
+				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#    pragma GCC diagnostic push
+				#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+				#endif
+				                    return getExtents(view)[idx] * GetPitchBytes<DimInt<idx + 1>, TView>::getPitchBytes(view);
+				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#    pragma GCC diagnostic pop
+				#endif
+				                }
 				                else if constexpr(idx == viewDim - 1)
-				                    return getExtent<viewDim - 1>(view) * static_cast<ViewIdx>(sizeof(Elem<TView>));
+				                    return getExtents(view)[viewDim - 1] * static_cast<ViewIdx>(sizeof(Elem<TView>));
 				                else
 				                    return static_cast<ViewIdx>(sizeof(Elem<TView>));
 				                ALPAKA_UNREACHABLE({});
+				            }
+				        };
+
+				        //! Customization point for \ref getPitchesInBytes.
+				        //! The default implementation uses the extent to calculate the pitches.
+				        template<typename TView, typename TSfinae = void>
+				        struct GetPitchesInBytes
+				        {
+				            ALPAKA_FN_HOST_ACC constexpr auto operator()(TView const& view) const
+				            {
+				                return alpaka::detail::calculatePitchesFromExtents<Elem<TView>>(getExtents(view));
 				            }
 				        };
 
@@ -9907,9 +11760,29 @@
 				    //! \return The pitch in bytes. This is the distance in bytes between two consecutive elements in the given
 				    //! dimension.
 				    template<std::size_t Tidx, typename TView>
-				    ALPAKA_FN_HOST auto getPitchBytes(TView const& view) -> Idx<TView>
+				    [[deprecated("Use getPitchesInBytes instead")]] ALPAKA_FN_HOST auto getPitchBytes(TView const& view) -> Idx<TView>
 				    {
+				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#    pragma GCC diagnostic push
+				#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+				#endif
 				        return trait::GetPitchBytes<DimInt<Tidx>, TView>::getPitchBytes(view);
+				#if BOOST_COMP_CLANG || BOOST_COMP_GNUC
+				#    pragma GCC diagnostic pop
+				#endif
+				    }
+
+				    //! \return The pitches in bytes as an alpaka::Vec. This is the distance in bytes between two consecutive elements
+				    //! in the given dimension.
+				    //! E.g. for a 3D view without padding, the 0-dim pitch is the distance in bytes to jump from one element to the
+				    //! next within the same row, the 1-dim pitch (aka. the row pitch) is the distance in bytes to jump from one
+				    //! element to the neighboring element on the next row. The 2-dim pitch (aka. the slice pitch) is the distance in
+				    //! bytes to jump from one element to the neighboring element on the next slice.
+				    //! E.g. a 3D view of floats without padding and the extents {42, 10, 2}, would have a pitch vector of {80, 8, 4}.
+				    template<typename TView>
+				    ALPAKA_FN_HOST auto getPitchesInBytes(TView const& view) -> Vec<Dim<TView>, Idx<TView>>
+				    {
+				        return trait::GetPitchesInBytes<TView>{}(view);
 				    }
 
 				    //! Create a memory set task.
@@ -9955,7 +11828,7 @@
 				    template<typename TViewFwd, typename TQueue>
 				    ALPAKA_FN_HOST auto memset(TQueue& queue, TViewFwd&& view, std::uint8_t const& byte) -> void
 				    {
-				        enqueue(queue, createTaskMemset(std::forward<TViewFwd>(view), byte, getExtentVec(view)));
+				        enqueue(queue, createTaskMemset(std::forward<TViewFwd>(view), byte, getExtents(view)));
 				    }
 
 				    //! Creates a memory copy task.
@@ -10020,7 +11893,7 @@
 				    template<typename TViewSrc, typename TViewDstFwd, typename TQueue>
 				    ALPAKA_FN_HOST auto memcpy(TQueue& queue, TViewDstFwd&& viewDst, TViewSrc const& viewSrc) -> void
 				    {
-				        enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), viewSrc, getExtentVec(viewSrc)));
+				        enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), viewSrc, getExtents(viewSrc)));
 				    }
 
 				    namespace detail
@@ -10040,7 +11913,7 @@
 				            {
 				                os << rowPrefix;
 
-				                auto const pitch(getPitchBytes<TDim::value + 1u>(view));
+				                auto const pitch = getPitchesInBytes(view)[TDim::value + 1];
 				                auto const lastIdx(extent[TDim::value] - 1u);
 				                for(auto i(decltype(lastIdx)(0)); i <= lastIdx; ++i)
 				                {
@@ -10064,6 +11937,7 @@
 				                os << rowSuffix;
 				            }
 				        };
+
 				        template<typename TView>
 				        struct Print<DimInt<Dim<TView>::value - 1u>, TView>
 				        {
@@ -10096,6 +11970,7 @@
 				            }
 				        };
 				    } // namespace detail
+
 				    //! Prints the content of the view to the given queue.
 				    // \TODO: Add precision flag.
 				    // \TODO: Add column alignment flag.
@@ -10111,7 +11986,7 @@
 				        detail::Print<DimInt<0u>, TView>::print(
 				            view,
 				            getPtrNative(view),
-				            getExtentVec(view),
+				            getExtents(view),
 				            os,
 				            elementSeparator,
 				            rowSeparator,
@@ -10119,50 +11994,19 @@
 				            rowSuffix);
 				    }
 
-				    namespace detail
-				    {
-				        //! A class with a create method that returns the pitch for each index.
-				        template<std::size_t Tidx>
-				        struct CreatePitchBytes
-				        {
-				            template<typename TView>
-				            ALPAKA_FN_HOST static auto create(TView const& view) -> Idx<TView>
-				            {
-				                return getPitchBytes<Tidx>(view);
-				            }
-				        };
-
-				        //! Calculate the pitches purely from the extents.
-				        template<typename TElem, typename TDim, typename TIdx>
-				        ALPAKA_FN_HOST inline auto calculatePitchesFromExtents(Vec<TDim, TIdx> const& extent)
-				        {
-				            Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
-				            if constexpr(TDim::value > 0)
-				            {
-				                pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
-				                for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
-				                {
-				                    pitchBytes[i - 1] = extent[i - 1] * pitchBytes[i];
-				                }
-				            }
-				            return pitchBytes;
-				        }
-				    } // namespace detail
 				    //! \return The pitch vector.
 				    template<typename TView>
-				    auto getPitchBytesVec(TView const& view = TView()) -> Vec<Dim<TView>, Idx<TView>>
+				    [[deprecated("Use getPitchesInBytes instead")]] auto getPitchBytesVec(TView const& view)
+				        -> Vec<Dim<TView>, Idx<TView>>
 				    {
-				        return createVecFromIndexedFn<Dim<TView>, detail::CreatePitchBytes>(view);
+				        return getPitchesInBytes(view);
 				    }
 
 				    //! \return The pitch but only the last N elements.
 				    template<typename TDim, typename TView>
 				    ALPAKA_FN_HOST auto getPitchBytesVecEnd(TView const& view = TView()) -> Vec<TDim, Idx<TView>>
 				    {
-				        using IdxOffset = std::integral_constant<
-				            std::intmax_t,
-				            static_cast<std::intmax_t>(Dim<TView>::value) - static_cast<std::intmax_t>(TDim::value)>;
-				        return createVecFromIndexedFnOffset<TDim, detail::CreatePitchBytes, IdxOffset>(view);
+				        return subVecEnd<TDim>(getPitchesInBytes(view));
 				    }
 
 				    //! \return A view to static device memory.
@@ -10203,7 +12047,7 @@
 				    //! \param pitch Pitch in bytes for each dimension. Dimensionality must be equal to extent.
 				    //! \return A view to device memory.
 				    template<typename TDev, typename TElem, typename TExtent, typename TPitch>
-				    auto createView(TDev const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
+				    auto createView(TDev const& dev, TElem* pMem, TExtent const& extent, TPitch pitch)
 				    {
 				        return trait::CreateViewPlainPtr<TDev>::createViewPlainPtr(dev, pMem, extent, pitch);
 				    }
@@ -10217,7 +12061,7 @@
 				    template<typename TDev, typename TContainer>
 				    auto createView(TDev const& dev, TContainer& con)
 				    {
-				        return createView(dev, std::data(con), getExtentVec(con));
+				        return createView(dev, std::data(con), getExtents(con));
 				    }
 
 				    //! Creates a view to a contiguous container of device-accessible memory.
@@ -10277,14 +12121,12 @@
 
 				                    constexpr ByteIndexedAccessor() noexcept = default;
 
-				                    ALPAKA_FN_HOST_ACC
-				                    constexpr data_handle_type offset(data_handle_type p, size_t i) const noexcept
+				                    ALPAKA_FN_HOST_ACC constexpr data_handle_type offset(data_handle_type p, size_t i) const noexcept
 				                    {
 				                        return p + i;
 				                    }
 
-				                    ALPAKA_FN_HOST_ACC
-				                    constexpr reference access(data_handle_type p, size_t i) const noexcept
+				                    ALPAKA_FN_HOST_ACC constexpr reference access(data_handle_type p, size_t i) const noexcept
 				                    {
 				                        assert(i % alignof(ElementType) == 0);
 				#    if BOOST_COMP_GNUC
@@ -10301,18 +12143,8 @@
 				                template<typename TView, std::size_t... Is>
 				                ALPAKA_FN_HOST auto makeExtents(TView const& view, std::index_sequence<Is...>)
 				                {
-				                    return std::experimental::dextents<Idx<TView>, Dim<TView>::value>{getExtent<Is>(view)...};
-				                }
-
-				                template<typename TView, std::size_t... Is>
-				                ALPAKA_FN_HOST auto makeStrides(TView const& view, std::index_sequence<Is...>)
-				                {
-				                    constexpr auto fastestIndexPitch = static_cast<Idx<TView>>(sizeof(Elem<TView>));
-				                    [[maybe_unused]] constexpr auto dim = Dim<TView>::value;
-				                    // alpaka pitches are right-shifted by 1. We skip getPitchBytes<0> (the size in bytes of the entire
-				                    // buffer) and append the element size last
-				                    return std::array<Idx<TView>, dim>{
-				                        (Is < dim - 1 ? getPitchBytes<Is + 1>(view) : fastestIndexPitch)...};
+				                    auto const ex = getExtents(view);
+				                    return std::experimental::dextents<Idx<TView>, Dim<TView>::value>{ex[Is]...};
 				                }
 				            } // namespace detail
 
@@ -10326,7 +12158,7 @@
 				                    using Element = Elem<TView>;
 				                    auto extents = detail::makeExtents(view, std::make_index_sequence<dim>{});
 				                    auto* ptr = reinterpret_cast<std::byte*>(getPtrNative(view));
-				                    auto const strides = detail::makeStrides(view, std::make_index_sequence<dim>{});
+				                    auto const strides = toArray(getPitchesInBytes(view));
 				                    layout_stride::mapping<decltype(extents)> m{extents, strides};
 				                    return mdspan<Element, decltype(extents), layout_stride, detail::ByteIndexedAccessor<Element>>{
 				                        ptr,
@@ -10339,7 +12171,7 @@
 				                    using Element = Elem<TView>;
 				                    auto extents = detail::makeExtents(view, std::make_index_sequence<dim>{});
 				                    auto* ptr = reinterpret_cast<std::byte*>(getPtrNative(view));
-				                    auto strides = detail::makeStrides(view, std::make_index_sequence<dim>{});
+				                    auto strides = toArray(getPitchesInBytes(view));
 				                    std::reverse(begin(strides), end(strides));
 				                    layout_stride::mapping<decltype(extents)> m{extents, strides};
 				                    return mdspan<Element, decltype(extents), layout_stride, detail::ByteIndexedAccessor<Element>>{
@@ -10364,6 +12196,13 @@
 				        {
 				            return traits::GetMdSpan<TView>::getMdSpanTransposed(view);
 				        }
+
+				        template<typename TElem, typename TIdx, typename TDim>
+				        using MdSpan = alpaka::experimental::mdspan<
+				            TElem,
+				            alpaka::experimental::dextents<TIdx, TDim::value>,
+				            alpaka::experimental::layout_stride,
+				            alpaka::experimental::traits::detail::ByteIndexedAccessor<TElem>>;
 				    } // namespace experimental
 				#endif
 				} // namespace alpaka
@@ -10371,6 +12210,7 @@
 				// == ./include/alpaka/mem/view/Traits.hpp ==
 				// ============================================================================
 
+			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 			namespace alpaka
 			{
@@ -10454,7 +12294,7 @@
 			    //! \tparam TDev The type of device to allocate the buffer on.
 			    //! \tparam TDim The dimensionality of the buffer to allocate.
 			    template<typename TDev, typename TDim>
-			    constexpr inline bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
+			    inline constexpr bool hasAsyncBufSupport = trait::HasAsyncBufSupport<TDim, TDev>::value;
 			#if BOOST_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
@@ -10497,9 +12337,12 @@
 			    //! \param extent The extent of the buffer.
 			    //! \return The newly allocated buffer.
 			    template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
-			    ALPAKA_FN_HOST auto allocMappedBuf(DevCpu const& host, TExtent const& extent = TExtent())
+			    ALPAKA_FN_HOST auto allocMappedBuf(
+			        DevCpu const& host,
+			        TPlatform const& platform,
+			        TExtent const& extent = TExtent())
 			    {
-			        return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, extent);
+			        return trait::BufAllocMapped<TPlatform, TElem, Dim<TExtent>, TIdx>::allocMappedBuf(host, platform, extent);
 			    }
 
 			    /* TODO: Remove this pragma block once support for clang versions <= 13 is removed. These versions are unable to
@@ -10512,7 +12355,7 @@
 			    //!
 			    //! \tparam TPlatform The platform from which the buffer is accessible.
 			    template<typename TPlatform>
-			    constexpr inline bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
+			    inline constexpr bool hasMappedBufSupport = trait::HasMappedBufSupport<TPlatform>::value;
 			#if BOOST_COMP_CLANG
 			#    pragma clang diagnostic pop
 			#endif
@@ -10523,19 +12366,23 @@
 			    //! this function is provided for convenience in the cases where the difference is not relevant,
 			    //! and the pinned/mapped memory is only used as a performance optimisation.
 			    //!
-			    //! \tparam TPlatform The platform from which the buffer is accessible.
 			    //! \tparam TElem The element type of the returned buffer.
 			    //! \tparam TIdx The linear index type of the buffer.
 			    //! \tparam TExtent The extent type of the buffer.
+			    //! \tparam TPlatform The platform from which the buffer is accessible.
 			    //! \param host The host device to allocate the buffer on.
 			    //! \param extent The extent of the buffer.
 			    //! \return The newly allocated buffer.
-			    template<typename TPlatform, typename TElem, typename TIdx, typename TExtent>
-			    ALPAKA_FN_HOST auto allocMappedBufIfSupported(DevCpu const& host, TExtent const& extent = TExtent())
+			    template<typename TElem, typename TIdx, typename TExtent, typename TPlatform>
+			    ALPAKA_FN_HOST auto allocMappedBufIfSupported(
+			        DevCpu const& host,
+			        TPlatform const& platform,
+			        TExtent const& extent = TExtent())
 			    {
-			        if constexpr(hasMappedBufSupport<TPlatform>)
+			        using Platform = alpaka::Platform<TPlatform>;
+			        if constexpr(hasMappedBufSupport<Platform>)
 			        {
-			            return allocMappedBuf<TPlatform, TElem, TIdx>(host, extent);
+			            return allocMappedBuf<Platform, TElem, TIdx>(host, platform, extent);
 			        }
 			        else
 			        {
@@ -10549,7 +12396,7 @@
 			// == ./include/alpaka/mem/buf/Traits.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/queue/Properties.hpp ==
 			// ==
@@ -10569,6 +12416,7 @@
 			        //! The caller is NOT waiting until the enqueued task is finished
 			        struct NonBlocking;
 			    } // namespace property
+
 			    using namespace property;
 			} // namespace alpaka
 			// ==
@@ -10583,7 +12431,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/event/Traits.hpp ==
 				// ==
@@ -10592,8 +12440,8 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 
 				namespace alpaka
 				{
@@ -10628,7 +12476,7 @@
 				// == ./include/alpaka/event/Traits.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/queue/cpu/IGenericThreadsQueue.hpp ==
 				// ==
@@ -10637,7 +12485,7 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 				namespace alpaka
 				{
@@ -10670,7 +12518,7 @@
 				// == ./include/alpaka/queue/cpu/IGenericThreadsQueue.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <atomic>    // amalgamate: file already included
 			// #include <memory>    // amalgamate: file already included
@@ -10704,6 +12552,7 @@
 			                    , m_bCurrentlyExecutingTask(false)
 			                {
 			                }
+
 			                QueueGenericThreadsBlockingImpl(QueueGenericThreadsBlockingImpl<TDev> const&) = delete;
 			                auto operator=(QueueGenericThreadsBlockingImpl<TDev> const&)
 			                    -> QueueGenericThreadsBlockingImpl<TDev>& = delete;
@@ -10741,10 +12590,12 @@
 
 			            dev.registerQueue(m_spQueueImpl);
 			        }
+
 			        auto operator==(QueueGenericThreadsBlocking<TDev> const& rhs) const -> bool
 			        {
 			            return (m_spQueueImpl == rhs.m_spQueueImpl);
 			        }
+
 			        auto operator!=(QueueGenericThreadsBlocking<TDev> const& rhs) const -> bool
 			        {
 			            return !((*this) == rhs);
@@ -10762,6 +12613,7 @@
 			        {
 			            using type = TDev;
 			        };
+
 			        //! The CPU blocking device queue device get trait specialization.
 			        template<typename TDev>
 			        struct GetDev<QueueGenericThreadsBlocking<TDev>>
@@ -10795,6 +12647,7 @@
 			                queue.m_spQueueImpl->m_bCurrentlyExecutingTask = false;
 			            }
 			        };
+
 			        //! The CPU blocking device queue test trait specialization.
 			        template<typename TDev>
 			        struct Empty<QueueGenericThreadsBlocking<TDev>>
@@ -10828,7 +12681,7 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/core/Utility.hpp ==
 					// ==
@@ -10836,7 +12689,7 @@
 					 * SPDX-License-Identifier: MPL-2.0
 					 */
 					// #pragma once
-					// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 					// #include <type_traits>    // amalgamate: file already included
 					// #include <utility>    // amalgamate: file already included
@@ -10896,9 +12749,9 @@
 					// == ./include/alpaka/core/Utility.hpp ==
 					// ============================================================================
 
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/QueueGenericThreadsBlocking.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/queue/QueueGenericThreadsBlocking.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/queue/QueueGenericThreadsNonBlocking.hpp ==
 					// ==
@@ -10907,7 +12760,7 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 						// ============================================================================
 						// == ./include/alpaka/core/CallbackThread.hpp ==
 						// ==
@@ -10916,6 +12769,9 @@
 						 */
 
 						// #pragma once
+						// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+
+						// #include <cassert>    // amalgamate: file already included
 						#include <condition_variable>
 						// #include <functional>    // amalgamate: file already included
 						#include <future>
@@ -10928,10 +12784,40 @@
 						{
 						    class CallbackThread
 						    {
-						        // std::packaged_task is used because std::function requires that the wrapped callable is copyable.
+						#if BOOST_COMP_CLANG
+						#    pragma clang diagnostic push
+						#    pragma clang diagnostic ignored "-Wweak-vtables"
+						#endif
+						        // A custom class is used because std::function<F> requires F to be copyable, and std::packaged_task provides a
+						        // std::future which will keep the task alive and we cannot control the moment the future is set.
 						        //! \todo with C++23 std::move_only_function should be used
-						        using Task = std::packaged_task<void()>;
-						        using TaskPackage = std::pair<Task, std::promise<void>>;
+						        struct Task
+						#if BOOST_COMP_CLANG
+						#    pragma clang diagnostic pop
+						#endif
+						        {
+						            virtual ~Task() = default;
+						            virtual void run() = 0;
+						        };
+
+						        template<typename Function>
+						        struct FunctionHolder : Task
+						        {
+						            Function m_func;
+
+						            template<typename FunctionFwd>
+						            explicit FunctionHolder(FunctionFwd&& func) : m_func{std::forward<FunctionFwd>(func)}
+						            {
+						            }
+
+						            void run() override
+						            {
+						                // if m_func throws, let it propagate
+						                m_func();
+						            }
+						        };
+
+						        using TaskPackage = std::pair<std::unique_ptr<Task>, std::promise<void>>;
 
 						    public:
 						        ~CallbackThread()
@@ -10958,17 +12844,16 @@
 						        template<typename NullaryFunction>
 						        auto submit(NullaryFunction&& nf) -> std::future<void>
 						        {
+						            using DecayedFunction = std::decay_t<NullaryFunction>;
 						            static_assert(
-						                std::is_void_v<std::invoke_result_t<NullaryFunction>>,
+						                std::is_void_v<std::invoke_result_t<DecayedFunction>>,
 						                "Submitted function must not have any arguments and return void.");
-						            return submit(Task{std::forward<NullaryFunction>(nf)});
-						        }
 
-						        auto submit(Task task) -> std::future<void>
-						        {
-						            // We do not use the future of std::packed_task because the future will keep the task alive
-						            // and we can not control the moment the future is set.
-						            auto tp = std::make_pair(std::move(task), std::promise<void>{});
+						            // FunctionHolder stores a copy of the user's task, but may be constructed from an expiring value to avoid
+						            // the copy. We do NOT store a reference to the users task, which could dangle if the user isn't careful.
+						            auto tp = std::pair(
+						                std::unique_ptr<Task>(new FunctionHolder<DecayedFunction>{std::forward<NullaryFunction>(nf)}),
+						                std::promise<void>{});
 						            auto f = tp.second.get_future();
 						            {
 						                std::unique_lock<std::mutex> lock{m_mutex};
@@ -11007,9 +12892,10 @@
 						                    while(true)
 						                    {
 						                        std::promise<void> taskPromise;
+						                        std::exception_ptr eptr;
 						                        {
 						                            // Task is destroyed before promise is updated but after the queue state is up to date.
-						                            Task task;
+						                            std::unique_ptr<Task> task = nullptr;
 						                            {
 						                                std::unique_lock<std::mutex> lock{m_mutex};
 						                                m_cond.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
@@ -11020,7 +12906,15 @@
 						                                task = std::move(m_tasks.front().first);
 						                                taskPromise = std::move(m_tasks.front().second);
 						                            }
-						                            task();
+						                            assert(task);
+						                            try
+						                            {
+						                                task->run();
+						                            }
+						                            catch(...)
+						                            {
+						                                eptr = std::current_exception();
+						                            }
 						                            {
 						                                std::unique_lock<std::mutex> lock{m_mutex};
 						                                // Pop empty data from the queue, task and promise will be destroyed later in a
@@ -11031,7 +12925,10 @@
 						                        }
 						                        // In case the executed tasks is the last task in the queue the waiting threads will see the
 						                        // queue as empty.
-						                        taskPromise.set_value();
+						                        if(eptr)
+						                            taskPromise.set_exception(std::move(eptr));
+						                        else
+						                            taskPromise.set_value();
 						                    }
 						                });
 						        }
@@ -11041,11 +12938,11 @@
 						// == ./include/alpaka/core/CallbackThread.hpp ==
 						// ============================================================================
 
-					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/queue/cpu/IGenericThreadsQueue.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/queue/cpu/IGenericThreadsQueue.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 					// #include <future>    // amalgamate: file already included
 					// #include <memory>    // amalgamate: file already included
@@ -11080,12 +12977,14 @@
 					                explicit QueueGenericThreadsNonBlockingImpl(TDev dev) : m_dev(std::move(dev))
 					                {
 					                }
+
 					                QueueGenericThreadsNonBlockingImpl(QueueGenericThreadsNonBlockingImpl<TDev> const&) = delete;
 					                QueueGenericThreadsNonBlockingImpl(QueueGenericThreadsNonBlockingImpl<TDev>&&) = delete;
 					                auto operator=(QueueGenericThreadsNonBlockingImpl<TDev> const&)
 					                    -> QueueGenericThreadsNonBlockingImpl<TDev>& = delete;
 					                auto operator=(QueueGenericThreadsNonBlockingImpl&&)
 					                    -> QueueGenericThreadsNonBlockingImpl<TDev>& = delete;
+
 					                ~QueueGenericThreadsNonBlockingImpl() override
 					                {
 					                }
@@ -11122,10 +13021,12 @@
 
 					            dev.registerQueue(m_spQueueImpl);
 					        }
+
 					        auto operator==(QueueGenericThreadsNonBlocking<TDev> const& rhs) const -> bool
 					        {
 					            return (m_spQueueImpl == rhs.m_spQueueImpl);
 					        }
+
 					        auto operator!=(QueueGenericThreadsNonBlocking<TDev> const& rhs) const -> bool
 					        {
 					            return !((*this) == rhs);
@@ -11143,6 +13044,7 @@
 					        {
 					            using type = TDev;
 					        };
+
 					        //! The CPU non-blocking device queue device get trait specialization.
 					        template<typename TDev>
 					        struct GetDev<QueueGenericThreadsNonBlocking<TDev>>
@@ -11170,6 +13072,7 @@
 					                queue.m_spQueueImpl->m_workerThread.submit(task);
 					            }
 					        };
+
 					        //! The CPU non-blocking device queue test trait specialization.
 					        template<typename TDev>
 					        struct Empty<QueueGenericThreadsNonBlocking<TDev>>
@@ -11182,12 +13085,12 @@
 					    } // namespace trait
 					} // namespace alpaka
 
-					// #include "alpaka/event/EventGenericThreads.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/event/EventGenericThreads.hpp"    // amalgamate: file already inlined
 					// ==
 					// == ./include/alpaka/queue/QueueGenericThreadsNonBlocking.hpp ==
 					// ============================================================================
 
-				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 				// #include <condition_variable>    // amalgamate: file already included
 				// #include <future>    // amalgamate: file already included
@@ -11210,6 +13113,7 @@
 				            EventGenericThreadsImpl(TDev dev) noexcept : m_dev(std::move(dev))
 				            {
 				            }
+
 				            EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> const&) = delete;
 				            auto operator=(EventGenericThreadsImpl<TDev> const&) -> EventGenericThreadsImpl<TDev>& = delete;
 
@@ -11255,10 +13159,12 @@
 				            : m_spEventImpl(std::make_shared<generic::detail::EventGenericThreadsImpl<TDev>>(dev))
 				        {
 				        }
+
 				        auto operator==(EventGenericThreads<TDev> const& rhs) const -> bool
 				        {
 				            return (m_spEventImpl == rhs.m_spEventImpl);
 				        }
+
 				        auto operator!=(EventGenericThreads<TDev> const& rhs) const -> bool
 				        {
 				            return !((*this) == rhs);
@@ -11267,6 +13173,7 @@
 				    public:
 				        std::shared_ptr<generic::detail::EventGenericThreadsImpl<TDev>> m_spEventImpl;
 				    };
+
 				    namespace trait
 				    {
 				        //! The CPU device event device type trait specialization.
@@ -11275,6 +13182,7 @@
 				        {
 				            using type = TDev;
 				        };
+
 				        //! The CPU device event device get trait specialization.
 				        template<typename TDev>
 				        struct GetDev<EventGenericThreads<TDev>>
@@ -11329,11 +13237,13 @@
 				                        // Nothing to do if it has been re-enqueued to a later position in the queue.
 				                        if(enqueueCount == spEventImpl->m_enqueueCount)
 				                        {
-				                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+				                            spEventImpl->m_LastReadyEnqueueCount
+				                                = std::max(enqueueCount, spEventImpl->m_LastReadyEnqueueCount);
 				                        }
 				                    });
 				            }
 				        };
+
 				        //! The CPU non-blocking device queue enqueue trait specialization.
 				        template<typename TDev>
 				        struct Enqueue<QueueGenericThreadsNonBlocking<TDev>, EventGenericThreads<TDev>>
@@ -11347,6 +13257,7 @@
 				                alpaka::enqueue(*queue.m_spQueueImpl, event);
 				            }
 				        };
+
 				        //! The CPU blocking device queue enqueue trait specialization.
 				        template<typename TDev>
 				        struct Enqueue<alpaka::generic::detail::QueueGenericThreadsBlockingImpl<TDev>, EventGenericThreads<TDev>>
@@ -11381,6 +13292,7 @@
 				                promise.set_value();
 				            }
 				        };
+
 				        //! The CPU blocking device queue enqueue trait specialization.
 				        template<typename TDev>
 				        struct Enqueue<QueueGenericThreadsBlocking<TDev>, EventGenericThreads<TDev>>
@@ -11395,6 +13307,7 @@
 				            }
 				        };
 				    } // namespace trait
+
 				    namespace trait
 				    {
 				        namespace generic
@@ -11434,6 +13347,7 @@
 				                wait(*event.m_spEventImpl);
 				            }
 				        };
+
 				        //! The CPU device event implementation thread wait trait specialization.
 				        //!
 				        //! Waits until the event itself and therefore all tasks preceding it in the queue it is enqueued to have been
@@ -11452,6 +13366,7 @@
 				                eventImpl.wait(enqueueCount, lk);
 				            }
 				        };
+
 				        //! The CPU non-blocking device queue event wait trait specialization.
 				        template<typename TDev>
 				        struct WaiterWaitFor<
@@ -11471,18 +13386,14 @@
 
 				                if(!spEventImpl->isReady())
 				                {
-				                    auto const enqueueCount = spEventImpl->m_enqueueCount;
+				                    auto oldFuture = spEventImpl->m_future;
 
-				                    // Enqueue a task that waits for the given event.
-				                    queueImpl.m_workerThread.submit(
-				                        [spEventImpl, enqueueCount]() mutable
-				                        {
-				                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-				                            spEventImpl->wait(enqueueCount, lk2);
-				                        });
+				                    // Enqueue a task that waits for the given future of the event.
+				                    queueImpl.m_workerThread.submit([oldFuture]() { oldFuture.get(); });
 				                }
 				            }
 				        };
+
 				        //! The CPU non-blocking device queue event wait trait specialization.
 				        template<typename TDev>
 				        struct WaiterWaitFor<QueueGenericThreadsNonBlocking<TDev>, EventGenericThreads<TDev>>
@@ -11494,6 +13405,7 @@
 				                wait(*queue.m_spQueueImpl, event);
 				            }
 				        };
+
 				        //! The CPU blocking device queue event wait trait specialization.
 				        template<typename TDev>
 				        struct WaiterWaitFor<alpaka::generic::detail::QueueGenericThreadsBlockingImpl<TDev>, EventGenericThreads<TDev>>
@@ -11506,6 +13418,7 @@
 				                wait(*event.m_spEventImpl);
 				            }
 				        };
+
 				        //! The CPU blocking device queue event wait trait specialization.
 				        template<typename TDev>
 				        struct WaiterWaitFor<QueueGenericThreadsBlocking<TDev>, EventGenericThreads<TDev>>
@@ -11517,6 +13430,7 @@
 				                wait(*queue.m_spQueueImpl, event);
 				            }
 				        };
+
 				        //! The CPU non-blocking device event wait trait specialization.
 				        //!
 				        //! Any future work submitted in any queue of this device will wait for event to complete before beginning
@@ -11567,9 +13481,9 @@
 			// == ./include/alpaka/queue/QueueGenericThreadsBlocking.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/queue/QueueGenericThreadsNonBlocking.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/queue/cpu/IGenericThreadsQueue.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/queue/QueueGenericThreadsNonBlocking.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/queue/cpu/IGenericThreadsQueue.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/traits/Traits.hpp ==
 			// ==
@@ -11578,7 +13492,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 			namespace alpaka
 			{
@@ -11613,7 +13527,7 @@
 			// == ./include/alpaka/traits/Traits.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <algorithm>    // amalgamate: file already included
 		// #include <cstddef>    // amalgamate: file already included
@@ -11626,15 +13540,17 @@
 		namespace alpaka
 		{
 		    class DevCpu;
+
 		    namespace cpu
 		    {
 		        using ICpuQueue = IGenericThreadsQueue<DevCpu>;
-		    }
+		    } // namespace cpu
+
 		    namespace trait
 		    {
 		        template<typename TPlatform, typename TSfinae>
 		        struct GetDevByIdx;
-		    }
+		    } // namespace trait
 		    struct PlatformCpu;
 
 		    //! The CPU device.
@@ -11661,6 +13577,7 @@
 		        {
 		            return true;
 		        }
+
 		        auto operator!=(DevCpu const& rhs) const -> bool
 		        {
 		            return !((*this) == rhs);
@@ -11770,6 +13687,7 @@
 		            using type = PlatformCpu;
 		        };
 		    } // namespace trait
+
 		    using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;
 		    using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
 
@@ -11812,27 +13730,28 @@
 	    //! This accelerator allows parallel kernel execution on a CPU device.
 	    //! It uses OpenMP 2.0 to implement the grid block parallelism.
 	    //! The block idx is restricted to 1x1x1.
-	    template<
-	        typename TDim,
-	        typename TIdx>
-	    class AccCpuOmp2Blocks final :
-	        public WorkDivMembers<TDim, TIdx>,
-	        public gb::IdxGbRef<TDim, TIdx>,
-	        public bt::IdxBtZero<TDim, TIdx>,
-	        public AtomicHierarchy<
-	            AtomicCpu,   // grid atomics
-	            AtomicOmpBuiltIn,    // block atomics
-	            AtomicNoOp           // thread atomics
-	        >,
-	        public math::MathStdLib,
-	        public BlockSharedMemDynMember<>,
-	        public BlockSharedMemStMember<>,
-	        public BlockSyncNoOp,
-	        public IntrinsicCpu,
-	        public MemFenceOmp2Blocks,
-	        public rand::RandStdLib,
-	        public warp::WarpSingleThread,
-	        public concepts::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
+	    template<typename TDim, typename TIdx>
+	    class AccCpuOmp2Blocks final
+	        : public WorkDivMembers<TDim, TIdx>
+	        , public gb::IdxGbRef<TDim, TIdx>
+	        , public bt::IdxBtZero<TDim, TIdx>
+	        , public AtomicHierarchy<
+	              AtomicCpu, // grid atomics
+	              AtomicOmpBuiltIn, // block atomics
+	              AtomicNoOp> // thread atomics
+	        , public math::MathStdLib
+	        , public BlockSharedMemDynMember<>
+	        , public BlockSharedMemStMember<>
+	        , public BlockSyncNoOp
+	        , public IntrinsicCpu
+	        , public MemFenceOmp2Blocks
+	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+	        , public rand::RandDefault
+	#    else
+	        , public rand::RandStdLib
+	#    endif
+	        , public warp::WarpSingleThread
+	        , public concepts::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -11853,18 +13772,8 @@
 	        ALPAKA_FN_HOST AccCpuOmp2Blocks(TWorkDiv const& workDiv, std::size_t const& blockSharedMemDynSizeBytes)
 	            : WorkDivMembers<TDim, TIdx>(workDiv)
 	            , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
-	            , bt::IdxBtZero<TDim, TIdx>()
-	            , AtomicHierarchy<
-	                  AtomicCpu, // atomics between grids
-	                  AtomicOmpBuiltIn, // atomics between blocks
-	                  AtomicNoOp // atomics between threads
-	                  >()
-	            , math::MathStdLib()
 	            , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
 	            , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
-	            , BlockSyncNoOp()
-	            , MemFenceOmp2Blocks()
-	            , rand::RandStdLib()
 	            , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
 	        {
 	        }
@@ -11882,6 +13791,7 @@
 	        {
 	            using type = AccCpuOmp2Blocks<TDim, TIdx>;
 	        };
+
 	        //! The CPU OpenMP 2.0 block accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>
@@ -11906,6 +13816,7 @@
 	                        static_cast<size_t>(AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes())};
 	            }
 	        };
+
 	        //! The CPU OpenMP 2.0 block accelerator name trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccName<AccCpuOmp2Blocks<TDim, TIdx>>
@@ -11988,10 +13899,10 @@
 
 	// #pragma once
 	// Base classes.
-	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/atomic/AtomicOmpBuiltIn.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/atomic/AtomicOmpBuiltIn.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp ==
 		// ==
@@ -12000,8 +13911,8 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/core/AlignedAlloc.hpp ==
 			// ==
@@ -12010,8 +13921,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 			#include <new>
 
@@ -12031,14 +13942,13 @@
 			// == ./include/alpaka/core/AlignedAlloc.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already inlined
 
 		// #include <functional>    // amalgamate: file already included
 		// #include <memory>    // amalgamate: file already included
 		// #include <utility>    // amalgamate: file already included
 		// #include <vector>    // amalgamate: file already included
-
 
 		namespace alpaka
 		{
@@ -12116,13 +14026,15 @@
 		// ============================================================================
 		// == ./include/alpaka/block/sync/BlockSyncBarrierOmp.hpp ==
 		// ==
-		/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+		/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-		// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+
+		// #include <cstdint>    // amalgamate: file already included
 
 		#ifdef _OPENMP
 
@@ -12153,6 +14065,7 @@
 		        {
 		            template<typename TOp>
 		            struct AtomicOp;
+
 		            template<>
 		            struct AtomicOp<BlockCount>
 		            {
@@ -12162,6 +14075,7 @@
 		                    result += static_cast<int>(value);
 		                }
 		            };
+
 		            template<>
 		            struct AtomicOp<BlockAnd>
 		            {
@@ -12171,6 +14085,7 @@
 		                    result &= static_cast<int>(value);
 		                }
 		            };
+
 		            template<>
 		            struct AtomicOp<BlockOr>
 		            {
@@ -12186,6 +14101,7 @@
 		        struct SyncBlockThreadsPredicate<TOp, BlockSyncBarrierOmp>
 		        {
 		            ALPAKA_NO_HOST_ACC_WARNING
+
 		            ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(BlockSyncBarrierOmp const& blockSync, int predicate)
 		                -> int
 		            {
@@ -12222,7 +14138,7 @@
 		// == ./include/alpaka/block/sync/BlockSyncBarrierOmp.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/idx/bt/IdxBtOmp.hpp ==
 		// ==
@@ -12231,9 +14147,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/idx/MapIdx.hpp ==
 			// ==
@@ -12242,258 +14158,105 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
 			namespace alpaka
 			{
-			    namespace detail
-			    {
-			        //! Maps a linear index to a N dimensional index.
-			        template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TSfinae = void>
-			        struct MapIdx;
-			        //! Maps a N dimensional index to the same N dimensional index.
-			        template<std::size_t TidxDim>
-			        struct MapIdx<TidxDim, TidxDim>
-			        {
-			            // \tparam TElem Type of the index values.
-			            // \param idx Idx to be mapped.
-			            // \param extent Spatial size to map the index to.
-			            // \return A N dimensional vector.
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TElem>
-			            ALPAKA_FN_HOST_ACC static auto mapIdx(
-			                Vec<DimInt<TidxDim>, TElem> const& idx,
-			                [[maybe_unused]] Vec<DimInt<TidxDim>, TElem> const& extent) -> Vec<DimInt<TidxDim>, TElem>
-			            {
-			                return idx;
-			            }
-			        };
-			        //! Maps a 1 dimensional index to a N dimensional index.
-			        template<std::size_t TidxDimOut>
-			        struct MapIdx<TidxDimOut, 1u, std::enable_if_t<(TidxDimOut > 1u)>>
-			        {
-			            // \tparam TElem Type of the index values.
-			            // \param idx Idx to be mapped.
-			            // \param extent Spatial size to map the index to
-			            // \return A N dimensional vector.
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TElem>
-			            ALPAKA_FN_HOST_ACC static auto mapIdx(
-			                Vec<DimInt<1u>, TElem> const& idx,
-			                Vec<DimInt<TidxDimOut>, TElem> const& extent) -> Vec<DimInt<TidxDimOut>, TElem>
-			            {
-			                auto idxNd = Vec<DimInt<TidxDimOut>, TElem>::all(0u);
-
-			                constexpr std::size_t lastIdx(TidxDimOut - 1u);
-
-			                // fast-dim
-			                idxNd[lastIdx] = static_cast<TElem>(idx[0u] % extent[lastIdx]);
-
-			                // in-between
-			                TElem hyperPlanesBefore = extent[lastIdx];
-			                for(std::size_t r(1u); r < lastIdx; ++r)
-			                {
-			                    std::size_t const d = lastIdx - r;
-			                    idxNd[d] = static_cast<TElem>(idx[0u] / hyperPlanesBefore % extent[d]);
-			                    hyperPlanesBefore *= extent[d];
-			                }
-
-			                // slow-dim
-			                idxNd[0u] = static_cast<TElem>(idx[0u] / hyperPlanesBefore);
-
-			                return idxNd;
-			            }
-			        };
-			        //! Maps a 1 dimensional index to a N dimensional index.
-			        template<std::size_t TidxDimIn>
-			        struct MapIdx<1u, TidxDimIn, std::enable_if_t<(TidxDimIn > 1u)>>
-			        {
-			            // \tparam TElem Type of the index values.
-			            // \param idx Idx to be mapped.
-			            // \param extent Spatial size to map the index to.
-			            // \return A 1 dimensional vector.
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TElem>
-			            ALPAKA_FN_HOST_ACC static auto mapIdx(
-			                Vec<DimInt<TidxDimIn>, TElem> const& idx,
-			                Vec<DimInt<TidxDimIn>, TElem> const& extent) -> Vec<DimInt<1u>, TElem>
-			            {
-			                TElem idx1d(idx[0u]);
-			                for(std::size_t d(1u); d < TidxDimIn; ++d)
-			                {
-			                    idx1d = static_cast<TElem>(idx1d * extent[d] + idx[d]);
-			                }
-			                return {idx1d};
-			            }
-			        };
-
-			        template<std::size_t TidxDimOut>
-			        struct MapIdx<TidxDimOut, 0u>
-			        {
-			            template<typename TElem, std::size_t TidxDimExtents>
-			            ALPAKA_FN_HOST_ACC static auto mapIdx(
-			                Vec<DimInt<0u>, TElem> const&,
-			                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<TidxDimOut>, TElem>
-			            {
-			                return Vec<DimInt<TidxDimOut>, TElem>::zeros();
-			            }
-			        };
-
-			        template<std::size_t TidxDimIn>
-			        struct MapIdx<0u, TidxDimIn>
-			        {
-			            template<typename TElem, std::size_t TidxDimExtents>
-			            ALPAKA_FN_HOST_ACC static auto mapIdx(
-			                Vec<DimInt<TidxDimIn>, TElem> const&,
-			                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<0u>, TElem>
-			            {
-			                return {};
-			            }
-			        };
-			    } // namespace detail
-
-			    //! Maps a N dimensional index to a N dimensional position.
+			    //! Maps an N-dimensional index to an N-dimensional position. At least one dimension must always be 1 or zero.
 			    //!
-			    //! \tparam TidxDimOut Dimension of the index vector to map to.
-			    //! \tparam TidxDimIn Dimension of the index vector to map from.
-			    //! \tparam TElem Type of the elements of the index vector to map from.
+			    //! \tparam TDimOut Dimension of the index vector to map to.
+			    //! \param in The index vector to map from.
+			    //! \param extent The extents of the input or output space, whichever has more than 1 dimensions.
 			    ALPAKA_NO_HOST_ACC_WARNING template<
-			        std::size_t TidxDimOut,
-			        std::size_t TidxDimIn,
-			        std::size_t TidxDimExtents,
+			        std::size_t TDimOut,
+			        std::size_t TDimIn,
+			        std::size_t TDimExtents,
 			        typename TElem>
-			    ALPAKA_FN_HOST_ACC auto mapIdx(
-			        Vec<DimInt<TidxDimIn>, TElem> const& idx,
-			        Vec<DimInt<TidxDimExtents>, TElem> const& extent) -> Vec<DimInt<TidxDimOut>, TElem>
+			    ALPAKA_FN_HOST_ACC auto mapIdx(Vec<DimInt<TDimIn>, TElem> const& in, Vec<DimInt<TDimExtents>, TElem> const& extent)
+			        -> Vec<DimInt<TDimOut>, TElem>
 			    {
-			        return detail::MapIdx<TidxDimOut, TidxDimIn>::mapIdx(idx, extent);
+			        if constexpr(TDimOut == 0 || TDimIn == 0)
+			            return Vec<DimInt<TDimOut>, TElem>::zeros();
+			        else if constexpr(TDimOut == TDimIn)
+			            return in;
+			        else if constexpr(TDimOut == 1)
+			        {
+			            TElem out = in[0];
+			            for(std::size_t d = 1; d < TDimIn; ++d)
+			                out = static_cast<TElem>(out * extent[d] + in[d]);
+			            return {out};
+			        }
+			        else if constexpr(TDimIn == 1)
+			        {
+			            auto flat = in.front();
+			            Vec<DimInt<TDimOut>, TElem> out;
+			            for(std::size_t d = TDimOut - 1u; d > 0; d--)
+			            {
+			                out[d] = static_cast<TElem>(flat % extent[d]);
+			                flat /= extent[d];
+			            }
+			            out.front() = static_cast<TElem>(flat);
+			            return out;
+			        }
+			        else
+			            static_assert(!sizeof(TElem), "Not implemented");
+
+			        ALPAKA_UNREACHABLE({});
 			    }
 
-			    namespace detail
-			    {
-			        //! Maps a linear index to a N dimensional index assuming a buffer wihtout padding.
-			        template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TSfinae = void>
-			        struct MapIdxPitchBytes;
-			        //! Maps a N dimensional index to the same N dimensional index assuming a buffer wihtout padding.
-			        template<std::size_t TidxDim>
-			        struct MapIdxPitchBytes<TidxDim, TidxDim>
-			        {
-			            // \tparam TElem Type of the index values.
-			            // \param idx Idx to be mapped.
-			            // \param pitch Spatial pitch (in elems) to map the index to
-			            // \return N dimensional vector.
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TElem>
-			            ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-			                Vec<DimInt<TidxDim>, TElem> const& idx,
-			                [[maybe_unused]] Vec<DimInt<TidxDim>, TElem> const& pitch) -> Vec<DimInt<TidxDim>, TElem>
-			            {
-			                return idx;
-			            }
-			        };
-			        //! Maps a 1 dimensional index to a N dimensional index assuming a buffer wihtout padding.
-			        template<std::size_t TidxDimOut>
-			        struct MapIdxPitchBytes<TidxDimOut, 1u, std::enable_if_t<(TidxDimOut > 1u)>>
-			        {
-			            // \tparam TElem Type of the index values.
-			            // \param idx Idx to be mapped.
-			            // \param pitch Spatial pitch (in elems) to map the index to
-			            // \return N dimensional vector.
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TElem>
-			            ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-			                Vec<DimInt<1u>, TElem> const& idx,
-			                Vec<DimInt<TidxDimOut>, TElem> const& pitch) -> Vec<DimInt<TidxDimOut>, TElem>
-			            {
-			                auto idxNd = Vec<DimInt<TidxDimOut>, TElem>::all(0u);
-
-			                constexpr std::size_t lastIdx = TidxDimOut - 1u;
-
-			                TElem tmp = idx[0u];
-			                for(std::size_t d(0u); d < lastIdx; ++d)
-			                {
-			                    idxNd[d] = static_cast<TElem>(tmp / pitch[d + 1]);
-			                    tmp %= pitch[d + 1];
-			                }
-			                idxNd[lastIdx] = tmp;
-
-			                return idxNd;
-			            }
-			        };
-			        //! Maps a N dimensional index to a 1 dimensional index assuming a buffer without padding.
-			        template<std::size_t TidxDimIn>
-			        struct MapIdxPitchBytes<1u, TidxDimIn, std::enable_if_t<(TidxDimIn > 1u)>>
-			        {
-			            // \tparam TElem Type of the index values.
-			            // \param idx Idx to be mapped.
-			            // \param pitch Spatial pitch (in elems) to map the index to
-			            // \return A 1 dimensional vector.
-			            ALPAKA_NO_HOST_ACC_WARNING
-			            template<typename TElem>
-			            ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-			                Vec<DimInt<TidxDimIn>, TElem> const& idx,
-			                Vec<DimInt<TidxDimIn>, TElem> const& pitch) -> Vec<DimInt<1u>, TElem>
-			            {
-			                constexpr auto lastDim = TidxDimIn - 1;
-			                TElem idx1d = idx[lastDim];
-			                for(std::size_t d(0u); d < lastDim; ++d)
-			                {
-			                    idx1d = static_cast<TElem>(idx1d + pitch[d + 1] * idx[d]);
-			                }
-			                return {idx1d};
-			            }
-			        };
-
-			        template<std::size_t TidxDimOut>
-			        struct MapIdxPitchBytes<TidxDimOut, 0u>
-			        {
-			            template<typename TElem, std::size_t TidxDimExtents>
-			            ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-			                Vec<DimInt<0u>, TElem> const&,
-			                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<TidxDimOut>, TElem>
-			            {
-			                return Vec<DimInt<TidxDimOut>, TElem>::zeros();
-			            }
-			        };
-
-			        template<std::size_t TidxDimIn>
-			        struct MapIdxPitchBytes<0u, TidxDimIn>
-			        {
-			            template<typename TElem, std::size_t TidxDimExtents>
-			            ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-			                Vec<DimInt<TidxDimIn>, TElem> const&,
-			                Vec<DimInt<TidxDimExtents>, TElem> const&) -> Vec<DimInt<0u>, TElem>
-			            {
-			                return {};
-			            }
-			        };
-			    } // namespace detail
-
-			    //! Maps a N dimensional index to a N dimensional position based on
-			    //! pitch in a buffer without padding or a byte buffer.
+			    //! Maps an N dimensional index to a N dimensional position based on the pitches of a view without padding or a
+			    //! byte view. At least one dimension must always be 1 or zero.
 			    //!
-			    //! \tparam TidxDimOut Dimension of the index vector to map to.
-			    //! \tparam TidxDimIn Dimension of the index vector to map from.
-			    //! \tparam TElem Type of the elements of the index vector to map from.
+			    //! \tparam TDimOut Dimension of the index vector to map to.
+			    //! \param in The index vector to map from.
+			    //! \param pitches The pitches of the input or output space, whichever has more than 1 dimensions.
 			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<std::size_t TidxDimOut, std::size_t TidxDimIn, std::size_t TidxDimPitch, typename TElem>
+			    template<std::size_t TDimOut, std::size_t TDimIn, std::size_t TidxDimPitch, typename TElem>
 			    ALPAKA_FN_HOST_ACC auto mapIdxPitchBytes(
-			        Vec<DimInt<TidxDimIn>, TElem> const& idx,
-			        Vec<DimInt<TidxDimPitch>, TElem> const& pitch) -> Vec<DimInt<TidxDimOut>, TElem>
+			        Vec<DimInt<TDimIn>, TElem> const& in,
+			        Vec<DimInt<TidxDimPitch>, TElem> const& pitches) -> Vec<DimInt<TDimOut>, TElem>
 			    {
-			        return detail::MapIdxPitchBytes<TidxDimOut, TidxDimIn>::mapIdxPitchBytes(idx, pitch);
+			        if constexpr(TDimOut == 0 || TDimIn == 0)
+			            return Vec<DimInt<TDimOut>, TElem>::zeros();
+			        else if constexpr(TDimOut == TDimIn)
+			            return in;
+			        else if constexpr(TDimOut == 1)
+			        {
+			            using DimMinusOne = DimInt<TDimIn - 1>;
+			            return {in.back() + (subVecBegin<DimMinusOne>(pitches) * subVecBegin<DimMinusOne>(in)).sum()};
+			        }
+			        else if constexpr(TDimIn == 1)
+			        {
+			            auto result = Vec<DimInt<TDimOut>, TElem>::zeros();
+
+			            TElem out = in.front();
+			            for(std::size_t d = 0; d < TDimOut - 1u; ++d)
+			            {
+			                result[d] = static_cast<TElem>(out / pitches[d]);
+			                out %= pitches[d];
+			            }
+			            result.back() = out;
+
+			            return result;
+			        }
+			        else
+			            static_assert(!sizeof(TElem), "Not implemented");
+
+			        ALPAKA_UNREACHABLE({});
 			    }
 			} // namespace alpaka
 			// ==
 			// == ./include/alpaka/idx/MapIdx.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
 
 		#ifdef _OPENMP
 
@@ -12562,9 +14325,9 @@
 		// == ./include/alpaka/idx/bt/IdxBtOmp.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/fence/MemFenceOmp2Threads.hpp ==
 		// ==
@@ -12573,8 +14336,8 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 		#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
 
@@ -12639,19 +14402,20 @@
 		// == ./include/alpaka/mem/fence/MemFenceOmp2Threads.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/core/ClipCast.hpp ==
 		// ==
@@ -12660,7 +14424,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already inlined
 
 		// #include <algorithm>    // amalgamate: file already included
 		// #include <limits>    // amalgamate: file already included
@@ -12675,8 +14439,8 @@
 		            std::is_integral_v<T> && std::is_integral_v<V>,
 		            "clipCast can not be called with non-integral types!");
 
-		        auto constexpr max = static_cast<V>(std::numeric_limits<alpaka::meta::LowerMax<T, V>>::max());
-		        auto constexpr min = static_cast<V>(std::numeric_limits<alpaka::meta::HigherMin<T, V>>::min());
+		        constexpr auto max = static_cast<V>(std::numeric_limits<alpaka::meta::LowerMax<T, V>>::max());
+		        constexpr auto min = static_cast<V>(std::numeric_limits<alpaka::meta::HigherMin<T, V>>::min());
 
 		        return static_cast<T>(std::max(min, std::min(max, val)));
 		    }
@@ -12685,8 +14449,8 @@
 		// == ./include/alpaka/core/ClipCast.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <limits>    // amalgamate: file already included
 	// #include <typeinfo>    // amalgamate: file already included
@@ -12708,27 +14472,28 @@
 	    //!
 	    //! This accelerator allows parallel kernel execution on a CPU device.
 	    //! It uses OpenMP 2.0 to implement the block thread parallelism.
-	    template<
-	        typename TDim,
-	        typename TIdx>
-	    class AccCpuOmp2Threads final :
-	        public WorkDivMembers<TDim, TIdx>,
-	        public gb::IdxGbRef<TDim, TIdx>,
-	        public bt::IdxBtOmp<TDim, TIdx>,
-	        public AtomicHierarchy<
-	            AtomicCpu,   // grid atomics
-	            AtomicOmpBuiltIn,    // block atomics
-	            AtomicOmpBuiltIn     // thread atomics
-	        >,
-	        public math::MathStdLib,
-	        public BlockSharedMemDynMember<>,
-	        public BlockSharedMemStMemberMasterSync<>,
-	        public BlockSyncBarrierOmp,
-	        public IntrinsicCpu,
-	        public MemFenceOmp2Threads,
-	        public rand::RandStdLib,
-	        public warp::WarpSingleThread,
-	        public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
+	    template<typename TDim, typename TIdx>
+	    class AccCpuOmp2Threads final
+	        : public WorkDivMembers<TDim, TIdx>
+	        , public gb::IdxGbRef<TDim, TIdx>
+	        , public bt::IdxBtOmp<TDim, TIdx>
+	        , public AtomicHierarchy<
+	              AtomicCpu, // grid atomics
+	              AtomicOmpBuiltIn, // block atomics
+	              AtomicOmpBuiltIn> // thread atomics
+	        , public math::MathStdLib
+	        , public BlockSharedMemDynMember<>
+	        , public BlockSharedMemStMemberMasterSync<>
+	        , public BlockSyncBarrierOmp
+	        , public IntrinsicCpu
+	        , public MemFenceOmp2Threads
+	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+	        , public rand::RandDefault
+	#    else
+	        , public rand::RandStdLib
+	#    endif
+	        , public warp::WarpSingleThread
+	        , public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -12749,22 +14514,12 @@
 	        ALPAKA_FN_HOST AccCpuOmp2Threads(TWorkDiv const& workDiv, std::size_t const& blockSharedMemDynSizeBytes)
 	            : WorkDivMembers<TDim, TIdx>(workDiv)
 	            , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
-	            , bt::IdxBtOmp<TDim, TIdx>()
-	            , AtomicHierarchy<
-	                  AtomicCpu, // atomics between grids
-	                  AtomicOmpBuiltIn, // atomics between blocks
-	                  AtomicOmpBuiltIn // atomics between threads
-	                  >()
-	            , math::MathStdLib()
 	            , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
 	            , BlockSharedMemStMemberMasterSync<>(
 	                  staticMemBegin(),
 	                  staticMemCapacity(),
 	                  [this]() { syncBlockThreads(*this); },
 	                  []() noexcept { return (::omp_get_thread_num() == 0); })
-	            , BlockSyncBarrierOmp()
-	            , MemFenceOmp2Threads()
-	            , rand::RandStdLib()
 	            , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
 	        {
 	        }
@@ -12782,6 +14537,7 @@
 	        {
 	            using type = AccCpuOmp2Threads<TDim, TIdx>;
 	        };
+
 	        //! The CPU OpenMP 2.0 thread accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuOmp2Threads<TDim, TIdx>>
@@ -12811,6 +14567,7 @@
 	                        getMemBytes(dev)};
 	            }
 	        };
+
 	        //! The CPU OpenMP 2.0 thread accelerator name trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccName<AccCpuOmp2Threads<TDim, TIdx>>
@@ -12893,17 +14650,17 @@
 
 	// #pragma once
 	// Base classes.
-	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/atomic/AtomicNoOp.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/atomic/AtomicNoOp.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/fence/MemFenceCpuSerial.hpp ==
 		// ==
@@ -12912,8 +14669,8 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <atomic>    // amalgamate: file already included
 
@@ -12950,14 +14707,7 @@
 		            static auto mem_fence(MemFenceCpuSerial const&, TMemScope const&)
 		            {
 		                /* Enable device fences because we may want to synchronize with other (serial) kernels. */
-
-		                static std::atomic<int> dummy{42};
-
-		                /* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use
-		                 * these dummy operations to ensure this.*/
-		                auto x = dummy.load(std::memory_order_relaxed);
 		                std::atomic_thread_fence(std::memory_order_acq_rel);
-		                dummy.store(x, std::memory_order_relaxed);
 		            }
 		        };
 		    } // namespace trait
@@ -12966,21 +14716,22 @@
 		// == ./include/alpaka/mem/fence/MemFenceCpuSerial.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <memory>    // amalgamate: file already included
 	// #include <typeinfo>    // amalgamate: file already included
@@ -12996,27 +14747,28 @@
 	    //!
 	    //! This accelerator allows serial kernel execution on a CPU device.
 	    //! The block idx is restricted to 1x1x1 and all blocks are executed serially so there is no parallelism at all.
-	    template<
-	        typename TDim,
-	        typename TIdx>
-	    class AccCpuSerial final :
-	        public WorkDivMembers<TDim, TIdx>,
-	        public gb::IdxGbRef<TDim, TIdx>,
-	        public bt::IdxBtZero<TDim, TIdx>,
-	        public AtomicHierarchy<
-	            AtomicCpu, // grid atomics
-	            AtomicNoOp,        // block atomics
-	            AtomicNoOp         // thread atomics
-	        >,
-	        public math::MathStdLib,
-	        public BlockSharedMemDynMember<>,
-	        public BlockSharedMemStMember<>,
-	        public BlockSyncNoOp,
-	        public IntrinsicCpu,
-	        public MemFenceCpuSerial,
-	        public rand::RandStdLib,
-	        public warp::WarpSingleThread,
-	        public concepts::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>
+	    template<typename TDim, typename TIdx>
+	    class AccCpuSerial final
+	        : public WorkDivMembers<TDim, TIdx>
+	        , public gb::IdxGbRef<TDim, TIdx>
+	        , public bt::IdxBtZero<TDim, TIdx>
+	        , public AtomicHierarchy<
+	              AtomicCpu, // grid atomics
+	              AtomicNoOp, // block atomics
+	              AtomicNoOp> // thread atomics
+	        , public math::MathStdLib
+	        , public BlockSharedMemDynMember<>
+	        , public BlockSharedMemStMember<>
+	        , public BlockSyncNoOp
+	        , public IntrinsicCpu
+	        , public MemFenceCpuSerial
+	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+	        , public rand::RandDefault
+	#    else
+	        , public rand::RandStdLib
+	#    endif
+	        , public warp::WarpSingleThread
+	        , public concepts::Implements<ConceptAcc, AccCpuSerial<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -13037,18 +14789,8 @@
 	        ALPAKA_FN_HOST AccCpuSerial(TWorkDiv const& workDiv, size_t const& blockSharedMemDynSizeBytes)
 	            : WorkDivMembers<TDim, TIdx>(workDiv)
 	            , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
-	            , bt::IdxBtZero<TDim, TIdx>()
-	            , AtomicHierarchy<
-	                  AtomicCpu, // atomics between grids
-	                  AtomicNoOp, // atomics between blocks
-	                  AtomicNoOp // atomics between threads
-	                  >()
-	            , math::MathStdLib()
 	            , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
 	            , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
-	            , BlockSyncNoOp()
-	            , MemFenceCpuSerial()
-	            , rand::RandStdLib()
 	            , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
 	        {
 	        }
@@ -13066,6 +14808,7 @@
 	        {
 	            using type = AccCpuSerial<TDim, TIdx>;
 	        };
+
 	        //! The CPU serial accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuSerial<TDim, TIdx>>
@@ -13090,6 +14833,7 @@
 	                        static_cast<size_t>(AccCpuSerial<TDim, TIdx>::staticAllocBytes())};
 	            }
 	        };
+
 	        //! The CPU serial accelerator name trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccName<AccCpuSerial<TDim, TIdx>>
@@ -13188,9 +14932,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/meta/DependentFalseType.hpp ==
 				// ==
@@ -13519,7 +15263,7 @@
 			// == ./include/alpaka/atomic/AtomicGenericSycl.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp ==
 			// ==
@@ -13528,7 +15272,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstddef>    // amalgamate: file already included
 
@@ -13577,8 +15321,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"    // amalgamate: file already inlined
 
 			// #include <cstddef>    // amalgamate: file already included
 			// #include <cstdint>    // amalgamate: file already included
@@ -13650,7 +15394,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -13735,8 +15479,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/Sycl.hpp ==
 				// ==
@@ -13745,12 +15489,12 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/meta/IntegerSequence.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/meta/IntegerSequence.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 				// #include <array>    // amalgamate: file already included
 				// #include <cstddef>    // amalgamate: file already included
@@ -13904,79 +15648,29 @@
 				    };
 
 				    //! The SYCL vectors' extent get trait specialization.
-				    template<typename TExtent>
-				    struct GetExtent<DimInt<Dim<TExtent>::value>, TExtent, std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
+				    template<typename T>
+				    struct GetExtents<T, std::enable_if_t<IsSyclBuiltInType<T>::value>>
 				    {
-				        static auto getExtent(TExtent const& extent)
+				        auto operator()(T const& value) const
 				        {
-				            if constexpr(std::is_scalar_v<TExtent>)
-				                return extent;
+				            if constexpr(std::is_scalar_v<T>)
+				                return value;
 				            else
-				            {
-				                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-				                // to the requested dimension's vector element. Then return the element's value.
-				                return extent.template swizzle<DimInt<Dim<TExtent>::value>::value>();
-				            }
+				                return impl(value, std::make_index_sequence<Dim<T>::value>{});
 				        }
-				    };
 
-				    //! The SYCL vectors' extent set trait specialization.
-				    template<typename TExtent, typename TExtentVal>
-				    struct SetExtent<
-				        DimInt<Dim<TExtent>::value>,
-				        TExtent,
-				        TExtentVal,
-				        std::enable_if_t<IsSyclBuiltInType<TExtent>::value>>
-				    {
-				        static auto setExtent(TExtent const& extent, TExtentVal const& extentVal)
+				    private:
+				        template<std::size_t... Is>
+				        auto impl(T const& value, std::index_sequence<Is...>) const
 				        {
-				            if constexpr(std::is_scalar_v<TExtent>)
-				                extent = extentVal;
-				            else
-				            {
-				                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-				                // to the requested dimension's vector element. Then set the element's value.
-				                extent.template swizzle<DimInt<Dim<TExtent>::value>::value>() = extentVal;
-				            }
+				            return Vec{value.template swizzle<Is>()...};
 				        }
 				    };
 
 				    //! The SYCL vectors' offset get trait specialization.
-				    template<typename TOffsets>
-				    struct GetOffset<DimInt<Dim<TOffsets>::value>, TOffsets, std::enable_if_t<IsSyclBuiltInType<TOffsets>::value>>
+				    template<typename T>
+				    struct GetOffsets<T, std::enable_if_t<IsSyclBuiltInType<T>::value>> : GetExtents<T>
 				    {
-				        static auto getOffset(TOffsets const& offsets)
-				        {
-				            if constexpr(std::is_scalar_v<TOffsets>)
-				                return offsets;
-				            else
-				            {
-				                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-				                // to the requested dimension's vector element. Then return the element's value.
-				                return offsets.template swizzle<DimInt<Dim<TOffsets>::value>::value>();
-				            }
-				        }
-				    };
-
-				    //! The SYCL vectors' offset set trait specialization.
-				    template<typename TOffsets, typename TOffset>
-				    struct SetOffset<
-				        DimInt<Dim<TOffsets>::value>,
-				        TOffsets,
-				        TOffset,
-				        std::enable_if_t<IsSyclBuiltInType<TOffsets>::value>>
-				    {
-				        static auto setOffset(TOffsets const& offsets, TOffset const& offset)
-				        {
-				            if constexpr(std::is_scalar_v<TOffsets>)
-				                offsets = offset;
-				            else
-				            {
-				                // Creates a SYCL vector with one element from a multidimensional vector. The element is a reference
-				                // to the requested dimension's vector element. Then set the element's value.
-				                offsets.template swizzle<DimInt<Dim<TOffsets>::value>::value>() = offset;
-				            }
-				        }
 				    };
 
 				    //! The SYCL vectors' idx type trait specialization.
@@ -13992,8 +15686,8 @@
 				// == ./include/alpaka/core/Sycl.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -14072,11 +15766,11 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -14155,8 +15849,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/intrinsic/IntrinsicFallback.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/intrinsic/IntrinsicFallback.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
 
@@ -14218,7 +15912,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/math/Complex.hpp ==
 				// ==
@@ -14227,7 +15921,7 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/math/FloatEqualExact.hpp ==
 					// ==
@@ -14236,7 +15930,7 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 					// #include <type_traits>    // amalgamate: file already included
 
@@ -14853,7 +16547,7 @@
 				// == ./include/alpaka/math/Complex.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/math/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/math/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
@@ -14921,6 +16615,11 @@
 
 			    //! The SYCL conj.
 			    class ConjGenericSycl : public concepts::Implements<alpaka::math::ConceptMathConj, ConjGenericSycl>
+			    {
+			    };
+
+			    //! The SYCL copysign.
+			    class CopysignGenericSycl : public concepts::Implements<alpaka::math::ConceptMathCopysign, CopysignGenericSycl>
 			    {
 			    };
 
@@ -15068,6 +16767,7 @@
 			        , public CbrtGenericSycl
 			        , public CeilGenericSycl
 			        , public ConjGenericSycl
+			        , public CopysignGenericSycl
 			        , public CosGenericSycl
 			        , public CoshGenericSycl
 			        , public ErfGenericSycl
@@ -15238,6 +16938,22 @@
 			        auto operator()(math::ConjGenericSycl const&, TArg const& arg)
 			        {
 			            return Complex<TArg>{arg, TArg{0.0}};
+			        }
+			    };
+
+			    //! The SYCL copysign trait specialization.
+			    template<typename TMag, typename TSgn>
+			    struct Copysign<
+			        math::CopysignGenericSycl,
+			        TMag,
+			        TSgn,
+			        std::enable_if_t<std::is_floating_point_v<TMag> && std::is_floating_point_v<TSgn>>>
+			    {
+			        using TCommon = std::common_type_t<TMag, TSgn>;
+
+			        auto operator()(math::CopysignGenericSycl const&, TMag const& y, TSgn const& x)
+			        {
+			            return sycl::copysign(static_cast<TCommon>(y), static_cast<TCommon>(x));
 			        }
 			    };
 
@@ -15586,7 +17302,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -15605,38 +17321,24 @@
 			        struct SyclFenceProps<alpaka::memory_scope::Block>
 			        {
 			            static constexpr auto scope = sycl::memory_scope::work_group;
-			            static constexpr auto space = sycl::access::address_space::local_space;
 			        };
 
 			        template<>
 			        struct SyclFenceProps<alpaka::memory_scope::Device>
 			        {
 			            static constexpr auto scope = sycl::memory_scope::device;
-			            static constexpr auto space = sycl::access::address_space::global_space;
 			        };
 
 			        template<>
 			        struct SyclFenceProps<alpaka::memory_scope::Grid>
 			        {
 			            static constexpr auto scope = sycl::memory_scope::device;
-			            static constexpr auto space = sycl::access::address_space::global_space;
 			        };
 			    } // namespace detail
 
 			    //! The SYCL memory fence.
 			    class MemFenceGenericSycl : public concepts::Implements<ConceptMemFence, MemFenceGenericSycl>
 			    {
-			    public:
-			        MemFenceGenericSycl(
-			            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_dummy,
-			            sycl::local_accessor<int> local_dummy)
-			            : m_global_dummy{global_dummy}
-			            , m_local_dummy{local_dummy}
-			        {
-			        }
-
-			        sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> m_global_dummy;
-			        sycl::local_accessor<int> m_local_dummy;
 			    };
 			} // namespace alpaka
 
@@ -15645,17 +17347,10 @@
 			    template<typename TMemScope>
 			    struct MemFence<MemFenceGenericSycl, TMemScope>
 			    {
-			        static auto mem_fence(MemFenceGenericSycl const& fence, TMemScope const&)
+			        static auto mem_fence(MemFenceGenericSycl const&, TMemScope const&)
 			        {
 			            static constexpr auto scope = detail::SyclFenceProps<TMemScope>::scope;
-			            static constexpr auto space = detail::SyclFenceProps<TMemScope>::space;
-			            auto dummy
-			                = (scope == sycl::memory_scope::work_group)
-			                      ? sycl::atomic_ref<int, sycl::memory_order::relaxed, scope, space>{fence.m_local_dummy[0]}
-			                      : sycl::atomic_ref<int, sycl::memory_order::relaxed, scope, space>{fence.m_global_dummy[0]};
-			            auto const dummy_val = dummy.load();
 			            sycl::atomic_fence(sycl::memory_order::acq_rel, scope);
-			            dummy.store(dummy_val);
 			        }
 			    };
 			} // namespace alpaka::trait
@@ -15665,6 +17360,7 @@
 			// == ./include/alpaka/mem/fence/MemFenceGenericSycl.hpp ==
 			// ============================================================================
 
+		// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/rand/RandGenericSycl.hpp ==
 			// ==
@@ -15673,8 +17369,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/dev/DevGenericSycl.hpp ==
 				// ==
@@ -15683,14 +17379,14 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 					// ============================================================================
 					// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
 					// ==
@@ -15699,11 +17395,11 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 					// #include <algorithm>    // amalgamate: file already included
 					#include <exception>
@@ -15834,7 +17530,7 @@
 					                                cgh.depends_on(m_dependencies);
 
 					                            if constexpr(is_sycl_kernel<TTask>) // Kernel
-					                                task(cgh, m_fence_dummy); // Will call cgh.parallel_for internally
+					                                task(cgh); // Will call cgh.parallel_for internally
 					                            else // Host
 					                                cgh.host_task(task);
 					                        });
@@ -15854,7 +17550,6 @@
 
 					        std::vector<sycl::event> m_dependencies;
 					        sycl::event m_last_event;
-					        sycl::buffer<int, 1> m_fence_dummy{sycl::range<1>{1}};
 					        std::shared_mutex mutable m_mutex;
 
 					    private:
@@ -15898,7 +17593,7 @@
 					{
 					    template<typename TDev>
 					    class EventGenericSycl;
-					}
+					} // namespace alpaka
 
 					namespace alpaka::trait
 					{
@@ -15979,8 +17674,8 @@
 					// == ./include/alpaka/queue/sycl/QueueGenericSyclBase.hpp ==
 					// ============================================================================
 
-				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 				// #include <algorithm>    // amalgamate: file already included
 				// #include <cstddef>    // amalgamate: file already included
@@ -16215,9 +17910,9 @@
 				// == ./include/alpaka/dev/DevGenericSycl.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
 
-			#ifdef ALPAKA_ACC_SYCL_ENABLED
+			#if defined(ALPAKA_ACC_SYCL_ENABLED) && !defined(ALPAKA_DISABLE_VENDOR_RNG)
 
 			// Backend specific imports.
 			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
@@ -16233,8 +17928,6 @@
 			#        pragma clang diagnostic ignored "-Wsign-compare"
 			#        pragma clang diagnostic ignored "-Wundef"
 			#    endif
-			#    include <oneapi/mkl/rng.hpp>
-
 			#    include <oneapi/dpl/random>
 			#    if BOOST_COMP_CLANG
 			#        pragma clang diagnostic pop
@@ -16299,10 +17992,12 @@
 			            {
 			                return std::numeric_limits<result_type>::min();
 			            }
+
 			            ALPAKA_FN_HOST_ACC static result_type max()
 			            {
 			                return std::numeric_limits<result_type>::max();
 			            }
+
 			            result_type operator()()
 			            {
 			                oneapi::dpl::uniform_real_distribution<float> distr;
@@ -16416,7 +18111,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
 
@@ -16460,16 +18156,22 @@
 			        // Restrict to warpSize <= 32 for now.
 			        static auto activemask(warp::WarpGenericSycl<TDim> const& warp) -> std::uint32_t
 			        {
-			            // SYCL has no way of querying this. Since sub-group functions have to be executed in convergent code
-			            // regions anyway we return the full mask.
-			            auto const sub_group = warp.m_item_warp.get_sub_group();
-			            auto const mask = sycl::ext::oneapi::group_ballot(sub_group, true);
-			            // FIXME This should be std::uint64_t on AMD GCN architectures and on CPU,
-			            // but the former is not targeted in alpaka and CPU case is not supported in SYCL yet.
-			            // Restrict to warpSize <= 32 for now.
-			            std::uint32_t bits = 0;
-			            mask.extract_bits(bits);
-			            return bits;
+			            static_assert(!sizeof(warp), "activemask is not supported on SYCL");
+			            // SYCL does not have an API to get the activemask. It is also questionable (to me, bgruber) whether an
+			            // "activemask" even exists on some hardware architectures, since the idea is bound to threads being
+			            // "turned off" when they take different control flow in a warp. A SYCL implementation could run each
+			            // thread as a SIMD lane, in which cause the "thread" is always active, but some SIMD lanes are either
+			            // predicated off, or side-effects are masked out when writing them back.
+			            //
+			            // An implementation via oneAPI's sycl::ext::oneapi::group_ballot causes UB, because activemask is expected
+			            // to be callable when less than all threads are active in a warp (CUDA). But SYCL requires all threads of
+			            // a group to call the function.
+			            //
+			            // Intel's CUDA -> SYCL migration tool also suggests that there is no direct equivalent and the user must
+			            // rewrite their kernel logic. See also:
+			            // https://oneapi-src.github.io/SYCLomatic/dev_guide/diagnostic_ref/dpct1086.html
+
+			            return ~std::uint32_t{0};
 			        }
 			    };
 
@@ -16552,9 +18254,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -16671,17 +18373,17 @@
 
 
 		// Specialized traits.
-		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 		// Implementation details.
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 
 		// #include <cstddef>    // amalgamate: file already included
 		// #include <string>    // amalgamate: file already included
@@ -16708,7 +18410,11 @@
 		        , public BlockSyncGenericSycl<TDim>
 		        , public IntrinsicGenericSycl
 		        , public MemFenceGenericSycl
+		#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+		        , public rand::RandDefault
+		#    else
 		        , public rand::RandGenericSycl<TDim>
+		#    endif
 		        , public warp::WarpGenericSycl<TDim>
 		    {
 		        static_assert(TDim::value > 0, "The SYCL accelerator must have a dimension greater than zero.");
@@ -16723,20 +18429,16 @@
 		            Vec<TDim, TIdx> const& threadElemExtent,
 		            sycl::nd_item<TDim::value> work_item,
 		            sycl::local_accessor<std::byte> dyn_shared_acc,
-		            sycl::local_accessor<std::byte> st_shared_acc,
-		            sycl::accessor<int, 1, sycl::access_mode::read_write, sycl::target::device> global_fence_dummy,
-		            sycl::local_accessor<int> local_fence_dummy)
+		            sycl::local_accessor<std::byte> st_shared_acc)
 		            : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
 		            , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
 		            , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
-		            , AtomicHierarchy<AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl>{}
-		            , math::MathGenericSycl{}
 		            , BlockSharedMemDynGenericSycl{dyn_shared_acc}
 		            , BlockSharedMemStGenericSycl{st_shared_acc}
 		            , BlockSyncGenericSycl<TDim>{work_item}
-		            , IntrinsicGenericSycl{}
-		            , MemFenceGenericSycl{global_fence_dummy, local_fence_dummy}
+		#    ifndef ALPAKA_DISABLE_VENDOR_RNG
 		            , rand::RandGenericSycl<TDim>{work_item}
+		#    endif
 		            , warp::WarpGenericSycl<TDim>{work_item}
 		        {
 		        }
@@ -16809,10 +18511,10 @@
 		// == ./include/alpaka/acc/AccGenericSycl.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/dev/DevCpuSycl.hpp ==
 		// ==
@@ -16821,7 +18523,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/platform/PlatformCpuSycl.hpp ==
 			// ==
@@ -16830,8 +18532,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/platform/PlatformGenericSycl.hpp ==
 				// ==
@@ -16840,10 +18542,10 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 				// #include <cstddef>    // amalgamate: file already included
 				// #include <exception>    // amalgamate: file already included
@@ -17564,7 +19266,7 @@
 
 			// #include <string>    // amalgamate: file already included
 
-			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
@@ -17601,7 +19303,7 @@
 			// ============================================================================
 
 
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 		namespace alpaka
 		{
@@ -17613,7 +19315,7 @@
 		// == ./include/alpaka/dev/DevCpuSycl.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
 		// ==
@@ -17630,360 +19332,13 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-				// ============================================================================
-				// == ./include/alpaka/core/STLTuple/STLTuple.hpp ==
-				// ==
-				/***************************************************************************
-				 *
-				 *  Copyright (C) 2018 Codeplay Software Limited
-				 *  Licensed under the Apache License, Version 2.0 (the "License");
-				 *  you may not use this file except in compliance with the License.
-				 *  You may obtain a copy of the License at
-				 *
-				 *      http://www.apache.org/licenses/LICENSE-2.0
-				 *
-				 *  For your convenience, a copy of the License has been included in this
-				 *  repository.
-				 *
-				 *  Unless required by applicable law or agreed to in writing, software
-				 *  distributed under the License is distributed on an "AS IS" BASIS,
-				 *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-				 *  See the License for the specific language governing permissions and
-				 *  limitations under the License.
-				 *
-				 * STLTuple.h
-				 *
-				 * \brief:
-				 *  Minimal implementation of std::tuple that is standard layout.
-				 *
-				  Authors:
-				 *
-				 *    Mehdi Goli    Codeplay Software Ltd.
-				 *    Ralph Potter  Codeplay Software Ltd.
-				 *    Luke Iwanski  Codeplay Software Ltd.
-				 *
-				 **************************************************************************/
-
-				// clang-format off
-				// #pragma once
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-
-				// suppress warnings as this is third-party code
-				#if BOOST_COMP_CLANG
-				#   pragma clang diagnostic push
-				#   pragma clang diagnostic ignored "-Wdocumentation"
-				#   pragma clang diagnostic ignored "-Wdocumentation-unknown-command"
-				#endif
-				#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
-				#    pragma warning(push)
-				#    pragma warning(disable : 4003) // not enough arguments for function-like macro invocation
-				#endif
-
-				namespace utility {
-				namespace tuple {
-				/// \struct StaticIf
-				/// \brief The StaticIf struct is used to statically choose the type based on
-				/// the condition.
-				template <bool, typename T = void>
-				struct StaticIf;
-				/// \brief specialisation of the \ref StaticIf when the condition is true
-				template <typename T>
-				struct StaticIf<true, T> {
-				  typedef T type;
-				};
-
-				/// \struct Tuple
-				/// \brief is a fixed-size collection of heterogeneous values
-				/// \ztparam Ts...	-	the types of the elements that the tuple stores.
-				/// Empty list is supported.
-				template <class... Ts>
-				struct Tuple {};
-
-				/// \brief specialisation of the \ref Tuple class when the tuple has at least
-				/// one element.
-				/// \tparam T : the type of the first element in the tuple.
-				/// \tparam Ts... the rest of the elements in the tuple. Ts... can be empty.
-				template <class T, class... Ts>
-				struct Tuple<T, Ts...> {
-				  Tuple(T t, Ts... ts) : head(t), tail(ts...) {}
-				  T head;
-				  Tuple<Ts...> tail;
-				};
-
-				template <typename, typename>
-				struct concat_tuple {};
-
-				template <typename... Ts, typename... Us>
-				struct concat_tuple<Tuple<Ts...>, Tuple<Us...>> {
-				  using type = Tuple<Ts..., Us...>;
-				};
-
-				template <typename T>
-				struct remove_last_type;
-
-				template <typename T>
-				struct remove_last_type<Tuple<T>> {
-				  using type = Tuple<>;
-				};
-
-				template <typename T, typename... Args>
-				struct remove_last_type<Tuple<T, Args...>> {
-				  using type = typename concat_tuple<
-				      Tuple<T>, typename remove_last_type<Tuple<Args...>>::type>::type;
-				};
-
-				template <typename T>
-				struct remove_first_type {};
-
-				template <typename T, typename... Ts>
-				struct remove_first_type<Tuple<T, Ts...>> {
-				  typedef Tuple<Ts...> type;
-				};
-
-				///\ struct ElemTypeHolder
-				/// \brief ElemTypeHolder class is used to specify the types of the
-				/// elements inside the tuple
-				/// \tparam size_t the number of elements inside the tuple
-				/// \tparam class the tuple class
-				template <size_t, class>
-				struct ElemTypeHolder;
-
-				/// \brief specialisation of the \ref ElemTypeHolder class when the number of
-				/// elements inside the tuple is 1
-				template <class T, class... Ts>
-				struct ElemTypeHolder<0, Tuple<T, Ts...>> {
-				  typedef T type;
-				};
-
-				/// \brief specialisation of the \ref ElemTypeHolder class when the number of
-				/// elements inside the tuple is bigger than 1. It recursively calls itself to
-				/// detect the type of each element in the tuple
-				/// \tparam T : the type of the first element in the tuple.
-				/// \tparam Ts... the rest of the elements in the tuple. Ts... can be empty.
-				/// \tparam K is the Kth element in the tuple
-				template <size_t k, class T, class... Ts>
-				struct ElemTypeHolder<k, Tuple<T, Ts...>> {
-				  typedef typename ElemTypeHolder<k - 1, Tuple<Ts...>>::type type;
-				};
-
-				/// get
-				/// \brief Extracts the first element from the tuple.
-				/// K=0 represents the first element of the tuple. The tuple cannot be empty.
-				/// \tparam Ts... are the type of the elements in the tuple.
-				/// \param t is the tuple whose contents to extract
-				/// \return  typename ElemTypeHolder<0, Tuple<Ts...> >::type &>::type
-
-				#define TERMINATE_CONDS_TUPLE_GET(CVQual)                                      \
-				  template <size_t k, class... Ts>                                             \
-				  typename StaticIf<k == 0, CVQual                                             \
-				                    typename ElemTypeHolder<0, Tuple<Ts...>>::type&>::type     \
-				  get(CVQual Tuple<Ts...>& t) {                                                \
-				    static_assert(sizeof...(Ts) != 0,                                          \
-				                  "The requseted value is bigger than the size of the tuple"); \
-				    return t.head;                                                             \
-				  }
-
-				TERMINATE_CONDS_TUPLE_GET(const)
-				TERMINATE_CONDS_TUPLE_GET()
-				#undef TERMINATE_CONDS_TUPLE_GET
-				/// get
-				/// \brief Extracts the Kth element from the tuple.
-				///\tparam K is an integer value in [0,sizeof...(Types)).
-				/// \tparam T is the (sizeof...(Types) -(K+1)) element in the tuple
-				/// \tparam Ts... are the type of the elements  in the tuple.
-				/// \param t is the tuple whose contents to extract
-				/// \return  typename ElemTypeHolder<K, Tuple<Ts...> >::type &>::type
-				#define RECURSIVE_TUPLE_GET(CVQual)                                           \
-				  template <size_t k, class T, class... Ts>                                   \
-				  typename StaticIf<k != 0, CVQual                                            \
-				                    typename ElemTypeHolder<k, Tuple<T, Ts...>>::type&>::type \
-				  get(CVQual Tuple<T, Ts...>& t) {                                            \
-				    return utility::tuple::get<k - 1>(t.tail);                                \
-				  }
-				RECURSIVE_TUPLE_GET(const)
-				RECURSIVE_TUPLE_GET()
-				#undef RECURSIVE_TUPLE_GET
-
-				/// make_tuple
-				/// \brief Creates a tuple object, deducing the target type from the types of
-				/// arguments.
-				/// \tparam Args the type of the arguments to construct the tuple from
-				/// \param args zero or more arguments to construct the tuple from
-				/// \return Tuple<Args...>
-				template <typename... Args>
-				Tuple<Args...> make_tuple(Args... args) {
-				  return Tuple<Args...>(args...);
-				}
-
-				/// size
-				/// \brief Provides access to the number of elements in a tuple as a
-				/// compile-time constant expression.
-				/// \tparam Args the type of the arguments to construct the tuple from
-				/// \return size_t
-				template <typename... Args>
-				static constexpr size_t size(Tuple<Args...>&) {
-				  return sizeof...(Args);
-				}
-
-				/// \struct IndexList
-				/// \brief Creates a list of index from the elements in the tuple
-				/// \tparam Is... a list of index from [0 to sizeof...(tuple elements))
-				template <size_t... Is>
-				struct IndexList {};
-
-				/// \struct RangeBuilder
-				/// \brief Collects internal details for generating index ranges [MIN, MAX)
-				/// Declare primary template for index range builder
-				/// \tparam MIN is the starting index in the tuple
-				/// \tparam N represents sizeof..(elemens)- sizeof...(Is)
-				/// \tparam Is... are the list of generated index so far
-				template <size_t MIN, size_t N, size_t... Is>
-				struct RangeBuilder;
-
-				/// \brief base Step: Specialisation of the \ref RangeBuilder when the
-				/// MIN==MAX. In this case the Is... is [0 to sizeof...(tuple elements))
-				/// \tparam MIN is the starting index of the tuple
-				/// \tparam Is is [0 to sizeof...(tuple elements))
-				template <size_t MIN, size_t... Is>
-				struct RangeBuilder<MIN, MIN, Is...> {
-				  typedef IndexList<Is...> type;
-				};
-
-				/// Induction step: Specialisation of the RangeBuilder class when N!=MIN
-				/// in this case we are recursively subtracting N by one and adding one
-				/// index to Is... list until MIN==N
-				/// \tparam MIN is the starting index in the tuple
-				/// \tparam N represents sizeof..(elemens)- sizeof...(Is)
-				/// \tparam Is... are the list of generated index so far
-				template <size_t MIN, size_t N, size_t... Is>
-				struct RangeBuilder : public RangeBuilder<MIN, N - 1, N - 1, Is...> {};
-
-				/// \brief IndexRange that returns a [MIN, MAX) index range
-				/// \tparam MIN is the starting index in the tuple
-				/// \tparam MAX is the size of the tuple
-				template <size_t MIN, size_t MAX>
-				struct IndexRange : RangeBuilder<MIN, MAX>::type {};
-
-				/// append_base
-				/// \brief unpacking the elements of the input tuple t and creating a new tuple
-				/// by adding element a at the end of it.
-				///\tparam Args... the type of the elements inside the tuple t
-				/// \tparam T the type of the new element going to be added at the end of tuple
-				/// \tparam I... is the list of index from [0 to sizeof...(t))
-				/// \param t the tuple on which we want to append a.
-				/// \param a the new elements going to be added to the tuple
-				/// \return Tuple<Args..., T>
-				template <typename... Args, typename T, size_t... I>
-				Tuple<Args..., T> append_base(Tuple<Args...> t, T a, IndexList<I...>) {
-				  return utility::tuple::make_tuple(get<I>(t)..., a);
-				}
-
-				/// append
-				/// \brief the deduction function for \ref append_base that automatically
-				/// generate the \ref IndexRange
-				///\tparam Args... the type of the elements inside the tuple t
-				/// \tparam T the type of the new element going to be added at the end of tuple
-				/// \param t the tuple on which we want to append a.
-				/// \param a the new elements going to be added to the tuple
-				/// \return Tuple<Args..., T>
-				template <typename... Args, typename T>
-				Tuple<Args..., T> append(Tuple<Args...> t, T a) {
-				  return utility::tuple::append_base(t, a, IndexRange<0, sizeof...(Args)>());
-				}
-
-				/// append_base
-				/// \brief This is a specialisation of \ref append_base when we want to
-				/// concatenate
-				/// tuple t2 at the end of the tuple t1. Here we unpack both tuples, generate
-				/// the IndexRange for each of them and create an output tuple T that contains
-				/// both elements of t1 and t2.
-				///\tparam Args1... the type of the elements inside the tuple t1
-				///\tparam Args2... the type of the elements inside the tuple t2
-				/// \tparam I1... is the list of index from [0 to sizeof...(t1))
-				/// \tparam I2... is the list of index from [0 to sizeof...(t2))
-				/// \param t1 is the tuple on which we want to append t2.
-				/// \param t2 is the tuple that is going to be added on t1.
-				/// \return Tuple<Args1..., Args2...>
-				template <typename... Args1, typename... Args2, size_t... I1, size_t... I2>
-				Tuple<Args1..., Args2...> append_base(Tuple<Args1...> t1, Tuple<Args2...> t2,
-				                                      IndexList<I1...>, IndexList<I2...>) {
-				  return utility::tuple::make_tuple(get<I1>(t1)..., get<I2>(t2)...);
-				}
-
-				/// append
-				/// \brief deduction function for \ref append_base when we are appending tuple
-				/// t1 by tuple t2. In this case the \ref IndexRange for both tuple are
-				/// automatically generated.
-				///\tparam Args1... the type of the elements inside the tuple t1
-				///\tparam Args2... the type of the elements inside the tuple t2
-				/// \param t1 is the tuple on which we want to append t2.
-				/// \param t2 is the tuple that is going to be added on t1.
-				/// \return Tuple<Args1..., Args2...>
-				template <typename... Args1, typename... Args2>
-				Tuple<Args1..., Args2...> append(Tuple<Args1...> t1, Tuple<Args2...> t2) {
-				  return utility::tuple::append_base(t1, t2, IndexRange<0, sizeof...(Args1)>(),
-				                                     IndexRange<0, sizeof...(Args2)>());
-				}
-
-				}  // namespace tuple
-				}  // namespace utility
-
-				#if BOOST_COMP_CLANG
-				#   pragma clang diagnostic pop
-				#endif
-				#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
-				#    pragma warning(pop)
-				#endif
-				// ==
-				// == ./include/alpaka/core/STLTuple/STLTuple.hpp ==
-				// ============================================================================
-
-			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-				// ============================================================================
-				// == ./include/alpaka/core/Tuple.hpp ==
-				// ==
-				/* Copyright 2022 Jeffrey Kelling, Jan Stephan, Bernhard Manfred Gruber
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/core/STLTuple/STLTuple.hpp"    // amalgamate: file already expanded
-
-				// #include <cstddef>    // amalgamate: file already included
-				// #include <utility>    // amalgamate: file already included
-
-				namespace alpaka::core
-				{
-				    using namespace ::utility::tuple;
-
-				    namespace detail
-				    {
-				        template<typename TFunc, typename... TArgs, std::size_t... Is>
-				        constexpr auto apply_impl(TFunc&& f, Tuple<TArgs...>&& t, std::index_sequence<Is...>)
-				        {
-				            return f(get<Is>(std::forward<Tuple<TArgs...>&&>(t))...);
-				        }
-				    } // namespace detail
-
-				    template<typename TFunc, typename... TArgs>
-				    constexpr auto apply(TFunc&& f, Tuple<TArgs...> t)
-				    {
-				        return detail::apply_impl(
-				            std::forward<TFunc>(f),
-				            std::forward<Tuple<TArgs...>&&>(t),
-				            std::make_index_sequence<sizeof...(TArgs)>{});
-				    }
-				} // namespace alpaka::core
-				// ==
-				// == ./include/alpaka/core/Tuple.hpp ==
-				// ============================================================================
-
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
 				// ==
@@ -18088,608 +19443,10 @@
 				// == ./include/alpaka/kernel/SyclSubgroupSize.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-				// ============================================================================
-				// == ./include/alpaka/mem/buf/sycl/Accessor.hpp ==
-				// ==
-				/* Copyright 2023 Jan Stephan, Andrea Bocci, Aurora Perego
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-					// ============================================================================
-					// == ./include/alpaka/mem/view/Accessor.hpp ==
-					// ==
-					/* Copyright 2022 Bernhard Manfred Gruber
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/core/Utility.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already expanded
-						// ============================================================================
-						// == ./include/alpaka/meta/TypeListOps.hpp ==
-						// ==
-						/* Copyright 2022 Bernhard Manfred Gruber
-						 * SPDX-License-Identifier: MPL-2.0
-						 */
-
-						// #pragma once
-						// #include <type_traits>    // amalgamate: file already included
-
-						namespace alpaka::meta
-						{
-						    namespace detail
-						    {
-						        template<typename List>
-						        struct Front
-						        {
-						        };
-
-						        template<template<typename...> class List, typename Head, typename... Tail>
-						        struct Front<List<Head, Tail...>>
-						        {
-						            using type = Head;
-						        };
-						    } // namespace detail
-
-						    template<typename List>
-						    using Front = typename detail::Front<List>::type;
-
-						    template<typename List, typename Value>
-						    struct Contains : std::false_type
-						    {
-						    };
-
-						    template<template<typename...> class List, typename Head, typename... Tail, typename Value>
-						    struct Contains<List<Head, Tail...>, Value>
-						    {
-						        static constexpr bool value = std::is_same_v<Head, Value> || Contains<List<Tail...>, Value>::value;
-						    };
-						} // namespace alpaka::meta
-						// ==
-						// == ./include/alpaka/meta/TypeListOps.hpp ==
-						// ============================================================================
-
-
-					// #include <tuple>    // amalgamate: file already included
-
-					namespace alpaka::experimental
-					{
-					    //! Access tag type indicating read-only access.
-					    struct ReadAccess
-					    {
-					    };
-
-					    //! Access tag type indicating write-only access.
-					    struct WriteAccess
-					    {
-					    };
-
-					    //! Access tag type indicating read-write access.
-					    struct ReadWriteAccess
-					    {
-					    };
-
-					    //! An accessor is an abstraction for accessing memory objects such as views and buffers.
-					    //! @tparam TMemoryHandle A handle to a memory object.
-					    //! @tparam TElem The type of the element stored by the memory object. Values and references to this type are
-					    //! returned on access.
-					    //! @tparam TBufferIdx The integral type used for indexing and index computations.
-					    //! @tparam TDim The dimensionality of the accessed data.
-					    //! @tparam TAccessModes Either a single access tag type or a `std::tuple` containing multiple access tag
-					    //! types.
-					    template<typename TMemoryHandle, typename TElem, typename TBufferIdx, std::size_t TDim, typename TAccessModes>
-					    struct Accessor;
-
-					    namespace trait
-					    {
-					        //! The customization point for how to build an accessor for a given memory object.
-					        template<typename TMemoryObject, typename SFINAE = void>
-					        struct BuildAccessor
-					        {
-					            template<typename... TAccessModes, typename TMemoryObjectForwardRef>
-					            ALPAKA_FN_HOST static auto buildAccessor(TMemoryObjectForwardRef&&)
-					            {
-					                static_assert(
-					                    meta::DependentFalseType<TMemoryObject>::value,
-					                    "BuildAccessor<TMemoryObject> is not specialized for your TMemoryObject.");
-					            }
-					        };
-					    } // namespace trait
-
-					    namespace internal
-					    {
-					        template<typename AccessorOrBuffer>
-					        struct MemoryHandle
-					        {
-					        };
-
-					        template<typename TMemoryHandle, typename TElem, typename TBufferIdx, std::size_t TDim, typename TAccessModes>
-					        struct MemoryHandle<Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, TAccessModes>>
-					        {
-					            using type = TMemoryHandle;
-					        };
-					    } // namespace internal
-
-					    /// Get the memory handle type of the given accessor or buffer type.
-					    template<typename Accessor>
-					    using MemoryHandle = typename internal::MemoryHandle<Accessor>::type;
-
-					    namespace internal
-					    {
-					        template<typename T>
-					        struct IsAccessor : std::false_type
-					        {
-					        };
-
-					        template<typename TMemoryHandle, typename TElem, typename TBufferIdx, std::size_t Dim, typename TAccessModes>
-					        struct IsAccessor<Accessor<TMemoryHandle, TElem, TBufferIdx, Dim, TAccessModes>> : std::true_type
-					        {
-					        };
-					    } // namespace internal
-
-					    //! Creates an accessor for the given memory object using the specified access modes. Memory objects are e.g.
-					    //! alpaka views and buffers.
-					    template<
-					        typename... TAccessModes,
-					        typename TMemoryObject,
-					        typename = std::enable_if_t<!internal::IsAccessor<std::decay_t<TMemoryObject>>::value>>
-					    ALPAKA_FN_HOST auto accessWith(TMemoryObject&& memoryObject)
-					    {
-					        return trait::BuildAccessor<std::decay_t<TMemoryObject>>::template buildAccessor<TAccessModes...>(
-					            memoryObject);
-					    }
-
-					    //! Constrains an existing accessor with multiple access modes to the specified access modes.
-					    // TODO: currently only allows constraining down to 1 access mode
-					    template<
-					        typename TNewAccessMode,
-					        typename TMemoryHandle,
-					        typename TElem,
-					        typename TBufferIdx,
-					        std::size_t TDim,
-					        typename... TPrevAccessModes>
-					    ALPAKA_FN_HOST auto accessWith(
-					        Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, std::tuple<TPrevAccessModes...>> const& acc)
-					    {
-					        static_assert(
-					            meta::Contains<std::tuple<TPrevAccessModes...>, TNewAccessMode>::value,
-					            "The accessed accessor must already contain the requested access mode");
-					        return Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, TNewAccessMode>{acc};
-					    }
-
-					    //! Constrains an existing accessor to the specified access modes.
-					    // constraining accessor to the same access mode again just passes through
-					    template<typename TNewAccessMode, typename TMemoryHandle, typename TElem, typename TBufferIdx, std::size_t TDim>
-					    ALPAKA_FN_HOST auto accessWith(Accessor<TMemoryHandle, TElem, TBufferIdx, TDim, TNewAccessMode> const& acc)
-					    {
-					        return acc;
-					    }
-
-					    //! Creates a read-write accessor for the given memory object (view, buffer, ...) or accessor.
-					    template<typename TMemoryObjectOrAccessor>
-					    ALPAKA_FN_HOST auto access(TMemoryObjectOrAccessor&& viewOrAccessor)
-					    {
-					        return accessWith<ReadWriteAccess>(std::forward<TMemoryObjectOrAccessor>(viewOrAccessor));
-					    }
-
-					    //! Creates a read-only accessor for the given memory object (view, buffer, ...) or accessor.
-					    template<typename TMemoryObjectOrAccessor>
-					    ALPAKA_FN_HOST auto readAccess(TMemoryObjectOrAccessor&& viewOrAccessor)
-					    {
-					        return accessWith<ReadAccess>(std::forward<TMemoryObjectOrAccessor>(viewOrAccessor));
-					    }
-
-					    //! Creates a write-only accessor for the given memory object (view, buffer, ...) or accessor.
-					    template<typename TMemoryObjectOrAccessor>
-					    ALPAKA_FN_HOST auto writeAccess(TMemoryObjectOrAccessor&& viewOrAccessor)
-					    {
-					        return accessWith<WriteAccess>(std::forward<TMemoryObjectOrAccessor>(viewOrAccessor));
-					    }
-
-					    //! An alias for an accessor accessing a buffer on the given accelerator.
-					    template<
-					        typename TAcc,
-					        typename TElem,
-					        std::size_t TDim,
-					        typename TAccessModes = ReadWriteAccess,
-					        typename TIdx = Idx<TAcc>>
-					    using BufferAccessor = Accessor<
-					        MemoryHandle<decltype(accessWith<TAccessModes>(core::declval<Buf<TAcc, TElem, DimInt<TDim>, TIdx>>()))>,
-					        TElem,
-					        TIdx,
-					        TDim,
-					        TAccessModes>;
-					} // namespace alpaka::experimental
-					// ==
-					// == ./include/alpaka/mem/view/Accessor.hpp ==
-					// ============================================================================
-
-					// ============================================================================
-					// == ./include/alpaka/mem/view/ViewAccessor.hpp ==
-					// ==
-					/* Copyright 2022 Bernhard Manfred Gruber
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/mem/view/Accessor.hpp"    // amalgamate: file already expanded
-
-					// #include <type_traits>    // amalgamate: file already included
-
-					namespace alpaka::experimental
-					{
-					    namespace internal
-					    {
-					        template<typename T>
-					        ALPAKA_FN_HOST_ACC auto asBytePtr(T* p)
-					        {
-					            return reinterpret_cast<char*>(p);
-					        }
-
-					        template<typename T>
-					        struct WriteOnlyProxy
-					        {
-					            ALPAKA_FN_HOST_ACC WriteOnlyProxy(T& location) : loc(location)
-					            {
-					            }
-
-					            template<typename U>
-					            ALPAKA_FN_HOST_ACC auto operator=(U&& value) -> auto&
-					            {
-					                loc = std::forward<U>(value);
-					                return *this;
-					            }
-
-					        private:
-					            T& loc;
-					        };
-
-					        template<typename TElem, typename TAccessModes>
-					        struct AccessReturnTypeImpl;
-
-					        template<typename TElem>
-					        struct AccessReturnTypeImpl<TElem, ReadAccess>
-					        {
-					            using type = TElem;
-					        };
-
-					        template<typename TElem>
-					        struct AccessReturnTypeImpl<TElem, WriteAccess>
-					        {
-					            using type = WriteOnlyProxy<TElem>;
-					        };
-
-					        template<typename TElem>
-					        struct AccessReturnTypeImpl<TElem, ReadWriteAccess>
-					        {
-					            using type = TElem&;
-					        };
-
-					        template<typename TElem, typename THeadAccessMode, typename... TTailAccessModes>
-					        struct AccessReturnTypeImpl<TElem, std::tuple<THeadAccessMode, TTailAccessModes...>>
-					            : AccessReturnTypeImpl<TElem, THeadAccessMode>
-					        {
-					        };
-
-					        template<typename TElem, typename TAccessModes>
-					        using AccessReturnType = typename internal::AccessReturnTypeImpl<TElem, TAccessModes>::type;
-					    } // namespace internal
-
-					    //! 1D accessor to memory objects represented by a pointer.
-					    // We keep this specialization to not store the zero-dim pitch vector and provide one more operator[].
-					    template<typename TElem, typename TBufferIdx, typename TAccessModes>
-					    struct Accessor<TElem*, TElem, TBufferIdx, 1, TAccessModes>
-					    {
-					        using ReturnType = internal::AccessReturnType<TElem, TAccessModes>;
-
-					        ALPAKA_FN_HOST_ACC Accessor(
-					            TElem* p_,
-					            Vec<DimInt<0>, TBufferIdx> pitchesInBytes_,
-					            Vec<DimInt<1>, TBufferIdx> extents_)
-					            : p(p_)
-					            , extents(extents_)
-					        {
-					            (void) pitchesInBytes_;
-					        }
-
-					        template<typename TOtherAccessModes>
-					        ALPAKA_FN_HOST_ACC Accessor(Accessor<TElem*, TElem, TBufferIdx, 1, TOtherAccessModes> const& other)
-					            : p(other.p)
-					            , extents(other.extents)
-					        {
-					        }
-
-					        ALPAKA_FN_HOST_ACC auto operator[](Vec<DimInt<1>, TBufferIdx> i) const -> ReturnType
-					        {
-					            return (*this)(i[0]);
-					        }
-
-					        ALPAKA_FN_HOST_ACC auto operator[](TBufferIdx i) const -> ReturnType
-					        {
-					            return (*this)(i);
-					        }
-
-					        ALPAKA_FN_HOST_ACC auto operator()(TBufferIdx i) const -> ReturnType
-					        {
-					            return p[i];
-					        }
-
-					        TElem* p;
-					        Vec<DimInt<1>, TBufferIdx> extents;
-					    };
-
-					    //! Higher than 1D accessor to memory objects represented by a pointer.
-					    template<typename TElem, typename TBufferIdx, std::size_t TDim, typename TAccessModes>
-					    struct Accessor<TElem*, TElem, TBufferIdx, TDim, TAccessModes>
-					    {
-					        using ReturnType = internal::AccessReturnType<TElem, TAccessModes>;
-
-					        ALPAKA_FN_HOST_ACC Accessor(
-					            TElem* p_,
-					            Vec<DimInt<TDim - 1>, TBufferIdx> pitchesInBytes_,
-					            Vec<DimInt<TDim>, TBufferIdx> extents_)
-					            : p(p_)
-					            , pitchesInBytes(pitchesInBytes_)
-					            , extents(extents_)
-					        {
-					        }
-
-					        template<typename TOtherAccessModes>
-					        ALPAKA_FN_HOST_ACC Accessor(Accessor<TElem*, TElem, TBufferIdx, TDim, TOtherAccessModes> const& other)
-					            : p(other.p)
-					            , pitchesInBytes(other.pitchesInBytes)
-					            , extents(other.extents)
-					        {
-					        }
-
-					    private:
-					        template<std::size_t... TIs>
-					        [[nodiscard]] ALPAKA_FN_HOST_ACC auto subscript(Vec<DimInt<TDim>, TBufferIdx> index) const -> ReturnType
-					        {
-					#if BOOST_COMP_GNUC
-					#    pragma GCC diagnostic push
-					#    pragma GCC diagnostic ignored "-Wcast-align"
-					#endif
-					            auto bp = internal::asBytePtr(p);
-					            for(std::size_t i = 0u; i < TDim; i++)
-					            {
-					                auto const pitch = i < TDim - 1 ? pitchesInBytes[i] : static_cast<TBufferIdx>(sizeof(TElem));
-					                bp += index[i] * pitch;
-					            }
-					            return *reinterpret_cast<TElem*>(bp);
-					#if BOOST_COMP_GNUC
-					#    pragma GCC diagnostic pop
-					#endif
-					        }
-
-					    public:
-					        ALPAKA_FN_HOST_ACC auto operator[](Vec<DimInt<TDim>, TBufferIdx> i) const -> ReturnType
-					        {
-					            return subscript(i);
-					        }
-
-					        template<typename... Ts>
-					        ALPAKA_FN_HOST_ACC auto operator()(Ts... i) const -> ReturnType
-					        {
-					            static_assert(sizeof...(Ts) == TDim, "You need to specify TDim indices.");
-					            return subscript(Vec<DimInt<TDim>, TBufferIdx>{static_cast<TBufferIdx>(i)...});
-					        }
-
-					        TElem* p;
-					        Vec<DimInt<TDim - 1>, TBufferIdx> pitchesInBytes;
-					        Vec<DimInt<TDim>, TBufferIdx> extents;
-					    };
-
-					    namespace trait
-					    {
-					        namespace internal
-					        {
-					            template<typename T, typename SFINAE = void>
-					            struct IsView : std::false_type
-					            {
-					            };
-
-					            // TODO: replace this by a concept in C++20
-					            template<typename TView>
-					            struct IsView<
-					                TView,
-					                std::void_t<
-					                    Idx<TView>,
-					                    Dim<TView>,
-					                    decltype(getPtrNative(std::declval<TView>())),
-					                    decltype(getPitchBytes<0>(std::declval<TView>())),
-					                    decltype(getExtent<0>(std::declval<TView>()))>> : std::true_type
-					            {
-					            };
-
-					            template<typename... TAccessModes>
-					            struct BuildAccessModeList;
-
-					            template<typename TAccessMode>
-					            struct BuildAccessModeList<TAccessMode>
-					            {
-					                using type = TAccessMode;
-					            };
-
-					            template<typename TAccessMode1, typename TAccessMode2, typename... TAccessModes>
-					            struct BuildAccessModeList<TAccessMode1, TAccessMode2, TAccessModes...>
-					            {
-					                using type = std::tuple<TAccessMode1, TAccessMode2, TAccessModes...>;
-					            };
-
-					            template<
-					                typename... TAccessModes,
-					                typename TViewForwardRef,
-					                std::size_t... TPitchIs,
-					                std::size_t... TExtentIs>
-					            ALPAKA_FN_HOST auto buildViewAccessor(
-					                TViewForwardRef&& view,
-					                std::index_sequence<TPitchIs...>,
-					                std::index_sequence<TExtentIs...>)
-					            {
-					                using TView = std::decay_t<TViewForwardRef>;
-					                static_assert(IsView<TView>::value);
-					                using TBufferIdx = Idx<TView>;
-					                constexpr auto dim = Dim<TView>::value;
-					                using Elem = Elem<TView>;
-					                auto p = getPtrNative(view);
-					                static_assert(
-					                    std::is_same_v<decltype(p), Elem const*> || std::is_same_v<decltype(p), Elem*>,
-					                    "We assume that getPtrNative() returns a raw pointer to the view's elements");
-					                static_assert(
-					                    !std::is_same_v<
-					                        decltype(p),
-					                        Elem const*> || std::is_same_v<std::tuple<TAccessModes...>, std::tuple<ReadAccess>>,
-					                    "When getPtrNative() returns a const raw pointer, the access mode must be ReadAccess");
-					                using AccessModeList = typename BuildAccessModeList<TAccessModes...>::type;
-					                return Accessor<Elem*, Elem, TBufferIdx, dim, AccessModeList>{
-					                    const_cast<Elem*>(p), // strip constness, this is handled the the access modes
-					                    {getPitchBytes<TPitchIs + 1>(view)...},
-					                    {getExtent<TExtentIs>(view)...}};
-					            }
-					        } // namespace internal
-
-					        //! Builds an accessor from view like memory objects.
-					        template<typename TView>
-					        struct BuildAccessor<TView, std::enable_if_t<internal::IsView<TView>::value>>
-					        {
-					            template<typename... TAccessModes, typename TViewForwardRef>
-					            ALPAKA_FN_HOST static auto buildAccessor(TViewForwardRef&& view)
-					            {
-					                using Dim = Dim<std::decay_t<TView>>;
-					                return internal::buildViewAccessor<TAccessModes...>(
-					                    std::forward<TViewForwardRef>(view),
-					                    std::make_index_sequence<Dim::value - 1>{},
-					                    std::make_index_sequence<Dim::value>{});
-					            }
-					        };
-					    } // namespace trait
-					} // namespace alpaka::experimental
-					// ==
-					// == ./include/alpaka/mem/view/ViewAccessor.hpp ==
-					// ============================================================================
-
-
-				// #include <cstddef>    // amalgamate: file already included
-				// #include <utility>    // amalgamate: file already included
-
-				#ifdef ALPAKA_ACC_SYCL_ENABLED
-
-				// #    include <sycl/sycl.hpp>    // amalgamate: file already included
-
-				namespace alpaka
-				{
-				    template<typename TElem, typename TDim, typename TIdx, typename TDev>
-				    class BufGenericSycl;
-
-				    namespace detail
-				    {
-				        template<typename... TAlpakaAccessModes>
-				        inline constexpr auto sycl_access_mode = sycl::access_mode::read_write;
-
-				        template<>
-				        inline constexpr auto sycl_access_mode<experimental::ReadAccess> = sycl::access_mode::read;
-
-				        template<>
-				        inline constexpr auto sycl_access_mode<experimental::WriteAccess> = sycl::access_mode::write;
-
-				        template<typename TElem, int TDim, typename... TAlpakaAccessModes>
-				        using SyclAccessor = sycl::accessor<
-				            TElem,
-				            TDim,
-				            sycl_access_mode<TAlpakaAccessModes...>,
-				            sycl::target::device,
-				            sycl::access::placeholder::true_t>;
-				    } // namespace detail
-
-				    template<typename TElem, typename TIdx, typename TAccessModes>
-				    struct experimental::
-				        Accessor<detail::SyclAccessor<TElem, 1, TAccessModes>, TElem, TIdx, std::size_t{1}, TAccessModes>
-				    {
-				        static constexpr auto sycl_access_mode = detail::sycl_access_mode<TAccessModes>;
-				        using SyclAccessor = detail::SyclAccessor<TElem, 1, TAccessModes>;
-				        using VecType = Vec<DimInt<1>, TIdx>;
-				        using ReturnType = std::conditional_t<
-				            std::is_same_v<TAccessModes, ReadAccess>,
-				            typename SyclAccessor::const_reference,
-				            typename SyclAccessor::reference>;
-
-				        Accessor(SyclAccessor accessor, Vec<DimInt<1>, TIdx> ext) : m_accessor{accessor}, extents{ext}
-				        {
-				        }
-
-				        auto operator[](VecType const& i) const -> ReturnType
-				        {
-				            auto const range = sycl::id<1>{i[0]};
-				            return m_accessor[range];
-				        }
-
-				        auto operator[](TIdx i) const -> ReturnType
-				        {
-				            return m_accessor[i];
-				        }
-
-				        template<typename... TIs>
-				        auto operator()(TIs... is) const
-				        {
-				            static_assert(sizeof...(TIs) == 1, "Number of indices must match the dimensionality.");
-				            return operator[](VecType{static_cast<TIdx>(is)...});
-				        }
-
-				        SyclAccessor m_accessor;
-				        VecType extents;
-				    };
-
-				    template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
-				    struct experimental::
-				        Accessor<detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
-				    {
-				        static constexpr auto sycl_access_mode = detail::sycl_access_mode<TAccessModes>;
-				        using SyclAccessor = detail::SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>;
-				        using VecType = Vec<DimInt<TDim>, TIdx>;
-				        using ReturnType = std::conditional_t<
-				            std::is_same_v<TAccessModes, ReadAccess>,
-				            typename SyclAccessor::const_reference,
-				            typename SyclAccessor::reference>;
-
-
-				        Accessor(SyclAccessor accessor, Vec<DimInt<TDim>, TIdx> ext) : m_accessor{accessor}, extents{ext}
-				        {
-				        }
-
-				        auto operator[](VecType const& i) const -> ReturnType
-				        {
-				            using IdType = sycl::id<DimInt<TDim>::value>;
-				            auto const id = (TDim == 2) ? IdType{i[1], i[0]} : IdType{i[2], i[1], i[0]};
-				            return m_accessor[id];
-				        }
-
-				        template<typename... TIs>
-				        auto operator()(TIs... is) const -> ReturnType
-				        {
-				            static_assert(sizeof...(TIs) == TDim, "Number of indices must match the dimensionality.");
-				            return operator[](VecType{static_cast<TIdx>(is)...});
-				        }
-
-				        SyclAccessor m_accessor;
-				        VecType extents;
-				    };
-				} // namespace alpaka
-
-				#endif
-				// ==
-				// == ./include/alpaka/mem/buf/sycl/Accessor.hpp ==
-				// ============================================================================
-
-			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 			// #include <cassert>    // amalgamate: file already included
 			// #include <functional>    // amalgamate: file already included
@@ -18712,22 +19469,11 @@
 			#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
 			        cgh.parallel_for(                                                                                             \
 			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-			            [item_elements,                                                                                           \
-			             dyn_shared_accessor,                                                                                     \
-			             st_shared_accessor,                                                                                      \
-			             global_fence_dummy,                                                                                      \
-			             local_fence_dummy,                                                                                       \
-			             k_func,                                                                                                  \
-			             k_args](sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]             \
+			            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+			                sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]                  \
 			            {                                                                                                         \
-			                auto acc = TAcc{                                                                                      \
-			                    item_elements,                                                                                    \
-			                    work_item,                                                                                        \
-			                    dyn_shared_accessor,                                                                              \
-			                    st_shared_accessor,                                                                               \
-			                    global_fence_dummy,                                                                               \
-			                    local_fence_dummy};                                                                               \
-			                core::apply(                                                                                          \
+			                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+			                std::apply(                                                                                           \
 			                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
 			                    k_args);                                                                                          \
 			            });
@@ -18735,22 +19481,11 @@
 			#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
 			        cgh.parallel_for(                                                                                             \
 			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-			            [item_elements,                                                                                           \
-			             dyn_shared_accessor,                                                                                     \
-			             st_shared_accessor,                                                                                      \
-			             global_fence_dummy,                                                                                      \
-			             local_fence_dummy,                                                                                       \
-			             k_func,                                                                                                  \
-			             k_args](sycl::nd_item<TDim::value> work_item)                                                            \
+			            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+			                sycl::nd_item<TDim::value> work_item)                                                                 \
 			            {                                                                                                         \
-			                auto acc = TAcc{                                                                                      \
-			                    item_elements,                                                                                    \
-			                    work_item,                                                                                        \
-			                    dyn_shared_accessor,                                                                              \
-			                    st_shared_accessor,                                                                               \
-			                    global_fence_dummy,                                                                               \
-			                    local_fence_dummy};                                                                               \
-			                core::apply(                                                                                          \
+			                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+			                std::apply(                                                                                           \
 			                    [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
 			                    k_args);                                                                                          \
 			            });
@@ -18759,50 +19494,8 @@
 			        throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
 			        cgh.parallel_for(                                                                                             \
 			            sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-			            [item_elements,                                                                                           \
-			             dyn_shared_accessor,                                                                                     \
-			             st_shared_accessor,                                                                                      \
-			             global_fence_dummy,                                                                                      \
-			             local_fence_dummy,                                                                                       \
-			             k_func,                                                                                                  \
-			             k_args](sycl::nd_item<TDim::value> work_item) {});
-
-			namespace alpaka::detail
-			{
-			    template<typename TAcc, typename TKernelFnObj, typename... TArgs>
-			    struct kernel
-			    {
-			    }; // SYCL kernel names must be globally visible
-
-			    // Helpers for assigning placeholder accessors to the command group of our kernel
-			    struct general
-			    {
-			    };
-			    struct special : general
-			    {
-			    };
-
-			    template<typename TElem, typename TIdx, std::size_t TDim, typename TAccessModes>
-			    inline auto require(
-			        sycl::handler& cgh,
-			        experimental::Accessor<SyclAccessor<TElem, DimInt<TDim>::value, TAccessModes>, TElem, TIdx, TDim, TAccessModes>
-			            acc,
-			        special)
-			    {
-			        cgh.require(acc.m_accessor);
-			    }
-
-			    template<typename TParam>
-			    inline auto require(sycl::handler&, TParam&&, general)
-			    {
-			    }
-
-			    template<typename... TArgs>
-			    inline auto require(sycl::handler& cgh, core::Tuple<TArgs...> const& args)
-			    {
-			        core::apply([&](auto&&... ps) { (require(cgh, std::forward<decltype(ps)>(ps), special{}), ...); }, args);
-			    }
-			} // namespace alpaka::detail
+			            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+			                sycl::nd_item<TDim::value> work_item) {});
 
 			namespace alpaka
 			{
@@ -18821,11 +19514,8 @@
 			        {
 			        }
 
-			        auto operator()(sycl::handler& cgh, sycl::buffer<int, 1>& global_fence_buf) const -> void
+			        auto operator()(sycl::handler& cgh) const -> void
 			        {
-			            // Assign placeholder accessors to this command group
-			            detail::require(cgh, m_args);
-
 			            auto const work_groups = WorkDivMembers<TDim, TIdx>::m_gridBlockExtent;
 			            auto const group_items = WorkDivMembers<TDim, TIdx>::m_blockThreadExtent;
 			            auto const item_elements = WorkDivMembers<TDim, TIdx>::m_threadElemExtent;
@@ -18836,7 +19526,7 @@
 			            // allocate dynamic shared memory -- needs at least 1 byte to make the Xilinx Runtime happy
 			            auto const dyn_shared_mem_bytes = std::max(
 			                1ul,
-			                core::apply(
+			                std::apply(
 			                    [&](std::decay_t<TArgs> const&... args) {
 			                        return getBlockSharedMemDynSizeBytes<TAcc>(m_kernelFnObj, group_items, item_elements, args...);
 			                    },
@@ -18847,10 +19537,6 @@
 			            // allocate static shared memory -- value comes from the build system
 			            constexpr auto st_shared_mem_bytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
 			            auto st_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{st_shared_mem_bytes}, cgh};
-
-			            // register memory fence dummies
-			            auto global_fence_dummy = global_fence_buf.get_access(cgh); // Exists once per queue
-			            auto local_fence_dummy = sycl::local_accessor<int>{sycl::range<1>{1}, cgh};
 
 			            // copy-by-value so we don't access 'this' on the device
 			            auto k_func = m_kernelFnObj;
@@ -18976,7 +19662,7 @@
 
 			    public:
 			        TKernelFnObj m_kernelFnObj;
-			        core::Tuple<std::decay_t<TArgs>...> m_args;
+			        std::tuple<std::decay_t<TArgs>...> m_args;
 			    };
 
 			} // namespace alpaka
@@ -19031,7 +19717,7 @@
 			// ============================================================================
 
 
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 		namespace alpaka
 		{
@@ -19047,15 +19733,15 @@
 		// == ./include/alpaka/kernel/TaskKernelCpuSycl.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 	// #include <string>    // amalgamate: file already included
 	// #include <utility>    // amalgamate: file already included
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
@@ -19138,17 +19824,17 @@
 
 	// #pragma once
 	// Base classes.
-	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/atomic/AtomicNoOp.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/atomic/AtomicNoOp.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/fence/MemFenceCpu.hpp ==
 		// ==
@@ -19157,8 +19843,8 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <atomic>    // amalgamate: file already included
 
@@ -19207,13 +19893,7 @@
 		                 *   a == 10 && b == 20
 		                 */
 
-		                static auto dummy = std::atomic<int>{42};
-
-		                /* ISO C++ fences are only clearly defined if there are atomic operations surrounding them. So we use
-		                 * these dummy operations to ensure this.*/
-		                auto x = dummy.load(std::memory_order_relaxed);
 		                std::atomic_thread_fence(std::memory_order_acq_rel);
-		                dummy.store(x, std::memory_order_relaxed);
 		            }
 		        };
 		    } // namespace trait
@@ -19222,21 +19902,22 @@
 		// == ./include/alpaka/mem/fence/MemFenceCpu.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <memory>    // amalgamate: file already included
 	// #include <typeinfo>    // amalgamate: file already included
@@ -19249,27 +19930,28 @@
 	    class TaskKernelCpuTbbBlocks;
 
 	    //! The CPU TBB block accelerator.
-	    template<
-	        typename TDim,
-	        typename TIdx>
-	    class AccCpuTbbBlocks final :
-	        public WorkDivMembers<TDim, TIdx>,
-	        public gb::IdxGbRef<TDim, TIdx>,
-	        public bt::IdxBtZero<TDim, TIdx>,
-	        public AtomicHierarchy<
-	            AtomicCpu, // grid atomics
-	            AtomicCpu, // block atomics
-	            AtomicNoOp         // thread atomics
-	        >,
-	        public math::MathStdLib,
-	        public BlockSharedMemDynMember<>,
-	        public BlockSharedMemStMember<>,
-	        public BlockSyncNoOp,
-	        public IntrinsicCpu,
-	        public MemFenceCpu,
-	        public rand::RandStdLib,
-	        public warp::WarpSingleThread,
-	        public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
+	    template<typename TDim, typename TIdx>
+	    class AccCpuTbbBlocks final
+	        : public WorkDivMembers<TDim, TIdx>
+	        , public gb::IdxGbRef<TDim, TIdx>
+	        , public bt::IdxBtZero<TDim, TIdx>
+	        , public AtomicHierarchy<
+	              AtomicCpu, // grid atomics
+	              AtomicCpu, // block atomics
+	              AtomicNoOp> // thread atomics
+	        , public math::MathStdLib
+	        , public BlockSharedMemDynMember<>
+	        , public BlockSharedMemStMember<>
+	        , public BlockSyncNoOp
+	        , public IntrinsicCpu
+	        , public MemFenceCpu
+	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+	        , public rand::RandDefault
+	#    else
+	        , public rand::RandStdLib
+	#    endif
+	        , public warp::WarpSingleThread
+	        , public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -19290,18 +19972,8 @@
 	        ALPAKA_FN_HOST AccCpuTbbBlocks(TWorkDiv const& workDiv, std::size_t const& blockSharedMemDynSizeBytes)
 	            : WorkDivMembers<TDim, TIdx>(workDiv)
 	            , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
-	            , bt::IdxBtZero<TDim, TIdx>()
-	            , AtomicHierarchy<
-	                  AtomicCpu, // atomics between grids
-	                  AtomicCpu, // atomics between blocks
-	                  AtomicNoOp // atomics between threads
-	                  >()
-	            , math::MathStdLib()
 	            , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
 	            , BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity())
-	            , BlockSyncNoOp()
-	            , MemFenceCpu()
-	            , rand::RandStdLib()
 	            , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
 	        {
 	        }
@@ -19319,6 +19991,7 @@
 	        {
 	            using type = AccCpuTbbBlocks<TDim, TIdx>;
 	        };
+
 	        //! The CPU TBB block accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>
@@ -19343,6 +20016,7 @@
 	                        static_cast<size_t>(AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes())};
 	            }
 	        };
+
 	        //! The CPU TBB block accelerator name trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccName<AccCpuTbbBlocks<TDim, TIdx>>
@@ -19425,10 +20099,10 @@
 
 	// #pragma once
 	// Base classes.
-	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/block/sync/BlockSyncBarrierThread.hpp ==
 		// ==
@@ -19437,7 +20111,7 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/core/BarrierThread.hpp ==
 			// ==
@@ -19447,10 +20121,10 @@
 
 			// #pragma once
 			// Uncomment this to disable the standard spinlock behaviour of the threads
-			//#define ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
+			// #define ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
 
-			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 			// #include <condition_variable>    // amalgamate: file already included
 			// #include <mutex>    // amalgamate: file already included
@@ -19524,6 +20198,7 @@
 			        {
 			            template<typename TOp>
 			            struct AtomicOp;
+
 			            template<>
 			            struct AtomicOp<BlockCount>
 			            {
@@ -19532,6 +20207,7 @@
 			                    result += static_cast<int>(value);
 			                }
 			            };
+
 			            template<>
 			            struct AtomicOp<BlockAnd>
 			            {
@@ -19540,6 +20216,7 @@
 			                    result &= static_cast<int>(value);
 			                }
 			            };
+
 			            template<>
 			            struct AtomicOp<BlockOr>
 			            {
@@ -19609,7 +20286,7 @@
 			// == ./include/alpaka/core/BarrierThread.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 		// #include <map>    // amalgamate: file already included
 		// #include <mutex>    // amalgamate: file already included
@@ -19667,7 +20344,7 @@
 		// == ./include/alpaka/block/sync/BlockSyncBarrierThread.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/idx/bt/IdxBtRefThreadIdMap.hpp ==
 		// ==
@@ -19676,11 +20353,11 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 		// #include <map>    // amalgamate: file already included
 		// #include <thread>    // amalgamate: file already included
@@ -19702,6 +20379,7 @@
 		                : m_threadToIndexMap(mThreadToIndices)
 		            {
 		            }
+
 		            ALPAKA_FN_HOST IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const&) = delete;
 		            ALPAKA_FN_HOST auto operator=(IdxBtRefThreadIdMap const&) -> IdxBtRefThreadIdMap& = delete;
 
@@ -19750,27 +20428,28 @@
 		// == ./include/alpaka/idx/bt/IdxBtRefThreadIdMap.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/fence/MemFenceCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/intrinsic/IntrinsicCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/fence/MemFenceCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/warp/WarpSingleThread.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <memory>    // amalgamate: file already included
 	// #include <thread>    // amalgamate: file already included
@@ -19787,27 +20466,28 @@
 	    //!
 	    //! This accelerator allows parallel kernel execution on a CPU device.
 	    //! It uses std::thread to implement the parallelism.
-	    template<
-	        typename TDim,
-	        typename TIdx>
-	    class AccCpuThreads final :
-	        public WorkDivMembers<TDim, TIdx>,
-	        public gb::IdxGbRef<TDim, TIdx>,
-	        public bt::IdxBtRefThreadIdMap<TDim, TIdx>,
-	        public AtomicHierarchy<
-	            AtomicCpu, // grid atomics
-	            AtomicCpu, // block atomics
-	            AtomicCpu  // thread atomics
-	        >,
-	        public math::MathStdLib,
-	        public BlockSharedMemDynMember<>,
-	        public BlockSharedMemStMemberMasterSync<>,
-	        public BlockSyncBarrierThread<TIdx>,
-	        public IntrinsicCpu,
-	        public MemFenceCpu,
-	        public rand::RandStdLib,
-	        public warp::WarpSingleThread,
-	        public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
+	    template<typename TDim, typename TIdx>
+	    class AccCpuThreads final
+	        : public WorkDivMembers<TDim, TIdx>
+	        , public gb::IdxGbRef<TDim, TIdx>
+	        , public bt::IdxBtRefThreadIdMap<TDim, TIdx>
+	        , public AtomicHierarchy<
+	              AtomicCpu, // grid atomics
+	              AtomicCpu, // block atomics
+	              AtomicCpu> // thread atomics
+	        , public math::MathStdLib
+	        , public BlockSharedMemDynMember<>
+	        , public BlockSharedMemStMemberMasterSync<>
+	        , public BlockSyncBarrierThread<TIdx>
+	        , public IntrinsicCpu
+	        , public MemFenceCpu
+	#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+	        , public rand::RandDefault
+	#    else
+	        , public rand::RandStdLib
+	#    endif
+	        , public warp::WarpSingleThread
+	        , public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
 	    {
 	        static_assert(
 	            sizeof(TIdx) >= sizeof(int),
@@ -19829,12 +20509,6 @@
 	            : WorkDivMembers<TDim, TIdx>(workDiv)
 	            , gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx)
 	            , bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap)
-	            , AtomicHierarchy<
-	                  AtomicCpu, // atomics between grids
-	                  AtomicCpu, // atomics between blocks
-	                  AtomicCpu // atomics between threads
-	                  >()
-	            , math::MathStdLib()
 	            , BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes)
 	            , BlockSharedMemStMemberMasterSync<>(
 	                  staticMemBegin(),
@@ -19842,8 +20516,6 @@
 	                  [this]() { syncBlockThreads(*this); },
 	                  [this]() noexcept { return (m_idMasterThread == std::this_thread::get_id()); })
 	            , BlockSyncBarrierThread<TIdx>(getWorkDiv<Block, Threads>(workDiv).prod())
-	            , MemFenceCpu()
-	            , rand::RandStdLib()
 	            , m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
 	        {
 	        }
@@ -19867,6 +20539,7 @@
 	        {
 	            using type = AccCpuThreads<TDim, TIdx>;
 	        };
+
 	        //! The CPU threads accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuThreads<TDim, TIdx>>
@@ -19901,6 +20574,7 @@
 	                        getMemBytes(dev)};
 	            }
 	        };
+
 	        //! The CPU threads accelerator name trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccName<AccCpuThreads<TDim, TIdx>>
@@ -19974,7 +20648,7 @@
 	// == ./include/alpaka/acc/AccCpuThreads.hpp ==
 	// ============================================================================
 
-// #include "alpaka/acc/AccDevProps.hpp"    // amalgamate: file already expanded
+// #include "alpaka/acc/AccDevProps.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/acc/AccFpgaSyclIntel.hpp ==
 	// ==
@@ -19983,20 +20657,20 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/dev/DevFpgaSyclIntel.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan
+		/* Copyright 2023 Jan Stephan
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/platform/PlatformFpgaSyclIntel.hpp ==
 			// ==
@@ -20005,11 +20679,11 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
 
-			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
@@ -20066,7 +20740,7 @@
 			// ============================================================================
 
 
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 		namespace alpaka
 		{
@@ -20078,7 +20752,7 @@
 		// == ./include/alpaka/dev/DevFpgaSyclIntel.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/kernel/TaskKernelFpgaSyclIntel.hpp ==
 		// ==
@@ -20087,9 +20761,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
 
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 		namespace alpaka
 		{
@@ -20106,15 +20780,15 @@
 		// == ./include/alpaka/kernel/TaskKernelFpgaSyclIntel.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 	// #include <string>    // amalgamate: file already included
 	// #include <utility>    // amalgamate: file already included
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
@@ -20188,7 +20862,7 @@
 	// == ./include/alpaka/acc/AccFpgaSyclIntel.hpp ==
 	// ============================================================================
 
-// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/acc/AccGpuCudaRt.hpp ==
 	// ==
@@ -20206,7 +20880,7 @@
 
 		// #pragma once
 		// Base classes.
-		// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/atomic/AtomicHierarchy.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp ==
 			// ==
@@ -20223,10 +20897,10 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Utility.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
 
 				// #include <type_traits>    // amalgamate: file already included
 
@@ -20290,7 +20964,7 @@
 				            decltype(atomicCAS(alpaka::core::declval<T*>(), alpaka::core::declval<T>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T compare, T value)
+				        static __device__ T atomic(T* add, T compare, T value)
 				        {
 				            return atomicCAS(add, compare, value);
 				        }
@@ -20307,7 +20981,7 @@
 				            alpaka::core::declval<T>(),
 				            alpaka::core::declval<T>()))>> : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T compare, T value)
+				        static __device__ T atomic(T* add, T compare, T value)
 				        {
 				            return atomicCAS_block(add, compare, value);
 				        }
@@ -20324,7 +20998,7 @@
 				        typename std::void_t<decltype(atomicAdd(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicAdd(add, value);
 				        }
@@ -20340,7 +21014,7 @@
 				        typename std::void_t<decltype(atomicAdd_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicAdd_block(add, value);
 				        }
@@ -20375,7 +21049,7 @@
 				        typename std::void_t<decltype(atomicSub(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicSub(add, value);
 				        }
@@ -20390,7 +21064,7 @@
 				        typename std::void_t<decltype(atomicSub_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicSub_block(add, value);
 				        }
@@ -20406,7 +21080,7 @@
 				        typename std::void_t<decltype(atomicMin(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicMin(add, value);
 				        }
@@ -20421,7 +21095,7 @@
 				        typename std::void_t<decltype(atomicMin_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicMin_block(add, value);
 				        }
@@ -20473,7 +21147,7 @@
 				        typename std::void_t<decltype(atomicMax(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicMax(add, value);
 				        }
@@ -20488,7 +21162,7 @@
 				        typename std::void_t<decltype(atomicMax_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicMax_block(add, value);
 				        }
@@ -20541,7 +21215,7 @@
 				        typename std::void_t<decltype(atomicExch(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicExch(add, value);
 				        }
@@ -20556,7 +21230,7 @@
 				        typename std::void_t<decltype(atomicExch_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicExch_block(add, value);
 				        }
@@ -20573,7 +21247,7 @@
 				        typename std::void_t<decltype(atomicInc(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicInc(add, value);
 				        }
@@ -20588,7 +21262,7 @@
 				        typename std::void_t<decltype(atomicInc_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicInc_block(add, value);
 				        }
@@ -20605,7 +21279,7 @@
 				        typename std::void_t<decltype(atomicDec(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicDec(add, value);
 				        }
@@ -20620,7 +21294,7 @@
 				        typename std::void_t<decltype(atomicDec_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicDec_block(add, value);
 				        }
@@ -20637,7 +21311,7 @@
 				        typename std::void_t<decltype(atomicAnd(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicAnd(add, value);
 				        }
@@ -20652,7 +21326,7 @@
 				        typename std::void_t<decltype(atomicAnd_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicAnd_block(add, value);
 				        }
@@ -20669,7 +21343,7 @@
 				        typename std::void_t<decltype(atomicOr(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicOr(add, value);
 				        }
@@ -20684,7 +21358,7 @@
 				        typename std::void_t<decltype(atomicOr_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicOr_block(add, value);
 				        }
@@ -20701,7 +21375,7 @@
 				        typename std::void_t<decltype(atomicXor(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicXor(add, value);
 				        }
@@ -20716,7 +21390,7 @@
 				        typename std::void_t<decltype(atomicXor_block(alpaka::core::declval<T*>(), alpaka::core::declval<T>()))>>
 				        : std::true_type
 				    {
-				        __device__ static T atomic(T* add, T value)
+				        static __device__ T atomic(T* add, T value)
 				        {
 				            return atomicXor_block(add, value);
 				        }
@@ -20733,11 +21407,11 @@
 				// == ./include/alpaka/atomic/AtomicUniformCudaHip.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
 
 			// #include <limits>    // amalgamate: file already included
 			// #include <type_traits>    // amalgamate: file already included
@@ -20754,308 +21428,297 @@
 			#            error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 			#        endif
 
-			namespace alpaka
+			namespace alpaka::trait
 			{
-			    namespace trait
+			    namespace detail
 			    {
-			        namespace detail
+			        struct EmulationBase
 			        {
-			            struct EmulationBase
+			            //! reinterprets an address as an 32bit value for atomicCas emulation usage
+			            template<typename TAddressType>
+			            static __device__ auto reinterpretAddress(TAddressType* address)
+			                -> std::enable_if_t<sizeof(TAddressType) == 4u, unsigned int*>
 			            {
-			                //! reinterprets an address as an 32bit value for atomicCas emulation usage
-			                template<typename TAddressType>
-			                __device__ static auto reinterpretAddress(TAddressType* address)
-			                    -> std::enable_if_t<sizeof(TAddressType) == 4u, unsigned int*>
-			                {
-			                    return reinterpret_cast<unsigned int*>(address);
-			                }
+			                return reinterpret_cast<unsigned int*>(address);
+			            }
 
-			                //! reinterprets a address as an 64bit value for atomicCas emulation usage
-			                template<typename TAddressType>
-			                __device__ static auto reinterpretAddress(TAddressType* address)
-			                    -> std::enable_if_t<sizeof(TAddressType) == 8u, unsigned long long int*>
-			                {
-			                    return reinterpret_cast<unsigned long long int*>(address);
-			                }
-
-			                //! reinterprets a value to be usable for the atomicCAS emulation
-			                template<typename T_Type>
-			                __device__ static auto reinterpretValue(T_Type value)
-			                {
-			                    return *reinterpretAddress(&value);
-			                }
-			            };
-			            //! Emulate atomic
-			            //
-			            // The default implementation will emulate all atomic functions with atomicCAS.
-			            template<
-			                typename TOp,
-			                typename TAtomic,
-			                typename T,
-			                typename THierarchy,
-			                typename TSfinae = void,
-			                typename TDefer = void>
-			            struct EmulateAtomic : private EmulationBase
+			            //! reinterprets a address as an 64bit value for atomicCas emulation usage
+			            template<typename TAddressType>
+			            static __device__ auto reinterpretAddress(TAddressType* address)
+			                -> std::enable_if_t<sizeof(TAddressType) == 8u, unsigned long long int*>
 			            {
-			            public:
-			                __device__ static auto atomic(
-			                    alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
-			                    T* const addr,
-			                    T const& value) -> T
-			                {
-			                    auto* const addressAsIntegralType = reinterpretAddress(addr);
-			                    using EmulatedType = ALPAKA_DECAY_T(decltype(*addressAsIntegralType));
+			                return reinterpret_cast<unsigned long long int*>(address);
+			            }
 
-			                    // Emulating atomics with atomicCAS is mentioned in the programming guide too.
-			                    // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
+			            //! reinterprets a value to be usable for the atomicCAS emulation
+			            template<typename T_Type>
+			            static __device__ auto reinterpretValue(T_Type value)
+			            {
+			                return *reinterpretAddress(&value);
+			            }
+			        };
+
+			        //! Emulate atomic
+			        //
+			        // The default implementation will emulate all atomic functions with atomicCAS.
+			        template<
+			            typename TOp,
+			            typename TAtomic,
+			            typename T,
+			            typename THierarchy,
+			            typename TSfinae = void,
+			            typename TDefer = void>
+			        struct EmulateAtomic : private EmulationBase
+			        {
+			        public:
+			            static __device__ auto atomic(
+			                alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
+			                T* const addr,
+			                T const& value) -> T
+			            {
+			                auto* const addressAsIntegralType = reinterpretAddress(addr);
+			                using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
+
+			                // Emulating atomics with atomicCAS is mentioned in the programming guide too.
+			                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 			#        if BOOST_LANG_HIP
 			#            if __has_builtin(__hip_atomic_load)
-			                    EmulatedType old{
-			                        __hip_atomic_load(addressAsIntegralType, __ATOMIC_RELAXED, __HIP_MEMORY_SCOPE_AGENT)};
+			                EmulatedType old{__hip_atomic_load(addressAsIntegralType, __ATOMIC_RELAXED, __HIP_MEMORY_SCOPE_AGENT)};
 			#            else
-			                    EmulatedType old{__atomic_load_n(addressAsIntegralType, __ATOMIC_RELAXED)};
+			                EmulatedType old{__atomic_load_n(addressAsIntegralType, __ATOMIC_RELAXED)};
 			#            endif
 			#        else
-			                    EmulatedType old{*addressAsIntegralType};
+			                EmulatedType old{*addressAsIntegralType};
 			#        endif
-			                    EmulatedType assumed;
-			                    do
-			                    {
-			                        assumed = old;
-			                        T v = *(reinterpret_cast<T*>(&assumed));
-			                        TOp{}(&v, value);
-			                        using Cas = alpaka::trait::
-			                            AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>;
-			                        old = Cas::atomicOp(ctx, addressAsIntegralType, assumed, reinterpretValue(v));
-			                        // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
-			                    } while(assumed != old);
-			                    return *(reinterpret_cast<T*>(&old));
-			                }
-			            };
-
-			            //! Emulate AtomicCas with equivalent unisigned integral type
-			            template<typename T, typename THierarchy>
-			            struct EmulateAtomic<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>
-			                : private EmulationBase
-			            {
-			                __device__ static auto atomic(
-			                    alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
-			                    T* const addr,
-			                    T const& compare,
-			                    T const& value) -> T
+			                EmulatedType assumed;
+			                do
 			                {
-			                    auto* const addressAsIntegralType = reinterpretAddress(addr);
-			                    using EmulatedType = ALPAKA_DECAY_T(decltype(*addressAsIntegralType));
-			                    EmulatedType reinterpretedCompare = reinterpretValue(compare);
-			                    EmulatedType reinterpretedValue = reinterpretValue(value);
-
-			                    auto old = alpaka::trait::
-			                        AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>::
-			                            atomicOp(ctx, addressAsIntegralType, reinterpretedCompare, reinterpretedValue);
-
-			                    return *(reinterpret_cast<T*>(&old));
-			                }
-			            };
-
-			            //! Emulate AtomicSub with atomicAdd
-			            template<typename T, typename THierarchy>
-			            struct EmulateAtomic<alpaka::AtomicSub, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>
-			            {
-			                __device__ static auto atomic(
-			                    alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
-			                    T* const addr,
-			                    T const& value) -> T
-			                {
-			                    return alpaka::trait::
-			                        AtomicOp<alpaka::AtomicAdd, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>::atomicOp(
-			                            ctx,
-			                            addr,
-			                            -value);
-			                }
-			            };
-
-			            //! AtomicDec can not be implemented for floating point types!
-			            template<typename T, typename THierarchy>
-			            struct EmulateAtomic<
-			                alpaka::AtomicDec,
-			                alpaka::AtomicUniformCudaHipBuiltIn,
-			                T,
-			                THierarchy,
-			                std::enable_if_t<std::is_floating_point_v<T>>>
-			            {
-			                __device__ static auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
-			                {
-			                    static_assert(
-			                        !sizeof(T),
-			                        "EmulateAtomic<alpaka::AtomicDec> is not supported for floating point data types!");
-			                    return T{};
-			                }
-			            };
-
-			            //! AtomicInc can not be implemented for floating point types!
-			            template<typename T, typename THierarchy>
-			            struct EmulateAtomic<
-			                alpaka::AtomicInc,
-			                alpaka::AtomicUniformCudaHipBuiltIn,
-			                T,
-			                THierarchy,
-			                std::enable_if_t<std::is_floating_point_v<T>>>
-			            {
-			                __device__ static auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
-			                {
-			                    static_assert(
-			                        !sizeof(T),
-			                        "EmulateAtomic<alpaka::AtomicInc> is not supported for floating point data types!");
-			                    return T{};
-			                }
-			            };
-
-			            //! AtomicAnd can not be implemented for floating point types!
-			            template<typename T, typename THierarchy>
-			            struct EmulateAtomic<
-			                alpaka::AtomicAnd,
-			                alpaka::AtomicUniformCudaHipBuiltIn,
-			                T,
-			                THierarchy,
-			                std::enable_if_t<std::is_floating_point_v<T>>>
-			            {
-			                __device__ static auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
-			                {
-			                    static_assert(
-			                        !sizeof(T),
-			                        "EmulateAtomic<alpaka::AtomicAnd> is not supported for floating point data types!");
-			                    return T{};
-			                }
-			            };
-
-			            //! AtomicOr can not be implemented for floating point types!
-			            template<typename T, typename THierarchy>
-			            struct EmulateAtomic<
-			                alpaka::AtomicOr,
-			                alpaka::AtomicUniformCudaHipBuiltIn,
-			                T,
-			                THierarchy,
-			                std::enable_if_t<std::is_floating_point_v<T>>>
-			            {
-			                __device__ static auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
-			                {
-			                    static_assert(
-			                        !sizeof(T),
-			                        "EmulateAtomic<alpaka::AtomicOr> is not supported for floating point data types!");
-			                    return T{};
-			                }
-			            };
-
-			            //! AtomicXor can not be implemented for floating point types!
-			            template<typename T, typename THierarchy>
-			            struct EmulateAtomic<
-			                alpaka::AtomicXor,
-			                alpaka::AtomicUniformCudaHipBuiltIn,
-			                T,
-			                THierarchy,
-			                std::enable_if_t<std::is_floating_point_v<T>>>
-			            {
-			                __device__ static auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
-			                {
-			                    static_assert(
-			                        !sizeof(T),
-			                        "EmulateAtomic<alpaka::AtomicXor> is not supported for floating point data types!");
-			                    return T{};
-			                }
-			            };
-
-			        } // namespace detail
-
-			        //! Generic atomic implementation
-			        //
-			        // - unsigned long int will be redirected to unsigned long long int or unsigned int implementation depending if
-			        //   unsigned long int is a 64 or 32bit data type.
-			        // - Atomics which are not available as builtin atomic will be emulated.
-			        template<typename TOp, typename T, typename THierarchy>
-			        struct AtomicOp<TOp, AtomicUniformCudaHipBuiltIn, T, THierarchy>
-			        {
-			            __device__ static auto atomicOp(
-			                AtomicUniformCudaHipBuiltIn const& ctx,
-			                [[maybe_unused]] T* const addr,
-			                [[maybe_unused]] T const& value) -> T
-			            {
-			                static_assert(
-			                    sizeof(T) == 4u || sizeof(T) == 8u,
-			                    "atomicOp<TOp, AtomicUniformCudaHipBuiltIn, T>(atomic, addr, value) is not supported! Only 64 and "
-			                    "32bit atomics are supported.");
-
-			                if constexpr(::AlpakaBuiltInAtomic<TOp, T, THierarchy>::value)
-			                    return ::AlpakaBuiltInAtomic<TOp, T, THierarchy>::atomic(addr, value);
-
-			                else if constexpr(std::is_same_v<unsigned long int, T>)
-			                {
-			                    if constexpr(sizeof(T) == 4u && ::AlpakaBuiltInAtomic<TOp, unsigned int, THierarchy>::value)
-			                        return ::AlpakaBuiltInAtomic<TOp, unsigned int, THierarchy>::atomic(
-			                            reinterpret_cast<unsigned int*>(addr),
-			                            static_cast<unsigned int>(value));
-			                    else if constexpr(
-			                        sizeof(T) == 8u
-			                        && ::AlpakaBuiltInAtomic<TOp, unsigned long long int, THierarchy>::value) // LP64
-			                    {
-			                        return ::AlpakaBuiltInAtomic<TOp, unsigned long long int, THierarchy>::atomic(
-			                            reinterpret_cast<unsigned long long int*>(addr),
-			                            static_cast<unsigned long long int>(value));
-			                    }
-			                }
-
-			                return detail::EmulateAtomic<TOp, AtomicUniformCudaHipBuiltIn, T, THierarchy>::atomic(
-			                    ctx,
-			                    addr,
-			                    value);
+			                    assumed = old;
+			                    T v = *(reinterpret_cast<T*>(&assumed));
+			                    TOp{}(&v, value);
+			                    using Cas = alpaka::trait::
+			                        AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>;
+			                    old = Cas::atomicOp(ctx, addressAsIntegralType, assumed, reinterpretValue(v));
+			                    // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
+			                } while(assumed != old);
+			                return *(reinterpret_cast<T*>(&old));
 			            }
 			        };
 
+			        //! Emulate AtomicCas with equivalent unisigned integral type
 			        template<typename T, typename THierarchy>
-			        struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, T, THierarchy>
+			        struct EmulateAtomic<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>
+			            : private EmulationBase
 			        {
-			            __device__ static auto atomicOp(
-			                [[maybe_unused]] AtomicUniformCudaHipBuiltIn const& ctx,
-			                [[maybe_unused]] T* const addr,
-			                [[maybe_unused]] T const& compare,
-			                [[maybe_unused]] T const& value) -> T
+			            static __device__ auto atomic(
+			                alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
+			                T* const addr,
+			                T const& compare,
+			                T const& value) -> T
 			            {
-			                static_assert(
-			                    sizeof(T) == 4u || sizeof(T) == 8u,
-			                    "atomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, T>(atomic, addr, compare, value) is not "
-			                    "supported! Only 64 and "
-			                    "32bit atomics are supported.");
+			                auto* const addressAsIntegralType = reinterpretAddress(addr);
+			                using EmulatedType = std::decay_t<decltype(*addressAsIntegralType)>;
+			                EmulatedType reinterpretedCompare = reinterpretValue(compare);
+			                EmulatedType reinterpretedValue = reinterpretValue(value);
 
-			                if constexpr(::AlpakaBuiltInAtomic<AtomicCas, T, THierarchy>::value)
-			                    return ::AlpakaBuiltInAtomic<AtomicCas, T, THierarchy>::atomic(addr, compare, value);
+			                auto old = alpaka::trait::
+			                    AtomicOp<alpaka::AtomicCas, alpaka::AtomicUniformCudaHipBuiltIn, EmulatedType, THierarchy>::
+			                        atomicOp(ctx, addressAsIntegralType, reinterpretedCompare, reinterpretedValue);
 
-			                else if constexpr(std::is_same_v<unsigned long int, T>)
-			                {
-			                    if constexpr(sizeof(T) == 4u && ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, THierarchy>::value)
-			                        return ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, THierarchy>::atomic(
-			                            reinterpret_cast<unsigned int*>(addr),
-			                            static_cast<unsigned int>(compare),
-			                            static_cast<unsigned int>(value));
-			                    else if constexpr(
-			                        sizeof(T) == 8u
-			                        && ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, THierarchy>::value) // LP64
-			                    {
-			                        return ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, THierarchy>::atomic(
-			                            reinterpret_cast<unsigned long long int*>(addr),
-			                            static_cast<unsigned long long int>(compare),
-			                            static_cast<unsigned long long int>(value));
-			                    }
-			                }
-
-			                return detail::EmulateAtomic<AtomicCas, AtomicUniformCudaHipBuiltIn, T, THierarchy>::atomic(
-			                    ctx,
-			                    addr,
-			                    compare,
-			                    value);
+			                return *(reinterpret_cast<T*>(&old));
 			            }
 			        };
 
-			    } // namespace trait
-			} // namespace alpaka
+			        //! Emulate AtomicSub with atomicAdd
+			        template<typename T, typename THierarchy>
+			        struct EmulateAtomic<alpaka::AtomicSub, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>
+			        {
+			            static __device__ auto atomic(
+			                alpaka::AtomicUniformCudaHipBuiltIn const& ctx,
+			                T* const addr,
+			                T const& value) -> T
+			            {
+			                return alpaka::trait::AtomicOp<alpaka::AtomicAdd, alpaka::AtomicUniformCudaHipBuiltIn, T, THierarchy>::
+			                    atomicOp(ctx, addr, -value);
+			            }
+			        };
+
+			        //! AtomicDec can not be implemented for floating point types!
+			        template<typename T, typename THierarchy>
+			        struct EmulateAtomic<
+			            alpaka::AtomicDec,
+			            alpaka::AtomicUniformCudaHipBuiltIn,
+			            T,
+			            THierarchy,
+			            std::enable_if_t<std::is_floating_point_v<T>>>
+			        {
+			            static __device__ auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
+			            {
+			                static_assert(
+			                    !sizeof(T),
+			                    "EmulateAtomic<alpaka::AtomicDec> is not supported for floating point data types!");
+			                return T{};
+			            }
+			        };
+
+			        //! AtomicInc can not be implemented for floating point types!
+			        template<typename T, typename THierarchy>
+			        struct EmulateAtomic<
+			            alpaka::AtomicInc,
+			            alpaka::AtomicUniformCudaHipBuiltIn,
+			            T,
+			            THierarchy,
+			            std::enable_if_t<std::is_floating_point_v<T>>>
+			        {
+			            static __device__ auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
+			            {
+			                static_assert(
+			                    !sizeof(T),
+			                    "EmulateAtomic<alpaka::AtomicInc> is not supported for floating point data types!");
+			                return T{};
+			            }
+			        };
+
+			        //! AtomicAnd can not be implemented for floating point types!
+			        template<typename T, typename THierarchy>
+			        struct EmulateAtomic<
+			            alpaka::AtomicAnd,
+			            alpaka::AtomicUniformCudaHipBuiltIn,
+			            T,
+			            THierarchy,
+			            std::enable_if_t<std::is_floating_point_v<T>>>
+			        {
+			            static __device__ auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
+			            {
+			                static_assert(
+			                    !sizeof(T),
+			                    "EmulateAtomic<alpaka::AtomicAnd> is not supported for floating point data types!");
+			                return T{};
+			            }
+			        };
+
+			        //! AtomicOr can not be implemented for floating point types!
+			        template<typename T, typename THierarchy>
+			        struct EmulateAtomic<
+			            alpaka::AtomicOr,
+			            alpaka::AtomicUniformCudaHipBuiltIn,
+			            T,
+			            THierarchy,
+			            std::enable_if_t<std::is_floating_point_v<T>>>
+			        {
+			            static __device__ auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
+			            {
+			                static_assert(
+			                    !sizeof(T),
+			                    "EmulateAtomic<alpaka::AtomicOr> is not supported for floating point data types!");
+			                return T{};
+			            }
+			        };
+
+			        //! AtomicXor can not be implemented for floating point types!
+			        template<typename T, typename THierarchy>
+			        struct EmulateAtomic<
+			            alpaka::AtomicXor,
+			            alpaka::AtomicUniformCudaHipBuiltIn,
+			            T,
+			            THierarchy,
+			            std::enable_if_t<std::is_floating_point_v<T>>>
+			        {
+			            static __device__ auto atomic(alpaka::AtomicUniformCudaHipBuiltIn const&, T* const, T const&) -> T
+			            {
+			                static_assert(
+			                    !sizeof(T),
+			                    "EmulateAtomic<alpaka::AtomicXor> is not supported for floating point data types!");
+			                return T{};
+			            }
+			        };
+
+			    } // namespace detail
+
+			    //! Generic atomic implementation
+			    //
+			    // - unsigned long int will be redirected to unsigned long long int or unsigned int implementation depending if
+			    //   unsigned long int is a 64 or 32bit data type.
+			    // - Atomics which are not available as builtin atomic will be emulated.
+			    template<typename TOp, typename T, typename THierarchy>
+			    struct AtomicOp<TOp, AtomicUniformCudaHipBuiltIn, T, THierarchy>
+			    {
+			        static __device__ auto atomicOp(
+			            AtomicUniformCudaHipBuiltIn const& ctx,
+			            [[maybe_unused]] T* const addr,
+			            [[maybe_unused]] T const& value) -> T
+			        {
+			            static_assert(
+			                sizeof(T) == 4u || sizeof(T) == 8u,
+			                "atomicOp<TOp, AtomicUniformCudaHipBuiltIn, T>(atomic, addr, value) is not supported! Only 64 and "
+			                "32bit atomics are supported.");
+
+			            if constexpr(::AlpakaBuiltInAtomic<TOp, T, THierarchy>::value)
+			                return ::AlpakaBuiltInAtomic<TOp, T, THierarchy>::atomic(addr, value);
+
+			            else if constexpr(std::is_same_v<unsigned long int, T>)
+			            {
+			                if constexpr(sizeof(T) == 4u && ::AlpakaBuiltInAtomic<TOp, unsigned int, THierarchy>::value)
+			                    return ::AlpakaBuiltInAtomic<TOp, unsigned int, THierarchy>::atomic(
+			                        reinterpret_cast<unsigned int*>(addr),
+			                        static_cast<unsigned int>(value));
+			                else if constexpr(
+			                    sizeof(T) == 8u && ::AlpakaBuiltInAtomic<TOp, unsigned long long int, THierarchy>::value) // LP64
+			                {
+			                    return ::AlpakaBuiltInAtomic<TOp, unsigned long long int, THierarchy>::atomic(
+			                        reinterpret_cast<unsigned long long int*>(addr),
+			                        static_cast<unsigned long long int>(value));
+			                }
+			            }
+
+			            return detail::EmulateAtomic<TOp, AtomicUniformCudaHipBuiltIn, T, THierarchy>::atomic(ctx, addr, value);
+			        }
+			    };
+
+			    template<typename T, typename THierarchy>
+			    struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, T, THierarchy>
+			    {
+			        static __device__ auto atomicOp(
+			            [[maybe_unused]] AtomicUniformCudaHipBuiltIn const& ctx,
+			            [[maybe_unused]] T* const addr,
+			            [[maybe_unused]] T const& compare,
+			            [[maybe_unused]] T const& value) -> T
+			        {
+			            static_assert(
+			                sizeof(T) == 4u || sizeof(T) == 8u,
+			                "atomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, T>(atomic, addr, compare, value) is not "
+			                "supported! Only 64 and "
+			                "32bit atomics are supported.");
+
+			            if constexpr(::AlpakaBuiltInAtomic<AtomicCas, T, THierarchy>::value)
+			                return ::AlpakaBuiltInAtomic<AtomicCas, T, THierarchy>::atomic(addr, compare, value);
+
+			            else if constexpr(std::is_same_v<unsigned long int, T>)
+			            {
+			                if constexpr(sizeof(T) == 4u && ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, THierarchy>::value)
+			                    return ::AlpakaBuiltInAtomic<AtomicCas, unsigned int, THierarchy>::atomic(
+			                        reinterpret_cast<unsigned int*>(addr),
+			                        static_cast<unsigned int>(compare),
+			                        static_cast<unsigned int>(value));
+			                else if constexpr(
+			                    sizeof(T) == 8u
+			                    && ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, THierarchy>::value) // LP64
+			                {
+			                    return ::AlpakaBuiltInAtomic<AtomicCas, unsigned long long int, THierarchy>::atomic(
+			                        reinterpret_cast<unsigned long long int*>(addr),
+			                        static_cast<unsigned long long int>(compare),
+			                        static_cast<unsigned long long int>(value));
+			                }
+			            }
+
+			            return detail::EmulateAtomic<AtomicCas, AtomicUniformCudaHipBuiltIn, T, THierarchy>::atomic(
+			                ctx,
+			                addr,
+			                compare,
+			                value);
+			        }
+			    };
+			} // namespace alpaka::trait
 			#    endif
 			#endif
 			// ==
@@ -21070,9 +21733,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
@@ -21130,9 +21793,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
 			// #include <type_traits>    // amalgamate: file already included
@@ -21168,6 +21831,7 @@
 			                return *(reinterpret_cast<T*>(shMem));
 			            }
 			        };
+
 			        template<>
 			        struct FreeSharedVars<BlockSharedMemStUniformCudaHipBuiltIn>
 			        {
@@ -21195,9 +21859,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -21315,7 +21979,7 @@
 			// == ./include/alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp ==
 			// ==
@@ -21325,8 +21989,8 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/core/Cuda.hpp ==
 				// ==
@@ -21338,14 +22002,15 @@
 					// ============================================================================
 					// == ./include/alpaka/core/CudaHipCommon.hpp ==
 					// ==
-					/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber
+					/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+					                  Jan Stephan
 					 * SPDX-License-Identifier: MPL-2.0
 					 */
 
 					// #pragma once
-					// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 						// ============================================================================
 						// == ./include/alpaka/meta/Concatenate.hpp ==
 						// ==
@@ -21360,17 +22025,20 @@
 						    {
 						        template<typename... T>
 						        struct ConcatenateImpl;
+
 						        template<typename T>
 						        struct ConcatenateImpl<T>
 						        {
 						            using type = T;
 						        };
+
 						        template<template<typename...> class TList, typename... As, typename... Bs, typename... TRest>
 						        struct ConcatenateImpl<TList<As...>, TList<Bs...>, TRest...>
 						        {
 						            using type = typename ConcatenateImpl<TList<As..., Bs...>, TRest...>::type;
 						        };
 						    } // namespace detail
+
 						    template<typename... T>
 						    using Concatenate = typename detail::ConcatenateImpl<T...>::type;
 						} // namespace alpaka::meta
@@ -21378,9 +22046,52 @@
 						// == ./include/alpaka/meta/Concatenate.hpp ==
 						// ============================================================================
 
-					// #include "alpaka/meta/TypeListOps.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+						// ============================================================================
+						// == ./include/alpaka/meta/TypeListOps.hpp ==
+						// ==
+						/* Copyright 2022 Bernhard Manfred Gruber
+						 * SPDX-License-Identifier: MPL-2.0
+						 */
+
+						// #pragma once
+						// #include <type_traits>    // amalgamate: file already included
+
+						namespace alpaka::meta
+						{
+						    namespace detail
+						    {
+						        template<typename List>
+						        struct Front
+						        {
+						        };
+
+						        template<template<typename...> class List, typename Head, typename... Tail>
+						        struct Front<List<Head, Tail...>>
+						        {
+						            using type = Head;
+						        };
+						    } // namespace detail
+
+						    template<typename List>
+						    using Front = typename detail::Front<List>::type;
+
+						    template<typename List, typename Value>
+						    struct Contains : std::false_type
+						    {
+						    };
+
+						    template<template<typename...> class List, typename Head, typename... Tail, typename Value>
+						    struct Contains<List<Head, Tail...>, Value>
+						    {
+						        static constexpr bool value = std::is_same_v<Head, Value> || Contains<List<Tail...>, Value>::value;
+						    };
+						} // namespace alpaka::meta
+						// ==
+						// == ./include/alpaka/meta/TypeListOps.hpp ==
+						// ============================================================================
+
+					// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 					// #include <tuple>    // amalgamate: file already included
 
@@ -21388,7 +22099,7 @@
 
 					#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 					#        include <cuda.h>
-					#        include <cuda_runtime.h>
+					// #        include <cuda_runtime.h>    // amalgamate: file already included
 					#    endif
 
 					#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
@@ -21460,18 +22171,21 @@
 					        {
 					            using type = DimInt<1u>;
 					        };
+
 					        //! The CUDA/HIP vectors 2D dimension get trait specialization.
 					        template<typename T>
 					        struct DimType<T, std::enable_if_t<meta::Contains<alpaka::detail::CudaHipBuiltinTypes2, T>::value>>
 					        {
 					            using type = DimInt<2u>;
 					        };
+
 					        //! The CUDA/HIP vectors 3D dimension get trait specialization.
 					        template<typename T>
 					        struct DimType<T, std::enable_if_t<meta::Contains<alpaka::detail::CudaHipBuiltinTypes3, T>::value>>
 					        {
 					            using type = DimInt<3u>;
 					        };
+
 					        //! The CUDA/HIP vectors 4D dimension get trait specialization.
 					        template<typename T>
 					        struct DimType<T, std::enable_if_t<meta::Contains<alpaka::detail::CudaHipBuiltinTypes4, T>::value>>
@@ -21486,222 +22200,33 @@
 					            using type = decltype(std::declval<T>().x);
 					        };
 
-					        //! The CUDA/HIP vectors extent get trait specialization.
-					        template<typename TExtent>
-					        struct GetExtent<
-					            DimInt<Dim<TExtent>::value - 1u>,
-					            TExtent,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 1)>>
+					        template<typename TCudaHipBuiltin>
+					        struct GetExtents<TCudaHipBuiltin, std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TCudaHipBuiltin>>>
 					        {
 					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
+					            ALPAKA_FN_HOST_ACC auto operator()(TCudaHipBuiltin const& value) const
+					                -> Vec<Dim<TCudaHipBuiltin>, Idx<TCudaHipBuiltin>>
 					            {
-					                return extent.x;
-					            }
-					        };
-					        //! The CUDA/HIP vectors extent get trait specialization.
-					        template<typename TExtent>
-					        struct GetExtent<
-					            DimInt<Dim<TExtent>::value - 2u>,
-					            TExtent,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 2)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-					            {
-					                return extent.y;
-					            }
-					        };
-					        //! The CUDA/HIP vectors extent get trait specialization.
-					        template<typename TExtent>
-					        struct GetExtent<
-					            DimInt<Dim<TExtent>::value - 3u>,
-					            TExtent,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 3)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-					            {
-					                return extent.z;
-					            }
-					        };
-					        //! The CUDA/HIP vectors extent get trait specialization.
-					        template<typename TExtent>
-					        struct GetExtent<
-					            DimInt<Dim<TExtent>::value - 4u>,
-					            TExtent,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 4)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getExtent(TExtent const& extent)
-					            {
-					                return extent.w;
-					            }
-					        };
-					        //! The CUDA/HIP vectors extent set trait specialization.
-					        template<typename TExtent, typename TExtentVal>
-					        struct SetExtent<
-					            DimInt<Dim<TExtent>::value - 1u>,
-					            TExtent,
-					            TExtentVal,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 1)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-					            {
-					                extent.x = extentVal;
-					            }
-					        };
-					        //! The CUDA/HIP vectors extent set trait specialization.
-					        template<typename TExtent, typename TExtentVal>
-					        struct SetExtent<
-					            DimInt<Dim<TExtent>::value - 2u>,
-					            TExtent,
-					            TExtentVal,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 2)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-					            {
-					                extent.y = extentVal;
-					            }
-					        };
-					        //! The CUDA/HIP vectors extent set trait specialization.
-					        template<typename TExtent, typename TExtentVal>
-					        struct SetExtent<
-					            DimInt<Dim<TExtent>::value - 3u>,
-					            TExtent,
-					            TExtentVal,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 3)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-					            {
-					                extent.z = extentVal;
-					            }
-					        };
-					        //! The CUDA/HIP vectors extent set trait specialization.
-					        template<typename TExtent, typename TExtentVal>
-					        struct SetExtent<
-					            DimInt<Dim<TExtent>::value - 4u>,
-					            TExtent,
-					            TExtentVal,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TExtent> && (Dim<TExtent>::value >= 4)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setExtent(TExtent const& extent, TExtentVal const& extentVal) -> void
-					            {
-					                extent.w = extentVal;
+					                constexpr auto dim = Dim<TCudaHipBuiltin>::value;
+					                if constexpr(dim == 1)
+					                    return {value.x};
+					                else if constexpr(dim == 2)
+					                    return {value.y, value.x};
+					                else if constexpr(dim == 3)
+					                    return {value.z, value.y, value.x};
+					                else if constexpr(dim == 4)
+					                    return {value.w, value.z, value.y, value.x};
+					                else
+					                    static_assert(sizeof(value) == 0, "Not implemented");
+
+					                ALPAKA_UNREACHABLE({});
 					            }
 					        };
 
-					        //! The CUDA/HIP vectors offset get trait specialization.
-					        template<typename TOffsets>
-					        struct GetOffset<
-					            DimInt<Dim<TOffsets>::value - 1u>,
-					            TOffsets,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 1)>>
+					        template<typename TCudaHipBuiltin>
+					        struct GetOffsets<TCudaHipBuiltin, std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TCudaHipBuiltin>>>
+					            : GetExtents<TCudaHipBuiltin>
 					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const& offsets)
-					            {
-					                return offsets.x;
-					            }
-					        };
-					        //! The CUDA/HIP vectors offset get trait specialization.
-					        template<typename TOffsets>
-					        struct GetOffset<
-					            DimInt<Dim<TOffsets>::value - 2u>,
-					            TOffsets,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 2)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const& offsets)
-					            {
-					                return offsets.y;
-					            }
-					        };
-					        //! The CUDA/HIP vectors offset get trait specialization.
-					        template<typename TOffsets>
-					        struct GetOffset<
-					            DimInt<Dim<TOffsets>::value - 3u>,
-					            TOffsets,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 3)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const& offsets)
-					            {
-					                return offsets.z;
-					            }
-					        };
-					        //! The CUDA/HIP vectors offset get trait specialization.
-					        template<typename TOffsets>
-					        struct GetOffset<
-					            DimInt<Dim<TOffsets>::value - 4u>,
-					            TOffsets,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 4)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto getOffset(TOffsets const& offsets)
-					            {
-					                return offsets.w;
-					            }
-					        };
-					        //! The CUDA/HIP vectors offset set trait specialization.
-					        template<typename TOffsets, typename TOffset>
-					        struct SetOffset<
-					            DimInt<Dim<TOffsets>::value - 1u>,
-					            TOffsets,
-					            TOffset,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 1)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-					            {
-					                offsets.x = offset;
-					            }
-					        };
-					        //! The CUDA/HIP vectors offset set trait specialization.
-					        template<typename TOffsets, typename TOffset>
-					        struct SetOffset<
-					            DimInt<Dim<TOffsets>::value - 2u>,
-					            TOffsets,
-					            TOffset,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 2)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-					            {
-					                offsets.y = offset;
-					            }
-					        };
-					        //! The CUDA/HIP vectors offset set trait specialization.
-					        template<typename TOffsets, typename TOffset>
-					        struct SetOffset<
-					            DimInt<Dim<TOffsets>::value - 3u>,
-					            TOffsets,
-					            TOffset,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 3)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-					            {
-					                offsets.z = offset;
-					            }
-					        };
-					        //! The CUDA/HIP vectors offset set trait specialization.
-					        template<typename TOffsets, typename TOffset>
-					        struct SetOffset<
-					            DimInt<Dim<TOffsets>::value - 4u>,
-					            TOffsets,
-					            TOffset,
-					            std::enable_if_t<alpaka::detail::isCudaHipBuiltInType<TOffsets> && (Dim<TOffsets>::value >= 4)>>
-					        {
-					            ALPAKA_NO_HOST_ACC_WARNING
-					            ALPAKA_FN_HOST_ACC static auto setOffset(TOffsets const& offsets, TOffset const& offset) -> void
-					            {
-					                offsets.w = offset;
-					            }
 					        };
 
 					        //! The CUDA/HIP vectors idx type trait specialization.
@@ -21764,7 +22289,7 @@
 				} // namespace alpaka::cuda::detail
 
 				//! CUDA driver error checking with log and exception.
-				#    define ALPAKA_CUDA_DRV_CHECK(cmd) ::alpaka::cuda::detail::cudaDrvCheck(cmd, #    cmd, __FILE__, __LINE__)
+				#    define ALPAKA_CUDA_DRV_CHECK(cmd) ::alpaka::cuda::detail::cudaDrvCheck(cmd, #cmd, __FILE__, __LINE__)
 
 					// ============================================================================
 					// == ./include/alpaka/core/UniformCudaHip.hpp ==
@@ -21775,8 +22300,8 @@
 					 */
 
 					// #pragma once
-					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-					// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
+					// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
 						// ============================================================================
 						// == ./include/alpaka/core/Hip.hpp ==
 						// ==
@@ -21785,8 +22310,8 @@
 						 */
 
 						// #pragma once
-						// #include "alpaka/core/CudaHipCommon.hpp"    // amalgamate: file already expanded
-						// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already expanded
+						// #include "alpaka/core/CudaHipCommon.hpp"    // amalgamate: file already inlined
+						// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already inlined
 
 						#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 						#    if !BOOST_LANG_HIP && !defined(ALPAKA_HOST_ONLY)
@@ -21798,7 +22323,7 @@
 						// ============================================================================
 
 
-					// #include <array>    // amalgamate: file already included
+					// #include <initializer_list>    // amalgamate: file already included
 					// #include <stdexcept>    // amalgamate: file already included
 					// #include <string>    // amalgamate: file already included
 					// #include <tuple>    // amalgamate: file already included
@@ -21836,23 +22361,19 @@
 					    }
 
 					    //! CUDA/HIP runtime API error checking with log and exception, ignoring specific error values
-					    // NOTE: All ignored errors have to be convertible to TApi::Error_t.
-					    template<typename TApi, bool TThrow, typename... TErrors>
+					    template<typename TApi, bool TThrow>
 					    ALPAKA_FN_HOST inline void rtCheckIgnore(
 					        typename TApi::Error_t const& error,
 					        char const* cmd,
 					        char const* file,
 					        int const& line,
-					        TErrors&&... ignoredErrorCodes) noexcept(!TThrow)
+					        std::initializer_list<typename TApi::Error_t> ignoredErrorCodes) noexcept(!TThrow)
 					    {
 					        if(error != TApi::success)
 					        {
-					            std::array<typename TApi::Error_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{
-					                {ignoredErrorCodes...}};
-
 					            // If the error code is not one of the ignored ones.
-					            if(std::find(std::cbegin(aIgnoredErrorCodes), std::cend(aIgnoredErrorCodes), error)
-					               == std::cend(aIgnoredErrorCodes))
+					            if(std::find(std::cbegin(ignoredErrorCodes), std::cend(ignoredErrorCodes), error)
+					               == std::cend(ignoredErrorCodes))
 					            {
 					                rtCheck<TApi, TThrow>(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
 					            }
@@ -21874,93 +22395,34 @@
 					    }
 					} // namespace alpaka::uniform_cuda_hip::detail
 
-					#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+					#    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IMPL(cmd, throw, ...)                                                    \
+					        do                                                                                                            \
+					        {                                                                                                             \
+					            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, throw>(                                        \
+					                "'" #cmd "' A previous API call (not this one) set the error ",                                       \
+					                __FILE__,                                                                                             \
+					                __LINE__);                                                                                            \
+					            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, throw>(                                           \
+					                cmd,                                                                                                  \
+					                #cmd,                                                                                                 \
+					                __FILE__,                                                                                             \
+					                __LINE__,                                                                                             \
+					                {__VA_ARGS__});                                                                                       \
+					        } while(0)
+
 					//! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
-					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                     \
-					            do                                                                                                        \
-					            {                                                                                                         \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(                                     \
-					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
-					                    __FILE__,                                                                                         \
-					                    __LINE__);                                                                                        \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, true>(                                        \
-					                    cmd,                                                                                              \
-					                    #cmd,                                                                                             \
-					                    __FILE__,                                                                                         \
-					                    __LINE__,                                                                                         \
-					                    __VA_ARGS__);                                                                                     \
-					            } while(0)
-					#    else
-					#        if BOOST_COMP_CLANG
-					#            pragma clang diagnostic push
-					#            pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-					#        endif
-					//! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
-					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                     \
-					            do                                                                                                        \
-					            {                                                                                                         \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, true>(                                     \
-					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
-					                    __FILE__,                                                                                         \
-					                    __LINE__);                                                                                        \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, true>(                                        \
-					                    cmd,                                                                                              \
-					                    #cmd,                                                                                             \
-					                    __FILE__,                                                                                         \
-					                    __LINE__,                                                                                         \
-					                    ##__VA_ARGS__);                                                                                   \
-					            } while(0)
-					#        if BOOST_COMP_CLANG
-					#            pragma clang diagnostic pop
-					#        endif
-					#    endif
+					#    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd, ...)                                                         \
+					        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IMPL(cmd, true, __VA_ARGS__)
 
 					//! CUDA/HIP runtime error checking with log and exception.
-					#    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cmd) ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(cmd)
+					#    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cmd) ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IMPL(cmd, true, )
 
-					#    if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
-					//! CUDA/HIP runtime error checking with log, ignoring specific error values
-					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                            \
-					            do                                                                                                        \
-					            {                                                                                                         \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, false>(                                    \
-					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
-					                    __FILE__,                                                                                         \
-					                    __LINE__);                                                                                        \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, false>(                                       \
-					                    cmd,                                                                                              \
-					                    #cmd,                                                                                             \
-					                    __FILE__,                                                                                         \
-					                    __LINE__,                                                                                         \
-					                    __VA_ARGS__);                                                                                     \
-					            } while(0)
-					#    else
-					#        if BOOST_COMP_CLANG
-					#            pragma clang diagnostic push
-					#            pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-					#        endif
 					//! CUDA/HIP runtime error checking with log and exception, ignoring specific error values
-					#        define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                            \
-					            do                                                                                                        \
-					            {                                                                                                         \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError<TApi, false>(                                    \
-					                    "'" #cmd "' A previous API call (not this one) set the error ",                                   \
-					                    __FILE__,                                                                                         \
-					                    __LINE__);                                                                                        \
-					                ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore<TApi, false>(                                       \
-					                    cmd,                                                                                              \
-					                    #cmd,                                                                                             \
-					                    __FILE__,                                                                                         \
-					                    __LINE__,                                                                                         \
-					                    ##__VA_ARGS__);                                                                                   \
-					            } while(0)
-					#        if BOOST_COMP_CLANG
-					#            pragma clang diagnostic pop
-					#        endif
-					#    endif
+					#    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd, ...)                                                \
+					        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IMPL(cmd, false, __VA_ARGS__)
 
 					//! CUDA/HIP runtime error checking with log.
-					#    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(cmd) ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE_NOEXCEPT(cmd)
+					#    define ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(cmd) ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IMPL(cmd, false, )
 					#endif
 					// ==
 					// == ./include/alpaka/core/UniformCudaHip.hpp ==
@@ -21972,10 +22434,10 @@
 				// == ./include/alpaka/core/Cuda.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -22056,13 +22518,13 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -22142,9 +22604,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/intrinsic/Traits.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -22227,14 +22689,14 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/CudaHipCommon.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/math/Complex.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/math/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/CudaHipCommon.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/UniformCudaHip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/math/Complex.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/math/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
@@ -22299,6 +22761,12 @@
 
 			    //! The CUDA built in conj.
 			    class ConjUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathConj, ConjUniformCudaHipBuiltIn>
+			    {
+			    };
+
+			    //! The CUDA built in copysign.
+			    class CopysignUniformCudaHipBuiltIn
+			        : public concepts::Implements<ConceptMathCopysign, CopysignUniformCudaHipBuiltIn>
 			    {
 			    };
 
@@ -22448,6 +22916,7 @@
 			        , public CbrtUniformCudaHipBuiltIn
 			        , public CeilUniformCudaHipBuiltIn
 			        , public ConjUniformCudaHipBuiltIn
+			        , public CopysignUniformCudaHipBuiltIn
 			        , public CosUniformCudaHipBuiltIn
 			        , public CoshUniformCudaHipBuiltIn
 			        , public ErfUniformCudaHipBuiltIn
@@ -22816,6 +23285,30 @@
 			            }
 			        };
 
+			        //! The CUDA copysign trait specialization for real types.
+			        template<typename TMag, typename TSgn>
+			        struct Copysign<
+			            CopysignUniformCudaHipBuiltIn,
+			            TMag,
+			            TSgn,
+			            std::enable_if_t<std::is_floating_point_v<TMag> && std::is_floating_point_v<TSgn>>>
+			        {
+			            __host__ __device__ auto operator()(
+			                CopysignUniformCudaHipBuiltIn const& /* copysign_ctx */,
+			                TMag const& mag,
+			                TSgn const& sgn)
+			            {
+			                if constexpr(is_decayed_v<TMag, float> && is_decayed_v<TSgn, float>)
+			                    return ::copysignf(mag, sgn);
+			                else if constexpr(is_decayed_v<TMag, double> || is_decayed_v<TSgn, double>)
+			                    return ::copysign(mag, sgn);
+			                else
+			                    static_assert(!sizeof(TMag), "Unsupported data type");
+
+			                ALPAKA_UNREACHABLE(TMag{});
+			            }
+			        };
+
 			        //! The CUDA cos trait specialization for real types.
 			        template<typename TArg>
 			        struct Cos<CosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point_v<TArg>>>
@@ -23124,9 +23617,8 @@
 			                else if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float>)
 			                    return ::fmaxf(x, y);
 			                else if constexpr(
-			                    is_decayed_v<
-			                        Tx,
-			                        double> || is_decayed_v<Ty, double> || (is_decayed_v<Tx, float> && std::is_integral_v<Ty>)
+			                    is_decayed_v<Tx, double> || is_decayed_v<Ty, double>
+			                    || (is_decayed_v<Tx, float> && std::is_integral_v<Ty>)
 			                    || (std::is_integral_v<Tx> && is_decayed_v<Ty, float>) )
 			                    return ::fmax(x, y);
 			                else
@@ -23158,9 +23650,8 @@
 			                else if constexpr(is_decayed_v<Tx, float> && is_decayed_v<Ty, float>)
 			                    return ::fminf(x, y);
 			                else if constexpr(
-			                    is_decayed_v<
-			                        Tx,
-			                        double> || is_decayed_v<Ty, double> || (is_decayed_v<Tx, float> && std::is_integral_v<Ty>)
+			                    is_decayed_v<Tx, double> || is_decayed_v<Ty, double>
+			                    || (is_decayed_v<Tx, float> && std::is_integral_v<Ty>)
 			                    || (std::is_integral_v<Tx> && is_decayed_v<Ty, float>) )
 			                    return ::fmin(x, y);
 			                else
@@ -23266,7 +23757,6 @@
 			                ALPAKA_UNREACHABLE(Ret{});
 			            }
 			        };
-
 
 			        //! The CUDA round trait specialization.
 			        template<typename TArg>
@@ -23577,9 +24067,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -23640,6 +24130,7 @@
 			// == ./include/alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp ==
 			// ============================================================================
 
+		// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/rand/RandUniformCudaHipRand.hpp ==
 			// ==
@@ -23648,28 +24139,281 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/dev/DevUniformCudaHipRt.hpp ==
 				// ==
-				/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato, Jan Stephan
+				/* Copyright 2023 Benjamin Worpitz, Jakob Krude, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+				 *                Antonio Di Pilato, Jan Stephan
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
 				// #pragma once
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/dev/common/QueueRegistry.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+					// ============================================================================
+					// == ./include/alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp ==
+					// ==
+					/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+					 * Antonio Di Pilato
+					 * SPDX-License-Identifier: MPL-2.0
+					 */
+
+					// #pragma once
+					// #include "alpaka/core/CallbackThread.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
+					// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
+
+					// #include <condition_variable>    // amalgamate: file already included
+					// #include <functional>    // amalgamate: file already included
+					// #include <future>    // amalgamate: file already included
+					// #include <memory>    // amalgamate: file already included
+					// #include <mutex>    // amalgamate: file already included
+					// #include <thread>    // amalgamate: file already included
+
+					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+
+					namespace alpaka
+					{
+					    template<typename TApi>
+					    class EventUniformCudaHipRt;
+
+					    template<typename TApi>
+					    class DevUniformCudaHipRt;
+
+					    namespace uniform_cuda_hip::detail
+					    {
+					        //! The CUDA/HIP RT queue implementation.
+					        template<typename TApi>
+					        class QueueUniformCudaHipRtImpl final
+					        {
+					        public:
+					            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(DevUniformCudaHipRt<TApi> const& dev)
+					                : m_dev(dev)
+					                , m_UniformCudaHipQueue()
+					            {
+					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+					                // Set the current device.
+					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(m_dev.getNativeHandle()));
+
+					                // - [cuda/hip]StreamDefault: Default queue creation flag.
+					                // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created queue may run
+					                // concurrently with work in queue 0 (the NULL queue),
+					                //   and that the created queue should perform no implicit synchronization with queue 0.
+					                // Create the queue on the current device.
+					                // NOTE: [cuda/hip]StreamNonBlocking is required to match the semantic implemented in the alpaka
+					                // CPU queue. It would be too much work to implement implicit default queue synchronization on CPU.
+
+					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+					                    TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
+					            }
+
+					            QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl&&) = default;
+					            auto operator=(QueueUniformCudaHipRtImpl&&) -> QueueUniformCudaHipRtImpl& = delete;
+
+					            ALPAKA_FN_HOST ~QueueUniformCudaHipRtImpl()
+					            {
+					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+					                // Make sure all pending async work is finished before destroying the stream to guarantee determinism.
+					                // This would not be necessary for plain CUDA/HIP operations, but we can have host functions in the
+					                // stream, which reference this queue instance and its CallbackThread. Make sure they are done.
+					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
+					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
+					            }
+
+					            [[nodiscard]] auto getNativeHandle() const noexcept
+					            {
+					                return m_UniformCudaHipQueue;
+					            }
+
+					        public:
+					            DevUniformCudaHipRt<TApi> const m_dev; //!< The device this queue is bound to.
+					            core::CallbackThread m_callbackThread;
+
+					        private:
+					            typename TApi::Stream_t m_UniformCudaHipQueue;
+					        };
+
+					        //! The CUDA/HIP RT queue.
+					        template<typename TApi, bool TBlocking>
+					        class QueueUniformCudaHipRt
+					            : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueUniformCudaHipRt<TApi, TBlocking>>
+					            , public concepts::Implements<ConceptQueue, QueueUniformCudaHipRt<TApi, TBlocking>>
+					            , public concepts::Implements<ConceptGetDev, QueueUniformCudaHipRt<TApi, TBlocking>>
+					        {
+					        public:
+					            ALPAKA_FN_HOST QueueUniformCudaHipRt(DevUniformCudaHipRt<TApi> const& dev)
+					                : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(dev))
+					            {
+					                dev.registerQueue(m_spQueueImpl);
+					            }
+
+					            ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRt const& rhs) const -> bool
+					            {
+					                return (m_spQueueImpl == rhs.m_spQueueImpl);
+					            }
+
+					            ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRt const& rhs) const -> bool
+					            {
+					                return !((*this) == rhs);
+					            }
+
+					            [[nodiscard]] auto getNativeHandle() const noexcept
+					            {
+					                return m_spQueueImpl->getNativeHandle();
+					            }
+
+					            auto getCallbackThread() -> core::CallbackThread&
+					            {
+					                return m_spQueueImpl->m_callbackThread;
+					            }
+
+					        public:
+					            std::shared_ptr<QueueUniformCudaHipRtImpl<TApi>> m_spQueueImpl;
+					        };
+					    } // namespace uniform_cuda_hip::detail
+
+					    namespace trait
+					    {
+					        //! The CUDA/HIP RT queue device get trait specialization.
+					        template<typename TApi, bool TBlocking>
+					        struct GetDev<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
+					        {
+					            ALPAKA_FN_HOST static auto getDev(
+					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue)
+					                -> DevUniformCudaHipRt<TApi>
+					            {
+					                return queue.m_spQueueImpl->m_dev;
+					            }
+					        };
+
+					        //! The CUDA/HIP RT queue test trait specialization.
+					        template<typename TApi, bool TBlocking>
+					        struct Empty<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
+					        {
+					            ALPAKA_FN_HOST static auto empty(
+					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue) -> bool
+					            {
+					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+					                // Query is allowed even for queues on non current device.
+					                typename TApi::Error_t ret = TApi::success;
+					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
+					                    ret = TApi::streamQuery(queue.getNativeHandle()),
+					                    TApi::errorNotReady);
+					                return (ret == TApi::success);
+					            }
+					        };
+
+					        //! The CUDA/HIP RT queue thread wait trait specialization.
+					        //!
+					        //! Blocks execution of the calling thread until the queue has finished processing all previously requested
+					        //! tasks (kernels, data copies, ...)
+					        template<typename TApi, bool TBlocking>
+					        struct CurrentThreadWaitFor<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
+					        {
+					            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue) -> void
+					            {
+					                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+					                // Sync is allowed even for queues on non current device.
+					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
+					            }
+					        };
+
+					        //! The CUDA/HIP RT blocking queue device type trait specialization.
+					        template<typename TApi, bool TBlocking>
+					        struct DevType<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
+					        {
+					            using type = DevUniformCudaHipRt<TApi>;
+					        };
+
+					        //! The CUDA/HIP RT blocking queue event type trait specialization.
+					        template<typename TApi, bool TBlocking>
+					        struct EventType<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
+					        {
+					            using type = EventUniformCudaHipRt<TApi>;
+					        };
+
+					        //! The CUDA/HIP RT blocking queue enqueue trait specialization.
+					        template<typename TApi, bool TBlocking, typename TTask>
+					        struct Enqueue<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>, TTask>
+					        {
+					            using QueueImpl = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
+
+					            struct HostFuncData
+					            {
+					                // We don't need to keep the queue alive, because in it's dtor it will synchronize with the CUDA/HIP
+					                // stream and wait until all host functions and the CallbackThread are done. It's actually an error to
+					                // copy the queue into the host function. Destroying it here would call CUDA/HIP APIs from the host
+					                // function. Passing it further to the Callback thread, would make the Callback thread hold a task
+					                // containing the queue with the CallbackThread itself. Destroying the task if no other queue instance
+					                // exists will make the CallbackThread join itself and crash.
+					                QueueImpl& q;
+					                TTask t;
+					            };
+
+					            ALPAKA_FN_HOST static void uniformCudaHipRtHostFunc(void* arg)
+					            {
+					                auto data = std::unique_ptr<HostFuncData>(reinterpret_cast<HostFuncData*>(arg));
+					                auto& queue = data->q;
+					                auto f = queue.m_callbackThread.submit([d = std::move(data)] { d->t(); });
+					                f.wait();
+					            }
+
+					            ALPAKA_FN_HOST static auto enqueue(
+					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
+					                TTask const& task) -> void
+					            {
+					                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::launchHostFunc(
+					                    queue.getNativeHandle(),
+					                    uniformCudaHipRtHostFunc,
+					                    new HostFuncData{*queue.m_spQueueImpl, task}));
+					                if constexpr(TBlocking)
+					                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
+					            }
+					        };
+
+					        //! The CUDA/HIP RT blocking queue native handle trait specialization.
+					        template<typename TApi, bool TBlocking>
+					        struct NativeHandle<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
+					        {
+					            [[nodiscard]] static auto getNativeHandle(
+					                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue)
+					            {
+					                return queue.getNativeHandle();
+					            }
+					        };
+					    } // namespace trait
+					} // namespace alpaka
+
+					#endif
+					// ==
+					// == ./include/alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp ==
+					// ============================================================================
+
+				// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 				// #include <cstddef>    // amalgamate: file already included
 				// #include <string>    // amalgamate: file already included
@@ -23683,13 +24427,13 @@
 				    {
 				        template<typename TPlatform, typename TSfinae>
 				        struct GetDevByIdx;
-				    }
+				    } // namespace trait
 
 				    namespace uniform_cuda_hip::detail
 				    {
 				        template<typename TApi, bool TBlocking>
 				        class QueueUniformCudaHipRt;
-				    }
+				    } // namespace uniform_cuda_hip::detail
 
 				    template<typename TApi>
 				    using QueueUniformCudaHipRtBlocking = uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, true>;
@@ -23701,7 +24445,7 @@
 				    struct PlatformUniformCudaHipRt;
 
 				    template<typename TApi, typename TElem, typename TDim, typename TIdx>
-				    class BufUniformCudaHipRt;
+				    struct BufUniformCudaHipRt;
 
 				    //! The CUDA/HIP RT device handle.
 				    template<typename TApi>
@@ -23711,14 +24455,19 @@
 				    {
 				        friend struct trait::GetDevByIdx<PlatformUniformCudaHipRt<TApi>>;
 
+				        using IDeviceQueue = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
+
 				    protected:
-				        DevUniformCudaHipRt() = default;
+				        DevUniformCudaHipRt() : m_QueueRegistry{std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>()}
+				        {
+				        }
 
 				    public:
 				        ALPAKA_FN_HOST auto operator==(DevUniformCudaHipRt const& rhs) const -> bool
 				        {
 				            return m_iDevice == rhs.m_iDevice;
 				        }
+
 				        ALPAKA_FN_HOST auto operator!=(DevUniformCudaHipRt const& rhs) const -> bool
 				        {
 				            return !((*this) == rhs);
@@ -23729,11 +24478,28 @@
 				            return m_iDevice;
 				        }
 
+				        [[nodiscard]] ALPAKA_FN_HOST auto getAllQueues() const -> std::vector<std::shared_ptr<IDeviceQueue>>
+				        {
+				            return m_QueueRegistry->getAllExistingQueues();
+				        }
+
+				        //! Registers the given queue on this device.
+				        //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+				        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IDeviceQueue> spQueue) const -> void
+				        {
+				            m_QueueRegistry->registerQueue(spQueue);
+				        }
+
 				    private:
-				        DevUniformCudaHipRt(int iDevice) : m_iDevice(iDevice)
+				        DevUniformCudaHipRt(int iDevice)
+				            : m_iDevice(iDevice)
+				            , m_QueueRegistry(std::make_shared<alpaka::detail::QueueRegistry<IDeviceQueue>>())
 				        {
 				        }
+
 				        int m_iDevice;
+
+				        std::shared_ptr<alpaka::detail::QueueRegistry<IDeviceQueue>> m_QueueRegistry;
 				    };
 
 				    namespace trait
@@ -23876,11 +24642,11 @@
 				// == ./include/alpaka/dev/DevUniformCudaHipRt.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <type_traits>    // amalgamate: file already included
 
-			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+			#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)) && !defined(ALPAKA_DISABLE_VENDOR_RNG)
 
 			#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 			#        include <curand_kernel.h>
@@ -23890,7 +24656,7 @@
 			#            pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
 			#        endif
 
-			#        if HIP_VERSION >= 50200000
+			#        if HIP_VERSION >= 50'200'000
 			#            include <hiprand/hiprand_kernel.h>
 			#        else
 			#            include <hiprand_kernel.h>
@@ -23980,14 +24746,16 @@
 			#        else
 			            using result_type = decltype(hiprand(&state));
 			#        endif
-			            ALPAKA_FN_HOST_ACC constexpr static result_type min()
+			            ALPAKA_FN_HOST_ACC static constexpr result_type min()
 			            {
 			                return std::numeric_limits<result_type>::min();
 			            }
-			            ALPAKA_FN_HOST_ACC constexpr static result_type max()
+
+			            ALPAKA_FN_HOST_ACC static constexpr result_type max()
 			            {
 			                return std::numeric_limits<result_type>::max();
 			            }
+
 			            __device__ result_type operator()()
 			            {
 			#        ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
@@ -24158,9 +24926,9 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/warp/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstdint>    // amalgamate: file already included
 
@@ -24280,6 +25048,7 @@
 			                return __shfl(val, srcLane, width);
 			#        endif
 			            }
+
 			            //-------------------------------------------------------------
 			            __device__ static auto shfl(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
@@ -24311,13 +25080,13 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -24428,17 +25197,17 @@
 
 
 		// Specialized traits.
-		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 		// Implementation details.
-		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 		// #include <typeinfo>    // amalgamate: file already included
 
@@ -24452,28 +25221,28 @@
 		    //! The GPU CUDA accelerator.
 		    //!
 		    //! This accelerator allows parallel kernel execution on devices supporting CUDA.
-		    template<
-		        typename TApi,
-		        typename TDim,
-		        typename TIdx>
-		    class AccGpuUniformCudaHipRt final :
-		        public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
-		        public gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
-		        public bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
-		        public AtomicHierarchy<
-		            AtomicUniformCudaHipBuiltIn, // grid atomics
-		            AtomicUniformCudaHipBuiltIn, // block atomics
-		            AtomicUniformCudaHipBuiltIn  // thread atomics
-		        >,
-		        public math::MathUniformCudaHipBuiltIn,
-		        public BlockSharedMemDynUniformCudaHipBuiltIn,
-		        public BlockSharedMemStUniformCudaHipBuiltIn,
-		        public BlockSyncUniformCudaHipBuiltIn,
-		        public IntrinsicUniformCudaHipBuiltIn,
-		        public MemFenceUniformCudaHipBuiltIn,
-		        public rand::RandUniformCudaHipRand<TApi>,
-		        public warp::WarpUniformCudaHipBuiltIn,
-		        public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
+		    template<typename TApi, typename TDim, typename TIdx>
+		    class AccGpuUniformCudaHipRt final
+		        : public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>
+		        , public gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>
+		        , public bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>
+		        , public AtomicHierarchy<
+		              AtomicUniformCudaHipBuiltIn, // grid atomics
+		              AtomicUniformCudaHipBuiltIn, // block atomics
+		              AtomicUniformCudaHipBuiltIn> // thread atomics
+		        , public math::MathUniformCudaHipBuiltIn
+		        , public BlockSharedMemDynUniformCudaHipBuiltIn
+		        , public BlockSharedMemStUniformCudaHipBuiltIn
+		        , public BlockSyncUniformCudaHipBuiltIn
+		        , public IntrinsicUniformCudaHipBuiltIn
+		        , public MemFenceUniformCudaHipBuiltIn
+		#    ifdef ALPAKA_DISABLE_VENDOR_RNG
+		        , public rand::RandDefault
+		#    else
+		        , public rand::RandUniformCudaHipRand<TApi>
+		#    endif
+		        , public warp::WarpUniformCudaHipBuiltIn
+		        , public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
 		    {
 		        static_assert(
 		            sizeof(TIdx) >= sizeof(int),
@@ -24487,19 +25256,6 @@
 
 		        ALPAKA_FN_HOST_ACC AccGpuUniformCudaHipRt(Vec<TDim, TIdx> const& threadElemExtent)
 		            : WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent)
-		            , gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>()
-		            , bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>()
-		            , AtomicHierarchy<
-		                  AtomicUniformCudaHipBuiltIn, // atomics between grids
-		                  AtomicUniformCudaHipBuiltIn, // atomics between blocks
-		                  AtomicUniformCudaHipBuiltIn // atomics between threads
-		                  >()
-		            , math::MathUniformCudaHipBuiltIn()
-		            , BlockSharedMemDynUniformCudaHipBuiltIn()
-		            , BlockSharedMemStUniformCudaHipBuiltIn()
-		            , BlockSyncUniformCudaHipBuiltIn()
-		            , MemFenceUniformCudaHipBuiltIn()
-		            , rand::RandUniformCudaHipRand<TApi>()
 		        {
 		        }
 		    };
@@ -24712,7 +25468,7 @@
 		// == ./include/alpaka/acc/AccGpuUniformCudaHipRt.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/core/ApiCudaRt.hpp ==
 		// ==
@@ -25150,8 +25906,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/core/ApiHipRt.hpp ==
 		// ==
@@ -25165,7 +25921,7 @@
 		#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
 		#    include <hip/hip_runtime_api.h>
-		#    include <hip/hip_version.h>
+		// #    include <hip/hip_version.h>    // amalgamate: file already included
 
 		namespace alpaka
 		{
@@ -25235,7 +25991,7 @@
 		        static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::hipDeviceAttributeMaxThreadsPerBlock;
 		        static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::hipDeviceAttributeMultiprocessorCount;
 
-		#    if HIP_VERSION >= 40500000
+		#    if HIP_VERSION >= 40'500'000
 		        static constexpr Limit_t limitPrintfFifoSize = ::hipLimitPrintfFifoSize;
 		#    else
 		        static constexpr Limit_t limitPrintfFifoSize
@@ -25274,7 +26030,7 @@
 
 		        static inline Error_t deviceGetLimit(size_t* pValue, Limit_t limit)
 		        {
-		#    if HIP_VERSION < 40500000
+		#    if HIP_VERSION < 40'500'000
 		            if(limit == limitPrintfFifoSize)
 		            {
 		                // Implemented only in ROCm 4.5.0 and later.
@@ -25338,7 +26094,7 @@
 		        static inline Error_t freeAsync([[maybe_unused]] void* devPtr, [[maybe_unused]] Stream_t stream)
 		        {
 		            // hipFreeAsync is implemented only in ROCm 5.2.0 and later.
-		#    if HIP_VERSION >= 50200000
+		#    if HIP_VERSION >= 50'200'000
 		            return ::hipFreeAsync(devPtr, stream);
 		#    else
 		            // Not implemented.
@@ -25421,7 +26177,7 @@
 		        static inline Error_t launchHostFunc(Stream_t stream, HostFn_t fn, void* userData)
 		        {
 		            // hipLaunchHostFunc is implemented only in ROCm 5.4.0 and later.
-		#    if HIP_VERSION >= 50400000
+		#    if HIP_VERSION >= 50'400'000
 		            // Wrap the host function using the proper calling convention.
 		            return ::hipLaunchHostFunc(stream, HostFnAdaptor::hostFunction, new HostFnAdaptor{fn, userData});
 		#    else
@@ -25446,7 +26202,7 @@
 		            [[maybe_unused]] Stream_t stream)
 		        {
 		            // hipMallocAsync is implemented only in ROCm 5.2.0 and later.
-		#    if HIP_VERSION >= 50200000
+		#    if HIP_VERSION >= 50'200'000
 		            return ::hipMallocAsync(devPtr, size, stream);
 		#    else
 		            // Not implemented.
@@ -25608,20 +26364,20 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
 		// ==
-		/* Copyright 2022 Jan Stephan
+		/* Copyright 2023 Jan Stephan
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/platform/PlatformGpuSyclIntel.hpp ==
 			// ==
@@ -25630,13 +26386,13 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/platform/PlatformGenericSycl.hpp"    // amalgamate: file already inlined
 
 			// #include <string>    // amalgamate: file already included
 
-			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+			#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 			// #    include <sycl/sycl.hpp>    // amalgamate: file already included
 
@@ -25676,7 +26432,7 @@
 			// ============================================================================
 
 
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 		namespace alpaka
 		{
@@ -25688,7 +26444,7 @@
 		// == ./include/alpaka/dev/DevGpuSyclIntel.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
 		// ==
@@ -25697,9 +26453,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
 
-		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+		#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 		namespace alpaka
 		{
@@ -25716,15 +26472,15 @@
 		// == ./include/alpaka/kernel/TaskKernelGpuSyclIntel.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 	// #include <string>    // amalgamate: file already included
 	// #include <utility>    // amalgamate: file already included
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
@@ -25798,50 +26554,50 @@
 	// == ./include/alpaka/acc/AccGpuSyclIntel.hpp ==
 	// ============================================================================
 
-// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already expanded
-// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
 // atomic
-// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already expanded
-// #include "alpaka/atomic/AtomicGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/atomic/AtomicNoOp.hpp"    // amalgamate: file already expanded
-// #include "alpaka/atomic/AtomicOmpBuiltIn.hpp"    // amalgamate: file already expanded
-// #include "alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
-// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already expanded
-// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already inlined
+// #include "alpaka/atomic/AtomicGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/atomic/AtomicNoOp.hpp"    // amalgamate: file already inlined
+// #include "alpaka/atomic/AtomicOmpBuiltIn.hpp"    // amalgamate: file already inlined
+// #include "alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
+// #include "alpaka/atomic/Op.hpp"    // amalgamate: file already inlined
+// #include "alpaka/atomic/Traits.hpp"    // amalgamate: file already inlined
 // block
 // shared
 // dynamic
-// #include "alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/block/shared/dyn/BlockSharedMemDynGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/shared/dyn/Traits.hpp"    // amalgamate: file already inlined
 // static
-// #include "alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/block/shared/st/BlockSharedMemStGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/shared/st/BlockSharedMemStMember.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/shared/st/BlockSharedMemStMemberMasterSync.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/shared/st/Traits.hpp"    // amalgamate: file already inlined
 // sync
-// #include "alpaka/block/sync/BlockSyncBarrierOmp.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/sync/BlockSyncBarrierThread.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/sync/BlockSyncGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
-// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/block/sync/BlockSyncBarrierOmp.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/sync/BlockSyncBarrierThread.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/sync/BlockSyncGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/sync/BlockSyncNoOp.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
+// #include "alpaka/block/sync/Traits.hpp"    // amalgamate: file already inlined
 // core
-// #include "alpaka/core/Align.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/AlignedAlloc.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/BarrierThread.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Debug.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/OmpSchedule.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
+// #include "alpaka/core/Align.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/AlignedAlloc.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/BarrierThread.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/ClipCast.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/OmpSchedule.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/core/RemoveRestrict.hpp ==
 	// ==
@@ -25850,7 +26606,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka
 	{
@@ -25883,7 +26639,7 @@
 	// == ./include/alpaka/core/RemoveRestrict.hpp ==
 	// ============================================================================
 
-// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/core/ThreadPool.hpp ==
 	// ==
@@ -25892,7 +26648,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 	// #include <atomic>    // amalgamate: file already included
 	// #include <future>    // amalgamate: file already included
@@ -25941,9 +26697,9 @@
 	        //!             via move then move the lambda.
 	        //! \return     A future to the created task.
 	        template<typename TFnObj, typename... TArgs>
-	        auto enqueueTask(TFnObj&& task, TArgs&&... args)
+	        auto enqueueTask(TFnObj&& task, TArgs&&... args) -> std::future<void>
 	        {
-	            auto ptask = Task{[=, t = std::forward<TFnObj>(task)] { t(args...); }};
+	            auto ptask = Task{[=, t = std::forward<TFnObj>(task)]() noexcept(noexcept(task(args...))) { t(args...); }};
 	            auto future = ptask.get_future();
 	            {
 	                std::lock_guard<std::mutex> lock{m_mutex};
@@ -25983,43 +26739,13 @@
 	// == ./include/alpaka/core/ThreadPool.hpp ==
 	// ============================================================================
 
-// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already expanded
-	// ============================================================================
-	// == ./include/alpaka/core/Unroll.hpp ==
-	// ==
-	/* Copyright 2021 Benjamin Worpitz, Bernhard Manfred Gruber
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-
-	//! Suggests unrolling of the directly following loop to the compiler.
-	//!
-	//! Usage:
-	//!  `ALPAKA_UNROLL
-	//!  for(...){...}`
-	// \TODO: Implement for other compilers.
-	#if BOOST_ARCH_PTX
-	#    define ALPAKA_UNROLL_STRINGIFY(x) #    x
-	#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll __VA_ARGS__))
-	#elif BOOST_COMP_IBM || BOOST_COMP_SUNPRO || BOOST_COMP_HPACC
-	#    define ALPAKA_UNROLL_STRINGIFY(x) #    x
-	#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll(__VA_ARGS__)))
-	#elif BOOST_COMP_PGI
-	#    define ALPAKA_UNROLL(...) _Pragma("unroll")
-	#else
-	#    define ALPAKA_UNROLL(...)
-	#endif
-	// ==
-	// == ./include/alpaka/core/Unroll.hpp ==
-	// ============================================================================
-
-// #include "alpaka/core/Utility.hpp"    // amalgamate: file already expanded
-// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already expanded
+// #include "alpaka/core/Unreachable.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Unroll.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
+// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already inlined
 // dev
-// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/dev/DevCudaRt.hpp ==
 	// ==
@@ -26028,8 +26754,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
@@ -26044,9 +26770,9 @@
 	// == ./include/alpaka/dev/DevCudaRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already expanded
+// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/dev/DevHipRt.hpp ==
 	// ==
@@ -26055,8 +26781,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -26071,7 +26797,7 @@
 	// == ./include/alpaka/dev/DevHipRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/dev/cpu/Wait.hpp ==
 	// ==
@@ -26080,7 +26806,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/event/EventCpu.hpp ==
 		// ==
@@ -26089,18 +26815,18 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/event/EventGenericThreads.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/event/EventGenericThreads.hpp"    // amalgamate: file already inlined
 
 		namespace alpaka
 		{
 		    using EventCpu = EventGenericThreads<DevCpu>;
-		}
+		} // namespace alpaka
 		// ==
 		// == ./include/alpaka/event/EventCpu.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka::trait
 	{
@@ -26132,7 +26858,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
 
 	// #include <type_traits>    // amalgamate: file already included
 
@@ -26149,10 +26875,10 @@
 	// == ./include/alpaka/dim/DimArithmetic.hpp ==
 	// ============================================================================
 
-// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
 // event
-// #include "alpaka/event/EventCpu.hpp"    // amalgamate: file already expanded
+// #include "alpaka/event/EventCpu.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/event/EventCpuSycl.hpp ==
 	// ==
@@ -26161,7 +26887,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/event/EventGenericSycl.hpp ==
 		// ==
@@ -26170,9 +26896,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/queue/QueueGenericSyclBlocking.hpp ==
 			// ==
@@ -26181,7 +26907,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -26189,7 +26915,7 @@
 			{
 			    template<typename TDev>
 			    using QueueGenericSyclBlocking = detail::QueueGenericSyclBase<TDev, true>;
-			}
+			} // namespace alpaka
 
 			#endif
 			// ==
@@ -26204,7 +26930,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already inlined
 
 			#ifdef ALPAKA_ACC_SYCL_ENABLED
 
@@ -26212,14 +26938,14 @@
 			{
 			    template<typename TDev>
 			    using QueueGenericSyclNonBlocking = detail::QueueGenericSyclBase<TDev, false>;
-			}
+			} // namespace alpaka
 
 			#endif
 			// ==
 			// == ./include/alpaka/queue/QueueGenericSyclNonBlocking.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <functional>    // amalgamate: file already included
 		// #include <memory>    // amalgamate: file already included
@@ -26374,7 +27100,7 @@
 		// ============================================================================
 
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
@@ -26394,7 +27120,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/event/EventUniformCudaHipRt.hpp ==
 		// ==
@@ -26403,12 +27129,12 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/queue/QueueUniformCudaHipRtBlocking.hpp ==
 			// ==
@@ -26417,248 +27143,7 @@
 			 */
 
 			// #pragma once
-				// ============================================================================
-				// == ./include/alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp ==
-				// ==
-				/* Copyright 2022 Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
-				 * Antonio Di Pilato
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/core/CallbackThread.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
-
-				// #include <condition_variable>    // amalgamate: file already included
-				// #include <functional>    // amalgamate: file already included
-				// #include <future>    // amalgamate: file already included
-				// #include <memory>    // amalgamate: file already included
-				// #include <mutex>    // amalgamate: file already included
-				// #include <thread>    // amalgamate: file already included
-
-				#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-
-				namespace alpaka
-				{
-				    template<typename TApi>
-				    class EventUniformCudaHipRt;
-
-				    namespace uniform_cuda_hip::detail
-				    {
-				        //! The CUDA/HIP RT queue implementation.
-				        template<typename TApi>
-				        class QueueUniformCudaHipRtImpl final
-				        {
-				        public:
-				            ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(DevUniformCudaHipRt<TApi> const& dev)
-				                : m_dev(dev)
-				                , m_UniformCudaHipQueue()
-				            {
-				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-				                // Set the current device.
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(m_dev.getNativeHandle()));
-
-				                // - [cuda/hip]StreamDefault: Default queue creation flag.
-				                // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created queue may run
-				                // concurrently with work in queue 0 (the NULL queue),
-				                //   and that the created queue should perform no implicit synchronization with queue 0.
-				                // Create the queue on the current device.
-				                // NOTE: [cuda/hip]StreamNonBlocking is required to match the semantic implemented in the alpaka
-				                // CPU queue. It would be too much work to implement implicit default queue synchronization on CPU.
-
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-				                    TApi::streamCreateWithFlags(&m_UniformCudaHipQueue, TApi::streamNonBlocking));
-				            }
-				            QueueUniformCudaHipRtImpl(QueueUniformCudaHipRtImpl&&) = default;
-				            auto operator=(QueueUniformCudaHipRtImpl&&) -> QueueUniformCudaHipRtImpl& = delete;
-				            ALPAKA_FN_HOST ~QueueUniformCudaHipRtImpl()
-				            {
-				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-				                // Make sure all pending async work is finished before destroying the stream to guarantee determinism.
-				                // This would not be necessary for plain CUDA/HIP operations, but we can have host functions in the
-				                // stream, which reference this queue instance and its CallbackThread. Make sure they are done.
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamSynchronize(m_UniformCudaHipQueue));
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::streamDestroy(m_UniformCudaHipQueue));
-				            }
-
-				            [[nodiscard]] auto getNativeHandle() const noexcept
-				            {
-				                return m_UniformCudaHipQueue;
-				            }
-
-				        public:
-				            DevUniformCudaHipRt<TApi> const m_dev; //!< The device this queue is bound to.
-				            core::CallbackThread m_callbackThread;
-
-				        private:
-				            typename TApi::Stream_t m_UniformCudaHipQueue;
-				        };
-
-				        //! The CUDA/HIP RT queue.
-				        template<typename TApi, bool TBlocking>
-				        class QueueUniformCudaHipRt
-				            : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueUniformCudaHipRt<TApi, TBlocking>>
-				            , public concepts::Implements<ConceptQueue, QueueUniformCudaHipRt<TApi, TBlocking>>
-				            , public concepts::Implements<ConceptGetDev, QueueUniformCudaHipRt<TApi, TBlocking>>
-				        {
-				        public:
-				            ALPAKA_FN_HOST QueueUniformCudaHipRt(DevUniformCudaHipRt<TApi> const& dev)
-				                : m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl<TApi>>(dev))
-				            {
-				            }
-				            ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRt const& rhs) const -> bool
-				            {
-				                return (m_spQueueImpl == rhs.m_spQueueImpl);
-				            }
-				            ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRt const& rhs) const -> bool
-				            {
-				                return !((*this) == rhs);
-				            }
-
-				            [[nodiscard]] auto getNativeHandle() const noexcept
-				            {
-				                return m_spQueueImpl->getNativeHandle();
-				            }
-				            auto getCallbackThread() -> core::CallbackThread&
-				            {
-				                return m_spQueueImpl->m_callbackThread;
-				            }
-
-				        public:
-				            std::shared_ptr<QueueUniformCudaHipRtImpl<TApi>> m_spQueueImpl;
-				        };
-				    } // namespace uniform_cuda_hip::detail
-
-				    namespace trait
-				    {
-				        //! The CUDA/HIP RT queue device get trait specialization.
-				        template<typename TApi, bool TBlocking>
-				        struct GetDev<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-				        {
-				            ALPAKA_FN_HOST static auto getDev(
-				                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue)
-				                -> DevUniformCudaHipRt<TApi>
-				            {
-				                return queue.m_spQueueImpl->m_dev;
-				            }
-				        };
-
-				        //! The CUDA/HIP RT queue test trait specialization.
-				        template<typename TApi, bool TBlocking>
-				        struct Empty<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-				        {
-				            ALPAKA_FN_HOST static auto empty(
-				                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue) -> bool
-				            {
-				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-				                // Query is allowed even for queues on non current device.
-				                typename TApi::Error_t ret = TApi::success;
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
-				                    ret = TApi::streamQuery(queue.getNativeHandle()),
-				                    TApi::errorNotReady);
-				                return (ret == TApi::success);
-				            }
-				        };
-
-				        //! The CUDA/HIP RT queue thread wait trait specialization.
-				        //!
-				        //! Blocks execution of the calling thread until the queue has finished processing all previously requested
-				        //! tasks (kernels, data copies, ...)
-				        template<typename TApi, bool TBlocking>
-				        struct CurrentThreadWaitFor<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-				        {
-				            ALPAKA_FN_HOST static auto currentThreadWaitFor(
-				                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue) -> void
-				            {
-				                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-				                // Sync is allowed even for queues on non current device.
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
-				            }
-				        };
-
-				        //! The CUDA/HIP RT blocking queue device type trait specialization.
-				        template<typename TApi, bool TBlocking>
-				        struct DevType<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-				        {
-				            using type = DevUniformCudaHipRt<TApi>;
-				        };
-
-				        //! The CUDA/HIP RT blocking queue event type trait specialization.
-				        template<typename TApi, bool TBlocking>
-				        struct EventType<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-				        {
-				            using type = EventUniformCudaHipRt<TApi>;
-				        };
-
-				        //! The CUDA/HIP RT blocking queue enqueue trait specialization.
-				        template<typename TApi, bool TBlocking, typename TTask>
-				        struct Enqueue<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>, TTask>
-				        {
-				            using QueueImpl = uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl<TApi>;
-
-				            struct HostFuncData
-				            {
-				                // We don't need to keep the queue alive, because in it's dtor it will synchronize with the CUDA/HIP
-				                // stream and wait until all host functions and the CallbackThread are done. It's actually an error to
-				                // copy the queue into the host function. Destroying it here would call CUDA/HIP APIs from the host
-				                // function. Passing it further to the Callback thread, would make the Callback thread hold a task
-				                // containing the queue with the CallbackThread itself. Destroying the task if no other queue instance
-				                // exists will make the CallbackThread join itself and crash.
-				                QueueImpl& q;
-				                TTask t;
-				            };
-
-				            ALPAKA_FN_HOST static void uniformCudaHipRtHostFunc(void* arg)
-				            {
-				                auto data = std::unique_ptr<HostFuncData>(reinterpret_cast<HostFuncData*>(arg));
-				                auto& queue = data->q;
-				                auto f = queue.m_callbackThread.submit([data = std::move(data)] { data->t(); });
-				                f.wait();
-				            }
-
-				            ALPAKA_FN_HOST static auto enqueue(
-				                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
-				                TTask const& task) -> void
-				            {
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::launchHostFunc(
-				                    queue.getNativeHandle(),
-				                    uniformCudaHipRtHostFunc,
-				                    new HostFuncData{*queue.m_spQueueImpl, task}));
-				                if constexpr(TBlocking)
-				                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamSynchronize(queue.getNativeHandle()));
-				            }
-				        };
-
-				        //! The CUDA/HIP RT blocking queue native handle trait specialization.
-				        template<typename TApi, bool TBlocking>
-				        struct NativeHandle<uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>>
-				        {
-				            [[nodiscard]] static auto getNativeHandle(
-				                uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking> const& queue)
-				            {
-				                return queue.getNativeHandle();
-				            }
-				        };
-				    } // namespace trait
-				} // namespace alpaka
-
-				#endif
-				// ==
-				// == ./include/alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp ==
-				// ============================================================================
-
+			// #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -26683,7 +27168,7 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -26700,7 +27185,7 @@
 			// == ./include/alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <functional>    // amalgamate: file already included
 		// #include <memory>    // amalgamate: file already included
@@ -26739,8 +27224,10 @@
 		                    &m_UniformCudaHipEvent,
 		                    (bBusyWait ? TApi::eventDefault : TApi::eventBlockingSync) | TApi::eventDisableTiming));
 		            }
+
 		            EventUniformCudaHipImpl(EventUniformCudaHipImpl const&) = delete;
 		            auto operator=(EventUniformCudaHipImpl const&) -> EventUniformCudaHipImpl& = delete;
+
 		            ALPAKA_FN_HOST ~EventUniformCudaHipImpl()
 		            {
 		                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -26777,10 +27264,12 @@
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 		        }
+
 		        ALPAKA_FN_HOST auto operator==(EventUniformCudaHipRt<TApi> const& rhs) const -> bool
 		        {
 		            return (m_spEventImpl == rhs.m_spEventImpl);
 		        }
+
 		        ALPAKA_FN_HOST auto operator!=(EventUniformCudaHipRt<TApi> const& rhs) const -> bool
 		        {
 		            return !((*this) == rhs);
@@ -26794,6 +27283,7 @@
 		    public:
 		        std::shared_ptr<uniform_cuda_hip::detail::EventUniformCudaHipImpl<TApi>> m_spEventImpl;
 		    };
+
 		    namespace trait
 		    {
 		        //! The CUDA/HIP RT device event device type trait specialization.
@@ -26802,6 +27292,7 @@
 		        {
 		            using type = DevUniformCudaHipRt<TApi>;
 		        };
+
 		        //! The CUDA/HIP RT device event device get trait specialization.
 		        template<typename TApi>
 		        struct GetDev<EventUniformCudaHipRt<TApi>>
@@ -26842,6 +27333,7 @@
 		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::eventRecord(event.getNativeHandle(), queue.getNativeHandle()));
 		            }
 		        };
+
 		        //! The CUDA/HIP RT queue enqueue trait specialization.
 		        template<typename TApi>
 		        struct Enqueue<QueueUniformCudaHipRtBlocking<TApi>, EventUniformCudaHipRt<TApi>>
@@ -26871,6 +27363,7 @@
 		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::eventSynchronize(event.getNativeHandle()));
 		            }
 		        };
+
 		        //! The CUDA/HIP RT queue event wait trait specialization.
 		        template<typename TApi>
 		        struct WaiterWaitFor<QueueUniformCudaHipRtNonBlocking<TApi>, EventUniformCudaHipRt<TApi>>
@@ -26885,6 +27378,7 @@
 		                    TApi::streamWaitEvent(queue.getNativeHandle(), event.getNativeHandle(), 0));
 		            }
 		        };
+
 		        //! The CUDA/HIP RT queue event wait trait specialization.
 		        template<typename TApi>
 		        struct WaiterWaitFor<QueueUniformCudaHipRtBlocking<TApi>, EventUniformCudaHipRt<TApi>>
@@ -26899,6 +27393,7 @@
 		                    TApi::streamWaitEvent(queue.getNativeHandle(), event.getNativeHandle(), 0));
 		            }
 		        };
+
 		        //! The CUDA/HIP RT device event wait trait specialization.
 		        //!
 		        //! Any future work submitted in any queue of this device will wait for event to complete before beginning
@@ -26915,9 +27410,17 @@
 		                // Set the current device.
 		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
 
-		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::streamWaitEvent(nullptr, event.getNativeHandle(), 0));
+		                // Get all the queues on the device at the time of invocation.
+		                // All queues added afterwards are ignored.
+		                auto vQueues = dev.getAllQueues();
+		                for(auto&& spQueue : vQueues)
+		                {
+		                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+		                        TApi::streamWaitEvent(spQueue->getNativeHandle(), event.getNativeHandle(), 0));
+		                }
 		            }
 		        };
+
 		        //! The CUDA/HIP RT event native handle trait specialization.
 		        template<typename TApi>
 		        struct NativeHandle<EventUniformCudaHipRt<TApi>>
@@ -26957,10 +27460,10 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
@@ -26972,19 +27475,19 @@
 	// == ./include/alpaka/event/EventFpgaSyclIntel.hpp ==
 	// ============================================================================
 
-// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/event/EventGpuSyclIntel.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/event/EventGenericSycl.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
@@ -27004,8 +27507,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/event/EventUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/event/EventUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -27020,9 +27523,9 @@
 	// == ./include/alpaka/event/EventHipRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/event/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/event/Traits.hpp"    // amalgamate: file already inlined
 // extent
-// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
 // idx
 	// ============================================================================
 	// == ./include/alpaka/idx/Accessors.hpp ==
@@ -27032,14 +27535,14 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Positioning.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
 
 	// #include <utility>    // amalgamate: file already included
 
@@ -27052,6 +27555,7 @@
 	    {
 	        return trait::GetIdx<TIdx, TOrigin, TUnit>::getIdx(idx, workDiv);
 	    }
+
 	    //! Get the indices requested.
 	    ALPAKA_NO_HOST_ACC_WARNING
 	    template<typename TOrigin, typename TUnit, typename TIdxWorkDiv>
@@ -27067,6 +27571,7 @@
 	        struct GetIdx<TIdxGb, origin::Grid, unit::Blocks>
 	        {
 	            using ImplementationBase = concepts::ImplementationBase<ConceptIdxGb, TIdxGb>;
+
 	            //! \return The index of the current thread in the grid.
 	            ALPAKA_NO_HOST_ACC_WARNING
 	            template<typename TWorkDiv>
@@ -27082,6 +27587,7 @@
 	        struct GetIdx<TIdxBt, origin::Block, unit::Threads>
 	        {
 	            using ImplementationBase = concepts::ImplementationBase<ConceptIdxBt, TIdxBt>;
+
 	            //! \return The index of the current thread in the grid.
 	            ALPAKA_NO_HOST_ACC_WARNING
 	            template<typename TWorkDiv>
@@ -27107,6 +27613,7 @@
 	            }
 	        };
 	    } // namespace trait
+
 	    //! Get the index of the first element this thread computes.
 	    ALPAKA_NO_HOST_ACC_WARNING
 	    template<typename TIdxWorkDiv, typename TGridThreadIdx, typename TThreadElemExtent>
@@ -27117,6 +27624,7 @@
 	    {
 	        return gridThreadIdx * threadElemExtent;
 	    }
+
 	    //! Get the index of the first element this thread computes.
 	    ALPAKA_NO_HOST_ACC_WARNING
 	    template<typename TIdxWorkDiv, typename TGridThreadIdx>
@@ -27126,6 +27634,7 @@
 	        auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
 	        return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx, threadElemExtent);
 	    }
+
 	    //! Get the index of the first element this thread computes.
 	    ALPAKA_NO_HOST_ACC_WARNING
 	    template<typename TIdxWorkDiv>
@@ -27140,16 +27649,16 @@
 	// == ./include/alpaka/idx/Accessors.hpp ==
 	// ============================================================================
 
-// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/bt/IdxBtGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/bt/IdxBtOmp.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/bt/IdxBtRefThreadIdMap.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/gb/IdxGbGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already expanded
-// #include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
+// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/bt/IdxBtGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/bt/IdxBtOmp.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/bt/IdxBtRefThreadIdMap.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/bt/IdxBtZero.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/gb/IdxGbGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/gb/IdxGbRef.hpp"    // amalgamate: file already inlined
+// #include "alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
 // kernel
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp ==
@@ -27160,20 +27669,20 @@
 
 	// #pragma once
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/AccCpuOmp2Blocks.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/OmpSchedule.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccCpuOmp2Blocks.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/OmpSchedule.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
@@ -27962,7 +28471,7 @@
 
 	            // Get the size of the block shared dynamic memory.
 	            auto const blockSharedMemDynSizeBytes = std::apply(
-	                [&](ALPAKA_DECAY_T(TArgs) const&... args)
+	                [&](std::decay_t<TArgs> const&... args)
 	                {
 	                    return getBlockSharedMemDynSizeBytes<AccCpuOmp2Blocks<TDim, TIdx>>(
 	                        m_kernelFnObj,
@@ -27986,7 +28495,7 @@
 
 	            // Get the OpenMP schedule information for the given kernel and parameter types
 	            auto const schedule = std::apply(
-	                [&](ALPAKA_DECAY_T(TArgs) const&... args) {
+	                [&](std::decay_t<TArgs> const&... args) {
 	                    return getOmpSchedule<AccCpuOmp2Blocks<TDim, TIdx>>(
 	                        m_kernelFnObj,
 	                        blockThreadExtent,
@@ -28118,17 +28627,17 @@
 
 	// #pragma once
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/AccCpuOmp2Threads.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccCpuOmp2Threads.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/meta/NdLoop.hpp ==
 		// ==
@@ -28137,9 +28646,9 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 		// #include <utility>    // amalgamate: file already included
 
@@ -28220,7 +28729,7 @@
 		// == ./include/alpaka/meta/NdLoop.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
@@ -28267,7 +28776,7 @@
 
 	            // Get the size of the block shared dynamic memory.
 	            auto const blockSharedMemDynSizeBytes = std::apply(
-	                [&](ALPAKA_DECAY_T(TArgs) const&... args)
+	                [&](std::decay_t<TArgs> const&... args)
 	                {
 	                    return getBlockSharedMemDynSizeBytes<AccCpuOmp2Threads<TDim, TIdx>>(
 	                        m_kernelFnObj,
@@ -28412,19 +28921,19 @@
 
 	// #pragma once
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/AccCpuSerial.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccCpuSerial.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <tuple>    // amalgamate: file already included
@@ -28465,7 +28974,7 @@
 
 	            // Get the size of the block shared dynamic memory.
 	            auto const blockSharedMemDynSizeBytes = std::apply(
-	                [&](ALPAKA_DECAY_T(TArgs) const&... args)
+	                [&](std::decay_t<TArgs> const&... args)
 	                {
 	                    return getBlockSharedMemDynSizeBytes<AccCpuSerial<TDim, TIdx>>(
 	                        m_kernelFnObj,
@@ -28552,7 +29061,7 @@
 	// == ./include/alpaka/kernel/TaskKernelCpuSerial.hpp ==
 	// ============================================================================
 
-// #include "alpaka/kernel/TaskKernelCpuSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/kernel/TaskKernelCpuSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelCpuTbbBlocks.hpp ==
 	// ==
@@ -28562,20 +29071,20 @@
 
 	// #pragma once
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/AccCpuTbbBlocks.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccCpuTbbBlocks.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/MapIdx.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <stdexcept>    // amalgamate: file already included
@@ -28620,7 +29129,7 @@
 
 	            // Get the size of the block shared dynamic memory.
 	            auto const blockSharedMemDynSizeBytes = std::apply(
-	                [&](ALPAKA_DECAY_T(TArgs) const&... args)
+	                [&](std::decay_t<TArgs> const&... args)
 	                {
 	                    return getBlockSharedMemDynSizeBytes<AccCpuTbbBlocks<TDim, TIdx>>(
 	                        m_kernelFnObj,
@@ -28723,21 +29232,21 @@
 
 	// #pragma once
 	// Specialized traits.
-	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 
 	// Implementation details.
-	// #include "alpaka/acc/AccCpuThreads.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/ThreadPool.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/acc/AccCpuThreads.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/ThreadPool.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 	// #include <algorithm>    // amalgamate: file already included
 	// #include <functional>    // amalgamate: file already included
@@ -28926,8 +29435,8 @@
 	// == ./include/alpaka/kernel/TaskKernelCpuThreads.hpp ==
 	// ============================================================================
 
-// #include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/kernel/TaskKernelFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+// #include "alpaka/kernel/TaskKernelGenericSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/kernel/TaskKernelGpuCudaRt.hpp ==
 	// ==
@@ -28936,7 +29445,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp ==
 		// ==
@@ -28946,23 +29455,23 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Decay.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/RemoveRestrict.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Decay.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/DemangleTypeNames.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/RemoveRestrict.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 			// ============================================================================
 			// == ./include/alpaka/workdiv/WorkDivHelpers.hpp ==
 			// ==
@@ -28971,13 +29480,14 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Utility.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Utility.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 			// #include <algorithm>    // amalgamate: file already included
 			// #include <array>    // amalgamate: file already included
@@ -29017,6 +29527,7 @@
 			                --divisor;
 			            return divisor;
 			        }
+
 			        //! \param val The value to find divisors of.
 			        //! \param maxDivisor The maximum.
 			        //! \return A list of all divisors less then or equal to the given maximum.
@@ -29277,8 +29788,8 @@
 			        }
 			        else
 			            return subDivideGridElems(
-			                getExtentVec(gridElemExtent),
-			                getExtentVec(threadElemExtents),
+			                getExtents(gridElemExtent),
+			                getExtents(threadElemExtents),
 			                getAccDevProps<TAcc>(dev),
 			                blockThreadMustDivideGridThreadExtent,
 			                gridBlockExtentSubDivRestrictions);
@@ -29336,6 +29847,7 @@
 
 			        return true;
 			    }
+
 			    //! \tparam TAcc The accelerator to test the validity on.
 			    //! \param dev The device to test the work division for validity on.
 			    //! \param workDiv The work division to test for validity.
@@ -29350,7 +29862,7 @@
 			// == ./include/alpaka/workdiv/WorkDivHelpers.hpp ==
 			// ============================================================================
 
-		// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 
 		// #include <stdexcept>    // amalgamate: file already included
 		// #include <tuple>    // amalgamate: file already included
@@ -29363,7 +29875,7 @@
 
 		#    if !defined(ALPAKA_HOST_ONLY)
 
-		// #        include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already expanded
+		// #        include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
 		#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
 		#            error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
@@ -29377,6 +29889,10 @@
 		{
 		    namespace detail
 		    {
+		#        if BOOST_COMP_CLANG
+		#            pragma clang diagnostic push
+		#            pragma clang diagnostic ignored "-Wunused-template"
+		#        endif
 		        //! The GPU CUDA/HIP kernel entry point.
 		        // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
 		        // We have put the function into a shallow namespace and gave it a short name, so the mangled name in the
@@ -29401,6 +29917,9 @@
 		#        endif
 		            kernelFnObj(const_cast<TAcc const&>(acc), args...);
 		        }
+		#        if BOOST_COMP_CLANG
+		#            pragma clang diagnostic pop
+		#        endif
 		    } // namespace detail
 
 		    namespace uniform_cuda_hip
@@ -29546,7 +30065,7 @@
 
 		                // Get the size of the block shared dynamic memory.
 		                auto const blockSharedMemDynSizeBytes = std::apply(
-		                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
+		                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
 		                        return getBlockSharedMemDynSizeBytes<TAcc>(
 		                            task.m_kernelFnObj,
 		                            blockThreadExtent,
@@ -29566,7 +30085,7 @@
 		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                // Log the function attributes.
 		                typename TApi::FuncAttributes_t funcAttrs;
-		                TApi::funcGetAttributes(&funcAttrs, kernelName);
+		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
 		                std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
 		                          << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
 		                          << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
@@ -29584,7 +30103,7 @@
 		                // (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the
 		                // value location.
 		                std::apply(
-		                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
+		                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
 		                    {
 		                        kernelName<<<
 		                            gridDim,
@@ -29654,7 +30173,7 @@
 
 		                // Get the size of the block shared dynamic memory.
 		                auto const blockSharedMemDynSizeBytes = std::apply(
-		                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args) {
+		                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
 		                        return getBlockSharedMemDynSizeBytes<TAcc>(
 		                            task.m_kernelFnObj,
 		                            blockThreadExtent,
@@ -29674,7 +30193,7 @@
 		#        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                // Log the function attributes.
 		                typename TApi::FuncAttributes_t funcAttrs;
-		                TApi::funcGetAttributes(&funcAttrs, kernelName);
+		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
 		                std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
 		                          << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
 		                          << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
@@ -29688,7 +30207,7 @@
 
 		                // Enqueue the kernel execution.
 		                std::apply(
-		                    [&](remove_restrict_t<ALPAKA_DECAY_T(TArgs)> const&... args)
+		                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
 		                    {
 		                        kernelName<<<
 		                            gridDim,
@@ -29727,7 +30246,7 @@
 	{
 	    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
 	    using TaskKernelGpuCudaRt = TaskKernelGpuUniformCudaHipRt<ApiCudaRt, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>;
-	}
+	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
 	// ==
@@ -29742,8 +30261,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -29751,20 +30270,20 @@
 	{
 	    template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
 	    using TaskKernelGpuHipRt = TaskKernelGpuUniformCudaHipRt<ApiHipRt, TAcc, TDim, TIdx, TKernelFnObj, TArgs...>;
-	}
+	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_HIP_ENABLED
 	// ==
 	// == ./include/alpaka/kernel/TaskKernelGpuHipRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/kernel/TaskKernelGpuSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/kernel/TaskKernelGpuSyclIntel.hpp"    // amalgamate: file already inlined
+// #include "alpaka/kernel/Traits.hpp"    // amalgamate: file already inlined
 // math
-// #include "alpaka/math/Complex.hpp"    // amalgamate: file already expanded
-// #include "alpaka/math/MathGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already expanded
-// #include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
+// #include "alpaka/math/Complex.hpp"    // amalgamate: file already inlined
+// #include "alpaka/math/MathGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/math/MathStdLib.hpp"    // amalgamate: file already inlined
+// #include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
 // mem
 	// ============================================================================
 	// == ./include/alpaka/mem/alloc/AllocCpuAligned.hpp ==
@@ -29774,10 +30293,10 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/AlignedAlloc.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/cpu/SysInfo.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/AlignedAlloc.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/cpu/SysInfo.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/alloc/Traits.hpp ==
 		// ==
@@ -29786,11 +30305,11 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
 
 		namespace alpaka
 		{
@@ -29898,8 +30417,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/alloc/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/alloc/Traits.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka
 	{
@@ -29935,7 +30454,7 @@
 	// == ./include/alpaka/mem/alloc/AllocCpuNew.hpp ==
 	// ============================================================================
 
-// #include "alpaka/mem/alloc/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/mem/alloc/Traits.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufCpu.hpp ==
 	// ==
@@ -29944,35 +30463,55 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/alloc/AllocCpuAligned.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Vectorize.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/alloc/AllocCpuAligned.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/view/ViewAccessOps.hpp ==
 		// ==
-		/* Copyright 2022 Andrea Bocci
+		/* Copyright 2023 Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/view/ViewAccessor.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
 
+		// #include <cstdint>    // amalgamate: file already included
 		// #include <sstream>    // amalgamate: file already included
+		// #include <stdexcept>    // amalgamate: file already included
 		// #include <type_traits>    // amalgamate: file already included
+		// #include <utility>    // amalgamate: file already included
 
 		namespace alpaka::internal
 		{
+		    template<typename T, typename SFINAE = void>
+		    inline constexpr bool isView = false;
+
+		    // TODO(bgruber): replace this by a concept in C++20
+		    template<typename TView>
+		    inline constexpr bool isView<
+		        TView,
+		        std::void_t<
+		            Idx<TView>,
+		            Dim<TView>,
+		            decltype(getPtrNative(std::declval<TView>())),
+		            decltype(getPitchesInBytes(std::declval<TView>())),
+		            decltype(getExtents(std::declval<TView>()))>>
+		        = true;
+
 		    template<typename TView>
 		    struct ViewAccessOps
 		    {
+		        static_assert(isView<TView>);
+
 		    private:
 		        using value_type = Elem<TView>;
 		        using pointer = value_type*;
@@ -29980,13 +30519,9 @@
 		        using reference = value_type&;
 		        using const_reference = value_type const&;
 		        using Idx = alpaka::Idx<TView>;
+		        using Dim = alpaka::Dim<TView>;
 
 		    public:
-		        ViewAccessOps()
-		        {
-		            static_assert(experimental::trait::internal::IsView<TView>::value);
-		        }
-
 		        ALPAKA_FN_HOST auto data() -> pointer
 		        {
 		            return getPtrNative(*static_cast<TView*>(this));
@@ -29999,82 +30534,75 @@
 
 		        ALPAKA_FN_HOST auto operator*() -> reference
 		        {
-		            static_assert(Dim<TView>::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
+		            static_assert(Dim::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
 		            return *data();
 		        }
 
 		        ALPAKA_FN_HOST auto operator*() const -> const_reference
 		        {
-		            static_assert(Dim<TView>::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
+		            static_assert(Dim::value == 0, "operator* is only valid for Buffers and Views of dimension 0");
 		            return *data();
 		        }
 
 		        ALPAKA_FN_HOST auto operator->() -> pointer
 		        {
-		            static_assert(Dim<TView>::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
+		            static_assert(Dim::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
 		            return data();
 		        }
 
 		        ALPAKA_FN_HOST auto operator->() const -> const_pointer
 		        {
-		            static_assert(Dim<TView>::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
+		            static_assert(Dim::value == 0, "operator-> is only valid for Buffers and Views of dimension 0");
 		            return data();
 		        }
 
 		        ALPAKA_FN_HOST auto operator[](Idx i) -> reference
 		        {
-		            static_assert(Dim<TView>::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
+		            static_assert(Dim::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
 		            return data()[i];
 		        }
 
 		        ALPAKA_FN_HOST auto operator[](Idx i) const -> const_reference
 		        {
-		            static_assert(Dim<TView>::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
+		            static_assert(Dim::value == 1, "operator[i] is only valid for Buffers and Views of dimension 1");
 		            return data()[i];
 		        }
 
 		    private:
-		        template<std::size_t TDim, typename TIdx>
-		        [[nodiscard]] ALPAKA_FN_HOST auto ptr_at([[maybe_unused]] Vec<DimInt<TDim>, TIdx> index) const -> const_pointer
+		        template<typename TIdx>
+		        [[nodiscard]] ALPAKA_FN_HOST auto ptr_at([[maybe_unused]] Vec<Dim, TIdx> index) const -> const_pointer
 		        {
-		            static_assert(
-		                Dim<TView>::value == TDim,
-		                "the index type must have the same dimensionality as the Buffer or View");
 		            static_assert(
 		                std::is_convertible_v<TIdx, Idx>,
 		                "the index type must be convertible to the index of the Buffer or View");
 
-		            auto ptr = reinterpret_cast<uintptr_t>(data());
-		            if constexpr(TDim > 0)
+		            auto ptr = reinterpret_cast<std::uintptr_t>(data());
+		            if constexpr(Dim::value > 0)
 		            {
-		                auto const pitchesInBytes = getPitchBytesVec(*static_cast<TView const*>(this));
-		                for(std::size_t i = 0u; i < TDim; i++)
-		                {
-		                    const Idx pitch = i + 1 < TDim ? pitchesInBytes[i + 1] : static_cast<Idx>(sizeof(value_type));
-		                    ptr += static_cast<uintptr_t>(index[i] * pitch);
-		                }
+		                ptr += static_cast<std::uintptr_t>(
+		                    (getPitchesInBytes(*static_cast<TView const*>(this)) * castVec<Idx>(index)).sum());
 		            }
 		            return reinterpret_cast<const_pointer>(ptr);
 		        }
 
 		    public:
-		        template<std::size_t TDim, typename TIdx>
-		        ALPAKA_FN_HOST auto operator[](Vec<DimInt<TDim>, TIdx> index) -> reference
+		        template<typename TIdx>
+		        ALPAKA_FN_HOST auto operator[](Vec<Dim, TIdx> index) -> reference
 		        {
 		            return *const_cast<pointer>(ptr_at(index));
 		        }
 
-		        template<std::size_t TDim, typename TIdx>
-		        ALPAKA_FN_HOST auto operator[](Vec<DimInt<TDim>, TIdx> index) const -> const_reference
+		        template<typename TIdx>
+		        ALPAKA_FN_HOST auto operator[](Vec<Dim, TIdx> index) const -> const_reference
 		        {
 		            return *ptr_at(index);
 		        }
 
-		        template<std::size_t TDim, typename TIdx>
-		        ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) -> reference
+		        template<typename TIdx>
+		        ALPAKA_FN_HOST auto at(Vec<Dim, TIdx> index) -> reference
 		        {
-		            auto extent = getExtentVec(*static_cast<TView*>(this));
-		            if(!(index < extent).foldrAll(std::logical_and<bool>(), true))
+		            auto extent = getExtents(*static_cast<TView*>(this));
+		            if(!(index < extent).all())
 		            {
 		                std::stringstream msg;
 		                msg << "index " << index << " is outside of the Buffer or View extent " << extent;
@@ -30083,11 +30611,11 @@
 		            return *const_cast<pointer>(ptr_at(index));
 		        }
 
-		        template<std::size_t TDim, typename TIdx>
-		        [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<DimInt<TDim>, TIdx> index) const -> const_reference
+		        template<typename TIdx>
+		        [[nodiscard]] ALPAKA_FN_HOST auto at(Vec<Dim, TIdx> index) const -> const_reference
 		        {
-		            auto extent = getExtentVec(*static_cast<TView const*>(this));
-		            if(!(index < extent).foldrAll(std::logical_and<bool>(), true))
+		            auto extent = getExtents(*static_cast<TView const*>(this));
+		            if(!(index < extent).all())
 		            {
 		                std::stringstream msg;
 		                msg << "index " << index << " is outside of the Buffer or View extent " << extent;
@@ -30101,8 +30629,83 @@
 		// == ./include/alpaka/mem/view/ViewAccessOps.hpp ==
 		// ============================================================================
 
-	// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/platform/PlatformCpu.hpp ==
+		// ==
+		/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
+
+		// #include <sstream>    // amalgamate: file already included
+		// #include <vector>    // amalgamate: file already included
+
+		namespace alpaka
+		{
+		    //! The CPU device platform.
+		    struct PlatformCpu : concepts::Implements<ConceptPlatform, PlatformCpu>
+		    {
+		#if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                     \
+		    && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
+		        // This is a workaround for g++-11 bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96295
+		        // g++-11 complains in *all* places where a PlatformCpu is used, that it "may be used uninitialized"
+		        char c = {};
+		#endif
+		    };
+
+		    namespace trait
+		    {
+		        //! The CPU device device type trait specialization.
+		        template<>
+		        struct DevType<PlatformCpu>
+		        {
+		            using type = DevCpu;
+		        };
+
+		        //! The CPU platform device count get trait specialization.
+		        template<>
+		        struct GetDevCount<PlatformCpu>
+		        {
+		            ALPAKA_FN_HOST static auto getDevCount(PlatformCpu const&) -> std::size_t
+		            {
+		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+		                return 1;
+		            }
+		        };
+
+		        //! The CPU platform device get trait specialization.
+		        template<>
+		        struct GetDevByIdx<PlatformCpu>
+		        {
+		            ALPAKA_FN_HOST static auto getDevByIdx(PlatformCpu const& platform, std::size_t const& devIdx) -> DevCpu
+		            {
+		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+		                std::size_t const devCount = getDevCount(platform);
+		                if(devIdx >= devCount)
+		                {
+		                    std::stringstream ssErr;
+		                    ssErr << "Unable to return device handle for CPU device with index " << devIdx
+		                          << " because there are only " << devCount << " devices!";
+		                    throw std::runtime_error(ssErr.str());
+		                }
+
+		                return {};
+		            }
+		        };
+		    } // namespace trait
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/platform/PlatformCpu.hpp ==
+		// ============================================================================
+
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 	// #include <functional>    // amalgamate: file already included
 	// #include <memory>    // amalgamate: file already included
@@ -30150,8 +30753,10 @@
 	                          << std::endl;
 	#endif
 	            }
+
 	            BufCpuImpl(BufCpuImpl&&) = delete;
 	            auto operator=(BufCpuImpl&&) -> BufCpuImpl& = delete;
+
 	            ALPAKA_FN_HOST ~BufCpuImpl()
 	            {
 	                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -30192,6 +30797,7 @@
 	        {
 	            using type = DevCpu;
 	        };
+
 	        //! The BufCpu device get trait specialization.
 	        template<typename TElem, typename TDim, typename TIdx>
 	        struct GetDev<BufCpu<TElem, TDim, TIdx>>
@@ -30217,15 +30823,12 @@
 	        };
 
 	        //! The BufCpu width get trait specialization.
-	        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-	        struct GetExtent<
-	            TIdxIntegralConst,
-	            BufCpu<TElem, TDim, TIdx>,
-	            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+	        template<typename TElem, typename TDim, typename TIdx>
+	        struct GetExtents<BufCpu<TElem, TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getExtent(BufCpu<TElem, TDim, TIdx> const& extent) -> TIdx
+	            ALPAKA_FN_HOST auto operator()(BufCpu<TElem, TDim, TIdx> const& buf)
 	            {
-	                return extent.m_spBufCpuImpl->m_extentElements[TIdxIntegralConst::value];
+	                return buf.m_spBufCpuImpl->m_extentElements;
 	            }
 	        };
 
@@ -30237,11 +30840,13 @@
 	            {
 	                return buf.m_spBufCpuImpl->m_pMem;
 	            }
+
 	            ALPAKA_FN_HOST static auto getPtrNative(BufCpu<TElem, TDim, TIdx>& buf) -> TElem*
 	            {
 	                return buf.m_spBufCpuImpl->m_pMem;
 	            }
 	        };
+
 	        //! The BufCpu pointer on device get trait specialization.
 	        template<typename TElem, typename TDim, typename TIdx>
 	        struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevCpu>
@@ -30258,6 +30863,7 @@
 	                    throw std::runtime_error("The buffer is not accessible from the given device!");
 	                }
 	            }
+
 	            ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevCpu const& dev) -> TElem*
 	            {
 	                if(dev == getDev(buf))
@@ -30301,6 +30907,7 @@
 	                return BufCpu<TElem, TDim, TIdx>(dev, memPtr, std::move(deleter), extent);
 	            }
 	        };
+
 	        //! The BufCpu stream-ordered memory allocation trait specialization.
 	        template<typename TElem, typename TDim, typename TIdx>
 	        struct AsyncBufAlloc<TElem, TDim, TIdx, DevCpu>
@@ -30357,8 +30964,10 @@
 	        struct BufAllocMapped<PlatformCpu, TElem, TDim, TIdx>
 	        {
 	            template<typename TExtent>
-	            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
-	                -> BufCpu<TElem, TDim, TIdx>
+	            ALPAKA_FN_HOST static auto allocMappedBuf(
+	                DevCpu const& host,
+	                PlatformCpu const& /*platform*/,
+	                TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
 	            {
 	                // Allocate standard host memory.
 	                return allocBuf<TElem, TIdx>(host, extent);
@@ -30372,12 +30981,12 @@
 	        };
 
 	        //! The BufCpu offset get trait specialization.
-	        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-	        struct GetOffset<TIdxIntegralConst, BufCpu<TElem, TDim, TIdx>>
+	        template<typename TElem, typename TDim, typename TIdx>
+	        struct GetOffsets<BufCpu<TElem, TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getOffset(BufCpu<TElem, TDim, TIdx> const&) -> TIdx
+	            ALPAKA_FN_HOST auto operator()(BufCpu<TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
 	            {
-	                return 0u;
+	                return Vec<TDim, TIdx>::zeros();
 	            }
 	        };
 
@@ -30399,19 +31008,19 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
 
 		// #include <cstring>    // amalgamate: file already included
 
 		namespace alpaka
 		{
 		    class DevCpu;
-		}
+		} // namespace alpaka
 
 		namespace alpaka
 		{
@@ -30423,6 +31032,8 @@
 		        template<typename TDim, typename TViewDst, typename TViewSrc, typename TExtent>
 		        struct TaskCopyCpuBase
 		        {
+		            static_assert(TDim::value > 0);
+
 		            using ExtentSize = Idx<TExtent>;
 		            using DstSize = Idx<TViewDst>;
 		            using SrcSize = Idx<TViewSrc>;
@@ -30430,23 +31041,26 @@
 
 		            template<typename TViewFwd>
 		            TaskCopyCpuBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
-		                : m_extent(getExtentVec(extent))
-		                , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+		                : m_extent(getExtents(extent))
+		                , m_extentWidthBytes(m_extent.back() * static_cast<ExtentSize>(sizeof(Elem)))
 		#if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-		                , m_dstExtent(getExtentVec(viewDst))
-		                , m_srcExtent(getExtentVec(viewSrc))
+		                , m_dstExtent(getExtents(viewDst))
+		                , m_srcExtent(getExtents(viewSrc))
 		#endif
-		                , m_dstPitchBytes(getPitchBytesVec(viewDst))
-		                , m_srcPitchBytes(getPitchBytesVec(viewSrc))
+		                , m_dstPitchBytes(getPitchesInBytes(viewDst))
+		                , m_srcPitchBytes(getPitchesInBytes(viewSrc))
 		                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
 		                , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
 		            {
 		                if constexpr(TDim::value > 0)
 		                {
-		                    ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-		                    ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).foldrAll(std::logical_or<bool>()));
-		                    ALPAKA_ASSERT(static_cast<DstSize>(m_extentWidthBytes) <= m_dstPitchBytes[TDim::value - 1u]);
-		                    ALPAKA_ASSERT(static_cast<SrcSize>(m_extentWidthBytes) <= m_srcPitchBytes[TDim::value - 1u]);
+		                    ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+		                    ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).all());
+		                    if constexpr(TDim::value > 1)
+		                    {
+		                        ALPAKA_ASSERT(static_cast<DstSize>(m_extentWidthBytes) <= m_dstPitchBytes[TDim::value - 2]);
+		                        ALPAKA_ASSERT(static_cast<SrcSize>(m_extentWidthBytes) <= m_srcPitchBytes[TDim::value - 2]);
+		                    }
 		                }
 		            }
 
@@ -30494,10 +31108,11 @@
 		#endif
 		                // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
 		                // iteration.
-		                Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
-		                // [z, y, x] -> [y, x] because the z pitch (the full size of the buffer) is not required.
-		                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
-		                Vec<DimMin1, SrcSize> const srcPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_srcPitchBytes));
+		                Vec<DimMin1, ExtentSize> const extentWithoutInnermost = subVecBegin<DimMin1>(this->m_extent);
+		                Vec<DimMin1, DstSize> const dstPitchBytesWithoutInnermost
+		                    = subVecBegin<DimMin1>(this->m_dstPitchBytes);
+		                Vec<DimMin1, SrcSize> const srcPitchBytesWithoutInnermost
+		                    = subVecBegin<DimMin1>(this->m_srcPitchBytes);
 
 		                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
 		                {
@@ -30506,14 +31121,8 @@
 		                        [&](Vec<DimMin1, ExtentSize> const& idx)
 		                        {
 		                            std::memcpy(
-		                                reinterpret_cast<void*>(
-		                                    this->m_dstMemNative
-		                                    + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
-		                                          .foldrAll(std::plus<DstSize>())),
-		                                reinterpret_cast<void const*>(
-		                                    this->m_srcMemNative
-		                                    + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost)
-		                                          .foldrAll(std::plus<SrcSize>())),
+		                                this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutInnermost).sum(),
+		                                this->m_srcMemNative + (castVec<SrcSize>(idx) * srcPitchBytesWithoutInnermost).sum(),
 		                                static_cast<std::size_t>(this->m_extentWidthBytes));
 		                        });
 		                }
@@ -30558,9 +31167,9 @@
 		                , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
 		            {
 		                // all zero-sized extents are equivalent
-		                ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
-		                ALPAKA_ASSERT(getExtentVec(viewDst).prod() == 1u);
-		                ALPAKA_ASSERT(getExtentVec(viewSrc).prod() == 1u);
+		                ALPAKA_ASSERT(getExtents(extent).prod() == 1u);
+		                ALPAKA_ASSERT(getExtents(viewDst).prod() == 1u);
+		                ALPAKA_ASSERT(getExtents(viewSrc).prod() == 1u);
 		            }
 
 		#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -30624,12 +31233,12 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
 
 		// #include <cstring>    // amalgamate: file already included
 
@@ -30643,6 +31252,8 @@
 		        template<typename TDim, typename TView, typename TExtent>
 		        struct TaskSetCpuBase
 		        {
+		            static_assert(TDim::value > 0);
+
 		            using ExtentSize = Idx<TExtent>;
 		            using DstSize = Idx<TView>;
 		            using Elem = alpaka::Elem<TView>;
@@ -30650,16 +31261,17 @@
 		            template<typename TViewFwd>
 		            TaskSetCpuBase(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
 		                : m_byte(byte)
-		                , m_extent(getExtentVec(extent))
-		                , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+		                , m_extent(getExtents(extent))
+		                , m_extentWidthBytes(m_extent.back() * static_cast<ExtentSize>(sizeof(Elem)))
 		#if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-		                , m_dstExtent(getExtentVec(view))
+		                , m_dstExtent(getExtents(view))
 		#endif
-		                , m_dstPitchBytes(getPitchBytesVec(view))
+		                , m_dstPitchBytes(getPitchesInBytes(view))
 		                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
 		            {
-		                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-		                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
+		                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+		                if constexpr(TDim::value > 1)
+		                    ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 2]);
 		            }
 
 		#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -30700,9 +31312,8 @@
 		#endif
 		                // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
 		                // iteration.
-		                Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
-		                // [z, y, x] -> [y, x] because the z pitch (the full idx of the buffer) is not required.
-		                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
+		                Vec<DimMin1, ExtentSize> const extentWithoutInnermost = subVecBegin<DimMin1>(this->m_extent);
+		                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost = subVecBegin<DimMin1>(this->m_dstPitchBytes);
 
 		                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
 		                {
@@ -30711,10 +31322,7 @@
 		                        [&](Vec<DimMin1, ExtentSize> const& idx)
 		                        {
 		                            std::memset(
-		                                reinterpret_cast<void*>(
-		                                    this->m_dstMemNative
-		                                    + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
-		                                          .foldrAll(std::plus<DstSize>())),
+		                                this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost).sum(),
 		                                this->m_byte,
 		                                static_cast<std::size_t>(this->m_extentWidthBytes));
 		                        });
@@ -30738,7 +31346,7 @@
 		                if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
 		                {
 		                    std::memset(
-		                        reinterpret_cast<void*>(this->m_dstMemNative),
+		                        this->m_dstMemNative,
 		                        this->m_byte,
 		                        static_cast<std::size_t>(this->m_extentWidthBytes));
 		                }
@@ -30760,8 +31368,8 @@
 		                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
 		            {
 		                // all zero-sized extents are equivalent
-		                ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
-		                ALPAKA_ASSERT(getExtentVec(view).prod() == 1u);
+		                ALPAKA_ASSERT(getExtents(extent).prod() == 1u);
+		                ALPAKA_ASSERT(getExtents(view).prod() == 1u);
 		            }
 
 		#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -30780,7 +31388,7 @@
 		#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                printDebug();
 		#endif
-		                std::memset(reinterpret_cast<void*>(m_dstMemNative), m_byte, sizeof(Elem));
+		                std::memset(m_dstMemNative, m_byte, sizeof(Elem));
 		            }
 
 		            std::uint8_t const m_byte;
@@ -30821,7 +31429,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/BufGenericSycl.hpp ==
 		// ==
@@ -30830,16 +31438,15 @@
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/buf/BufCpu.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/view/Accessor.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/buf/BufCpu.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 		// #include <memory>    // amalgamate: file already included
 		// #include <type_traits>    // amalgamate: file already included
@@ -30920,14 +31527,12 @@
 		    };
 
 		    //! The BufGenericSycl extent get trait specialization.
-		    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetExtent<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+		    struct GetExtents<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
 		    {
-		        static_assert(TDim::value > TIdxIntegralConst::value, "Requested dimension out of bounds");
-
-		        static auto getExtent(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf) -> TIdx
+		        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const& buf) const
 		        {
-		            return buf.m_extentElements[TIdxIntegralConst::value];
+		            return buf.m_extentElements;
 		        }
 		    };
 
@@ -30989,7 +31594,9 @@
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-		            if constexpr(TDim::value == 0 || TDim::value == 1)
+		            if constexpr(TDim::value == 0)
+		                std::cout << __func__ << " ewb: " << sizeof(TElem) << '\n';
+		            else if constexpr(TDim::value == 1)
 		            {
 		                auto const width = getWidth(extent);
 
@@ -31022,9 +31629,7 @@
 		                static_cast<std::size_t>(getExtentProduct(extent)),
 		                nativeDev,
 		                nativeContext);
-		            // captured structured bindings are a C++20 extension
-		            // auto deleter = [nativeContext](TElem* ptr) { sycl::free(ptr, nativeContext); };
-		            auto deleter = [&dev](TElem* ptr) { sycl::free(ptr, dev.getNativeHandle().second); };
+		            auto deleter = [ctx = nativeContext](TElem* ptr) { sycl::free(ptr, ctx); };
 
 		            return BufGenericSycl<TElem, TDim, TIdx, TPlatform>(dev, memPtr, std::move(deleter), extent);
 		        }
@@ -31037,12 +31642,12 @@
 		    };
 
 		    //! The BufGenericSycl offset get trait specialization.
-		    template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx, typename TPlatform>
-		    struct GetOffset<TIdxIntegralConst, BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
+		    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+		    struct GetOffsets<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
 		    {
-		        static auto getOffset(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const&) -> TIdx
+		        auto operator()(BufGenericSycl<TElem, TDim, TIdx, TPlatform> const&) const -> Vec<TDim, TIdx>
 		        {
-		            return 0u;
+		            return Vec<TDim, TIdx>::zeros();
 		        }
 		    };
 
@@ -31051,13 +31656,14 @@
 		    struct BufAllocMapped
 		    {
 		        template<typename TExtent>
-		        static auto allocMappedBuf(DevCpu const& host, TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+		        static auto allocMappedBuf(DevCpu const& host, TPlatform const& platform, TExtent const& extent)
+		            -> BufCpu<TElem, TDim, TIdx>
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 		            // Allocate SYCL page-locked memory on the host, mapped into the TPlatform address space and
 		            // accessible to all devices in the TPlatform.
-		            auto ctx = TPlatform::syclContext();
+		            auto ctx = platform.syclContext();
 		            TElem* memPtr = sycl::malloc_host<TElem>(static_cast<std::size_t>(getExtentProduct(extent)), ctx);
 		            auto deleter = [ctx](TElem* ptr) { sycl::free(ptr, ctx); };
 
@@ -31080,6 +31686,7 @@
 		        {
 		            return getPtrNative(buf);
 		        }
+
 		        static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevGenericSycl<TPlatform> const&) -> TElem*
 		        {
 		            return getPtrNative(buf);
@@ -31087,7 +31694,6 @@
 		    };
 		} // namespace alpaka::trait
 
-		// #    include "alpaka/mem/buf/sycl/Accessor.hpp"    // amalgamate: file already expanded
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/sycl/Copy.hpp ==
 			// ==
@@ -31096,13 +31702,13 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/elem/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
 				// ============================================================================
 				// == ./include/alpaka/mem/buf/sycl/Common.hpp ==
 				// ==
@@ -31111,9 +31717,9 @@
 				 */
 
 				// #pragma once
-				// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-				// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
+				// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
 
 				// #include <cstddef>    // amalgamate: file already included
 
@@ -31128,14 +31734,18 @@
 				    {
 				        constexpr auto dim = Dim<TExtent>::value;
 
-				        auto const width = getWidth(ext) * multiplier;
-
-				        if constexpr(dim == 1)
-				            return sycl::range<1>{width};
-				        else if constexpr(dim == 2)
-				            return sycl::range<2>{width, getHeight(ext)};
+				        if constexpr(dim == 0)
+				            return sycl::range<1>{multiplier};
 				        else
-				            return sycl::range<3>{width, getHeight(ext), getDepth(ext)};
+				        {
+				            auto const width = getWidth(ext) * multiplier;
+				            if constexpr(dim == 1)
+				                return sycl::range<1>{width};
+				            else if constexpr(dim == 2)
+				                return sycl::range<2>{width, getHeight(ext)};
+				            else
+				                return sycl::range<3>{width, getHeight(ext), getDepth(ext)};
+				        }
 				    }
 
 				    template<typename TView>
@@ -31143,12 +31753,17 @@
 				    {
 				        constexpr auto dim = Dim<TView>::value;
 
-				        if constexpr(dim == 1)
-				            return sycl::id<1>{getOffsetX(view)};
-				        else if constexpr(dim == 2)
-				            return sycl::id<2>{getOffsetX(view), getOffsetY(view)};
+				        if constexpr(dim == 0)
+				            return sycl::range<1>{1};
 				        else
-				            return sycl::id<3>{getOffsetX(view), getOffsetY(view), getOffsetZ(view)};
+				        {
+				            if constexpr(dim == 1)
+				                return sycl::id<1>{getOffsetX(view)};
+				            else if constexpr(dim == 2)
+				                return sycl::id<2>{getOffsetX(view), getOffsetY(view)};
+				            else
+				                return sycl::id<3>{getOffsetX(view), getOffsetY(view), getOffsetZ(view)};
+				        }
 				    }
 				} // namespace alpaka::detail
 
@@ -31157,10 +31772,10 @@
 				// == ./include/alpaka/mem/buf/sycl/Common.hpp ==
 				// ============================================================================
 
-			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
 			// #include <memory>    // amalgamate: file already included
 			// #include <type_traits>    // amalgamate: file already included
@@ -31185,21 +31800,21 @@
 
 			        template<typename TViewFwd>
 			        TaskCopySyclBase(TViewFwd&& viewDst, TViewSrc const& viewSrc, TExtent const& extent)
-			            : m_extent(getExtentVec(extent))
+			            : m_extent(getExtents(extent))
+			            , m_extentWidthBytes(m_extent.back() * static_cast<ExtentSize>(sizeof(Elem)))
 			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-			            , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
-			            , m_dstExtent(getExtentVec(viewDst))
-			            , m_srcExtent(getExtentVec(viewSrc))
+			            , m_dstExtent(getExtents(viewDst))
+			            , m_srcExtent(getExtents(viewSrc))
 			#    endif
-			            , m_dstPitchBytes(getPitchBytesVec(viewDst))
-			            , m_srcPitchBytes(getPitchBytesVec(viewSrc))
+			            , m_dstPitchBytes(getPitchesInBytes(viewDst))
+			            , m_srcPitchBytes(getPitchesInBytes(viewSrc))
 			            , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(viewDst)))
 			            , m_srcMemNative(reinterpret_cast<std::uint8_t const*>(getPtrNative(viewSrc)))
 			        {
 			            if constexpr(TDim::value > 0)
 			            {
-			                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-			                ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).foldrAll(std::logical_or<bool>()));
+			                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+			                ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).all());
 			            }
 			        }
 
@@ -31214,8 +31829,8 @@
 			#    endif
 
 			        Vec<TDim, ExtentSize> const m_extent;
-			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
 			        ExtentSize const m_extentWidthBytes;
+			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
 			        Vec<TDim, DstSize> const m_dstExtent;
 			        Vec<TDim, SrcSize> const m_srcExtent;
 			#    endif
@@ -31248,9 +31863,8 @@
 			            // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
 			            // iteration.
 			            Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
-			            // [z, y, x] -> [y, x] because the z pitch (the full size of the buffer) is not required.
-			            Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
-			            Vec<DimMin1, SrcSize> const srcPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_srcPitchBytes));
+			            Vec<DimMin1, DstSize> const dstPitchBytesWithoutInnermost(subVecBegin<DimMin1>(this->m_dstPitchBytes));
+			            Vec<DimMin1, SrcSize> const srcPitchBytesWithoutInnermost(subVecBegin<DimMin1>(this->m_srcPitchBytes));
 
 			            // Record an event for each memcpy call
 			            std::vector<sycl::event> events;
@@ -31263,14 +31877,8 @@
 			                    [&](Vec<DimMin1, ExtentSize> const& idx)
 			                    {
 			                        events.push_back(queue.memcpy(
-			                            reinterpret_cast<void*>(
-			                                this->m_dstMemNative
-			                                + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
-			                                      .foldrAll(std::plus<DstSize>())),
-			                            reinterpret_cast<void const*>(
-			                                this->m_srcMemNative
-			                                + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost)
-			                                      .foldrAll(std::plus<SrcSize>())),
+			                            this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutInnermost).sum(),
+			                            this->m_srcMemNative + (castVec<SrcSize>(idx) * srcPitchBytesWithoutInnermost).sum(),
 			                            static_cast<std::size_t>(this->m_extentWidthBytes),
 			                            requirements));
 			                    });
@@ -31299,8 +31907,8 @@
 			            if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
 			            {
 			                return queue.memcpy(
-			                    reinterpret_cast<void*>(this->m_dstMemNative),
-			                    reinterpret_cast<void const*>(this->m_srcMemNative),
+			                    this->m_dstMemNative,
+			                    this->m_srcMemNative,
 			                    sizeof(Elem) * static_cast<std::size_t>(this->m_extent.prod()),
 			                    requirements);
 			            }
@@ -31327,9 +31935,9 @@
 			            , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
 			        {
 			            // all zero-sized extents are equivalent
-			            ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
-			            ALPAKA_ASSERT(getExtentVec(viewDst).prod() == 1u);
-			            ALPAKA_ASSERT(getExtentVec(viewSrc).prod() == 1u);
+			            ALPAKA_ASSERT(getExtents(extent).prod() == 1u);
+			            ALPAKA_ASSERT(getExtents(viewDst).prod() == 1u);
+			            ALPAKA_ASSERT(getExtents(viewSrc).prod() == 1u);
 			        }
 
 			        auto operator()(sycl::queue& queue, std::vector<sycl::event> const& requirements) const -> sycl::event
@@ -31402,18 +32010,18 @@
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/mem/buf/sycl/Common.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Debug.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Sycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/buf/sycl/Common.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 
 			// #include <cstddef>    // amalgamate: file already included
 			// #include <cstdint>    // amalgamate: file already included
@@ -31437,18 +32045,19 @@
 			            template<typename TViewFwd>
 			            TaskSetSyclBase(TViewFwd&& view, std::uint8_t const& byte, TExtent const& extent)
 			                : m_byte(byte)
-			                , m_extent(getExtentVec(extent))
-			                , m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem)))
+			                , m_extent(getExtents(extent))
+			                , m_extentWidthBytes(m_extent.back() * static_cast<ExtentSize>(sizeof(Elem)))
 			#    if(!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-			                , m_dstExtent(getExtentVec(view))
+			                , m_dstExtent(getExtents(view))
 			#    endif
 
-			                , m_dstPitchBytes(getPitchBytesVec(view))
+			                , m_dstPitchBytes(getPitchesInBytes(view))
 			                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
 
 			            {
-			                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-			                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
+			                ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).all());
+			                if constexpr(TDim::value > 1)
+			                    ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 2]);
 			            }
 
 			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -31491,8 +32100,7 @@
 			                // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one
 			                // iteration.
 			                Vec<DimMin1, ExtentSize> const extentWithoutInnermost(subVecBegin<DimMin1>(this->m_extent));
-			                // [z, y, x] -> [y, x] because the z pitch (the full idx of the buffer) is not required.
-			                Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(subVecEnd<DimMin1>(this->m_dstPitchBytes));
+			                Vec<DimMin1, DstSize> const dstPitchBytesWithoutInnermost(subVecBegin<DimMin1>(this->m_dstPitchBytes));
 
 			                // Record an event for each memcpy call
 			                std::vector<sycl::event> events;
@@ -31505,10 +32113,7 @@
 			                        [&](Vec<DimMin1, ExtentSize> const& idx)
 			                        {
 			                            events.push_back(queue.memset(
-			                                reinterpret_cast<void*>(
-			                                    this->m_dstMemNative
-			                                    + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost)
-			                                          .foldrAll(std::plus<DstSize>())),
+			                                this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutInnermost).sum(),
 			                                this->m_byte,
 			                                static_cast<std::size_t>(this->m_extentWidthBytes),
 			                                requirements));
@@ -31563,8 +32168,8 @@
 			                , m_dstMemNative(reinterpret_cast<std::uint8_t*>(getPtrNative(view)))
 			            {
 			                // all zero-sized extents are equivalent
-			                ALPAKA_ASSERT(getExtentVec(extent).prod() == 1u);
-			                ALPAKA_ASSERT(getExtentVec(view).prod() == 1u);
+			                ALPAKA_ASSERT(getExtents(extent).prod() == 1u);
+			                ALPAKA_ASSERT(getExtents(view).prod() == 1u);
 			            }
 
 			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -31592,7 +32197,6 @@
 			        };
 
 			    } // namespace detail
-
 
 			    namespace trait
 			    {
@@ -31623,13 +32227,13 @@
 		// ============================================================================
 
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
 	    using BufCpuSycl = BufGenericSycl<TElem, TDim, TIdx, PlatformCpuSycl>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -31644,27 +32248,28 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/mem/buf/BufUniformCudaHipRt.hpp ==
 		// ==
-		/* Copyright 2022 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
-		 * Bernhard Manfred Gruber, Antonio Di Pilato
+		/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
+		 *                Bernhard Manfred Gruber, Antonio Di Pilato
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
+		// #include <cstddef>    // amalgamate: file already included
 		// #include <functional>    // amalgamate: file already included
 		// #include <memory>    // amalgamate: file already included
 		// #include <type_traits>    // amalgamate: file already included
@@ -31680,16 +32285,31 @@
 		    template<typename TElem, typename TDim, typename TIdx>
 		    class BufCpu;
 
+		    namespace detail
+		    {
+		        template<typename TDim, typename SFINAE = void>
+		        struct PitchHolder
+		        {
+		            explicit PitchHolder(std::size_t)
+		            {
+		            }
+		        };
+
+		        template<typename TDim>
+		        struct PitchHolder<TDim, std::enable_if_t<TDim::value >= 2>>
+		        {
+		            std::size_t m_rowPitchInBytes;
+		        };
+		    } // namespace detail
+
 		    //! The CUDA/HIP memory buffer.
 		    template<typename TApi, typename TElem, typename TDim, typename TIdx>
-		    class BufUniformCudaHipRt : public internal::ViewAccessOps<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+		    struct BufUniformCudaHipRt
+		        : detail::PitchHolder<TDim>
+		        , internal::ViewAccessOps<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
 		    {
-		    public:
-		        static_assert(
-		            !std::is_const_v<TElem>,
-		            "The elem type of the buffer can not be const because the C++ Standard forbids containers of const "
-		            "elements!");
-		        static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer can not be const!");
+		        static_assert(!std::is_const_v<TElem>, "The elem type of the buffer must not be const");
+		        static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer must not be const!");
 
 		        //! Constructor
 		        template<typename TExtent, typename Deleter>
@@ -31697,12 +32317,12 @@
 		            DevUniformCudaHipRt<TApi> const& dev,
 		            TElem* const pMem,
 		            Deleter deleter,
-		            TIdx const& pitchBytes,
-		            TExtent const& extent)
-		            : m_dev(dev)
-		            , m_extentElements(getExtentVecEnd<TDim>(extent))
+		            TExtent const& extent,
+		            std::size_t pitchBytes)
+		            : detail::PitchHolder<TDim>{pitchBytes}
+		            , m_dev(dev)
+		            , m_extentElements(getExtents(extent))
 		            , m_spMem(pMem, std::move(deleter))
-		            , m_pitchBytes(pitchBytes)
 		        {
 		            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -31715,11 +32335,9 @@
 		                "The idx type of TExtent and the TIdx template parameter have to be identical!");
 		        }
 
-		    public:
 		        DevUniformCudaHipRt<TApi> m_dev;
 		        Vec<TDim, TIdx> m_extentElements;
 		        std::shared_ptr<TElem> m_spMem;
-		        TIdx m_pitchBytes;
 		    };
 
 		    namespace trait
@@ -31757,15 +32375,12 @@
 		        };
 
 		        //! The BufUniformCudaHipRt extent get trait specialization.
-		        template<typename TApi, typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-		        struct GetExtent<
-		            TIdxIntegralConst,
-		            BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>,
-		            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+		        template<typename TApi, typename TElem, typename TDim, typename TIdx>
+		        struct GetExtents<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
 		        {
-		            ALPAKA_FN_HOST static auto getExtent(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& extent) -> TIdx
+		            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buffer) const
 		            {
-		                return extent.m_extentElements[TIdxIntegralConst::value];
+		                return buffer.m_extentElements;
 		            }
 		        };
 
@@ -31778,6 +32393,7 @@
 		            {
 		                return buf.m_spMem.get();
 		            }
+
 		            ALPAKA_FN_HOST static auto getPtrNative(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf) -> TElem*
 		            {
 		                return buf.m_spMem.get();
@@ -31801,6 +32417,7 @@
 		                    throw std::runtime_error("The buffer is not accessible from the given device!");
 		                }
 		            }
+
 		            ALPAKA_FN_HOST static auto getPtrDev(
 		                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf,
 		                DevUniformCudaHipRt<TApi> const& dev) -> TElem*
@@ -31816,15 +32433,24 @@
 		            }
 		        };
 
-		        //! The BufUniformCudaHipRt pitch get trait specialization.
 		        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-		        struct GetPitchBytes<DimInt<TDim::value - 1u>, BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+		        struct GetPitchesInBytes<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
 		        {
-		            ALPAKA_FN_HOST static auto getPitchBytes(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) -> TIdx
+		            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) const
+		                -> Vec<TDim, TIdx>
 		            {
-		                return buf.m_pitchBytes; // TODO(bgruber): is this even correct? This reports the pitch for the TDim -
-		                                         // 1 dimension, but CUDA's pitch is always the row pitch, independently of the
-		                                         // buffer's dimensions.
+		                Vec<TDim, TIdx> v{};
+		                if constexpr(TDim::value > 0)
+		                {
+		                    v.back() = sizeof(TElem);
+		                    if constexpr(TDim::value > 1)
+		                    {
+		                        v[TDim::value - 2] = static_cast<TIdx>(buf.m_rowPitchInBytes);
+		                        for(TIdx i = TDim::value - 2; i > 0; i--)
+		                            v[i - 1] = buf.m_extentElements[i] * v[i];
+		                    }
+		                }
+		                return v;
 		            }
 		        };
 
@@ -31841,19 +32467,23 @@
 		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
 
 		                void* memPtr = nullptr;
-		                std::size_t pitchBytes = 0u;
+		                std::size_t rowPitchInBytes = 0u;
 		                if(getExtentProduct(extent) != 0)
 		                {
-		                    if constexpr(Dim::value <= 1)
+		                    if constexpr(Dim::value == 0)
 		                    {
-		                        pitchBytes = static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem);
-		                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::malloc(&memPtr, pitchBytes));
+		                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::malloc(&memPtr, sizeof(TElem)));
+		                    }
+		                    else if constexpr(Dim::value == 1)
+		                    {
+		                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+		                            TApi::malloc(&memPtr, static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem)));
 		                    }
 		                    else if constexpr(Dim::value == 2)
 		                    {
 		                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::mallocPitch(
 		                            &memPtr,
-		                            &pitchBytes,
+		                            &rowPitchInBytes,
 		                            static_cast<std::size_t>(getWidth(extent)) * sizeof(TElem),
 		                            static_cast<std::size_t>(getHeight(extent))));
 		                    }
@@ -31867,7 +32497,7 @@
 		                        pitchedPtrVal.ptr = nullptr;
 		                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::malloc3D(&pitchedPtrVal, extentVal));
 		                        memPtr = pitchedPtrVal.ptr;
-		                        pitchBytes = pitchedPtrVal.pitch;
+		                        rowPitchInBytes = pitchedPtrVal.pitch;
 		                    }
 		                }
 		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -31878,14 +32508,17 @@
 		                    std::cout << " eh: " << getHeight(extent);
 		                if constexpr(Dim::value >= 3)
 		                    std::cout << " ed: " << getDepth(extent);
-		                std::cout << " ptr: " << memPtr << " pitch: " << pitchBytes << std::endl;
+		                std::cout << " ptr: " << memPtr;
+		                if constexpr(Dim::value >= 2)
+		                    std::cout << " rowpitch: " << rowPitchInBytes;
+		                std::cout << std::endl;
 		#    endif
 		                return {
 		                    dev,
 		                    reinterpret_cast<TElem*>(memPtr),
 		                    [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::free(ptr)); },
-		                    static_cast<TIdx>(pitchBytes),
-		                    extent};
+		                    extent,
+		                    rowPitchInBytes};
 		            }
 		        };
 
@@ -31914,7 +32547,7 @@
 		                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 		                static_assert(TDim::value == Dim<TExtent>::value, "extent must have the same dimension as the buffer");
-		                auto const width = getWidth(extent);
+		                auto const width = getExtentProduct(extent); // handles 1D and 0D buffers
 
 		                auto const& dev = getDev(queue);
 		                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::setDevice(dev.getNativeHandle()));
@@ -31927,13 +32560,13 @@
 		#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 		                std::cout << __func__ << " ew: " << width << " ptr: " << memPtr << std::endl;
 		#    endif
-		                return BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>(
+		                return {
 		                    dev,
 		                    reinterpret_cast<TElem*>(memPtr),
-		                    [queue = std::move(queue)](TElem* ptr)
-		                    { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::freeAsync(ptr, queue.getNativeHandle())); },
-		                    width * static_cast<TIdx>(sizeof(TElem)),
-		                    extent);
+		                    [q = std::move(queue)](TElem* ptr)
+		                    { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::freeAsync(ptr, q.getNativeHandle())); },
+		                    extent,
+		                    static_cast<std::size_t>(width) * sizeof(TElem)};
 		            }
 		        };
 
@@ -31953,8 +32586,10 @@
 		        struct BufAllocMapped<PlatformUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
 		        {
 		            template<typename TExtent>
-		            ALPAKA_FN_HOST static auto allocMappedBuf(DevCpu const& host, TExtent const& extent)
-		                -> BufCpu<TElem, TDim, TIdx>
+		            ALPAKA_FN_HOST static auto allocMappedBuf(
+		                DevCpu const& host,
+		                PlatformUniformCudaHipRt<TApi> const& /*platform*/,
+		                TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
 		            {
 		                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -31978,12 +32613,13 @@
 		        };
 
 		        //! The BufUniformCudaHipRt offset get trait specialization.
-		        template<typename TApi, typename TIdxIntegralConst, typename TElem, typename TDim, typename TIdx>
-		        struct GetOffset<TIdxIntegralConst, BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+		        template<typename TApi, typename TElem, typename TDim, typename TIdx>
+		        struct GetOffsets<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
 		        {
-		            ALPAKA_FN_HOST static auto getOffset(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const&) -> TIdx
+		            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const&) const
+		                -> Vec<TDim, TIdx>
 		            {
-		                return 0u;
+		                return Vec<TDim, TIdx>::zeros();
 		            }
 		        };
 
@@ -32012,6 +32648,7 @@
 
 		                return pDev;
 		            }
+
 		            ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevUniformCudaHipRt<TApi> const&)
 		                -> TElem*
 		            {
@@ -32029,23 +32666,24 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/uniformCudaHip/Copy.hpp ==
 			// ==
-			/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
-			 * Bernhard Manfred Gruber, Antonio Di Pilato
+			/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Jan Stephan,
+			 *                Bernhard Manfred Gruber, Antonio Di Pilato
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already inlined
 
+			// #include <cstddef>    // amalgamate: file already included
 			// #include <cstdint>    // amalgamate: file already included
 			// #include <set>    // amalgamate: file already included
 			// #include <tuple>    // amalgamate: file already included
@@ -32078,16 +32716,11 @@
 			                : m_uniformMemCpyKind(uniformMemCpyKind)
 			                , m_iDstDevice(iDstDevice)
 			                , m_iSrcDevice(iSrcDevice)
-			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-			                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
-			                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
-			#    endif
 			                , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
 			                , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
 			            {
 			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-			                ALPAKA_ASSERT(Idx(1u) <= m_dstWidth);
-			                ALPAKA_ASSERT(Idx(1u) <= m_srcWidth);
+			                ALPAKA_ASSERT(getExtentProduct(extent) == 1);
 			#    endif
 			            }
 
@@ -32115,8 +32748,8 @@
 			            ALPAKA_FN_HOST auto printDebug() const -> void
 			            {
 			                std::cout << __func__ << " ddev: " << m_iDstDevice << " ew: " << Idx(1u)
-			                          << " ewb: " << static_cast<Idx>(sizeof(Elem<TViewDst>)) << " dw: " << m_dstWidth
-			                          << " dptr: " << m_dstMemNative << " sdev: " << m_iSrcDevice << " sw: " << m_srcWidth
+			                          << " ewb: " << static_cast<Idx>(sizeof(Elem<TViewDst>)) << " dw: " << Idx(1u)
+			                          << " dptr: " << m_dstMemNative << " sdev: " << m_iSrcDevice << " sw: " << Idx(1u)
 			                          << " sptr: " << m_srcMemNative << std::endl;
 			            }
 			#    endif
@@ -32124,10 +32757,6 @@
 			            typename TApi::MemcpyKind_t m_uniformMemCpyKind;
 			            int m_iDstDevice;
 			            int m_iSrcDevice;
-			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-			            Idx m_dstWidth;
-			            Idx m_srcWidth;
-			#    endif
 			            void* m_dstMemNative;
 			            void const* m_srcMemNative;
 			        };
@@ -32154,7 +32783,7 @@
 			                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
 			                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
 			#    endif
-			                , m_extentWidthBytes(getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
+			                , m_extentWidthBytes(static_cast<std::size_t>(getWidth(extent)) * sizeof(Elem<TViewDst>))
 			                , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
 			                , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
 			            {
@@ -32170,7 +32799,7 @@
 			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 			                printDebug();
 			#    endif
-			                if(m_extentWidthBytes == 0)
+			                if(m_extentWidthBytes == std::size_t{0})
 			                {
 			                    return;
 			                }
@@ -32183,7 +32812,7 @@
 			                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memcpyAsync(
 			                    m_dstMemNative,
 			                    m_srcMemNative,
-			                    static_cast<std::size_t>(m_extentWidthBytes),
+			                    m_extentWidthBytes,
 			                    m_uniformMemCpyKind,
 			                    queue.getNativeHandle()));
 			            }
@@ -32207,7 +32836,7 @@
 			            Idx m_dstWidth;
 			            Idx m_srcWidth;
 			#    endif
-			            Idx m_extentWidthBytes;
+			            std::size_t m_extentWidthBytes;
 			            void* m_dstMemNative;
 			            void const* m_srcMemNative;
 			        };
@@ -32232,7 +32861,7 @@
 			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 			                , m_extentWidth(getWidth(extent))
 			#    endif
-			                , m_extentWidthBytes(getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>)))
+			                , m_extentWidthBytes(static_cast<std::size_t>(getWidth(extent)) * sizeof(Elem<TViewDst>))
 			                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
 			                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
 			                , m_extentHeight(getHeight(extent))
@@ -32240,12 +32869,8 @@
 			                , m_dstHeight(static_cast<Idx>(getHeight(viewDst)))
 			                , m_srcHeight(static_cast<Idx>(getHeight(viewSrc)))
 			#    endif
-			                , m_dstpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst)))
-			                , m_srcpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc)))
-			                , m_dstPitchBytesY(
-			                      static_cast<Idx>(getPitchBytes<Dim<TViewDst>::value - (2u % Dim<TViewDst>::value)>(viewDst)))
-			                , m_srcPitchBytesY(
-			                      static_cast<Idx>(getPitchBytes<Dim<TViewSrc>::value - (2u % Dim<TViewDst>::value)>(viewSrc)))
+			                , m_dstRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[0]))
+			                , m_srcRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[0]))
 			                , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
 			                , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
 			            {
@@ -32254,8 +32879,8 @@
 			                ALPAKA_ASSERT(m_extentHeight <= m_dstHeight);
 			                ALPAKA_ASSERT(m_extentWidth <= m_srcWidth);
 			                ALPAKA_ASSERT(m_extentHeight <= m_srcHeight);
-			                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstpitchBytesX);
-			                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcpitchBytesX);
+			                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstRowPitchBytes);
+			                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcRowPitchBytes);
 			#    endif
 			            }
 
@@ -32266,7 +32891,7 @@
 			                printDebug();
 			#    endif
 			                // This is not only an optimization but also prevents a division by zero.
-			                if(m_extentWidthBytes == 0 || m_extentHeight == 0)
+			                if(m_extentWidthBytes == std::size_t{0} || m_extentHeight == 0)
 			                {
 			                    return;
 			                }
@@ -32278,10 +32903,10 @@
 			                // Initiate the memory copy.
 			                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memcpy2DAsync(
 			                    m_dstMemNative,
-			                    static_cast<std::size_t>(m_dstpitchBytesX),
+			                    m_dstRowPitchBytes,
 			                    m_srcMemNative,
-			                    static_cast<std::size_t>(m_srcpitchBytesX),
-			                    static_cast<std::size_t>(m_extentWidthBytes),
+			                    m_srcRowPitchBytes,
+			                    m_extentWidthBytes,
 			                    static_cast<std::size_t>(m_extentHeight),
 			                    m_uniformMemCpyKind,
 			                    queue.getNativeHandle()));
@@ -32293,9 +32918,9 @@
 			            {
 			                std::cout << __func__ << " ew: " << m_extentWidth << " eh: " << m_extentHeight
 			                          << " ewb: " << m_extentWidthBytes << " ddev: " << m_iDstDevice << " dw: " << m_dstWidth
-			                          << " dh: " << m_dstHeight << " dptr: " << m_dstMemNative << " dpitchb: " << m_dstpitchBytesX
+			                          << " dh: " << m_dstHeight << " dptr: " << m_dstMemNative << " dpitch: " << m_dstRowPitchBytes
 			                          << " sdev: " << m_iSrcDevice << " sw: " << m_srcWidth << " sh: " << m_srcHeight
-			                          << " sptr: " << m_srcMemNative << " spitchb: " << m_srcpitchBytesX << std::endl;
+			                          << " sptr: " << m_srcMemNative << " spitch: " << m_srcRowPitchBytes << std::endl;
 			            }
 			#    endif
 
@@ -32305,7 +32930,7 @@
 			#    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 			            Idx m_extentWidth;
 			#    endif
-			            Idx m_extentWidthBytes;
+			            std::size_t m_extentWidthBytes;
 			            Idx m_dstWidth;
 			            Idx m_srcWidth;
 
@@ -32314,10 +32939,8 @@
 			            Idx m_dstHeight;
 			            Idx m_srcHeight;
 			#    endif
-			            Idx m_dstpitchBytesX;
-			            Idx m_srcpitchBytesX;
-			            Idx m_dstPitchBytesY;
-			            Idx m_srcPitchBytesY;
+			            std::size_t m_dstRowPitchBytes;
+			            std::size_t m_srcRowPitchBytes;
 
 			            void* m_dstMemNative;
 			            void const* m_srcMemNative;
@@ -32341,7 +32964,7 @@
 			                , m_iDstDevice(iDstDevice)
 			                , m_iSrcDevice(iSrcDevice)
 			                , m_extentWidth(getWidth(extent))
-			                , m_extentWidthBytes(m_extentWidth * static_cast<Idx>(sizeof(Elem<TViewDst>)))
+			                , m_extentWidthBytes(static_cast<std::size_t>(m_extentWidth) * sizeof(Elem<TViewDst>))
 			                , m_dstWidth(static_cast<Idx>(getWidth(viewDst)))
 			                , m_srcWidth(static_cast<Idx>(getWidth(viewSrc)))
 			                , m_extentHeight(getHeight(extent))
@@ -32352,12 +32975,10 @@
 			                , m_dstDepth(static_cast<Idx>(getDepth(viewDst)))
 			                , m_srcDepth(static_cast<Idx>(getDepth(viewSrc)))
 			#    endif
-			                , m_dstpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst)))
-			                , m_srcpitchBytesX(static_cast<Idx>(getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc)))
-			                , m_dstPitchBytesY(
-			                      static_cast<Idx>(getPitchBytes<Dim<TViewDst>::value - (2u % Dim<TViewDst>::value)>(viewDst)))
-			                , m_srcPitchBytesY(
-			                      static_cast<Idx>(getPitchBytes<Dim<TViewSrc>::value - (2u % Dim<TViewDst>::value)>(viewSrc)))
+			                , m_dstRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[1]))
+			                , m_srcRowPitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[1]))
+			                , m_dstSlicePitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewDst)[0]))
+			                , m_srcSlicePitchBytes(static_cast<std::size_t>(getPitchesInBytes(viewSrc)[0]))
 			                , m_dstMemNative(reinterpret_cast<void*>(getPtrNative(viewDst)))
 			                , m_srcMemNative(reinterpret_cast<void const*>(getPtrNative(viewSrc)))
 			            {
@@ -32368,8 +32989,8 @@
 			                ALPAKA_ASSERT(m_extentWidth <= m_srcWidth);
 			                ALPAKA_ASSERT(m_extentHeight <= m_srcHeight);
 			                ALPAKA_ASSERT(m_extentDepth <= m_srcDepth);
-			                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstpitchBytesX);
-			                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcpitchBytesX);
+			                ALPAKA_ASSERT(m_extentWidthBytes <= m_dstRowPitchBytes);
+			                ALPAKA_ASSERT(m_extentWidthBytes <= m_srcRowPitchBytes);
 			#    endif
 			            }
 
@@ -32380,7 +33001,7 @@
 			                printDebug();
 			#    endif
 			                // This is not only an optimization but also prevents a division by zero.
-			                if(m_extentWidthBytes == 0 || m_extentHeight == 0 || m_extentDepth == 0)
+			                if(m_extentWidthBytes == std::size_t{0} || m_extentHeight == 0 || m_extentDepth == 0)
 			                {
 			                    return;
 			                }
@@ -32403,23 +33024,19 @@
 			                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
 			                // Fill CUDA/HIP parameter structure.
-			                typename TApi::Memcpy3DParms_t memCpy3DParms;
-			                memCpy3DParms.srcArray = nullptr; // Either srcArray or srcPtr.
-			                memCpy3DParms.srcPos = TApi::makePos(0, 0, 0); // Optional. Offset in bytes.
+			                typename TApi::Memcpy3DParms_t memCpy3DParms{}; // zero-init required per CUDA documentation
 			                memCpy3DParms.srcPtr = TApi::makePitchedPtr(
 			                    const_cast<void*>(m_srcMemNative),
-			                    static_cast<std::size_t>(m_srcpitchBytesX),
+			                    m_srcRowPitchBytes,
 			                    static_cast<std::size_t>(m_srcWidth),
-			                    static_cast<std::size_t>(m_srcPitchBytesY / m_srcpitchBytesX));
-			                memCpy3DParms.dstArray = nullptr; // Either dstArray or dstPtr.
-			                memCpy3DParms.dstPos = TApi::makePos(0, 0, 0); // Optional. Offset in bytes.
+			                    m_srcSlicePitchBytes / m_srcRowPitchBytes);
 			                memCpy3DParms.dstPtr = TApi::makePitchedPtr(
 			                    m_dstMemNative,
-			                    static_cast<std::size_t>(m_dstpitchBytesX),
+			                    m_dstRowPitchBytes,
 			                    static_cast<std::size_t>(m_dstWidth),
-			                    static_cast<std::size_t>(m_dstPitchBytesY / m_dstpitchBytesX));
+			                    m_dstSlicePitchBytes / m_dstRowPitchBytes);
 			                memCpy3DParms.extent = TApi::makeExtent(
-			                    static_cast<std::size_t>(m_extentWidthBytes),
+			                    m_extentWidthBytes,
 			                    static_cast<std::size_t>(m_extentHeight),
 			                    static_cast<std::size_t>(m_extentDepth));
 			                memCpy3DParms.kind = m_uniformMemCpyKind;
@@ -32432,10 +33049,11 @@
 			                std::cout << __func__ << " ew: " << m_extentWidth << " eh: " << m_extentHeight
 			                          << " ed: " << m_extentDepth << " ewb: " << m_extentWidthBytes << " ddev: " << m_iDstDevice
 			                          << " dw: " << m_dstWidth << " dh: " << m_dstHeight << " dd: " << m_dstDepth
-			                          << " dptr: " << m_dstMemNative << " dpitchb: " << m_dstpitchBytesX
-			                          << " sdev: " << m_iSrcDevice << " sw: " << m_srcWidth << " sh: " << m_srcHeight
-			                          << " sd: " << m_srcDepth << " sptr: " << m_srcMemNative << " spitchb: " << m_srcpitchBytesX
-			                          << std::endl;
+			                          << " dptr: " << m_dstMemNative << " drowpitch: " << m_dstRowPitchBytes
+			                          << " dslicepitch: " << m_dstSlicePitchBytes << " sdev: " << m_iSrcDevice
+			                          << " sw: " << m_srcWidth << " sh: " << m_srcHeight << " sd: " << m_srcDepth
+			                          << " sptr: " << m_srcMemNative << " srowpitch: " << m_srcRowPitchBytes
+			                          << " sslicepitch: " << m_srcSlicePitchBytes << std::endl;
 			            }
 			#    endif
 			            typename TApi::MemcpyKind_t m_uniformMemCpyKind;
@@ -32443,7 +33061,7 @@
 			            int m_iSrcDevice;
 
 			            Idx m_extentWidth;
-			            Idx m_extentWidthBytes;
+			            std::size_t m_extentWidthBytes;
 			            Idx m_dstWidth;
 			            Idx m_srcWidth;
 
@@ -32455,10 +33073,10 @@
 			            Idx m_dstDepth;
 			            Idx m_srcDepth;
 			#    endif
-			            Idx m_dstpitchBytesX;
-			            Idx m_srcpitchBytesX;
-			            Idx m_dstPitchBytesY;
-			            Idx m_srcPitchBytesY;
+			            std::size_t m_dstRowPitchBytes;
+			            std::size_t m_srcRowPitchBytes;
+			            std::size_t m_dstSlicePitchBytes;
+			            std::size_t m_srcSlicePitchBytes;
 
 			            void* m_dstMemNative;
 			            void const* m_srcMemNative;
@@ -32697,23 +33315,25 @@
 			// ============================================================================
 			// == ./include/alpaka/mem/buf/uniformCudaHip/Set.hpp ==
 			// ==
-			/* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
-			 * Antonio Di Pilato
+			/* Copyright 2023 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+			 *                Antonio Di Pilato, Jan Stephan
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
-			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+			// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
+			// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
+
+			// #include <cstddef>    // amalgamate: file already included
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
@@ -32790,8 +33410,6 @@
 			            template<typename TQueue>
 			            auto enqueue(TQueue& queue) const -> void
 			            {
-			                using Idx = Idx<TExtent>;
-
 			                auto& view = this->m_view;
 			                auto const& extent = this->m_extent;
 
@@ -32804,11 +33422,11 @@
 			                }
 
 			                // Initiate the memory set.
-			                auto const extentWidthBytes = extentWidth * static_cast<Idx>(sizeof(Elem<TView>));
+			                auto const extentWidthBytes = static_cast<std::size_t>(extentWidth) * sizeof(Elem<TView>);
 			                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memsetAsync(
 			                    getPtrNative(view),
 			                    static_cast<int>(this->m_byte),
-			                    static_cast<size_t>(extentWidthBytes),
+			                    extentWidthBytes,
 			                    queue.getNativeHandle()));
 			            }
 			        };
@@ -32830,8 +33448,6 @@
 			            template<typename TQueue>
 			            auto enqueue(TQueue& queue) const -> void
 			            {
-			                using Idx = Idx<TExtent>;
-
 			                auto& view = this->m_view;
 			                auto const& extent = this->m_extent;
 
@@ -32843,13 +33459,13 @@
 			                    return;
 			                }
 
-			                auto const extentWidthBytes = extentWidth * static_cast<Idx>(sizeof(Elem<TView>));
+			                auto const extentWidthBytes = static_cast<std::size_t>(extentWidth) * sizeof(Elem<TView>);
 
 			#    if !defined(NDEBUG)
 			                auto const dstWidth = getWidth(view);
 			                auto const dstHeight = getHeight(view);
 			#    endif
-			                auto const dstPitchBytesX = getPitchBytes<Dim<TView>::value - 1u>(view);
+			                auto const dstRowPitchBytes = static_cast<std::size_t>(getPitchesInBytes(view)[0]);
 			                auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
 			                ALPAKA_ASSERT(extentWidth <= dstWidth);
 			                ALPAKA_ASSERT(extentHeight <= dstHeight);
@@ -32857,10 +33473,10 @@
 			                // Initiate the memory set.
 			                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memset2DAsync(
 			                    dstNativePtr,
-			                    static_cast<size_t>(dstPitchBytesX),
+			                    dstRowPitchBytes,
 			                    static_cast<int>(this->m_byte),
-			                    static_cast<size_t>(extentWidthBytes),
-			                    static_cast<size_t>(extentHeight),
+			                    extentWidthBytes,
+			                    static_cast<std::size_t>(extentHeight),
 			                    queue.getNativeHandle()));
 			            }
 			        };
@@ -32883,7 +33499,6 @@
 			            auto enqueue(TQueue& queue) const -> void
 			            {
 			                using Elem = alpaka::Elem<TView>;
-			                using Idx = Idx<TExtent>;
 
 			                auto& view = this->m_view;
 			                auto const& extent = this->m_extent;
@@ -32903,8 +33518,7 @@
 			                auto const dstHeight = getHeight(view);
 			                auto const dstDepth = getDepth(view);
 			#    endif
-			                auto const dstPitchBytesX = getPitchBytes<Dim<TView>::value - 1u>(view);
-			                auto const dstPitchBytesY = getPitchBytes<Dim<TView>::value - (2u % Dim<TView>::value)>(view);
+			                auto const [dstSlicePitchBytes, dstRowPitchBytes, _] = getPitchesInBytes(view);
 			                auto const dstNativePtr = reinterpret_cast<void*>(getPtrNative(view));
 			                ALPAKA_ASSERT(extentWidth <= dstWidth);
 			                ALPAKA_ASSERT(extentHeight <= dstHeight);
@@ -32913,14 +33527,14 @@
 			                // Fill CUDA parameter structures.
 			                typename TApi::PitchedPtr_t const pitchedPtrVal = TApi::makePitchedPtr(
 			                    dstNativePtr,
-			                    static_cast<size_t>(dstPitchBytesX),
-			                    static_cast<size_t>(dstWidth * static_cast<Idx>(sizeof(Elem))),
-			                    static_cast<size_t>(dstPitchBytesY / dstPitchBytesX));
+			                    static_cast<std::size_t>(dstRowPitchBytes),
+			                    static_cast<std::size_t>(dstWidth) * sizeof(Elem),
+			                    static_cast<std::size_t>(dstSlicePitchBytes / dstRowPitchBytes));
 
 			                typename TApi::Extent_t const extentVal = TApi::makeExtent(
-			                    static_cast<size_t>(extentWidth * static_cast<Idx>(sizeof(Elem))),
-			                    static_cast<size_t>(extentHeight),
-			                    static_cast<size_t>(extentDepth));
+			                    static_cast<std::size_t>(extentWidth) * sizeof(Elem),
+			                    static_cast<std::size_t>(extentHeight),
+			                    static_cast<std::size_t>(extentDepth));
 
 			                // Initiate the memory set.
 			                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::memset3DAsync(
@@ -33102,7 +33716,7 @@
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
 	    using BufCudaRt = BufUniformCudaHipRt<ApiCudaRt, TElem, TDim, TIdx>;
-	}
+	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_CUDA_ENABLED
 	// ==
@@ -33112,46 +33726,46 @@
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufFpgaSyclIntel.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan
+	/* Copyright 2023 Jan Stephan
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
 	    using BufFpgaSyclIntel = BufGenericSycl<TElem, TDim, TIdx, DevFpgaSyclIntel>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
 	// == ./include/alpaka/mem/buf/BufFpgaSyclIntel.hpp ==
 	// ============================================================================
 
-// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/mem/buf/BufGpuSyclIntel.hpp ==
 	// ==
-	/* Copyright 2022 Jan Stephan, Luca Ferragina
+	/* Copyright 2023 Jan Stephan, Luca Ferragina
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/buf/BufGenericSycl.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
 	    using BufGpuSyclIntel = BufGenericSycl<TElem, TDim, TIdx, PlatformGpuSyclIntel>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -33166,8 +33780,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/buf/BufUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/buf/BufUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -33175,24 +33789,22 @@
 	{
 	    template<typename TElem, typename TDim, typename TIdx>
 	    using BufHipRt = BufUniformCudaHipRt<ApiHipRt, TElem, TDim, TIdx>;
-	}
+	} // namespace alpaka
 
 	#endif // ALPAKA_ACC_GPU_HIP_ENABLED
 	// ==
 	// == ./include/alpaka/mem/buf/BufHipRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/fence/MemFenceCpu.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/fence/MemFenceCpuSerial.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/fence/MemFenceGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/fence/MemFenceOmp2Blocks.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/fence/MemFenceOmp2Threads.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/view/Accessor.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-// #include "alpaka/mem/view/ViewAccessor.hpp"    // amalgamate: file already expanded
+// #include "alpaka/mem/buf/Traits.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/fence/MemFenceCpu.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/fence/MemFenceCpuSerial.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/fence/MemFenceGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/fence/MemFenceOmp2Blocks.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/fence/MemFenceOmp2Threads.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
+// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/mem/view/ViewConst.hpp ==
 	// ==
@@ -33201,14 +33813,14 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka
 	{
@@ -33265,12 +33877,12 @@
 	            using type = typename ElemType<TView>::type const;
 	        };
 
-	        template<typename I, typename TView>
-	        struct GetExtent<I, ViewConst<TView>>
+	        template<typename TView>
+	        struct GetExtents<ViewConst<TView>>
 	        {
-	            ALPAKA_FN_HOST static auto getExtent(ViewConst<TView> const& view)
+	            ALPAKA_FN_HOST auto operator()(ViewConst<TView> const& view) const
 	            {
-	                return alpaka::getExtent<I::value>(view.m_view);
+	                return getExtents(view.m_view);
 	            }
 	        };
 
@@ -33286,21 +33898,21 @@
 	            }
 	        };
 
-	        template<typename I, typename TView>
-	        struct GetPitchBytes<I, ViewConst<TView>>
+	        template<typename TView>
+	        struct GetPitchesInBytes<ViewConst<TView>>
 	        {
-	            ALPAKA_FN_HOST static auto getPitchBytes(ViewConst<TView> const& view)
+	            ALPAKA_FN_HOST auto operator()(ViewConst<TView> const& view) const
 	            {
-	                return alpaka::getPitchBytes<I::value>(view.m_view);
+	                return alpaka::getPitchesInBytes(view.m_view);
 	            }
 	        };
 
-	        template<typename I, typename TView>
-	        struct GetOffset<I, ViewConst<TView>>
+	        template<typename TView>
+	        struct GetOffsets<ViewConst<TView>>
 	        {
-	            ALPAKA_FN_HOST static auto getOffset(ViewConst<TView> const& view)
+	            ALPAKA_FN_HOST auto operator()(ViewConst<TView> const& view) const
 	            {
-	                return alpaka::getOffset<I::value>(view.m_view);
+	                return alpaka::getOffsets(view.m_view);
 	            }
 	        };
 
@@ -33323,13 +33935,13 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 	// #include <type_traits>    // amalgamate: file already included
 	// #include <utility>    // amalgamate: file already included
@@ -33338,50 +33950,29 @@
 	{
 	    //! The memory view to wrap plain pointers.
 	    template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	    class ViewPlainPtr final : public internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+	    struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
 	    {
 	        static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 
-	        using Dev = alpaka::Dev<TDev>;
-
-	    public:
 	        template<typename TExtent>
-	        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev dev, TExtent const& extent = TExtent())
-	            : m_pMem(pMem)
-	            , m_dev(std::move(dev))
-	            , m_extentElements(getExtentVecEnd<TDim>(extent))
-	            , m_pitchBytes(detail::calculatePitchesFromExtents<TElem>(m_extentElements))
+	        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent = TExtent())
+	            : ViewPlainPtr(pMem, std::move(dev), extent, detail::calculatePitchesFromExtents<TElem>(extent))
 	        {
 	        }
 
 	        template<typename TExtent, typename TPitch>
-	        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, Dev const dev, TExtent const& extent, TPitch const& pitchBytes)
+	        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent, TPitch pitchBytes)
 	            : m_pMem(pMem)
-	            , m_dev(dev)
-	            , m_extentElements(getExtentVecEnd<TDim>(extent))
-	            , m_pitchBytes(subVecEnd<TDim>(static_cast<Vec<TDim, TIdx>>(pitchBytes)))
+	            , m_dev(std::move(dev))
+	            , m_extentElements(extent)
+	            , m_pitchBytes(static_cast<Vec<TDim, TIdx>>(pitchBytes))
 	        {
 	        }
 
-	        ViewPlainPtr(ViewPlainPtr const&) = default;
-	        ALPAKA_FN_HOST
-	        ViewPlainPtr(ViewPlainPtr&& other) noexcept
-	            : m_pMem(other.m_pMem)
-	            , m_dev(other.m_dev)
-	            , m_extentElements(other.m_extentElements)
-	            , m_pitchBytes(other.m_pitchBytes)
-	        {
-	        }
-	        ALPAKA_FN_HOST
-	        auto operator=(ViewPlainPtr const&) -> ViewPlainPtr& = delete;
-	        ALPAKA_FN_HOST
-	        auto operator=(ViewPlainPtr&&) -> ViewPlainPtr& = delete;
-
-	    public:
-	        TElem* const m_pMem;
-	        Dev const m_dev;
-	        Vec<TDim, TIdx> const m_extentElements;
-	        Vec<TDim, TIdx> const m_pitchBytes;
+	        TElem* m_pMem;
+	        TDev m_dev;
+	        Vec<TDim, TIdx> m_extentElements;
+	        Vec<TDim, TIdx> m_pitchBytes;
 	    };
 
 	    // Trait specializations for ViewPlainPtr.
@@ -33418,25 +34009,18 @@
 	            using type = TElem;
 	        };
 	    } // namespace trait
-	    namespace trait
-	    {
-	        //! The ViewPlainPtr width get trait specialization.
-	        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetExtent<
-	            TIdxIntegralConst,
-	            ViewPlainPtr<TDev, TElem, TDim, TIdx>,
-	            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
-	        {
-	            ALPAKA_FN_HOST
-	            static auto getExtent(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& extent) -> TIdx
-	            {
-	                return extent.m_extentElements[TIdxIntegralConst::value];
-	            }
-	        };
-	    } // namespace trait
 
 	    namespace trait
 	    {
+	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+	        struct GetExtents<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+	        {
+	            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
+	            {
+	                return view.m_extentElements;
+	            }
+	        };
+
 	        //! The ViewPlainPtr native pointer get trait specialization.
 	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
 	        struct GetPtrNative<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
@@ -33445,20 +34029,19 @@
 	            {
 	                return view.m_pMem;
 	            }
+
 	            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx>& view) -> TElem*
 	            {
 	                return view.m_pMem;
 	            }
 	        };
 
-	        //! The ViewPlainPtr memory pitch get trait specialization.
-	        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-	            struct GetPitchBytes < TIdxIntegralConst,
-	            ViewPlainPtr<TDev, TElem, TDim, TIdx>, std::enable_if_t<TIdxIntegralConst::value<TDim::value>>
+	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+	        struct GetPitchesInBytes<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getPitchBytes(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> TIdx
+	            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
 	            {
-	                return view.m_pitchBytes[TIdxIntegralConst::value];
+	                return view.m_pitchBytes;
 	            }
 	        };
 
@@ -33515,7 +34098,7 @@
 	        struct CreateViewPlainPtr<DevCpu>
 	        {
 	            template<typename TElem, typename TExtent, typename TPitch>
-	            static auto createViewPlainPtr(DevCpu const& dev, TElem* pMem, TExtent const& extent, TPitch const& pitch)
+	            static auto createViewPlainPtr(DevCpu const& dev, TElem* pMem, TExtent const& extent, TPitch pitch)
 	            {
 	                return alpaka::ViewPlainPtr<DevCpu, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
 	                    pMem,
@@ -33535,7 +34118,7 @@
 	                DevUniformCudaHipRt<TApi> const& dev,
 	                TElem* pMem,
 	                TExtent const& extent,
-	                TPitch const& pitch)
+	                TPitch pitch)
 	            {
 	                return alpaka::
 	                    ViewPlainPtr<DevUniformCudaHipRt<TApi>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
@@ -33557,7 +34140,7 @@
 	                DevGenericSycl<TPlatform> const& dev,
 	                TElem* pMem,
 	                TExtent const& extent,
-	                TPitch const& pitch)
+	                TPitch pitch)
 	            {
 	                return alpaka::
 	                    ViewPlainPtr<DevGenericSycl<TPlatform>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
@@ -33569,13 +34152,12 @@
 	        };
 	#endif
 	        //! The ViewPlainPtr offset get trait specialization.
-	        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetOffset<TIdxIntegralConst, ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+	        struct GetOffsets<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST
-	            static auto getOffset(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) -> TIdx
+	            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
 	            {
-	                return 0u;
+	                return Vec<TDim, TIdx>::zeros();
 	            }
 	        };
 
@@ -33602,78 +34184,10 @@
 	 * concepts. It should be sufficient to check for the existence of Container.size() and Container.data() */
 
 	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-		// ============================================================================
-		// == ./include/alpaka/platform/PlatformCpu.hpp ==
-		// ==
-		/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
-
-		// #include <sstream>    // amalgamate: file already included
-		// #include <vector>    // amalgamate: file already included
-
-		namespace alpaka
-		{
-		    //! The CPU device platform.
-		    struct PlatformCpu : concepts::Implements<ConceptPlatform, PlatformCpu>
-		    {
-		    };
-
-		    namespace trait
-		    {
-		        //! The CPU device device type trait specialization.
-		        template<>
-		        struct DevType<PlatformCpu>
-		        {
-		            using type = DevCpu;
-		        };
-
-		        //! The CPU platform device count get trait specialization.
-		        template<>
-		        struct GetDevCount<PlatformCpu>
-		        {
-		            ALPAKA_FN_HOST static auto getDevCount(PlatformCpu const&) -> std::size_t
-		            {
-		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-		                return 1;
-		            }
-		        };
-
-		        //! The CPU platform device get trait specialization.
-		        template<>
-		        struct GetDevByIdx<PlatformCpu>
-		        {
-		            ALPAKA_FN_HOST static auto getDevByIdx(PlatformCpu const& platform, std::size_t const& devIdx) -> DevCpu
-		            {
-		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-		                std::size_t const devCount = getDevCount(platform);
-		                if(devIdx >= devCount)
-		                {
-		                    std::stringstream ssErr;
-		                    ssErr << "Unable to return device handle for CPU device with index " << devIdx
-		                          << " because there are only " << devCount << " devices!";
-		                    throw std::runtime_error(ssErr.str());
-		                }
-
-		                return {};
-		            }
-		        };
-		    } // namespace trait
-		} // namespace alpaka
-		// ==
-		// == ./include/alpaka/platform/PlatformCpu.hpp ==
-		// ============================================================================
-
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <array>    // amalgamate: file already included
 
@@ -33712,14 +34226,13 @@
 	        using type = TElem;
 	    };
 
-	    //! The std::array width get trait specialization.
 	    template<typename TElem, std::size_t Tsize>
-	    struct GetExtent<DimInt<0u>, std::array<TElem, Tsize>>
+	    struct GetExtents<std::array<TElem, Tsize>>
 	    {
-	        ALPAKA_FN_HOST static constexpr auto getExtent(std::array<TElem, Tsize> const& extent)
-	            -> Idx<std::array<TElem, Tsize>>
+	        ALPAKA_FN_HOST constexpr auto operator()(std::array<TElem, Tsize> const& a)
+	            -> Vec<DimInt<1>, Idx<std::array<TElem, Tsize>>>
 	        {
-	            return std::size(extent);
+	            return {std::size(a)};
 	        }
 	    };
 
@@ -33731,6 +34244,7 @@
 	        {
 	            return std::data(view);
 	        }
+
 	        ALPAKA_FN_HOST static auto getPtrNative(std::array<TElem, Tsize>& view) -> TElem*
 	        {
 	            return std::data(view);
@@ -33738,12 +34252,13 @@
 	    };
 
 	    //! The std::array offset get trait specialization.
-	    template<typename TIdx, typename TElem, std::size_t Tsize>
-	    struct GetOffset<TIdx, std::array<TElem, Tsize>>
+	    template<typename TElem, std::size_t Tsize>
+	    struct GetOffsets<std::array<TElem, Tsize>>
 	    {
-	        ALPAKA_FN_HOST static auto getOffset(std::array<TElem, Tsize> const&) -> Idx<std::array<TElem, Tsize>>
+	        ALPAKA_FN_HOST auto operator()(std::array<TElem, Tsize> const&)
+	            -> Vec<DimInt<1>, Idx<std::array<TElem, Tsize>>>
 	        {
-	            return 0u;
+	            return {0};
 	        }
 	    };
 
@@ -33769,10 +34284,10 @@
 	 * concepts. It should be sufficient to check for the existence of Container.size() and Container.data() */
 
 	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
 
 	// #include <vector>    // amalgamate: file already included
 
@@ -33809,14 +34324,13 @@
 	        using type = TElem;
 	    };
 
-	    //! The std::vector width get trait specialization.
 	    template<typename TElem, typename TAllocator>
-	    struct GetExtent<DimInt<0u>, std::vector<TElem, TAllocator>>
+	    struct GetExtents<std::vector<TElem, TAllocator>>
 	    {
-	        ALPAKA_FN_HOST static auto getExtent(std::vector<TElem, TAllocator> const& extent)
-	            -> Idx<std::vector<TElem, TAllocator>>
+	        ALPAKA_FN_HOST constexpr auto operator()(std::vector<TElem, TAllocator> const& a)
+	            -> Vec<DimInt<1>, Idx<std::vector<TElem, TAllocator>>>
 	        {
-	            return std::size(extent);
+	            return {std::size(a)};
 	        }
 	    };
 
@@ -33828,6 +34342,7 @@
 	        {
 	            return std::data(view);
 	        }
+
 	        ALPAKA_FN_HOST static auto getPtrNative(std::vector<TElem, TAllocator>& view) -> TElem*
 	        {
 	            return std::data(view);
@@ -33835,13 +34350,13 @@
 	    };
 
 	    //! The std::vector offset get trait specialization.
-	    template<typename TIdx, typename TElem, typename TAllocator>
-	    struct GetOffset<TIdx, std::vector<TElem, TAllocator>>
+	    template<typename TElem, typename TAllocator>
+	    struct GetOffsets<std::vector<TElem, TAllocator>>
 	    {
-	        ALPAKA_FN_HOST static auto getOffset(std::vector<TElem, TAllocator> const&)
-	            -> Idx<std::vector<TElem, TAllocator>>
+	        ALPAKA_FN_HOST auto operator()(std::vector<TElem, TAllocator> const&) const
+	            -> Vec<DimInt<1>, Idx<std::vector<TElem, TAllocator>>>
 	        {
-	            return 0u;
+	            return {0};
 	        }
 	    };
 
@@ -33864,17 +34379,17 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/Assert.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/mem/view/ViewPlainPtr.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Assert.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/extent/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/ViewPlainPtr.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 	// #include <type_traits>    // amalgamate: file already included
 	// #include <utility>    // amalgamate: file already included
@@ -33894,23 +34409,26 @@
 	        //! \param view The view this view is a sub-view of.
 	        //! \param extentElements The extent in elements.
 	        //! \param relativeOffsetsElements The offsets in elements.
-	        template<typename TView, typename TOffsets, typename TExtent>
+	        template<typename TQualifiedView, typename TOffsets, typename TExtent>
 	        ViewSubView(
-	            TView const& view,
+	            TQualifiedView& view,
 	            TExtent const& extentElements,
 	            TOffsets const& relativeOffsetsElements = TOffsets())
-	            : m_viewParentView(getPtrNative(view), getDev(view), getExtentVec(view), getPitchBytesVec(view))
-	            , m_extentElements(getExtentVec(extentElements))
-	            , m_offsetsElements(getOffsetVec(relativeOffsetsElements))
+	            : m_viewParentView(getPtrNative(view), getDev(view), getExtents(view), getPitchesInBytes(view))
+	            , m_extentElements(getExtents(extentElements))
+	            , m_offsetsElements(getOffsets(relativeOffsetsElements))
+	            , m_nativePtr(computeNativePtr())
 	        {
 	            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
+	            using View = std::remove_cv_t<TQualifiedView>;
+
 	            static_assert(
-	                std::is_same_v<Dev, alpaka::Dev<TView>>,
+	                std::is_same_v<Dev, alpaka::Dev<View>>,
 	                "The dev type of TView and the Dev template parameter have to be identical!");
 
 	            static_assert(
-	                std::is_same_v<TIdx, Idx<TView>>,
+	                std::is_same_v<TIdx, Idx<View>>,
 	                "The idx type of TView and the TIdx template parameter have to be identical!");
 	            static_assert(
 	                std::is_same_v<TIdx, Idx<TExtent>>,
@@ -33920,7 +34438,7 @@
 	                "The idx type of TOffsets and the TIdx template parameter have to be identical!");
 
 	            static_assert(
-	                std::is_same_v<TDim, Dim<TView>>,
+	                std::is_same_v<TDim, Dim<View>>,
 	                "The dim type of TView and the TDim template parameter have to be identical!");
 	            static_assert(
 	                std::is_same_v<TDim, Dim<TExtent>>,
@@ -33929,67 +34447,43 @@
 	                std::is_same_v<TDim, Dim<TOffsets>>,
 	                "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-	            ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= getExtentVec(view))
-	                              .foldrAll(std::logical_and<bool>(), true));
-	        }
-	        //! Constructor.
-	        //! \param view The view this view is a sub-view of.
-	        //! \param extentElements The extent in elements.
-	        //! \param relativeOffsetsElements The offsets in elements.
-	        template<typename TView, typename TOffsets, typename TExtent>
-	        ViewSubView(TView& view, TExtent const& extentElements, TOffsets const& relativeOffsetsElements = TOffsets())
-	            : m_viewParentView(getPtrNative(view), getDev(view), getExtentVec(view), getPitchBytesVec(view))
-	            , m_extentElements(getExtentVec(extentElements))
-	            , m_offsetsElements(getOffsetVec(relativeOffsetsElements))
-	        {
-	            ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-	            static_assert(
-	                std::is_same_v<Dev, alpaka::Dev<TView>>,
-	                "The dev type of TView and the Dev template parameter have to be identical!");
-
-	            static_assert(
-	                std::is_same_v<TIdx, Idx<TView>>,
-	                "The idx type of TView and the TIdx template parameter have to be identical!");
-	            static_assert(
-	                std::is_same_v<TIdx, Idx<TExtent>>,
-	                "The idx type of TExtent and the TIdx template parameter have to be identical!");
-	            static_assert(
-	                std::is_same_v<TIdx, Idx<TOffsets>>,
-	                "The idx type of TOffsets and the TIdx template parameter have to be identical!");
-
-	            static_assert(
-	                std::is_same_v<TDim, Dim<TView>>,
-	                "The dim type of TView and the TDim template parameter have to be identical!");
-	            static_assert(
-	                std::is_same_v<TDim, Dim<TExtent>>,
-	                "The dim type of TExtent and the TDim template parameter have to be identical!");
-	            static_assert(
-	                std::is_same_v<TDim, Dim<TOffsets>>,
-	                "The dim type of TOffsets and the TDim template parameter have to be identical!");
-
-	            ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= getExtentVec(view))
-	                              .foldrAll(std::logical_and<bool>(), true));
+	            ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= getExtents(view)).all());
 	        }
 
 	        //! \param view The view this view is a sub-view of.
 	        template<typename TView>
-	        explicit ViewSubView(TView const& view) : ViewSubView(view, view, Vec<TDim, TIdx>::all(0))
+	        explicit ViewSubView(TView const& view) : ViewSubView(view, getExtents(view), Vec<TDim, TIdx>::zeros())
 	        {
 	            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 	        }
 
 	        //! \param view The view this view is a sub-view of.
 	        template<typename TView>
-	        explicit ViewSubView(TView& view) : ViewSubView(view, view, Vec<TDim, TIdx>::all(0))
+	        explicit ViewSubView(TView& view) : ViewSubView(view, getExtents(view), Vec<TDim, TIdx>::zeros())
 	        {
 	            ALPAKA_DEBUG_FULL_LOG_SCOPE;
 	        }
 
 	    public:
+	        ALPAKA_FN_HOST auto computeNativePtr()
+	        {
+	#if BOOST_COMP_GNUC
+	#    pragma GCC diagnostic push
+	            // "cast from 'std::uint8_t*' to 'TElem*' increases required alignment of target type"
+	#    pragma GCC diagnostic ignored "-Wcast-align"
+	#endif
+	            return reinterpret_cast<TElem*>(
+	                reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(m_viewParentView))
+	                + (m_offsetsElements * getPitchesInBytes(m_viewParentView)).sum());
+	#if BOOST_COMP_GNUC
+	#    pragma GCC diagnostic pop
+	#endif
+	        }
+
 	        ViewPlainPtr<Dev, TElem, TDim, TIdx> m_viewParentView; // This wraps the parent view.
 	        Vec<TDim, TIdx> m_extentElements; // The extent of this view.
 	        Vec<TDim, TIdx> m_offsetsElements; // The offset relative to the parent view.
+	        TElem* m_nativePtr;
 	    };
 
 	    // Trait specializations for ViewSubView.
@@ -34027,89 +34521,47 @@
 	        };
 
 	        //! The ViewSubView width get trait specialization.
-	        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TDev, typename TIdx>
-	        struct GetExtent<
-	            TIdxIntegralConst,
-	            ViewSubView<TDev, TElem, TDim, TIdx>,
-	            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+	        template<typename TElem, typename TDim, typename TDev, typename TIdx>
+	        struct GetExtents<ViewSubView<TDev, TElem, TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getExtent(ViewSubView<TDev, TElem, TDim, TIdx> const& extent) -> TIdx
+	            ALPAKA_FN_HOST auto operator()(ViewSubView<TDev, TElem, TDim, TIdx> const& view) const
 	            {
-	                return extent.m_extentElements[TIdxIntegralConst::value];
+	                return view.m_extentElements;
 	            }
 	        };
 
-	#if BOOST_COMP_GNUC
-	#    pragma GCC diagnostic push
-	#    pragma GCC diagnostic ignored                                                                                    \
-	        "-Wcast-align" // "cast from 'std::uint8_t*' to 'TElem*' increases required alignment of target type"
-	#endif
 	        //! The ViewSubView native pointer get trait specialization.
 	        template<typename TElem, typename TDim, typename TDev, typename TIdx>
 	        struct GetPtrNative<ViewSubView<TDev, TElem, TDim, TIdx>>
 	        {
-	        private:
-	            using IdxSequence = std::make_index_sequence<TDim::value>;
-
-	        public:
 	            ALPAKA_FN_HOST static auto getPtrNative(ViewSubView<TDev, TElem, TDim, TIdx> const& view) -> TElem const*
 	            {
-	                // \TODO: pre-calculate this pointer for faster execution.
-	                return reinterpret_cast<TElem const*>(
-	                    reinterpret_cast<std::uint8_t const*>(alpaka::getPtrNative(view.m_viewParentView))
-	                    + pitchedOffsetBytes(view, IdxSequence()));
+	                return view.m_nativePtr;
 	            }
+
 	            ALPAKA_FN_HOST static auto getPtrNative(ViewSubView<TDev, TElem, TDim, TIdx>& view) -> TElem*
 	            {
-	                // \TODO: pre-calculate this pointer for faster execution.
-	                return reinterpret_cast<TElem*>(
-	                    reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view.m_viewParentView))
-	                    + pitchedOffsetBytes(view, IdxSequence()));
-	            }
-
-	        private:
-	            //! For a 3D vector this calculates:
-	            //!
-	            //! getOffset<0u>(view) * getPitchBytes<1u>(view)
-	            //! + getOffset<1u>(view) * getPitchBytes<2u>(view)
-	            //! + getOffset<2u>(view) * getPitchBytes<3u>(view)
-	            //! while getPitchBytes<3u>(view) is equivalent to sizeof(TElem)
-	            template<typename TView, std::size_t... TIndices>
-	            ALPAKA_FN_HOST static auto pitchedOffsetBytes(TView const& view, std::index_sequence<TIndices...> const&)
-	                -> TIdx
-	            {
-	                return meta::foldr(std::plus<TIdx>(), pitchedOffsetBytesDim<TIndices>(view)..., TIdx{0});
-	            }
-	            template<std::size_t Tidx, typename TView>
-	            ALPAKA_FN_HOST static auto pitchedOffsetBytesDim(TView const& view) -> TIdx
-	            {
-	                return getOffset<Tidx>(view) * getPitchBytes<Tidx + 1u>(view);
+	                return view.m_nativePtr;
 	            }
 	        };
-	#if BOOST_COMP_GNUC
-	#    pragma GCC diagnostic pop
-	#endif
 
 	        //! The ViewSubView pitch get trait specialization.
-	        template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetPitchBytes<TIdxIntegralConst, ViewSubView<TDev, TElem, TDim, TIdx>>
+	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+	        struct GetPitchesInBytes<ViewSubView<TDev, TElem, TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getPitchBytes(ViewSubView<TDev, TElem, TDim, TIdx> const& view) -> TIdx
+	            ALPAKA_FN_HOST auto operator()(ViewSubView<TDev, TElem, TDim, TIdx> const& view) const
 	            {
-	                return alpaka::getPitchBytes<TIdxIntegralConst::value>(view.m_viewParentView);
+	                return getPitchesInBytes(view.m_viewParentView);
 	            }
 	        };
 
 	        //! The ViewSubView x offset get trait specialization.
-	        template<typename TIdxIntegralConst, typename TElem, typename TDim, typename TDev, typename TIdx>
-	        struct GetOffset<
-	            TIdxIntegralConst,
-	            ViewSubView<TDev, TElem, TDim, TIdx>,
-	            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+	        template<typename TElem, typename TDim, typename TDev, typename TIdx>
+	        struct GetOffsets<ViewSubView<TDev, TElem, TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getOffset(ViewSubView<TDev, TElem, TDim, TIdx> const& offset) -> TIdx
+	            ALPAKA_FN_HOST auto operator()(ViewSubView<TDev, TElem, TDim, TIdx> const& offset)
 	            {
-	                return offset.m_offsetsElements[TIdxIntegralConst::value];
+	                return offset.m_offsetsElements;
 	            }
 	        };
 
@@ -34157,6 +34609,7 @@
 	    {
 	        template<typename TList, template<typename...> class TApplicant>
 	        struct ApplyImpl;
+
 	        template<template<typename...> class TList, template<typename...> class TApplicant, typename... T>
 	        struct ApplyImpl<TList<T...>, TApplicant>
 	        {
@@ -34178,7 +34631,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka::meta
 	{
@@ -34189,30 +34642,35 @@
 	    {
 	        template<typename... Ts>
 	        struct CartesianProductImplHelper;
+
 	        // Stop condition.
 	        template<template<typename...> class TList, typename... Ts>
 	        struct CartesianProductImplHelper<TList<Ts...>>
 	        {
 	            using type = TList<Ts...>;
 	        };
+
 	        // Catches first empty tuple.
 	        template<template<typename...> class TList, typename... Ts>
 	        struct CartesianProductImplHelper<TList<TList<>>, Ts...>
 	        {
 	            using type = TList<>;
 	        };
+
 	        // Catches any empty tuple except first.
 	        template<template<typename...> class TList, typename... Ts, typename... Rests>
 	        struct CartesianProductImplHelper<TList<Ts...>, TList<>, Rests...>
 	        {
 	            using type = TList<>;
 	        };
+
 	        template<template<typename...> class TList, typename... X, typename H, typename... Rests>
 	        struct CartesianProductImplHelper<TList<X...>, TList<H>, Rests...>
 	        {
 	            using type1 = TList<Concatenate<X, TList<H>>...>;
 	            using type = typename CartesianProductImplHelper<type1, Rests...>::type;
 	        };
+
 	        template<
 	            template<typename...>
 	            class TList,
@@ -34232,12 +34690,14 @@
 
 	        template<template<typename...> class TList, typename... Ts>
 	        struct CartesianProductImpl;
+
 	        // The base case for no input returns an empty sequence.
 	        template<template<typename...> class TList>
 	        struct CartesianProductImpl<TList>
 	        {
 	            using type = TList<>;
 	        };
+
 	        // R is the return type, Head<A...> is the first input list
 	        template<template<typename...> class TList, template<typename...> class Head, typename... Ts, typename... Tail>
 	        struct CartesianProductImpl<TList, Head<Ts...>, Tail...>
@@ -34253,323 +34713,9 @@
 	// == ./include/alpaka/meta/CartesianProduct.hpp ==
 	// ============================================================================
 
-// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already expanded
-	// ============================================================================
-	// == ./include/alpaka/meta/CudaVectorArrayWrapper.hpp ==
-	// ==
-	/* Copyright 2022 Jiří Vyskočil, Jan Stephan, Bernhard Manfred Gruber
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-
-	// #include <functional>    // amalgamate: file already included
-	#include <initializer_list>
-	#include <numeric>
-	// #include <type_traits>    // amalgamate: file already included
-
-	#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-
-	namespace alpaka::meta
-	{
-	    namespace detail
-	    {
-	        template<typename TScalar, unsigned N>
-	        struct CudaVectorArrayTypeTraits;
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<float, 1>
-	        {
-	            using type = float1;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<float, 2>
-	        {
-	            using type = float2;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<float, 3>
-	        {
-	            using type = float3;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<float, 4>
-	        {
-	            using type = float4;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<double, 1>
-	        {
-	            using type = double1;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<double, 2>
-	        {
-	            using type = double2;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<double, 3>
-	        {
-	            using type = double3;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<double, 4>
-	        {
-	            using type = double4;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<unsigned, 1>
-	        {
-	            using type = uint1;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<unsigned, 2>
-	        {
-	            using type = uint2;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<unsigned, 3>
-	        {
-	            using type = uint3;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<unsigned, 4>
-	        {
-	            using type = uint4;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<int, 1>
-	        {
-	            using type = int1;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<int, 2>
-	        {
-	            using type = int2;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<int, 3>
-	        {
-	            using type = int3;
-	        };
-
-	        template<>
-	        struct CudaVectorArrayTypeTraits<int, 4>
-	        {
-	            using type = int4;
-	        };
-	    } // namespace detail
-
-	    /// Helper struct providing [] subscript access to CUDA vector types
-	    template<typename TScalar, unsigned N>
-	    struct CudaVectorArrayWrapper;
-
-	    template<typename TScalar>
-	    struct CudaVectorArrayWrapper<TScalar, 4> : public detail::CudaVectorArrayTypeTraits<TScalar, 4>::type
-	    {
-	        using value_type = TScalar;
-	        constexpr static unsigned size = 4;
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-	        {
-	            auto it = std::begin(init);
-	            this->x = *it++;
-	            this->y = *it++;
-	            this->z = *it++;
-	            this->w = *it++;
-	        }
-	        template<class Other>
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-	        {
-	            static_assert(std::tuple_size_v<Other> == size, "Can only convert between vectors of same size.");
-	            static_assert(
-	                std::is_same_v<typename Other::value_type, value_type>,
-	                "Can only convert between vectors of same element type.");
-	            this->x = o[0];
-	            this->y = o[1];
-	            this->z = o[2];
-	            this->w = o[3];
-	        }
-	        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-	        {
-	            std::array<value_type, size> ret;
-	            ret[0] = this->x;
-	            ret[1] = this->y;
-	            ret[2] = this->z;
-	            ret[3] = this->w;
-	            return ret;
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
-	        {
-	            assert(k >= 0 && k < 4);
-	            return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
-	        {
-	            assert(k >= 0 && k < 4);
-	            return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
-	        }
-	    };
-
-	    template<typename TScalar>
-	    struct CudaVectorArrayWrapper<TScalar, 3> : public detail::CudaVectorArrayTypeTraits<TScalar, 3>::type
-	    {
-	        using value_type = TScalar;
-	        constexpr static unsigned size = 3;
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-	        {
-	            auto it = std::begin(init);
-	            this->x = *it++;
-	            this->y = *it++;
-	            this->z = *it++;
-	        }
-	        template<class Other>
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-	        {
-	            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
-	            static_assert(
-	                std::is_same<typename Other::value_type, value_type>::value,
-	                "Can only convert between vectors of same element type.");
-	            this->x = o[0];
-	            this->y = o[1];
-	            this->z = o[2];
-	        }
-	        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-	        {
-	            std::array<value_type, size> ret;
-	            ret[0] = this->x;
-	            ret[1] = this->y;
-	            ret[2] = this->z;
-	            return ret;
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
-	        {
-	            assert(k >= 0 && k < 3);
-	            return k == 0 ? this->x : (k == 1 ? this->y : this->z);
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
-	        {
-	            assert(k >= 0 && k < 3);
-	            return k == 0 ? this->x : (k == 1 ? this->y : this->z);
-	        }
-	    };
-
-	    template<typename TScalar>
-	    struct CudaVectorArrayWrapper<TScalar, 2> : public detail::CudaVectorArrayTypeTraits<TScalar, 2>::type
-	    {
-	        using value_type = TScalar;
-	        constexpr static unsigned size = 2;
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-	        {
-	            auto it = std::begin(init);
-	            this->x = *it++;
-	            this->y = *it++;
-	        }
-	        template<class Other>
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-	        {
-	            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
-	            static_assert(
-	                std::is_same<typename Other::value_type, value_type>::value,
-	                "Can only convert between vectors of same element type.");
-	            this->x = o[0];
-	            this->y = o[1];
-	        }
-	        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-	        {
-	            std::array<value_type, size> ret;
-	            ret[0] = this->x;
-	            ret[1] = this->y;
-	            return ret;
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
-	        {
-	            assert(k >= 0 && k < 2);
-	            return k == 0 ? this->x : this->y;
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
-	        {
-	            assert(k >= 0 && k < 2);
-	            return k == 0 ? this->x : this->y;
-	        }
-	    };
-
-	    template<typename TScalar>
-	    struct CudaVectorArrayWrapper<TScalar, 1> : public detail::CudaVectorArrayTypeTraits<TScalar, 1>::type
-	    {
-	        using value_type = TScalar;
-	        constexpr static unsigned size = 1;
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-	        {
-	            auto it = std::begin(init);
-	            this->x = *it;
-	        }
-	        template<class Other>
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-	        {
-	            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
-	            static_assert(
-	                std::is_same<typename Other::value_type, value_type>::value,
-	                "Can only convert between vectors of same element type.");
-	            this->x = o[0];
-	        }
-	        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-	        {
-	            std::array<value_type, size> ret;
-	            ret[0] = this->x;
-	            return ret;
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[]([[maybe_unused]] int const k) noexcept
-	        {
-	            assert(k == 0);
-	            return this->x;
-	        }
-
-	        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](
-	            [[maybe_unused]] int const k) const noexcept
-	        {
-	            assert(k == 0);
-	            return this->x;
-	        }
-	    };
-	} // namespace alpaka::meta
-
-	namespace std
-	{
-	    /// Specialization of std::tuple_size for \a float4_array
-	    template<typename T, unsigned N>
-	    struct tuple_size<alpaka::meta::CudaVectorArrayWrapper<T, N>> : integral_constant<size_t, N>
-	    {
-	    };
-	} // namespace std
-
-	#endif
-	// ==
-	// == ./include/alpaka/meta/CudaVectorArrayWrapper.hpp ==
-	// ============================================================================
-
-// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already expanded
+// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
+// #include "alpaka/meta/CudaVectorArrayWrapper.hpp"    // amalgamate: file already inlined
+// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/meta/Filter.hpp ==
 	// ==
@@ -34578,7 +34724,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
 
 	// #include <type_traits>    // amalgamate: file already included
 
@@ -34588,11 +34734,13 @@
 	    {
 	        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
 	        struct FilterImplHelper;
+
 	        template<template<typename...> class TList, template<typename> class TPred>
 	        struct FilterImplHelper<TList, TPred>
 	        {
 	            using type = TList<>;
 	        };
+
 	        template<template<typename...> class TList, template<typename> class TPred, typename T, typename... Ts>
 	        struct FilterImplHelper<TList, TPred, T, Ts...>
 	        {
@@ -34604,6 +34752,7 @@
 
 	        template<typename TList, template<typename> class TPred>
 	        struct FilterImpl;
+
 	        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
 	        struct FilterImpl<TList<Ts...>, TPred>
 	        {
@@ -34617,7 +34766,7 @@
 	// == ./include/alpaka/meta/Filter.hpp ==
 	// ============================================================================
 
-// #include "alpaka/meta/Fold.hpp"    // amalgamate: file already expanded
+// #include "alpaka/meta/Fold.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/meta/ForEachType.hpp ==
 	// ==
@@ -34626,7 +34775,7 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 
 	// #include <utility>    // amalgamate: file already included
 
@@ -34636,6 +34785,7 @@
 	    {
 	        template<typename TList>
 	        struct ForEachTypeHelper;
+
 	        template<template<typename...> class TList>
 	        struct ForEachTypeHelper<TList<>>
 	        {
@@ -34645,6 +34795,7 @@
 	            {
 	            }
 	        };
+
 	        template<template<typename...> class TList, typename T, typename... Ts>
 	        struct ForEachTypeHelper<TList<T, Ts...>>
 	        {
@@ -34674,77 +34825,10 @@
 	// == ./include/alpaka/meta/ForEachType.hpp ==
 	// ============================================================================
 
-// #include "alpaka/meta/Functional.hpp"    // amalgamate: file already expanded
-// #include "alpaka/meta/IntegerSequence.hpp"    // amalgamate: file already expanded
-// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already expanded
-	// ============================================================================
-	// == ./include/alpaka/meta/IsArrayOrVector.hpp ==
-	// ==
-	/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/meta/CudaVectorArrayWrapper.hpp"    // amalgamate: file already expanded
-
-	// #include <functional>    // amalgamate: file already included
-	// #include <numeric>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
-	// #include <vector>    // amalgamate: file already included
-
-	namespace alpaka::meta
-	{
-	    /** Checks whether T is an array or a vector type
-	     *
-	     * @tparam T a type to check
-	     */
-	    template<typename T>
-	    struct IsArrayOrVector : std::false_type
-	    {
-	    };
-
-	    /** Specialization of \a IsArrayOrVector for vector types
-	     *
-	     * @tparam T inner type held in the vector
-	     * @tparam A vector allocator
-	     */
-	    template<typename T, typename A>
-	    struct IsArrayOrVector<std::vector<T, A>> : std::true_type
-	    {
-	    };
-
-	    /** Specialization of \a IsArrayOrVector for plain arrays
-	     *
-	     * @tparam T inner type held in the array
-	     * @tparam N size of the array
-	     */
-	    template<typename T, std::size_t N>
-	    struct IsArrayOrVector<T[N]> : std::true_type
-	    {
-	    };
-
-	    /** Specialization of \a IsArrayOrVector for std::array
-	     *
-	     * @tparam T inner type held in the array
-	     * @tparam N size of the array
-	     */
-	    template<typename T, std::size_t N>
-	    struct IsArrayOrVector<std::array<T, N>> : std::true_type
-	    {
-	    };
-
-	#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-	    /// Specialization of \a IsArrayOrVector for CUDA vector array wrapper
-	    template<typename T, unsigned N>
-	    struct IsArrayOrVector<CudaVectorArrayWrapper<T, N>> : std::true_type
-	    {
-	    };
-	#endif
-	} // namespace alpaka::meta
-	// ==
-	// == ./include/alpaka/meta/IsArrayOrVector.hpp ==
-	// ============================================================================
-
+// #include "alpaka/meta/Functional.hpp"    // amalgamate: file already inlined
+// #include "alpaka/meta/IntegerSequence.hpp"    // amalgamate: file already inlined
+// #include "alpaka/meta/Integral.hpp"    // amalgamate: file already inlined
+// #include "alpaka/meta/IsArrayOrVector.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/meta/IsStrictBase.hpp ==
 	// ==
@@ -34766,7 +34850,7 @@
 	// == ./include/alpaka/meta/IsStrictBase.hpp ==
 	// ============================================================================
 
-// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already expanded
+// #include "alpaka/meta/NdLoop.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/meta/NonZero.hpp ==
 	// ==
@@ -34800,7 +34884,7 @@
 	// == ./include/alpaka/meta/NonZero.hpp ==
 	// ============================================================================
 
-// #include "alpaka/meta/Set.hpp"    // amalgamate: file already expanded
+// #include "alpaka/meta/Set.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/meta/Transform.hpp ==
 	// ==
@@ -34815,6 +34899,7 @@
 	    {
 	        template<typename Ts, template<typename...> class TOp>
 	        struct TransformImpl;
+
 	        template<template<typename...> class TList, typename... Ts, template<typename...> class TOp>
 	        struct TransformImpl<TList<Ts...>, TOp>
 	        {
@@ -34828,12 +34913,12 @@
 	// == ./include/alpaka/meta/Transform.hpp ==
 	// ============================================================================
 
-// #include "alpaka/meta/TypeListOps.hpp"    // amalgamate: file already expanded
+// #include "alpaka/meta/TypeListOps.hpp"    // amalgamate: file already inlined
 // offset
-// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/offset/Traits.hpp"    // amalgamate: file already inlined
 // platform
-// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already expanded
-// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/PlatformCpu.hpp"    // amalgamate: file already inlined
+// #include "alpaka/platform/PlatformCpuSycl.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/platform/PlatformCudaRt.hpp ==
 	// ==
@@ -34842,20 +34927,21 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
 		// ============================================================================
 		// == ./include/alpaka/platform/PlatformUniformCudaHipRt.hpp ==
 		// ==
-		/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
+		/* Copyright 2022 Benjamin Worpitz, René Widera, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato,
+		 *                Christian Kaever
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
 		// #pragma once
-		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already expanded
+		// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Cuda.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Hip.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/Traits.hpp"    // amalgamate: file already inlined
 
 		// #include <iostream>    // amalgamate: file already included
 		// #include <sstream>    // amalgamate: file already included
@@ -34874,6 +34960,12 @@
 		    template<typename TApi>
 		    struct PlatformUniformCudaHipRt : concepts::Implements<ConceptPlatform, PlatformUniformCudaHipRt<TApi>>
 		    {
+		#    if defined(BOOST_COMP_GNUC) && BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(11, 0, 0)                                 \
+		        && BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(12, 0, 0)
+		        // This is a workaround for g++-11 bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96295
+		        // g++-11 complains in *all* places where a PlatformCpu is used, that it "may be used uninitialized"
+		        char c = {};
+		#    endif
 		    };
 
 		    namespace trait
@@ -34981,11 +35073,11 @@
 		            {
 		                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-		                std::size_t const kiB(1024);
-		                std::size_t const miB(kiB * kiB);
+		                constexpr auto KiB = std::size_t{1024};
+		                constexpr auto MiB = KiB * KiB;
 		                std::cout << "name: " << devProp.name << std::endl;
-		                std::cout << "totalGlobalMem: " << devProp.totalGlobalMem / miB << " MiB" << std::endl;
-		                std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock / kiB << " KiB" << std::endl;
+		                std::cout << "totalGlobalMem: " << devProp.totalGlobalMem / MiB << " MiB" << std::endl;
+		                std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock / KiB << " KiB" << std::endl;
 		                std::cout << "regsPerBlock: " << devProp.regsPerBlock << std::endl;
 		                std::cout << "warpSize: " << devProp.warpSize << std::endl;
 		                std::cout << "maxThreadsPerBlock: " << devProp.maxThreadsPerBlock << std::endl;
@@ -34994,7 +35086,7 @@
 		                std::cout << "maxGridSize[3]: (" << devProp.maxGridSize[0] << ", " << devProp.maxGridSize[1] << ", "
 		                          << devProp.maxGridSize[2] << ")" << std::endl;
 		                std::cout << "clockRate: " << devProp.clockRate << " kHz" << std::endl;
-		                std::cout << "totalConstMem: " << devProp.totalConstMem / kiB << " KiB" << std::endl;
+		                std::cout << "totalConstMem: " << devProp.totalConstMem / KiB << " KiB" << std::endl;
 		                std::cout << "major: " << devProp.major << std::endl;
 		                std::cout << "minor: " << devProp.minor << std::endl;
 
@@ -35072,7 +35164,7 @@
 		                else
 		                { // ApiHipRt
 		                    std::cout << "clockInstructionRate: " << devProp.clockInstructionRate << "kHz" << std::endl;
-		                    std::cout << "maxSharedMemoryPerMultiProcessor: " << devProp.maxSharedMemoryPerMultiProcessor / kiB
+		                    std::cout << "maxSharedMemoryPerMultiProcessor: " << devProp.maxSharedMemoryPerMultiProcessor / KiB
 		                              << " KiB" << std::endl;
 		                    std::cout << "gcnArch: " << devProp.gcnArch << std::endl;
 		                    std::cout << "arch: " << std::endl;
@@ -35121,8 +35213,8 @@
 	// == ./include/alpaka/platform/PlatformCudaRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/PlatformFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+// #include "alpaka/platform/PlatformGpuSyclIntel.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/platform/PlatformHipRt.hpp ==
 	// ==
@@ -35131,8 +35223,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/platform/PlatformUniformCudaHipRt.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/platform/PlatformUniformCudaHipRt.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -35147,1262 +35239,18 @@
 	// == ./include/alpaka/platform/PlatformHipRt.hpp ==
 	// ============================================================================
 
-// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/platform/Traits.hpp"    // amalgamate: file already inlined
 // rand
-	// ============================================================================
-	// == ./include/alpaka/rand/RandDefault.hpp ==
-	// ==
-	/* Copyright 2022 Jeffrey Kelling, Jan Stephan, Bernhard Manfred Gruber
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/math/Traits.hpp"    // amalgamate: file already expanded
-		// ============================================================================
-		// == ./include/alpaka/rand/RandPhilox.hpp ==
-		// ==
-		/* Copyright 2022 Jiří Vyskočil, Jan Stephan, Bernhard Manfred Gruber
-		 * SPDX-License-Identifier: MPL-2.0
-		 */
-
-		// #pragma once
-		// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-		// #include "alpaka/meta/IsArrayOrVector.hpp"    // amalgamate: file already expanded
-			// ============================================================================
-			// == ./include/alpaka/rand/Philox/PhiloxSingle.hpp ==
-			// ==
-			/* Copyright 2022 Jiri Vyskocil, Rene Widera, Bernhard Manfred Gruber
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-				// ============================================================================
-				// == ./include/alpaka/rand/Philox/MultiplyAndSplit64to32.hpp ==
-				// ==
-				/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/core/Common.hpp"    // amalgamate: file already expanded
-
-				namespace alpaka::rand
-				{
-				    /// Get high 32 bits of a 64-bit number
-				    ALPAKA_FN_HOST_ACC constexpr static auto high32Bits(std::uint64_t const x) -> std::uint32_t
-				    {
-				        return static_cast<std::uint32_t>(x >> 32);
-				    }
-
-				    /// Get low 32 bits of a 64-bit number
-				    ALPAKA_FN_HOST_ACC constexpr static auto low32Bits(std::uint64_t const x) -> std::uint32_t
-				    {
-				        return static_cast<std::uint32_t>(x & 0xffffffff);
-				    }
-
-				    /** Multiply two 64-bit numbers and split the result into high and low 32 bits, also known as "mulhilo32"
-				     *
-				     * @param a first 64-bit multiplier
-				     * @param b second 64-bit multiplier
-				     * @param resultHigh high 32 bits of the product a*b
-				     * @param resultLow low 32 bits of the product a*b
-				     */
-				    // TODO: See single-instruction implementations in original Philox source code
-				    ALPAKA_FN_HOST_ACC constexpr static void multiplyAndSplit64to32(
-				        std::uint64_t const a,
-				        std::uint64_t const b,
-				        std::uint32_t& resultHigh,
-				        std::uint32_t& resultLow)
-				    {
-				        std::uint64_t res64 = a * b;
-				        resultHigh = high32Bits(res64);
-				        resultLow = low32Bits(res64);
-				    }
-				} // namespace alpaka::rand
-				// ==
-				// == ./include/alpaka/rand/Philox/MultiplyAndSplit64to32.hpp ==
-				// ============================================================================
-
-				// ============================================================================
-				// == ./include/alpaka/rand/Philox/PhiloxBaseTraits.hpp ==
-				// ==
-				/* Copyright 2022 Jiří Vyskočil, Bernhard Manfred Gruber, Jeffrey Kelling, Jan Stephan
-				 * SPDX-License-Identifier: MPL-2.0
-				 */
-
-				// #pragma once
-				// #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"    // amalgamate: file already expanded
-					// ============================================================================
-					// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
-					// ==
-					/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber, Jeffrey Kelling
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-						// ============================================================================
-						// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
-						// ==
-						/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber, Jeffrey Kelling
-						 * SPDX-License-Identifier: MPL-2.0
-						 */
-
-						// #pragma once
-						// #include "alpaka/core/Unroll.hpp"    // amalgamate: file already expanded
-						// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already expanded
-							// ============================================================================
-							// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
-							// ==
-							/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
-							 * SPDX-License-Identifier: MPL-2.0
-							 */
-
-							// #pragma once
-							// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already expanded
-
-							// #include <cstdint>    // amalgamate: file already included
-							// #include <utility>    // amalgamate: file already included
-
-
-							namespace alpaka::rand::engine
-							{
-							    /** Constants used in the Philox algorithm
-							     *
-							     * The numbers are taken from the reference Philox implementation:
-							     *
-							     * J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
-							     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking,
-							     * Storage and Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
-							     *
-							     * @tparam TParams basic Philox algorithm parameters
-							     *
-							     * static const data members are transformed into functions, because GCC
-							     * assumes types with static data members to be not mappable and makes not
-							     * exception for constexpr ones. This is a valid interpretation of the
-							     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
-							     * data member are mappable.
-							     */
-							    template<typename TParams>
-							    class PhiloxConstants
-							    {
-							    public:
-							        static constexpr std::uint64_t WEYL_64_0()
-							        {
-							            return 0x9E3779B97F4A7C15; ///< First Weyl sequence parameter: the golden ratio
-							        }
-							        static constexpr std::uint64_t WEYL_64_1()
-							        {
-							            return 0xBB67AE8584CAA73B; ///< Second Weyl sequence parameter: \f$ \sqrt{3}-1 \f$
-							        }
-
-							        static constexpr std::uint32_t WEYL_32_0()
-							        {
-							            return high32Bits(WEYL_64_0()); ///< 1st Weyl sequence parameter, 32 bits
-							        }
-							        static constexpr std::uint32_t WEYL_32_1()
-							        {
-							            return high32Bits(WEYL_64_1()); ///< 2nd Weyl sequence parameter, 32 bits
-							        }
-
-							        static constexpr std::uint32_t MULTIPLITER_4x32_0()
-							        {
-							            return 0xCD9E8D57; ///< First Philox S-box multiplier
-							        }
-							        static constexpr std::uint32_t MULTIPLITER_4x32_1()
-							        {
-							            return 0xD2511F53; ///< Second Philox S-box multiplier
-							        }
-							    };
-							} // namespace alpaka::rand::engine
-							// ==
-							// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
-							// ============================================================================
-
-
-						// #include <utility>    // amalgamate: file already included
-
-
-						namespace alpaka::rand::engine
-						{
-						    /** Philox algorithm parameters
-						     *
-						     * @tparam TCounterSize number of elements in the counter
-						     * @tparam TWidth width of one counter element (in bits)
-						     * @tparam TRounds number of S-box rounds
-						     */
-						    template<unsigned TCounterSize, unsigned TWidth, unsigned TRounds>
-						    struct PhiloxParams
-						    {
-						        static constexpr unsigned counterSize = TCounterSize;
-						        static constexpr unsigned width = TWidth;
-						        static constexpr unsigned rounds = TRounds;
-						    };
-
-						    /** Class basic Philox family counter-based PRNG
-						     *
-						     * Checks the validity of passed-in parameters and calls the \a TBackend methods to perform N rounds of the
-						     * Philox shuffle.
-						     *
-						     * @tparam TBackend device-dependent backend, specifies the array types
-						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-						     */
-						    template<typename TBackend, typename TParams>
-						    class PhiloxStateless : public PhiloxConstants<TParams>
-						    {
-						        static constexpr unsigned numRounds()
-						        {
-						            return TParams::rounds;
-						        }
-						        static constexpr unsigned vectorSize()
-						        {
-						            return TParams::counterSize;
-						        }
-						        static constexpr unsigned numberWidth()
-						        {
-						            return TParams::width;
-						        }
-
-						        static_assert(numRounds() > 0, "Number of Philox rounds must be > 0.");
-						        static_assert(vectorSize() % 2 == 0, "Philox counter size must be an even number.");
-						        static_assert(vectorSize() <= 16, "Philox SP network is not specified for sizes > 16.");
-						        static_assert(numberWidth() % 8 == 0, "Philox number width in bits must be a multiple of 8.");
-
-						        static_assert(numberWidth() == 32, "Philox implemented only for 32 bit numbers.");
-
-						    public:
-						        using Counter = typename TBackend::Counter;
-						        using Key = typename TBackend::Key;
-						        using Constants = PhiloxConstants<TParams>;
-
-						    protected:
-						        /** Single round of the Philox shuffle
-						         *
-						         * @param counter state of the counter
-						         * @param key value of the key
-						         * @return shuffled counter
-						         */
-						        static ALPAKA_FN_HOST_ACC auto singleRound(Counter const& counter, Key const& key)
-						        {
-						            std::uint32_t H0, L0, H1, L1;
-						            multiplyAndSplit64to32(counter[0], Constants::MULTIPLITER_4x32_0(), H0, L0);
-						            multiplyAndSplit64to32(counter[2], Constants::MULTIPLITER_4x32_1(), H1, L1);
-						            return Counter{H1 ^ counter[1] ^ key[0], L1, H0 ^ counter[3] ^ key[1], L0};
-						        }
-
-						        /** Bump the \a key by the Weyl sequence step parameter
-						         *
-						         * @param key the key to be bumped
-						         * @return the bumped key
-						         */
-						        static ALPAKA_FN_HOST_ACC auto bumpKey(Key const& key)
-						        {
-						            return Key{key[0] + Constants::WEYL_32_0(), key[1] + Constants::WEYL_32_1()};
-						        }
-
-						        /** Performs N rounds of the Philox shuffle
-						         *
-						         * @param counter_in initial state of the counter
-						         * @param key_in initial state of the key
-						         * @return result of the PRNG shuffle; has the same size as the counter
-						         */
-						        static ALPAKA_FN_HOST_ACC auto nRounds(Counter const& counter_in, Key const& key_in) -> Counter
-						        {
-						            Key key{key_in};
-						            Counter counter = singleRound(counter_in, key);
-
-						            ALPAKA_UNROLL(numRounds())
-						            for(unsigned int n = 0; n < numRounds(); ++n)
-						            {
-						                key = bumpKey(key);
-						                counter = singleRound(counter, key);
-						            }
-
-						            return counter;
-						        }
-
-						    public:
-						        /** Generates a random number (\p TCounterSize x32-bit)
-						         *
-						         * @param counter initial state of the counter
-						         * @param key initial state of the key
-						         * @return result of the PRNG shuffle; has the same size as the counter
-						         */
-						        static ALPAKA_FN_HOST_ACC auto generate(Counter const& counter, Key const& key) -> Counter
-						        {
-						            return nRounds(counter, key);
-						        }
-						    };
-						} // namespace alpaka::rand::engine
-						// ==
-						// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
-						// ============================================================================
-
-
-					// #include <utility>    // amalgamate: file already included
-
-
-					namespace alpaka::rand::engine
-					{
-					    /** Common class for Philox family engines
-					     *
-					     * Relies on `PhiloxStateless` to provide the PRNG and adds state to handling the counting.
-					     *
-					     * @tparam TBackend device-dependent backend, specifies the array types
-					     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-					     * @tparam TImpl engine type implementation (CRTP)
-					     *
-					     * static const data members are transformed into functions, because GCC
-					     * assumes types with static data members to be not mappable and makes not
-					     * exception for constexpr ones. This is a valid interpretation of the
-					     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
-					     * data member are mappable.
-					     */
-					    template<typename TBackend, typename TParams, typename TImpl>
-					    class PhiloxBaseCommon
-					        : public TBackend
-					        , public PhiloxStateless<TBackend, TParams>
-					    {
-					    public:
-					        using Counter = typename PhiloxStateless<TBackend, TParams>::Counter;
-					        using Key = typename PhiloxStateless<TBackend, TParams>::Key;
-
-					    protected:
-					        /** Advance the \a counter to the next state
-					         *
-					         * Increments the passed-in \a counter by one with a 128-bit carry.
-					         *
-					         * @param counter reference to the counter which is to be advanced
-					         */
-					        ALPAKA_FN_HOST_ACC void advanceCounter(Counter& counter)
-					        {
-					            counter[0]++;
-					            /* 128-bit carry */
-					            if(counter[0] == 0)
-					            {
-					                counter[1]++;
-					                if(counter[1] == 0)
-					                {
-					                    counter[2]++;
-					                    if(counter[2] == 0)
-					                    {
-					                        counter[3]++;
-					                    }
-					                }
-					            }
-					        }
-
-					        /** Advance the internal state counter by \a offset N-vectors (N = counter size)
-					         *
-					         * Advances the internal value of this->state.counter
-					         *
-					         * @param offset number of N-vectors to skip
-					         */
-					        ALPAKA_FN_HOST_ACC void skip4(uint64_t offset)
-					        {
-					            Counter& counter = static_cast<TImpl*>(this)->state.counter;
-					            Counter temp = counter;
-					            counter[0] += low32Bits(offset);
-					            counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
-					            counter[2] += (counter[0] < temp[1] ? 1u : 0u);
-					            counter[3] += (counter[0] < temp[2] ? 1u : 0u);
-					        }
-
-					        /** Advance the counter by the length of \a subsequence
-					         *
-					         * Advances the internal value of this->state.counter
-					         *
-					         * @param subsequence number of subsequences to skip
-					         */
-					        ALPAKA_FN_HOST_ACC void skipSubsequence(uint64_t subsequence)
-					        {
-					            Counter& counter = static_cast<TImpl*>(this)->state.counter;
-					            Counter temp = counter;
-					            counter[2] += low32Bits(subsequence);
-					            counter[3] += high32Bits(subsequence) + (counter[2] < temp[2] ? 1 : 0);
-					        }
-					    };
-					} // namespace alpaka::rand::engine
-					// ==
-					// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
-					// ============================================================================
-
-					// ============================================================================
-					// == ./include/alpaka/rand/Philox/PhiloxBaseCudaArray.hpp ==
-					// ==
-					/* Copyright 2022 Jiri Vyskocil
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/meta/CudaVectorArrayWrapper.hpp"    // amalgamate: file already expanded
-
-					#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-
-					namespace alpaka::rand::engine
-					{
-					    namespace trait
-					    {
-					        template<typename TScalar>
-					        struct PhiloxResultContainerTraits;
-
-					        template<>
-					        struct PhiloxResultContainerTraits<float>
-					        {
-					            using type = meta::CudaVectorArrayWrapper<float, 4>;
-					        };
-
-					        template<>
-					        struct PhiloxResultContainerTraits<double>
-					        {
-					            using type = meta::CudaVectorArrayWrapper<double, 4>;
-					        };
-
-					        template<>
-					        struct PhiloxResultContainerTraits<int>
-					        {
-					            using type = meta::CudaVectorArrayWrapper<int, 4>;
-					        };
-
-					        template<>
-					        struct PhiloxResultContainerTraits<unsigned>
-					        {
-					            using type = meta::CudaVectorArrayWrapper<unsigned, 4>;
-					        };
-
-					        template<typename TScalar>
-					        using PhiloxResultContainer = typename PhiloxResultContainerTraits<TScalar>::type;
-					    } // namespace trait
-
-					    /** Philox backend using array-like interface to CUDA uintN types for the storage of Key and Counter
-					     *
-					     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-					     */
-					    template<typename TParams>
-					    class PhiloxBaseCudaArray
-					    {
-					        static_assert(TParams::counterSize == 4, "GPU Philox implemented only for counters of width == 4");
-
-					    public:
-					        using Counter
-					            = meta::CudaVectorArrayWrapper<unsigned, 4>; ///< Counter type = array-like interface to CUDA uint4
-					        using Key = meta::CudaVectorArrayWrapper<unsigned, 2>; ///< Key type = array-like interface to CUDA uint2
-					        template<typename TDistributionResultScalar>
-					        using ResultContainer = trait::PhiloxResultContainer<TDistributionResultScalar>; ///< Vector template for
-					                                                                                         ///< distribution results
-					    };
-					} // namespace alpaka::rand::engine
-
-					#endif
-					// ==
-					// == ./include/alpaka/rand/Philox/PhiloxBaseCudaArray.hpp ==
-					// ============================================================================
-
-					// ============================================================================
-					// == ./include/alpaka/rand/Philox/PhiloxBaseStdArray.hpp ==
-					// ==
-					/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include <array>    // amalgamate: file already included
-					// #include <cstdint>    // amalgamate: file already included
-
-					namespace alpaka::rand::engine
-					{
-					    /** Philox backend using std::array for Key and Counter storage
-					     *
-					     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-					     */
-					    template<typename TParams>
-					    class PhiloxBaseStdArray
-					    {
-					    public:
-					        using Counter = std::array<std::uint32_t, TParams::counterSize>; ///< Counter type = std::array
-					        using Key = std::array<std::uint32_t, TParams::counterSize / 2>; ///< Key type = std::array
-					        template<typename TScalar>
-					        using ResultContainer
-					            = std::array<TScalar, TParams::counterSize>; ///< Vector template for distribution results
-					    };
-					} // namespace alpaka::rand::engine
-					// ==
-					// == ./include/alpaka/rand/Philox/PhiloxBaseStdArray.hpp ==
-					// ============================================================================
-
-				// #include "alpaka/rand/Philox/PhiloxStateless.hpp"    // amalgamate: file already expanded
-					// ============================================================================
-					// == ./include/alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp ==
-					// ==
-					/* Copyright 2022 Jeffrey Kelling
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/rand/Philox/PhiloxStateless.hpp"    // amalgamate: file already expanded
-
-					namespace alpaka::rand::engine
-					{
-					    /** Common class for Philox family engines
-					     *
-					     * Checks the validity of passed-in parameters and calls the \a TBackend methods to perform N rounds of the
-					     * Philox shuffle.
-					     *
-					     * @tparam TBackend device-dependent backend, specifies the array types
-					     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-					     */
-					    template<typename TBackend, typename TParams>
-					    struct PhiloxStatelessKeyedBase : public PhiloxStateless<TBackend, TParams>
-					    {
-					    public:
-					        using Counter = typename PhiloxStateless<TBackend, TParams>::Counter;
-					        using Key = typename PhiloxStateless<TBackend, TParams>::Key;
-
-					        const Key m_key;
-
-					        PhiloxStatelessKeyedBase(Key&& key) : m_key(std::move(key))
-					        {
-					        }
-
-					        ALPAKA_FN_HOST_ACC auto operator()(Counter const& counter) const
-					        {
-					            return this->generate(counter, m_key);
-					        }
-					    };
-					} // namespace alpaka::rand::engine
-					// ==
-					// == ./include/alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp ==
-					// ============================================================================
-
-
-				namespace alpaka::rand::engine::trait
-				{
-				    template<typename TAcc>
-				    constexpr inline bool isGPU = false;
-
-				#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-				    template<typename TApi, typename TDim, typename TIdx>
-				    constexpr inline bool isGPU<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>> = true;
-				#endif
-
-				    /** Selection of default backend
-				     *
-				     * Selects the data backend based on the accelerator device type. As of now, different backends operate
-				     * on different array types.
-				     *
-				     * @tparam TAcc the accelerator as defined in alpaka/acc
-				     * @tparam TParams Philox algorithm parameters
-				     * @tparam TSfinae internal parameter to stop substitution search and provide the default
-				     */
-				    template<typename TAcc, typename TParams, typename TSfinae = void>
-				    struct PhiloxStatelessBaseTraits
-				    {
-				        // template <typename Acc, typename TParams, typename TImpl>
-				#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-				        using Backend = std::conditional_t<isGPU<TAcc>, PhiloxBaseCudaArray<TParams>, PhiloxBaseStdArray<TParams>>;
-				#else
-				        using Backend = PhiloxBaseStdArray<TParams>;
-				#endif
-				        using Counter = typename Backend::Counter; ///< Counter array type
-				        using Key = typename Backend::Key; ///< Key array type
-				        template<typename TDistributionResultScalar>
-				        using ResultContainer =
-				            typename Backend::template ResultContainer<TDistributionResultScalar>; ///< Distribution
-				                                                                                   ///< container type
-				        /// Base type to be inherited from by stateless keyed engine
-				        using Base = PhiloxStateless<Backend, TParams>;
-				    };
-
-				    /** Selection of default backend
-				     *
-				     * Selects the data backend based on the accelerator device type. As of now, different backends operate
-				     * on different array types.
-				     *
-				     * @tparam TAcc the accelerator as defined in alpaka/acc
-				     * @tparam TParams Philox algorithm parameters
-				     * @tparam TSfinae internal parameter to stop substitution search and provide the default
-				     */
-				    template<typename TAcc, typename TParams, typename TSfinae = void>
-				    struct PhiloxStatelessKeyedBaseTraits : public PhiloxStatelessBaseTraits<TAcc, TParams>
-				    {
-				        using Backend = typename PhiloxStatelessBaseTraits<TAcc, TParams>::Backend;
-				        /// Base type to be inherited from by counting engines
-				        using Base = PhiloxStatelessKeyedBase<Backend, TParams>;
-				    };
-
-				    /** Selection of default backend
-				     *
-				     * Selects the data backend based on the accelerator device type. As of now, different backends operate
-				     * on different array types.
-				     *
-				     * @tparam TAcc the accelerator as defined in alpaka/acc
-				     * @tparam TParams Philox algorithm parameters
-				     * @tparam TImpl engine type implementation (CRTP)
-				     * @tparam TSfinae internal parameter to stop substitution search and provide the default
-				     */
-				    template<typename TAcc, typename TParams, typename TImpl, typename TSfinae = void>
-				    struct PhiloxBaseTraits : public PhiloxStatelessBaseTraits<TAcc, TParams>
-				    {
-				        using Backend = typename PhiloxStatelessBaseTraits<TAcc, TParams>::Backend;
-				        /// Base type to be inherited from by counting engines
-				        using Base = PhiloxBaseCommon<Backend, TParams, TImpl>;
-				    };
-				} // namespace alpaka::rand::engine::trait
-				// ==
-				// == ./include/alpaka/rand/Philox/PhiloxBaseTraits.hpp ==
-				// ============================================================================
-
-
-			// #include <utility>    // amalgamate: file already included
-
-			namespace alpaka::rand::engine
-			{
-			    /** Philox state for single value engine
-			     *
-			     * @tparam TCounter Type of the Counter array
-			     * @tparam TKey Type of the Key array
-			     */
-			    template<typename TCounter, typename TKey>
-			    struct PhiloxStateSingle
-			    {
-			        using Counter = TCounter;
-			        using Key = TKey;
-
-			        Counter counter; ///< Counter array
-			        Key key; ///< Key array
-			        Counter result; ///< Intermediate result array
-			        std::uint32_t position; ///< Pointer to the active intermediate result element
-			        // TODO: Box-Muller states
-			    };
-
-			    /** Philox engine generating a single number
-			     *
-			     * This engine's operator() will return a single number. Since the result is the same size as the counter,
-			     * and so it contains more than one number, it has to be stored between individual invocations of
-			     * operator(). Additionally a pointer has to be stored indicating which part of the result array is to be
-			     * returned next.
-			     *
-			     * @tparam TAcc Accelerator type as defined in alpaka/acc
-			     * @tparam TParams Basic parameters for the Philox algorithm
-			     */
-			    template<typename TAcc, typename TParams>
-			    class PhiloxSingle : public trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>::Base
-			    {
-			    public:
-			        /// Specialization for different TAcc backends
-			        using Traits = typename trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>;
-
-			        using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
-			        using Key = typename Traits::Key; ///< Backend-dependent Key type
-			        using State = PhiloxStateSingle<Counter, Key>; ///< Backend-dependent State type
-
-			        State state; ///< Internal engine state
-
-			    protected:
-			        /** Advance internal counter to the next value
-			         *
-			         * Advances the full internal counter array, resets the position pointer and stores the intermediate
-			         * result to be recalled when the user requests a number.
-			         */
-			        ALPAKA_FN_HOST_ACC void advanceState()
-			        {
-			            this->advanceCounter(state.counter);
-			            state.result = this->nRounds(state.counter, state.key);
-			            state.position = 0;
-			        }
-
-			        /** Get the next random number and advance internal state
-			         *
-			         * The intermediate result stores N = TParams::counterSize numbers. Check if we've already given out
-			         * all of them. If so, generate a new intermediate result (this also resets the pointer to the position
-			         * of the actual number). Finally, we return the actual number.
-			         *
-			         * @return The next random number
-			         */
-			        ALPAKA_FN_HOST_ACC auto nextNumber()
-			        {
-			            // Element zero will always contain the next valid random number.
-			            auto result = state.result[0];
-			            state.position++;
-			            if(state.position == TParams::counterSize)
-			            {
-			                advanceState();
-			            }
-			            else
-			            {
-			                // Shift state results to allow hard coded access to element zero.
-			                // This will avoid high register usage on NVIDIA devices.
-			                // \todo Check if this shifting of the result vector is decreasing CPU performance.
-			                //       If so this optimization for GPUs (mostly NVIDIA) should be moved into
-			                //       PhiloxBaseCudaArray.
-			                state.result[0] = state.result[1];
-			                state.result[1] = state.result[2];
-			                state.result[2] = state.result[3];
-			            }
-
-			            return result;
-			        }
-
-			        /// Skips the next \a offset numbers
-			        ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
-			        {
-			            static_assert(TParams::counterSize == 4, "Only counterSize is supported.");
-			            state.position = static_cast<decltype(state.position)>(state.position + (offset & 3));
-			            offset += state.position < 4 ? 0 : 4;
-			            state.position -= state.position < 4 ? 0 : 4u;
-			            for(auto numShifts = state.position; numShifts > 0; --numShifts)
-			            {
-			                // Shift state results to allow hard coded access to element zero.
-			                // This will avoid high register usage on NVIDIA devices.
-			                state.result[0] = state.result[1];
-			                state.result[1] = state.result[2];
-			                state.result[2] = state.result[3];
-			            }
-			            this->skip4(offset / 4);
-			        }
-
-			    public:
-			        /** Construct a new Philox engine with single-value output
-			         *
-			         * @param seed Set the Philox generator key
-			         * @param subsequence Select a subsequence of size 2^64
-			         * @param offset Skip \a offset numbers form the start of the subsequence
-			         */
-			        ALPAKA_FN_HOST_ACC PhiloxSingle(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
-			            : state{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}, {0, 0, 0, 0}, 0}
-			        {
-			            this->skipSubsequence(subsequence);
-			            skip(offset);
-			            advanceState();
-			        }
-
-			        /** Get the next random number
-			         *
-			         * @return The next random number
-			         */
-			        ALPAKA_FN_HOST_ACC auto operator()()
-			        {
-			            return nextNumber();
-			        }
-			    };
-			} // namespace alpaka::rand::engine
-			// ==
-			// == ./include/alpaka/rand/Philox/PhiloxSingle.hpp ==
-			// ============================================================================
-
-			// ============================================================================
-			// == ./include/alpaka/rand/Philox/PhiloxVector.hpp ==
-			// ==
-			/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
-			 * SPDX-License-Identifier: MPL-2.0
-			 */
-
-			// #pragma once
-			// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already expanded
-			// #include "alpaka/rand/Philox/PhiloxBaseTraits.hpp"    // amalgamate: file already expanded
-
-			// #include <utility>    // amalgamate: file already included
-
-
-			namespace alpaka::rand::engine
-			{
-			    /** Philox state for vector generator
-			     *
-			     * @tparam TCounter Type of the Counter array
-			     * @tparam TKey Type of the Key array
-			     */
-			    template<typename TCounter, typename TKey>
-			    struct PhiloxStateVector
-			    {
-			        using Counter = TCounter;
-			        using Key = TKey;
-
-			        Counter counter; ///< Counter array
-			        Key key; ///< Key array
-			    };
-
-			    /** Philox engine generating a vector of numbers
-			     *
-			     * This engine's operator() will return a vector of numbers corresponding to the full size of its counter.
-			     * This is a convenience vs. memory size tradeoff since the user has to deal with the output array
-			     * themselves, but the internal state comprises only of a single counter and a key.
-			     *
-			     * @tparam TAcc Accelerator type as defined in alpaka/acc
-			     * @tparam TParams Basic parameters for the Philox algorithm
-			     */
-			    template<typename TAcc, typename TParams>
-			    class PhiloxVector : public trait::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>::Base
-			    {
-			    public:
-			        /// Specialization for different TAcc backends
-			        using Traits = trait::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>;
-
-			        using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
-			        using Key = typename Traits::Key; ///< Backend-dependent Key type
-			        using State = PhiloxStateVector<Counter, Key>; ///< Backend-dependent State type
-			        template<typename TDistributionResultScalar>
-			        using ResultContainer = typename Traits::template ResultContainer<TDistributionResultScalar>;
-
-			        State state;
-
-			    protected:
-			        /** Get the next array of random numbers and advance internal state
-			         *
-			         * @return The next array of random numbers
-			         */
-			        ALPAKA_FN_HOST_ACC auto nextVector()
-			        {
-			            this->advanceCounter(state.counter);
-			            return this->nRounds(state.counter, state.key);
-			        }
-
-			        /** Skips the next \a offset vectors
-			         *
-			         * Unlike its counterpart in \a PhiloxSingle, this function advances the state in multiples of the
-			         * counter size thus skipping the entire array of numbers.
-			         */
-			        ALPAKA_FN_HOST_ACC void skip(uint64_t offset)
-			        {
-			            this->skip4(offset);
-			        }
-
-			    public:
-			        /** Construct a new Philox engine with vector output
-			         *
-			         * @param seed Set the Philox generator key
-			         * @param subsequence Select a subsequence of size 2^64
-			         * @param offset Skip \a offset numbers form the start of the subsequence
-			         */
-			        ALPAKA_FN_HOST_ACC PhiloxVector(uint64_t seed = 0, uint64_t subsequence = 0, uint64_t offset = 0)
-			            : state{{0, 0, 0, 0}, {low32Bits(seed), high32Bits(seed)}}
-			        {
-			            this->skipSubsequence(subsequence);
-			            skip(offset);
-			            nextVector();
-			        }
-
-			        /** Get the next vector of random numbers
-			         *
-			         * @return The next vector of random numbers
-			         */
-			        ALPAKA_FN_HOST_ACC auto operator()()
-			        {
-			            return nextVector();
-			        }
-			    };
-			} // namespace alpaka::rand::engine
-			// ==
-			// == ./include/alpaka/rand/Philox/PhiloxVector.hpp ==
-			// ============================================================================
-
-		// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already expanded
-
-		// #include <cstdint>    // amalgamate: file already included
-		// #include <limits>    // amalgamate: file already included
-		// #include <random>    // amalgamate: file already included
-		// #include <type_traits>    // amalgamate: file already included
-
-		namespace alpaka::rand
-		{
-		    /** Most common Philox engine variant, outputs single number
-		     *
-		     * This is a variant of the Philox engine generator which outputs a single float. The counter size is \f$4
-		     * \times 32 = 128\f$ bits. Since the engine returns a single number, the generated result, which has the same
-		     * size as the counter, has to be stored between invocations. Additionally a 32 bit pointer is stored. The
-		     * total size of the state is 352 bits = 44 bytes.
-		     *
-		     * Ref.: J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
-		     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
-		     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
-		     *
-		     * @tparam TAcc Accelerator type as defined in alpaka/acc
-		     */
-		    template<typename TAcc>
-		    class Philox4x32x10 : public concepts::Implements<ConceptRand, Philox4x32x10<TAcc>>
-		    {
-		    public:
-		        using EngineParams = engine::PhiloxParams<4, 32, 10>; ///< Philox algorithm: 10 rounds, 4 numbers of size 32.
-		        using EngineVariant = engine::PhiloxSingle<TAcc, EngineParams>; ///< Engine outputs a single number
-
-		        /** Initialize a new Philox engine
-		         *
-		         * @param seed Set the Philox generator key
-		         * @param subsequence Select a subsequence of size 2^64
-		         * @param offset Skip \a offset numbers form the start of the subsequence
-		         */
-		        ALPAKA_FN_HOST_ACC Philox4x32x10(
-		            std::uint64_t const seed = 0,
-		            std::uint64_t const subsequence = 0,
-		            std::uint64_t const offset = 0)
-		            : engineVariant(seed, subsequence, offset)
-		        {
-		        }
-
-		        // STL UniformRandomBitGenerator concept
-		        // https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator
-		        using result_type = std::uint32_t;
-		        ALPAKA_FN_HOST_ACC constexpr auto min() -> result_type
-		        {
-		            return 0;
-		        }
-		        ALPAKA_FN_HOST_ACC constexpr auto max() -> result_type
-		        {
-		            return std::numeric_limits<result_type>::max();
-		        }
-		        ALPAKA_FN_HOST_ACC auto operator()() -> result_type
-		        {
-		            return engineVariant();
-		        }
-
-		    private:
-		        EngineVariant engineVariant;
-		    };
-
-		    /** Most common Philox engine variant, outputs a 4-vector of floats
-		     *
-		     * This is a variant of the Philox engine generator which outputs a vector containing 4 floats. The counter
-		     * size is \f$4 \times 32 = 128\f$ bits. Since the engine returns the whole generated vector, it is up to the
-		     * user to extract individual floats as they need. The benefit is smaller state size since the state does not
-		     * contain the intermediate results. The total size of the state is 192 bits = 24 bytes.
-		     *
-		     * Ref.: J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
-		     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
-		     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
-		     *
-		     * @tparam TAcc Accelerator type as defined in alpaka/acc
-		     */
-		    template<typename TAcc>
-		    class Philox4x32x10Vector : public concepts::Implements<ConceptRand, Philox4x32x10Vector<TAcc>>
-		    {
-		    public:
-		        using EngineParams = engine::PhiloxParams<4, 32, 10>;
-		        using EngineVariant = engine::PhiloxVector<TAcc, EngineParams>;
-
-		        /** Initialize a new Philox engine
-		         *
-		         * @param seed Set the Philox generator key
-		         * @param subsequence Select a subsequence of size 2^64
-		         * @param offset Number of numbers to skip form the start of the subsequence.
-		         */
-		        ALPAKA_FN_HOST_ACC Philox4x32x10Vector(
-		            std::uint32_t const seed = 0,
-		            std::uint32_t const subsequence = 0,
-		            std::uint32_t const offset = 0)
-		            : engineVariant(seed, subsequence, offset)
-		        {
-		        }
-
-		        template<typename TScalar>
-		        using ResultContainer = typename EngineVariant::template ResultContainer<TScalar>;
-
-		        using ResultInt = std::uint32_t;
-		        using ResultVec = decltype(std::declval<EngineVariant>()());
-		        ALPAKA_FN_HOST_ACC constexpr auto min() -> ResultInt
-		        {
-		            return 0;
-		        }
-		        ALPAKA_FN_HOST_ACC constexpr auto max() -> ResultInt
-		        {
-		            return std::numeric_limits<ResultInt>::max();
-		        }
-		        ALPAKA_FN_HOST_ACC auto operator()() -> ResultVec
-		        {
-		            return engineVariant();
-		        }
-
-		    private:
-		        EngineVariant engineVariant;
-		    };
-
-		    // The following exists because you "cannot call __device__ function from a __host__ __device__ function"
-		    // directly, but wrapping that call in a struct is just fine.
-		    template<typename TEngine>
-		    struct EngineCallHostAccProxy
-		    {
-		        ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> decltype(engine())
-		        {
-		            return engine();
-		        }
-		    };
-
-		    /// TEMP: Distributions to be decided on later. The generator should be compatible with STL as of now.
-		    template<typename TResult, typename TSfinae = void>
-		    class UniformReal : public concepts::Implements<ConceptRand, UniformReal<TResult>>
-		    {
-		        template<typename TRes, typename TEnable = void>
-		        struct ResultType
-		        {
-		            using type = TRes;
-		        };
-
-		        template<typename TRes>
-		        struct ResultType<TRes, std::enable_if_t<meta::IsArrayOrVector<TRes>::value>>
-		        {
-		            using type = typename TRes::value_type;
-		        };
-
-		        using T = typename ResultType<TResult>::type;
-		        static_assert(std::is_floating_point_v<T>, "Only floating-point types are supported");
-
-		    public:
-		        ALPAKA_FN_HOST_ACC UniformReal() : UniformReal(0, 1)
-		        {
-		        }
-
-		        ALPAKA_FN_HOST_ACC UniformReal(T min, T max) : _min(min), _max(max), _range(_max - _min)
-		        {
-		        }
-
-		        template<typename TEngine>
-		        ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> TResult
-		        {
-		            if constexpr(meta::IsArrayOrVector<TResult>::value)
-		            {
-		                auto result = engine();
-		                T scale = static_cast<T>(1) / engine.max() * _range;
-		                TResult ret{
-		                    static_cast<T>(result[0]) * scale + _min,
-		                    static_cast<T>(result[1]) * scale + _min,
-		                    static_cast<T>(result[2]) * scale + _min,
-		                    static_cast<T>(result[3]) * scale + _min};
-		                return ret;
-		            }
-		            else
-		            {
-		                // Since it's possible to get a host-only engine here, the call has to go through proxy
-		                return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / engine.max() * _range + _min;
-		            }
-
-		            ALPAKA_UNREACHABLE(TResult{});
-		        }
-
-		    private:
-		        const T _min;
-		        const T _max;
-		        const T _range;
-		    };
-		} // namespace alpaka::rand
-		// ==
-		// == ./include/alpaka/rand/RandPhilox.hpp ==
-		// ============================================================================
-
-	// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already expanded
-
-	// #include <algorithm>    // amalgamate: file already included
-	// #include <limits>    // amalgamate: file already included
-	// #include <type_traits>    // amalgamate: file already included
-
-	namespace alpaka::rand
-	{
-	    class RandDefault : public concepts::Implements<ConceptRand, RandDefault>
-	    {
-	    };
-
-	    namespace distribution::gpu
-	    {
-	        namespace detail
-	        {
-	            template<typename TFloat>
-	            struct BitsType;
-
-	            template<>
-	            struct BitsType<float>
-	            {
-	                using type = std::uint32_t;
-	            };
-	            template<>
-	            struct BitsType<double>
-	            {
-	                using type = std::uint64_t;
-	            };
-	        } // namespace detail
-
-	        //! The GPU random number normal distribution.
-	        template<typename T>
-	        class UniformUint
-	        {
-	            static_assert(std::is_integral_v<T>, "Return type of UniformUint must be integral.");
-
-	        public:
-	            UniformUint() = default;
-
-	            template<typename TEngine>
-	            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
-	            {
-	                using BitsT = typename TEngine::result_type;
-	                T ret = 0;
-	                constexpr auto N = sizeof(T) / sizeof(BitsT);
-	                for(unsigned int a = 0; a < N; ++a)
-	                {
-	                    ret
-	                        ^= (static_cast<T>(engine())
-	                            << (sizeof(BitsT) * std::numeric_limits<unsigned char>::digits * a));
-	                }
-	                return ret;
-	            }
-	        };
-
-	        //! The GPU random number uniform distribution.
-	        template<typename T>
-	        class UniformReal
-	        {
-	            static_assert(std::is_floating_point_v<T>, "Return type of UniformReal must be floating point.");
-
-	            using BitsT = typename detail::BitsType<T>::type;
-
-	        public:
-	            UniformReal() = default;
-
-	            template<typename TEngine>
-	            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
-	            {
-	                constexpr BitsT limit = static_cast<BitsT>(1) << std::numeric_limits<T>::digits;
-	                const BitsT b = UniformUint<BitsT>()(engine);
-	                auto const ret = static_cast<T>(b & (limit - 1)) / limit;
-	                return ret;
-	            }
-	        };
-
-	        /*! The GPU random number normal distribution.
-	         *
-	         * \note
-	         * This type contains state and is not thread-safe: To be used
-	         * per thread, not shared.
-	         *
-	         * \note When reproducibility is a concern, each instance of
-	         * this class should be used with only on random engine
-	         * instance, or two consecutive number should be generated with
-	         * each engine used. This is due to the implicit caching of one
-	         * Gaussian random number.
-	         */
-	        template<typename Acc, typename T>
-	        class NormalReal
-	        {
-	            static_assert(std::is_floating_point_v<T>, "Return type of NormalReal must be floating point.");
-
-	            Acc const* m_acc;
-	            T m_cache = std::numeric_limits<T>::quiet_NaN();
-
-	        public:
-	            /*! \warning Retains a reference to \p acc, thus must not outlive it.
-	             */
-	            ALPAKA_FN_HOST_ACC constexpr NormalReal(Acc const& acc) : m_acc(&acc)
-	            {
-	            }
-
-	            // All copy operations (and thus also move since we don't declare those and they fall back to copy) do NOT
-	            // copy m_cache. This way we can ensure that the following holds:
-	            // NormalReal<Acc> a(acc), b(acc);
-	            // Engine<Acc> e(acc);
-	            // assert(a(e) != b(e)); // because of two engine invocations
-	            // b = a;
-	            // assert(a(e) != b(e)); // because of two engine invocations
-
-	            ALPAKA_FN_HOST_ACC constexpr NormalReal(NormalReal const& other) : m_acc(other.m_acc)
-	            {
-	            }
-
-	            ALPAKA_FN_HOST_ACC constexpr auto operator=(NormalReal const& other) -> NormalReal&
-	            {
-	                m_acc = other.m_acc;
-	                return *this;
-	            }
-
-	            template<typename TEngine>
-	            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
-	            {
-	                constexpr auto sigma = T{1};
-	                constexpr auto mu = T{0};
-	                if(math::isnan(*m_acc, m_cache))
-	                {
-	                    UniformReal<T> uni;
-
-	                    T u1, u2;
-	                    do
-	                    {
-	                        u1 = uni(engine);
-	                        u2 = uni(engine);
-	                    } while(u1 <= std::numeric_limits<T>::epsilon());
-
-	                    // compute z0 and z1
-	                    const T mag = sigma * math::sqrt(*m_acc, static_cast<T>(-2.) * math::log(*m_acc, u1));
-	                    constexpr T twoPi = static_cast<T>(2. * math::constants::pi);
-	                    // getting two normal number out of this, store one for later
-	                    m_cache = mag * static_cast<T>(math::cos(*m_acc, twoPi * u2)) + mu;
-
-	                    return mag * static_cast<T>(math::sin(*m_acc, twoPi * u2)) + mu;
-	                }
-
-	                const T ret = m_cache;
-	                m_cache = std::numeric_limits<T>::quiet_NaN();
-	                return ret;
-	            }
-	        };
-	    } // namespace distribution::gpu
-
-	    namespace distribution::trait
-	    {
-	        //! The GPU device random number float normal distribution get trait specialization.
-	        template<typename T>
-	        struct CreateNormalReal<RandDefault, T, std::enable_if_t<std::is_floating_point_v<T>>>
-	        {
-	            template<typename TAcc>
-	            ALPAKA_FN_HOST_ACC static auto createNormalReal(TAcc const& acc) -> gpu::NormalReal<TAcc, T>
-	            {
-	                return {acc};
-	            }
-	        };
-	        //! The GPU device random number float uniform distribution get trait specialization.
-	        template<typename T>
-	        struct CreateUniformReal<RandDefault, T, std::enable_if_t<std::is_floating_point_v<T>>>
-	        {
-	            ALPAKA_FN_HOST_ACC static auto createUniformReal(RandDefault const& /* rand */) -> gpu::UniformReal<T>
-	            {
-	                return {};
-	            }
-	        };
-	        //! The GPU device random number integer uniform distribution get trait specialization.
-	        template<typename T>
-	        struct CreateUniformUint<RandDefault, T, std::enable_if_t<std::is_integral_v<T>>>
-	        {
-	            ALPAKA_FN_HOST_ACC static auto createUniformUint(RandDefault const& /* rand */) -> gpu::UniformUint<T>
-	            {
-	                return {};
-	            }
-	        };
-	    } // namespace distribution::trait
-
-	    namespace engine::trait
-	    {
-	        //! The GPU device random number default generator get trait specialization.
-	        template<>
-	        struct CreateDefault<RandDefault>
-	        {
-	            template<typename TAcc>
-	            ALPAKA_FN_HOST_ACC static auto createDefault(
-	                TAcc const& /* acc */,
-	                std::uint32_t const& seed,
-	                std::uint32_t const& subsequence,
-	                std::uint32_t const& offset) -> Philox4x32x10<TAcc>
-	            {
-	                return {seed, subsequence, offset};
-	            }
-	        };
-	    } // namespace engine::trait
-	} // namespace alpaka::rand
-	// ==
-	// == ./include/alpaka/rand/RandDefault.hpp ==
-	// ============================================================================
-
-// #include "alpaka/rand/RandGenericSycl.hpp"    // amalgamate: file already expanded
-// #include "alpaka/rand/RandPhilox.hpp"    // amalgamate: file already expanded
-// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already expanded
-// #include "alpaka/rand/RandUniformCudaHipRand.hpp"    // amalgamate: file already expanded
-// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/rand/RandDefault.hpp"    // amalgamate: file already inlined
+// #include "alpaka/rand/RandGenericSycl.hpp"    // amalgamate: file already inlined
+// #include "alpaka/rand/RandPhilox.hpp"    // amalgamate: file already inlined
+// #include "alpaka/rand/RandStdLib.hpp"    // amalgamate: file already inlined
+// #include "alpaka/rand/RandUniformCudaHipRand.hpp"    // amalgamate: file already inlined
+// #include "alpaka/rand/Traits.hpp"    // amalgamate: file already inlined
 // idx
-// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/idx/Traits.hpp"    // amalgamate: file already inlined
 // queue
-// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already expanded
+// #include "alpaka/queue/Properties.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/queue/QueueCpuBlocking.hpp ==
 	// ==
@@ -36411,13 +35259,13 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/event/EventCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericThreadsBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/event/EventCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericThreadsBlocking.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka
 	{
 	    using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
-	}
+	} // namespace alpaka
 	// ==
 	// == ./include/alpaka/queue/QueueCpuBlocking.hpp ==
 	// ============================================================================
@@ -36430,13 +35278,13 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/event/EventCpu.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericThreadsNonBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/event/EventCpu.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericThreadsNonBlocking.hpp"    // amalgamate: file already inlined
 
 	namespace alpaka
 	{
 	    using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;
-	}
+	} // namespace alpaka
 	// ==
 	// == ./include/alpaka/queue/QueueCpuNonBlocking.hpp ==
 	// ============================================================================
@@ -36449,15 +35297,15 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
 	    using QueueCpuSyclBlocking = QueueGenericSyclBlocking<DevCpuSycl>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -36472,15 +35320,15 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevCpuSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_CPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_CPU)
 
 	namespace alpaka
 	{
 	    using QueueCpuSyclNonBlocking = QueueGenericSyclNonBlocking<DevCpuSycl>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -36495,8 +35343,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
@@ -36519,8 +35367,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiCudaRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
@@ -36543,15 +35391,15 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
 	    using QueueFpgaSyclIntelBlocking = QueueGenericSyclBlocking<DevFpgaSyclIntel>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -36566,15 +35414,15 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
 
 	namespace alpaka
 	{
 	    using QueueFpgaSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevFpgaSyclIntel>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -36589,15 +35437,15 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclBlocking.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
 	    using QueueGpuSyclIntelBlocking = QueueGenericSyclBlocking<DevGpuSyclIntel>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -36612,15 +35460,15 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/dev/DevGpuSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"    // amalgamate: file already inlined
 
-	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_BACKEND_ONEAPI) && defined(ALPAKA_SYCL_ONEAPI_GPU)
+	#if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 	namespace alpaka
 	{
 	    using QueueGpuSyclIntelNonBlocking = QueueGenericSyclNonBlocking<DevGpuSyclIntel>;
-	}
+	} // namespace alpaka
 
 	#endif
 	// ==
@@ -36635,8 +35483,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueUniformCudaHipRtBlocking.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -36659,8 +35507,8 @@
 	 */
 
 	// #pragma once
-	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already expanded
-	// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already expanded
+	// #include "alpaka/core/ApiHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp"    // amalgamate: file already inlined
 
 	#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
 
@@ -36675,21 +35523,19 @@
 	// == ./include/alpaka/queue/QueueHipRtNonBlocking.hpp ==
 	// ============================================================================
 
-// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/queue/Traits.hpp"    // amalgamate: file already inlined
 // traits
-// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/traits/Traits.hpp"    // amalgamate: file already inlined
 // wait
-// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already expanded
+// #include "alpaka/wait/Traits.hpp"    // amalgamate: file already inlined
 // workdiv
-// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already expanded
-// #include "alpaka/workdiv/WorkDivHelpers.hpp"    // amalgamate: file already expanded
-// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already expanded
+// #include "alpaka/workdiv/Traits.hpp"    // amalgamate: file already inlined
+// #include "alpaka/workdiv/WorkDivHelpers.hpp"    // amalgamate: file already inlined
+// #include "alpaka/workdiv/WorkDivMembers.hpp"    // amalgamate: file already inlined
 // vec
-// #include "alpaka/vec/Traits.hpp"    // amalgamate: file already expanded
-// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already expanded
+// #include "alpaka/vec/Traits.hpp"    // amalgamate: file already inlined
+// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 // ==
 // == ./include/alpaka/alpaka.hpp ==
 // ============================================================================
-
-
 
