@@ -1,4 +1,7 @@
-# Copyright 2023 Bernhard Manfred Gruber
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+#
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhard.manfred.gruber@cern.ch>
+#
 # SPDX-License-Identifier: MPL-2.0
 
 name: Publish amalgamated alpaka.hpp to single-header

@@ -1,7 +1,10 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
 #
-# Copyright 2014-2020 Benjamin Worpitz, Axel Huebl, Jan Stephan
+# SPDX-FileContributor: Sergei Bastrakov <s.bastrakov@hzdr.de>
+# SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+# SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 set(_TARGET_NAME "intrinsicTest")
 

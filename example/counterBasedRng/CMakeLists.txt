@@ -1,7 +1,10 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
 #
-# Copyright 2023 Benjamin Worpitz, Jan Stephan, Jeffrey Kelling
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+# SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+#
 # SPDX-License-Identifier: ISC
-#
 
 ################################################################################
 # Required CMake version.

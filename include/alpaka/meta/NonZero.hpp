@@ -1,4 +1,8 @@
-/* Copyright 2023 Andrea Bocci
+/*
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Andrea Bocci <andrea.bocci@cern.ch>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

@@ -1,8 +1,24 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+# SPDX-FileCopyrightText: Technische Universität Dresden <https://www.tu-dresden.de>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
 #
-# Copyright 2023 Benjamin Worpitz, Erik Zenker, Axel Hübl, Jan Stephan, René Widera, Jeffrey Kelling, Andrea Bocci,
-#                Bernhard Manfred Gruber, Aurora Perego
+# SPDX-FileContributor: Sergei Bastrakov <s.bastrakov@hzdr.de>
+# SPDX-FileContributor: Andrea Bocci <andrea.bocci@cern.ch>
+# SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+# SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+# SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+# SPDX-FileContributor: Maximilian Knespel <maximilian.knespel@mailbox.tu-dresden.de>
+# SPDX-FileContributor: Jakob Krude <jakob.krude@hotmail.com>
+# SPDX-FileContributor: Aurora Perego <aurora.perego@cern.ch>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: Matthias Werner <Matthias.Werner1@tu-dresden.de>
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+# SPDX-FileContributor: Erik Zenker <erikzenker@posteo.de>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 include(CMakePrintHelpers) # for easier printing of variables and properties
 include(CMakeDependentOption) # Make options depend on other options

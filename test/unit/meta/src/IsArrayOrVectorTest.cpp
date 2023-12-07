@@ -1,4 +1,9 @@
-/* Copyright 2022 Jiří Vyskočil, Jan Stephan
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ *
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: Jiří Vyskočil <jiri@vyskocil.com>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

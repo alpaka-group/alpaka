@@ -1,9 +1,11 @@
-
-// Copyright (c) 2015-16 Tom Deakin, Simon McIntosh-Smith,
-// University of Bristol HPC
-//
-// For full license terms please see the LICENSE file distributed with this
-// source code
+/*
+ * SPDX-FileCopyrightText: University of Bristol <https://www.bristol.ac.uk>
+ *
+ * SPDX-FileContributor: Tom Deakin <tom.deakin@bristol.ac.uk>
+ * SPDX-FileContributor: Simon McIntosh-Smith <s.mcintosh-smith@bristol.ac.uk>
+ *
+ * SPDX-License-Identifier: LicenseRef-Babelstream
+ */
 
 #pragma once
 

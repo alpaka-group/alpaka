@@ -1,0 +1,24 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: alpaka
+Upstream-Contact: Jan Stephan <j.stephan@hzdr.de>
+Source: https://www.github.com/alpaka-group/alpaka
+
+Files: .zenodo.json
+Copyright: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https:/www.hzdr.de>
+License: CC0-1.0
+
+Files: *.md
+Copyright: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https:/www.hzdr.de>
+License: CC-BY-4.0
+
+Files: docs/*
+Copyright: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https:/www.hzdr.de>
+License: CC-BY-4.0
+
+Files: thirdParty/catch2/*
+Copyright: Catch2 Authors
+License: BSL-1.0
+
+Files: script/job_generator/requirements.txt
+Copyright: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https:/www.hzdr.de>
+License: MPL-2.0

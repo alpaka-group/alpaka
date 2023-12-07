@@ -1,4 +1,13 @@
-/* Copyright 2020 Jonas Schenke, Bernhard Manfred Gruber
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ * SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Jonas Schenke <jonas@groeger-clan.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ * SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
  * SPDX-License-Identifier: ISC
  */
 

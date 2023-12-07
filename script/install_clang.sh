@@ -1,9 +1,17 @@
 #!/bin/bash
-
 #
-# Copyright 2023 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
+# SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+# SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 source ./script/travis_retry.sh
 

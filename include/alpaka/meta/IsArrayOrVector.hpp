@@ -1,4 +1,10 @@
-/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Jiří Vyskočil <jiri@vyskocil.com>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

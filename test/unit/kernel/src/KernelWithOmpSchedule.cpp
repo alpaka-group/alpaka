@@ -1,4 +1,11 @@
-/* Copyright 2023 Sergei Bastrakov, Jan Stephan
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ *
+ * SPDX-FileContributor: Sergei Bastrakov <s.bastrakov@hzdr.de>
+ * SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

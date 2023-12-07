@@ -1,4 +1,14 @@
-/* Copyright 2023 Benjamin Worpitz, Jan Stephan, Luca Ferragina, Aurora Perego
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ * SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
+ * SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+ * SPDX-FileContributor: Luca Ferragina <luca.ferragina@cern.ch>
+ * SPDX-FileContributor: Aurora Perego <aurora.perego@cern.ch>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

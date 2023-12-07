@@ -1,8 +1,10 @@
 #!/bin/bash
 #
-# Copyright 2019-2020 Benjamin Worpitz, Rene Widera
-# SPDX-License-Identifier: MPL-2.0
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
 #
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+#
+# SPDX-License-Identifier: MPL-2.0
 
 ANSI_RED="\033[31m"
 ANSI_RESET="\033[0m"

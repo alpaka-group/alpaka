@@ -1,4 +1,8 @@
-/* Copyright 2021 Rene Widera
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ *
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

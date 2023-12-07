@@ -1,4 +1,8 @@
-/* Copyright 2022 Jeffrey Kelling
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ *
+ * SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

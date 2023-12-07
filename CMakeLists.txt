@@ -1,7 +1,19 @@
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+# SPDX-FileCopyrightText: Science and Technology Facilities Council <stfc.ukri.org>
+# SPDX-FileCopyrightText: Matthias Werner <Matthias.Werner1@tu-dresden.de>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
 #
-# Copyright 2023 Benjamin Worpitz, Jan Stephan, Bernhard Manfred Gruber
+# SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+# SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+# SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+# SPDX-FileContributor: Stewart Martin-Haugh <stewart.martin-haugh@stfc.ac.uk>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: Matthias Werner <Matthias.Werner1@tu-dresden.de>
+# SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 ################################################################################
 # Required CMake version
@@ -113,7 +125,8 @@ append_recursive_files_add_to_src_group("${_alpaka_ROOT_DIR}/docs/markdown" "${_
 set_source_files_properties(${_alpaka_FILES_DOC} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 append_recursive_files_add_to_src_group("${_alpaka_ROOT_DIR}/.github" "${_alpaka_ROOT_DIR}" "yml" _alpaka_FILES_OTHER)
-list(APPEND _alpaka_FILES_OTHER "${_alpaka_ROOT_DIR}/.clang-format" "${_alpaka_ROOT_DIR}/.gitignore" "${_alpaka_ROOT_DIR}/.zenodo.json" "${_alpaka_ROOT_DIR}/LICENSE" "${_alpaka_ROOT_DIR}/README.md")
+append_recursive_files_add_to_src_group("${_alpaka_ROOT_DIR}/LICENSES" "${_alpaka_ROOT_DIR}" "txt" _alpaka_FILES_OTHER)
+list(APPEND _alpaka_FILES_OTHER "${_alpaka_ROOT_DIR}/.clang-format" "${_alpaka_ROOT_DIR}/.gitignore" "${_alpaka_ROOT_DIR}/.zenodo.json" "${_alpaka_ROOT_DIR}/README.md")
 set_source_files_properties(${_alpaka_FILES_OTHER} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 if(TARGET alpaka)

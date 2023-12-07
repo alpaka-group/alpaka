@@ -1,4 +1,15 @@
-/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Oak Ridge National Laboratory <https://www.ornl.gov>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Sergei Bastrakov <s.bastrakov@hzdr.de>
+ * SPDX-FileContributor: Andrea Bocci <andrea.bocci@cern.ch>
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: David M. Rogers <predictivestatmech@gmail.com>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ *
  * SPDX-License-Identifier: MPL-2.0
  */
 

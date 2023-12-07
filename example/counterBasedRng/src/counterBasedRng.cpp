@@ -1,4 +1,11 @@
-/* Copyright 2023 Jeffrey Kelling, Jan Stephan
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ *
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ *
  * SPDX-License-Identifier: ISC
  */
 

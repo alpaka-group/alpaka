@@ -1,8 +1,11 @@
 #!/bin/bash
 #
-# Copyright 2023 Antonio Di Pilato, Jan Stephan
-# SPDX-License-Identifier: MPL-2.0
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
 #
+# SPDX-FileContributor: Antonio Di Pilato <tony.dipilato03@gmail.com>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+#
+# SPDX-License-Identifier: MPL-2.0
 
 source ./script/travis_retry.sh
 

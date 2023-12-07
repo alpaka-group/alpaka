@@ -1,4 +1,8 @@
-"""Copyright 2023 Simeon Ehrig
+"""
+SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+
+SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+
 SPDX-License-Identifier: MPL-2.0
 
 This module contains constants used for the alpaka job generation.

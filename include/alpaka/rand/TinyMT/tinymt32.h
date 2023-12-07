@@ -1,4 +1,17 @@
-/* Copyright 2011 - 2023 Mutsuo Saito, Makoto Matsumoto, Axel Hübl, Benjamin Worpitz, Bernhard Manfred Gruber
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Hiroshima University <https://www.hiroshima-u.ac.jp>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ * SPDX-FileCopyrightText: University of Tokyo <https://www.u-tokyo.ac.jp>
+ * SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Axel Hübl <a.huebl@plasma.ninja>
+ * SPDX-FileContributor: Christian Kaever <c.kaever@hzdr.de>
+ * SPDX-FileContributor: Makoto Matsumoto <matumoto@ms.u-tokyo.ac.jp>
+ * SPDX-FileContributor: Mutsuo Saito <saito@math.sci.hiroshima-u.ac.jp>
+ * SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 // clang-format off

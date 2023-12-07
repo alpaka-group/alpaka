@@ -1,3 +1,46 @@
+# SPDX-FileCopyrightText: Bo Anderson <mail@boanderson.me>
+# SPDX-FileCopyrightText: Carlo Cabrera
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+# SPDX-FileCopyrightText: Rui Chen <rui@chenrui.dev>
+# SPDX-FileCopyrightText: François-Xavier Coudert <fxcoudert@gmail.com>
+# SPDX-FileCopyrightText: Raul Ferreira <raulmendesferreira@gmail.com>
+# SPDX-FileCopyrightText: Sam Ford
+# SPDX-FileCopyrightText: Nanda H. Krishna <nanda.harishankar@gmail.com>
+# SPDX-FileCopyrightText: Clément L. <porkepix@gmail.com>
+# SPDX-FileCopyrightText: Vai Kong Edward Li
+# SPDX-FileCopyrightText: Patrick Linnane <patrick@linnane.io>
+# SDPX-FileCopyrightText: Miccal Matthews <miccal.matthews@gmail.com>
+# SPDX-FileCopyrightText: Mike McQuaid <mike@mikemcquaid.com>
+# SPDX-FileCopyrightText: Sean Molenaar
+# SPDX-FileCopyrightText: Rylan Polster <rslpolster@gmail.com>
+# SPDX-FileCopyrightText: Michka Popoff <michkapopoff@gmail.com>
+# SPDX-FileCopyrightText: Tuta GmbH <https://www.tutao.de>
+# SPDX-FileCopyrightText: Caleb Xu <calebcenter@live.com>
+# SPDX-FileCopyrightText: Tommy Yang <yt940928@gmail.com>
+# SPDX-FileCopyrightText: Ruoyu Zhong <zhongruoyo@outlook.com>
+#
+# SPDX-FileContributor: Mohammed Anas <triallax@tutanota.com>
+# SPDX-FileContributor: Bo Anderson <mail@boanderson.me>
+# SPDX-FileContributor: Carlo Cabrera
+# SPDX-FileContributor: Rui Chen <rui@chenrui.dev>
+# SPDX-FileContributor: Michael Cho <cho-m@tuta.io>
+# SPDX-FileContributor: François-Xavier Coudert <fxcoudert@gmail.com>
+# SPDX-FileContributor: Raul Ferreira <raulmendesferreira@gmail.com>
+# SPDX-FileContributor: Sam Ford
+# SPDX-FileContributor: Nanda H. Krishna <nanda.harishankar@gmail.com>
+# SPDX-FileContributor: Clément L. <porkepix@gmail.com>
+# SPDX-FileContributor: Vai Kong Edward Li
+# SPDX-FileContributor: Patrick Linnane <patrick@linnane.io>
+# SPDX-FileContributor: Miccal Matthews <miccal.matthews@gmail.com>
+# SPDX-FileContributor: Mike McQuaid <mike@mikemcquaid.com>
+# SPDX-FileContributor: Sean Molenaar
+# SPDX-FileContributor: Rylan Polster <rslpolster@gmail.com>
+# SPDX-FileContributor: Michka Popoff <michkapopoff@gmail.com>
+# SPDX-FileContributor: Henry Fredrick Schreiner <henry.fredrick.schreiner@cern.ch>
+# SPDX-FileContributor: Caleb Xu <calebcenter@live.com>
+# SPDX-FileContributor: Tommy Yang <yt940928@gmail.com>
+# SPDX-FileContributor: Ruoyu Zhong <zhongruoyo@outlook.com>
+# 
 # SPDX-License-Identifier: BSD-2-Clause
 
 class Libomp < Formula

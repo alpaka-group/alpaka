@@ -1,4 +1,11 @@
-/* Copyright 2019 Jonas Schenke
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
+ * SPDX-FileContributor: Jonas Schenke <jonas@groeger-clan.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ * SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
  * SPDX-License-Identifier: ISC
  */
 

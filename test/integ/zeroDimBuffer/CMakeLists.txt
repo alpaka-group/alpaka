@@ -1,7 +1,8 @@
+# SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
 #
-# Copyright 2021 Andrea Bocci
+# SPDX-FileContributor: Andrea Bocci <andrea.bocci@cern.ch>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 set(_TARGET_NAME "zeroDimBufferTest")
 

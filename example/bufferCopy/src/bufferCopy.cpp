@@ -1,5 +1,19 @@
-/* Copyright 2023 Alexander Matthes, Benjamin Worpitz, Erik Zenker, Matthias Werner, Bernhard Manfred Gruber,
- *                Jan Stephan
+/*
+ * SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+ * SPDX-FileCopyrightText: Organisation européenne pour la recherche nucléaire (CERN) <https://www.cern.ch>
+ * SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ *
+ * SPDX-FileContributor: Sergei Bastrakov <s.bastrakov@hzdr.de>
+ * SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+ * SPDX-FileContributor: Bernhard Manfred Gruber <bernhardmgruber@gmail.com>
+ * SPDX-FileContributor: Jeffrey Kelling <j.kelling@hzdr.de>
+ * SPDX-FileContributor: Alexander Matthes <ziz@mailbox.org>
+ * SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+ * SPDX-FileContributor: Matthias Werner <Matthias.Werner1@tu-dresden.de>
+ * SPDX-FileContributor: René Widera <r.widera@hzdr.de>
+ * SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+ * SPDX-FileContributor: Erik Zenker <erikzenker@posteo.de>
+ *
  * SPDX-License-Identifier: ISC
  */
 

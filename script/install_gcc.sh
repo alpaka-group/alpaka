@@ -1,9 +1,13 @@
 #!/bin/bash
-
 #
-# Copyright 2022 Benjamin Worpitz, Simeon Ehrig, Jan Stephan
+# SPDX-FileCopyrightText: Helmholtz-Zentrum Dresden-Rossendorf e.V. <https://www.hzdr.de>
+# SPDX-FileCopyrightText: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
+# SPDX-FileContributor: Simeon Ehrig <s.ehrig@hzdr.de>
+# SPDX-FileContributor: Jan Stephan <j.stephan@hzdr.de>
+# SPDX-FileContributor: Benjamin Worpitz <benjaminworpitz@gmail.com>
+#
 # SPDX-License-Identifier: MPL-2.0
-#
 
 source ./script/travis_retry.sh
 
