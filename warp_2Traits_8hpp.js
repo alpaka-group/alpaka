@@ -6,6 +6,8 @@ var warp_2Traits_8hpp =
     [ "any", "warp_2Traits_8hpp.html#a5388b6f43f46df541ea8a2eb72ccee70", null ],
     [ "ballot", "warp_2Traits_8hpp.html#a0d88e1c2faaf38a4e14ea0d763402d32", null ],
     [ "getSize", "warp_2Traits_8hpp.html#aa9fddbe593ae1d26989838411072a2ad", null ],
-    [ "shfl", "warp_2Traits_8hpp.html#adce3dddd0f7a2845ad1083972499ff07", null ],
-    [ "shfl", "warp_2Traits_8hpp.html#a8954fa269b9d459ea0f404e2e0cc41e9", null ]
+    [ "shfl", "warp_2Traits_8hpp.html#aec22b5aa12447c50d86ddeeb390d953e", null ],
+    [ "shfl_down", "warp_2Traits_8hpp.html#a8a2ee014c34e033cda544fc9ae641475", null ],
+    [ "shfl_up", "warp_2Traits_8hpp.html#a19ebfd2d4611e1339e5660018a6dae46", null ],
+    [ "shfl_xor", "warp_2Traits_8hpp.html#abd6ed10d3003f831e9f4df741d6704e2", null ]
 ];

@@ -9,6 +9,8 @@ var namespacealpaka_1_1warp =
     [ "any", "namespacealpaka_1_1warp.html#a5388b6f43f46df541ea8a2eb72ccee70", null ],
     [ "ballot", "namespacealpaka_1_1warp.html#a0d88e1c2faaf38a4e14ea0d763402d32", null ],
     [ "getSize", "namespacealpaka_1_1warp.html#aa9fddbe593ae1d26989838411072a2ad", null ],
-    [ "shfl", "namespacealpaka_1_1warp.html#adce3dddd0f7a2845ad1083972499ff07", null ],
-    [ "shfl", "namespacealpaka_1_1warp.html#a8954fa269b9d459ea0f404e2e0cc41e9", null ]
+    [ "shfl", "namespacealpaka_1_1warp.html#aec22b5aa12447c50d86ddeeb390d953e", null ],
+    [ "shfl_down", "namespacealpaka_1_1warp.html#a8a2ee014c34e033cda544fc9ae641475", null ],
+    [ "shfl_up", "namespacealpaka_1_1warp.html#a19ebfd2d4611e1339e5660018a6dae46", null ],
+    [ "shfl_xor", "namespacealpaka_1_1warp.html#abd6ed10d3003f831e9f4df741d6704e2", null ]
 ];

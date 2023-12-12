@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"atomic_2Traits_8hpp.html#a4c6a0197f66257d016d1250a05030def":[4,0,0,0,1,10,15],
 "atomic_2Traits_8hpp.html#a4f18d8a56f1420bf97c3ae420c50b1ee":[4,0,0,0,1,10,14],
 "atomic_2Traits_8hpp.html#a63cfc71f3e70ac355d00d5d72c22c155":[4,0,0,0,1,10,12],
 "atomic_2Traits_8hpp.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12":[4,0,0,0,1,10,10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html":[3,0,0,4,5],
 "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a97c8f604d04702b11e13f1c9efb601b4":[3,0,0,4,5,1],
 "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ab0b0a1794b3e5b2a14dbfb480dd95c7d":[3,0,0,4,5,3],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8":[3,0,0,4,5,0],
-"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#af14ad17349beb10f28f5a8d0bb10ffc1":[3,0,0,4,5,2]
+"classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8":[3,0,0,4,5,0]
 };

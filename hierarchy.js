@@ -960,6 +960,15 @@ var hierarchy =
     [ "alpaka::warp::trait::Shfl< TWarp, TSfinae >", "structalpaka_1_1warp_1_1trait_1_1Shfl.html", null ],
     [ "alpaka::warp::trait::Shfl< WarpSingleThread >", "structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpSingleThread_01_4.html", null ],
     [ "alpaka::warp::trait::Shfl< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html", null ],
+    [ "alpaka::warp::trait::ShflDown< TWarp, TSfinae >", "structalpaka_1_1warp_1_1trait_1_1ShflDown.html", null ],
+    [ "alpaka::warp::trait::ShflDown< WarpSingleThread >", "structalpaka_1_1warp_1_1trait_1_1ShflDown_3_01WarpSingleThread_01_4.html", null ],
+    [ "alpaka::warp::trait::ShflDown< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1trait_1_1ShflDown_3_01WarpUniformCudaHipBuiltIn_01_4.html", null ],
+    [ "alpaka::warp::trait::ShflUp< TWarp, TSfinae >", "structalpaka_1_1warp_1_1trait_1_1ShflUp.html", null ],
+    [ "alpaka::warp::trait::ShflUp< WarpSingleThread >", "structalpaka_1_1warp_1_1trait_1_1ShflUp_3_01WarpSingleThread_01_4.html", null ],
+    [ "alpaka::warp::trait::ShflUp< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1trait_1_1ShflUp_3_01WarpUniformCudaHipBuiltIn_01_4.html", null ],
+    [ "alpaka::warp::trait::ShflXor< TWarp, TSfinae >", "structalpaka_1_1warp_1_1trait_1_1ShflXor.html", null ],
+    [ "alpaka::warp::trait::ShflXor< WarpSingleThread >", "structalpaka_1_1warp_1_1trait_1_1ShflXor_3_01WarpSingleThread_01_4.html", null ],
+    [ "alpaka::warp::trait::ShflXor< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1trait_1_1ShflXor_3_01WarpUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::detail::BlockSharedMemStMemberImpl< core::vectorization::defaultAlignment >", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html", [
       [ "alpaka::BlockSharedMemStMember< TDataAlignBytes >", "classalpaka_1_1BlockSharedMemStMember.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
