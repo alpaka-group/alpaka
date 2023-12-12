@@ -9323,7 +9323,7 @@
 		// ============================================================================
 		// == ./include/alpaka/warp/WarpSingleThread.hpp ==
 		// ==
-		/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber
+		/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -9331,7 +9331,7 @@
 			// ============================================================================
 			// == ./include/alpaka/warp/Traits.hpp ==
 			// ==
-			/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber
+			/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Bernhard Manfred Gruber, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -9370,6 +9370,18 @@
 			        //! The shfl warp swizzling trait.
 			        template<typename TWarp, typename TSfinae = void>
 			        struct Shfl;
+
+			        //! The shfl up warp swizzling trait.
+			        template<typename TWarp, typename TSfinae = void>
+			        struct ShflUp;
+
+			        //! The shfl down warp swizzling trait.
+			        template<typename TWarp, typename TSfinae = void>
+			        struct ShflDown;
+
+			        //! The shfl xor warp swizzling trait.
+			        template<typename TWarp, typename TSfinae = void>
+			        struct ShflXor;
 
 			        //! The active mask trait.
 			        template<typename TWarp, typename TSfinae = void>
@@ -9494,7 +9506,7 @@
 			    //!     __shared__ int32_t values[warpsize];
 			    //!     values[threadIdx.x] = value;
 			    //!     __syncthreads();
-			    //!     return values[(srcLane + width*floor(threadIdx.x/width))%width];
+			    //!     return values[width*(threadIdx.x/width) + srcLane%width];
 			    //!
 			    //! However, it does not use shared memory.
 			    //!
@@ -9514,20 +9526,125 @@
 			    //! \param  width   number of threads receiving a single value
 			    //! \return val from the thread index srcLane.
 			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TWarp>
-			    ALPAKA_FN_ACC auto shfl(TWarp const& warp, std::int32_t value, std::int32_t srcLane, std::int32_t width = 0)
+			    template<typename TWarp, typename T>
+			    ALPAKA_FN_ACC auto shfl(TWarp const& warp, T value, std::int32_t srcLane, std::int32_t width = 0)
 			    {
 			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
 			        return trait::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
 			    }
 
-			    //! shfl for float vals
+			    //! Exchange data between threads within a warp.
+			    //! It copies from a lane with lower ID relative to caller.
+			    //! The lane ID is calculated by subtracting delta from the caller’s lane ID.
+			    //!
+			    //! Effectively executes:
+			    //!
+			    //!     __shared__ int32_t values[warpsize];
+			    //!     values[threadIdx.x] = value;
+			    //!     __syncthreads();
+			    //!     return (threadIdx.x % width >= delta) ? values[threadIdx.x - delta] : values[threadIdx.x];
+			    //!
+			    //! However, it does not use shared memory.
+			    //!
+			    //! Notes:
+			    //! * The programmer must ensure that all threads calling this
+			    //!   function (and the srcLane) are executing the same line of code.
+			    //!   In particular it is not portable to write if(a) {shfl} else {shfl}.
+			    //!
+			    //! * Commonly used with width = warpsize (the default), (returns values[threadIdx.x - delta] if threadIdx.x >=
+			    //! delta)
+			    //!
+			    //! * Width must be a power of 2.
+			    //!
+			    //! \tparam TWarp   warp implementation type
+			    //! \tparam T       value type
+			    //! \param  warp    warp implementation
+			    //! \param  value   value to broadcast
+			    //! \param  offset  corresponds to the delta used to compute the lane ID
+			    //! \param  width   size of the group participating in the shuffle operation
+			    //! \return val from the thread index lane ID.
 			    ALPAKA_NO_HOST_ACC_WARNING
-			    template<typename TWarp>
-			    ALPAKA_FN_ACC auto shfl(TWarp const& warp, float value, std::int32_t srcLane, std::int32_t width = 0)
+			    template<typename TWarp, typename T>
+			    ALPAKA_FN_ACC auto shfl_up(TWarp const& warp, T value, std::uint32_t offset, std::int32_t width = 0)
 			    {
 			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-			        return trait::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
+			        return trait::ShflUp<ImplementationBase>::shfl_up(warp, value, offset, width ? width : getSize(warp));
+			    }
+
+			    //! Exchange data between threads within a warp.
+			    //! It copies from a lane with higher ID relative to caller.
+			    //! The lane ID is calculated by adding delta to the caller’s lane ID.
+			    //!
+			    //! Effectively executes:
+			    //!
+			    //!     __shared__ int32_t values[warpsize];
+			    //!     values[threadIdx.x] = value;
+			    //!     __syncthreads();
+			    //!     return (threadIdx.x % width + delta < width) ? values[threadIdx.x + delta] : values[threadIdx.x];
+			    //!
+			    //! However, it does not use shared memory.
+			    //!
+			    //! Notes:
+			    //! * The programmer must ensure that all threads calling this
+			    //!   function (and the srcLane) are executing the same line of code.
+			    //!   In particular it is not portable to write if(a) {shfl} else {shfl}.
+			    //!
+			    //! * Commonly used with width = warpsize (the default), (returns values[threadIdx.x+delta] if threadIdx.x+delta <
+			    //! warpsize)
+			    //!
+			    //! * Width must be a power of 2.
+			    //!
+			    //! \tparam TWarp   warp implementation type
+			    //! \tparam T       value type
+			    //! \param  warp    warp implementation
+			    //! \param  value   value to broadcast
+			    //! \param  offset  corresponds to the delta used to compute the lane ID
+			    //! \param  width   size of the group participating in the shuffle operation
+			    //! \return val from the thread index lane ID.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TWarp, typename T>
+			    ALPAKA_FN_ACC auto shfl_down(TWarp const& warp, T value, std::uint32_t offset, std::int32_t width = 0)
+			    {
+			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        return trait::ShflDown<ImplementationBase>::shfl_down(warp, value, offset, width ? width : getSize(warp));
+			    }
+
+			    //! Exchange data between threads within a warp.
+			    //! It copies from a lane based on bitwise XOR of own lane ID.
+			    //! The lane ID is calculated by performing a bitwise XOR of the caller’s lane ID with mask
+			    //!
+			    //! Effectively executes:
+			    //!
+			    //!     __shared__ int32_t values[warpsize];
+			    //!     values[threadIdx.x] = value;
+			    //!     __syncthreads();
+			    //!     int lane = threadIdx.x ^ mask;
+			    //!     return values[lane / width > threadIdx.x / width ? threadIdx.x : lane];
+			    //!
+			    //! However, it does not use shared memory.
+			    //!
+			    //! Notes:
+			    //! * The programmer must ensure that all threads calling this
+			    //!   function (and the srcLane) are executing the same line of code.
+			    //!   In particular it is not portable to write if(a) {shfl} else {shfl}.
+			    //!
+			    //! * Commonly used with width = warpsize (the default), (returns values[threadIdx.x^mask])
+			    //!
+			    //! * Width must be a power of 2.
+			    //!
+			    //! \tparam TWarp   warp implementation type
+			    //! \tparam T       value type
+			    //! \param  warp    warp implementation
+			    //! \param  value   value to broadcast
+			    //! \param  mask    corresponds to the mask used to compute the lane ID
+			    //! \param  width   size of the group participating in the shuffle operation
+			    //! \return val from the thread index lane ID.
+			    ALPAKA_NO_HOST_ACC_WARNING
+			    template<typename TWarp, typename T>
+			    ALPAKA_FN_ACC auto shfl_xor(TWarp const& warp, T value, std::int32_t mask, std::int32_t width = 0)
+			    {
+			        using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+			        return trait::ShflXor<ImplementationBase>::shfl_xor(warp, value, mask, width ? width : getSize(warp));
 			    }
 			} // namespace alpaka::warp
 			// ==
@@ -9594,18 +9711,52 @@
 		        template<>
 		        struct Shfl<WarpSingleThread>
 		        {
+		            template<typename T>
 		            static auto shfl(
 		                warp::WarpSingleThread const& /*warp*/,
-		                std::int32_t val,
+		                T val,
 		                std::int32_t /*srcLane*/,
 		                std::int32_t /*width*/)
 		            {
 		                return val;
 		            }
+		        };
 
-		            static auto shfl(
+		        template<>
+		        struct ShflUp<WarpSingleThread>
+		        {
+		            template<typename T>
+		            static auto shfl_up(
 		                warp::WarpSingleThread const& /*warp*/,
-		                float val,
+		                T val,
+		                std::uint32_t /*srcLane*/,
+		                std::int32_t /*width*/)
+		            {
+		                return val;
+		            }
+		        };
+
+		        template<>
+		        struct ShflDown<WarpSingleThread>
+		        {
+		            template<typename T>
+		            static auto shfl_down(
+		                warp::WarpSingleThread const& /*warp*/,
+		                T val,
+		                std::uint32_t /*srcLane*/,
+		                std::int32_t /*width*/)
+		            {
+		                return val;
+		            }
+		        };
+
+		        template<>
+		        struct ShflXor<WarpSingleThread>
+		        {
+		            template<typename T>
+		            static auto shfl_xor(
+		                warp::WarpSingleThread const& /*warp*/,
+		                T val,
 		                std::int32_t /*srcLane*/,
 		                std::int32_t /*width*/)
 		            {
@@ -18108,6 +18259,12 @@
 			// ==
 			/* Copyright 2023 Jan Stephan, Luca Ferragina, Andrea Bocci, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
+			 *
+			 * The implementations of Shfl::shfl(), ShflUp::shfl_up(), ShflDown::shfl_down() and ShflXor::shfl_xor() are derived
+			 * from Intel DPCT.
+			 * Copyright (C) Intel Corporation.
+			 * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+			 * See https://llvm.org/LICENSE.txt for license information.
 			 */
 
 			// #pragma once
@@ -18221,7 +18378,6 @@
 			        static auto shfl(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t srcLane, std::int32_t width)
 			        {
 			            ALPAKA_ASSERT_OFFLOAD(width > 0);
-			            ALPAKA_ASSERT_OFFLOAD(srcLane < width);
 			            ALPAKA_ASSERT_OFFLOAD(srcLane >= 0);
 
 			            /* If width < srcLane the sub-group needs to be split into assumed subdivisions. The first item of each
@@ -18231,12 +18387,70 @@
 			               The first starts at sub-group index 0 and the second at sub-group index 16. For srcLane = 4 the
 			               first subdivision will access the value at sub-group index 4 and the second at sub-group index 20. */
 			            auto const actual_group = warp.m_item_warp.get_sub_group();
-			            auto const actual_item_id = static_cast<std::int32_t>(actual_group.get_local_linear_id());
-			            auto const actual_group_id = actual_item_id / width;
-			            auto const actual_src_id = static_cast<std::size_t>(srcLane + actual_group_id * width);
-			            auto const src = sycl::id<1>{actual_src_id};
+			            std::uint32_t const w = static_cast<std::uint32_t>(width);
+			            std::uint32_t const start_index = actual_group.get_local_linear_id() / w * w;
+			            return sycl::select_from_group(actual_group, value, start_index + static_cast<std::uint32_t>(srcLane) % w);
+			        }
+			    };
 
-			            return sycl::select_from_group(actual_group, value, src);
+			    template<typename TDim>
+			    struct ShflUp<warp::WarpGenericSycl<TDim>>
+			    {
+			        template<typename T>
+			        static auto shfl_up(
+			            warp::WarpGenericSycl<TDim> const& warp,
+			            T value,
+			            std::uint32_t offset, /* must be the same for all work-items in the group */
+			            std::int32_t width)
+			        {
+			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            std::uint32_t const w = static_cast<std::uint32_t>(width);
+			            std::uint32_t const id = actual_group.get_local_linear_id();
+			            std::uint32_t const start_index = id / w * w;
+			            T result = sycl::shift_group_right(actual_group, value, offset);
+			            if((id - start_index) < offset)
+			            {
+			                result = value;
+			            }
+			            return result;
+			        }
+			    };
+
+			    template<typename TDim>
+			    struct ShflDown<warp::WarpGenericSycl<TDim>>
+			    {
+			        template<typename T>
+			        static auto shfl_down(
+			            warp::WarpGenericSycl<TDim> const& warp,
+			            T value,
+			            std::uint32_t offset,
+			            std::int32_t width)
+			        {
+			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            std::uint32_t const w = static_cast<std::uint32_t>(width);
+			            std::uint32_t const id = actual_group.get_local_linear_id();
+			            std::uint32_t const end_index = (id / w + 1) * w;
+			            T result = sycl::shift_group_left(actual_group, value, offset);
+			            if((id + offset) >= end_index)
+			            {
+			                result = value;
+			            }
+			            return result;
+			        }
+			    };
+
+			    template<typename TDim>
+			    struct ShflXor<warp::WarpGenericSycl<TDim>>
+			    {
+			        template<typename T>
+			        static auto shfl_xor(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t mask, std::int32_t width)
+			        {
+			            auto const actual_group = warp.m_item_warp.get_sub_group();
+			            std::uint32_t const w = static_cast<std::uint32_t>(width);
+			            std::uint32_t const id = actual_group.get_local_linear_id();
+			            std::uint32_t const start_index = id / w * w;
+			            std::uint32_t const target_offset = (id % w) ^ static_cast<std::uint32_t>(mask);
+			            return sycl::select_from_group(actual_group, value, target_offset < w ? start_index + target_offset : id);
 			        }
 			    };
 			} // namespace alpaka::warp::trait
@@ -24921,7 +25135,7 @@
 			// ============================================================================
 			// == ./include/alpaka/warp/WarpUniformCudaHipBuiltIn.hpp ==
 			// ==
-			/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber
+			/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -25035,26 +25249,12 @@
 			        template<>
 			        struct Shfl<WarpUniformCudaHipBuiltIn>
 			        {
-			            //-------------------------------------------------------------
+			            template<typename T>
 			            __device__ static auto shfl(
 			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-			                float val,
+			                T val,
 			                int srcLane,
-			                std::int32_t width) -> float
-			            {
-			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_sync(activemask(warp), val, srcLane, width);
-			#        else
-			                return __shfl(val, srcLane, width);
-			#        endif
-			            }
-
-			            //-------------------------------------------------------------
-			            __device__ static auto shfl(
-			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
-			                std::int32_t val,
-			                int srcLane,
-			                std::int32_t width) -> std::int32_t
+			                std::int32_t width) -> T
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 			                return __shfl_sync(activemask(warp), val, srcLane, width);
@@ -25063,6 +25263,61 @@
 			#        endif
 			            }
 			        };
+
+			        template<>
+			        struct ShflUp<WarpUniformCudaHipBuiltIn>
+			        {
+			            template<typename T>
+			            __device__ static auto shfl_up(
+			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+			                T val,
+			                std::uint32_t offset,
+			                std::int32_t width) -> T
+			            {
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+			                return __shfl_up_sync(activemask(warp), val, offset, width);
+			#        else
+			                return __shfl_up(val, offset, width);
+			#        endif
+			            }
+			        };
+
+			        template<>
+			        struct ShflDown<WarpUniformCudaHipBuiltIn>
+			        {
+			            template<typename T>
+			            __device__ static auto shfl_down(
+			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+			                T val,
+			                std::uint32_t offset,
+			                std::int32_t width) -> T
+			            {
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+			                return __shfl_down_sync(activemask(warp), val, offset, width);
+			#        else
+			                return __shfl_down(val, offset, width);
+			#        endif
+			            }
+			        };
+
+			        template<>
+			        struct ShflXor<WarpUniformCudaHipBuiltIn>
+			        {
+			            template<typename T>
+			            __device__ static auto shfl_xor(
+			                [[maybe_unused]] warp::WarpUniformCudaHipBuiltIn const& warp,
+			                T val,
+			                std::int32_t mask,
+			                std::int32_t width) -> T
+			            {
+			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+			                return __shfl_xor_sync(activemask(warp), val, mask, width);
+			#        else
+			                return __shfl_xor(val, mask, width);
+			#        endif
+			            }
+			        };
+
 			    } // namespace trait
 			#    endif
 			} // namespace alpaka::warp
