@@ -25135,7 +25135,7 @@
 			// ============================================================================
 			// == ./include/alpaka/warp/WarpUniformCudaHipBuiltIn.hpp ==
 			// ==
-			/* Copyright 2022 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego
+			/* Copyright 2023 Sergei Bastrakov, David M. Rogers, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Aurora Perego
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
@@ -25203,7 +25203,7 @@
 			                std::int32_t predicate) -> std::int32_t
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __all_sync(activemask(warp), predicate);
+			                return __all_sync(0xffff'ffff, predicate);
 			#        else
 			                return __all(predicate);
 			#        endif
@@ -25218,7 +25218,7 @@
 			                std::int32_t predicate) -> std::int32_t
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __any_sync(activemask(warp), predicate);
+			                return __any_sync(0xffff'ffff, predicate);
 			#        else
 			                return __any(predicate);
 			#        endif
@@ -25239,7 +25239,7 @@
 			#        endif
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __ballot_sync(activemask(warp), predicate);
+			                return __ballot_sync(0xffff'ffff, predicate);
 			#        else
 			                return __ballot(predicate);
 			#        endif
@@ -25257,7 +25257,7 @@
 			                std::int32_t width) -> T
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_sync(activemask(warp), val, srcLane, width);
+			                return __shfl_sync(0xffff'ffff, val, srcLane, width);
 			#        else
 			                return __shfl(val, srcLane, width);
 			#        endif
@@ -25275,7 +25275,7 @@
 			                std::int32_t width) -> T
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_up_sync(activemask(warp), val, offset, width);
+			                return __shfl_up_sync(0xffff'ffff, val, offset, width);
 			#        else
 			                return __shfl_up(val, offset, width);
 			#        endif
@@ -25293,7 +25293,7 @@
 			                std::int32_t width) -> T
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_down_sync(activemask(warp), val, offset, width);
+			                return __shfl_down_sync(0xffff'ffff, val, offset, width);
 			#        else
 			                return __shfl_down(val, offset, width);
 			#        endif
@@ -25311,7 +25311,7 @@
 			                std::int32_t width) -> T
 			            {
 			#        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-			                return __shfl_xor_sync(activemask(warp), val, mask, width);
+			                return __shfl_xor_sync(0xffff'ffff, val, mask, width);
 			#        else
 			                return __shfl_xor(val, mask, width);
 			#        endif
