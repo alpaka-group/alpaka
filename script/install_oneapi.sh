@@ -44,7 +44,7 @@ then
 fi
 
 which "${CXX}"
-${CXX} -v
+${CXX} --version
 which "${CC}"
-${CC} -v
+${CC} --version
 sycl-ls

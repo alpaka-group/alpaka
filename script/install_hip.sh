@@ -12,6 +12,8 @@ source ./script/set.sh
 : "${ALPAKA_CI_HIP_ROOT_DIR?'ALPAKA_CI_HIP_ROOT_DIR must be specified'}"
 : "${ALPAKA_CI_HIP_VERSION?'ALPAKA_CI_HIP_VERSION must be specified'}"
 
+function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+
 if agc-manager -e rocm@${ALPAKA_CI_HIP_VERSION} ; then
     export ROCM_PATH=$(agc-manager -b rocm@${ALPAKA_CI_HIP_VERSION})
 else
@@ -30,6 +32,9 @@ else
     fi
 
     apt install --no-install-recommends -y rocm-llvm${ALPAKA_CI_ROCM_VERSION} hip-runtime-amd${ALPAKA_CI_ROCM_VERSION} rocm-dev${ALPAKA_CI_ROCM_VERSION} rocm-utils${ALPAKA_CI_ROCM_VERSION} rocrand-dev${ALPAKA_CI_ROCM_VERSION} rocminfo${ALPAKA_CI_ROCM_VERSION} rocm-cmake${ALPAKA_CI_ROCM_VERSION} rocm-device-libs${ALPAKA_CI_ROCM_VERSION} rocm-core${ALPAKA_CI_ROCM_VERSION} rocm-smi-lib${ALPAKA_CI_ROCM_VERSION}
+    if [ $(version ${ALPAKA_CI_ROCM_VERSION}) -ge $(version "6.0.0") ]; then
+        apt install --no-install-recommends -y hiprand-dev${ALPAKA_CI_ROCM_VERSION}
+    fi
     export ROCM_PATH=/opt/rocm
 fi
 # ROCM_PATH required by HIP tools
