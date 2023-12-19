@@ -83,6 +83,10 @@ $(document).ready(function(){initNavTree('structalpaka_1_1trait_1_1HasAsyncBufSu
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::trait::HasAsyncBufSupport&lt; TDim, DevUniformCudaHipRt&lt; TApi &gt; &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
@@ -100,14 +104,149 @@ $(document).ready(function(){initNavTree('structalpaka_1_1trait_1_1HasAsyncBufSu
  <div class="center">
   <img src="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.png" alt=""/>
  </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aff0c4bb8988cea368372fa9cbdd69574"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#aff0c4bb8988cea368372fa9cbdd69574">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK</a> (TApi::hostMalloc(reinterpret_cast&lt; void ** &gt;(&amp;<a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a61ff62d968f61ca72222e3c059bc2650">memPtr</a>), sizeof(TElem) *static_cast&lt; std::size_t &gt;(<a class="el" href="namespacealpaka.html#a016a833f79132d97e61ac8166f85a12a">getExtentProduct</a>(extent)), TApi::hostMallocMapped|TApi::hostMallocPortable))</td></tr>
+<tr class="separator:aff0c4bb8988cea368372fa9cbdd69574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a398d004da3fadb9085a6b66b6c519cf5"><td class="memItemLeft" align="right" valign="top">return&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a398d004da3fadb9085a6b66b6c519cf5">BufCpu</a> (host, <a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a61ff62d968f61ca72222e3c059bc2650">memPtr</a>, std::move(<a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a2517b7f53c0a333dee4cf2b56445f04b">deleter</a>), extent)</td></tr>
+<tr class="separator:a398d004da3fadb9085a6b66b6c519cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a76d2e3d4368f3030734d765ea239eb9e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a76d2e3d4368f3030734d765ea239eb9e">ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</a></td></tr>
+<tr class="separator:a76d2e3d4368f3030734d765ea239eb9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2517b7f53c0a333dee4cf2b56445f04b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a2517b7f53c0a333dee4cf2b56445f04b">deleter</a> = [](TElem* ptr) { <a class="el" href="UniformCudaHip_8hpp.html#a22859ac71d0dd3e9e1f743a8f70ec323">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT</a>(TApi::hostFree(ptr)); }</td></tr>
+<tr class="separator:a2517b7f53c0a333dee4cf2b56445f04b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ff62d968f61ca72222e3c059bc2650"><td class="memItemLeft" align="right" valign="top">TElem *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a61ff62d968f61ca72222e3c059bc2650">memPtr</a> = nullptr</td></tr>
+<tr class="separator:a61ff62d968f61ca72222e3c059bc2650"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TApi, typename TDim&gt;<br />
 struct alpaka::trait::HasAsyncBufSupport&lt; TDim, DevUniformCudaHipRt&lt; TApi &gt; &gt;</h3>
 
 <p>The CUDA/HIP stream-ordered memory allocation capability trait specialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00323">323</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00322">322</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aff0c4bb8988cea368372fa9cbdd69574"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff0c4bb8988cea368372fa9cbdd69574">&#9670;&nbsp;</a></span>ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi , typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport.html">alpaka::trait::HasAsyncBufSupport</a>&lt; TDim, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt; &gt;::ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK </td>
+          <td>(</td>
+          <td class="paramtype">TApi::hostMalloc(reinterpret_cast&lt; void ** &gt;(&amp;<a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a61ff62d968f61ca72222e3c059bc2650">memPtr</a>), sizeof(TElem) *static_cast&lt; std::size_t &gt;(<a class="el" href="namespacealpaka.html#a016a833f79132d97e61ac8166f85a12a">getExtentProduct</a>(extent)), TApi::hostMallocMapped|TApi::hostMallocPortable)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a398d004da3fadb9085a6b66b6c519cf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a398d004da3fadb9085a6b66b6c519cf5">&#9670;&nbsp;</a></span>BufCpu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi , typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">return <a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport.html">alpaka::trait::HasAsyncBufSupport</a>&lt; TDim, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt; &gt;::<a class="el" href="classalpaka_1_1BufCpu.html">BufCpu</a> </td>
+          <td>(</td>
+          <td class="paramtype">host&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a61ff62d968f61ca72222e3c059bc2650">memPtr</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::move(<a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html#a2517b7f53c0a333dee4cf2b56445f04b">deleter</a>)&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">extent&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a76d2e3d4368f3030734d765ea239eb9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76d2e3d4368f3030734d765ea239eb9e">&#9670;&nbsp;</a></span>ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi , typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport.html">alpaka::trait::HasAsyncBufSupport</a>&lt; TDim, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt; &gt;::ALPAKA_DEBUG_MINIMAL_LOG_SCOPE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00347">347</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a2517b7f53c0a333dee4cf2b56445f04b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2517b7f53c0a333dee4cf2b56445f04b">&#9670;&nbsp;</a></span>deleter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi , typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport.html">alpaka::trait::HasAsyncBufSupport</a>&lt; TDim, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt; &gt;::deleter = [](TElem* ptr) { <a class="el" href="UniformCudaHip_8hpp.html#a22859ac71d0dd3e9e1f743a8f70ec323">ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT</a>(TApi::hostFree(ptr)); }</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00356">356</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a61ff62d968f61ca72222e3c059bc2650"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61ff62d968f61ca72222e3c059bc2650">&#9670;&nbsp;</a></span>memPtr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TApi , typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">TElem* <a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport.html">alpaka::trait::HasAsyncBufSupport</a>&lt; TDim, <a class="el" href="classalpaka_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a>&lt; TApi &gt; &gt;::memPtr = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BufUniformCudaHipRt_8hpp_source.html#l00351">351</a> of file <a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/alpaka/alpaka/include/alpaka/mem/buf/<a class="el" href="BufUniformCudaHipRt_8hpp_source.html">BufUniformCudaHipRt.hpp</a></li>
 </ul>
 </div><!-- contents -->
@@ -116,7 +255,7 @@ struct alpaka::trait::HasAsyncBufSupport&lt; TDim, DevUniformCudaHipRt&lt; TApi 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1trait.html">trait</a></li><li class="navelem"><a class="el" href="structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevUniformCudaHipRt_3_01TApi_01_4_01_4.html">HasAsyncBufSupport&lt; TDim, DevUniformCudaHipRt&lt; TApi &gt; &gt;</a></li>
-    <li class="footer">Generated on Fri Dec 15 2023 16:25:40 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Dec 19 2023 10:39:07 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
