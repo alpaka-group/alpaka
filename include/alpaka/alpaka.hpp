@@ -26348,9 +26348,17 @@
 
 		        static inline Error_t freeAsync([[maybe_unused]] void* devPtr, [[maybe_unused]] Stream_t stream)
 		        {
-		            // hipFreeAsync is implemented only in ROCm 5.2.0 and later.
-		#    if HIP_VERSION >= 50'200'000
-		            return ::hipFreeAsync(devPtr, stream);
+		            // stream-ordered memory operations are fully implemented only in ROCm 5.3.0 and later.
+		#    if HIP_VERSION >= 50'300'000
+		            // hipFreeAsync fails on a null pointer deallocation
+		            if(devPtr)
+		            {
+		                return ::hipFreeAsync(devPtr, stream);
+		            }
+		            else
+		            {
+		                return ::hipSuccess;
+		            }
 		#    else
 		            // Not implemented.
 		            return errorUnknown;
@@ -26456,9 +26464,21 @@
 		            [[maybe_unused]] size_t size,
 		            [[maybe_unused]] Stream_t stream)
 		        {
-		            // hipMallocAsync is implemented only in ROCm 5.2.0 and later.
-		#    if HIP_VERSION >= 50'200'000
+		            // stream-ordered memory operations are fully implemented only in ROCm 5.3.0 and later.
+		#    if HIP_VERSION >= 50'600'000
 		            return ::hipMallocAsync(devPtr, size, stream);
+		#    elif HIP_VERSION >= 50'300'000
+		            // before ROCm 5.6.0, hipMallocAsync fails for an allocation of 0 bytes
+		            if(size > 0)
+		            {
+		                return ::hipMallocAsync(devPtr, size, stream);
+		            }
+		            else
+		            {
+		                // make sure the pointer can safely be passed to hipFreeAsync
+		                *devPtr = nullptr;
+		                return ::hipSuccess;
+		            }
 		#    else
 		            // Not implemented.
 		            return errorUnknown;
@@ -32788,8 +32808,8 @@
 		#    endif
 		#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 		            static_assert(
-		                !std::is_same_v<TApi, ApiHipRt>,
-		                "HIP devices do not support stream-ordered memory buffers.");
+		                std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0),
+		                "Support for stream-ordered memory buffers requires HIP/ROCm 5.3 or higher.");
 		#    endif
 		            static_assert(
 		                TDim::value <= 1,
@@ -32825,16 +32845,22 @@
 		            }
 		        };
 
-		#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 		        //! The CUDA/HIP stream-ordered memory allocation capability trait specialization.
 		        template<typename TApi, typename TDim>
 		        struct HasAsyncBufSupport<TDim, DevUniformCudaHipRt<TApi>>
 		            : std::bool_constant<
-		                  std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0)
-		                  && TDim::value <= 1>
+		                  TDim::value <= 1
+		                  && (
+		#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+		                      std::is_same_v<TApi, ApiCudaRt> && TApi::version >= BOOST_VERSION_NUMBER(11, 2, 0)
+		#    elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+		                      std::is_same_v<TApi, ApiHipRt> && TApi::version >= BOOST_VERSION_NUMBER(5, 3, 0)
+		#    else
+		                      false
+		#    endif
+		                          )>
 		        {
 		        };
-		#    endif
 
 		        //! The pinned/mapped memory allocation trait specialization for the CUDA/HIP devices.
 		        template<typename TApi, typename TElem, typename TDim, typename TIdx>
