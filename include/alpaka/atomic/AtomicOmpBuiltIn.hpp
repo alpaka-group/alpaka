@@ -179,7 +179,7 @@ namespace alpaka
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicMin, AtomicOmpBuiltIn, T, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T value) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -188,7 +188,9 @@ namespace alpaka
                 {
                     old = ref;
                     if(value < ref)
+                    {
                         ref = value;
+                    }
                 }
                 return old;
             }
@@ -198,7 +200,7 @@ namespace alpaka
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicMax, AtomicOmpBuiltIn, T, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T value) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -207,7 +209,9 @@ namespace alpaka
                 {
                     old = ref;
                     if(value > ref)
+                    {
                         ref = value;
+                    }
                 }
                 return old;
             }
@@ -249,11 +253,7 @@ namespace alpaka
         template<typename T, typename THierarchy>
         struct AtomicOp<AtomicCas, AtomicOmpBuiltIn, T, THierarchy>
         {
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const&,
-                T* const addr,
-                T const& compare,
-                T const& value) -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T compare, T value) -> T
             {
                 T old;
                 auto& ref(*addr);
@@ -261,7 +261,10 @@ namespace alpaka
 #        pragma omp atomic capture compare
                 {
                     old = ref;
-                    ref = (ref == compare ? value : ref);
+                    if(ref == compare)
+                    {
+                        ref = value;
+                    }
                 }
                 return old;
             }

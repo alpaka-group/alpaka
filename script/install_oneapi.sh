@@ -33,8 +33,13 @@ then
     # The compiler will automatically pull in OpenMP and TBB as dependencies
     components=(
         intel-oneapi-common-vars                                      # Contains /opt/intel/oneapi/setvars.sh - has no version number
-        intel-oneapi-compiler-dpcpp-cpp-"${ALPAKA_CI_ONEAPI_VERSION}" # Contains icpx compiler and SYCL runtime
-        intel-oneapi-runtime-opencl                                   # Required to run SYCL tests on the CPU - has no version number
+        intel-oneapi-compiler-dpcpp-cpp-"${ALPAKA_CI_ONEAPI_VERSION}"
+        intel-oneapi-compiler-dpcpp-cpp-runtime-"${ALPAKA_CI_ONEAPI_VERSION}" 
+        intel-oneapi-compiler-shared-"${ALPAKA_CI_ONEAPI_VERSION}" 
+        intel-oneapi-dpcpp-cpp-"${ALPAKA_CI_ONEAPI_VERSION}" 
+        intel-oneapi-openmp-"${ALPAKA_CI_ONEAPI_VERSION}" 
+        intel-oneapi-openmp-common-"${ALPAKA_CI_ONEAPI_VERSION}"
+
     )
     travis_retry sudo apt-get install -y "${components[@]}"
 
