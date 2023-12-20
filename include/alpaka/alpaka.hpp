@@ -2021,22 +2021,47 @@
 			#include <cassert>
 			// #include <type_traits>    // amalgamate: file already included
 
+			//! The assert can be explicit disabled by defining NDEBUG
 			#define ALPAKA_ASSERT(...) assert(__VA_ARGS__)
 
-			#if defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) || defined(SYCL_EXT_ONEAPI_ASSERT)
-			#    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION) ALPAKA_ASSERT(EXPRESSION)
-			#elif defined __AMDGCN__ && (!defined NDEBUG)
-			#    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)                                                                         \
-			        do                                                                                                            \
-			        {                                                                                                             \
-			            if(!(EXPRESSION))                                                                                         \
-			                __builtin_trap();                                                                                     \
-			        } while(false)
+			//! Macro which expands to a noop.
+			//! Macro enforces an semicolon after the call.
+			#define ALPAKA_NOOP(...)                                                                                              \
+			    do                                                                                                                \
+			    {                                                                                                                 \
+			    } while(false)
+
+			//! ALPAKA_ASSERT_ACC_IMPL is an assert-like macro.
+			//! It can be disabled setting the ALPAKA_DISABLE_ASSERT_ACC preprocessor symbol or the NDEBUG preprocessor symbol.
+			#if !defined(ALPAKA_DISABLE_ASSERT_ACC)
+			#    define ALPAKA_ASSERT_ACC_IMPL(...) ALPAKA_ASSERT(__VA_ARGS__)
 			#else
-			#    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)                                                                         \
-			        do                                                                                                            \
-			        {                                                                                                             \
-			        } while(false)
+			#    define ALPAKA_ASSERT_ACC_IMPL(...) ALPAKA_NOOP(__VA_ARGS__)
+			#endif
+
+			//! ALPAKA_ASSERT_ACC is an assert-like macro.
+			//!
+			//! In device code for a GPU or SYCL backend it can be disabled setting the ALPAKA_DISABLE_ASSERT_ACC preprocessor
+			//! symbol or the NDEBUG preprocessor symbol. In device code for a native C++ CPU backend and in host code, it is
+			//! equivalent to ALPAKA_ASSERT, and can be disabled setting the NDEBUG preprocessor symbol.
+			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDA_ARCH__)
+			// CUDA device code
+			#    define ALPAKA_ASSERT_ACC(...) ALPAKA_ASSERT_ACC_IMPL(__VA_ARGS__)
+			#elif defined(ALPAKA_ACC_GPU_HIP_ENABLED) && defined(__HIP_DEVICE_COMPILE__)
+			// HIP/ROCm device code
+			#    define ALPAKA_ASSERT_ACC(...) ALPAKA_ASSERT_ACC_IMPL(__VA_ARGS__)
+			#elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(__SYCL_DEVICE_ONLY__)
+			// SYCL/oneAPI device code
+			#    if defined(SYCL_EXT_ONEAPI_ASSERT)
+			#        define ALPAKA_ASSERT_ACC(...) ALPAKA_ASSERT_ACC_IMPL(__VA_ARGS__)
+			#    else
+			#        define ALPAKA_ASSERT_ACC(...) ALPAKA_NOOP(__VA_ARGS__)
+			#    endif
+			// add here any other #elif conditions for non-CPU backends
+			// ...
+			#else
+			// CPU backend, or host code
+			#    define ALPAKA_ASSERT_ACC(...) ALPAKA_ASSERT(__VA_ARGS__)
 			#endif
 
 			namespace alpaka::core
@@ -2050,7 +2075,7 @@
 			                [[maybe_unused]] TArg const& arg)
 			            {
 			                if constexpr(std::is_signed_v<TArg>)
-			                    ALPAKA_ASSERT_OFFLOAD(arg >= 0);
+			                    ALPAKA_ASSERT_ACC(arg >= 0);
 
 			                // Nothing to do for unsigned types.
 			            }
@@ -2075,7 +2100,7 @@
 			                [[maybe_unused]] TRhs const& rhs)
 			            {
 			                if constexpr(std::is_signed_v<TRhs> || (TLhs::value != 0u))
-			                    ALPAKA_ASSERT_OFFLOAD(TLhs::value > rhs);
+			                    ALPAKA_ASSERT_ACC(TLhs::value > rhs);
 
 			                // Nothing to do for unsigned types comparing to zero.
 			            }
@@ -2492,7 +2517,7 @@
 		    public:
 		        BlockSharedMemDynMember(std::size_t sizeBytes) : m_dynPitch(getPitch(sizeBytes))
 		        {
-		            ALPAKA_ASSERT_OFFLOAD(static_cast<std::uint32_t>(sizeBytes) <= staticAllocBytes());
+		            ALPAKA_ASSERT_ACC(static_cast<std::uint32_t>(sizeBytes) <= staticAllocBytes());
 		        }
 
 		        auto dynMemBegin() const -> uint8_t*
@@ -2681,7 +2706,7 @@
 			            : m_mem(mem)
 			            , m_capacity(static_cast<std::uint32_t>(capacity))
 			        {
-			            ALPAKA_ASSERT_OFFLOAD((m_mem == nullptr) == (m_capacity == 0u));
+			            ALPAKA_ASSERT_ACC((m_mem == nullptr) == (m_capacity == 0u));
 			        }
 			#else
 			        BlockSharedMemStMemberImpl(std::uint8_t* mem, std::size_t) : m_mem(mem)
@@ -2694,12 +2719,12 @@
 			        {
 			            // Add meta data chunk in front of the user data
 			            m_allocdBytes = varChunkEnd<MetaData>(m_allocdBytes);
-			            ALPAKA_ASSERT_OFFLOAD(m_allocdBytes <= m_capacity);
+			            ALPAKA_ASSERT_ACC(m_allocdBytes <= m_capacity);
 			            auto* meta = getLatestVarPtr<MetaData>();
 
 			            // Allocate variable
 			            m_allocdBytes = varChunkEnd<T>(m_allocdBytes);
-			            ALPAKA_ASSERT_OFFLOAD(m_allocdBytes <= m_capacity);
+			            ALPAKA_ASSERT_ACC(m_allocdBytes <= m_capacity);
 
 			            // Update meta data with id and offset for the allocated variable.
 			            meta->id = id;
@@ -2729,7 +2754,7 @@
 			                // Adjust offset to be aligned
 			                std::uint32_t const alignedMetaDataOffset
 			                    = varChunkEnd<MetaData>(off) - static_cast<std::uint32_t>(sizeof(MetaData));
-			                ALPAKA_ASSERT_OFFLOAD(
+			                ALPAKA_ASSERT_ACC(
 			                    (alignedMetaDataOffset + static_cast<std::uint32_t>(sizeof(MetaData))) <= m_allocdBytes);
 			                auto* metaDataPtr = reinterpret_cast<MetaData*>(m_mem + alignedMetaDataOffset);
 			                off = metaDataPtr->offset;
@@ -14442,7 +14467,7 @@
 		            static auto getIdx(bt::IdxBtOmp<TDim, TIdx> const& /* idx */, TWorkDiv const& workDiv) -> Vec<TDim, TIdx>
 		            {
 		                // We assume that the thread id is positive.
-		                ALPAKA_ASSERT_OFFLOAD(::omp_get_thread_num() >= 0);
+		                ALPAKA_ASSERT_ACC(::omp_get_thread_num() >= 0);
 		                // \TODO: Would it be faster to precompute the index and cache it inside an array?
 		                return mapIdx<TDim::value>(
 		                    Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
@@ -18377,8 +18402,8 @@
 			        template<typename T>
 			        static auto shfl(warp::WarpGenericSycl<TDim> const& warp, T value, std::int32_t srcLane, std::int32_t width)
 			        {
-			            ALPAKA_ASSERT_OFFLOAD(width > 0);
-			            ALPAKA_ASSERT_OFFLOAD(srcLane >= 0);
+			            ALPAKA_ASSERT_ACC(width > 0);
+			            ALPAKA_ASSERT_ACC(srcLane >= 0);
 
 			            /* If width < srcLane the sub-group needs to be split into assumed subdivisions. The first item of each
 			               subdivision has the assumed index 0. The srcLane index is relative to the subdivisions.
