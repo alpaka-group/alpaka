@@ -502,7 +502,7 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
 
     # supported HIP version range
     set(_alpaka_HIP_MIN_VER 5.0)
-    set(_alpaka_HIP_MAX_VER 5.5)
+    set(_alpaka_HIP_MAX_VER 5.7)
     find_package(hip "${_alpaka_HIP_MIN_VER}...${_alpaka_HIP_MAX_VER}")
 
     if(NOT TARGET hip)
@@ -525,12 +525,12 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
             # hiprand requires ROCm implementation of random numbers by rocrand
             # hip::hiprand is currently not expressing this dependency
             find_package(rocrand REQUIRED CONFIG
-                    HINTS "${HIP_ROOT_DIR}/rocrand"
+                    HINTS "${ROCM_ROOT_DIR}/rocrand"
                     HINTS "/opt/rocm/rocrand")
             if(rocrand_FOUND)
                 target_link_libraries(alpaka INTERFACE roc::rocrand)
             else()
-                MESSAGE(FATAL_ERROR "Could not find rocRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/rocrand).")
+                MESSAGE(FATAL_ERROR "Could not find rocRAND (also searched in: ROCM_ROOT_DIR=${ROCM_ROOT_DIR}/rocrand).")
             endif()
 
             # HIP random numbers
