@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#a0560313df7405e2ab1f0f4542c2d47e8":[3,0,0,13,1,0,2,4],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#a187f34ec89c8b19582776c2c6e08c7a9":[3,0,0,13,1,0,2,3],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#a7e9e262d03cc0ec2caf5681b590984d4":[3,0,0,13,1,0,2,0],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#ab84eccaa9fea527493962dc2c7eacf21":[3,0,0,13,1,0,2,5],
@@ -249,5 +248,6 @@ var NAVTREEINDEX5 =
 "functions_type.html":[3,2,3,0],
 "functions_type_b.html":[3,2,3,1],
 "functions_type_c.html":[3,2,3,2],
-"functions_type_d.html":[3,2,3,3]
+"functions_type_d.html":[3,2,3,3],
+"functions_type_e.html":[3,2,3,4]
 };

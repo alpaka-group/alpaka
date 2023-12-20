@@ -1,6 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxResultContainerTraits_3_01unsigned_01_4.html":[3,0,0,13,1,1,11],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxResultContainerTraits_3_01unsigned_01_4.html#a643a5da28eea4178900557466a903dfe":[3,0,0,13,1,1,11,0],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html":[3,0,0,13,1,1,12],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#a20903af5b7dd3607ea8c4985389ab74c":[3,0,0,13,1,1,12,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1DevType_3_01PlatformCpu_01_4.html":[3,0,0,15,101],
 "structalpaka_1_1trait_1_1DevType_3_01PlatformCpu_01_4.html#ad95d8aa9fc4ee97446f575ecd1657c60":[3,0,0,15,101,0],
 "structalpaka_1_1trait_1_1DevType_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html":[3,0,0,15,102],
-"structalpaka_1_1trait_1_1DevType_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html#a150122d4858880b02a40a73131252502":[3,0,0,15,102,0]
+"structalpaka_1_1trait_1_1DevType_3_01PlatformUniformCudaHipRt_3_01TApi_01_4_01_4.html#a150122d4858880b02a40a73131252502":[3,0,0,15,102,0],
+"structalpaka_1_1trait_1_1DevType_3_01QueueCpuOmp2Collective_01_4.html":[3,0,0,15,103]
 };
