@@ -55,4 +55,13 @@ def alpaka_post_filter(row: List) -> bool:
     ):
         return False
 
+    # OpenMP is not supported for ipcx < 2024
+    #if row_check_name(row, HOST_COMPILER, "==", ICPX) and row_check_version(row, HOST_COMPILER, "!=", "2024.0") and (
+    #        row_check_backend_version(row, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, "==", ON_VER)
+    #        or row_check_backend_version(
+    #    row, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE, "==", ON_VER
+    #)
+    #):
+    #    return False
+
     return True
