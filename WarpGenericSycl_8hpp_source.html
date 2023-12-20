@@ -208,8 +208,8 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1warp.html#aec22b5aa12447c50d86ddeeb390d953e">shfl</a>(warp::WarpGenericSycl&lt;TDim&gt; <span class="keyword">const</span>&amp; warp, T value, std::int32_t srcLane, std::int32_t width)</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(width &gt; 0);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(srcLane &gt;= 0);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>(width &gt; 0);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>(srcLane &gt;= 0);</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="comment">/* If width &lt; srcLane the sub-group needs to be split into assumed subdivisions. The first item of each</span></div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">               subdivision has the assumed index 0. The srcLane index is relative to the subdivisions.</span></div>
@@ -288,7 +288,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAssert_8hpp_html"><div class="ttname"><a href="Assert_8hpp.html">Assert.hpp</a></div></div>
-<div class="ttc" id="aAssert_8hpp_html_acf9112f00b5f6352f9c046236fb9255e"><div class="ttname"><a href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a></div><div class="ttdeci">#define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00024">Assert.hpp:24</a></div></div>
+<div class="ttc" id="aAssert_8hpp_html_a618b8834e37408b2c21f6c7efa7a9108"><div class="ttname"><a href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a></div><div class="ttdeci">#define ALPAKA_ASSERT_ACC(...)</div><div class="ttdoc">ALPAKA_ASSERT_ACC is an assert-like macro.</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00052">Assert.hpp:52</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1test_html_ac57b0d74f76c2d03f10f7871408b4106"><div class="ttname"><a href="namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106">alpaka::test::offset</a></div><div class="ttdeci">constexpr auto offset</div><div class="ttdef"><b>Definition:</b> <a href="Extent_8hpp_source.html#l00034">Extent.hpp:34</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1warp_1_1trait_html"><div class="ttname"><a href="namespacealpaka_1_1warp_1_1trait.html">alpaka::warp::trait</a></div><div class="ttdoc">The warp traits.</div><div class="ttdef"><b>Definition:</b> <a href="warp_2Traits_8hpp_source.html#l00020">Traits.hpp:21</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1warp_html"><div class="ttname"><a href="namespacealpaka_1_1warp.html">alpaka::warp</a></div><div class="ttdef"><b>Definition:</b> <a href="warp_2Traits_8hpp_source.html#l00013">Traits.hpp:14</a></div></div>
@@ -308,7 +308,7 @@ $(document).ready(function(){initNavTree('WarpGenericSycl_8hpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_7d123124934e174b4626b90ed7337338.html">warp</a></li><li class="navelem"><a class="el" href="WarpGenericSycl_8hpp.html">WarpGenericSycl.hpp</a></li>
-    <li class="footer">Generated on Wed Dec 20 2023 14:40:03 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Dec 20 2023 15:17:04 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

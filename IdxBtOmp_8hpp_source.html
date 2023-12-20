@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('IdxBtOmp_8hpp_source.html',''); initRe
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1GetIdx_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#ac690f93b1bbd608f3173cab50b4f3817">   45</a></span>&#160;            <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1trait_1_1GetIdx_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#ac690f93b1bbd608f3173cab50b4f3817">getIdx</a>(<a class="code" href="classalpaka_1_1bt_1_1IdxBtOmp.html">bt::IdxBtOmp&lt;TDim, TIdx&gt;</a> <span class="keyword">const</span>&amp; <span class="comment">/* idx */</span>, TWorkDiv <span class="keyword">const</span>&amp; workDiv) -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TDim, TIdx&gt;</a></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="comment">// We assume that the thread id is positive.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(::omp_get_thread_num() &gt;= 0);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>(::omp_get_thread_num() &gt;= 0);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="comment">// \TODO: Would it be faster to precompute the index and cache it inside an array?</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keywordflow">return</span> mapIdx&lt;TDim::value&gt;(</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    <a class="code" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="code" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">DimInt&lt;1u&gt;</a>, TIdx&gt;(<span class="keyword">static_cast&lt;</span>TIdx<span class="keyword">&gt;</span>(::omp_get_thread_num())),</div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('IdxBtOmp_8hpp_source.html',''); initRe
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aAssert_8hpp_html"><div class="ttname"><a href="Assert_8hpp.html">Assert.hpp</a></div></div>
-<div class="ttc" id="aAssert_8hpp_html_acf9112f00b5f6352f9c046236fb9255e"><div class="ttname"><a href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a></div><div class="ttdeci">#define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00024">Assert.hpp:24</a></div></div>
+<div class="ttc" id="aAssert_8hpp_html_a618b8834e37408b2c21f6c7efa7a9108"><div class="ttname"><a href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a></div><div class="ttdeci">#define ALPAKA_ASSERT_ACC(...)</div><div class="ttdoc">ALPAKA_ASSERT_ACC is an assert-like macro.</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00052">Assert.hpp:52</a></div></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
 <div class="ttc" id="aMapIdx_8hpp_html"><div class="ttname"><a href="MapIdx_8hpp.html">MapIdx.hpp</a></div></div>
 <div class="ttc" id="aPositioning_8hpp_html"><div class="ttname"><a href="Positioning_8hpp.html">Positioning.hpp</a></div></div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('IdxBtOmp_8hpp_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="dir_d09a687214752b73c59e5dd5576fcca9.html">bt</a></li><li class="navelem"><a class="el" href="IdxBtOmp_8hpp.html">IdxBtOmp.hpp</a></li>
-    <li class="footer">Generated on Wed Dec 20 2023 14:40:03 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Dec 20 2023 15:17:04 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

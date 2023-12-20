@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemStMemberImpl_8hpp_source
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            : m_mem(mem)</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            , m_capacity(static_cast&lt;std::uint32_t&gt;(capacity))</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>((m_mem == <span class="keyword">nullptr</span>) == (m_capacity == 0u));</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>((m_mem == <span class="keyword">nullptr</span>) == (m_capacity == 0u));</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac83c1f1f6ab6c9353b5abbc94ab374d8">BlockSharedMemStMemberImpl</a>(std::uint8_t* mem, std::size_t) : m_mem(mem)</div>
@@ -141,12 +141,12 @@ $(document).ready(function(){initNavTree('BlockSharedMemStMemberImpl_8hpp_source
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="comment">// Add meta data chunk in front of the user data</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            m_allocdBytes = varChunkEnd&lt;MetaData&gt;(m_allocdBytes);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(m_allocdBytes &lt;= m_capacity);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>(m_allocdBytes &lt;= m_capacity);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">auto</span>* meta = getLatestVarPtr&lt;MetaData&gt;();</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="comment">// Allocate variable</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            m_allocdBytes = varChunkEnd&lt;T&gt;(m_allocdBytes);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(m_allocdBytes &lt;= m_capacity);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>(m_allocdBytes &lt;= m_capacity);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="comment">// Update meta data with id and offset for the allocated variable.</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            meta-&gt;id = id;</div>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemStMemberImpl_8hpp_source
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="comment">// Adjust offset to be aligned</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                std::uint32_t <span class="keyword">const</span> alignedMetaDataOffset</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    = varChunkEnd&lt;MetaData&gt;(off) - <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(<span class="keyword">sizeof</span>(MetaData));</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>(</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    (alignedMetaDataOffset + <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(<span class="keyword">sizeof</span>(MetaData))) &lt;= m_allocdBytes);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keyword">auto</span>* metaDataPtr = <span class="keyword">reinterpret_cast&lt;</span>MetaData*<span class="keyword">&gt;</span>(m_mem + alignedMetaDataOffset);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                off = metaDataPtr-&gt;offset;</div>
@@ -233,7 +233,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemStMemberImpl_8hpp_source
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    };</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;} <span class="comment">// namespace alpaka::detail</span></div>
 <div class="ttc" id="aAssert_8hpp_html"><div class="ttname"><a href="Assert_8hpp.html">Assert.hpp</a></div></div>
-<div class="ttc" id="aAssert_8hpp_html_acf9112f00b5f6352f9c046236fb9255e"><div class="ttname"><a href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a></div><div class="ttdeci">#define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00024">Assert.hpp:24</a></div></div>
+<div class="ttc" id="aAssert_8hpp_html_a618b8834e37408b2c21f6c7efa7a9108"><div class="ttname"><a href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a></div><div class="ttdeci">#define ALPAKA_ASSERT_ACC(...)</div><div class="ttdoc">ALPAKA_ASSERT_ACC is an assert-like macro.</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00052">Assert.hpp:52</a></div></div>
 <div class="ttc" id="aVectorize_8hpp_html"><div class="ttname"><a href="Vectorize_8hpp.html">Vectorize.hpp</a></div></div>
 <div class="ttc" id="ablock_2shared_2st_2Traits_8hpp_html"><div class="ttname"><a href="block_2shared_2st_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1detail_1_1BlockSharedMemStMemberImpl_html"><div class="ttname"><a href="classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html">alpaka::detail::BlockSharedMemStMemberImpl</a></div><div class="ttdoc">Implementation of static block shared memory provider.</div><div class="ttdef"><b>Definition:</b> <a href="BlockSharedMemStMemberImpl_8hpp_source.html#l00023">BlockSharedMemStMemberImpl.hpp:24</a></div></div>
@@ -250,7 +250,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemStMemberImpl_8hpp_source
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_0864fd1327d23bd6a262ac55462cb31e.html">block</a></li><li class="navelem"><a class="el" href="dir_80053b06cd80a729c5eaac439ea18035.html">shared</a></li><li class="navelem"><a class="el" href="dir_7be937b0b17efdbd2f169f14f5c2db8e.html">st</a></li><li class="navelem"><a class="el" href="dir_545d22f27db2615a487beca7f9179f9d.html">detail</a></li><li class="navelem"><a class="el" href="BlockSharedMemStMemberImpl_8hpp.html">BlockSharedMemStMemberImpl.hpp</a></li>
-    <li class="footer">Generated on Wed Dec 20 2023 14:40:03 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Dec 20 2023 15:17:04 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemDynMember_8hpp_source.ht
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classalpaka_1_1BlockSharedMemDynMember.html#a74123c1e22070b194846c83182f0e5ad">   43</a></span>&#160;        <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#a74123c1e22070b194846c83182f0e5ad">BlockSharedMemDynMember</a>(std::size_t sizeBytes) : m_dynPitch(getPitch(sizeBytes))</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <a class="code" href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a>(<span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(sizeBytes) &lt;= <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#a1482ba5ec4f8e6e4e697e777b771693c">staticAllocBytes</a>());</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <a class="code" href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a>(<span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(sizeBytes) &lt;= <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#a1482ba5ec4f8e6e4e697e777b771693c">staticAllocBytes</a>());</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classalpaka_1_1BlockSharedMemDynMember.html#a493693192b766fd681af2fa5fdd93010">   48</a></span>&#160;        <span class="keyword">auto</span> <a class="code" href="classalpaka_1_1BlockSharedMemDynMember.html#a493693192b766fd681af2fa5fdd93010">dynMemBegin</a>() const -&gt; uint8_t*</div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemDynMember_8hpp_source.ht
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    } <span class="comment">// namespace trait</span></div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="ttc" id="aAssert_8hpp_html"><div class="ttname"><a href="Assert_8hpp.html">Assert.hpp</a></div></div>
-<div class="ttc" id="aAssert_8hpp_html_acf9112f00b5f6352f9c046236fb9255e"><div class="ttname"><a href="Assert_8hpp.html#acf9112f00b5f6352f9c046236fb9255e">ALPAKA_ASSERT_OFFLOAD</a></div><div class="ttdeci">#define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00024">Assert.hpp:24</a></div></div>
+<div class="ttc" id="aAssert_8hpp_html_a618b8834e37408b2c21f6c7efa7a9108"><div class="ttname"><a href="Assert_8hpp.html#a618b8834e37408b2c21f6c7efa7a9108">ALPAKA_ASSERT_ACC</a></div><div class="ttdeci">#define ALPAKA_ASSERT_ACC(...)</div><div class="ttdoc">ALPAKA_ASSERT_ACC is an assert-like macro.</div><div class="ttdef"><b>Definition:</b> <a href="Assert_8hpp_source.html#l00052">Assert.hpp:52</a></div></div>
 <div class="ttc" id="aBlockSharedDynMemberAllocKiB_8hpp_html"><div class="ttname"><a href="BlockSharedDynMemberAllocKiB_8hpp.html">BlockSharedDynMemberAllocKiB.hpp</a></div></div>
 <div class="ttc" id="aVectorize_8hpp_html"><div class="ttname"><a href="Vectorize_8hpp.html">Vectorize.hpp</a></div></div>
 <div class="ttc" id="ablock_2shared_2dyn_2Traits_8hpp_html"><div class="ttname"><a href="block_2shared_2dyn_2Traits_8hpp.html">Traits.hpp</a></div></div>
@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('BlockSharedMemDynMember_8hpp_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_0864fd1327d23bd6a262ac55462cb31e.html">block</a></li><li class="navelem"><a class="el" href="dir_80053b06cd80a729c5eaac439ea18035.html">shared</a></li><li class="navelem"><a class="el" href="dir_60be6ec9b9f6430d01be52510748f004.html">dyn</a></li><li class="navelem"><a class="el" href="BlockSharedMemDynMember_8hpp.html">BlockSharedMemDynMember.hpp</a></li>
-    <li class="footer">Generated on Wed Dec 20 2023 14:40:03 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Dec 20 2023 15:17:04 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
