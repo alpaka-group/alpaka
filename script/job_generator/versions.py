@@ -28,7 +28,7 @@ sw_versions: Dict[str, List[str]] = {
         "12.2",
     ],
     HIPCC: ["5.0", "5.1", "5.2", "5.3", "5.4", "5.5"],
-    ICPX: ["2023.1.0", "2023.2.0"],
+    ICPX: ["2024.0"],
     # Contains all enabled back-ends.
     # There are special cases for ALPAKA_ACC_GPU_CUDA_ENABLE and ALPAKA_ACC_GPU_HIP_ENABLE
     # which have to be combined with nvcc and hipcc versions.
@@ -68,6 +68,8 @@ sw_versions: Dict[str, List[str]] = {
         # Turn off OpenMP back-ends until Intel fixes https://github.com/intel/llvm/issues/10711
         [
             ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE,
+            ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE,
+            ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE,
             ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE,
             ALPAKA_ACC_SYCL_ENABLE,
         ],
