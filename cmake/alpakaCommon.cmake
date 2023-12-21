@@ -512,15 +512,15 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
     if(CMAKE_HIP_COMPILER)
         enable_language(HIP)
         find_package(hip REQUIRED)
-        #target_link_libraries(alpaka INTERFACE "$<$<LINK_LANGUAGE:CXX>:hip::host")
-        target_link_libraries(alpaka INTERFACE hip::host)
+        target_link_libraries(alpaka INTERFACE "$<$<LINK_LANGUAGE:CXX>:hip::host>")
+        alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CXX>:-D__HIP_PLATFORM_AMD__>")
 
         alpaka_compiler_option(HIP_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" OFF)
         if(alpaka_HIP_KEEP_FILES)
             alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-save-temps>")
         endif()
 
-        if(alpaka_FAST_MATH)
+        if(alpaka_FAST_MATH STREQUAL ON)
             alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-ffast-math>")
         endif()
 

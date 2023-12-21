@@ -41,7 +41,6 @@ macro(alpaka_add_executable In_Name)
         foreach(_file ${ARGN})
             if((${_file} MATCHES "\\.cpp$") OR
                (${_file} MATCHES "\\.cxx$") OR
-               (${_file} MATCHES "\\.cu$") OR
                (${_file} MATCHES "\\.hip$")
             )
                 set_source_files_properties(${_file} PROPERTIES LANGUAGE HIP)
