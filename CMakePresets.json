@@ -73,7 +73,6 @@
             "description": "use HIP back-end on AMD GPUs",
             "inherits": "develop",
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "hipcc",
                 "alpaka_ACC_CPU_B_SEQ_T_SEQ_ENABLE": "ON",
                 "alpaka_ACC_GPU_HIP_ENABLE": "ON"
             }
