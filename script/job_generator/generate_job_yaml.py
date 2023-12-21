@@ -353,6 +353,8 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
             variables["ALPAKA_CI_CLANG_VER"] = "16"
         elif job[DEVICE_COMPILER][VERSION] == "5.7":
             variables["ALPAKA_CI_CLANG_VER"] = "17"
+        elif job[DEVICE_COMPILER][VERSION] == "6.0":
+            variables["ALPAKA_CI_CLANG_VER"] = "17"
         else:
             raise RuntimeError(
                 "generate_job_yaml.job_variables(): unknown hip version: "
