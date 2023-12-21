@@ -73,7 +73,7 @@ fi
 if [ -z ${CI_GPU_ARCH+x} ] ; then
     # In case the runner is not providing a GPU architecture e.g. a CPU runner set the architecture
     # to Radeon VII or MI50/60.
-    export GPU_TARGETS="gfx906"
+    export CMAKE_HIP_ARCHITECTURES="gfx906"
 fi
 
 # environment overview

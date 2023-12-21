@@ -322,7 +322,7 @@ alpaka_ACC_GPU_HIP_ONLY_MODE
 
      Only back-ends using HIP can be enabled in this mode.
 
-GPU_TARGETS
+CMAKE_HIP_ARCHITECTURES
   .. code-block::
 
      Set the GPU architecture: e.g. "gfx900;gfx906;gfx908".
