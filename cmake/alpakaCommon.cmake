@@ -507,7 +507,7 @@ endif()
 if(alpaka_ACC_GPU_HIP_ENABLE)
 
     # supported HIP version range
-    set(_alpaka_HIP_MIN_VER 5.0)
+    set(_alpaka_HIP_MIN_VER 5.1)
     set(_alpaka_HIP_MAX_VER 5.7)
     set(_alpaka_HIP_NEXT_MAJOR_MIN_VER 6.0)
 
