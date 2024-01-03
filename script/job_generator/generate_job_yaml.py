@@ -337,9 +337,7 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
         variables["CXX"] = "clang++"
         variables["GPU_TARGETS"] = "${CI_GPU_ARCH}"
         # TODO(SimeonEhrig) check, if we can remove this variable:
-        if job[DEVICE_COMPILER][VERSION] == "5.0":
-            variables["ALPAKA_CI_CLANG_VER"] = "14"
-        elif job[DEVICE_COMPILER][VERSION] == "5.1":
+        if job[DEVICE_COMPILER][VERSION] == "5.1":
             variables["ALPAKA_CI_CLANG_VER"] = "14"
         elif job[DEVICE_COMPILER][VERSION] == "5.2":
             variables["ALPAKA_CI_CLANG_VER"] = "14"
