@@ -1,5 +1,5 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber,
- * Antonio Di Pilato
+/* Copyright 2024 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan, Bernhard Manfred Gruber,
+ *                Antonio Di Pilato, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -132,6 +132,16 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getWarpSizes(DevCpu const& /* dev */) -> std::vector<std::size_t>
             {
                 return {1u};
+            }
+        };
+
+        //! The CPU device preferred warp size get trait specialization.
+        template<>
+        struct GetPreferredWarpSize<DevCpu>
+        {
+            ALPAKA_FN_HOST static constexpr auto getPreferredWarpSize(DevCpu const& /* dev */) -> std::size_t
+            {
+                return 1u;
             }
         };
 

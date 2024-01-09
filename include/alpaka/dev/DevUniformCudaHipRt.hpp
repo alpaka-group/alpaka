@@ -1,10 +1,11 @@
-/* Copyright 2023 Benjamin Worpitz, Jakob Krude, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
- *                Antonio Di Pilato, Jan Stephan
+/* Copyright 2024 Benjamin Worpitz, Jakob Krude, René Widera, Andrea Bocci, Bernhard Manfred Gruber,
+ *                Antonio Di Pilato, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
 
+#include "alpaka/core/ApiCudaRt.hpp"
 #include "alpaka/core/Concepts.hpp"
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Hip.hpp"
@@ -164,12 +165,36 @@ namespace alpaka
         {
             ALPAKA_FN_HOST static auto getWarpSizes(DevUniformCudaHipRt<TApi> const& dev) -> std::vector<std::size_t>
             {
+                return {GetPreferredWarpSize<DevUniformCudaHipRt<TApi>>::getPreferredWarpSize(dev)};
+            }
+        };
+
+        //! The CUDA/HIP RT preferred device warp size get trait specialization.
+        template<typename TApi>
+        struct GetPreferredWarpSize<DevUniformCudaHipRt<TApi>>
+        {
+            ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
+            {
                 typename TApi::DeviceProp_t devProp;
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, dev.getNativeHandle()));
 
-                return {static_cast<std::size_t>(devProp.warpSize)};
+                return static_cast<std::size_t>(devProp.warpSize);
             }
         };
+
+#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+        //! The CUDA RT preferred device warp size get trait specialization.
+        template<>
+        struct GetPreferredWarpSize<DevUniformCudaHipRt<ApiCudaRt>>
+        {
+            ALPAKA_FN_HOST static constexpr auto getPreferredWarpSize(DevUniformCudaHipRt<ApiCudaRt> const& /* dev */)
+                -> std::size_t
+            {
+                // All CUDA GPUs to date have a warp size of 32 threads.
+                return 32u;
+            }
+        };
+#    endif // ALPAKA_ACC_GPU_CUDA_ENABLED
 
         //! The CUDA/HIP RT device reset trait specialization.
         template<typename TApi>
