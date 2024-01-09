@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2024 Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -41,6 +41,10 @@ namespace alpaka
         //! The device warp size get trait.
         template<typename T, typename TSfinae = void>
         struct GetWarpSizes;
+
+        //! The device preferred warp size get trait.
+        template<typename T, typename TSfinae = void>
+        struct GetPreferredWarpSize;
 
         //! The device reset trait.
         template<typename T, typename TSfinae = void>
@@ -107,6 +111,13 @@ namespace alpaka
     ALPAKA_FN_HOST auto getWarpSizes(TDev const& dev) -> std::vector<std::size_t>
     {
         return trait::GetWarpSizes<TDev>::getWarpSizes(dev);
+    }
+
+    //! \return The preferred warp size on the device in number of threads.
+    template<typename TDev>
+    ALPAKA_FN_HOST constexpr auto getPreferredWarpSize(TDev const& dev) -> std::size_t
+    {
+        return trait::GetPreferredWarpSize<TDev>::getPreferredWarpSize(dev);
     }
 
     //! Resets the device.
