@@ -1,6 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1ViewPlainPtr.html#ab3ba7c5c06b0657d805fcff01794dda2":[3,0,0,112,1],
 "structalpaka_1_1ViewPlainPtr.html#adaabaaaad93768283b66b0a500d3c311":[3,0,0,112,4],
 "structalpaka_1_1ViewPlainPtr.html#afe5baf6b96870c5578165a7e8c4df270":[3,0,0,112,2],
 "structalpaka_1_1concepts_1_1Implements.html":[3,0,0,1,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1ConceptMathFloor.html":[3,0,0,9,40],
 "structalpaka_1_1math_1_1ConceptMathFma.html":[3,0,0,9,41],
 "structalpaka_1_1math_1_1ConceptMathFmod.html":[3,0,0,9,42],
-"structalpaka_1_1math_1_1ConceptMathIsfinite.html":[3,0,0,9,43]
+"structalpaka_1_1math_1_1ConceptMathIsfinite.html":[3,0,0,9,43],
+"structalpaka_1_1math_1_1ConceptMathIsinf.html":[3,0,0,9,44]
 };
