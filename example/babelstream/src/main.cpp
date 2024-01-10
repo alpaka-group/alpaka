@@ -5,6 +5,8 @@
 // For full license terms please see the LICENSE file distributed with this
 // source code
 
+// NOLINTBEGIN
+
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -582,3 +584,5 @@ void parseArguments(int argc, char* argv[])
         }
     }
 }
+
+// NOLINTEND
