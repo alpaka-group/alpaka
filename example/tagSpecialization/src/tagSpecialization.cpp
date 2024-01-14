@@ -123,8 +123,9 @@ auto main() -> int
     // Run the wrapper kernel, which calls the actual specialized
     // Specializing the entry kernel with tags is not possible. Therefore pre processor guards are required, see
     // kernelSpecialization example.
-    alpaka::exec<Acc>(queue, workDiv, WrapperKernel{});
-    alpaka::wait(queue);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, WrapperKernel{});
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
     return EXIT_SUCCESS;
 #endif
 }
