@@ -202,12 +202,15 @@ auto main() -> int
 
     InitRandomKernel initRandomKernel;
     auto pitchBufAccRandS = alpaka::getPitchesInBytes(bufAccRandS)[0];
-    alpaka::exec<Acc>(queue, workdiv, initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
-    alpaka::wait(queue);
+    auto const taskInitRandomKernel
+        = alpaka::createTaskKernel<Acc>(workdiv, initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskInitRandomKernel);
 
     auto pitchBufAccRandV = alpaka::getPitchesInBytes(bufAccRandV)[0];
-    alpaka::exec<Acc>(queue, workdiv, initRandomKernel, extent, ptrBufAccRandV, pitchBufAccRandV);
-    alpaka::wait(queue);
+    auto const task2InitRandomKernel
+        = alpaka::createTaskKernel<Acc>(workdiv, initRandomKernel, extent, ptrBufAccRandV, pitchBufAccRandV);
+    alpaka::enqueue(queue, task2InitRandomKernel);
 
     auto pitchHostS = alpaka::getPitchesInBytes(bufHostS)[0];
     auto pitchHostV = alpaka::getPitchesInBytes(bufHostV)[0];
@@ -224,8 +227,7 @@ auto main() -> int
     auto pitchBufAccS = alpaka::getPitchesInBytes(bufAccS)[0];
     alpaka::memcpy(queue, bufAccS, bufHostS);
     RunTimestepKernelSingle runTimestepKernelSingle;
-    alpaka::exec<Acc>(
-        queue,
+    auto const taskRunTimestepKernelSingle = alpaka::createTaskKernel<Acc>(
         workdiv,
         runTimestepKernelSingle,
         extent,
@@ -233,13 +235,14 @@ auto main() -> int
         ptrBufAccS,
         pitchBufAccRandS,
         pitchBufAccS);
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskRunTimestepKernelSingle);
     alpaka::memcpy(queue, bufHostS, bufAccS);
 
     auto pitchBufAccV = alpaka::getPitchesInBytes(bufAccV)[0];
     alpaka::memcpy(queue, bufAccV, bufHostV);
     RunTimestepKernelVector runTimestepKernelVector;
-    alpaka::exec<Acc>(
-        queue,
+    auto const taskRunTimestepKernelVector = alpaka::createTaskKernel<Acc>(
         workdiv,
         runTimestepKernelVector,
         extent,
@@ -247,8 +250,9 @@ auto main() -> int
         ptrBufAccV,
         pitchBufAccRandV,
         pitchBufAccV);
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskRunTimestepKernelVector);
     alpaka::memcpy(queue, bufHostV, bufAccV);
-    alpaka::wait(queue);
 
     float avgS = 0;
     float avgV = 0;
