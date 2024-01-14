@@ -51,8 +51,7 @@ void AlpakaStream<T>::init_arrays(T initA, T initB, T initC)
 {
     auto const workdiv = WorkDiv{arraySize / blockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
-    alpaka::exec<Acc>(
-        queue,
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workdiv,
         InitKernel{},
         alpaka::getPtrNative(d_a),
@@ -61,7 +60,7 @@ void AlpakaStream<T>::init_arrays(T initA, T initB, T initC)
         initA,
         initB,
         initC);
-    alpaka::wait(queue);
+    alpaka::enqueue(queue, taskKernel);
 }
 
 template<typename T>
@@ -87,8 +86,10 @@ void AlpakaStream<T>::copy()
 {
     auto const workdiv = WorkDiv{arraySize / blockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
-    alpaka::exec<Acc>(queue, workdiv, CopyKernel{}, alpaka::getPtrNative(d_a), alpaka::getPtrNative(d_c));
-    alpaka::wait(queue);
+    auto const taskKernel
+        = alpaka::createTaskKernel<Acc>(workdiv, CopyKernel{}, alpaka::getPtrNative(d_a), alpaka::getPtrNative(d_c));
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 }
 
 struct MulKernel
@@ -107,8 +108,10 @@ void AlpakaStream<T>::mul()
 {
     auto const workdiv = WorkDiv{arraySize / blockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
-    alpaka::exec<Acc>(queue, workdiv, MulKernel{}, alpaka::getPtrNative(d_b), alpaka::getPtrNative(d_c));
-    alpaka::wait(queue);
+    auto const taskKernel
+        = alpaka::createTaskKernel<Acc>(workdiv, MulKernel{}, alpaka::getPtrNative(d_b), alpaka::getPtrNative(d_c));
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 }
 
 struct AddKernel
@@ -126,14 +129,14 @@ void AlpakaStream<T>::add()
 {
     auto const workdiv = WorkDiv{arraySize / blockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
-    alpaka::exec<Acc>(
-        queue,
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workdiv,
         AddKernel{},
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
         alpaka::getPtrNative(d_c));
-    alpaka::wait(queue);
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 }
 
 struct TriadKernel
@@ -152,14 +155,14 @@ void AlpakaStream<T>::triad()
 {
     auto const workdiv = WorkDiv{arraySize / blockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
-    alpaka::exec<Acc>(
-        queue,
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workdiv,
         TriadKernel{},
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
         alpaka::getPtrNative(d_c));
-    alpaka::wait(queue);
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 }
 
 struct NstreamKernel
@@ -178,14 +181,14 @@ void AlpakaStream<T>::nstream()
 {
     auto const workdiv = WorkDiv{arraySize / blockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
-    alpaka::exec<Acc>(
-        queue,
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workdiv,
         NstreamKernel{},
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
         alpaka::getPtrNative(d_c));
-    alpaka::wait(queue);
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 }
 
 struct DotKernel
@@ -224,15 +227,15 @@ auto AlpakaStream<T>::dot() -> T
 {
     auto const workdiv = WorkDiv{dotBlockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, dotBlockSize * blockSize);
-    alpaka::exec<Acc>(
-        queue,
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workdiv,
         DotKernel{},
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
         alpaka::getPtrNative(d_sum),
         arraySize);
-    alpaka::wait(queue);
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 
     alpaka::memcpy(queue, sums, d_sum);
     T const* sumPtr = alpaka::getPtrNative(sums);
