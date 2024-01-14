@@ -96,9 +96,10 @@ auto main() -> int
         false,
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
-    // Run the kernel
-    alpaka::exec<Acc>(queue, workDiv, Kernel{});
-    alpaka::wait(queue);
+
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, Kernel{});
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 
     return EXIT_SUCCESS;
 #endif
