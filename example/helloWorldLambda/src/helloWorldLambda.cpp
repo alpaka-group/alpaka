@@ -106,8 +106,9 @@ auto main() -> int
     // To define a fully generic kernel lambda, the type of acc must be
     // auto. The Nvidia nvcc does not support generic lambdas, so the
     // type is set to Acc.
-    alpaka::exec<Acc>(
-        queue,
+
+    // create the kernel execution task
+    auto const taskKernelHelloWorldLambda = alpaka::createTaskKernel<Acc>(
         workDiv,
         [] ALPAKA_FN_ACC(Acc const& acc, size_t const nExclamationMarksAsArg) -> void
         {
@@ -130,7 +131,9 @@ auto main() -> int
             printf("\n");
         },
         nExclamationMarks);
-    alpaka::wait(queue);
+
+    // enqueue the kernel execution task.
+    alpaka::enqueue(queue, taskKernelHelloWorldLambda);
 
     return EXIT_SUCCESS;
 
