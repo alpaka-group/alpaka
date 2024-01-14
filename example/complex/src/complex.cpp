@@ -79,8 +79,9 @@ auto main() -> int
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Run the kernel
-    alpaka::exec<Acc>(queue, workDiv, ComplexKernel{});
-    alpaka::wait(queue);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, ComplexKernel{});
+    // Enqueue the kernel
+    alpaka::enqueue(queue, taskKernel);
 
     // Usage of alpaka::Complex<T> on the host side is the same as inside kernels, except math functions are not
     // supported
@@ -89,7 +90,7 @@ auto main() -> int
     auto y = alpaka::Complex<float>(0.3f, 0.4f);
     x *= 2.0f;
     alpaka::Complex<float> z = x + y;
-
+    std::cout << "z: " << z.real() << " " << std::showpos << z.imag() << "i" << std::endl;
     return EXIT_SUCCESS;
 #endif
 }
