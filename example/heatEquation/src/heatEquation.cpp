@@ -148,7 +148,9 @@ auto main() -> int
     for(uint32_t step = 0; step < numTimeSteps; step++)
     {
         // Compute next values
-        alpaka::exec<Acc>(queue, workdiv, kernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+        auto const taskKernel = alpaka::createTaskKernel<Acc>(workdiv, kernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+        // Enqueue the kernel
+        alpaka::enqueue(queue, taskKernel);
 
         // We assume the boundary conditions are constant and so these values
         // do not need to be updated.
