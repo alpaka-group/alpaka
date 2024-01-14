@@ -253,8 +253,7 @@ void runStrategy(Box& box)
     // of the PRNG buffer and has to be passed in explicitly. Other strategies ignore the last parameter, and deduce
     // the initial parameters solely from the thread index
 
-    alpaka::exec<Box::Acc>(
-        box.queue,
+    auto const taskInitRandomKernel = alpaka::createTaskKernel<Box::Acc>(
         box.workdivRand,
         initRandomKernel,
         box.extentRand,
@@ -262,7 +261,8 @@ void runStrategy(Box& box)
         static_cast<unsigned>(
             box.extentResult[0] / box.extentRand[0])); // == NUM_ROLLS; amount of work to be performed by each thread
 
-    alpaka::wait(box.queue);
+    // Enqueue the kernel
+    alpaka::enqueue(box.queue, taskInitRandomKernel);
 
     // OPTIONAL: copy the the initial states to host if you want to check them yourself
     // alpaka_rand::Philox4x32x10<Box::Acc>* const ptrBufHostRand{alpaka::getPtrNative(box.bufHostRand)};
@@ -280,9 +280,16 @@ void runStrategy(Box& box)
     // Run the "computation" kernel filling the results buffer with random numbers in parallel
     alpaka::memcpy(box.queue, box.bufAccResult, box.bufHostResult);
     FillKernel fillKernel;
-    alpaka::exec<Box::Acc>(box.queue, box.workdivResult, fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
+
+    auto const taskFillKernel = alpaka::createTaskKernel<Box::Acc>(
+        box.workdivResult,
+        fillKernel,
+        box.extentResult,
+        ptrBufAccRand,
+        ptrBufAccResult);
+    // Enqueue the kernel
+    alpaka::enqueue(box.queue, taskInitRandomKernel);
     alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult);
-    alpaka::wait(box.queue);
 
     // save the results to a CSV file
     Writer<TStrategy>::save(ptrBufHostResult, box);
