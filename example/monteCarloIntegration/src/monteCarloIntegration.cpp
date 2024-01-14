@@ -114,9 +114,10 @@ auto main() -> int
     alpaka::memcpy(queue, bufAcc, bufHost);
 
     Kernel kernel;
-    alpaka::exec<Acc>(queue, workdiv, kernel, numPoints, ptrBufAcc, Function{});
+    auto const taskKernelMonteCarlo = alpaka::createTaskKernel<Acc>(workdiv, kernel, numPoints, ptrBufAcc, Function{});
+
+    alpaka::enqueue(queue, taskKernelMonteCarlo);
     alpaka::memcpy(queue, bufHost, bufAcc);
-    alpaka::wait(queue);
 
     // Check the result.
     uint32_t globalCount = *ptrBufHost;
