@@ -17,6 +17,7 @@ project("alpakaExamples" LANGUAGES CXX)
 
 add_subdirectory("bufferCopy/")
 add_subdirectory("complex/")
+add_subdirectory("convolution1D/")
 add_subdirectory("counterBasedRng/")
 add_subdirectory("heatEquation/")
 add_subdirectory("helloWorld/")
