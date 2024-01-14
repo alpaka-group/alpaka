@@ -159,21 +159,24 @@ auto main() -> int
     // argument. So a kernel can be a class or struct, a lambda, etc.
     HelloWorldKernel helloWorldKernel;
 
-    // Run the kernel
-    //
-    // To execute the kernel, you have to provide the
+    // Create the kernel execution task
+    // To create the kernel eecuion task, you have to provide the
     // work division as well as the additional kernel function
     // parameters.
+    auto const taskKernelHelloWorld = alpaka::createTaskKernel<Acc>(
+        workDiv,
+        helloWorldKernel
+        /* put kernel arguments here */);
+
+    // Run the kernel
+    //
     // The kernel execution task is enqueued into an accelerator queue.
     // The queue can be blocking or non-blocking
     // depending on the chosen queue type (see type definitions above).
     // Here it is synchronous which means that the kernel is directly executed.
-    alpaka::exec<Acc>(
-        queue,
-        workDiv,
-        helloWorldKernel
-        /* put kernel arguments here */);
-    alpaka::wait(queue);
+
+    // enqueue the kernel execution task
+    alpaka::enqueue(queue, taskKernelHelloWorld);
 
     return EXIT_SUCCESS;
 #endif
