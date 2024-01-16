@@ -17,12 +17,9 @@ class CounterBasedRngKernel
 public:
     template<class TAcc>
     using Vec = alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>>;
-    template<class TAcc>
-    using Gen = typename alpaka::rand::PhiloxStateless4x32x10Vector<TAcc>;
-    template<class TAcc>
-    using Key = typename Gen<TAcc>::Key;
-    template<class TAcc>
-    using Counter = typename Gen<TAcc>::Counter;
+    using Gen = typename alpaka::rand::PhiloxStateless4x32x10Vector;
+    using Key = typename Gen::Key;
+    using Counter = typename Gen::Counter;
 
     template<typename TAcc, typename TElem>
     using Mdspan = alpaka::experimental::MdSpan<TElem, alpaka::Idx<TAcc>, alpaka::Dim<TAcc>>;
@@ -36,7 +33,7 @@ private:
         static ALPAKA_FN_ACC auto elemLoop(
             TAcc const& acc,
             Mdspan<TAcc, TElem> dst,
-            Key<TAcc> const& key,
+            Key const& key,
             Vec<TAcc> const& threadElemExtent,
             Vec<TAcc>& threadFirstElemIdx) -> void
         {
@@ -56,14 +53,14 @@ private:
             }
             else
             {
-                Counter<TAcc> c = {0, 0, 0, 0};
+                Counter c = {0, 0, 0, 0};
                 for(unsigned int i = 0; i < Dim; ++i)
                     c[i] = threadFirstElemIdx[i];
 
                 for(; threadFirstElemIdx[Dim - 1] < threadLastElemIdxClipped; ++threadFirstElemIdx[Dim - 1])
                 {
                     c[Dim - 1] = threadFirstElemIdx[Dim - 1];
-                    auto const random = Gen<TAcc>::generate(c, key);
+                    auto const random = Gen::generate(c, key);
                     // to make use of the whole random vector we would need to ensure numElement[0] % 4 == 0
                     dst(alpaka::toArray(threadFirstElemIdx)) = TElem(random[0]);
                 }
@@ -82,7 +79,7 @@ public:
     //! \param extent The matrix dimension in elements.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc, typename TElem>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, Mdspan<TAcc, TElem> dst, Key<TAcc> const& key) const -> void
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, Mdspan<TAcc, TElem> dst, Key const& key) const -> void
     {
         constexpr auto Dim = alpaka::Dim<TAcc>::value;
         static_assert(Dim <= 4, "The CounterBasedRngKernel expects at most 4-dimensional indices!");
@@ -166,7 +163,7 @@ auto main() -> int
     Data* const pBufHostDev(alpaka::getPtrNative(bufHostDev));
 
     std::random_device rd{};
-    CounterBasedRngKernel::Key<AccHost> key = {rd(), rd()};
+    CounterBasedRngKernel::Key key = {rd(), rd()};
 
     // Allocate buffer on the accelerator
     using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;

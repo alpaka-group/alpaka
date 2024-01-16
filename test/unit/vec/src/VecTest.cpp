@@ -483,7 +483,8 @@ TEMPLATE_TEST_CASE("Vec generator constructor", "[vec]", std::size_t, int, unsig
         // Floating point types require a precision check instead of an exact == match
         if constexpr(std::is_floating_point<TestType>::value)
         {
-            auto const precision = std::numeric_limits<TestType>::epsilon() * 5; // Arbitrary precision requirement
+            // Arbitrary precision requirement
+            auto const precision = std::numeric_limits<TestType>::epsilon() * 5;
             CHECK(std::abs(vec[i] - static_cast<TestType>(i + 1)) < precision);
         }
         else

@@ -15,16 +15,14 @@ constexpr unsigned NUM_X = 127;
 constexpr unsigned NUM_Y = 211;
 
 /// Selected PRNG engine for single-value operation
-template<typename TAcc>
-using RandomEngineSingle = alpaka::rand::Philox4x32x10<TAcc>;
+using RandomEngineSingle = alpaka::rand::Philox4x32x10;
 // using RandomEngineSingle = alpaka::rand::engine::uniform_cuda_hip::Xor;
 // using RandomEngineSingle = alpaka::rand::engine::cpu::MersenneTwister;
 // using RandomEngineSingle = alpaka::rand::engine::cpu::TinyMersenneTwister;
 
 
 /// Selected PRNG engine for vector operation
-template<typename TAcc>
-using RandomEngineVector = alpaka::rand::Philox4x32x10Vector<TAcc>;
+using RandomEngineVector = alpaka::rand::Philox4x32x10Vector;
 
 /** Get a  pointer to the correct location of `TElement array` taking pitch into account.
  *
@@ -71,7 +69,7 @@ struct RunTimestepKernelSingle
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
         TExtent const extent,
-        RandomEngineSingle<TAcc>* const states,
+        RandomEngineSingle* const states,
         float* const cells,
         std::size_t pitchRand,
         std::size_t pitchOut) const -> void
@@ -84,7 +82,7 @@ struct RunTimestepKernelSingle
             auto cellsOut = pitchedPointer2D(cells, pitchOut, idx);
 
             // Setup generator and distribution.
-            RandomEngineSingle<TAcc> engine(*statesOut);
+            RandomEngineSingle engine(*statesOut);
             alpaka::rand::UniformReal<float> dist;
 
             float sum = 0;
@@ -104,7 +102,7 @@ struct RunTimestepKernelVector
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
         TExtent const extent,
-        RandomEngineVector<TAcc>* const states,
+        RandomEngineVector* const states,
         float* const cells,
         std::size_t pitchRand,
         std::size_t pitchOut) const -> void
@@ -117,10 +115,10 @@ struct RunTimestepKernelVector
             auto cellsOut = pitchedPointer2D(cells, pitchOut, idx);
 
             // Setup generator and distribution.
-            RandomEngineVector<TAcc> engine(*statesOut); // Load the state of the random engine
+            RandomEngineVector engine(*statesOut); // Load the state of the random engine
             using DistributionResult =
-                typename RandomEngineVector<TAcc>::template ResultContainer<float>; // Container type which will store
-                                                                                    // the distribution results
+                typename RandomEngineVector::template ResultContainer<float>; // Container type which will store
+                                                                              // the distribution results
             constexpr unsigned resultVectorSize = std::tuple_size_v<DistributionResult>; // Size of the result vector
             alpaka::rand::UniformReal<DistributionResult> dist; // Vector-aware distribution function
 
@@ -160,16 +158,16 @@ auto main() -> int
 
     using BufHost = alpaka::Buf<Host, float, Dim, Idx>;
     using BufAcc = alpaka::Buf<Acc, float, Dim, Idx>;
-    using BufHostRand = alpaka::Buf<Host, RandomEngineSingle<Acc>, Dim, Idx>;
-    using BufAccRand = alpaka::Buf<Acc, RandomEngineSingle<Acc>, Dim, Idx>;
-    using BufHostRandVec = alpaka::Buf<Host, RandomEngineVector<Acc>, Dim, Idx>;
-    using BufAccRandVec = alpaka::Buf<Acc, RandomEngineVector<Acc>, Dim, Idx>;
+    using BufHostRand = alpaka::Buf<Host, RandomEngineSingle, Dim, Idx>;
+    using BufAccRand = alpaka::Buf<Acc, RandomEngineSingle, Dim, Idx>;
+    using BufHostRandVec = alpaka::Buf<Host, RandomEngineVector, Dim, Idx>;
+    using BufAccRandVec = alpaka::Buf<Acc, RandomEngineVector, Dim, Idx>;
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
     constexpr Idx numX = NUM_X;
     constexpr Idx numY = NUM_Y;
 
-    const Vec extent(numY, numX);
+    Vec const extent(numY, numX);
 
     constexpr Idx perThreadX = 1;
     constexpr Idx perThreadY = 1;
@@ -192,13 +190,13 @@ auto main() -> int
     BufAcc bufAccV{alpaka::allocBuf<float, Idx>(devAcc, extent)};
     float* const ptrBufAccV{alpaka::getPtrNative(bufAccV)};
 
-    BufHostRand bufHostRandS{alpaka::allocBuf<RandomEngineSingle<Acc>, Idx>(devHost, extent)};
-    BufAccRand bufAccRandS{alpaka::allocBuf<RandomEngineSingle<Acc>, Idx>(devAcc, extent)};
-    RandomEngineSingle<Acc>* const ptrBufAccRandS{alpaka::getPtrNative(bufAccRandS)};
+    BufHostRand bufHostRandS{alpaka::allocBuf<RandomEngineSingle, Idx>(devHost, extent)};
+    BufAccRand bufAccRandS{alpaka::allocBuf<RandomEngineSingle, Idx>(devAcc, extent)};
+    RandomEngineSingle* const ptrBufAccRandS{alpaka::getPtrNative(bufAccRandS)};
 
-    BufHostRandVec bufHostRandV{alpaka::allocBuf<RandomEngineVector<Acc>, Idx>(devHost, extent)};
-    BufAccRandVec bufAccRandV{alpaka::allocBuf<RandomEngineVector<Acc>, Idx>(devAcc, extent)};
-    RandomEngineVector<Acc>* const ptrBufAccRandV{alpaka::getPtrNative(bufAccRandV)};
+    BufHostRandVec bufHostRandV{alpaka::allocBuf<RandomEngineVector, Idx>(devHost, extent)};
+    BufAccRandVec bufAccRandV{alpaka::allocBuf<RandomEngineVector, Idx>(devAcc, extent)};
+    RandomEngineVector* const ptrBufAccRandV{alpaka::getPtrNative(bufAccRandV)};
 
     InitRandomKernel initRandomKernel;
     auto pitchBufAccRandS = alpaka::getPitchesInBytes(bufAccRandS)[0];
