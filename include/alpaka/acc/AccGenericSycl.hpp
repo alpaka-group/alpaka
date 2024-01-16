@@ -135,7 +135,9 @@ namespace alpaka::trait
                     // m_threadElemCountMax
                     std::numeric_limits<TIdx>::max(),
                     // m_sharedMemSizeBytes
-                    device.template get_info<sycl::info::device::local_mem_size>()};
+                    device.template get_info<sycl::info::device::local_mem_size>(),
+                    // m_globalMemSizeBytes
+                    getMemBytes(dev)};
         }
     };
 

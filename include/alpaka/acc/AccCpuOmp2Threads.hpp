@@ -132,6 +132,7 @@ namespace alpaka
 #    else
                 auto const blockThreadCountMax = alpaka::core::clipCast<TIdx>(::omp_get_max_threads());
 #    endif
+                auto const memBytes = getMemBytes(dev);
                 return {// m_multiProcessorCount
                         static_cast<TIdx>(1),
                         // m_gridBlockExtentMax
@@ -147,7 +148,9 @@ namespace alpaka
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
-                        getMemBytes(dev)};
+                        memBytes,
+                        // m_globalMemSizeBytes
+                        memBytes};
             }
         };
 

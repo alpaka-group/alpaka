@@ -170,7 +170,9 @@ namespace alpaka
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
-                        static_cast<size_t>(sharedMemSizeBytes)};
+                        static_cast<size_t>(sharedMemSizeBytes),
+                        // m_globalMemSizeBytes
+                        getMemBytes(dev)};
 
 #    else
                 typename TApi::DeviceProp_t properties;
@@ -197,7 +199,9 @@ namespace alpaka
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
-                        static_cast<size_t>(properties.sharedMemPerBlock)};
+                        static_cast<size_t>(properties.sharedMemPerBlock),
+                        // m_globalMemSizeBytes
+                        getMemBytes(dev)};
 #    endif
             }
         };
