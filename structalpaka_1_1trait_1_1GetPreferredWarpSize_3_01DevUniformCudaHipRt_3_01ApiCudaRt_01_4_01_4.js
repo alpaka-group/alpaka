@@ -1,0 +1,4 @@
+var structalpaka_1_1trait_1_1GetPreferredWarpSize_3_01DevUniformCudaHipRt_3_01ApiCudaRt_01_4_01_4 =
+[
+    [ "getPreferredWarpSize", "structalpaka_1_1trait_1_1GetPreferredWarpSize_3_01DevUniformCudaHipRt_3_01ApiCudaRt_01_4_01_4.html#ad33ecf10e27871d1bb1578428b99e0f7", null ]
+];

@@ -1,15 +1,16 @@
 var NAVTREEINDEX1 =
 {
+"DemangleTypeNames_8hpp.html#a02c3471af40bf64c77e9d599f0007954":[4,0,0,0,3,15,0],
 "DemangleTypeNames_8hpp_source.html":[4,0,0,0,3,15],
 "DependentFalseType_8hpp.html":[4,0,0,0,15,4],
 "DependentFalseType_8hpp_source.html":[4,0,0,0,15,4],
 "DevCpuSycl_8hpp.html":[4,0,0,0,4,3],
 "DevCpuSycl_8hpp_source.html":[4,0,0,0,4,3],
 "DevCpu_8hpp.html":[4,0,0,0,4,2],
-"DevCpu_8hpp.html#a32307243b945c51f1a00dc17d96ea261":[4,0,0,0,4,2,11],
-"DevCpu_8hpp.html#a5b74cbab627401664d95c8a91c859a42":[4,0,0,0,4,2,13],
-"DevCpu_8hpp.html#a63e1bf3207d308d5e6f7f4e012f2d00e":[4,0,0,0,4,2,12],
-"DevCpu_8hpp.html#a8a11334697bff8a6fb14559535908633":[4,0,0,0,4,2,14],
+"DevCpu_8hpp.html#a32307243b945c51f1a00dc17d96ea261":[4,0,0,0,4,2,12],
+"DevCpu_8hpp.html#a5b74cbab627401664d95c8a91c859a42":[4,0,0,0,4,2,14],
+"DevCpu_8hpp.html#a63e1bf3207d308d5e6f7f4e012f2d00e":[4,0,0,0,4,2,13],
+"DevCpu_8hpp.html#a8a11334697bff8a6fb14559535908633":[4,0,0,0,4,2,15],
 "DevCpu_8hpp_source.html":[4,0,0,0,4,2],
 "DevCudaRt_8hpp.html":[4,0,0,0,4,4],
 "DevCudaRt_8hpp.html#a8dab48915b0cb9623165d122b33dd103":[4,0,0,0,4,4,0],
@@ -23,8 +24,8 @@ var NAVTREEINDEX1 =
 "DevHipRt_8hpp.html":[4,0,0,0,4,8],
 "DevHipRt_8hpp_source.html":[4,0,0,0,4,8],
 "DevUniformCudaHipRt_8hpp.html":[4,0,0,0,4,9],
-"DevUniformCudaHipRt_8hpp.html#a13646f485ddbe5f1809a3d24f77429eb":[4,0,0,0,4,9,12],
-"DevUniformCudaHipRt_8hpp.html#af493861b6c8c71c887690654c4943238":[4,0,0,0,4,9,13],
+"DevUniformCudaHipRt_8hpp.html#a13646f485ddbe5f1809a3d24f77429eb":[4,0,0,0,4,9,14],
+"DevUniformCudaHipRt_8hpp.html#af493861b6c8c71c887690654c4943238":[4,0,0,0,4,9,15],
 "DevUniformCudaHipRt_8hpp_source.html":[4,0,0,0,4,9],
 "DimArithmetic_8hpp.html":[4,0,0,0,5,0],
 "DimArithmetic_8hpp_source.html":[4,0,0,0,5,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "Positioning_8hpp_source.html":[4,0,0,0,3,18],
 "Properties_8hpp.html":[4,0,0,0,18,3],
 "Properties_8hpp_source.html":[4,0,0,0,18,3],
-"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
-"QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4]
+"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4]
 };

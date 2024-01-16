@@ -5,6 +5,7 @@ var DevCpu_8hpp =
     [ "GetFreeMemBytes< DevCpu >", "structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetFreeMemBytes_3_01DevCpu_01_4" ],
     [ "GetMemBytes< DevCpu >", "structalpaka_1_1trait_1_1GetMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetMemBytes_3_01DevCpu_01_4" ],
     [ "GetName< DevCpu >", "structalpaka_1_1trait_1_1GetName_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetName_3_01DevCpu_01_4" ],
+    [ "GetPreferredWarpSize< DevCpu >", "structalpaka_1_1trait_1_1GetPreferredWarpSize_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetPreferredWarpSize_3_01DevCpu_01_4" ],
     [ "GetWarpSizes< DevCpu >", "structalpaka_1_1trait_1_1GetWarpSizes_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1GetWarpSizes_3_01DevCpu_01_4" ],
     [ "NativeHandle< DevCpu >", "structalpaka_1_1trait_1_1NativeHandle_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1NativeHandle_3_01DevCpu_01_4" ],
     [ "PlatformType< DevCpu >", "structalpaka_1_1trait_1_1PlatformType_3_01DevCpu_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01DevCpu_01_4" ],

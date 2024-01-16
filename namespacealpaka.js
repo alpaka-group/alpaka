@@ -243,6 +243,7 @@ var namespacealpaka =
     [ "getPitchBytesVec", "namespacealpaka.html#aa2b9dfffcb003752bce0bc4193176490", null ],
     [ "getPitchBytesVecEnd", "namespacealpaka.html#a5f9c92013b75ef4c056051ce4fb100da", null ],
     [ "getPitchesInBytes", "namespacealpaka.html#a542bd81fb86be02c87d0a40008e32922", null ],
+    [ "getPreferredWarpSize", "namespacealpaka.html#a7a77181d02b450741aeb39c878a73cad", null ],
     [ "getPtrDev", "namespacealpaka.html#a420138ddf5280874ce5578b2ba294547", null ],
     [ "getPtrDev", "namespacealpaka.html#ac1d34f98ff0d43c5b7b2c95cc4f87ccd", null ],
     [ "getPtrNative", "namespacealpaka.html#ab0892f9211160310c93d8ffef300d3c1", null ],

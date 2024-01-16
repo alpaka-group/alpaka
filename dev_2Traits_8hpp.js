@@ -6,6 +6,7 @@ var dev_2Traits_8hpp =
     [ "getFreeMemBytes", "dev_2Traits_8hpp.html#a6049156c92d1112a3e7cfb96f09b153e", null ],
     [ "getMemBytes", "dev_2Traits_8hpp.html#a69d68a30000dc80ea5a1c09139f2b789", null ],
     [ "getName", "dev_2Traits_8hpp.html#a2f6580f456ad2faecf55eaadfe145cc6", null ],
+    [ "getPreferredWarpSize", "dev_2Traits_8hpp.html#a7a77181d02b450741aeb39c878a73cad", null ],
     [ "getWarpSizes", "dev_2Traits_8hpp.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5", null ],
     [ "reset", "dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943", null ],
     [ "trim", "dev_2Traits_8hpp.html#a464861d2e07520fe1048d7accc018433", null ],

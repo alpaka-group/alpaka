@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html#abe344ebd18c7bc930be8db54aacc1758":[3,0,0,13,1,0,1,4],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html":[3,0,0,13,1,0,2],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#a0560313df7405e2ab1f0f4542c2d47e8":[3,0,0,13,1,0,2,4],
 "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html#a187f34ec89c8b19582776c2c6e08c7a9":[3,0,0,13,1,0,2,3],
@@ -110,13 +111,14 @@ var NAVTREEINDEX5 =
 "dev_2Traits_8hpp.html":[4,0,0,0,4,10],
 "dev_2Traits_8hpp.html#a2f6580f456ad2faecf55eaadfe145cc6":[4,0,0,0,4,10,5],
 "dev_2Traits_8hpp.html#a32355d5c313b0846505aeaf5d42484be":[4,0,0,0,4,10,1],
-"dev_2Traits_8hpp.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5":[4,0,0,0,4,10,6],
-"dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943":[4,0,0,0,4,10,7],
-"dev_2Traits_8hpp.html#a464861d2e07520fe1048d7accc018433":[4,0,0,0,4,10,8],
+"dev_2Traits_8hpp.html#a351e6b1a8b15c2e1d4d2f29fdbd73af5":[4,0,0,0,4,10,7],
+"dev_2Traits_8hpp.html#a41ac82cec34e8e887aaa4d8e4e064943":[4,0,0,0,4,10,8],
+"dev_2Traits_8hpp.html#a464861d2e07520fe1048d7accc018433":[4,0,0,0,4,10,9],
 "dev_2Traits_8hpp.html#a6049156c92d1112a3e7cfb96f09b153e":[4,0,0,0,4,10,3],
 "dev_2Traits_8hpp.html#a69d68a30000dc80ea5a1c09139f2b789":[4,0,0,0,4,10,4],
+"dev_2Traits_8hpp.html#a7a77181d02b450741aeb39c878a73cad":[4,0,0,0,4,10,6],
 "dev_2Traits_8hpp.html#aa4fe5980725182b3306caf3167053a75":[4,0,0,0,4,10,2],
-"dev_2Traits_8hpp.html#ac46c96dc95e8410d4ae3ef85e79d8dbf":[4,0,0,0,4,10,9],
+"dev_2Traits_8hpp.html#ac46c96dc95e8410d4ae3ef85e79d8dbf":[4,0,0,0,4,10,10],
 "dev_2Traits_8hpp_source.html":[4,0,0,0,4,10],
 "dim_2Traits_8hpp.html":[4,0,0,0,5,2],
 "dim_2Traits_8hpp.html#aee3fb80b82e8f3e9601195afb0b8c34c":[4,0,0,0,5,2,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "functions_s.html":[3,2,0,18],
 "functions_t.html":[3,2,0,19],
 "functions_type.html":[3,2,3],
-"functions_type.html":[3,2,3,0],
-"functions_type_b.html":[3,2,3,1],
-"functions_type_c.html":[3,2,3,2]
+"functions_type.html":[3,2,3,0]
 };
