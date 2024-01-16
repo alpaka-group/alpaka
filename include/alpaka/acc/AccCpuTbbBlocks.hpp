@@ -111,7 +111,7 @@ namespace alpaka
         template<typename TDim, typename TIdx>
         struct GetAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>
         {
-            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& /* dev */) -> AccDevProps<TDim, TIdx>
+            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> AccDevProps<TDim, TIdx>
             {
                 return {// m_multiProcessorCount
                         static_cast<TIdx>(1),
@@ -128,7 +128,9 @@ namespace alpaka
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
-                        static_cast<size_t>(AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes())};
+                        static_cast<size_t>(AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes()),
+                        // m_globalMemSizeBytes
+                        getMemBytes(dev)};
             }
         };
 
