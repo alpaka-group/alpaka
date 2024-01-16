@@ -17,8 +17,7 @@ constexpr unsigned NUM_ROLLS = 2000; ///< Amount of random number "dice rolls" p
 
 /// Selected PRNG engine
 // Comment the current "using" line, and uncomment a different one to change the PRNG engine
-template<typename TAcc>
-using RandomEngine = alpaka::rand::Philox4x32x10<TAcc>;
+using RandomEngine = alpaka::rand::Philox4x32x10;
 
 // using RandomEngine = alpaka::rand::engine::cpu::MersenneTwister;
 // using RandomEngine = alpaka::rand::engine::cpu::TinyMersenneTwister;
@@ -45,8 +44,8 @@ struct Box
     QueueAcc queue; ///< default accelerator queue
 
     // buffers holding the PRNG states
-    using BufHostRand = alpaka::Buf<Host, RandomEngine<Acc>, Dim, Idx>;
-    using BufAccRand = alpaka::Buf<Acc, RandomEngine<Acc>, Dim, Idx>;
+    using BufHostRand = alpaka::Buf<Host, RandomEngine, Dim, Idx>;
+    using BufAccRand = alpaka::Buf<Acc, RandomEngine, Dim, Idx>;
 
     Vec const extentRand; ///< size of the buffer of PRNG states
     WorkDiv workdivRand; ///< work division for PRNG buffer initialization
@@ -71,8 +70,8 @@ struct Box
               Vec(Idx{1}),
               false,
               alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)}
-        , bufHostRand{alpaka::allocBuf<RandomEngine<Acc>, Idx>(alpaka::getDevByIdx(hostPlatform, 0), extentRand)}
-        , bufAccRand{alpaka::allocBuf<RandomEngine<Acc>, Idx>(alpaka::getDevByIdx(accPlatform, 0), extentRand)}
+        , bufHostRand{alpaka::allocBuf<RandomEngine, Idx>(alpaka::getDevByIdx(hostPlatform, 0), extentRand)}
+        , bufAccRand{alpaka::allocBuf<RandomEngine, Idx>(alpaka::getDevByIdx(accPlatform, 0), extentRand)}
         , extentResult{static_cast<Idx>((NUM_POINTS * NUM_ROLLS))} // Store all "rolls" for each "point"
         , workdivResult{alpaka::getValidWorkDiv<Acc>(
               alpaka::getDevByIdx(accPlatform, 0),
@@ -167,7 +166,7 @@ struct FillKernel
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc, ///< current accelerator
         TExtent const extent, ///< size of the results buffer
-        RandomEngine<TAcc>* const states, ///< PRNG states buffer
+        RandomEngine* const states, ///< PRNG states buffer
         float* const cells ///< results buffer
     ) const -> void
     {
@@ -180,7 +179,7 @@ struct FillKernel
             auto const numWorkers
                 = alpaka::math::min(acc, numGridThreads, static_cast<decltype(numGridThreads)>(NUM_POINTS));
 
-            RandomEngine<TAcc> engine(states[idx]); // Setup the PRNG using the saved state for this thread.
+            RandomEngine engine(states[idx]); // Setup the PRNG using the saved state for this thread.
             alpaka::rand::UniformReal<float> dist; // Setup the random number distribution
             for(uint32_t i = idx; i < extent[0]; i += numWorkers)
             {
@@ -245,7 +244,7 @@ template<Strategy TStrategy>
 void runStrategy(Box& box)
 {
     // Set up the pointer to the PRNG states buffer
-    RandomEngine<Box::Acc>* const ptrBufAccRand{alpaka::getPtrNative(box.bufAccRand)};
+    RandomEngine* const ptrBufAccRand{alpaka::getPtrNative(box.bufAccRand)};
 
     // Initialize the PRNG and its states on the device
     InitRandomKernel<TStrategy> initRandomKernel;

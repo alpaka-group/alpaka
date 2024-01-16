@@ -41,6 +41,7 @@ namespace alpaka
 
         using Dim = TDim;
         using Val = TVal;
+        using value_type = Val; //!< STL-like value_type.
 
     private:
         //! A sequence of integers from 0 to dim-1.
