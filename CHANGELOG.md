@@ -3,6 +3,40 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.0] - 2024-01-18
+
+### Added
+
+- Warp Shfl- Up, Down and Xor #1924
+- Add alpaka-ls #2175 #2218
+- Named access to Vec `.x()`, `.y()` #2201
+- Add CMake presets #2203
+- Add trait IsKernelArgumentTriviallyCopyable #2198
+- Add alpaka::getPreferredWarpSize(dev) #2216
+- `ROCm`
+  - ROCm 5.3 and later support asynchronous memory operations #2197
+  - Support for ROCM 5.6 - 6.0 #2207 #2210
+  - Use CMake's native HIP support #2215
+- `CUDA`
+  - Support for CUDA 12.3 #2211
+
+### Changed
+
+- Trim device names #2193
+- Change all CUDA warp operations to synchronise all threads #2204
+
+### Fixed
+
+- Fix a few warnings #2164
+- Workaround gcc warning on uninitialized PlatformCpu #2165
+- Fix icpx 2024.0 OpenMP atomics #2213
+
+### Removed
+
+- Remove ALPAKA_ASSERT_OFFLOAD, introduce ALPAKA_ASSERT_ACC #2199
+- `ROCm`
+  - Remove support for HIP ROCm 5.0 #2214
+
 ## [1.0.0] - 2023-11-14
 
 ### Added
