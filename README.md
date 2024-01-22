@@ -214,47 +214,7 @@ consider citing us accordingly in your derived work and publications:
 Contributing
 ------------
 
-Rules for contributions can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
+Rules for contributions can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
+Any pull request will be reviewed by a [maintainer](https://github.com/orgs/alpaka-group/teams/alpaka-maintainers).
 
-Authors
--------
-
-### Maintainers* and Core Developers
-
-- Benjamin Worpitz* (original author)
-- Dr. Sergei Bastrakov*
-- Kseniia Bastrakova
-- Dr. Andrea Bocci*
-- Dr. Antonio Di Pilato
-- Simeon Ehrig
-- Luca Ferragina
-- Bernhard Manfred Gruber*
-- Christian Kaever
-- Dr. Jeffrey Kelling
-- Dr. Stewart Martin-Haugh
-- Aurora Perego
-- Jan Stephan*
-- René Widera*
-- Dr. Jeffrey Young
-
-### Former Members, Contributions and Thanks
-
-- Dr. Michael Bussmann
-- Mat Colgrove
-- Valentin Gehrke
-- Dr. Axel Hübl
-- Maximilian Knespel
-- Jakob Krude
-- Alexander Matthes
-- Hauke Mewes
-- Phil Nash
-- Dr. Felice Pantaleo
-- Dr. David M. Rogers
-- Mutsuo Saito
-- Jonas Schenke
-- Daniel Vollmer
-- Dr. Jiří Vyskočil
-- Matthias Werner
-- Bert Wesarg
-- Malte Zacharias
-- Erik Zenker
+Thanks to all [active and former contributors](.zenodo.json).
