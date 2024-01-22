@@ -10209,16 +10209,13 @@
 			// ============================================================================
 			// == ./include/alpaka/acc/AccDevProps.hpp ==
 			// ==
-			/* Copyright 2020 Benjamin Worpitz, Bernhard Manfred Gruber
+			/* Copyright 2024 Benjamin Worpitz, Bernhard Manfred Gruber
 			 * SPDX-License-Identifier: MPL-2.0
 			 */
 
 			// #pragma once
 			// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
-
-			// #include <string>    // amalgamate: file already included
-			// #include <vector>    // amalgamate: file already included
 
 			namespace alpaka
 			{
@@ -10233,38 +10230,16 @@
 			            sizeof(TIdx) >= sizeof(int),
 			            "Index type is not supported, consider using int or a larger type.");
 
-			        ALPAKA_FN_HOST AccDevProps(
-			            TIdx const& multiProcessorCount,
-			            Vec<TDim, TIdx> const& gridBlockExtentMax,
-			            TIdx const& gridBlockCountMax,
-			            Vec<TDim, TIdx> const& blockThreadExtentMax,
-			            TIdx const& blockThreadCountMax,
-			            Vec<TDim, TIdx> const& threadElemExtentMax,
-			            TIdx const& threadElemCountMax,
-			            size_t const& sharedMemSizeBytes)
-			            : m_gridBlockExtentMax(gridBlockExtentMax)
-			            , m_blockThreadExtentMax(blockThreadExtentMax)
-			            , m_threadElemExtentMax(threadElemExtentMax)
-			            , m_gridBlockCountMax(gridBlockCountMax)
-			            , m_blockThreadCountMax(blockThreadCountMax)
-			            , m_threadElemCountMax(threadElemCountMax)
-			            , m_multiProcessorCount(multiProcessorCount)
-			            , m_sharedMemSizeBytes(sharedMemSizeBytes)
-			        {
-			        }
-
-			        // NOTE: The members have been reordered from the order in the constructor because gcc is buggy for some TDim
-			        // and TIdx and generates invalid assembly.
-			        Vec<TDim, TIdx> m_gridBlockExtentMax; //!< The maximum number of blocks in each dimension of the grid.
-			        Vec<TDim, TIdx> m_blockThreadExtentMax; //!< The maximum number of threads in each dimension of a block.
-			        Vec<TDim, TIdx> m_threadElemExtentMax; //!< The maximum number of elements in each dimension of a thread.
-
-			        TIdx m_gridBlockCountMax; //!< The maximum number of blocks in a grid.
-			        TIdx m_blockThreadCountMax; //!< The maximum number of threads in a block.
-			        TIdx m_threadElemCountMax; //!< The maximum number of elements in a threads.
-
+			        // Please keep the order of data members so aggregate initialization does not break!
 			        TIdx m_multiProcessorCount; //!< The number of multiprocessors.
+			        Vec<TDim, TIdx> m_gridBlockExtentMax; //!< The maximum number of blocks in each dimension of the grid.
+			        TIdx m_gridBlockCountMax; //!< The maximum number of blocks in a grid.
+			        Vec<TDim, TIdx> m_blockThreadExtentMax; //!< The maximum number of threads in each dimension of a block.
+			        TIdx m_blockThreadCountMax; //!< The maximum number of threads in a block.
+			        Vec<TDim, TIdx> m_threadElemExtentMax; //!< The maximum number of elements in each dimension of a thread.
+			        TIdx m_threadElemCountMax; //!< The maximum number of elements in a threads.
 			        size_t m_sharedMemSizeBytes; //!< The size of shared memory per block
+			        size_t m_globalMemSizeBytes; //!< The size of global memory
 			    };
 			} // namespace alpaka
 			// ==
@@ -14002,7 +13977,7 @@
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& /* dev */) -> alpaka::AccDevProps<TDim, TIdx>
+	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> alpaka::AccDevProps<TDim, TIdx>
 	            {
 	                return {// m_multiProcessorCount
 	                        static_cast<TIdx>(1),
@@ -14019,7 +13994,9 @@
 	                        // m_threadElemCountMax
 	                        std::numeric_limits<TIdx>::max(),
 	                        // m_sharedMemSizeBytes
-	                        static_cast<size_t>(AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes())};
+	                        static_cast<size_t>(AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes()),
+	                        // m_globalMemSizeBytes
+	                        getMemBytes(dev)};
 	            }
 	        };
 
@@ -14755,6 +14732,7 @@
 	#    else
 	                auto const blockThreadCountMax = alpaka::core::clipCast<TIdx>(::omp_get_max_threads());
 	#    endif
+	                auto const memBytes = getMemBytes(dev);
 	                return {// m_multiProcessorCount
 	                        static_cast<TIdx>(1),
 	                        // m_gridBlockExtentMax
@@ -14770,7 +14748,9 @@
 	                        // m_threadElemCountMax
 	                        std::numeric_limits<TIdx>::max(),
 	                        // m_sharedMemSizeBytes
-	                        getMemBytes(dev)};
+	                        memBytes,
+	                        // m_globalMemSizeBytes
+	                        memBytes};
 	            }
 	        };
 
@@ -15019,7 +14999,7 @@
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuSerial<TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& /* dev */) -> AccDevProps<TDim, TIdx>
+	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> AccDevProps<TDim, TIdx>
 	            {
 	                return {// m_multiProcessorCount
 	                        static_cast<TIdx>(1),
@@ -15036,7 +15016,9 @@
 	                        // m_threadElemCountMax
 	                        std::numeric_limits<TIdx>::max(),
 	                        // m_sharedMemSizeBytes
-	                        static_cast<size_t>(AccCpuSerial<TDim, TIdx>::staticAllocBytes())};
+	                        static_cast<size_t>(AccCpuSerial<TDim, TIdx>::staticAllocBytes()),
+	                        // m_globalMemSizeBytes
+	                        getMemBytes(dev)};
 	            }
 	        };
 
@@ -18769,7 +18751,9 @@
 		                    // m_threadElemCountMax
 		                    std::numeric_limits<TIdx>::max(),
 		                    // m_sharedMemSizeBytes
-		                    device.template get_info<sycl::info::device::local_mem_size>()};
+		                    device.template get_info<sycl::info::device::local_mem_size>(),
+		                    // m_globalMemSizeBytes
+		                    getMemBytes(dev)};
 		        }
 		    };
 
@@ -20278,7 +20262,7 @@
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>
 	        {
-	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& /* dev */) -> AccDevProps<TDim, TIdx>
+	            ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> AccDevProps<TDim, TIdx>
 	            {
 	                return {// m_multiProcessorCount
 	                        static_cast<TIdx>(1),
@@ -20295,7 +20279,9 @@
 	                        // m_threadElemCountMax
 	                        std::numeric_limits<TIdx>::max(),
 	                        // m_sharedMemSizeBytes
-	                        static_cast<size_t>(AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes())};
+	                        static_cast<size_t>(AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes()),
+	                        // m_globalMemSizeBytes
+	                        getMemBytes(dev)};
 	            }
 	        };
 
@@ -20838,6 +20824,7 @@
 	                    static_cast<TIdx>(1),
 	                    alpaka::core::clipCast<TIdx>(std::thread::hardware_concurrency() * 8));
 	#    endif
+	                auto const memBytes = getMemBytes(dev);
 	                return {// m_multiProcessorCount
 	                        static_cast<TIdx>(1),
 	                        // m_gridBlockExtentMax
@@ -20853,7 +20840,9 @@
 	                        // m_threadElemCountMax
 	                        std::numeric_limits<TIdx>::max(),
 	                        // m_sharedMemSizeBytes
-	                        getMemBytes(dev)};
+	                        memBytes,
+	                        // m_globalMemSizeBytes
+	                        memBytes};
 	            }
 	        };
 
@@ -26092,7 +26081,9 @@
 		                        // m_threadElemCountMax
 		                        std::numeric_limits<TIdx>::max(),
 		                        // m_sharedMemSizeBytes
-		                        static_cast<size_t>(sharedMemSizeBytes)};
+		                        static_cast<size_t>(sharedMemSizeBytes),
+		                        // m_globalMemSizeBytes
+		                        getMemBytes(dev)};
 
 		#    else
 		                typename TApi::DeviceProp_t properties;
@@ -26119,7 +26110,9 @@
 		                        // m_threadElemCountMax
 		                        std::numeric_limits<TIdx>::max(),
 		                        // m_sharedMemSizeBytes
-		                        static_cast<size_t>(properties.sharedMemPerBlock)};
+		                        static_cast<size_t>(properties.sharedMemPerBlock),
+		                        // m_globalMemSizeBytes
+		                        getMemBytes(dev)};
 		#    endif
 		            }
 		        };
