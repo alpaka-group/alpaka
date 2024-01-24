@@ -56,11 +56,6 @@ public:
 
 auto main() -> int
 {
-// Fallback for the CI with disabled sequential backend
-#if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    return EXIT_SUCCESS;
-#else
-
     // Define the index domain
     using Dim = alpaka::DimInt<1u>;
     using Idx = std::size_t;
@@ -206,5 +201,4 @@ auto main() -> int
                   << "Execution results incorrect!" << std::endl;
         return EXIT_FAILURE;
     }
-#endif
 }

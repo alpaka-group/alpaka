@@ -64,9 +64,6 @@ auto exactSolution(double const x, double const t) -> double
 //! from the next-buffer.
 auto main() -> int
 {
-#if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    return EXIT_SUCCESS;
-#else
     // Parameters (a user is supposed to change numNodesX, numTimeSteps)
     uint32_t const numNodesX = 1000;
     uint32_t const numTimeSteps = 10000;
@@ -181,5 +178,4 @@ auto main() -> int
                   << std::endl;
         return EXIT_FAILURE;
     }
-#endif
 }
