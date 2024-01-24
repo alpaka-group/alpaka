@@ -66,10 +66,6 @@ struct FillBufferKernel
 
 auto main() -> int
 {
-// Fallback for the CI with disabled sequential backend
-#if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    return EXIT_SUCCESS;
-#else
     // Define the index domain
     using Dim = alpaka::DimInt<3u>;
     using Idx = std::size_t;
@@ -260,5 +256,4 @@ auto main() -> int
     std::cout << std::endl;
 
     return EXIT_SUCCESS;
-#endif
 }

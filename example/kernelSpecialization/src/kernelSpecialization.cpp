@@ -55,11 +55,6 @@ struct Kernel
 
 auto main() -> int
 {
-// Fallback for the CI with disabled sequential backend
-#if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    return EXIT_SUCCESS;
-#else
-
     // Define the accelerator
     //
     // It is possible to choose from a set of accelerators:
@@ -101,5 +96,4 @@ auto main() -> int
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;
-#endif
 }

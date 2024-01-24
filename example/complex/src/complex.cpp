@@ -30,10 +30,6 @@ struct ComplexKernel
 
 auto main() -> int
 {
-// Fallback for the CI with disabled sequential backend
-#if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    return EXIT_SUCCESS;
-#else
     using Idx = std::size_t;
 
     // Define the accelerator
@@ -91,5 +87,4 @@ auto main() -> int
     alpaka::Complex<float> z = x + y;
 
     return EXIT_SUCCESS;
-#endif
 }

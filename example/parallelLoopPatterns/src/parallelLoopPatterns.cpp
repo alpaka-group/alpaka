@@ -403,11 +403,6 @@ void openMPSimdStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 
 auto main() -> int
 {
-// Fallback for the CI with disabled sequential backend
-#if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    return EXIT_SUCCESS;
-#else
-
     // Define the index domain, this example is only for 1d
     using Dim = alpaka::DimInt<1u>;
 
@@ -441,6 +436,4 @@ auto main() -> int
     chunkedGridStridedLoop<Acc>(devAcc, queue, bufAcc);
     naiveOpenMPStyle<Acc>(devAcc, queue, bufAcc);
     openMPSimdStyle<Acc>(devAcc, queue, bufAcc);
-
-#endif
 }

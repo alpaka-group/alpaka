@@ -49,10 +49,6 @@ struct HelloWorldKernel
 
 auto main() -> int
 {
-// Fallback for the CI with disabled sequential backend
-#if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    return EXIT_SUCCESS;
-#else
     // Define the index domain
     //
     // Depending on your type of problem, you have to define
@@ -176,5 +172,4 @@ auto main() -> int
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;
-#endif
 }
