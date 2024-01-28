@@ -231,7 +231,7 @@ Access multi-dimensional indices and extents of blocks, threads, and elements
      // Origin: Grid, Block, Thread
      // Unit: Blocks, Threads, Elems
 
-Access components of and destructuremulti-dimensional indices and extents
+Access components of and destructuremulti-dimensional indices and extents(dimensions)
   .. code-block:: c++
 
      auto idxX = idx[0];
@@ -257,6 +257,12 @@ Get dynamic shared memory pool, requires the kernel to specialize
 
      trait::BlockSharedMemDynSizeBytes
        Type * dynamicSharedMemoryPool = getDynSharedMem<Type>(acc);
+
+Allocate memory at the constant memory of the device
+  .. code-block:: c++
+
+      auto viewConstantMemUninitialized = alpaka::createStaticDevMemView(
+          &g_constantMemory2DUninitialized[0u][0u], acc, Vec{extentY, extentX});
 
 Synchronize threads of the same block
   .. code-block:: c++
