@@ -26,7 +26,6 @@ from generate_job_yaml import (
     write_job_yaml,
     distribute_to_waves,
     JOB_COMPILE_ONLY,
-    JOB_RUNTIME,
     JOB_UNKNOWN,
     WAVE_GROUP_NAMES,
 )
