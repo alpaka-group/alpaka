@@ -1,6 +1,8 @@
-/* Copyright 2022 Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2022 Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber, Mehmet Yusufoglu
  * SPDX-License-Identifier: MPL-2.0
  */
+
+#include "FooVec.hpp"
 
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
@@ -9,8 +11,6 @@
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
-
-#include <tuple>
 
 namespace
 {
@@ -141,44 +141,70 @@ TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
 }
 
 //! Test the constructors of WorkDivMembers using 3D extent, 3D extent with zero elements and 2D extents
+//! Test using any vector type in WorkDivMembers construction.
 TEST_CASE("WorkDivMembers", "[workDiv]")
 {
     using Idx = std::size_t;
     using Dim3D = alpaka::DimInt<3>;
     using Vec3D = alpaka::Vec<Dim3D, Idx>;
 
+    auto blocksPerGrid3D = Vec3D{1u, 2u, 3u};
+    auto const threadsPerBlock3D = Vec3D{2u, 4u, 6u};
     auto const elementsPerThread3D = Vec3D::all(static_cast<Idx>(1u));
-    auto const threadsPerBlock3D = Vec3D{2u, 2u, 2u};
-    auto blocksPerGrid3D = Vec3D{1u, 1u, 1u};
 
+    // Arguments: {1,2,3},{2,4,6},{1,1,1}
     auto ref3D = alpaka::WorkDivMembers<Dim3D, Idx>{blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D};
-    // call WorkDivMembers without explicit class template types
+    // Call without explicitly specifying explicit WorkDivMembers class template parameter types
     auto workDiv3D = alpaka::WorkDivMembers(blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D);
-    CHECK(workDiv3D == ref3D);
+    CHECK(ref3D == workDiv3D);
 
-    // change blocks per grid, assign zero to an element
-    blocksPerGrid3D = Vec3D{3u, 3u, 0u};
+    // Change blocks per grid
+    blocksPerGrid3D = Vec3D{3u, 6u, 9u};
+    // Arguments: {3,6,9},{2,4,6},{1,1,1}
     ref3D = alpaka::WorkDivMembers<Dim3D, Idx>{blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D};
-    // call without explicit template parameter types
+    // Call without explicitly specifying explicit WorkDivMembers class template parameter types
     workDiv3D = alpaka::WorkDivMembers(blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D);
-    CHECK(workDiv3D == ref3D);
+    CHECK(ref3D == workDiv3D);
 
-    // test using 2D vectors
+    // Test using 2D vectors
     using Dim2D = alpaka::DimInt<2>;
     using Vec2D = alpaka::Vec<Dim2D, Idx>;
 
-    auto const threadsPerBlock2D = Vec2D{2u, 2u};
-    auto const blocksPerGrid2D = Vec2D{1u, 1u};
+    auto const blocksPerGrid2D = Vec2D{6u, 9u};
+    auto const threadsPerBlock2D = Vec2D{4u, 6u};
     auto const elementsPerThread2D = Vec2D::all(static_cast<Idx>(1u));
+
+    // Arguments: {6,9},{4,6},{1,1}. The order of each input is y-x since alpaka vector uses z-y-x ordering
     auto const ref2D = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2D, threadsPerBlock2D, elementsPerThread2D};
     auto const workDiv2D = alpaka::WorkDivMembers(blocksPerGrid2D, threadsPerBlock2D, elementsPerThread2D);
-    CHECK(workDiv2D == ref2D);
+    CHECK(ref2D == workDiv2D);
 
-    // Test using different input types, reduced to given explicit class template types
-    auto ref2DimUsingMixed
+    // Test using initializer lists. Arguments: {6,9},{4,6},{1,1}. The order of initializer list is y-x since alpaka
+    // vector uses z-y-x ordering
+    auto const workDiv2DUsingInitList = alpaka::WorkDivMembers<Dim2D, Idx>({6, 9}, {4, 6}, {1, 1});
+    CHECK(ref2D == workDiv2DUsingInitList);
+
+    // Test using different input types with different number of dimensions(ranks), number of dimensions reduced to
+    // given explicit class template type number of dimensions (e.g. Dim2D) in the call. Arguments: {6,9},{2,4,6},{1,1}
+    auto worDiv2DUsingMixedRanks
         = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2D, threadsPerBlock3D, elementsPerThread3D};
-    CHECK(workDiv2D == ref2DimUsingMixed);
+    // Since the first element of threadsPerBlock3D is along Z-axis, it is removed
+    CHECK(ref2D == worDiv2DUsingMixedRanks);
 
-    ref2DimUsingMixed = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2D, threadsPerBlock3D, elementsPerThread2D};
-    CHECK(workDiv2D == ref2DimUsingMixed);
+    worDiv2DUsingMixedRanks
+        = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2D, threadsPerBlock3D, elementsPerThread2D};
+    CHECK(ref2D == worDiv2DUsingMixedRanks);
+
+    // Test the construction by using a user-defined type FooVec
+    //
+    // Test WorkDivMembers using the arguments of the type FooVec
+    auto const blocksPerGrid2DFoo = FooVec<size_t, 2u>{9u, 6u};
+    auto const threadsPerBlock2DFoo = FooVec<size_t, 2u>{6u, 4u};
+    auto const elementsPerThread2DFoo = FooVec<size_t, 2u>{1u, 1u};
+
+    // Arguments: {9,6},{6,4},{1,1}. These arguments are reversed at GetExtents specialization of FooVec
+    // FooVec assumes the list is ordered as x-y-z
+    auto const workDiv2DUsingFooVec
+        = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2DFoo, threadsPerBlock2DFoo, elementsPerThread2DFoo};
+    CHECK(ref2D == workDiv2DUsingFooVec);
 }
