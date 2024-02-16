@@ -139,3 +139,46 @@ TEMPLATE_LIST_TEST_CASE("isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
     REQUIRE(alpaka::isValidWorkDiv(alpaka::getAccDevProps<Acc>(dev), workDiv));
     REQUIRE(alpaka::isValidWorkDiv<Acc>(dev, workDiv));
 }
+
+//! Test the constructors of WorkDivMembers using 3D extent, 3D extent with zero elements and 2D extents
+TEST_CASE("WorkDivMembers", "[workDiv]")
+{
+    using Idx = std::size_t;
+    using Dim3D = alpaka::DimInt<3>;
+    using Vec3D = alpaka::Vec<Dim3D, Idx>;
+
+    auto const elementsPerThread3D = Vec3D::all(static_cast<Idx>(1u));
+    auto const threadsPerBlock3D = Vec3D{2u, 2u, 2u};
+    auto blocksPerGrid3D = Vec3D{1u, 1u, 1u};
+
+    auto ref3D = alpaka::WorkDivMembers<Dim3D, Idx>{blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D};
+    // call WorkDivMembers without explicit class template types
+    auto workDiv3D = alpaka::WorkDivMembers(blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D);
+    CHECK(workDiv3D == ref3D);
+
+    // change blocks per grid, assign zero to an element
+    blocksPerGrid3D = Vec3D{3u, 3u, 0u};
+    ref3D = alpaka::WorkDivMembers<Dim3D, Idx>{blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D};
+    // call without explicit template parameter types
+    workDiv3D = alpaka::WorkDivMembers(blocksPerGrid3D, threadsPerBlock3D, elementsPerThread3D);
+    CHECK(workDiv3D == ref3D);
+
+    // test using 2D vectors
+    using Dim2D = alpaka::DimInt<2>;
+    using Vec2D = alpaka::Vec<Dim2D, Idx>;
+
+    auto const threadsPerBlock2D = Vec2D{2u, 2u};
+    auto const blocksPerGrid2D = Vec2D{1u, 1u};
+    auto const elementsPerThread2D = Vec2D::all(static_cast<Idx>(1u));
+    auto const ref2D = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2D, threadsPerBlock2D, elementsPerThread2D};
+    auto const workDiv2D = alpaka::WorkDivMembers(blocksPerGrid2D, threadsPerBlock2D, elementsPerThread2D);
+    CHECK(workDiv2D == ref2D);
+
+    // Test using different input types, reduced to given explicit class template types
+    auto ref2DimUsingMixed
+        = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2D, threadsPerBlock3D, elementsPerThread3D};
+    CHECK(workDiv2D == ref2DimUsingMixed);
+
+    ref2DimUsingMixed = alpaka::WorkDivMembers<Dim2D, Idx>{blocksPerGrid2D, threadsPerBlock3D, elementsPerThread2D};
+    CHECK(workDiv2D == ref2DimUsingMixed);
+}
