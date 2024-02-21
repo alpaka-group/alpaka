@@ -1,5 +1,5 @@
-/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
- * SPDX-License-Identifier: MPL-2.0
+/* Copyright 2023 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci,
+ * Aurora Perego SPDX-License-Identifier: MPL-2.0
  */
 
 #include <alpaka/core/BoostPredef.hpp>
@@ -16,19 +16,8 @@ using Elem = std::uint32_t;
 using Dim = alpaka::DimInt<2u>;
 using Idx = std::uint32_t;
 
-// These forward declarations are only necessary when you want to access those variables
-// from a different compilation unit and should be moved to a common header.
-// Here they are used to silence clang`s -Wmissing-variable-declarations warning
-// that forces every non-static variable to be declared with extern before the are defined.
-// EXTERN_ALPAKA_STATIC_ACC_MEM_GLOBAL(Elem[3][2], g_globalMemory2DUninitialized);
-//EXTERN_ALPAKA_STATIC_ACC_MEM_GLOBAL(Elem[3][2], g_globalMemory2DUninitialized);
 ALPAKA_STATIC_ACC_MEM_GLOBAL(Elem[3][2], g_globalMemory2DUninitialized);
 
-// These forward declarations are only necessary when you want to access those variables
-// from a different compilation unit and should be moved to a common header.
-// Here they are used to silence clang`s -Wmissing-variable-declarations warning
-// that forces every non-static variable to be declared with extern before the are defined.
-// EXTERN_ALPAKA_STATIC_ACC_MEM_CONSTANT(Elem[3][2], g_constantMemory2DUninitialized);
 ALPAKA_STATIC_ACC_MEM_CONSTANT(Elem[3][2], g_constantMemory2DUninitialized);
 
 //! Uses static device memory on the accelerator defined globally for the whole compilation unit.
@@ -46,10 +35,6 @@ struct StaticDeviceMemoryTestKernel
         auto const val = offset;
 
         ALPAKA_CHECK(*success, val == *((&g_globalMemory2DUninitialized<TAcc>.get())[0][0] + offset));
-        printf(
-            "%u = %u\n",
-            val,
-            *((&g_globalMemory2DUninitialized<TAcc>.get())[0][0] + offset)); // compila anche senza get()
     }
 };
 
@@ -66,10 +51,6 @@ struct ConstantDeviceMemoryTestKernel
         auto const val = offset;
 
         ALPAKA_CHECK(*success, val == *((&g_constantMemory2DUninitialized<TAcc>.get())[0][0] + offset));
-        printf(
-            "%u = %u\n",
-            val,
-            *((&g_constantMemory2DUninitialized<TAcc>.get())[0][0] + offset)); // compila anche senza get()
     }
 };
 
@@ -96,14 +77,9 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
 
     auto const platformAcc = alpaka::Platform<Acc>{};
 
-    std::cout << " acc:" << alpaka::core::demangled<Acc> << std::endl;
     auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
     alpaka::Vec<Dim, Idx> const extent(3u, 2u);
-
-    alpaka::test::KernelExecutionFixture<Acc> fixture(extent);
-
-    StaticDeviceMemoryTestKernel kernel;
 
     // uninitialized static global device memory
     {
@@ -112,6 +88,10 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
 
         using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
         QueueAcc queueAcc(devAcc);
+
+        alpaka::test::KernelExecutionFixture<Acc> fixture(queueAcc, extent);
+
+        StaticDeviceMemoryTestKernel kernel;
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
         auto bufHost = alpaka::createView(devHost, data.data(), extent);
@@ -139,10 +119,6 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
 
     alpaka::Vec<Dim, Idx> const extent(3u, 2u);
 
-    alpaka::test::KernelExecutionFixture<Acc> fixture(extent);
-
-    ConstantDeviceMemoryTestKernel kernel;
-
     // uninitialized static constant device memory
     {
         auto const platformHost = alpaka::PlatformCpu{};
@@ -150,6 +126,10 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
 
         using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
         QueueAcc queueAcc(devAcc);
+
+        alpaka::test::KernelExecutionFixture<Acc> fixture(queueAcc, extent);
+
+        ConstantDeviceMemoryTestKernel kernel;
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
         auto bufHost = alpaka::createView(devHost, data.data(), extent);
