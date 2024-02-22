@@ -1,5 +1,5 @@
-/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
- * Aurora Perego
+/* Copyright 2024 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
+ *                Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 

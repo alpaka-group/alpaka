@@ -1,4 +1,4 @@
-/* Copyright 2023 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan, Aurora Perego
+/* Copyright 2024 Benjamin Worpitz, Andrea Bocci, Bernhard Manfred Gruber, Jan Stephan, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -50,13 +50,13 @@ namespace alpaka::test
         {
         }
 
-        KernelExecutionFixture(Queue& queue, WorkDiv workDiv) : m_queue{queue}, m_workDiv{std::move(workDiv)}
+        KernelExecutionFixture(Queue queue, WorkDiv workDiv) : m_queue{std::move(queue)}, m_workDiv{std::move(workDiv)}
         {
         }
 
         template<typename TExtent>
-        KernelExecutionFixture(Queue& queue, TExtent const& extent)
-            : m_queue{queue}
+        KernelExecutionFixture(Queue queue, TExtent const& extent)
+            : m_queue{std::move(queue)}
             , m_workDiv{getValidWorkDiv<Acc>(
                   m_device,
                   extent,
