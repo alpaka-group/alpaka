@@ -1,4 +1,4 @@
-/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci, Aurora Perego
+/* Copyright 2024 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci, Aurora Perego
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -102,7 +102,8 @@
 //!
 //! Those variables behave like ordinary variables when used in file-scope,
 //! but inside kernels the get() method must be used to access the variable.
-//! They are declared inline to be accessible from other compilation units.
+//! They are declared inline to resolve to a single instance across multiple
+//! translation units.
 //! Like ordinary variables, only one definition is allowed (ODR)
 //! Failure to do so might lead to linker errors.
 //!
@@ -175,7 +176,8 @@ namespace alpaka
 //!
 //! Those variables behave like ordinary variables when used in file-scope,
 //! but inside kernels the get() method must be used to access the variable.
-//! They are declared inline to be accessible from other compilation units.
+//! They are declared inline to resolve to a single instance across multiple
+//! translation units.
 //! Like ordinary variables, only one definition is allowed (ODR)
 //! Failure to do so might lead to linker errors.
 //!
