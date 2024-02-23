@@ -18,11 +18,11 @@ namespace alpaka
         TViewDst& viewDst,
         alpaka::DevGlobal<TViewSrc>& viewSrc)
     {
-        using Type = std::remove_all_extents_t<TViewSrc>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TViewSrc>>;
         auto extent = getExtents(viewDst);
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(&viewSrc.value)));
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewSrc>*>(&viewSrc))));
 
         auto view = alpaka::ViewPlainPtr<
             DevUniformCudaHipRt<TApi>,
@@ -39,11 +39,11 @@ namespace alpaka
         alpaka::DevGlobal<TViewDst>& viewDst,
         TViewSrc const& viewSrc)
     {
-        using Type = std::remove_all_extents_t<TViewDst>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDst>>;
         auto extent = getExtents(viewSrc);
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(&viewDst.value)));
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDst>*>(&viewDst))));
 
         auto view = alpaka::ViewPlainPtr<
             DevUniformCudaHipRt<TApi>,
@@ -61,10 +61,11 @@ namespace alpaka
         alpaka::DevGlobal<TViewSrc>& viewSrc,
         TExtent extent)
     {
-        using Type = std::remove_all_extents_t<TViewSrc>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TViewSrc>>;
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(&viewSrc.value)));
+            //TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(&viewSrc)));
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewSrc>*>(&viewSrc))));
 
         auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
             pMemAcc,
@@ -81,10 +82,10 @@ namespace alpaka
         TViewSrc const& viewSrc,
         TExtent extent)
     {
-        using Type = std::remove_all_extents_t<TViewDst>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDst>>;
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(&viewDst.value)));
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDst>*>(&viewDst))));
 
         auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
             pMemAcc,
