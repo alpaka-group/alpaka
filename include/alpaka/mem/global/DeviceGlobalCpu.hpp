@@ -15,10 +15,12 @@ namespace alpaka
     template<typename TViewSrc, typename TViewDstFwd, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(TQueue& queue, alpaka::DevGlobal<TViewDstFwd>& viewDst, TViewSrc const& viewSrc) -> void
     {
-        using Type = std::remove_all_extents_t<TViewDstFwd>;
+        //using TypeC = std::remove_all_extents_t<TViewDstFwd>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDstFwd>>;
         auto extent = getExtents(viewSrc);
         auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<decltype(extent)>, alpaka::Idx<decltype(extent)>>(
-            reinterpret_cast<Type*>(&viewDst),
+            //const_cast<std::remove_const_t<Type*>>(reinterpret_cast<Type*>(&viewDst)),
+            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDstFwd>*>(&viewDst)),
             alpaka::getDev(queue),
             extent);
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
@@ -43,9 +45,9 @@ namespace alpaka
         TViewSrc const& viewSrc,
         TExtent const& extent) -> void
     {
-        using Type = std::remove_all_extents_t<TViewDstFwd>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDstFwd>>;
         auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-            reinterpret_cast<Type*>(&viewDst),
+            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDstFwd>*>(&viewDst)),
             alpaka::getDev(queue),
             extent);
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));

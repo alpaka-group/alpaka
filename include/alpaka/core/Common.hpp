@@ -140,7 +140,8 @@ namespace alpaka
     template<typename T>
     struct DevGlobal
     {
-        T value; // backend specific value
+        using Type = std::remove_const_t<T>;
+        Type value; // backend specific value
 
         ALPAKA_FN_HOST_ACC T* operator&()
         {
@@ -211,7 +212,7 @@ namespace alpaka
     || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT(type, name)                                                                \
         template<typename TAcc>                                                                                       \
-        inline __constant__ alpaka::DevGlobal<type> name
+        inline __constant__ alpaka::DevGlobal<const type> name
 #elif defined(ALPAKA_ACC_SYCL_ENABLED)
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT(type, name)                                                                \
         template<typename TAcc>                                                                                       \
@@ -219,7 +220,7 @@ namespace alpaka
 #else
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT(type, name)                                                                \
         template<typename TAcc>                                                                                       \
-        inline alpaka::DevGlobal<type> name
+        inline alpaka::DevGlobal<const type> name
 #endif
 
 //! This macro disables memory optimizations for annotated device memory.
