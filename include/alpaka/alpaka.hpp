@@ -150,6 +150,7 @@
 #include "alpaka/mem/global/DeviceGlobalCpu.hpp"
 #include "alpaka/mem/global/DeviceGlobalGenericSycl.hpp"
 #include "alpaka/mem/global/DeviceGlobalUniformCudaHipBuiltIn.hpp"
+#include "alpaka/mem/global/Traits.hpp"
 #include "alpaka/mem/view/Traits.hpp"
 #include "alpaka/mem/view/ViewConst.hpp"
 #include "alpaka/mem/view/ViewPlainPtr.hpp"

@@ -98,7 +98,7 @@
 //! This macro defines a variable lying in global accelerator device memory.
 //!
 //! Example:
-//!   ALPAKA_STATIC_ACC_MEM_GLOBAL(int, variable);
+//!   ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<int> variable;
 //!
 //! Those variables behave like ordinary variables when used in file-scope,
 //! but inside kernels the get() method must be used to access the variable.
@@ -114,7 +114,7 @@
 //! \attention It is not allowed to initialize the variable together with the declaration.
 //!            To initialize the variable alpaka::memcpy must be used.
 //! \code{.cpp}
-//! ALPAKA_STATIC_ACC_MEM_GLOBAL(int, foo);
+//! ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<int> foo;
 //!
 //! struct DeviceMemoryKernel
 //! {
@@ -122,7 +122,7 @@
 //!    template<typename TAcc>
 //!    ALPAKA_FN_ACC void operator()(TAcc const& acc) const
 //!    {
-//!      auto a = foo.get();
+//!      auto a = foo<Tag>.get();
 //!    }
 //!  }
 //!
@@ -130,50 +130,24 @@
 //!     auto extent = alpaka::Vec<alpaka::DimInt<1u>, size_t>{1};
 //!     int initialValue = 42;
 //!     alpaka::ViewPlainPtr<DevHost, int, alpaka::DimInt<1u>, size_t> bufHost(&initialValue, devHost, extent);
-//!     alpaka::memcpy(queue, foo, bufHost, extent);
+//!     alpaka::memcpy(queue, foo<Tag>, bufHost, extent);
 //! }
 //! \endcode
-
-namespace alpaka
-{
-
-    template<typename T>
-    struct DevGlobal
-    {
-        using Type = std::remove_const_t<T>;
-        Type value; // backend specific value
-
-        ALPAKA_FN_HOST_ACC T* operator&()
-        {
-            return &value;
-        }
-
-        ALPAKA_FN_HOST_ACC T& get()
-        {
-            return value;
-        }
-    };
-} // namespace alpaka
-
 #if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
     || BOOST_LANG_HIP)
-#    define ALPAKA_STATIC_ACC_MEM_GLOBAL(type, name)                                                                  \
-        template<typename TAcc>                                                                                       \
-        inline __device__ alpaka::DevGlobal<type> name
-#elif defined(ALPAKA_ACC_SYCL_ENABLED)
-#    define ALPAKA_STATIC_ACC_MEM_GLOBAL(type, name)                                                                  \
-        template<typename TAcc>                                                                                       \
-        inline sycl::ext::oneapi::experimental::device_global<type> name
+#    define ALPAKA_STATIC_ACC_MEM_GLOBAL                                                                              \
+        template<typename TTag>                                                                                       \
+        inline __device__
 #else
-#    define ALPAKA_STATIC_ACC_MEM_GLOBAL(type, name)                                                                  \
-        template<typename TAcc>                                                                                       \
-        inline alpaka::DevGlobal<type> name
+#    define ALPAKA_STATIC_ACC_MEM_GLOBAL                                                                              \
+        template<typename TTag>                                                                                       \
+        inline
 #endif
 
 //! This macro defines a variable lying in constant accelerator device memory.
 //!
 //! Example:
-//!   ALPAKA_STATIC_ACC_MEM_CONSTANT(int, variable);
+//!   ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<int> variable;
 //!
 //! Those variables behave like ordinary variables when used in file-scope,
 //! but inside kernels the get() method must be used to access the variable.
@@ -189,7 +163,7 @@ namespace alpaka
 //! \attention It is not allowed to initialize the variable together with the declaration.
 //!            To initialize the variable alpaka::memcpy must be used.
 //! \code{.cpp}
-//! ALPAKA_STATIC_ACC_MEM_CONSTANT(int, foo);
+//! ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<int> foo;
 //!
 //! struct DeviceMemoryKernel
 //! {
@@ -197,7 +171,7 @@ namespace alpaka
 //!    template<typename TAcc>
 //!    ALPAKA_FN_ACC void operator()(TAcc const& acc) const
 //!    {
-//!      auto a = foo.get();
+//!      auto a = foo<Tag>.get();
 //!    }
 //!  }
 //!
@@ -205,22 +179,18 @@ namespace alpaka
 //!     auto extent = alpaka::Vec<alpaka::DimInt<1u>, size_t>{1};
 //!     int initialValue = 42;
 //!     alpaka::ViewPlainPtr<DevHost, int, alpaka::DimInt<1u>, size_t> bufHost(&initialValue, devHost, extent);
-//!     alpaka::memcpy(queue, foo, bufHost, extent);
+//!     alpaka::memcpy(queue, foo<Tag>, bufHost, extent);
 //! }
 //! \endcode
 #if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
     || BOOST_LANG_HIP)
-#    define ALPAKA_STATIC_ACC_MEM_CONSTANT(type, name)                                                                \
-        template<typename TAcc>                                                                                       \
-        inline __constant__ alpaka::DevGlobal<const type> name
-#elif defined(ALPAKA_ACC_SYCL_ENABLED)
-#    define ALPAKA_STATIC_ACC_MEM_CONSTANT(type, name)                                                                \
-        template<typename TAcc>                                                                                       \
-        inline sycl::ext::oneapi::experimental::device_global<const type> name
+#    define ALPAKA_STATIC_ACC_MEM_CONSTANT                                                                            \
+        template<typename TTag>                                                                                       \
+        inline __constant__
 #else
-#    define ALPAKA_STATIC_ACC_MEM_CONSTANT(type, name)                                                                \
-        template<typename TAcc>                                                                                       \
-        inline alpaka::DevGlobal<const type> name
+#    define ALPAKA_STATIC_ACC_MEM_CONSTANT                                                                            \
+        template<typename TTag>                                                                                       \
+        inline
 #endif
 
 //! This macro disables memory optimizations for annotated device memory.

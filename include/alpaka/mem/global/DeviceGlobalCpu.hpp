@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/mem/buf/cpu/Copy.hpp"
+#include "alpaka/mem/global/Traits.hpp"
 #include "alpaka/mem/view/ViewPlainPtr.hpp"
 
 #include <type_traits>
@@ -12,22 +13,60 @@
 // memcpy specialization for device global variables
 namespace alpaka
 {
-    template<typename TViewSrc, typename TViewDstFwd, typename TQueue>
-    ALPAKA_FN_HOST auto memcpy(TQueue& queue, alpaka::DevGlobal<TViewDstFwd>& viewDst, TViewSrc const& viewSrc) -> void
+
+    namespace detail
     {
-        //using TypeC = std::remove_all_extents_t<TViewDstFwd>;
+        template<typename T>
+        struct DevGlobalTrait<TagCpuOmp2Blocks, T>
+        {
+            using Type = detail::DevGlobalImplGeneric<TagCpuOmp2Blocks, T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagCpuOmp2Threads, T>
+        {
+            using Type = detail::DevGlobalImplGeneric<TagCpuOmp2Threads, T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagCpuSerial, T>
+        {
+            using Type = detail::DevGlobalImplGeneric<TagCpuSerial, T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagCpuTbbBlocks, T>
+        {
+            using Type = detail::DevGlobalImplGeneric<TagCpuTbbBlocks, T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagCpuThreads, T>
+        {
+            using Type = detail::DevGlobalImplGeneric<TagCpuThreads, T>;
+        };
+    } // namespace detail
+
+    template<typename TTag, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    ALPAKA_FN_HOST auto memcpy(
+        TQueue& queue,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TViewDstFwd>& viewDst,
+        TViewSrc const& viewSrc) -> void
+    {
         using Type = std::remove_const_t<std::remove_all_extents_t<TViewDstFwd>>;
         auto extent = getExtents(viewSrc);
         auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<decltype(extent)>, alpaka::Idx<decltype(extent)>>(
-            //const_cast<std::remove_const_t<Type*>>(reinterpret_cast<Type*>(&viewDst)),
             reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDstFwd>*>(&viewDst)),
             alpaka::getDev(queue),
             extent);
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
     }
 
-    template<typename TViewSrc, typename TViewDstFwd, typename TQueue>
-    ALPAKA_FN_HOST auto memcpy(TQueue& queue, TViewDstFwd&& viewDst, alpaka::DevGlobal<TViewSrc>& viewSrc) -> void
+    template<typename TTag, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    ALPAKA_FN_HOST auto memcpy(
+        TQueue& queue,
+        TViewDstFwd&& viewDst,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TViewSrc>& viewSrc) -> void
     {
         using Type = std::remove_all_extents_t<TViewSrc>;
         auto extent = getExtents(viewDst);
@@ -38,10 +77,10 @@ namespace alpaka
         enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), view, extent));
     }
 
-    template<typename TExtent, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    template<typename TTag, typename TExtent, typename TViewSrc, typename TViewDstFwd, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
-        alpaka::DevGlobal<TViewDstFwd>& viewDst,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TViewDstFwd>& viewDst,
         TViewSrc const& viewSrc,
         TExtent const& extent) -> void
     {
@@ -53,11 +92,11 @@ namespace alpaka
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
     }
 
-    template<typename TExtent, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    template<typename TTag, typename TExtent, typename TViewSrc, typename TViewDstFwd, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
         TViewDstFwd&& viewDst,
-        alpaka::DevGlobal<TViewSrc>& viewSrc,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TViewSrc>& viewSrc,
         TExtent const& extent) -> void
     {
         using Type = std::remove_all_extents_t<TViewSrc>;
