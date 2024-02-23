@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/mem/global/Traits.hpp"
 #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"
 
 #ifdef ALPAKA_ACC_SYCL_ENABLED
@@ -12,14 +13,43 @@
 
 namespace alpaka
 {
-    using sycl::ext::oneapi::experimental::device_global;
+    namespace detail
+    {
+        template<typename T>
+        struct DevGlobalTrait<TagCpuSycl, T>
+        {
+            // SYCL CPU implementation
+            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagGpuSyclIntel, T>
+        {
+            // SYCL GPU implementation
+            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagFpgaSyclIntel, T>
+        {
+            // SYCL FPGA implementation
+            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+        };
+
+        template<typename T>
+        struct DevGlobalTrait<TagGenericSycl, T>
+        {
+            // generic SYCL implementation
+            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+        };
+    } // namespace detail
 
     // from device to host
     template<typename TDev, bool TBlocking, typename TViewDst, typename TViewSrc>
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
         TViewDst&& viewDst,
-        device_global<TViewSrc> const& viewSrc)
+        sycl::ext::oneapi::experimental::device_global<TViewSrc> const& viewSrc)
     {
         queue.getNativeHandle().memcpy(reinterpret_cast<void*>(getPtrNative(viewDst)), viewSrc);
     }
@@ -28,7 +58,7 @@ namespace alpaka
     template<typename TDev, bool TBlocking, typename TViewDst, typename TViewSrc>
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
-        device_global<TViewDst>& viewDst,
+        sycl::ext::oneapi::experimental::device_global<TViewDst>& viewDst,
         TViewSrc const& viewSrc)
     {
         queue.getNativeHandle().memcpy(viewDst, reinterpret_cast<void const*>(getPtrNative(viewSrc)));
@@ -39,7 +69,7 @@ namespace alpaka
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
         TViewDst&& viewDst,
-        device_global<TViewSrc> const& viewSrc,
+        sycl::ext::oneapi::experimental::device_global<TViewSrc> const& viewSrc,
         TExtent extent)
     {
         using Elem = alpaka::Elem<std::remove_reference_t<TViewDst>>;
@@ -52,7 +82,7 @@ namespace alpaka
     template<typename TDev, bool TBlocking, typename TViewDst, typename TViewSrc, typename TExtent>
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
-        device_global<TViewDst>& viewDst,
+        sycl::ext::oneapi::experimental::device_global<TViewDst>& viewDst,
         TViewSrc const& viewSrc,
         TExtent extent)
     {
