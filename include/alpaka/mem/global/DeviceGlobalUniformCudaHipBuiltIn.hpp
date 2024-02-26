@@ -6,6 +6,7 @@
 
 #include "alpaka/dev/DevUniformCudaHipRt.hpp"
 #include "alpaka/mem/global/Traits.hpp"
+#include "alpaka/mem/view/ViewPlainPtr.hpp"
 #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
@@ -31,7 +32,21 @@ namespace alpaka
     } // namespace detail
 
     // from device to host
-    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TTypeSrc>
+    template<
+        typename TTag,
+        typename TApi,
+        bool TBlocking,
+        typename TViewDst,
+        typename TTypeSrc,
+        typename std::enable_if_t<
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+#    else
+            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+#    endif
+                ,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
         TViewDst& viewDst,
@@ -41,9 +56,8 @@ namespace alpaka
         using TypeExt = std::remove_const_t<TTypeSrc>;
         auto extent = getExtents(viewDst);
         TypeExt* pMemAcc(nullptr);
-        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
-            reinterpret_cast<void**>(&pMemAcc),
-            *(const_cast<TypeExt*>(&viewSrc))));
+        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewSrc))));
 
         auto view = alpaka::ViewPlainPtr<
             DevUniformCudaHipRt<TApi>,
@@ -54,7 +68,21 @@ namespace alpaka
     }
 
     // from host to device
-    template<typename TTag, typename TApi, bool TBlocking, typename TTypeDst, typename TViewSrc>
+    template<
+        typename TTag,
+        typename TApi,
+        bool TBlocking,
+        typename TTypeDst,
+        typename TViewSrc,
+        typename std::enable_if_t<
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+#    else
+            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+#    endif
+                ,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
         alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
@@ -64,9 +92,8 @@ namespace alpaka
         using TypeExt = std::remove_const_t<TTypeDst>;
         auto extent = getExtents(viewSrc);
         Type* pMemAcc(nullptr);
-        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
-            reinterpret_cast<void**>(&pMemAcc),
-		    *(const_cast<TypeExt*>(&viewDst))));
+        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewDst))));
 
         auto view = alpaka::ViewPlainPtr<
             DevUniformCudaHipRt<TApi>,
@@ -77,7 +104,22 @@ namespace alpaka
     }
 
     // from device to host
-    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TTypeSrc, typename TExtent>
+    template<
+        typename TTag,
+        typename TApi,
+        bool TBlocking,
+        typename TViewDst,
+        typename TTypeSrc,
+        typename TExtent,
+        typename std::enable_if_t<
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+#    else
+            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+#    endif
+                ,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
         TViewDst& viewDst,
@@ -85,11 +127,10 @@ namespace alpaka
         TExtent extent)
     {
         using Type = std::remove_const_t<std::remove_all_extents_t<TTypeSrc>>;
-		using TypeExt = std::remove_const_t<TTypeSrc>;
+        using TypeExt = std::remove_const_t<TTypeSrc>;
         Type* pMemAcc(nullptr);
-        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
-            reinterpret_cast<void**>(&pMemAcc),
-		    *(const_cast<TypeExt*>(&viewSrc))));
+        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewSrc))));
 
         auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
             reinterpret_cast<Type*>(pMemAcc),
@@ -99,7 +140,22 @@ namespace alpaka
     }
 
     // from host to device
-    template<typename TTag, typename TApi, bool TBlocking, typename TTypeDst, typename TViewSrc, typename TExtent>
+    template<
+        typename TTag,
+        typename TApi,
+        bool TBlocking,
+        typename TTypeDst,
+        typename TViewSrc,
+        typename TExtent,
+        typename std::enable_if_t<
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+#    else
+            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+#    endif
+                ,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
         alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
@@ -107,11 +163,10 @@ namespace alpaka
         TExtent extent)
     {
         using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
-		using TypeExt = std::remove_const_t<TTypeDst>;
+        using TypeExt = std::remove_const_t<TTypeDst>;
         Type* pMemAcc(nullptr);
-        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
-            reinterpret_cast<void**>(&pMemAcc),
-		    *(const_cast<TypeExt*>(&viewDst))));
+        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewDst))));
 
         auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
             reinterpret_cast<Type*>(pMemAcc),
