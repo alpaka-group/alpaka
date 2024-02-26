@@ -47,7 +47,17 @@ namespace alpaka
         };
     } // namespace detail
 
-    template<typename TTag, typename TViewSrc, typename TTypeDst, typename TQueue>
+    template<
+        typename TTag,
+        typename TViewSrc,
+        typename TTypeDst,
+        typename TQueue,
+        typename std::enable_if_t<
+            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+                || std::is_same_v<TTag, TagCpuThreads>,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
         alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
@@ -62,7 +72,17 @@ namespace alpaka
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
     }
 
-    template<typename TTag, typename TTypeSrc, typename TViewDstFwd, typename TQueue>
+    template<
+        typename TTag,
+        typename TTypeSrc,
+        typename TViewDstFwd,
+        typename TQueue,
+        typename std::enable_if_t<
+            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+                || std::is_same_v<TTag, TagCpuThreads>,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
         TViewDstFwd&& viewDst,
@@ -77,7 +97,18 @@ namespace alpaka
         enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), view, extent));
     }
 
-    template<typename TTag, typename TExtent, typename TViewSrc, typename TTypeDst, typename TQueue>
+    template<
+        typename TTag,
+        typename TExtent,
+        typename TViewSrc,
+        typename TTypeDst,
+        typename TQueue,
+        typename std::enable_if_t<
+            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+                || std::is_same_v<TTag, TagCpuThreads>,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
         alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
@@ -92,7 +123,18 @@ namespace alpaka
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
     }
 
-    template<typename TTag, typename TExtent, typename TTypeSrc, typename TViewDstFwd, typename TQueue>
+    template<
+        typename TTag,
+        typename TExtent,
+        typename TTypeSrc,
+        typename TViewDstFwd,
+        typename TQueue,
+        typename std::enable_if_t<
+            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+                || std::is_same_v<TTag, TagCpuThreads>,
+            int>
+        = 0>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
         TViewDstFwd&& viewDst,
