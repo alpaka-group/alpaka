@@ -16,5 +16,17 @@ then
     rm '/usr/local/bin/pydoc3.12'
     rm '/usr/local/bin/python3.12'
     rm '/usr/local/bin/python3.12-config'
+    rm '/usr/local/bin/2to3' || true
+    rm '/usr/local/bin/idle3' || true
+    rm '/usr/local/bin/pydoc3' || true
+    rm '/usr/local/bin/python3' || true
+    rm '/usr/local/bin/python3-config' || true
+    rm '/usr/local/share/man/man1/python3.1' || true
+    rm '/usr/local/lib/pkgconfig/python3-embed.pc' || true
+    rm '/usr/local/lib/pkgconfig/python3.pc' || true
+    rm '/usr/local/Frameworks/Python.framework/Headers' || true
+    rm '/usr/local/Frameworks/Python.framework/Python' || true
+    rm '/usr/local/Frameworks/Python.framework/Resources' || true
+    rm '/usr/local/Frameworks/Python.framework/Versions/Current'  || true
     brew reinstall --build-from-source --formula ./script/homebrew/${ALPAKA_CI_XCODE_VER}/libomp.rb
 fi
