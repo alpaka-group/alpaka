@@ -31,14 +31,14 @@ namespace alpaka
     } // namespace detail
 
     // from device to host
-    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TViewSrc>
+    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TTypeSrc>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
         TViewDst& viewDst,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewSrc>& viewSrc)
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc)
     {
-        using Type = std::remove_const_t<std::remove_all_extents_t<TViewSrc>>;
-        using TypeExt = std::remove_const_t<TViewSrc>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeSrc>>;
+        using TypeExt = std::remove_const_t<TTypeSrc>;
         auto extent = getExtents(viewDst);
         TypeExt* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
@@ -54,14 +54,14 @@ namespace alpaka
     }
 
     // from host to device
-    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TViewSrc>
+    template<typename TTag, typename TApi, bool TBlocking, typename TTypeDst, typename TViewSrc>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewDst>& viewDst,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
         TViewSrc const& viewSrc)
     {
-        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDst>>;
-        using TypeExt = std::remove_const_t<TViewDst>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
+        using TypeExt = std::remove_const_t<TTypeDst>;
         auto extent = getExtents(viewSrc);
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
@@ -77,15 +77,15 @@ namespace alpaka
     }
 
     // from device to host
-    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TViewSrc, typename TExtent>
+    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TTypeSrc, typename TExtent>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
         TViewDst& viewDst,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewSrc>& viewSrc,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc,
         TExtent extent)
     {
-        using Type = std::remove_const_t<std::remove_all_extents_t<TViewSrc>>;
-		using TypeExt = std::remove_const_t<TViewSrc>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeSrc>>;
+		using TypeExt = std::remove_const_t<TTypeSrc>;
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
             reinterpret_cast<void**>(&pMemAcc),
@@ -99,15 +99,15 @@ namespace alpaka
     }
 
     // from host to device
-    template<typename TTag, typename TApi, bool TBlocking, typename TViewDst, typename TViewSrc, typename TExtent>
+    template<typename TTag, typename TApi, bool TBlocking, typename TTypeDst, typename TViewSrc, typename TExtent>
     ALPAKA_FN_HOST auto memcpy(
         uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewDst>& viewDst,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
         TViewSrc const& viewSrc,
         TExtent extent)
     {
-        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDst>>;
-		using TypeExt = std::remove_const_t<TViewDst>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
+		using TypeExt = std::remove_const_t<TTypeDst>;
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
             reinterpret_cast<void**>(&pMemAcc),

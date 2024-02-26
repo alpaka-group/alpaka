@@ -45,31 +45,31 @@ namespace alpaka
     } // namespace detail
 
     // from device to host
-    template<typename TDev, bool TBlocking, typename TViewDst, typename TViewSrc>
+    template<typename TDev, bool TBlocking, typename TViewDst, typename TTypeSrc>
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
         TViewDst&& viewDst,
-        sycl::ext::oneapi::experimental::device_global<TViewSrc> const& viewSrc)
+        sycl::ext::oneapi::experimental::device_global<TTypeSrc> const& viewSrc)
     {
         queue.getNativeHandle().memcpy(reinterpret_cast<void*>(getPtrNative(viewDst)), viewSrc);
     }
 
     // from host to device
-    template<typename TDev, bool TBlocking, typename TViewDst, typename TViewSrc>
+    template<typename TDev, bool TBlocking, typename TTypeDst, typename TViewSrc>
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
-        sycl::ext::oneapi::experimental::device_global<TViewDst>& viewDst,
+        sycl::ext::oneapi::experimental::device_global<TTypeDst>& viewDst,
         TViewSrc const& viewSrc)
     {
         queue.getNativeHandle().memcpy(viewDst, reinterpret_cast<void const*>(getPtrNative(viewSrc)));
     }
 
     // from device to host
-    template<typename TDev, bool TBlocking, typename TViewDst, typename TViewSrc, typename TExtent>
+    template<typename TDev, bool TBlocking, typename TViewDst, typename TTypeSrc, typename TExtent>
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
         TViewDst&& viewDst,
-        sycl::ext::oneapi::experimental::device_global<TViewSrc> const& viewSrc,
+        sycl::ext::oneapi::experimental::device_global<TTypeSrc> const& viewSrc,
         TExtent extent)
     {
         using Elem = alpaka::Elem<std::remove_reference_t<TViewDst>>;
@@ -79,10 +79,10 @@ namespace alpaka
     }
 
     // from host to device
-    template<typename TDev, bool TBlocking, typename TViewDst, typename TViewSrc, typename TExtent>
+    template<typename TDev, bool TBlocking, typename TTypeDst, typename TViewSrc, typename TExtent>
     ALPAKA_FN_HOST auto memcpy(
         detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
-        sycl::ext::oneapi::experimental::device_global<TViewDst>& viewDst,
+        sycl::ext::oneapi::experimental::device_global<TTypeDst>& viewDst,
         TViewSrc const& viewSrc,
         TExtent extent)
     {
