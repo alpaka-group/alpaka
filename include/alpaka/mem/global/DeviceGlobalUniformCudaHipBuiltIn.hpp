@@ -38,17 +38,18 @@ namespace alpaka
         alpaka::detail::DevGlobalImplGeneric<TTag, TViewSrc>& viewSrc)
     {
         using Type = std::remove_const_t<std::remove_all_extents_t<TViewSrc>>;
+        using TypeExt = std::remove_const_t<TViewSrc>;
         auto extent = getExtents(viewDst);
-        Type* pMemAcc(nullptr);
+        TypeExt* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
             reinterpret_cast<void**>(&pMemAcc),
-            *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewSrc>*>(&viewSrc))));
+            *(const_cast<TypeExt*>(&viewSrc))));
 
         auto view = alpaka::ViewPlainPtr<
             DevUniformCudaHipRt<TApi>,
             Type,
             alpaka::Dim<decltype(extent)>,
-            alpaka::Idx<decltype(extent)>>(pMemAcc, alpaka::getDev(queue), extent);
+            alpaka::Idx<decltype(extent)>>(reinterpret_cast<Type*>(pMemAcc), alpaka::getDev(queue), extent);
         enqueue(queue, createTaskMemcpy(std::forward<TViewDst>(viewDst), view, extent));
     }
 
@@ -60,17 +61,18 @@ namespace alpaka
         TViewSrc const& viewSrc)
     {
         using Type = std::remove_const_t<std::remove_all_extents_t<TViewDst>>;
+        using TypeExt = std::remove_const_t<TViewDst>;
         auto extent = getExtents(viewSrc);
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
             reinterpret_cast<void**>(&pMemAcc),
-            *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDst>*>(&viewDst))));
+		    *(const_cast<TypeExt*>(&viewDst))));
 
         auto view = alpaka::ViewPlainPtr<
             DevUniformCudaHipRt<TApi>,
             Type,
             alpaka::Dim<decltype(extent)>,
-            alpaka::Idx<decltype(extent)>>(pMemAcc, alpaka::getDev(queue), extent);
+            alpaka::Idx<decltype(extent)>>(reinterpret_cast<Type*>(pMemAcc), alpaka::getDev(queue), extent);
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
     }
 
@@ -83,13 +85,14 @@ namespace alpaka
         TExtent extent)
     {
         using Type = std::remove_const_t<std::remove_all_extents_t<TViewSrc>>;
+		using TypeExt = std::remove_const_t<TViewSrc>;
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
             reinterpret_cast<void**>(&pMemAcc),
-            *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewSrc>*>(&viewSrc))));
+		    *(const_cast<TypeExt*>(&viewSrc))));
 
         auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-            pMemAcc,
+            reinterpret_cast<Type*>(pMemAcc),
             alpaka::getDev(queue),
             extent);
         enqueue(queue, createTaskMemcpy(std::forward<TViewDst>(viewDst), view, extent));
@@ -104,13 +107,14 @@ namespace alpaka
         TExtent extent)
     {
         using Type = std::remove_const_t<std::remove_all_extents_t<TViewDst>>;
+		using TypeExt = std::remove_const_t<TViewDst>;
         Type* pMemAcc(nullptr);
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(
             reinterpret_cast<void**>(&pMemAcc),
-            *reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDst>*>(&viewDst))));
+		    *(const_cast<TypeExt*>(&viewDst))));
 
         auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-            pMemAcc,
+            reinterpret_cast<Type*>(pMemAcc),
             alpaka::getDev(queue),
             extent);
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
