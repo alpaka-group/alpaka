@@ -47,28 +47,28 @@ namespace alpaka
         };
     } // namespace detail
 
-    template<typename TTag, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    template<typename TTag, typename TViewSrc, typename TTypeDst, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewDstFwd>& viewDst,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
         TViewSrc const& viewSrc) -> void
     {
-        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDstFwd>>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
         auto extent = getExtents(viewSrc);
         auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<decltype(extent)>, alpaka::Idx<decltype(extent)>>(
-            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDstFwd>*>(&viewDst)),
+            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TTypeDst>*>(&viewDst)),
             alpaka::getDev(queue),
             extent);
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
     }
 
-    template<typename TTag, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    template<typename TTag, typename TTypeSrc, typename TViewDstFwd, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
         TViewDstFwd&& viewDst,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewSrc>& viewSrc) -> void
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc) -> void
     {
-        using Type = std::remove_all_extents_t<TViewSrc>;
+        using Type = std::remove_all_extents_t<TTypeSrc>;
         auto extent = getExtents(viewDst);
         auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<decltype(extent)>, alpaka::Idx<decltype(extent)>>(
             reinterpret_cast<Type*>(&viewSrc),
@@ -77,29 +77,29 @@ namespace alpaka
         enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), view, extent));
     }
 
-    template<typename TTag, typename TExtent, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    template<typename TTag, typename TExtent, typename TViewSrc, typename TTypeDst, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewDstFwd>& viewDst,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
         TViewSrc const& viewSrc,
         TExtent const& extent) -> void
     {
-        using Type = std::remove_const_t<std::remove_all_extents_t<TViewDstFwd>>;
+        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
         auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TViewDstFwd>*>(&viewDst)),
+            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TTypeDst>*>(&viewDst)),
             alpaka::getDev(queue),
             extent);
         enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
     }
 
-    template<typename TTag, typename TExtent, typename TViewSrc, typename TViewDstFwd, typename TQueue>
+    template<typename TTag, typename TExtent, typename TTypeSrc, typename TViewDstFwd, typename TQueue>
     ALPAKA_FN_HOST auto memcpy(
         TQueue& queue,
         TViewDstFwd&& viewDst,
-        alpaka::detail::DevGlobalImplGeneric<TTag, TViewSrc>& viewSrc,
+        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc,
         TExtent const& extent) -> void
     {
-        using Type = std::remove_all_extents_t<TViewSrc>;
+        using Type = std::remove_all_extents_t<TTypeSrc>;
         auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
             reinterpret_cast<Type*>(&viewSrc),
             alpaka::getDev(queue),
