@@ -1,5 +1,9 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1warp_1_1trait_1_1Any_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,0,8],
+"structalpaka_1_1warp_1_1trait_1_1Any_3_01WarpUniformCudaHipBuiltIn_01_4.html#a62c5d708e2b6656aca971ffea1d31a8c":[3,0,0,17,0,8,0],
+"structalpaka_1_1warp_1_1trait_1_1Ballot.html":[3,0,0,17,0,9],
+"structalpaka_1_1warp_1_1trait_1_1Ballot_3_01WarpSingleThread_01_4.html":[3,0,0,17,0,10],
 "structalpaka_1_1warp_1_1trait_1_1Ballot_3_01WarpSingleThread_01_4.html#a2f8e695a41d51d2d56b31ba263a6b56e":[3,0,0,17,0,10,0],
 "structalpaka_1_1warp_1_1trait_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,0,11],
 "structalpaka_1_1warp_1_1trait_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html#a399275dd2f13f4abdb3c0b0451bbeee3":[3,0,0,17,0,11,0],
@@ -102,6 +106,5 @@ var NAVTREEINDEX17 =
 "warp_2Traits_8hpp_source.html":[4,0,0,0,25,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,26,0],
 "workdiv_2Traits_8hpp.html#a2a811570d2074f237f89c9910b82b44c":[4,0,0,0,26,0,4],
-"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0],
-"":[2,0,2]
+"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0]
 };

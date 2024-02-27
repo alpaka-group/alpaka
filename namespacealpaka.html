@@ -954,6 +954,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a751547dd588408ae790584281af1775f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a751547dd588408ae790584281af1775f">wait</a> (TWaiter &amp;waiter, TAwaited const &amp;awaited) -&gt; void</td></tr>
 <tr class="memdesc:a751547dd588408ae790584281af1775f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The waiter waits for the given awaited action to complete.  <a href="namespacealpaka.html#a751547dd588408ae790584281af1775f">More...</a><br /></td></tr>
 <tr class="separator:a751547dd588408ae790584281af1775f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3134a01468d2e3d6d7010fc308d72e59"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a3134a01468d2e3d6d7010fc308d72e59"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3134a01468d2e3d6d7010fc308d72e59">WorkDivMembers</a> (<a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;gridBlockExtent, <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;blockThreadExtent, <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;elemExtent) -&gt; <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt;</td></tr>
+<tr class="memdesc:a3134a01468d2e3d6d7010fc308d72e59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deduction guide for the constructor which can be called without explicit template type parameters.  <a href="namespacealpaka.html#a3134a01468d2e3d6d7010fc308d72e59">More...</a><br /></td></tr>
+<tr class="separator:a3134a01468d2e3d6d7010fc308d72e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ad90c384ab8eb037d42e98cd0d7d75632"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad90c384ab8eb037d42e98cd0d7d75632"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1Complex.html">Complex</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad90c384ab8eb037d42e98cd0d7d75632">operator+</a> (<a class="el" href="classalpaka_1_1Complex.html">Complex</a>&lt; T &gt; const &amp;val)</td></tr>
@@ -8041,6 +8045,44 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 
 </div>
 </div>
+<a id="a3134a01468d2e3d6d7010fc308d72e59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3134a01468d2e3d6d7010fc308d72e59">&#9670;&nbsp;</a></span>WorkDivMembers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TIdx &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1WorkDivMembers.html">alpaka::WorkDivMembers</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>gridBlockExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>blockThreadExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>elemExtent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt;  <a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Deduction guide for the constructor which can be called without explicit template type parameters. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="ac7dc6f9301a777fe3a25be17ac1d60b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac7dc6f9301a777fe3a25be17ac1d60b1">&#9670;&nbsp;</a></span>accMatchesTags</h2>
@@ -8385,7 +8427,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Tue Feb 27 2024 08:03:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Feb 27 2024 22:01:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

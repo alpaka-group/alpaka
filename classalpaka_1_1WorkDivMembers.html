@@ -122,8 +122,12 @@ $(document).ready(function(){initNavTree('classalpaka_1_1WorkDivMembers.html',''
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4907d4628832e373ca736c03a6b2df13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1WorkDivMembers.html#a4907d4628832e373ca736c03a6b2df13">WorkDivMembers</a> ()=delete</td></tr>
 <tr class="separator:a4907d4628832e373ca736c03a6b2df13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab752b6b25830083fc69721380a63ba38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1WorkDivMembers.html#ab752b6b25830083fc69721380a63ba38">WorkDivMembers</a> (<a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;gridBlockExtent, <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;blockThreadExtent, <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;elemExtent)</td></tr>
+<tr class="memdesc:ab752b6b25830083fc69721380a63ba38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts single specific type and is called without explicit template parameters.  <a href="classalpaka_1_1WorkDivMembers.html#ab752b6b25830083fc69721380a63ba38">More...</a><br /></td></tr>
+<tr class="separator:ab752b6b25830083fc69721380a63ba38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abecc96ddc3cabbabf9b0aa60cedea10f"><td class="memTemplParams" colspan="2">template&lt;typename TGridBlockExtent , typename TBlockThreadExtent , typename TThreadElemExtent &gt; </td></tr>
 <tr class="memitem:abecc96ddc3cabbabf9b0aa60cedea10f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1WorkDivMembers.html#abecc96ddc3cabbabf9b0aa60cedea10f">WorkDivMembers</a> (TGridBlockExtent const &amp;gridBlockExtent=TGridBlockExtent(), TBlockThreadExtent const &amp;blockThreadExtent=TBlockThreadExtent(), TThreadElemExtent const &amp;threadElemExtent=TThreadElemExtent())</td></tr>
+<tr class="memdesc:abecc96ddc3cabbabf9b0aa60cedea10f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts different alpaka vector types and takes the last TDim number of items.  <a href="classalpaka_1_1WorkDivMembers.html#abecc96ddc3cabbabf9b0aa60cedea10f">More...</a><br /></td></tr>
 <tr class="separator:abecc96ddc3cabbabf9b0aa60cedea10f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3e64e490520aa521d8714c5b64c84f8"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv &gt; </td></tr>
 <tr class="memitem:aa3e64e490520aa521d8714c5b64c84f8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1WorkDivMembers.html#aa3e64e490520aa521d8714c5b64c84f8">WorkDivMembers</a> (TWorkDiv const &amp;other)</td></tr>
@@ -165,7 +169,7 @@ class alpaka::WorkDivMembers&lt; TDim, TIdx &gt;</h3>
 <p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00019">19</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4907d4628832e373ca736c03a6b2df13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4907d4628832e373ca736c03a6b2df13">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4907d4628832e373ca736c03a6b2df13">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -192,7 +196,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </div>
 </div>
 <a id="abecc96ddc3cabbabf9b0aa60cedea10f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abecc96ddc3cabbabf9b0aa60cedea10f">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abecc96ddc3cabbabf9b0aa60cedea10f">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -235,12 +239,62 @@ template&lt;typename TGridBlockExtent , typename TBlockThreadExtent , typename T
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00026">26</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Accepts different alpaka vector types and takes the last TDim number of items. </p>
+
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00027">27</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab752b6b25830083fc69721380a63ba38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab752b6b25830083fc69721380a63ba38">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TIdx &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1WorkDivMembers.html">alpaka::WorkDivMembers</a>&lt; TDim, TIdx &gt;::<a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>gridBlockExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>blockThreadExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>elemExtent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Accepts single specific type and is called without explicit template parameters. </p>
+
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00039">39</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
 <a id="ad6c260bb1d8458e268599bf2d6add333"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6c260bb1d8458e268599bf2d6add333">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6c260bb1d8458e268599bf2d6add333">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -265,12 +319,12 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00037">37</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00050">50</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
 <a id="aa3e64e490520aa521d8714c5b64c84f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3e64e490520aa521d8714c5b64c84f8">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3e64e490520aa521d8714c5b64c84f8">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,12 +351,12 @@ template&lt;typename TWorkDiv &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00046">46</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00059">59</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
 <a id="adfb7963f224f827a7ef13c1cd4cc0e16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfb7963f224f827a7ef13c1cd4cc0e16">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adfb7963f224f827a7ef13c1cd4cc0e16">&#9670;&nbsp;</a></span>WorkDivMembers() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -359,7 +413,7 @@ template&lt;typename TWorkDiv &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00059">59</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00072">72</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -457,7 +511,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00073">73</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00086">86</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -498,7 +552,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00067">67</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00080">80</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -517,7 +571,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00082">82</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00095">95</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -535,7 +589,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00081">81</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00094">94</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -553,7 +607,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00083">83</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00096">96</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -566,7 +620,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1WorkDivMembers.html">WorkDivMembers</a></li>
-    <li class="footer">Generated on Tue Feb 27 2024 08:03:46 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Feb 27 2024 22:01:20 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

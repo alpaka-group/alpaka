@@ -1,5 +1,9 @@
 var NAVTREEINDEX15 =
 {
+"structalpaka_1_1trait_1_1GetAccName.html#a89be9c6144a1fd916731d19c5aa9d507":[3,0,0,15,226,0],
+"structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,227],
+"structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#a0824d86936d4bff9e0f6dcf4b27e3173":[3,0,0,15,227,0],
+"structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,228],
 "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#aa8b3185b0e54356f7007cbc643bbf1db":[3,0,0,15,228,0],
 "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,229],
 "structalpaka_1_1trait_1_1GetAccName_3_01AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a3be6b3bf227534727ba4928217f3a01c":[3,0,0,15,229,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX15 =
 "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,357],
 "structalpaka_1_1trait_1_1IdxType_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#ae8976182061c0a119a855c479a0bac29":[3,0,0,15,357,0],
 "structalpaka_1_1trait_1_1IdxType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,358],
-"structalpaka_1_1trait_1_1IdxType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a3e9e6e31a1302a678495568f8878eab1":[3,0,0,15,358,0],
-"structalpaka_1_1trait_1_1IdxType_3_01TIdx_00_01std_1_1enable__if__t_3_01alpaka_1_1detail_1_1isCu36fea1c5294e807a67cce159f4af5e41.html":[3,0,0,15,370],
-"structalpaka_1_1trait_1_1IdxType_3_01TIdx_00_01std_1_1enable__if__t_3_01alpaka_1_1detail_1_1isCu36fea1c5294e807a67cce159f4af5e41.html#a69b01436574d68187e6b59078655b447":[3,0,0,15,370,0],
-"structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html":[3,0,0,15,364],
-"structalpaka_1_1trait_1_1IdxType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__arithmetic__v_3_01T_01_4_01_4_01_4.html#a791836edf57d068d26e32640caa165c8":[3,0,0,15,364,0]
+"structalpaka_1_1trait_1_1IdxType_3_01BufUniformCudaHipRt_3_01TApi_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a3e9e6e31a1302a678495568f8878eab1":[3,0,0,15,358,0]
 };

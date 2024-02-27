@@ -316,6 +316,7 @@ var namespacealpaka =
     [ "ViewConst", "namespacealpaka.html#a2be994b379106bbd50e768e825321768", null ],
     [ "wait", "namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806", null ],
     [ "wait", "namespacealpaka.html#a751547dd588408ae790584281af1775f", null ],
+    [ "WorkDivMembers", "namespacealpaka.html#a3134a01468d2e3d6d7010fc308d72e59", null ],
     [ "accMatchesTags", "namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1", null ],
     [ "BlockSharedDynMemberAllocKiB", "namespacealpaka.html#a28aba9f9b9c76167878d4d304943d54b", null ],
     [ "hasAsyncBufSupport", "namespacealpaka.html#a8a8e81d9d160079842607c98825b67ce", null ],
