@@ -373,10 +373,8 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     if job[DEVICE_COMPILER][NAME] == ICPX:
         variables["CC"] = "icx"
         variables["CXX"] = "icpx"
-        if job[DEVICE_COMPILER][VERSION] == "2023.1.0":
-            variables["ALPAKA_CI_CLANG_VER"] = "16"
-        elif job[DEVICE_COMPILER][VERSION] == "2023.2.0":
-            variables["ALPAKA_CI_CLANG_VER"] = "16"
+        if job[DEVICE_COMPILER][VERSION] == "2024.0":
+            variables["ALPAKA_CI_CLANG_VER"] = "17"
         variables["ALPAKA_CI_STDLIB"] = "libstdc++"
         variables["ALPAKA_CI_ONEAPI_VERSION"] = job[DEVICE_COMPILER][VERSION]
         variables["alpaka_SYCL_ONEAPI_CPU"] = "ON"
