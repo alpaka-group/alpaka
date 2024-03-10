@@ -189,6 +189,8 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Inte
         if (alpaka_ACC_SYCL_ENABLE)
             # avoid: warning: disabled expansion of recursive macro
             list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-disabled-macro-expansion")
+            list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-reserved-identifier")
+            list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wno-old-style-cast")
         endif()
     endif()
 endif()
