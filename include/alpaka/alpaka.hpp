@@ -24527,6 +24527,7 @@
 					        static constexpr DeviceAttr_t deviceAttributeMaxSharedMemoryPerBlock = ::cudaDevAttrMaxSharedMemoryPerBlock;
 					        static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::cudaDevAttrMaxThreadsPerBlock;
 					        static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::cudaDevAttrMultiProcessorCount;
+					        static constexpr DeviceAttr_t deviceAttributeWarpSize = ::cudaDevAttrWarpSize;
 
 					        static constexpr Limit_t limitPrintfFifoSize = ::cudaLimitPrintfFifoSize;
 					        static constexpr Limit_t limitMallocHeapSize = ::cudaLimitMallocHeapSize;
@@ -25267,10 +25268,11 @@
 				        {
 				            ALPAKA_FN_HOST static auto getPreferredWarpSize(DevUniformCudaHipRt<TApi> const& dev) -> std::size_t
 				            {
-				                typename TApi::DeviceProp_t devProp;
-				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getDeviceProperties(&devProp, dev.getNativeHandle()));
+				                int warpSize = 0;
 
-				                return static_cast<std::size_t>(devProp.warpSize);
+				                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+				                    TApi::deviceGetAttribute(&warpSize, TApi::deviceAttributeWarpSize, dev.getNativeHandle()));
+				                return static_cast<std::size_t>(warpSize);
 				            }
 				        };
 
@@ -26356,6 +26358,7 @@
 		            = ::hipDeviceAttributeMaxSharedMemoryPerBlock;
 		        static constexpr DeviceAttr_t deviceAttributeMaxThreadsPerBlock = ::hipDeviceAttributeMaxThreadsPerBlock;
 		        static constexpr DeviceAttr_t deviceAttributeMultiprocessorCount = ::hipDeviceAttributeMultiprocessorCount;
+		        static constexpr DeviceAttr_t deviceAttributeWarpSize = ::hipDeviceAttributeWarpSize;
 
 		#    if HIP_VERSION >= 40'500'000
 		        static constexpr Limit_t limitPrintfFifoSize = ::hipLimitPrintfFifoSize;
