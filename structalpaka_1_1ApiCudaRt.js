@@ -74,6 +74,7 @@ var structalpaka_1_1ApiCudaRt =
     [ "deviceAttributeMaxSharedMemoryPerBlock", "structalpaka_1_1ApiCudaRt.html#a4218f9d96198ec227b1f41cba6d9f5d2", null ],
     [ "deviceAttributeMaxThreadsPerBlock", "structalpaka_1_1ApiCudaRt.html#a83adb3a452891ca44d9e8907bda330cc", null ],
     [ "deviceAttributeMultiprocessorCount", "structalpaka_1_1ApiCudaRt.html#a1b4207272ea3e0d0e73b34be88a87fbb", null ],
+    [ "deviceAttributeWarpSize", "structalpaka_1_1ApiCudaRt.html#afb538f794cb641f40c3abd85d78071c1", null ],
     [ "errorHostMemoryAlreadyRegistered", "structalpaka_1_1ApiCudaRt.html#ab6b69232fdfb5d210cbdcb7cc3fcf83a", null ],
     [ "errorHostMemoryNotRegistered", "structalpaka_1_1ApiCudaRt.html#af9db54ebd6ca3f646ad334cbc7038d4b", null ],
     [ "errorNotReady", "structalpaka_1_1ApiCudaRt.html#a5fadbe694e6c7950fc6be644ad565a70", null ],

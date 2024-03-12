@@ -12,5 +12,6 @@ var searchData=
   ['deviceattributemaxgriddimz_4376',['deviceAttributeMaxGridDimZ',['../structalpaka_1_1ApiCudaRt.html#af559980e8d2e976c02fce72744aed986',1,'alpaka::ApiCudaRt']]],
   ['deviceattributemaxsharedmemoryperblock_4377',['deviceAttributeMaxSharedMemoryPerBlock',['../structalpaka_1_1ApiCudaRt.html#a4218f9d96198ec227b1f41cba6d9f5d2',1,'alpaka::ApiCudaRt']]],
   ['deviceattributemaxthreadsperblock_4378',['deviceAttributeMaxThreadsPerBlock',['../structalpaka_1_1ApiCudaRt.html#a83adb3a452891ca44d9e8907bda330cc',1,'alpaka::ApiCudaRt']]],
-  ['deviceattributemultiprocessorcount_4379',['deviceAttributeMultiprocessorCount',['../structalpaka_1_1ApiCudaRt.html#a1b4207272ea3e0d0e73b34be88a87fbb',1,'alpaka::ApiCudaRt']]]
+  ['deviceattributemultiprocessorcount_4379',['deviceAttributeMultiprocessorCount',['../structalpaka_1_1ApiCudaRt.html#a1b4207272ea3e0d0e73b34be88a87fbb',1,'alpaka::ApiCudaRt']]],
+  ['deviceattributewarpsize_4380',['deviceAttributeWarpSize',['../structalpaka_1_1ApiCudaRt.html#afb538f794cb641f40c3abd85d78071c1',1,'alpaka::ApiCudaRt']]]
 ];
