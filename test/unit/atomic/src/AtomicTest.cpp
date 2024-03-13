@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
+#include "AtomicFunctors.hpp"
+
 #include <alpaka/atomic/Traits.hpp>
 #include <alpaka/math/FloatEqualExact.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
@@ -13,6 +15,9 @@
 
 #include <climits>
 #include <type_traits>
+
+
+using namespace alpaka::test::unit::atomic;
 
 template<typename T1, typename T2>
 ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(T1 a, T2 b) -> bool
@@ -31,223 +36,79 @@ ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(double a, double b) -> bool
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicAdd(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename THierarchy, typename TOp, typename TAcc, typename T>
+ALPAKA_FN_ACC auto testAtomicCall(TAcc const& acc, bool* success, T& operand, T operandOrig, T value) -> void
+{
+    auto op = typename TOp::Op{};
+
+    // check if the function `alpaka::atomicOp<*>` is callable
+    {
+        // left operand is half of the right
+        operand = operandOrig;
+        T reference = operand;
+        op(&reference, value);
+
+        T const ret = alpaka::atomicOp<typename TOp::Op>(acc, &operand, value, THierarchy{});
+        // check that always the old value is returned
+        ALPAKA_CHECK(*success, equals(operandOrig, ret));
+        // check that result in memory is correct
+        ALPAKA_CHECK(*success, equals(operand, reference));
+    }
+
+    // check if the function `alpaka::atomic*()` is callable
+    {
+        // left operand is half of the right
+        operand = operandOrig;
+        T reference = operand;
+        op(&reference, value);
+
+        T const ret = TOp::atomic(acc, &operand, value, THierarchy{});
+        // check that always the old value is returned
+        ALPAKA_CHECK(*success, equals(operandOrig, ret));
+        // check that result in memory is correct
+        ALPAKA_CHECK(*success, equals(operand, reference));
+    }
+}
+
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename THierarchy, typename TOp, typename TAcc, typename T>
+ALPAKA_FN_ACC auto testAtomicCombinations(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
+{
+    // helper variables to avoid compiler conversion warnings/errors
+    T constexpr one = static_cast<T>(1);
+    T constexpr two = static_cast<T>(2);
+    {
+        // left operand is half of the right
+        T const value = static_cast<T>(operandOrig / two);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+    }
+    {
+        // left operand is twice as large as the right
+        T const value = static_cast<T>(operandOrig * two);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+    }
+    {
+        // left operand is larger by one
+        T const value = static_cast<T>(operandOrig + one);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+    }
+    {
+        // left operand is smaller by one
+        T const value = static_cast<T>(operandOrig - one);
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+    }
+    {
+        // both operands are equal
+        T const value = operandOrig;
+        testAtomicCall<THierarchy, TOp>(acc, success, operand, operandOrig, value);
+    }
+}
+
+ALPAKA_NO_HOST_ACC_WARNING
+template<typename THierarchy, typename TAcc, typename T>
+ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T& operand, T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
-    T const reference = static_cast<T>(operandOrig + value);
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicAdd>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicAdd(acc, &operand, value, alpaka::hierarchy::Threads{});
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicSub(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-    T const reference = static_cast<T>(operandOrig - value);
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicSub>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicSub(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicMin(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-    T const reference = (operandOrig < value) ? operandOrig : value;
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicMin>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicMin(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicMax(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-    T const reference = (operandOrig > value) ? operandOrig : value;
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicMax>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicMax(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicExch(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-    T const reference = value;
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicExch>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicExch(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicInc(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    // \TODO: Check reset to 0 at 'value'.
-    T const value = static_cast<T>(42);
-    T const reference = static_cast<T>(operandOrig + 1);
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicInc>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicInc(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicDec(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    // \TODO: Check reset to 'value' at 0.
-    T const value = static_cast<T>(42);
-    T const reference = static_cast<T>(operandOrig - 1);
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicDec>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicDec(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicAnd(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-    T const reference = operandOrig & value;
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicAnd>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicAnd(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicOr(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-    T const reference = operandOrig | value;
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicOr>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOr(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicXor(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(operandOrig + static_cast<T>(4));
-    T const reference = operandOrig ^ value;
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicOp<alpaka::AtomicXor>(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-    {
-        operand = operandOrig;
-        T const ret = alpaka::atomicXor(acc, &operand, value);
-        ALPAKA_CHECK(*success, equals(operandOrig, ret));
-        ALPAKA_CHECK(*success, equals(operand, reference));
-    }
-}
-
-ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) -> void
-{
-    T const value = static_cast<T>(4);
-    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
     // with match
     {
@@ -255,13 +116,13 @@ ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) 
         T const reference = value;
         {
             operand = operandOrig;
-            T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value);
+            T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value, THierarchy{});
             ALPAKA_CHECK(*success, equals(operandOrig, ret));
             ALPAKA_CHECK(*success, equals(operand, reference));
         }
         {
             operand = operandOrig;
-            T const ret = alpaka::atomicCas(acc, &operand, compare, value);
+            T const ret = alpaka::atomicCas(acc, &operand, compare, value, THierarchy{});
             ALPAKA_CHECK(*success, equals(operandOrig, ret));
             ALPAKA_CHECK(*success, equals(operand, reference));
         }
@@ -273,79 +134,77 @@ ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) 
         T const reference = operandOrig;
         {
             operand = operandOrig;
-            T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value);
+            T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value, THierarchy{});
             ALPAKA_CHECK(*success, equals(operandOrig, ret));
             ALPAKA_CHECK(*success, equals(operand, reference));
         }
         {
             operand = operandOrig;
-            T const ret = alpaka::atomicCas(acc, &operand, compare, value);
+            T const ret = alpaka::atomicCas(acc, &operand, compare, value, THierarchy{});
             ALPAKA_CHECK(*success, equals(operandOrig, ret));
             ALPAKA_CHECK(*success, equals(operand, reference));
         }
     }
 }
 
-template<typename TAcc, typename T, typename Sfinae = void>
+template<typename THierarchy, typename TAcc, typename T, typename Sfinae = void>
 class AtomicTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
     {
-        testAtomicAdd(acc, success, operandOrig);
-        testAtomicSub(acc, success, operandOrig);
+        auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
-        testAtomicMin(acc, success, operandOrig);
-        testAtomicMax(acc, success, operandOrig);
+        testAtomicCombinations<THierarchy, Add>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Sub>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Exch>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Min>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Max>(acc, success, operand, operandOrig);
 
-        testAtomicExch(acc, success, operandOrig);
+        testAtomicCombinations<THierarchy, And>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Or>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Xor>(acc, success, operand, operandOrig);
 
         if constexpr(std::is_unsigned_v<T>)
         {
             // atomicInc / atomicDec are implemented only for unsigned integer types
-            testAtomicInc(acc, success, operandOrig);
-            testAtomicDec(acc, success, operandOrig);
+            testAtomicCombinations<THierarchy, Inc>(acc, success, operand, operandOrig);
+            testAtomicCombinations<THierarchy, Dec>(acc, success, operand, operandOrig);
         }
 
-        testAtomicAnd(acc, success, operandOrig);
-        testAtomicOr(acc, success, operandOrig);
-        testAtomicXor(acc, success, operandOrig);
-
-        testAtomicCas(acc, success, operandOrig);
+        testAtomicCas<THierarchy>(acc, success, operand, operandOrig);
     }
 };
 
-template<typename TAcc, typename T>
-class AtomicTestKernel<TAcc, T, std::enable_if_t<std::is_floating_point_v<T>>>
+
+template<typename THierarchy, typename TAcc, typename T>
+class AtomicTestKernel<THierarchy, TAcc, T, std::enable_if_t<std::is_floating_point_v<T>>>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
     {
-        testAtomicAdd(acc, success, operandOrig);
-        testAtomicSub(acc, success, operandOrig);
+        auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
-        testAtomicMin(acc, success, operandOrig);
-        testAtomicMax(acc, success, operandOrig);
+        testAtomicCombinations<THierarchy, Add>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Sub>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Exch>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Min>(acc, success, operand, operandOrig);
+        testAtomicCombinations<THierarchy, Max>(acc, success, operand, operandOrig);
 
-        testAtomicExch(acc, success, operandOrig);
+        // Inc, Dec, Or, And, Xor are not supported on float/double types
 
-        // These are not supported on float/double types
-        // testAtomicInc(acc, success, operandOrig);
-        // testAtomicDec(acc, success, operandOrig);
-        // testAtomicAnd(acc, success, operandOrig);
-        // testAtomicOr(acc, success, operandOrig);
-        // testAtomicXor(acc, success, operandOrig);
-
-        testAtomicCas(acc, success, operandOrig);
+        testAtomicCas<THierarchy>(acc, success, operand, operandOrig);
     }
 };
 
+
 #if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
 
-template<typename TApi, typename TDim, typename TIdx, typename T>
+template<typename THierarchy, typename TApi, typename TDim, typename TIdx, typename T>
 class AtomicTestKernel<
+    THierarchy,
     alpaka::AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
     T,
     std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
@@ -357,12 +216,29 @@ public:
         bool* success,
         T /* operandOrig */) const -> void
     {
-        // All other types are not supported by CUDA/HIP atomic operations.
+        // Only 32/64bit atomics are supported
         ALPAKA_CHECK(*success, true);
     }
 };
 
 #endif
+
+template<typename THierarchy, typename TDim, typename TIdx, typename T>
+class AtomicTestKernel<
+    THierarchy,
+    alpaka::AccOacc<TDim, TIdx>,
+    T,
+    std::enable_if_t<sizeof(T) != 4u && sizeof(T) != 8u>>
+{
+public:
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_ACC auto operator()(alpaka::AccOacc<TDim, TIdx> const& /* acc */, bool* success, T /* operandOrig */)
+        const -> void
+    {
+        // Only 32/64bit atomics are supported
+        ALPAKA_CHECK(*success, true);
+    }
+};
 
 template<typename TAcc, typename T>
 struct TestAtomicOperations
@@ -374,10 +250,16 @@ struct TestAtomicOperations
 
         alpaka::test::KernelExecutionFixture<TAcc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
-        AtomicTestKernel<TAcc, T> kernel;
-
         T value = static_cast<T>(32);
-        REQUIRE(fixture(kernel, value));
+
+        AtomicTestKernel<alpaka::hierarchy::Threads, TAcc, T> kernelAtomicThreads;
+        REQUIRE(fixture(kernelAtomicThreads, value));
+
+        AtomicTestKernel<alpaka::hierarchy::Blocks, TAcc, T> kernelAtomicBlocks;
+        REQUIRE(fixture(kernelAtomicBlocks, value));
+
+        AtomicTestKernel<alpaka::hierarchy::Grids, TAcc, T> kernelAtomicGrids;
+        REQUIRE(fixture(kernelAtomicGrids, value));
     }
 };
 
