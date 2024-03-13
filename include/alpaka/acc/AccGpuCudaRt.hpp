@@ -28,6 +28,12 @@ namespace alpaka
         {
             using type = alpaka::AccGpuCudaRt<TDim, TIdx>;
         };
+
+        template<typename TDim, typename TIdx>
+        struct MemVisibility<alpaka::AccCpuSerial<TDim, TIdx>>
+        {
+            using type = alpaka::MemVisibleGpuCudaRt;
+        };
     } // namespace trait
 } // namespace alpaka
 
