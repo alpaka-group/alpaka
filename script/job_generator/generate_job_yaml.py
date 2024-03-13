@@ -3,7 +3,7 @@ SPDX-License-Identifier: MPL-2.0
 
 Create GitLab-CI job description written in yaml from the job matrix."""
 
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Union
 from typeguard import typechecked
 import os, yaml
 import gitlab
@@ -221,7 +221,7 @@ def job_image(
 
 @typechecked
 def append_backend_variables(
-    variables: Dict[str, str], job: Dict[str, Tuple[str, str]]
+    variables: Dict[str, Union[str, int]], job: Dict[str, Tuple[str, Union[str, int]]]
 ):
     """Searches for enabled back-ends in the job parameters and appends the back-end
     variable to variables to enable it in the CI job.
@@ -237,7 +237,7 @@ def append_backend_variables(
 
 
 @typechecked
-def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
+def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, Union[str, int]]:
     """Add variables to the job depending of the job dict.
 
     Args:
@@ -246,7 +246,7 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     Returns:
         Dict[str, str]: Dict of {variable name : variable value}.
     """
-    variables: Dict[str, str] = {}
+    variables: Dict[str, Union[str, int]] = {}
 
     ################################################################################################
     ### job independent environment variables
@@ -287,6 +287,11 @@ def job_variables(job: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
 
     variables["ALPAKA_CI_CMAKE_VER"] = job[CMAKE][VERSION]
     variables["ALPAKA_BOOST_VERSION"] = job[BOOST][VERSION]
+
+    if job[BUILD_TYPE][VERSION] == CMAKE_DEBUG:
+        variables["alpaka_DEBUG"] = 2
+    else:
+        variables["alpaka_DEBUG"] = 0
 
     # all back-ends are disabled by default
     # back-ends are conditionally enabled depending on the job parameters
