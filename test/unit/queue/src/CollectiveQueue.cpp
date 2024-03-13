@@ -1,12 +1,8 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
+/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
-
-#    if _OPENMP < 200203
-#        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
-#    endif
 
 #    include <alpaka/alpaka.hpp>
 #    include <alpaka/test/queue/Queue.hpp>
@@ -16,6 +12,15 @@
 #    include <catch2/catch_test_macros.hpp>
 
 #    include <vector>
+
+/* clang doesn't define the _OPENMP macro when compiling in CUDA mode. We need to turn off -Wundef so clang doesn't
+   complain about our preprocessor guards.*/
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wundef"
+
+#    if _OPENMP < 200203 && !defined(BOOST_COMP_CLANG_CUDA)
+#        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+#    endif
 
 struct QueueCollectiveTestKernel
 {
@@ -127,5 +132,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     // only one value is allowed to differ from the initial value
     REQUIRE(numNonIntitialValues == 1u);
 }
+
+#    pragma clang diagnostic pop
 
 #endif

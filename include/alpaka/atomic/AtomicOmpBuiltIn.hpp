@@ -1,4 +1,4 @@
-/* Copyright 2022 René Widera, Bernhard Manfred Gruber
+/* Copyright 2023 René Widera, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -8,7 +8,16 @@
 #include "alpaka/atomic/Traits.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 
-#ifdef _OPENMP
+#if defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED) || defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
+
+/* clang doesn't define the _OPENMP macro when compiling in CUDA mode. We need to turn off -Wundef so clang doesn't
+   complain about our preprocessor guards.*/
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wundef"
+
+#    if(_OPENMP < 200203) && !defined(BOOST_COMP_CLANG_CUDA)
+#        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+#    endif
 
 namespace alpaka
 {
@@ -24,7 +33,7 @@ namespace alpaka
     {
 // check for OpenMP 3.1+
 // "omp atomic capture" is not supported before OpenMP 3.1
-#    if _OPENMP >= 201107
+#    if _OPENMP >= 201107 || BOOST_COMP_CLANG_CUDA
 
         //! The OpenMP accelerators atomic operation: ADD
         template<typename T, typename THierarchy>
@@ -169,11 +178,11 @@ namespace alpaka
             }
         };
 
-#    endif // _OPENMP >= 201107
+#    endif // _OPENMP >= 201107 || BOOST_COMP_CLANG_CUDA
 
 // check for OpenMP 5.1+
-// "omp atomic compare" was introduced with OpenMP 5.1
-#    if _OPENMP >= 202011
+// "omp atomic compare" was introduced with OpenMP 5.1 (supported since clang-15)
+#    if _OPENMP >= 202011 || (BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(15, 0, 0))
 
         //! The OpenMP accelerators atomic operation: Min
         template<typename T, typename THierarchy>
@@ -312,9 +321,11 @@ namespace alpaka
             }
         };
 
-#    endif // _OPENMP >= 202011
+#    endif // _OPENMP >= 202011 || (BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(15, 0, 0))
 
     } // namespace trait
 } // namespace alpaka
+
+#    pragma clang diagnostic pop
 
 #endif

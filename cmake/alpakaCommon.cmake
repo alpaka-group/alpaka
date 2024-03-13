@@ -393,7 +393,9 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             endif()
 
             if(alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
-                message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
+                # FindOpenMP.cmake guards the OpenMP::OpenMP_CXX target with a $<COMPILE_LANGUAGE:CXX> generator expression.
+                # We have to duplicate the flags here.
+                alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:${OpenMP_CXX_FLAGS}>")
             endif()
 
             target_compile_options(alpaka INTERFACE "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Wno-unknown-cuda-version>")

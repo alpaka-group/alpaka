@@ -1,16 +1,22 @@
-/* Copyright 2022 Sergei Bastrakov, Bernhard Manfred Gruber
+/* Copyright 2023 Sergei Bastrakov, Bernhard Manfred Gruber, Jan Stephan
  * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
 
+#include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Common.hpp"
 
-#ifdef _OPENMP
+#if defined(_OPENMP)
 #    include <omp.h>
 #endif
 
 #include <cstdint>
+
+/* clang doesn't define the _OPENMP macro when compiling in CUDA mode. We need to turn off -Wundef so clang doesn't
+   complain about our preprocessor guards.*/
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundef"
 
 namespace alpaka::omp
 {
@@ -30,7 +36,7 @@ namespace alpaka::omp
             Dynamic = 2u,
             Guided = 3u,
             // Auto supported since OpenMP 3.0
-#if defined _OPENMP && _OPENMP >= 200805
+#if(defined _OPENMP && _OPENMP >= 200805) || BOOST_COMP_CLANG_CUDA
             Auto = 4u,
 #endif
             Runtime = 5u
@@ -86,3 +92,5 @@ namespace alpaka::omp
         }
     }
 } // namespace alpaka::omp
+
+#pragma clang diagnostic pop
