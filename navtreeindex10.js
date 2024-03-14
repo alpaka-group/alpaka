@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1ViewConst.html#a7b0adf7a525e842b4da71f88a76930fd":[3,0,0,111,2],
 "structalpaka_1_1ViewConst.html#ad3f8f2bf1bed8ddad05d3d5bd10249f9":[3,0,0,111,1],
 "structalpaka_1_1ViewPlainPtr.html":[3,0,0,112],
 "structalpaka_1_1ViewPlainPtr.html#a046fb24160a7e6c776fe6a4fffd2b66d":[3,0,0,112,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1ConceptMathConj.html":[3,0,0,9,34],
 "structalpaka_1_1math_1_1ConceptMathCopysign.html":[3,0,0,9,35],
 "structalpaka_1_1math_1_1ConceptMathCos.html":[3,0,0,9,36],
-"structalpaka_1_1math_1_1ConceptMathCosh.html":[3,0,0,9,37],
-"structalpaka_1_1math_1_1ConceptMathErf.html":[3,0,0,9,38]
+"structalpaka_1_1math_1_1ConceptMathCosh.html":[3,0,0,9,37]
 };
