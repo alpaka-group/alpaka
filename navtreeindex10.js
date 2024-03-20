@@ -1,6 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html#aef04edfcc394cb33753d692b1c4aba82":[3,0,0,2,1,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html":[3,0,0,2,1,1],
 "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html#a05ac5d22cd7bf5947c87848005ff242c":[3,0,0,2,1,1,0],
 "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html":[3,0,0,2,1,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1ConceptMathSinh.html":[3,0,0,9,57],
 "structalpaka_1_1math_1_1ConceptMathSqrt.html":[3,0,0,9,58],
 "structalpaka_1_1math_1_1ConceptMathTan.html":[3,0,0,9,59],
-"structalpaka_1_1math_1_1ConceptMathTanh.html":[3,0,0,9,60]
+"structalpaka_1_1math_1_1ConceptMathTanh.html":[3,0,0,9,60],
+"structalpaka_1_1math_1_1ConceptMathTrunc.html":[3,0,0,9,61]
 };

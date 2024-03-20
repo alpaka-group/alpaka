@@ -1,6 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01concepts_1_1Im56703196c511d6767c91af80eebe840e.html":[3,0,0,15,416],
 "structalpaka_1_1trait_1_1PlatformType_3_01TPlatform_00_01std_1_1enable__if__t_3_01concepts_1_1Im56703196c511d6767c91af80eebe840e.html#a54443df5b6ec03c445a71a158141a2a2":[3,0,0,15,416,0],
 "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernea98d6d0cf9b537a479c050737fa6d86e.html":[3,0,0,15,411],
 "structalpaka_1_1trait_1_1PlatformType_3_01TaskKernelCpuOmp2Blocks_3_01TDim_00_01TIdx_00_01TKernea98d6d0cf9b537a479c050737fa6d86e.html#a4f0ef80d49e23b2d8d04d4c0812bab9c":[3,0,0,15,411,0],
@@ -246,5 +245,6 @@ var NAVTREEINDEX16 =
 "warp_2Traits_8hpp_source.html":[4,0,0,0,25,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,26,0],
 "workdiv_2Traits_8hpp.html#a2a811570d2074f237f89c9910b82b44c":[4,0,0,0,26,0,4],
-"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0]
+"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0],
+"":[2,0,2]
 };
