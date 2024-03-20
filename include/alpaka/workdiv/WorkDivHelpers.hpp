@@ -321,6 +321,33 @@ namespace alpaka
         ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
     }
 
+    template<
+        typename TApi,
+        typename TAcc,
+        typename TDev,
+        typename TKernel,
+        typename TGridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>,
+        typename TThreadElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>>
+    ALPAKA_FN_HOST void enqueueWithValidWorkDiv(
+        TDev const& queue,
+        TKernel const& kernel,
+        TGridElemExtent const& gridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        TThreadElemExtent const& threadElemExtents = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        bool blockThreadMustDivideGridThreadExtent = true,
+        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
+        = GridBlockExtentSubDivRestrictions::Unrestricted)
+    {
+        // Log the function attributes.
+        typename TApi::FuncAttributes_t funcAttrs;
+        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernel));
+        std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
+                  << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
+                  << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
+                  << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock << " numRegs: " << funcAttrs.numRegs
+                  << " ptxVersion: " << funcAttrs.ptxVersion << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes
+                  << " B" << std::endl;
+    }
+
     //! \tparam TDim The dimensionality of the accelerator device properties.
     //! \tparam TIdx The idx type of the accelerator device properties.
     //! \tparam TWorkDiv The type of the work division.
