@@ -1,13 +1,13 @@
 var classalpaka_1_1rand_1_1engine_1_1PhiloxVector =
 [
-    [ "Counter", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a0fab2dd85d39350c937b291ef3c26c58", null ],
-    [ "Key", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#aa0c54c757be8abff54fee5f6f3aa6b30", null ],
-    [ "ResultContainer", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#abccc88d68d3d709f164907a1ef4e7464", null ],
-    [ "State", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#aff92f05f8ff05d0265ecba8f5635a159", null ],
-    [ "Traits", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ae69a913ace20bba8d63f1c18f242dc41", null ],
-    [ "PhiloxVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#adb12dbd47334e4b6f403f1984df8e764", null ],
-    [ "nextVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9070c8635360989ce12058eab374830d", null ],
-    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a685c4d8e3a6e4dcff73df9cab13d6e25", null ],
-    [ "skip", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ad77e028e95da99728da753ce67db2f98", null ],
-    [ "state", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a437984ee349279f6c5fb89f40673e08a", null ]
+    [ "Base", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9dea952c5ad734497f5302d4c3f5a7dc", null ],
+    [ "Counter", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a2b2e394be006104220af1c8d65a2f6a0", null ],
+    [ "Key", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a65ba3fd37abddb6d953f8165778a3b26", null ],
+    [ "ResultContainer", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#abb91536038eac17244a5875ddeca79fa", null ],
+    [ "State", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a2c0361690aebc1a4a7f9a46f56520b20", null ],
+    [ "PhiloxVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a1187fb13c5085bc91677be16c588d134", null ],
+    [ "nextVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#abde3441823a0f622d7fa4d3debbfadfc", null ],
+    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a6e4df1fcb2d83314870d746cde46aec6", null ],
+    [ "skip", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ab8e3595cd7b93b12c1d2c41839ed36ea", null ],
+    [ "state", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#ad6c8fe6d349849d93b5137b3b985c22c", null ]
 ];

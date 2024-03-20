@@ -4,11 +4,6 @@ var dir_3fed8e0f808af832c9a01894efdb4599 =
     [ "PhiloxBaseCommon.hpp", "PhiloxBaseCommon_8hpp.html", [
       [ "PhiloxBaseCommon", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon" ]
     ] ],
-    [ "PhiloxBaseCudaArray.hpp", "PhiloxBaseCudaArray_8hpp.html", "PhiloxBaseCudaArray_8hpp" ],
-    [ "PhiloxBaseStdArray.hpp", "PhiloxBaseStdArray_8hpp.html", [
-      [ "PhiloxBaseStdArray", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray.html", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray" ]
-    ] ],
-    [ "PhiloxBaseTraits.hpp", "PhiloxBaseTraits_8hpp.html", "PhiloxBaseTraits_8hpp" ],
     [ "PhiloxConstants.hpp", "PhiloxConstants_8hpp.html", [
       [ "PhiloxConstants", "classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html", "classalpaka_1_1rand_1_1engine_1_1PhiloxConstants" ]
     ] ],
@@ -22,9 +17,6 @@ var dir_3fed8e0f808af832c9a01894efdb4599 =
     ] ],
     [ "PhiloxStatelessKeyedBase.hpp", "PhiloxStatelessKeyedBase_8hpp.html", [
       [ "PhiloxStatelessKeyedBase", "structalpaka_1_1rand_1_1engine_1_1PhiloxStatelessKeyedBase.html", "structalpaka_1_1rand_1_1engine_1_1PhiloxStatelessKeyedBase" ]
-    ] ],
-    [ "PhiloxStatelessVector.hpp", "PhiloxStatelessVector_8hpp.html", [
-      [ "PhiloxStatelessVector", "classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html", null ]
     ] ],
     [ "PhiloxVector.hpp", "PhiloxVector_8hpp.html", [
       [ "PhiloxStateVector", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector.html", "structalpaka_1_1rand_1_1engine_1_1PhiloxStateVector" ],

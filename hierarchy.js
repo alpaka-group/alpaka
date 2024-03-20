@@ -285,7 +285,6 @@ var hierarchy =
     [ "alpaka::memory_scope::Grid", "structalpaka_1_1memory__scope_1_1Grid.html", null ],
     [ "alpaka::MemSetKernel", "classalpaka_1_1MemSetKernel.html", null ],
     [ "alpaka::meta::Contains< List< Head, Tail... >, Value >", "structalpaka_1_1meta_1_1Contains_3_01List_3_01Head_00_01Tail_8_8_8_01_4_00_01Value_01_4.html", null ],
-    [ "alpaka::meta::CudaVectorArrayWrapper< TScalar, N >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper.html", null ],
     [ "alpaka::meta::detail::ApplyImpl< TList, TApplicant >", "structalpaka_1_1meta_1_1detail_1_1ApplyImpl.html", null ],
     [ "alpaka::meta::detail::ApplyImpl< TList< T... >, TApplicant >", "structalpaka_1_1meta_1_1detail_1_1ApplyImpl_3_01TList_3_01T_8_8_8_01_4_00_01TApplicant_01_4.html", null ],
     [ "alpaka::meta::detail::CartesianProductImpl< TList, Ts >", "structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl.html", null ],
@@ -302,23 +301,6 @@ var hierarchy =
     [ "alpaka::meta::detail::ConcatenateImpl< TList< As... >, TList< Bs... >, TRest... >", "structalpaka_1_1meta_1_1detail_1_1ConcatenateImpl_3_01TList_3_01As_8_8_8_01_4_00_01TList_3_01Bs_957cf045dd0545b9e46a9ae4bbc8ceb5.html", null ],
     [ "alpaka::meta::detail::ConvertIntegerSequence< TDstType, TIntegerSequence >", "structalpaka_1_1meta_1_1detail_1_1ConvertIntegerSequence.html", null ],
     [ "alpaka::meta::detail::ConvertIntegerSequence< TDstType, std::integer_sequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1ConvertIntegerSequence_3_01TDstType_00_01std_1_1integer__seque12c318184e9347c3f2ab4bfc091c07f3.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< TScalar, N >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< double, 1 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_011_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< double, 2 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_012_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< double, 3 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_013_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< double, 4 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01double_00_014_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< float, 1 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01float_00_011_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< float, 2 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01float_00_012_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< float, 3 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01float_00_013_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< float, 4 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01float_00_014_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< int, 1 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01int_00_011_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< int, 2 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01int_00_012_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< int, 3 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01int_00_013_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< int, 4 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01int_00_014_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< unsigned, 1 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_011_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< unsigned, 2 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_012_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< unsigned, 3 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_013_01_4.html", null ],
-    [ "alpaka::meta::detail::CudaVectorArrayTypeTraits< unsigned, 4 >", "structalpaka_1_1meta_1_1detail_1_1CudaVectorArrayTypeTraits_3_01unsigned_00_014_01_4.html", null ],
     [ "alpaka::meta::detail::Empty< T >", "structalpaka_1_1meta_1_1detail_1_1Empty.html", [
       [ "alpaka::meta::detail::IsParameterPackSetImpl< T, Ts... >", "structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html", null ]
     ] ],
@@ -396,21 +378,22 @@ var hierarchy =
     [ "alpaka::rand::engine::cpu::RandomDevice", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1RandomDevice.html", null ],
     [ "alpaka::rand::engine::cpu::TinyMersenneTwister", "classalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMersenneTwister.html", null ],
     [ "alpaka::rand::engine::cpu::TinyMTengine", "structalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMTengine.html", null ],
-    [ "alpaka::rand::engine::PhiloxBaseCudaArray< TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCudaArray.html", null ],
-    [ "alpaka::rand::engine::PhiloxBaseStdArray< TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseStdArray.html", null ],
     [ "alpaka::rand::engine::PhiloxConstants< TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html", [
-      [ "alpaka::rand::engine::PhiloxStateless< TBackend, TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html", [
-        [ "alpaka::rand::engine::PhiloxStatelessVector< TAcc, engine::PhiloxParams< 4, 32, 10 > >", "classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html", [
-          [ "alpaka::rand::PhiloxStateless4x32x10Vector< TAcc >", "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector.html", null ]
+      [ "alpaka::rand::engine::PhiloxStateless< engine::PhiloxParams< 4, 32, 10 > >", "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html", [
+        [ "alpaka::rand::PhiloxStateless4x32x10Vector", "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector.html", null ]
+      ] ],
+      [ "alpaka::rand::engine::PhiloxStateless< TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html", [
+        [ "alpaka::rand::engine::PhiloxBaseCommon< TParams, PhiloxVector< TParams > >", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html", [
+          [ "alpaka::rand::engine::PhiloxVector< TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html", null ]
         ] ],
-        [ "alpaka::rand::engine::PhiloxBaseCommon< TBackend, TParams, TImpl >", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html", [
-          [ "alpaka::rand::engine::PhiloxSingle< TAcc, EngineParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html", null ],
-          [ "alpaka::rand::engine::PhiloxVector< TAcc, EngineParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html", null ],
-          [ "alpaka::rand::engine::PhiloxSingle< TAcc, TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html", null ],
-          [ "alpaka::rand::engine::PhiloxVector< TAcc, TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html", null ]
+        [ "alpaka::rand::engine::PhiloxBaseCommon< TParams, PhiloxSingle< TParams > >", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html", [
+          [ "alpaka::rand::engine::PhiloxSingle< TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html", null ]
         ] ],
-        [ "alpaka::rand::engine::PhiloxStatelessKeyedBase< TBackend, TParams >", "structalpaka_1_1rand_1_1engine_1_1PhiloxStatelessKeyedBase.html", null ],
-        [ "alpaka::rand::engine::PhiloxStatelessVector< TAcc, TParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxStatelessVector.html", null ]
+        [ "alpaka::rand::engine::PhiloxBaseCommon< TParams, TImpl >", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html", [
+          [ "alpaka::rand::engine::PhiloxSingle< EngineParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html", null ],
+          [ "alpaka::rand::engine::PhiloxVector< EngineParams >", "classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html", null ]
+        ] ],
+        [ "alpaka::rand::engine::PhiloxStatelessKeyedBase< TParams >", "structalpaka_1_1rand_1_1engine_1_1PhiloxStatelessKeyedBase.html", null ]
       ] ]
     ] ],
     [ "alpaka::rand::engine::PhiloxParams< TCounterSize, TWidth, TRounds >", "structalpaka_1_1rand_1_1engine_1_1PhiloxParams.html", null ],
@@ -422,15 +405,6 @@ var hierarchy =
     [ "alpaka::rand::engine::trait::CreateDefault< RandomDevice >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandomDevice_01_4.html", null ],
     [ "alpaka::rand::engine::trait::CreateDefault< RandUniformCudaHipRand< TApi > >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandUniformCudaHipRand_3_01TApi_01_4_01_4.html", null ],
     [ "alpaka::rand::engine::trait::CreateDefault< TinyMersenneTwister >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html", null ],
-    [ "alpaka::rand::engine::trait::PhiloxResultContainerTraits< TScalar >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxResultContainerTraits.html", null ],
-    [ "alpaka::rand::engine::trait::PhiloxResultContainerTraits< double >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxResultContainerTraits_3_01double_01_4.html", null ],
-    [ "alpaka::rand::engine::trait::PhiloxResultContainerTraits< float >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxResultContainerTraits_3_01float_01_4.html", null ],
-    [ "alpaka::rand::engine::trait::PhiloxResultContainerTraits< int >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxResultContainerTraits_3_01int_01_4.html", null ],
-    [ "alpaka::rand::engine::trait::PhiloxResultContainerTraits< unsigned >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxResultContainerTraits_3_01unsigned_01_4.html", null ],
-    [ "alpaka::rand::engine::trait::PhiloxStatelessBaseTraits< TAcc, TParams, TSfinae >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html", [
-      [ "alpaka::rand::engine::trait::PhiloxBaseTraits< TAcc, TParams, TImpl, TSfinae >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html", null ],
-      [ "alpaka::rand::engine::trait::PhiloxStatelessKeyedBaseTraits< TAcc, TParams, TSfinae >", "structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessKeyedBaseTraits.html", null ]
-    ] ],
     [ "alpaka::rand::engine::uniform_cuda_hip::Xor", "classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html", null ],
     [ "alpaka::rand::EngineCallHostAccProxy< TEngine >", "structalpaka_1_1rand_1_1EngineCallHostAccProxy.html", null ],
     [ "alpaka::remove_restrict< T >", "structalpaka_1_1remove__restrict.html", null ],
@@ -981,18 +955,6 @@ var hierarchy =
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
-    ] ],
-    [ "detail::CudaVectorArrayTypeTraits::type", null, [
-      [ "alpaka::meta::CudaVectorArrayWrapper< TScalar, 1 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_011_01_4.html", null ]
-    ] ],
-    [ "detail::CudaVectorArrayTypeTraits::type", null, [
-      [ "alpaka::meta::CudaVectorArrayWrapper< TScalar, 2 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_012_01_4.html", null ]
-    ] ],
-    [ "detail::CudaVectorArrayTypeTraits::type", null, [
-      [ "alpaka::meta::CudaVectorArrayWrapper< TScalar, 3 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_013_01_4.html", null ]
-    ] ],
-    [ "detail::CudaVectorArrayTypeTraits::type", null, [
-      [ "alpaka::meta::CudaVectorArrayWrapper< TScalar, 4 >", "structalpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01TScalar_00_014_01_4.html", null ]
     ] ],
     [ "alpaka::trait::DevType< TView >", "structalpaka_1_1trait_1_1DevType.html", [
       [ "alpaka::trait::DevType< ViewConst< TView > >", "structalpaka_1_1trait_1_1DevType_3_01ViewConst_3_01TView_01_4_01_4.html", null ]
@@ -1616,14 +1578,14 @@ var hierarchy =
     [ "alpaka::concepts::Implements< ConceptRand, MersenneTwister >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::rand::MersenneTwister", "classalpaka_1_1rand_1_1MersenneTwister.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, Philox4x32x10< TAcc > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::rand::Philox4x32x10< TAcc >", "classalpaka_1_1rand_1_1Philox4x32x10.html", null ]
+    [ "alpaka::concepts::Implements< ConceptRand, Philox4x32x10 >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::rand::Philox4x32x10", "classalpaka_1_1rand_1_1Philox4x32x10.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, Philox4x32x10Vector< TAcc > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::rand::Philox4x32x10Vector< TAcc >", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html", null ]
+    [ "alpaka::concepts::Implements< ConceptRand, Philox4x32x10Vector >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::rand::Philox4x32x10Vector", "classalpaka_1_1rand_1_1Philox4x32x10Vector.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptRand, PhiloxStateless4x32x10Vector< TAcc > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::rand::PhiloxStateless4x32x10Vector< TAcc >", "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector.html", null ]
+    [ "alpaka::concepts::Implements< ConceptRand, PhiloxStateless4x32x10Vector >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::rand::PhiloxStateless4x32x10Vector", "classalpaka_1_1rand_1_1PhiloxStateless4x32x10Vector.html", null ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptRand, RandDefault >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::rand::RandDefault", "classalpaka_1_1rand_1_1RandDefault.html", null ]
@@ -1708,12 +1670,11 @@ var hierarchy =
       [ "alpaka::core::detail::RoundUpToPowerOfTwoHelper< N, TisPowerTwo >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper.html", null ],
       [ "alpaka::core::detail::RoundUpToPowerOfTwoHelper< N, false >", "structalpaka_1_1core_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html", null ],
       [ "alpaka::trait::WarpSize< TKernelFnObj, TAcc, TSfinae >", "structalpaka_1_1trait_1_1WarpSize.html", null ],
-      [ "std::tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
-      [ "std::tuple_size< alpaka::meta::CudaVectorArrayWrapper< T, N > >", "structstd_1_1tuple__size_3_01alpaka_1_1meta_1_1CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ]
+      [ "std::tuple_size< alpaka::Vec< TDim, TVal > >", "structstd_1_1tuple__size_3_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ]
     ] ],
     [ "std::true_type", null, [
-      [ "alpaka::meta::IsArrayOrVector< CudaVectorArrayWrapper< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01CudaVectorArrayWrapper_3_01T_00_01N_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ],
+      [ "alpaka::meta::IsArrayOrVector< alpaka::Vec< N, T > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01alpaka_1_1Vec_3_01N_00_01T_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::vector< T, A > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1vector_3_01T_00_01A_01_4_01_4.html", null ],
       [ "alpaka::test::trait::IsBlockingQueue< QueueCpuOmp2Collective >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html", null ],
@@ -1761,9 +1722,6 @@ var hierarchy =
     ] ],
     [ "alpaka::detail::TaskSetUniformCudaHipBase< TApi, DimInt< 3u >, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase.html", [
       [ "alpaka::detail::TaskSetUniformCudaHip< TApi, DimInt< 3u >, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TView_00_01TExtent_01_4.html", null ]
-    ] ],
-    [ "TBackend", null, [
-      [ "alpaka::rand::engine::PhiloxBaseCommon< TBackend, TParams, TImpl >", "classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html", null ]
     ] ],
     [ "TINYMT32_T", "structTINYMT32__T.html", null ],
     [ "alpaka::Vec< Dim, Idx >", "classalpaka_1_1Vec.html", null ],

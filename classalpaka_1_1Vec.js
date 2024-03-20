@@ -2,6 +2,7 @@ var classalpaka_1_1Vec =
 [
     [ "Dim", "classalpaka_1_1Vec.html#a79cd10bdf0f58e103e43275a258399fd", null ],
     [ "Val", "classalpaka_1_1Vec.html#a8ba1d21778eba24f0ada0ec057204c8b", null ],
+    [ "value_type", "classalpaka_1_1Vec.html#a679e7e68f6a5d7b0d42d30883080d4f2", null ],
     [ "Vec", "classalpaka_1_1Vec.html#a9b28e4f55e2d24291409d1b1b4ca3e5b", null ],
     [ "Vec", "classalpaka_1_1Vec.html#a7b6b1a4bfbc7a6b7a28fbc8f15a97755", null ],
     [ "Vec", "classalpaka_1_1Vec.html#aa8054f251327c0b38cdf04d0e4a92c3f", null ],

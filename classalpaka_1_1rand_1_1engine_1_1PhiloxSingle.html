@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::rand::engine::PhiloxSingle&lt; TAcc, TParams &gt; Class Template Reference</title>
+<title>alpaka: alpaka::rand::engine::PhiloxSingle&lt; TParams &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,218 +90,223 @@ $(document).ready(function(){initNavTree('classalpaka_1_1rand_1_1engine_1_1Philo
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::rand::engine::PhiloxSingle&lt; TAcc, TParams &gt; Class Template Reference</div>  </div>
+<div class="title">alpaka::rand::engine::PhiloxSingle&lt; TParams &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for alpaka::rand::engine::PhiloxSingle&lt; TAcc, TParams &gt;:</div>
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for alpaka::rand::engine::PhiloxSingle&lt; TParams &gt;:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
  <div class="center">
-  <img src="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.png" usemap="#alpaka::rand::engine::PhiloxSingle_3C_20TAcc_2C_20TParams_20_3E_map" alt=""/>
-  <map id="alpaka::rand::engine::PhiloxSingle_3C_20TAcc_2C_20TParams_20_3E_map" name="alpaka::rand::engine::PhiloxSingle_3C_20TAcc_2C_20TParams_20_3E_map">
-<area href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html" alt="alpaka::rand::engine::PhiloxBaseCommon&lt; TBackend, TParams, TImpl &gt;" shape="rect" coords="323,112,959,136"/>
-<area href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html" alt="alpaka::rand::engine::PhiloxStateless&lt; TBackend, TParams &gt;" shape="rect" coords="646,56,1282,80"/>
-<area href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html" alt="alpaka::rand::engine::PhiloxConstants&lt; TParams &gt;" shape="rect" coords="646,0,1282,24"/>
+  <img src="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.png" usemap="#alpaka::rand::engine::PhiloxSingle_3C_20TParams_20_3E_map" alt=""/>
+  <map id="alpaka::rand::engine::PhiloxSingle_3C_20TParams_20_3E_map" name="alpaka::rand::engine::PhiloxSingle_3C_20TParams_20_3E_map">
+<area href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html" alt="alpaka::rand::engine::PhiloxBaseCommon&lt; TParams, PhiloxSingle&lt; TParams &gt; &gt;" shape="rect" coords="0,112,465,136"/>
+<area href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html" alt="alpaka::rand::engine::PhiloxStateless&lt; TParams &gt;" shape="rect" coords="0,56,465,80"/>
+<area href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html" alt="alpaka::rand::engine::PhiloxConstants&lt; TParams &gt;" shape="rect" coords="0,0,465,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa58d3ff81a4b3d02dd866feb24bae6f4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa58d3ff81a4b3d02dd866feb24bae6f4">Counter</a> = typename Traits::Counter</td></tr>
-<tr class="memdesc:aa58d3ff81a4b3d02dd866feb24bae6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backend-dependent Counter type.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa58d3ff81a4b3d02dd866feb24bae6f4">More...</a><br /></td></tr>
-<tr class="separator:aa58d3ff81a4b3d02dd866feb24bae6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7242abe7b99cfdc1133f107f51d83f2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad7242abe7b99cfdc1133f107f51d83f2">Key</a> = typename Traits::Key</td></tr>
-<tr class="memdesc:ad7242abe7b99cfdc1133f107f51d83f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backend-dependent Key type.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad7242abe7b99cfdc1133f107f51d83f2">More...</a><br /></td></tr>
-<tr class="separator:ad7242abe7b99cfdc1133f107f51d83f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84b6b446f740da741b760071b105f6bc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a84b6b446f740da741b760071b105f6bc">State</a> = <a class="el" href="structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html">PhiloxStateSingle</a>&lt; <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a79cc71c9627805fb170c9b849dfa9e2a">Counter</a>, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a8251b47d8e619307d4d796c51d576e98">Key</a> &gt;</td></tr>
-<tr class="memdesc:a84b6b446f740da741b760071b105f6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backend-dependent State type.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a84b6b446f740da741b760071b105f6bc">More...</a><br /></td></tr>
-<tr class="separator:a84b6b446f740da741b760071b105f6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14d5794a215f630c1fa0d2c545cb6665"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a14d5794a215f630c1fa0d2c545cb6665">Traits</a> = typename <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html">trait::PhiloxBaseTraits</a>&lt; TAcc, TParams, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">PhiloxSingle</a>&lt; TAcc, TParams &gt; &gt;</td></tr>
-<tr class="memdesc:a14d5794a215f630c1fa0d2c545cb6665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization for different TAcc backends.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a14d5794a215f630c1fa0d2c545cb6665">More...</a><br /></td></tr>
-<tr class="separator:a14d5794a215f630c1fa0d2c545cb6665"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html">alpaka::rand::engine::PhiloxBaseCommon&lt; TBackend, TParams, TImpl &gt;</a></td></tr>
-<tr class="memitem:a79cc71c9627805fb170c9b849dfa9e2a inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a79cc71c9627805fb170c9b849dfa9e2a">Counter</a> = typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">PhiloxStateless</a>&lt; TBackend, TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a79cc71c9627805fb170c9b849dfa9e2a">Counter</a></td></tr>
-<tr class="separator:a79cc71c9627805fb170c9b849dfa9e2a inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8251b47d8e619307d4d796c51d576e98 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a8251b47d8e619307d4d796c51d576e98">Key</a> = typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">PhiloxStateless</a>&lt; TBackend, TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a8251b47d8e619307d4d796c51d576e98">Key</a></td></tr>
-<tr class="separator:a8251b47d8e619307d4d796c51d576e98 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">alpaka::rand::engine::PhiloxStateless&lt; TBackend, TParams &gt;</a></td></tr>
-<tr class="memitem:a33f9195aa02132cc7c5c873e27b455bb inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a33f9195aa02132cc7c5c873e27b455bb">Constants</a> = <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html">PhiloxConstants</a>&lt; TParams &gt;</td></tr>
-<tr class="separator:a33f9195aa02132cc7c5c873e27b455bb inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f483573a56c28bae086399d8c6a4918 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918">Counter</a> = typename TBackend::Counter</td></tr>
-<tr class="separator:a4f483573a56c28bae086399d8c6a4918 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8ccdf5c1a17aec4cb301df2624ad536 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536">Key</a> = typename TBackend::Key</td></tr>
-<tr class="separator:aa8ccdf5c1a17aec4cb301df2624ad536 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91f569b1ac87582554bbd8edb2ca9dbb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a91f569b1ac87582554bbd8edb2ca9dbb">Base</a> = <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html">PhiloxBaseCommon</a>&lt; TParams, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">PhiloxSingle</a>&lt; TParams &gt; &gt;</td></tr>
+<tr class="separator:a91f569b1ac87582554bbd8edb2ca9dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ba2ad6a5fc3539a401861f195b92a15"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0ba2ad6a5fc3539a401861f195b92a15">Counter</a> = typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a341cb5488a8d4493470466b02fb69ee1">Base::Counter</a></td></tr>
+<tr class="memdesc:a0ba2ad6a5fc3539a401861f195b92a15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counter type.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0ba2ad6a5fc3539a401861f195b92a15">More...</a><br /></td></tr>
+<tr class="separator:a0ba2ad6a5fc3539a401861f195b92a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa760f34c60ba6bb03f938909dd946563"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa760f34c60ba6bb03f938909dd946563">Key</a> = typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#ae10a19e4c2500ca0d3567eda92b77e66">Base::Key</a></td></tr>
+<tr class="memdesc:aa760f34c60ba6bb03f938909dd946563"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key type.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa760f34c60ba6bb03f938909dd946563">More...</a><br /></td></tr>
+<tr class="separator:aa760f34c60ba6bb03f938909dd946563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798e5c4fcc3c4fc21770143b9edba6ea"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a798e5c4fcc3c4fc21770143b9edba6ea">State</a> = <a class="el" href="structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html">PhiloxStateSingle</a>&lt; <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0ba2ad6a5fc3539a401861f195b92a15">Counter</a>, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa760f34c60ba6bb03f938909dd946563">Key</a> &gt;</td></tr>
+<tr class="memdesc:a798e5c4fcc3c4fc21770143b9edba6ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">State type.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a798e5c4fcc3c4fc21770143b9edba6ea">More...</a><br /></td></tr>
+<tr class="separator:a798e5c4fcc3c4fc21770143b9edba6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html">alpaka::rand::engine::PhiloxBaseCommon&lt; TParams, PhiloxSingle&lt; TParams &gt; &gt;</a></td></tr>
+<tr class="memitem:a341cb5488a8d4493470466b02fb69ee1 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a341cb5488a8d4493470466b02fb69ee1">Counter</a> = typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">PhiloxStateless</a>&lt; TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a></td></tr>
+<tr class="separator:a341cb5488a8d4493470466b02fb69ee1 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae10a19e4c2500ca0d3567eda92b77e66 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#ae10a19e4c2500ca0d3567eda92b77e66">Key</a> = typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">PhiloxStateless</a>&lt; TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aace4c37fd1e76d2ad94e33e5b56dbaeb">Key</a></td></tr>
+<tr class="separator:ae10a19e4c2500ca0d3567eda92b77e66 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a724ae7aa65eeda6c4b7664d728880252 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a724ae7aa65eeda6c4b7664d728880252">ResultContainer</a> = typename <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt</a>&lt; TParams::counterSize &gt;, TDistributionResultScalar &gt;</td></tr>
+<tr class="memdesc:a724ae7aa65eeda6c4b7664d728880252 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distribution container type.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a724ae7aa65eeda6c4b7664d728880252">More...</a><br /></td></tr>
+<tr class="separator:a724ae7aa65eeda6c4b7664d728880252 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">alpaka::rand::engine::PhiloxStateless&lt; TParams &gt;</a></td></tr>
+<tr class="memitem:ae59fdbc9b13b5a99a5000f586d103006 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ae59fdbc9b13b5a99a5000f586d103006">Constants</a> = <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html">PhiloxConstants</a>&lt; TParams &gt;</td></tr>
+<tr class="separator:ae59fdbc9b13b5a99a5000f586d103006 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6df626749fb3e918a44f865bc948035 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a> = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt</a>&lt; TParams::counterSize &gt;, std::uint32_t &gt;</td></tr>
+<tr class="separator:ad6df626749fb3e918a44f865bc948035 inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aace4c37fd1e76d2ad94e33e5b56dbaeb inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aace4c37fd1e76d2ad94e33e5b56dbaeb">Key</a> = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka.html#ac486a72c51166125fb227c7af1884209">alpaka::DimInt</a>&lt; TParams::counterSize/2 &gt;, std::uint32_t &gt;</td></tr>
+<tr class="separator:aace4c37fd1e76d2ad94e33e5b56dbaeb inherit pub_types_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8e0fcaa3967c23607091a70e61e3ecd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8e0fcaa3967c23607091a70e61e3ecd0">PhiloxSingle</a> (uint64_t seed=0, uint64_t subsequence=0, uint64_t offset=0)</td></tr>
-<tr class="separator:a8e0fcaa3967c23607091a70e61e3ecd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09eef95362f8289d074745b1bd67b797"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a09eef95362f8289d074745b1bd67b797">operator()</a> ()</td></tr>
-<tr class="separator:a09eef95362f8289d074745b1bd67b797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a320f64304b71d7e753c96fe0f9fd97b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a320f64304b71d7e753c96fe0f9fd97b8">PhiloxSingle</a> (uint64_t seed=0, uint64_t subsequence=0, uint64_t offset=0)</td></tr>
+<tr class="separator:a320f64304b71d7e753c96fe0f9fd97b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0baba621fb0f3e64b0c1bfd3c65fd3bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0baba621fb0f3e64b0c1bfd3c65fd3bf">operator()</a> ()</td></tr>
+<tr class="separator:a0baba621fb0f3e64b0c1bfd3c65fd3bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ad97963fa706facfccd8adeee4a0e007e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a84b6b446f740da741b760071b105f6bc">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad97963fa706facfccd8adeee4a0e007e">state</a></td></tr>
-<tr class="memdesc:ad97963fa706facfccd8adeee4a0e007e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal engine state.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad97963fa706facfccd8adeee4a0e007e">More...</a><br /></td></tr>
-<tr class="separator:ad97963fa706facfccd8adeee4a0e007e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a12cc142135be26edb107069200acc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a798e5c4fcc3c4fc21770143b9edba6ea">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a50a12cc142135be26edb107069200acc">state</a></td></tr>
+<tr class="memdesc:a50a12cc142135be26edb107069200acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal engine state.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a50a12cc142135be26edb107069200acc">More...</a><br /></td></tr>
+<tr class="separator:a50a12cc142135be26edb107069200acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a25f4838cb11b59561d87cfe747abd198"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a25f4838cb11b59561d87cfe747abd198">advanceState</a> ()</td></tr>
-<tr class="separator:a25f4838cb11b59561d87cfe747abd198"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d2e74db05dac543b0b3ba4880cd3ae4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8d2e74db05dac543b0b3ba4880cd3ae4">nextNumber</a> ()</td></tr>
-<tr class="separator:a8d2e74db05dac543b0b3ba4880cd3ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13f0e428e1de7c5509fee0685223aee7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a13f0e428e1de7c5509fee0685223aee7">skip</a> (uint64_t offset)</td></tr>
-<tr class="memdesc:a13f0e428e1de7c5509fee0685223aee7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skips the next <em>offset</em> numbers.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a13f0e428e1de7c5509fee0685223aee7">More...</a><br /></td></tr>
-<tr class="separator:a13f0e428e1de7c5509fee0685223aee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html">alpaka::rand::engine::PhiloxBaseCommon&lt; TBackend, TParams, TImpl &gt;</a></td></tr>
-<tr class="memitem:a0587624543b5405300c4996cc9311521 inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a0587624543b5405300c4996cc9311521">advanceCounter</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a79cc71c9627805fb170c9b849dfa9e2a">Counter</a> &amp;counter)</td></tr>
-<tr class="separator:a0587624543b5405300c4996cc9311521 inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c89eda207bc6fe51797c9deb53c330d inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a5c89eda207bc6fe51797c9deb53c330d">skip4</a> (uint64_t offset)</td></tr>
-<tr class="separator:a5c89eda207bc6fe51797c9deb53c330d inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bfa2f9abf45c5aee2783fc7a6bc91a2 inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a2bfa2f9abf45c5aee2783fc7a6bc91a2">skipSubsequence</a> (uint64_t subsequence)</td></tr>
-<tr class="separator:a2bfa2f9abf45c5aee2783fc7a6bc91a2 inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a028418b56caa4b4a164272abd0d88355"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a028418b56caa4b4a164272abd0d88355">advanceState</a> ()</td></tr>
+<tr class="separator:a028418b56caa4b4a164272abd0d88355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03ba7e859e71c3df73aa4fbed09eea86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a03ba7e859e71c3df73aa4fbed09eea86">nextNumber</a> ()</td></tr>
+<tr class="separator:a03ba7e859e71c3df73aa4fbed09eea86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55204a59187e3ac1044f703d81e440b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a55204a59187e3ac1044f703d81e440b4">skip</a> (uint64_t offset)</td></tr>
+<tr class="memdesc:a55204a59187e3ac1044f703d81e440b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skips the next <em>offset</em> numbers.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a55204a59187e3ac1044f703d81e440b4">More...</a><br /></td></tr>
+<tr class="separator:a55204a59187e3ac1044f703d81e440b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html">alpaka::rand::engine::PhiloxBaseCommon&lt; TParams, PhiloxSingle&lt; TParams &gt; &gt;</a></td></tr>
+<tr class="memitem:a040fc66bd3f67a03d66bcf56e9d100cf inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a040fc66bd3f67a03d66bcf56e9d100cf">advanceCounter</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a> &amp;counter)</td></tr>
+<tr class="separator:a040fc66bd3f67a03d66bcf56e9d100cf inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2b6a8d618490870d7930064cccae088 inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#ae2b6a8d618490870d7930064cccae088">skip4</a> (uint64_t offset)</td></tr>
+<tr class="separator:ae2b6a8d618490870d7930064cccae088 inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63dfeeb3a8b09ed7af8f6a0860f8ee3c inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a63dfeeb3a8b09ed7af8f6a0860f8ee3c">skipSubsequence</a> (uint64_t subsequence)</td></tr>
+<tr class="separator:a63dfeeb3a8b09ed7af8f6a0860f8ee3c inherit pro_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">alpaka::rand::engine::PhiloxStateless&lt; TBackend, TParams &gt;</a></td></tr>
-<tr class="memitem:a1c16d633710d634bf329db8996aa11bb inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a1c16d633710d634bf329db8996aa11bb">generate</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918">Counter</a> const &amp;counter, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536">Key</a> const &amp;key) -&gt; <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918">Counter</a></td></tr>
-<tr class="separator:a1c16d633710d634bf329db8996aa11bb inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">alpaka::rand::engine::PhiloxStateless&lt; TParams &gt;</a></td></tr>
+<tr class="memitem:a52404753b092fc8a8d051fba4c60051c inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a52404753b092fc8a8d051fba4c60051c">generate</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a> const &amp;counter, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aace4c37fd1e76d2ad94e33e5b56dbaeb">Key</a> const &amp;key) -&gt; <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a></td></tr>
+<tr class="separator:a52404753b092fc8a8d051fba4c60051c inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html">alpaka::rand::engine::PhiloxConstants&lt; TParams &gt;</a></td></tr>
 <tr class="memitem:ac359a3cabbf1c16a7052e65430cdfd0f inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#ac359a3cabbf1c16a7052e65430cdfd0f">MULTIPLITER_4x32_0</a> ()</td></tr>
+<tr class="memdesc:ac359a3cabbf1c16a7052e65430cdfd0f inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">First Philox S-box multiplier.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#ac359a3cabbf1c16a7052e65430cdfd0f">More...</a><br /></td></tr>
 <tr class="separator:ac359a3cabbf1c16a7052e65430cdfd0f inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79cd12fa4232d4e749242202ab229eea inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a79cd12fa4232d4e749242202ab229eea">MULTIPLITER_4x32_1</a> ()</td></tr>
+<tr class="memdesc:a79cd12fa4232d4e749242202ab229eea inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Second Philox S-box multiplier.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a79cd12fa4232d4e749242202ab229eea">More...</a><br /></td></tr>
 <tr class="separator:a79cd12fa4232d4e749242202ab229eea inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3363a4a077d6b368e1c89824dea29889 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a3363a4a077d6b368e1c89824dea29889">WEYL_32_0</a> ()</td></tr>
+<tr class="memdesc:a3363a4a077d6b368e1c89824dea29889 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">1st Weyl sequence parameter, 32 bits  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a3363a4a077d6b368e1c89824dea29889">More...</a><br /></td></tr>
 <tr class="separator:a3363a4a077d6b368e1c89824dea29889 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe568beee804198ccd1d5a29835c7c11 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#abe568beee804198ccd1d5a29835c7c11">WEYL_32_1</a> ()</td></tr>
+<tr class="memdesc:abe568beee804198ccd1d5a29835c7c11 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">2nd Weyl sequence parameter, 32 bits  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#abe568beee804198ccd1d5a29835c7c11">More...</a><br /></td></tr>
 <tr class="separator:abe568beee804198ccd1d5a29835c7c11 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e19488dc19e1b1a5ecdd3a7edfc450 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a54e19488dc19e1b1a5ecdd3a7edfc450">WEYL_64_0</a> ()</td></tr>
+<tr class="memdesc:a54e19488dc19e1b1a5ecdd3a7edfc450 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">First Weyl sequence parameter: the golden ratio.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a54e19488dc19e1b1a5ecdd3a7edfc450">More...</a><br /></td></tr>
 <tr class="separator:a54e19488dc19e1b1a5ecdd3a7edfc450 inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61d2aa5cc6a2bd45b0a7fc3b0b8f256a inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a61d2aa5cc6a2bd45b0a7fc3b0b8f256a">WEYL_64_1</a> ()</td></tr>
+<tr class="memdesc:a61d2aa5cc6a2bd45b0a7fc3b0b8f256a inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Second Weyl sequence parameter: <img class="formulaInl" alt="$ \sqrt{3}-1 $" src="form_0.png"/>.  <a href="classalpaka_1_1rand_1_1engine_1_1PhiloxConstants.html#a61d2aa5cc6a2bd45b0a7fc3b0b8f256a">More...</a><br /></td></tr>
 <tr class="separator:a61d2aa5cc6a2bd45b0a7fc3b0b8f256a inherit pub_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxConstants"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">alpaka::rand::engine::PhiloxStateless&lt; TBackend, TParams &gt;</a></td></tr>
-<tr class="memitem:ac351480b3ffaa811d92407a0cbbfb52d inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ac351480b3ffaa811d92407a0cbbfb52d">bumpKey</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536">Key</a> const &amp;key)</td></tr>
-<tr class="separator:ac351480b3ffaa811d92407a0cbbfb52d inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0558695f80d12211a57e42f4decf7d98 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a0558695f80d12211a57e42f4decf7d98">nRounds</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918">Counter</a> const &amp;counter_in, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536">Key</a> const &amp;key_in) -&gt; <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918">Counter</a></td></tr>
-<tr class="separator:a0558695f80d12211a57e42f4decf7d98 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88177c4a758bd8080fea38ce6789e1d9 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a88177c4a758bd8080fea38ce6789e1d9">singleRound</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a4f483573a56c28bae086399d8c6a4918">Counter</a> const &amp;counter, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aa8ccdf5c1a17aec4cb301df2624ad536">Key</a> const &amp;key)</td></tr>
-<tr class="separator:a88177c4a758bd8080fea38ce6789e1d9 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html">alpaka::rand::engine::PhiloxStateless&lt; TParams &gt;</a></td></tr>
+<tr class="memitem:aeae0379bf9b3b51fb926fe73a30d9db3 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aeae0379bf9b3b51fb926fe73a30d9db3">bumpKey</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aace4c37fd1e76d2ad94e33e5b56dbaeb">Key</a> const &amp;key)</td></tr>
+<tr class="separator:aeae0379bf9b3b51fb926fe73a30d9db3 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c7a11bf84cede072b5ccf1787cf3863 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a7c7a11bf84cede072b5ccf1787cf3863">nRounds</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a> const &amp;counter_in, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aace4c37fd1e76d2ad94e33e5b56dbaeb">Key</a> const &amp;key_in) -&gt; <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a></td></tr>
+<tr class="separator:a7c7a11bf84cede072b5ccf1787cf3863 inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1a0ae467df0788702e8a157c0cc81da inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#af1a0ae467df0788702e8a157c0cc81da">singleRound</a> (<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ad6df626749fb3e918a44f865bc948035">Counter</a> const &amp;counter, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aace4c37fd1e76d2ad94e33e5b56dbaeb">Key</a> const &amp;key)</td></tr>
+<tr class="separator:af1a0ae467df0788702e8a157c0cc81da inherit pro_static_methods_classalpaka_1_1rand_1_1engine_1_1PhiloxStateless"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TAcc, typename TParams&gt;<br />
-class alpaka::rand::engine::PhiloxSingle&lt; TAcc, TParams &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TParams&gt;<br />
+class alpaka::rand::engine::PhiloxSingle&lt; TParams &gt;</h3>
 
 <p>Philox engine generating a single number</p>
 <p>This engine's operator() will return a single number. Since the result is the same size as the counter, and so it contains more than one number, it has to be stored between individual invocations of operator(). Additionally a pointer has to be stored indicating which part of the result array is to be returned next.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">TAcc</td><td>Accelerator type as defined in alpaka/acc </td></tr>
     <tr><td class="paramname">TParams</td><td>Basic parameters for the Philox algorithm </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00043">43</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00046">46</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa58d3ff81a4b3d02dd866feb24bae6f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa58d3ff81a4b3d02dd866feb24bae6f4">&#9670;&nbsp;</a></span>Counter</h2>
+<a id="a91f569b1ac87582554bbd8edb2ca9dbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91f569b1ac87582554bbd8edb2ca9dbb">&#9670;&nbsp;</a></span>Base</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a79cc71c9627805fb170c9b849dfa9e2a">Counter</a> =  typename Traits::Counter</td>
+          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a91f569b1ac87582554bbd8edb2ca9dbb">Base</a> =  <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html">PhiloxBaseCommon</a>&lt;TParams, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">PhiloxSingle</a>&lt;TParams&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Backend-dependent Counter type. </p>
 
 <p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00049">49</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ad7242abe7b99cfdc1133f107f51d83f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7242abe7b99cfdc1133f107f51d83f2">&#9670;&nbsp;</a></span>Key</h2>
+<a id="a0ba2ad6a5fc3539a401861f195b92a15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ba2ad6a5fc3539a401861f195b92a15">&#9670;&nbsp;</a></span>Counter</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a8251b47d8e619307d4d796c51d576e98">Key</a> =  typename Traits::Key</td>
+          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0ba2ad6a5fc3539a401861f195b92a15">Counter</a> =  typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a341cb5488a8d4493470466b02fb69ee1">Base::Counter</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Backend-dependent Key type. </p>
+<p>Counter type. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00050">50</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00052">52</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a84b6b446f740da741b760071b105f6bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84b6b446f740da741b760071b105f6bc">&#9670;&nbsp;</a></span>State</h2>
+<a id="aa760f34c60ba6bb03f938909dd946563"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa760f34c60ba6bb03f938909dd946563">&#9670;&nbsp;</a></span>Key</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a84b6b446f740da741b760071b105f6bc">State</a> =  <a class="el" href="structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html">PhiloxStateSingle</a>&lt;<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a79cc71c9627805fb170c9b849dfa9e2a">Counter</a>, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#a8251b47d8e619307d4d796c51d576e98">Key</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa760f34c60ba6bb03f938909dd946563">Key</a> =  typename <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxBaseCommon.html#ae10a19e4c2500ca0d3567eda92b77e66">Base::Key</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Backend-dependent State type. </p>
+<p>Key type. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00051">51</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00054">54</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a14d5794a215f630c1fa0d2c545cb6665"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14d5794a215f630c1fa0d2c545cb6665">&#9670;&nbsp;</a></span>Traits</h2>
+<a id="a798e5c4fcc3c4fc21770143b9edba6ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a798e5c4fcc3c4fc21770143b9edba6ea">&#9670;&nbsp;</a></span>State</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a14d5794a215f630c1fa0d2c545cb6665">Traits</a> =  typename <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html">trait::PhiloxBaseTraits</a>&lt;TAcc, TParams, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">PhiloxSingle</a>&lt;TAcc, TParams&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a798e5c4fcc3c4fc21770143b9edba6ea">State</a> =  <a class="el" href="structalpaka_1_1rand_1_1engine_1_1PhiloxStateSingle.html">PhiloxStateSingle</a>&lt;<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0ba2ad6a5fc3539a401861f195b92a15">Counter</a>, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa760f34c60ba6bb03f938909dd946563">Key</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Specialization for different TAcc backends. </p>
+<p>State type. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00047">47</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00056">56</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8e0fcaa3967c23607091a70e61e3ecd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e0fcaa3967c23607091a70e61e3ecd0">&#9670;&nbsp;</a></span>PhiloxSingle()</h2>
+<a id="a320f64304b71d7e753c96fe0f9fd97b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a320f64304b71d7e753c96fe0f9fd97b8">&#9670;&nbsp;</a></span>PhiloxSingle()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">PhiloxSingle</a> </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::<a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">PhiloxSingle</a> </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname"><em>seed</em> = <code>0</code>, </td>
@@ -340,24 +345,24 @@ template&lt;typename TAcc , typename TParams &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00125">125</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00131">131</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a25f4838cb11b59561d87cfe747abd198"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25f4838cb11b59561d87cfe747abd198">&#9670;&nbsp;</a></span>advanceState()</h2>
+<a id="a028418b56caa4b4a164272abd0d88355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a028418b56caa4b4a164272abd0d88355">&#9670;&nbsp;</a></span>advanceState()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::advanceState </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::advanceState </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -372,23 +377,23 @@ template&lt;typename TAcc , typename TParams &gt; </div>
 <p>Advance internal counter to the next value</p>
 <p>Advances the full internal counter array, resets the position pointer and stores the intermediate result to be recalled when the user requests a number. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00061">61</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00067">67</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a8d2e74db05dac543b0b3ba4880cd3ae4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d2e74db05dac543b0b3ba4880cd3ae4">&#9670;&nbsp;</a></span>nextNumber()</h2>
+<a id="a03ba7e859e71c3df73aa4fbed09eea86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03ba7e859e71c3df73aa4fbed09eea86">&#9670;&nbsp;</a></span>nextNumber()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::nextNumber </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::nextNumber </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -404,23 +409,23 @@ template&lt;typename TAcc , typename TParams &gt; </div>
 <p>The intermediate result stores N = TParams::counterSize numbers. Check if we've already given out all of them. If so, generate a new intermediate result (this also resets the pointer to the position of the actual number). Finally, we return the actual number.</p>
 <dl class="section return"><dt>Returns</dt><dd>The next random number </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00076">76</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00082">82</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a09eef95362f8289d074745b1bd67b797"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09eef95362f8289d074745b1bd67b797">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a0baba621fb0f3e64b0c1bfd3c65fd3bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0baba621fb0f3e64b0c1bfd3c65fd3bf">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::operator() </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::operator() </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -435,23 +440,23 @@ template&lt;typename TAcc , typename TParams &gt; </div>
 <p>Get the next random number</p>
 <dl class="section return"><dt>Returns</dt><dd>The next random number </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00137">137</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00143">143</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a13f0e428e1de7c5509fee0685223aee7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13f0e428e1de7c5509fee0685223aee7">&#9670;&nbsp;</a></span>skip()</h2>
+<a id="a55204a59187e3ac1044f703d81e440b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55204a59187e3ac1044f703d81e440b4">&#9670;&nbsp;</a></span>skip()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::skip </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::skip </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname"><em>offset</em></td><td>)</td>
@@ -467,28 +472,28 @@ template&lt;typename TAcc , typename TParams &gt; </div>
 
 <p>Skips the next <em>offset</em> numbers. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00101">101</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00107">107</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ad97963fa706facfccd8adeee4a0e007e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad97963fa706facfccd8adeee4a0e007e">&#9670;&nbsp;</a></span>state</h2>
+<a id="a50a12cc142135be26edb107069200acc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a12cc142135be26edb107069200acc">&#9670;&nbsp;</a></span>state</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TParams &gt; </div>
+template&lt;typename TParams &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a84b6b446f740da741b760071b105f6bc">State</a> <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TAcc, TParams &gt;::state</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a798e5c4fcc3c4fc21770143b9edba6ea">State</a> <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">alpaka::rand::engine::PhiloxSingle</a>&lt; TParams &gt;::state</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Internal engine state. </p>
 
-<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00053">53</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PhiloxSingle_8hpp_source.html#l00059">59</a> of file <a class="el" href="PhiloxSingle_8hpp_source.html">PhiloxSingle.hpp</a>.</p>
 
 </div>
 </div>
@@ -501,7 +506,7 @@ template&lt;typename TAcc , typename TParams &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1engine.html">engine</a></li><li class="navelem"><a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html">PhiloxSingle</a></li>
-    <li class="footer">Generated on Wed Mar 20 2024 06:56:21 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Mar 20 2024 13:42:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

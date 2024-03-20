@@ -89,11 +89,6 @@ $(document).ready(function(){initNavTree('functions_b.html',''); initResizable()
 <li>back()
 : <a class="el" href="classalpaka_1_1Vec.html#a10fddf7a9da3de122eabe075102c5f52">alpaka::Vec&lt; TDim, TVal &gt;</a>
 </li>
-<li>Backend
-: <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#a56c2caf6df51efb4ebdcf66168af1994">alpaka::rand::engine::trait::PhiloxBaseTraits&lt; TAcc, TParams, TImpl, TSfinae &gt;</a>
-, <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#ac616a608626b38cea7c91556d911fdfd">alpaka::rand::engine::trait::PhiloxStatelessBaseTraits&lt; TAcc, TParams, TSfinae &gt;</a>
-, <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessKeyedBaseTraits.html#ab9e5de708718068a6133d4c9aa64ff61">alpaka::rand::engine::trait::PhiloxStatelessKeyedBaseTraits&lt; TAcc, TParams, TSfinae &gt;</a>
-</li>
 <li>ballot()
 : <a class="el" href="structalpaka_1_1warp_1_1trait_1_1Ballot_3_01WarpSingleThread_01_4.html#a2f8e695a41d51d2d56b31ba263a6b56e">alpaka::warp::trait::Ballot&lt; WarpSingleThread &gt;</a>
 , <a class="el" href="structalpaka_1_1warp_1_1trait_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html#a399275dd2f13f4abdb3c0b0451bbeee3">alpaka::warp::trait::Ballot&lt; WarpUniformCudaHipBuiltIn &gt;</a>
@@ -112,13 +107,12 @@ $(document).ready(function(){initNavTree('functions_b.html',''); initResizable()
 </li>
 <li>Base
 : <a class="el" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_01T_00_01Ts_8_8_8_01_4.html#a44f2a099fe34476669968ee70ccbd45d">alpaka::meta::detail::IsParameterPackSetImpl&lt; T, Ts... &gt;</a>
-, <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxBaseTraits.html#ab74dddc406c79d61497b8ca3a803ba32">alpaka::rand::engine::trait::PhiloxBaseTraits&lt; TAcc, TParams, TImpl, TSfinae &gt;</a>
-, <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessBaseTraits.html#a20903af5b7dd3607ea8c4985389ab74c">alpaka::rand::engine::trait::PhiloxStatelessBaseTraits&lt; TAcc, TParams, TSfinae &gt;</a>
-, <a class="el" href="structalpaka_1_1rand_1_1engine_1_1trait_1_1PhiloxStatelessKeyedBaseTraits.html#a8762d50b2fdbb4bceb0c86f849578512">alpaka::rand::engine::trait::PhiloxStatelessKeyedBaseTraits&lt; TAcc, TParams, TSfinae &gt;</a>
+, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a91f569b1ac87582554bbd8edb2ca9dbb">alpaka::rand::engine::PhiloxSingle&lt; TParams &gt;</a>
+, <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxVector.html#a9dea952c5ad734497f5302d4c3f5a7dc">alpaka::rand::engine::PhiloxVector&lt; TParams &gt;</a>
 </li>
 <li>begin()
 : <a class="el" href="structalpaka_1_1test_1_1trait_1_1Begin.html#a95ea8fb52d0a9d8cb3d89600870655e5">alpaka::test::trait::Begin&lt; TView, TSfinae &gt;</a>
-, <a class="el" href="classalpaka_1_1Vec.html#a4a11451f61b3919f3a2d95619e5ed738">alpaka::Vec&lt; TDim, TVal &gt;</a>
+, <a class="el" href="classalpaka_1_1Vec.html#adede57b5f6210149dc4a05c16cd137c5">alpaka::Vec&lt; TDim, TVal &gt;</a>
 </li>
 <li>blockingQueue
 : <a class="el" href="structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a84f3ec18deee850572f71a7fb414ba35">alpaka::cpu::detail::QueueCpuOmp2CollectiveImpl</a>
@@ -146,7 +140,7 @@ $(document).ready(function(){initNavTree('functions_b.html',''); initResizable()
 : <a class="el" href="structalpaka_1_1BufUniformCudaHipRt.html#a81a68b399964ce5a0271c7aa861d1926">alpaka::BufUniformCudaHipRt&lt; TApi, TElem, TDim, TIdx &gt;</a>
 </li>
 <li>bumpKey()
-: <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#ac351480b3ffaa811d92407a0cbbfb52d">alpaka::rand::engine::PhiloxStateless&lt; TBackend, TParams &gt;</a>
+: <a class="el" href="classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#aeae0379bf9b3b51fb926fe73a30d9db3">alpaka::rand::engine::PhiloxStateless&lt; TParams &gt;</a>
 </li>
 <li>busyWaitUntilBlockingQueueEmpty()
 : <a class="el" href="structalpaka_1_1cpu_1_1detail_1_1QueueCpuOmp2CollectiveImpl.html#a093fab26b51a03502900035770da1d54">alpaka::cpu::detail::QueueCpuOmp2CollectiveImpl</a>
@@ -157,7 +151,7 @@ $(document).ready(function(){initNavTree('functions_b.html',''); initResizable()
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Mar 20 2024 06:56:21 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Mar 20 2024 13:42:16 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

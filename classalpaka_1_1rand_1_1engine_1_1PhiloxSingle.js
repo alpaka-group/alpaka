@@ -1,13 +1,13 @@
 var classalpaka_1_1rand_1_1engine_1_1PhiloxSingle =
 [
-    [ "Counter", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa58d3ff81a4b3d02dd866feb24bae6f4", null ],
-    [ "Key", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad7242abe7b99cfdc1133f107f51d83f2", null ],
-    [ "State", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a84b6b446f740da741b760071b105f6bc", null ],
-    [ "Traits", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a14d5794a215f630c1fa0d2c545cb6665", null ],
-    [ "PhiloxSingle", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8e0fcaa3967c23607091a70e61e3ecd0", null ],
-    [ "advanceState", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a25f4838cb11b59561d87cfe747abd198", null ],
-    [ "nextNumber", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a8d2e74db05dac543b0b3ba4880cd3ae4", null ],
-    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a09eef95362f8289d074745b1bd67b797", null ],
-    [ "skip", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a13f0e428e1de7c5509fee0685223aee7", null ],
-    [ "state", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#ad97963fa706facfccd8adeee4a0e007e", null ]
+    [ "Base", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a91f569b1ac87582554bbd8edb2ca9dbb", null ],
+    [ "Counter", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0ba2ad6a5fc3539a401861f195b92a15", null ],
+    [ "Key", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#aa760f34c60ba6bb03f938909dd946563", null ],
+    [ "State", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a798e5c4fcc3c4fc21770143b9edba6ea", null ],
+    [ "PhiloxSingle", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a320f64304b71d7e753c96fe0f9fd97b8", null ],
+    [ "advanceState", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a028418b56caa4b4a164272abd0d88355", null ],
+    [ "nextNumber", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a03ba7e859e71c3df73aa4fbed09eea86", null ],
+    [ "operator()", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a0baba621fb0f3e64b0c1bfd3c65fd3bf", null ],
+    [ "skip", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a55204a59187e3ac1044f703d81e440b4", null ],
+    [ "state", "classalpaka_1_1rand_1_1engine_1_1PhiloxSingle.html#a50a12cc142135be26edb107069200acc", null ]
 ];
