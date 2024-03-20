@@ -3682,6 +3682,7 @@
 
 			        using Dim = TDim;
 			        using Val = TVal;
+			        using value_type = Val; //!< STL-like value_type.
 
 			    private:
 			        //! A sequence of integers from 0 to dim-1.
@@ -6794,344 +6795,10 @@
 				 */
 
 				// #pragma once
-					// ============================================================================
-					// == ./include/alpaka/meta/CudaVectorArrayWrapper.hpp ==
-					// ==
-					/* Copyright 2022 Jiří Vyskočil, Jan Stephan, Bernhard Manfred Gruber
-					 * SPDX-License-Identifier: MPL-2.0
-					 */
-
-					// #pragma once
-					// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
-
-					// #include <functional>    // amalgamate: file already included
-					#include <initializer_list>
-					#include <numeric>
-					// #include <type_traits>    // amalgamate: file already included
-
-					#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-
-					#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-					#        include <cuda_runtime.h>
-					#    endif
-
-					#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-					// #        include <hip/hip_runtime.h>    // amalgamate: file already included
-					#    endif
-
-					namespace alpaka::meta
-					{
-					    namespace detail
-					    {
-					        template<typename TScalar, unsigned N>
-					        struct CudaVectorArrayTypeTraits;
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<float, 1>
-					        {
-					            using type = float1;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<float, 2>
-					        {
-					            using type = float2;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<float, 3>
-					        {
-					            using type = float3;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<float, 4>
-					        {
-					            using type = float4;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<double, 1>
-					        {
-					            using type = double1;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<double, 2>
-					        {
-					            using type = double2;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<double, 3>
-					        {
-					            using type = double3;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<double, 4>
-					        {
-					            using type = double4;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<unsigned, 1>
-					        {
-					            using type = uint1;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<unsigned, 2>
-					        {
-					            using type = uint2;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<unsigned, 3>
-					        {
-					            using type = uint3;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<unsigned, 4>
-					        {
-					            using type = uint4;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<int, 1>
-					        {
-					            using type = int1;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<int, 2>
-					        {
-					            using type = int2;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<int, 3>
-					        {
-					            using type = int3;
-					        };
-
-					        template<>
-					        struct CudaVectorArrayTypeTraits<int, 4>
-					        {
-					            using type = int4;
-					        };
-					    } // namespace detail
-
-					    /// Helper struct providing [] subscript access to CUDA vector types
-					    template<typename TScalar, unsigned N>
-					    struct CudaVectorArrayWrapper;
-
-					    template<typename TScalar>
-					    struct CudaVectorArrayWrapper<TScalar, 4> : public detail::CudaVectorArrayTypeTraits<TScalar, 4>::type
-					    {
-					        using value_type = TScalar;
-					        static constexpr unsigned size = 4;
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-					        {
-					            auto it = std::begin(init);
-					            this->x = *it++;
-					            this->y = *it++;
-					            this->z = *it++;
-					            this->w = *it++;
-					        }
-
-					        template<class Other>
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-					        {
-					            static_assert(std::tuple_size_v<Other> == size, "Can only convert between vectors of same size.");
-					            static_assert(
-					                std::is_same_v<typename Other::value_type, value_type>,
-					                "Can only convert between vectors of same element type.");
-					            this->x = o[0];
-					            this->y = o[1];
-					            this->z = o[2];
-					            this->w = o[3];
-					        }
-
-					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-					        {
-					            std::array<value_type, size> ret;
-					            ret[0] = this->x;
-					            ret[1] = this->y;
-					            ret[2] = this->z;
-					            ret[3] = this->w;
-					            return ret;
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
-					        {
-					            assert(k >= 0 && k < 4);
-					            return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
-					        {
-					            assert(k >= 0 && k < 4);
-					            return k == 0 ? this->x : (k == 1 ? this->y : (k == 2 ? this->z : this->w));
-					        }
-					    };
-
-					    template<typename TScalar>
-					    struct CudaVectorArrayWrapper<TScalar, 3> : public detail::CudaVectorArrayTypeTraits<TScalar, 3>::type
-					    {
-					        using value_type = TScalar;
-					        static constexpr unsigned size = 3;
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-					        {
-					            auto it = std::begin(init);
-					            this->x = *it++;
-					            this->y = *it++;
-					            this->z = *it++;
-					        }
-
-					        template<class Other>
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-					        {
-					            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
-					            static_assert(
-					                std::is_same<typename Other::value_type, value_type>::value,
-					                "Can only convert between vectors of same element type.");
-					            this->x = o[0];
-					            this->y = o[1];
-					            this->z = o[2];
-					        }
-
-					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-					        {
-					            std::array<value_type, size> ret;
-					            ret[0] = this->x;
-					            ret[1] = this->y;
-					            ret[2] = this->z;
-					            return ret;
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
-					        {
-					            assert(k >= 0 && k < 3);
-					            return k == 0 ? this->x : (k == 1 ? this->y : this->z);
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
-					        {
-					            assert(k >= 0 && k < 3);
-					            return k == 0 ? this->x : (k == 1 ? this->y : this->z);
-					        }
-					    };
-
-					    template<typename TScalar>
-					    struct CudaVectorArrayWrapper<TScalar, 2> : public detail::CudaVectorArrayTypeTraits<TScalar, 2>::type
-					    {
-					        using value_type = TScalar;
-					        static constexpr unsigned size = 2;
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-					        {
-					            auto it = std::begin(init);
-					            this->x = *it++;
-					            this->y = *it++;
-					        }
-
-					        template<class Other>
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-					        {
-					            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
-					            static_assert(
-					                std::is_same<typename Other::value_type, value_type>::value,
-					                "Can only convert between vectors of same element type.");
-					            this->x = o[0];
-					            this->y = o[1];
-					        }
-
-					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-					        {
-					            std::array<value_type, size> ret;
-					            ret[0] = this->x;
-					            ret[1] = this->y;
-					            return ret;
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[](int const k) noexcept
-					        {
-					            assert(k >= 0 && k < 2);
-					            return k == 0 ? this->x : this->y;
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](int const k) const noexcept
-					        {
-					            assert(k >= 0 && k < 2);
-					            return k == 0 ? this->x : this->y;
-					        }
-					    };
-
-					    template<typename TScalar>
-					    struct CudaVectorArrayWrapper<TScalar, 1> : public detail::CudaVectorArrayTypeTraits<TScalar, 1>::type
-					    {
-					        using value_type = TScalar;
-					        static constexpr unsigned size = 1;
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(std::initializer_list<TScalar> init)
-					        {
-					            auto it = std::begin(init);
-					            this->x = *it;
-					        }
-
-					        template<class Other>
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE CudaVectorArrayWrapper(Other const& o)
-					        {
-					            static_assert(std::tuple_size<Other>::value == size, "Can only convert between vectors of same size.");
-					            static_assert(
-					                std::is_same<typename Other::value_type, value_type>::value,
-					                "Can only convert between vectors of same element type.");
-					            this->x = o[0];
-					        }
-
-					        ALPAKA_FN_HOST_ACC constexpr operator std::array<value_type, size>() const
-					        {
-					            std::array<value_type, size> ret;
-					            ret[0] = this->x;
-					            return ret;
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type& operator[]([[maybe_unused]] int const k) noexcept
-					        {
-					            assert(k == 0);
-					            return this->x;
-					        }
-
-					        ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE constexpr value_type const& operator[](
-					            [[maybe_unused]] int const k) const noexcept
-					        {
-					            assert(k == 0);
-					            return this->x;
-					        }
-					    };
-					} // namespace alpaka::meta
-
-					namespace std
-					{
-					    /// Specialization of std::tuple_size for \a float4_array
-					    template<typename T, unsigned N>
-					    struct tuple_size<alpaka::meta::CudaVectorArrayWrapper<T, N>> : integral_constant<size_t, N>
-					    {
-					    };
-					} // namespace std
-
-					#endif
-					// ==
-					// == ./include/alpaka/meta/CudaVectorArrayWrapper.hpp ==
-					// ============================================================================
-
+				// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 				// #include <functional>    // amalgamate: file already included
-				// #include <numeric>    // amalgamate: file already included
+				#include <numeric>
 				// #include <type_traits>    // amalgamate: file already included
 				#include <vector>
 
@@ -7176,13 +6843,16 @@
 				    {
 				    };
 
-				#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-				    /// Specialization of \a IsArrayOrVector for CUDA vector array wrapper
-				    template<typename T, unsigned N>
-				    struct IsArrayOrVector<CudaVectorArrayWrapper<T, N>> : std::true_type
+				    /** Specialization of \a IsArrayOrVector for alpaka::Vec
+				     *
+				     * @tparam T inner type held in the array
+				     * @tparam N size of the array
+				     */
+				    template<typename T, typename N>
+				    struct IsArrayOrVector<alpaka::Vec<N, T>> : std::true_type
 				    {
 				    };
-				#endif
+
 				} // namespace alpaka::meta
 				// ==
 				// == ./include/alpaka/meta/IsArrayOrVector.hpp ==
@@ -7246,15 +6916,15 @@
 					// ============================================================================
 
 					// ============================================================================
-					// == ./include/alpaka/rand/Philox/PhiloxBaseTraits.hpp ==
+					// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
 					// ==
-					/* Copyright 2022 Jiří Vyskočil, Bernhard Manfred Gruber, Jeffrey Kelling, Jan Stephan
+					/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber, Jeffrey Kelling
 					 * SPDX-License-Identifier: MPL-2.0
 					 */
 
 					// #pragma once
 						// ============================================================================
-						// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
+						// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
 						// ==
 						/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber, Jeffrey Kelling
 						 * SPDX-License-Identifier: MPL-2.0
@@ -7262,554 +6932,320 @@
 
 						// #pragma once
 							// ============================================================================
-							// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
+							// == ./include/alpaka/core/Unroll.hpp ==
 							// ==
-							/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber, Jeffrey Kelling
+							/* Copyright 2021 Benjamin Worpitz, Bernhard Manfred Gruber
 							 * SPDX-License-Identifier: MPL-2.0
 							 */
 
 							// #pragma once
-								// ============================================================================
-								// == ./include/alpaka/core/Unroll.hpp ==
-								// ==
-								/* Copyright 2021 Benjamin Worpitz, Bernhard Manfred Gruber
-								 * SPDX-License-Identifier: MPL-2.0
-								 */
+							// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 
-								// #pragma once
-								// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
+							//! Suggests unrolling of the directly following loop to the compiler.
+							//!
+							//! Usage:
+							//!  `ALPAKA_UNROLL
+							//!  for(...){...}`
+							// \TODO: Implement for other compilers.
+							#if BOOST_ARCH_PTX
+							#    define ALPAKA_UNROLL_STRINGIFY(x) #x
+							#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll __VA_ARGS__))
+							#elif BOOST_COMP_IBM || BOOST_COMP_SUNPRO || BOOST_COMP_HPACC
+							#    define ALPAKA_UNROLL_STRINGIFY(x) #x
+							#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll(__VA_ARGS__)))
+							#elif BOOST_COMP_PGI
+							#    define ALPAKA_UNROLL(...) _Pragma("unroll")
+							#else
+							#    define ALPAKA_UNROLL(...)
+							#endif
+							// ==
+							// == ./include/alpaka/core/Unroll.hpp ==
+							// ============================================================================
 
-								//! Suggests unrolling of the directly following loop to the compiler.
-								//!
-								//! Usage:
-								//!  `ALPAKA_UNROLL
-								//!  for(...){...}`
-								// \TODO: Implement for other compilers.
-								#if BOOST_ARCH_PTX
-								#    define ALPAKA_UNROLL_STRINGIFY(x) #x
-								#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll __VA_ARGS__))
-								#elif BOOST_COMP_IBM || BOOST_COMP_SUNPRO || BOOST_COMP_HPACC
-								#    define ALPAKA_UNROLL_STRINGIFY(x) #x
-								#    define ALPAKA_UNROLL(...) _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll(__VA_ARGS__)))
-								#elif BOOST_COMP_PGI
-								#    define ALPAKA_UNROLL(...) _Pragma("unroll")
-								#else
-								#    define ALPAKA_UNROLL(...)
-								#endif
-								// ==
-								// == ./include/alpaka/core/Unroll.hpp ==
-								// ============================================================================
+						// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already inlined
+							// ============================================================================
+							// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
+							// ==
+							/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
+							 * SPDX-License-Identifier: MPL-2.0
+							 */
 
+							// #pragma once
 							// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already inlined
-								// ============================================================================
-								// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
-								// ==
-								/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
-								 * SPDX-License-Identifier: MPL-2.0
-								 */
 
-								// #pragma once
-								// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already inlined
-
-								// #include <cstdint>    // amalgamate: file already included
-								// #include <utility>    // amalgamate: file already included
-
-								namespace alpaka::rand::engine
-								{
-								    /** Constants used in the Philox algorithm
-								     *
-								     * The numbers are taken from the reference Philox implementation:
-								     *
-								     * J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
-								     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking,
-								     * Storage and Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
-								     *
-								     * @tparam TParams basic Philox algorithm parameters
-								     *
-								     * static const data members are transformed into functions, because GCC
-								     * assumes types with static data members to be not mappable and makes not
-								     * exception for constexpr ones. This is a valid interpretation of the
-								     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
-								     * data member are mappable.
-								     */
-								    template<typename TParams>
-								    class PhiloxConstants
-								    {
-								    public:
-								        static constexpr std::uint64_t WEYL_64_0()
-								        {
-								            return 0x9E37'79B9'7F4A'7C15; ///< First Weyl sequence parameter: the golden ratio
-								        }
-
-								        static constexpr std::uint64_t WEYL_64_1()
-								        {
-								            return 0xBB67'AE85'84CA'A73B; ///< Second Weyl sequence parameter: \f$ \sqrt{3}-1 \f$
-								        }
-
-								        static constexpr std::uint32_t WEYL_32_0()
-								        {
-								            return high32Bits(WEYL_64_0()); ///< 1st Weyl sequence parameter, 32 bits
-								        }
-
-								        static constexpr std::uint32_t WEYL_32_1()
-								        {
-								            return high32Bits(WEYL_64_1()); ///< 2nd Weyl sequence parameter, 32 bits
-								        }
-
-								        static constexpr std::uint32_t MULTIPLITER_4x32_0()
-								        {
-								            return 0xCD9E'8D57; ///< First Philox S-box multiplier
-								        }
-
-								        static constexpr std::uint32_t MULTIPLITER_4x32_1()
-								        {
-								            return 0xD251'1F53; ///< Second Philox S-box multiplier
-								        }
-								    };
-								} // namespace alpaka::rand::engine
-								// ==
-								// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
-								// ============================================================================
-
-
+							// #include <cstdint>    // amalgamate: file already included
 							// #include <utility>    // amalgamate: file already included
 
 							namespace alpaka::rand::engine
 							{
-							    /** Philox algorithm parameters
+							    /** Constants used in the Philox algorithm
 							     *
-							     * @tparam TCounterSize number of elements in the counter
-							     * @tparam TWidth width of one counter element (in bits)
-							     * @tparam TRounds number of S-box rounds
+							     * The numbers are taken from the reference Philox implementation:
+							     *
+							     * J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
+							     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking,
+							     * Storage and Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
+							     *
+							     * @tparam TParams basic Philox algorithm parameters
+							     *
+							     * static const data members are transformed into functions, because GCC
+							     * assumes types with static data members to be not mappable and makes not
+							     * exception for constexpr ones. This is a valid interpretation of the
+							     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
+							     * data member are mappable.
 							     */
-							    template<unsigned TCounterSize, unsigned TWidth, unsigned TRounds>
-							    struct PhiloxParams
+							    template<typename TParams>
+							    class PhiloxConstants
 							    {
-							        static constexpr unsigned counterSize = TCounterSize;
-							        static constexpr unsigned width = TWidth;
-							        static constexpr unsigned rounds = TRounds;
-							    };
-
-							    /** Class basic Philox family counter-based PRNG
-							     *
-							     * Checks the validity of passed-in parameters and calls the \a TBackend methods to perform N rounds of the
-							     * Philox shuffle.
-							     *
-							     * @tparam TBackend device-dependent backend, specifies the array types
-							     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-							     */
-							    template<typename TBackend, typename TParams>
-							    class PhiloxStateless : public PhiloxConstants<TParams>
-							    {
-							        static constexpr unsigned numRounds()
-							        {
-							            return TParams::rounds;
-							        }
-
-							        static constexpr unsigned vectorSize()
-							        {
-							            return TParams::counterSize;
-							        }
-
-							        static constexpr unsigned numberWidth()
-							        {
-							            return TParams::width;
-							        }
-
-							        static_assert(numRounds() > 0, "Number of Philox rounds must be > 0.");
-							        static_assert(vectorSize() % 2 == 0, "Philox counter size must be an even number.");
-							        static_assert(vectorSize() <= 16, "Philox SP network is not specified for sizes > 16.");
-							        static_assert(numberWidth() % 8 == 0, "Philox number width in bits must be a multiple of 8.");
-
-							        static_assert(numberWidth() == 32, "Philox implemented only for 32 bit numbers.");
-
 							    public:
-							        using Counter = typename TBackend::Counter;
-							        using Key = typename TBackend::Key;
-							        using Constants = PhiloxConstants<TParams>;
-
-							    protected:
-							        /** Single round of the Philox shuffle
-							         *
-							         * @param counter state of the counter
-							         * @param key value of the key
-							         * @return shuffled counter
-							         */
-							        static ALPAKA_FN_HOST_ACC auto singleRound(Counter const& counter, Key const& key)
+							        /// First Weyl sequence parameter: the golden ratio
+							        static constexpr std::uint64_t WEYL_64_0()
 							        {
-							            std::uint32_t H0, L0, H1, L1;
-							            multiplyAndSplit64to32(counter[0], Constants::MULTIPLITER_4x32_0(), H0, L0);
-							            multiplyAndSplit64to32(counter[2], Constants::MULTIPLITER_4x32_1(), H1, L1);
-							            return Counter{H1 ^ counter[1] ^ key[0], L1, H0 ^ counter[3] ^ key[1], L0};
+							            return 0x9E37'79B9'7F4A'7C15;
 							        }
 
-							        /** Bump the \a key by the Weyl sequence step parameter
-							         *
-							         * @param key the key to be bumped
-							         * @return the bumped key
-							         */
-							        static ALPAKA_FN_HOST_ACC auto bumpKey(Key const& key)
+							        /// Second Weyl sequence parameter: \f$ \sqrt{3}-1 \f$
+							        static constexpr std::uint64_t WEYL_64_1()
 							        {
-							            return Key{key[0] + Constants::WEYL_32_0(), key[1] + Constants::WEYL_32_1()};
+							            return 0xBB67'AE85'84CA'A73B;
 							        }
 
-							        /** Performs N rounds of the Philox shuffle
-							         *
-							         * @param counter_in initial state of the counter
-							         * @param key_in initial state of the key
-							         * @return result of the PRNG shuffle; has the same size as the counter
-							         */
-							        static ALPAKA_FN_HOST_ACC auto nRounds(Counter const& counter_in, Key const& key_in) -> Counter
+							        /// 1st Weyl sequence parameter, 32 bits
+							        static constexpr std::uint32_t WEYL_32_0()
 							        {
-							            Key key{key_in};
-							            Counter counter = singleRound(counter_in, key);
-
-							            ALPAKA_UNROLL(numRounds())
-							            for(unsigned int n = 0; n < numRounds(); ++n)
-							            {
-							                key = bumpKey(key);
-							                counter = singleRound(counter, key);
-							            }
-
-							            return counter;
+							            return high32Bits(WEYL_64_0());
 							        }
 
-							    public:
-							        /** Generates a random number (\p TCounterSize x32-bit)
-							         *
-							         * @param counter initial state of the counter
-							         * @param key initial state of the key
-							         * @return result of the PRNG shuffle; has the same size as the counter
-							         */
-							        static ALPAKA_FN_HOST_ACC auto generate(Counter const& counter, Key const& key) -> Counter
+							        /// 2nd Weyl sequence parameter, 32 bits
+							        static constexpr std::uint32_t WEYL_32_1()
 							        {
-							            return nRounds(counter, key);
+							            return high32Bits(WEYL_64_1());
+							        }
+
+							        /// First Philox S-box multiplier
+							        static constexpr std::uint32_t MULTIPLITER_4x32_0()
+							        {
+							            return 0xCD9E'8D57;
+							        }
+
+							        /// Second Philox S-box multiplier
+							        static constexpr std::uint32_t MULTIPLITER_4x32_1()
+							        {
+							            return 0xD251'1F53;
 							        }
 							    };
 							} // namespace alpaka::rand::engine
 							// ==
-							// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
+							// == ./include/alpaka/rand/Philox/PhiloxConstants.hpp ==
 							// ============================================================================
 
+						// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
 
 						// #include <utility>    // amalgamate: file already included
 
 						namespace alpaka::rand::engine
 						{
-						    /** Common class for Philox family engines
+						    /** Philox algorithm parameters
 						     *
-						     * Relies on `PhiloxStateless` to provide the PRNG and adds state to handling the counting.
-						     *
-						     * @tparam TBackend device-dependent backend, specifies the array types
-						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-						     * @tparam TImpl engine type implementation (CRTP)
-						     *
-						     * static const data members are transformed into functions, because GCC
-						     * assumes types with static data members to be not mappable and makes not
-						     * exception for constexpr ones. This is a valid interpretation of the
-						     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
-						     * data member are mappable.
+						     * @tparam TCounterSize number of elements in the counter
+						     * @tparam TWidth width of one counter element (in bits)
+						     * @tparam TRounds number of S-box rounds
 						     */
-						    template<typename TBackend, typename TParams, typename TImpl>
-						    class PhiloxBaseCommon
-						        : public TBackend
-						        , public PhiloxStateless<TBackend, TParams>
+						    template<unsigned TCounterSize, unsigned TWidth, unsigned TRounds>
+						    struct PhiloxParams
 						    {
-						    public:
-						        using Counter = typename PhiloxStateless<TBackend, TParams>::Counter;
-						        using Key = typename PhiloxStateless<TBackend, TParams>::Key;
-
-						    protected:
-						        /** Advance the \a counter to the next state
-						         *
-						         * Increments the passed-in \a counter by one with a 128-bit carry.
-						         *
-						         * @param counter reference to the counter which is to be advanced
-						         */
-						        ALPAKA_FN_HOST_ACC void advanceCounter(Counter& counter)
-						        {
-						            counter[0]++;
-						            /* 128-bit carry */
-						            if(counter[0] == 0)
-						            {
-						                counter[1]++;
-						                if(counter[1] == 0)
-						                {
-						                    counter[2]++;
-						                    if(counter[2] == 0)
-						                    {
-						                        counter[3]++;
-						                    }
-						                }
-						            }
-						        }
-
-						        /** Advance the internal state counter by \a offset N-vectors (N = counter size)
-						         *
-						         * Advances the internal value of this->state.counter
-						         *
-						         * @param offset number of N-vectors to skip
-						         */
-						        ALPAKA_FN_HOST_ACC void skip4(uint64_t offset)
-						        {
-						            Counter& counter = static_cast<TImpl*>(this)->state.counter;
-						            Counter temp = counter;
-						            counter[0] += low32Bits(offset);
-						            counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
-						            counter[2] += (counter[0] < temp[1] ? 1u : 0u);
-						            counter[3] += (counter[0] < temp[2] ? 1u : 0u);
-						        }
-
-						        /** Advance the counter by the length of \a subsequence
-						         *
-						         * Advances the internal value of this->state.counter
-						         *
-						         * @param subsequence number of subsequences to skip
-						         */
-						        ALPAKA_FN_HOST_ACC void skipSubsequence(uint64_t subsequence)
-						        {
-						            Counter& counter = static_cast<TImpl*>(this)->state.counter;
-						            Counter temp = counter;
-						            counter[2] += low32Bits(subsequence);
-						            counter[3] += high32Bits(subsequence) + (counter[2] < temp[2] ? 1 : 0);
-						        }
+						        static constexpr unsigned counterSize = TCounterSize;
+						        static constexpr unsigned width = TWidth;
+						        static constexpr unsigned rounds = TRounds;
 						    };
-						} // namespace alpaka::rand::engine
-						// ==
-						// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
-						// ============================================================================
 
-						// ============================================================================
-						// == ./include/alpaka/rand/Philox/PhiloxBaseCudaArray.hpp ==
-						// ==
-						/* Copyright 2022 Jiri Vyskocil
-						 * SPDX-License-Identifier: MPL-2.0
-						 */
-
-						// #pragma once
-						// #include "alpaka/meta/CudaVectorArrayWrapper.hpp"    // amalgamate: file already inlined
-
-						#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-
-						namespace alpaka::rand::engine
-						{
-						    namespace trait
-						    {
-						        template<typename TScalar>
-						        struct PhiloxResultContainerTraits;
-
-						        template<>
-						        struct PhiloxResultContainerTraits<float>
-						        {
-						            using type = meta::CudaVectorArrayWrapper<float, 4>;
-						        };
-
-						        template<>
-						        struct PhiloxResultContainerTraits<double>
-						        {
-						            using type = meta::CudaVectorArrayWrapper<double, 4>;
-						        };
-
-						        template<>
-						        struct PhiloxResultContainerTraits<int>
-						        {
-						            using type = meta::CudaVectorArrayWrapper<int, 4>;
-						        };
-
-						        template<>
-						        struct PhiloxResultContainerTraits<unsigned>
-						        {
-						            using type = meta::CudaVectorArrayWrapper<unsigned, 4>;
-						        };
-
-						        template<typename TScalar>
-						        using PhiloxResultContainer = typename PhiloxResultContainerTraits<TScalar>::type;
-						    } // namespace trait
-
-						    /** Philox backend using array-like interface to CUDA uintN types for the storage of Key and Counter
+						    /** Class basic Philox family counter-based PRNG
 						     *
-						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-						     */
-						    template<typename TParams>
-						    class PhiloxBaseCudaArray
-						    {
-						        static_assert(TParams::counterSize == 4, "GPU Philox implemented only for counters of width == 4");
-
-						    public:
-						        using Counter
-						            = meta::CudaVectorArrayWrapper<unsigned, 4>; ///< Counter type = array-like interface to CUDA uint4
-						        using Key = meta::CudaVectorArrayWrapper<unsigned, 2>; ///< Key type = array-like interface to CUDA uint2
-						        template<typename TDistributionResultScalar>
-						        using ResultContainer = trait::PhiloxResultContainer<TDistributionResultScalar>; ///< Vector template for
-						                                                                                         ///< distribution results
-						    };
-						} // namespace alpaka::rand::engine
-
-						#endif
-						// ==
-						// == ./include/alpaka/rand/Philox/PhiloxBaseCudaArray.hpp ==
-						// ============================================================================
-
-						// ============================================================================
-						// == ./include/alpaka/rand/Philox/PhiloxBaseStdArray.hpp ==
-						// ==
-						/* Copyright 2022 Jiri Vyskocil, Bernhard Manfred Gruber
-						 * SPDX-License-Identifier: MPL-2.0
-						 */
-
-						// #pragma once
-						// #include <array>    // amalgamate: file already included
-						// #include <cstdint>    // amalgamate: file already included
-
-						namespace alpaka::rand::engine
-						{
-						    /** Philox backend using std::array for Key and Counter storage
-						     *
-						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
-						     */
-						    template<typename TParams>
-						    class PhiloxBaseStdArray
-						    {
-						    public:
-						        using Counter = std::array<std::uint32_t, TParams::counterSize>; ///< Counter type = std::array
-						        using Key = std::array<std::uint32_t, TParams::counterSize / 2>; ///< Key type = std::array
-						        template<typename TScalar>
-						        using ResultContainer
-						            = std::array<TScalar, TParams::counterSize>; ///< Vector template for distribution results
-						    };
-						} // namespace alpaka::rand::engine
-						// ==
-						// == ./include/alpaka/rand/Philox/PhiloxBaseStdArray.hpp ==
-						// ============================================================================
-
-					// #include "alpaka/rand/Philox/PhiloxStateless.hpp"    // amalgamate: file already inlined
-						// ============================================================================
-						// == ./include/alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp ==
-						// ==
-						/* Copyright 2022 Jeffrey Kelling
-						 * SPDX-License-Identifier: MPL-2.0
-						 */
-
-						// #pragma once
-						// #include "alpaka/rand/Philox/PhiloxStateless.hpp"    // amalgamate: file already inlined
-
-						namespace alpaka::rand::engine
-						{
-						    /** Common class for Philox family engines
-						     *
-						     * Checks the validity of passed-in parameters and calls the \a TBackend methods to perform N rounds of the
+						     * Checks the validity of passed-in parameters and calls the backend methods to perform N rounds of the
 						     * Philox shuffle.
 						     *
-						     * @tparam TBackend device-dependent backend, specifies the array types
 						     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
 						     */
-						    template<typename TBackend, typename TParams>
-						    struct PhiloxStatelessKeyedBase : public PhiloxStateless<TBackend, TParams>
+						    template<typename TParams>
+						    class PhiloxStateless : public PhiloxConstants<TParams>
 						    {
-						    public:
-						        using Counter = typename PhiloxStateless<TBackend, TParams>::Counter;
-						        using Key = typename PhiloxStateless<TBackend, TParams>::Key;
-
-						        const Key m_key;
-
-						        PhiloxStatelessKeyedBase(Key&& key) : m_key(std::move(key))
+						        static constexpr unsigned numRounds()
 						        {
+						            return TParams::rounds;
 						        }
 
-						        ALPAKA_FN_HOST_ACC auto operator()(Counter const& counter) const
+						        static constexpr unsigned vectorSize()
 						        {
-						            return this->generate(counter, m_key);
+						            return TParams::counterSize;
+						        }
+
+						        static constexpr unsigned numberWidth()
+						        {
+						            return TParams::width;
+						        }
+
+						        static_assert(numRounds() > 0, "Number of Philox rounds must be > 0.");
+						        static_assert(vectorSize() % 2 == 0, "Philox counter size must be an even number.");
+						        static_assert(vectorSize() <= 16, "Philox SP network is not specified for sizes > 16.");
+						        static_assert(numberWidth() % 8 == 0, "Philox number width in bits must be a multiple of 8.");
+
+						        static_assert(numberWidth() == 32, "Philox implemented only for 32 bit numbers.");
+
+						    public:
+						        using Counter = alpaka::Vec<alpaka::DimInt<TParams::counterSize>, std::uint32_t>;
+						        using Key = alpaka::Vec<alpaka::DimInt<TParams::counterSize / 2>, std::uint32_t>;
+						        using Constants = PhiloxConstants<TParams>;
+
+						    protected:
+						        /** Single round of the Philox shuffle
+						         *
+						         * @param counter state of the counter
+						         * @param key value of the key
+						         * @return shuffled counter
+						         */
+						        static ALPAKA_FN_HOST_ACC auto singleRound(Counter const& counter, Key const& key)
+						        {
+						            std::uint32_t H0, L0, H1, L1;
+						            multiplyAndSplit64to32(counter[0], Constants::MULTIPLITER_4x32_0(), H0, L0);
+						            multiplyAndSplit64to32(counter[2], Constants::MULTIPLITER_4x32_1(), H1, L1);
+						            return Counter{H1 ^ counter[1] ^ key[0], L1, H0 ^ counter[3] ^ key[1], L0};
+						        }
+
+						        /** Bump the \a key by the Weyl sequence step parameter
+						         *
+						         * @param key the key to be bumped
+						         * @return the bumped key
+						         */
+						        static ALPAKA_FN_HOST_ACC auto bumpKey(Key const& key)
+						        {
+						            return Key{key[0] + Constants::WEYL_32_0(), key[1] + Constants::WEYL_32_1()};
+						        }
+
+						        /** Performs N rounds of the Philox shuffle
+						         *
+						         * @param counter_in initial state of the counter
+						         * @param key_in initial state of the key
+						         * @return result of the PRNG shuffle; has the same size as the counter
+						         */
+						        static ALPAKA_FN_HOST_ACC auto nRounds(Counter const& counter_in, Key const& key_in) -> Counter
+						        {
+						            Key key{key_in};
+						            Counter counter = singleRound(counter_in, key);
+
+						            ALPAKA_UNROLL(numRounds())
+						            for(unsigned int n = 0; n < numRounds(); ++n)
+						            {
+						                key = bumpKey(key);
+						                counter = singleRound(counter, key);
+						            }
+
+						            return counter;
+						        }
+
+						    public:
+						        /** Generates a random number (\p TCounterSize x32-bit)
+						         *
+						         * @param counter initial state of the counter
+						         * @param key initial state of the key
+						         * @return result of the PRNG shuffle; has the same size as the counter
+						         */
+						        static ALPAKA_FN_HOST_ACC auto generate(Counter const& counter, Key const& key) -> Counter
+						        {
+						            return nRounds(counter, key);
 						        }
 						    };
 						} // namespace alpaka::rand::engine
 						// ==
-						// == ./include/alpaka/rand/Philox/PhiloxStatelessKeyedBase.hpp ==
+						// == ./include/alpaka/rand/Philox/PhiloxStateless.hpp ==
 						// ============================================================================
 
 
-					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-					namespace alpaka
+					// #include <utility>    // amalgamate: file already included
+
+					namespace alpaka::rand::engine
 					{
-					    template<typename TApi, typename TDim, typename TIdx>
-					    class AccGpuUniformCudaHipRt;
-					} // namespace alpaka
-					#endif
-
-					namespace alpaka::rand::engine::trait
-					{
-					    template<typename TAcc>
-					    inline constexpr bool isGPU = false;
-
-					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-					    template<typename TApi, typename TDim, typename TIdx>
-					    inline constexpr bool isGPU<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>> = true;
-					#endif
-
-					    /** Selection of default backend
+					    /** Common class for Philox family engines
 					     *
-					     * Selects the data backend based on the accelerator device type. As of now, different backends operate
-					     * on different array types.
+					     * Relies on `PhiloxStateless` to provide the PRNG and adds state to handling the counting.
 					     *
-					     * @tparam TAcc the accelerator as defined in alpaka/acc
-					     * @tparam TParams Philox algorithm parameters
-					     * @tparam TSfinae internal parameter to stop substitution search and provide the default
-					     */
-					    template<typename TAcc, typename TParams, typename TSfinae = void>
-					    struct PhiloxStatelessBaseTraits
-					    {
-					        // template <typename Acc, typename TParams, typename TImpl>
-					#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-					        using Backend = std::conditional_t<isGPU<TAcc>, PhiloxBaseCudaArray<TParams>, PhiloxBaseStdArray<TParams>>;
-					#else
-					        using Backend = PhiloxBaseStdArray<TParams>;
-					#endif
-					        using Counter = typename Backend::Counter; ///< Counter array type
-					        using Key = typename Backend::Key; ///< Key array type
-					        template<typename TDistributionResultScalar>
-					        using ResultContainer =
-					            typename Backend::template ResultContainer<TDistributionResultScalar>; ///< Distribution
-					                                                                                   ///< container type
-					        /// Base type to be inherited from by stateless keyed engine
-					        using Base = PhiloxStateless<Backend, TParams>;
-					    };
-
-					    /** Selection of default backend
-					     *
-					     * Selects the data backend based on the accelerator device type. As of now, different backends operate
-					     * on different array types.
-					     *
-					     * @tparam TAcc the accelerator as defined in alpaka/acc
-					     * @tparam TParams Philox algorithm parameters
-					     * @tparam TSfinae internal parameter to stop substitution search and provide the default
-					     */
-					    template<typename TAcc, typename TParams, typename TSfinae = void>
-					    struct PhiloxStatelessKeyedBaseTraits : public PhiloxStatelessBaseTraits<TAcc, TParams>
-					    {
-					        using Backend = typename PhiloxStatelessBaseTraits<TAcc, TParams>::Backend;
-					        /// Base type to be inherited from by counting engines
-					        using Base = PhiloxStatelessKeyedBase<Backend, TParams>;
-					    };
-
-					    /** Selection of default backend
-					     *
-					     * Selects the data backend based on the accelerator device type. As of now, different backends operate
-					     * on different array types.
-					     *
-					     * @tparam TAcc the accelerator as defined in alpaka/acc
-					     * @tparam TParams Philox algorithm parameters
+					     * @tparam TParams Philox algorithm parameters \sa PhiloxParams
 					     * @tparam TImpl engine type implementation (CRTP)
-					     * @tparam TSfinae internal parameter to stop substitution search and provide the default
+					     *
+					     * static const data members are transformed into functions, because GCC
+					     * assumes types with static data members to be not mappable and makes not
+					     * exception for constexpr ones. This is a valid interpretation of the
+					     * OpenMP <= 4.5 standard. In OpenMP >= 5.0 types with any kind of static
+					     * data member are mappable.
 					     */
-					    template<typename TAcc, typename TParams, typename TImpl, typename TSfinae = void>
-					    struct PhiloxBaseTraits : public PhiloxStatelessBaseTraits<TAcc, TParams>
+					    template<typename TParams, typename TImpl>
+					    class PhiloxBaseCommon : public PhiloxStateless<TParams>
 					    {
-					        using Backend = typename PhiloxStatelessBaseTraits<TAcc, TParams>::Backend;
-					        /// Base type to be inherited from by counting engines
-					        using Base = PhiloxBaseCommon<Backend, TParams, TImpl>;
+					    public:
+					        using Counter = typename PhiloxStateless<TParams>::Counter;
+					        using Key = typename PhiloxStateless<TParams>::Key;
+
+					        /// Distribution container type
+					        template<typename TDistributionResultScalar>
+					        using ResultContainer = typename alpaka::Vec<alpaka::DimInt<TParams::counterSize>, TDistributionResultScalar>;
+
+					    protected:
+					        /** Advance the \a counter to the next state
+					         *
+					         * Increments the passed-in \a counter by one with a 128-bit carry.
+					         *
+					         * @param counter reference to the counter which is to be advanced
+					         */
+					        ALPAKA_FN_HOST_ACC void advanceCounter(Counter& counter)
+					        {
+					            counter[0]++;
+					            /* 128-bit carry */
+					            if(counter[0] == 0)
+					            {
+					                counter[1]++;
+					                if(counter[1] == 0)
+					                {
+					                    counter[2]++;
+					                    if(counter[2] == 0)
+					                    {
+					                        counter[3]++;
+					                    }
+					                }
+					            }
+					        }
+
+					        /** Advance the internal state counter by \a offset N-vectors (N = counter size)
+					         *
+					         * Advances the internal value of this->state.counter
+					         *
+					         * @param offset number of N-vectors to skip
+					         */
+					        ALPAKA_FN_HOST_ACC void skip4(uint64_t offset)
+					        {
+					            Counter& counter = static_cast<TImpl*>(this)->state.counter;
+					            Counter temp = counter;
+					            counter[0] += low32Bits(offset);
+					            counter[1] += high32Bits(offset) + (counter[0] < temp[0] ? 1 : 0);
+					            counter[2] += (counter[0] < temp[1] ? 1u : 0u);
+					            counter[3] += (counter[0] < temp[2] ? 1u : 0u);
+					        }
+
+					        /** Advance the counter by the length of \a subsequence
+					         *
+					         * Advances the internal value of this->state.counter
+					         *
+					         * @param subsequence number of subsequences to skip
+					         */
+					        ALPAKA_FN_HOST_ACC void skipSubsequence(uint64_t subsequence)
+					        {
+					            Counter& counter = static_cast<TImpl*>(this)->state.counter;
+					            Counter temp = counter;
+					            counter[2] += low32Bits(subsequence);
+					            counter[3] += high32Bits(subsequence) + (counter[2] < temp[2] ? 1 : 0);
+					        }
 					    };
-					} // namespace alpaka::rand::engine::trait
+					} // namespace alpaka::rand::engine
 					// ==
-					// == ./include/alpaka/rand/Philox/PhiloxBaseTraits.hpp ==
+					// == ./include/alpaka/rand/Philox/PhiloxBaseCommon.hpp ==
 					// ============================================================================
 
 
@@ -7828,10 +7264,14 @@
 				        using Counter = TCounter;
 				        using Key = TKey;
 
-				        Counter counter; ///< Counter array
-				        Key key; ///< Key array
-				        Counter result; ///< Intermediate result array
-				        std::uint32_t position; ///< Pointer to the active intermediate result element
+				        /// Counter array
+				        Counter counter;
+				        /// Key array
+				        Key key;
+				        /// Intermediate result array
+				        Counter result;
+				        /// Pointer to the active intermediate result element
+				        std::uint32_t position;
 				        // TODO: Box-Muller states
 				    };
 
@@ -7842,21 +7282,23 @@
 				     * operator(). Additionally a pointer has to be stored indicating which part of the result array is to be
 				     * returned next.
 				     *
-				     * @tparam TAcc Accelerator type as defined in alpaka/acc
 				     * @tparam TParams Basic parameters for the Philox algorithm
 				     */
-				    template<typename TAcc, typename TParams>
-				    class PhiloxSingle : public trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>::Base
+				    template<typename TParams>
+				    class PhiloxSingle : public PhiloxBaseCommon<TParams, PhiloxSingle<TParams>>
 				    {
 				    public:
-				        /// Specialization for different TAcc backends
-				        using Traits = typename trait::PhiloxBaseTraits<TAcc, TParams, PhiloxSingle<TAcc, TParams>>;
+				        using Base = PhiloxBaseCommon<TParams, PhiloxSingle<TParams>>;
 
-				        using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
-				        using Key = typename Traits::Key; ///< Backend-dependent Key type
-				        using State = PhiloxStateSingle<Counter, Key>; ///< Backend-dependent State type
+				        /// Counter type
+				        using Counter = typename Base::Counter;
+				        /// Key type
+				        using Key = typename Base::Key;
+				        /// State type
+				        using State = PhiloxStateSingle<Counter, Key>;
 
-				        State state; ///< Internal engine state
+				        /// Internal engine state
+				        State state;
 
 				    protected:
 				        /** Advance internal counter to the next value
@@ -7959,7 +7401,7 @@
 
 				// #pragma once
 				// #include "alpaka/rand/Philox/MultiplyAndSplit64to32.hpp"    // amalgamate: file already inlined
-				// #include "alpaka/rand/Philox/PhiloxBaseTraits.hpp"    // amalgamate: file already inlined
+				// #include "alpaka/rand/Philox/PhiloxBaseCommon.hpp"    // amalgamate: file already inlined
 
 				// #include <utility>    // amalgamate: file already included
 
@@ -7976,8 +7418,10 @@
 				        using Counter = TCounter;
 				        using Key = TKey;
 
-				        Counter counter; ///< Counter array
-				        Key key; ///< Key array
+				        /// Counter array
+				        Counter counter;
+				        /// Key array
+				        Key key;
 				    };
 
 				    /** Philox engine generating a vector of numbers
@@ -7986,21 +7430,23 @@
 				     * This is a convenience vs. memory size tradeoff since the user has to deal with the output array
 				     * themselves, but the internal state comprises only of a single counter and a key.
 				     *
-				     * @tparam TAcc Accelerator type as defined in alpaka/acc
 				     * @tparam TParams Basic parameters for the Philox algorithm
 				     */
-				    template<typename TAcc, typename TParams>
-				    class PhiloxVector : public trait::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>::Base
+				    template<typename TParams>
+				    class PhiloxVector : public PhiloxBaseCommon<TParams, PhiloxVector<TParams>>
 				    {
 				    public:
-				        /// Specialization for different TAcc backends
-				        using Traits = trait::PhiloxBaseTraits<TAcc, TParams, PhiloxVector<TAcc, TParams>>;
+				        using Base = PhiloxBaseCommon<TParams, PhiloxVector<TParams>>;
 
-				        using Counter = typename Traits::Counter; ///< Backend-dependent Counter type
-				        using Key = typename Traits::Key; ///< Backend-dependent Key type
-				        using State = PhiloxStateVector<Counter, Key>; ///< Backend-dependent State type
+				        /// Counter type
+				        using Counter = typename Base::Counter;
+				        /// Key type
+				        using Key = typename Base::Key;
+				        /// State type
+				        using State = PhiloxStateVector<Counter, Key>;
+
 				        template<typename TDistributionResultScalar>
-				        using ResultContainer = typename Traits::template ResultContainer<TDistributionResultScalar>;
+				        using ResultContainer = typename Base::template ResultContainer<TDistributionResultScalar>;
 
 				        State state;
 
@@ -8178,15 +7624,14 @@
 			     * Ref.: J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
 			     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
 			     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
-			     *
-			     * @tparam TAcc Accelerator type as defined in alpaka/acc
 			     */
-			    template<typename TAcc>
-			    class Philox4x32x10 : public concepts::Implements<ConceptRand, Philox4x32x10<TAcc>>
+			    class Philox4x32x10 : public concepts::Implements<ConceptRand, Philox4x32x10>
 			    {
 			    public:
-			        using EngineParams = engine::PhiloxParams<4, 32, 10>; ///< Philox algorithm: 10 rounds, 4 numbers of size 32.
-			        using EngineVariant = engine::PhiloxSingle<TAcc, EngineParams>; ///< Engine outputs a single number
+			        /// Philox algorithm: 10 rounds, 4 numbers of size 32.
+			        using EngineParams = engine::PhiloxParams<4, 32, 10>;
+			        /// Engine outputs a single number
+			        using EngineVariant = engine::PhiloxSingle<EngineParams>;
 
 			        /** Initialize a new Philox engine
 			         *
@@ -8235,15 +7680,12 @@
 			     * Ref.: J. K. Salmon, M. A. Moraes, R. O. Dror and D. E. Shaw, "Parallel random numbers: As easy as 1, 2, 3,"
 			     * SC '11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and
 			     * Analysis, 2011, pp. 1-12, doi: 10.1145/2063384.2063405.
-			     *
-			     * @tparam TAcc Accelerator type as defined in alpaka/acc
 			     */
-			    template<typename TAcc>
-			    class Philox4x32x10Vector : public concepts::Implements<ConceptRand, Philox4x32x10Vector<TAcc>>
+			    class Philox4x32x10Vector : public concepts::Implements<ConceptRand, Philox4x32x10Vector>
 			    {
 			    public:
 			        using EngineParams = engine::PhiloxParams<4, 32, 10>;
-			        using EngineVariant = engine::PhiloxVector<TAcc, EngineParams>;
+			        using EngineVariant = engine::PhiloxVector<EngineParams>;
 
 			        /** Initialize a new Philox engine
 			         *
@@ -8329,7 +7771,7 @@
 			            if constexpr(meta::IsArrayOrVector<TResult>::value)
 			            {
 			                auto result = engine();
-			                T scale = static_cast<T>(1) / engine.max() * _range;
+			                T scale = static_cast<T>(1) / static_cast<T>(engine.max()) * _range;
 			                TResult ret{
 			                    static_cast<T>(result[0]) * scale + _min,
 			                    static_cast<T>(result[1]) * scale + _min,
@@ -8340,16 +7782,18 @@
 			            else
 			            {
 			                // Since it's possible to get a host-only engine here, the call has to go through proxy
-			                return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / engine.max() * _range + _min;
+			                return static_cast<T>(EngineCallHostAccProxy<TEngine>{}(engine)) / static_cast<T>(engine.max())
+			                           * _range
+			                       + _min;
 			            }
 
 			            ALPAKA_UNREACHABLE(TResult{});
 			        }
 
 			    private:
-			        const T _min;
-			        const T _max;
-			        const T _range;
+			        T const _min;
+			        T const _max;
+			        T const _range;
 			    };
 			} // namespace alpaka::rand
 			// ==
@@ -8428,7 +7872,7 @@
 		            ALPAKA_FN_HOST_ACC auto operator()(TEngine& engine) -> T
 		            {
 		                constexpr BitsT limit = static_cast<BitsT>(1) << std::numeric_limits<T>::digits;
-		                const BitsT b = UniformUint<BitsT>()(engine);
+		                BitsT const b = UniformUint<BitsT>()(engine);
 		                auto const ret = static_cast<T>(b & (limit - 1)) / limit;
 		                return ret;
 		            }
@@ -8496,7 +7940,7 @@
 		                    } while(u1 <= std::numeric_limits<T>::epsilon());
 
 		                    // compute z0 and z1
-		                    const T mag = sigma * math::sqrt(*m_acc, static_cast<T>(-2.) * math::log(*m_acc, u1));
+		                    T const mag = sigma * math::sqrt(*m_acc, static_cast<T>(-2.) * math::log(*m_acc, u1));
 		                    constexpr T twoPi = static_cast<T>(2. * math::constants::pi);
 		                    // getting two normal number out of this, store one for later
 		                    m_cache = mag * static_cast<T>(math::cos(*m_acc, twoPi * u2)) + mu;
@@ -8504,7 +7948,7 @@
 		                    return mag * static_cast<T>(math::sin(*m_acc, twoPi * u2)) + mu;
 		                }
 
-		                const T ret = m_cache;
+		                T const ret = m_cache;
 		                m_cache = std::numeric_limits<T>::quiet_NaN();
 		                return ret;
 		            }
@@ -8556,7 +8000,7 @@
 		                TAcc const& /* acc */,
 		                std::uint32_t const& seed,
 		                std::uint32_t const& subsequence,
-		                std::uint32_t const& offset) -> Philox4x32x10<TAcc>
+		                std::uint32_t const& offset) -> Philox4x32x10
 		            {
 		                return {seed, subsequence, offset};
 		            }
@@ -22395,7 +21839,7 @@
 
 					#    ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 					#        include <cuda.h>
-					// #        include <cuda_runtime.h>    // amalgamate: file already included
+					#        include <cuda_runtime.h>
 					#    endif
 
 					#    ifdef ALPAKA_ACC_GPU_HIP_ENABLED
@@ -22619,7 +22063,7 @@
 						// ============================================================================
 
 
-					// #include <initializer_list>    // amalgamate: file already included
+					#include <initializer_list>
 					// #include <stdexcept>    // amalgamate: file already included
 					// #include <string>    // amalgamate: file already included
 					// #include <tuple>    // amalgamate: file already included
@@ -25586,7 +25030,7 @@
 			        template<typename TApi, typename T>
 			        struct CreateNormalReal<RandUniformCudaHipRand<TApi>, T, std::enable_if_t<std::is_floating_point_v<T>>>
 			        {
-			            __device__ static auto createNormalReal(RandUniformCudaHipRand<TApi> const& /*rand*/)
+			            static __device__ auto createNormalReal(RandUniformCudaHipRand<TApi> const& /*rand*/)
 			                -> uniform_cuda_hip::NormalReal<T>
 			            {
 			                return {};
@@ -25597,7 +25041,7 @@
 			        template<typename TApi, typename T>
 			        struct CreateUniformReal<RandUniformCudaHipRand<TApi>, T, std::enable_if_t<std::is_floating_point_v<T>>>
 			        {
-			            __device__ static auto createUniformReal(RandUniformCudaHipRand<TApi> const& /*rand*/)
+			            static __device__ auto createUniformReal(RandUniformCudaHipRand<TApi> const& /*rand*/)
 			                -> uniform_cuda_hip::UniformReal<T>
 			            {
 			                return {};
@@ -25608,7 +25052,7 @@
 			        template<typename TApi, typename T>
 			        struct CreateUniformUint<RandUniformCudaHipRand<TApi>, T, std::enable_if_t<std::is_integral_v<T>>>
 			        {
-			            __device__ static auto createUniformUint(RandUniformCudaHipRand<TApi> const& /*rand*/)
+			            static __device__ auto createUniformUint(RandUniformCudaHipRand<TApi> const& /*rand*/)
 			                -> uniform_cuda_hip::UniformUint<T>
 			            {
 			                return {};
@@ -25622,7 +25066,7 @@
 			        template<typename TApi>
 			        struct CreateDefault<RandUniformCudaHipRand<TApi>>
 			        {
-			            __device__ static auto createDefault(
+			            static __device__ auto createDefault(
 			                RandUniformCudaHipRand<TApi> const& /*rand*/,
 			                std::uint32_t const& seed = 0,
 			                std::uint32_t const& subsequence = 0,
@@ -35109,7 +34553,6 @@
 	// ============================================================================
 
 // #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
-// #include "alpaka/meta/CudaVectorArrayWrapper.hpp"    // amalgamate: file already inlined
 // #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/meta/Filter.hpp ==
