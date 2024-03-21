@@ -345,6 +345,43 @@ namespace alpaka
                   << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock << " numRegs: " << funcAttrs.numRegs
                   << " ptxVersion: " << funcAttrs.ptxVersion << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes
                   << " B" << std::endl;
+
+        std::cout << ". MaxBlockDimX:" << funcAttrs.deviceAttributeMaxBlockDimX
+                  << ". MaxBlockDimY:" << funcAttrs.deviceAttributeMaxBlockDimY
+                  << ". MaxBlockDimZ:" << funcAttrs.deviceAttributeMaxBlockDimZ
+                  << ". MaxGridDimX:" << funcAttrs.deviceAttributeMaxGridDimX
+                  << ". MaxGridDimY:" << funcAttrs.deviceAttributeMaxGridDimY
+                  << ". MaxGridDimZ:" << funcAttrs.deviceAttributeMaxGridDimZ << std::endl;
+
+        // // choose between Blocking and NonBlocking
+        // using QueueProperty = alpaka::Blocking;
+        // using Queue = alpaka::Queue<Acc, QueueProperty>;
+
+
+        // auto const platformAcc = alpaka::Platform<Acc>{};
+        // auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
+
+
+        // Queue queue(devAcc);
+
+
+        // HelloWorldKernel helloWorldKernel;
+
+        //        // Run the kernel
+        //        //
+        //        // To execute the kernel, you have to provide the
+        //        // work division as well as the additional kernel function
+        //        // parameters.
+        //        // The kernel execution task is enqueued into an accelerator queue.
+        //        // The queue can be blocking or non-blocking
+        //        // depending on the chosen queue type (see type definitions above).
+        //        // Here it is synchronous which means that the kernel is directly executed.
+        // alpaka::exec<Acc>(
+        //     queue,
+        //     workDiv,
+        //     helloWorldKernel
+        //     /* put kernel arguments here */);
+        // alpaka::wait(queue);
     }
 
     //! \tparam TDim The dimensionality of the accelerator device properties.
