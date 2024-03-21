@@ -81,18 +81,16 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivKernel", "[workDivKernel]", alpaka::test
 
 TEMPLATE_LIST_TEST_CASE("enqueueWithValidWorkDiv.1D.withIdx", "[workDivKernel]", alpaka::test::TestAccs)
 {
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+    using TApi = alpaka::ApiHipRt<alpaka::Dim<Acc>, alpaka::Idx<Acc>>;
+#    elif defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+    using TApi = alpaka::ApiCudaRt<alpaka::Dim<Acc>, alpaka::Idx<Acc>>;
+#    endif
     using Acc = TestType;
     using Idx = alpaka::Idx<Acc>;
     using Dim = alpaka::Dim<Acc>;
-
-
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-    using TApi = alpaka::ApiHipRt<Dim, Idx>;
-#elif defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-    using TApi = alpaka::ApiCudaRt<Dim, Idx>;
-#endif
-
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
     using Vec = alpaka::Vec<Dim, Idx>;
     if constexpr(Dim::value == 1)
     {
