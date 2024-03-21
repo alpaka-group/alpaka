@@ -37,7 +37,7 @@ namespace
     struct HelloWorldKernel
     {
         template<typename TAcc>
-        ALPAKA_FN_ACC auto operator()(TAcc const& acc) const -> void
+        [[maybe_unused]] ALPAKA_FN_ACC auto operator()(TAcc const& acc) const -> void
         {
             using Dim = alpaka::Dim<TAcc>;
             using Idx = alpaka::Idx<TAcc>;
@@ -81,6 +81,7 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivKernel", "[workDivKernel]", alpaka::test
 
 TEMPLATE_LIST_TEST_CASE("enqueueWithValidWorkDiv.1D.withIdx", "[workDivKernel]", alpaka::test::TestAccs)
 {
+    [[maybe_unused]] HelloWorldKernel kernel;
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
@@ -97,7 +98,7 @@ TEMPLATE_LIST_TEST_CASE("enqueueWithValidWorkDiv.1D.withIdx", "[workDivKernel]",
         auto const platform = alpaka::Platform<Acc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
         // test that we can call getValidWorkDiv with the Idx type directly instead of a Vec
-        alpaka::enqueueWithValidWorkDiv<TApi, Acc>(dev, HelloWorldKernel{}, Vec{256}, Vec{13});
+        alpaka::enqueueWithValidWorkDiv<TApi, Acc>(dev, kernel, Vec{256}, Vec{13});
         // CHECK(alpaka::enqueueWithValidWorkDiv<Acc>(dev, Idx{256}, Idx{13}));
     }
 #endif
