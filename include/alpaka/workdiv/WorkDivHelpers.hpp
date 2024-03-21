@@ -336,6 +336,8 @@ namespace alpaka
         bool = true,
         GridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
     {
+        auto kernelName = alpaka::detail::
+            gpuKernel<TKernelFnObj, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>;
         // Log the function attributes.
         typename TApi::FuncAttributes_t funcAttrs;
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernel));
@@ -346,12 +348,12 @@ namespace alpaka
                   << " ptxVersion: " << funcAttrs.ptxVersion << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes
                   << " B" << std::endl;
 
-        std::cout << ". MaxBlockDimX:" << funcAttrs.deviceAttributeMaxBlockDimX
-                  << ". MaxBlockDimY:" << funcAttrs.deviceAttributeMaxBlockDimY
-                  << ". MaxBlockDimZ:" << funcAttrs.deviceAttributeMaxBlockDimZ
-                  << ". MaxGridDimX:" << funcAttrs.deviceAttributeMaxGridDimX
-                  << ". MaxGridDimY:" << funcAttrs.deviceAttributeMaxGridDimY
-                  << ". MaxGridDimZ:" << funcAttrs.deviceAttributeMaxGridDimZ << std::endl;
+        // std::cout << ". MaxBlockDimX:" << funcAttrs.maxBlockDimX
+        //           << ". MaxBlockDimY:" << funcAttrs.maxBlockDimY
+        //           << ". MaxBlockDimZ:" << funcAttrs.maxBlockDimZ
+        //           << ". MaxGridDimX:" << funcAttrs.maxGridDimX
+        //           << ". MaxGridDimY:" << funcAttrs.maxGridDimY
+        //           << ". MaxGridDimZ:" << funcAttrs.maxGridDimZ << std::endl;
 
         // // choose between Blocking and NonBlocking
         // using QueueProperty = alpaka::Blocking;

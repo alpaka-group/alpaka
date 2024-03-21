@@ -6,6 +6,7 @@
 #include <alpaka/acc/AccGpuHipRt.hpp>
 #include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #include <alpaka/core/ApiHipRt.hpp>
+#include <alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/workdiv/WorkDivHelpers.hpp>
