@@ -329,13 +329,12 @@ namespace alpaka
         typename TGridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>,
         typename TThreadElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>>
     ALPAKA_FN_HOST void enqueueWithValidWorkDiv(
-        TDev const& queue,
+        TDev const&,
         TKernel const& kernel,
-        TGridElemExtent const& gridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
-        TThreadElemExtent const& threadElemExtents = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
-        bool blockThreadMustDivideGridThreadExtent = true,
-        GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
-        = GridBlockExtentSubDivRestrictions::Unrestricted)
+        TGridElemExtent const& = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        TThreadElemExtent const& = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        bool = true,
+        GridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
     {
         // Log the function attributes.
         typename TApi::FuncAttributes_t funcAttrs;
