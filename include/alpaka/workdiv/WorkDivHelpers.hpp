@@ -339,7 +339,7 @@ namespace alpaka
     {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
         auto kernelName
-            = alpaka::detail::gpuKernel<kernel, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>;
+            = alpaka::detail::gpuKernel<TKernel, TApi, TAcc, Dim, Idx, remove_restrict_t<std::decay_t<TArgs>>...>;
         // Log the function attributes.
         typename TApi::FuncAttributes_t funcAttrs;
         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
@@ -350,43 +350,6 @@ namespace alpaka
                   << " ptxVersion: " << funcAttrs.ptxVersion << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes
                   << " B" << std::endl;
 #endif
-
-        // std::cout << ". MaxBlockDimX:" << funcAttrs.maxBlockDimX
-        //           << ". MaxBlockDimY:" << funcAttrs.maxBlockDimY
-        //           << ". MaxBlockDimZ:" << funcAttrs.maxBlockDimZ
-        //           << ". MaxGridDimX:" << funcAttrs.maxGridDimX
-        //           << ". MaxGridDimY:" << funcAttrs.maxGridDimY
-        //           << ". MaxGridDimZ:" << funcAttrs.maxGridDimZ << std::endl;
-
-        // // choose between Blocking and NonBlocking
-        // using QueueProperty = alpaka::Blocking;
-        // using Queue = alpaka::Queue<Acc, QueueProperty>;
-
-
-        // auto const platformAcc = alpaka::Platform<Acc>{};
-        // auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
-
-
-        // Queue queue(devAcc);
-
-
-        // HelloWorldKernel helloWorldKernel;
-
-        //        // Run the kernel
-        //        //
-        //        // To execute the kernel, you have to provide the
-        //        // work division as well as the additional kernel function
-        //        // parameters.
-        //        // The kernel execution task is enqueued into an accelerator queue.
-        //        // The queue can be blocking or non-blocking
-        //        // depending on the chosen queue type (see type definitions above).
-        //        // Here it is synchronous which means that the kernel is directly executed.
-        // alpaka::exec<Acc>(
-        //     queue,
-        //     workDiv,
-        //     helloWorldKernel
-        //     /* put kernel arguments here */);
-        // alpaka::wait(queue);
     }
 
     //! \tparam TDim The dimensionality of the accelerator device properties.

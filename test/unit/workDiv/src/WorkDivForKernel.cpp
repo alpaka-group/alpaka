@@ -94,7 +94,7 @@ TEMPLATE_LIST_TEST_CASE("enqueueWithValidWorkDiv.1D.withIdx", "[workDivKernel]",
         auto const platform = alpaka::Platform<Acc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
         // test that we can call getValidWorkDiv with the Idx type directly instead of a Vec
-        alpaka::enqueueWithValidWorkDiv<TApi, Acc>(dev, kernel, Vec{256}, Vec{13});
+        alpaka::enqueueWithValidWorkDiv<TApi, Acc, decltype(dev), HelloWorldKernel>(dev, kernel, Vec{256}, Vec{13});
         // CHECK(alpaka::enqueueWithValidWorkDiv<Acc>(dev, Idx{256}, Idx{13}));
     }
 #endif
