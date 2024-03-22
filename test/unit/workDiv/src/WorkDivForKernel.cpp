@@ -6,13 +6,47 @@
 #include <alpaka/acc/AccGpuHipRt.hpp>
 #include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #include <alpaka/core/ApiHipRt.hpp>
-#include <alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp>
+// #include <alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/workdiv/WorkDivHelpers.hpp>
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+namespace alpaka::detail
+{
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wunused-template"
+#    endif
+    //! The GPU CUDA/HIP kernel entry point.
+    // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
+    // We have put the function into a shallow namespace and gave it a short name, so the mangled name in the
+    // profiler (e.g. ncu) is as shorter as possible.
+    template<typename TKernelFnObj, typename TApi, typename TAcc, typename TDim, typename TIdx, typename... TArgs>
+    __global__ void gpuKernel(Vec<TDim, TIdx> const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs... args)
+    {
+#    if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
+#        error "Device capability >= 2.0 is required!"
+#    endif
+
+        TAcc const acc(threadElemExtent);
+
+// with clang it is not possible to query std::result_of for a pure device lambda created on the host side
+#    if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
+        static_assert(
+            std::is_same_v<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>,
+            "The TKernelFnObj is required to return void!");
+#    endif
+        kernelFnObj(const_cast<TAcc const&>(acc), args...);
+    }
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
+} // namespace alpaka::detail
+#endif
 
 namespace
 {
@@ -79,7 +113,6 @@ TEMPLATE_LIST_TEST_CASE("enqueueWithValidWorkDiv.1D.withIdx", "[workDivKernel]",
 {
     [[maybe_unused]] HelloWorldKernel kernel;
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
     using TApi = alpaka::ApiHipRt<alpaka::Dim<Acc>, alpaka::Idx<Acc>>;
 #    elif defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
