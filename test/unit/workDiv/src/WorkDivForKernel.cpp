@@ -45,11 +45,6 @@ namespace
             using Vec = alpaka::Vec<Dim, Idx>;
             using Vec1 = alpaka::Vec<alpaka::DimInt<1u>, Idx>;
 
-            // In the most cases the parallel work distibution depends
-            // on the current index of a thread and how many threads
-            // exist overall. These information can be obtained by
-            // getIdx() and getWorkDiv(). In this example these
-            // values are obtained for a global scope.
             Vec const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
             Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 

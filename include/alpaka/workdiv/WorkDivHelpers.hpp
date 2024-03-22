@@ -10,6 +10,7 @@
 #include "alpaka/core/Utility.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/extent/Traits.hpp"
+#include "alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp"
 #include "alpaka/vec/Vec.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
 
@@ -330,23 +331,25 @@ namespace alpaka
         typename TThreadElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>>
     ALPAKA_FN_HOST void enqueueWithValidWorkDiv(
         TDev const&,
-        TKernel const& kernel,
+        [[maybe_unused]] TKernel const& kernel,
         TGridElemExtent const& = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
         TThreadElemExtent const& = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
         bool = true,
         GridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
     {
-        auto kernelName = alpaka::detail::
-            gpuKernel<TKernelFnObj, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>;
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+        auto kernelName
+            = alpaka::detail::gpuKernel<kernel, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>;
         // Log the function attributes.
         typename TApi::FuncAttributes_t funcAttrs;
-        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernel));
+        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
         std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
                   << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
                   << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
                   << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock << " numRegs: " << funcAttrs.numRegs
                   << " ptxVersion: " << funcAttrs.ptxVersion << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes
                   << " B" << std::endl;
+#endif
 
         // std::cout << ". MaxBlockDimX:" << funcAttrs.maxBlockDimX
         //           << ". MaxBlockDimY:" << funcAttrs.maxBlockDimY
