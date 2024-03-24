@@ -7,6 +7,8 @@
 
 #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
 #include "alpaka/acc/Traits.hpp"
+#include "alpaka/core/ApiCudaRt.hpp"
+#include "alpaka/core/ApiHipRt.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Decay.hpp"
@@ -390,7 +392,36 @@ namespace alpaka
                 }
             }
         };
+
+
     } // namespace trait
+
+    template<
+        typename TApi,
+        typename TAcc,
+        typename TDev,
+        typename TKernelFnObj,
+        typename TGridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>,
+        typename TThreadElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>>
+    ALPAKA_FN_HOST void getValidWorkDivForKernel(
+        TDev const&,
+        [[maybe_unused]] TKernelFnObj const& kernel,
+        TGridElemExtent const& = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        TThreadElemExtent const& = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        bool = true,
+        GridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
+    {
+        auto kernelName = alpaka::detail::gpuKernel<TKernelFnObj, TApi, TAcc, Dim<TAcc>, Idx<TAcc>, TAcc>;
+        // Log the function attributes.
+        typename TApi::FuncAttributes_t funcAttrs;
+        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
+        std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
+                  << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
+                  << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
+                  << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock << " numRegs: " << funcAttrs.numRegs
+                  << " ptxVersion: " << funcAttrs.ptxVersion << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes
+                  << " B" << std::endl;
+    }
 } // namespace alpaka
 
 #    endif
