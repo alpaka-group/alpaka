@@ -62,11 +62,11 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D.withIdx", "[workDivKernel]"
 
 
 #        if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-    using TApi = alpaka::ApiCudaRt;
+    using TApi = alpaka::ApiCudaRt<Dim, Idx>;
 #        endif
 
 #        if defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-    using TApi = alpaka::ApiHipRt;
+    using TApi = alpaka::ApiHipRt<Dim, Idx>;
 #        endif
 
     using Vec = alpaka::Vec<Dim, Idx>;
