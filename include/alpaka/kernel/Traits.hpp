@@ -103,25 +103,7 @@ namespace alpaka
 #    error "Device capability >= 2.0 is required!"
 #endif
 
-                const TAcc acc(threadElemExtent);
-
-// with clang it is not possible to query std::result_of for a pure device lambda created on the host side
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
-                static_assert(
-                    std::is_same_v<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>,
-                    "The TKernelFnObj is required to return void!");
-#endif
-                auto kernelName = kernelFnObj(const_cast<TAcc const&>(acc), args...);
-
-                typename TApi::FuncAttributes_t funcAttrs;
-                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
-                std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
-                          << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
-                          << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
-                          << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
-                          << " numRegs: " << funcAttrs.numRegs << " ptxVersion: " << funcAttrs.ptxVersion
-                          << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B" << std::endl;
-                return 0u;
+                return 0;
             }
         };
 
