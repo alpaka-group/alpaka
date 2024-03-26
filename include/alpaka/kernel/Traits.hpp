@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "alpaka/core/ApiCudaRt.hpp"
+#include "alpaka/core/ApiHipRt.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Common.hpp"
 #include "alpaka/core/Debug.hpp"
@@ -65,6 +67,62 @@ namespace alpaka
                 [[maybe_unused]] Vec<TDim, Idx<TAcc>> const& threadElemExtent,
                 [[maybe_unused]] TArgs const&... args) -> std::size_t
             {
+                return 0u;
+            }
+        };
+
+        template<typename TApi, typename TKernelFnObj, typename TAcc, typename TSfinae = void>
+        struct WorkDivForKernel
+        {
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+            //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
+            //! \param blockThreadExtent The block thread extent.
+            //! \param threadElemExtent The thread element extent.
+            //! \tparam TArgs The kernel invocation argument types pack.
+            //! \param args,... The kernel invocation arguments.
+            //! \return The size of the shared memory allocated for a block in bytes.
+            //! The default version always returns zero.
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<typename TDim, typename... TArgs>
+            ALPAKA_FN_HOST_ACC static auto getWorkDivForKernel(
+                [[maybe_unused]] TKernelFnObj const& kernelFnObj,
+                [[maybe_unused]] Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
+                [[maybe_unused]] Vec<TDim, Idx<TAcc>> const& threadElemExtent,
+                [[maybe_unused]] TArgs const&... args) -> std::size_t
+            {
+                // auto kernelName = alpaka::detail::
+                //     gpuKernel<TKernelFnObj, TApi, TAcc, TDim, TIdx, remove_restrict_t<std::decay_t<TArgs>>...>;
+                // // Log the function attributes.
+
+#if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
+#    error "Device capability >= 2.0 is required!"
+#endif
+
+                const TAcc acc(threadElemExtent);
+
+// with clang it is not possible to query std::result_of for a pure device lambda created on the host side
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
+                static_assert(
+                    std::is_same_v<decltype(kernelFnObj(const_cast<TAcc const&>(acc), args...)), void>,
+                    "The TKernelFnObj is required to return void!");
+#endif
+                auto kernelName = kernelFnObj(const_cast<TAcc const&>(acc), args...);
+
+                typename TApi::FuncAttributes_t funcAttrs;
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::funcGetAttributes(&funcAttrs, kernelName));
+                std::cout << __func__ << " binaryVersion: " << funcAttrs.binaryVersion
+                          << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
+                          << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
+                          << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
+                          << " numRegs: " << funcAttrs.numRegs << " ptxVersion: " << funcAttrs.ptxVersion
+                          << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B" << std::endl;
                 return 0u;
             }
         };
@@ -161,6 +219,21 @@ namespace alpaka
         TArgs const&... args) -> std::size_t
     {
         return trait::BlockSharedMemDynSizeBytes<TKernelFnObj, TAcc>::getBlockSharedMemDynSizeBytes(
+            kernelFnObj,
+            blockThreadExtent,
+            threadElemExtent,
+            args...);
+    }
+
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TApi, typename TAcc, typename TKernelFnObj, typename TDim, typename... TArgs>
+    ALPAKA_FN_HOST_ACC auto getWorkDivForKernel(
+        TKernelFnObj const& kernelFnObj,
+        Vec<TDim, Idx<TAcc>> const& blockThreadExtent,
+        Vec<TDim, Idx<TAcc>> const& threadElemExtent,
+        TArgs const&... args) -> std::size_t
+    {
+        return trait::WorkDivForKernel<TApi, TKernelFnObj, TAcc>::getWorkDivForKernel(
             kernelFnObj,
             blockThreadExtent,
             threadElemExtent,

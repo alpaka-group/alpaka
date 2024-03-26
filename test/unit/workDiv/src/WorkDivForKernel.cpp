@@ -75,7 +75,7 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D.withIdx", "[workDivKernel]"
         auto const platform = alpaka::Platform<Acc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        alpaka::getValidWorkDivForKernel<TApi, Acc, decltype(dev), TestKernel>(dev, kernel, Vec{256}, Vec{13});
+        alpaka::getWorkDivForKernel<TApi, Acc, decltype(dev), TestKernel>(dev, kernel, Vec{256}, Vec{13});
         // CHECK(alpaka::getValidWorkDivForKernel<Acc>(dev, Idx{256}, Idx{13}));
     }
 #    endif
