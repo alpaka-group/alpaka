@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include "alpaka/core/ApiCudaRt.hpp"
-#include "alpaka/core/ApiHipRt.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Common.hpp"
 #include "alpaka/core/Debug.hpp"

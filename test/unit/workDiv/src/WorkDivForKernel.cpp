@@ -30,7 +30,7 @@ namespace
             using Vec1 = alpaka::Vec<alpaka::DimInt<1u>, Idx>;
 
             Vec const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-            Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+            Vec const globalThreadExtent = alpaka::getValidWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
             // Map the three dimensional thread index into a
             // one dimensional thread index space. We call it
@@ -52,7 +52,7 @@ namespace
     };
 } // namespace
 
-TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D.withIdx", "[workDivKernel]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("getWorkDivForKernel.1D.withIdx", "[workDivKernel]", alpaka::test::TestAccs)
 {
 #    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) || defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
     using Acc = TestType;
@@ -75,7 +75,7 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D.withIdx", "[workDivKernel]"
         auto const platform = alpaka::Platform<Acc>{};
         auto const dev = alpaka::getDevByIdx(platform, 0);
 
-        alpaka::getWorkDivForKernel<TApi, Acc, decltype(dev), TestKernel>(dev, kernel, Vec{256}, Vec{13});
+        alpaka::getWorkDivForKernel<TApi, Acc, TestKernel>(kernel, Vec{256}, Vec{13});
         // CHECK(alpaka::getValidWorkDivForKernel<Acc>(dev, Idx{256}, Idx{13}));
     }
 #    endif
