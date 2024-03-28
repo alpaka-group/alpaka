@@ -3,6 +3,46 @@
 Coding Guidelines
 ==================
 
+Pre-commit
+----------
+
+This project is set up for use with `pre-commit <https://pre-commit.com>`_. Using it will make your code conform with most
+of our (easily automatable) code style guidelines automatically. Pre-commit is a tool that manages
+`git hooks <https://git-scm.com/docs/githooks>`_ conveniently for you.
+In very short (for anything further see `pre-commit <https://pre-commit.com>`_), after running the following in your
+working clone of Alpaka
+
+.. code-block:: bash
+
+  # if not yet done, install the pre-commit executable following https://pre-commit.com
+  cd /path/to/alpaka-working-clone
+  pre-commit install
+
+``git`` will run a number of checks prior to every commit and push and will refuse to perform the
+pertinent action if they fail. Most of them (like e.g. the formatter) will have automatically altered your working tree
+with the necessary changes such that
+
+.. code-block:: bash
+
+  git add -u
+
+will make the next commit pass. Although disencouraged, in urgent cases it might be needed to be able to commit even if
+the checks fail. For such cases, you can either use
+
+.. code-block:: bash
+
+  git commit --no-verify [...]
+
+to completely skip all checks or use the more fine-grained control described `here <https://pre-commit.com/#temporarily-disabling-hooks>`_.
+
+You can use
+
+.. code-block:: bash
+
+   pre-commit run --all-files
+
+to run all the hooks on all files.
+
 Formatting
 ----------
 

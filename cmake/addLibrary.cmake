@@ -50,7 +50,7 @@ macro(alpaka_add_library libraryName)
 
         # We have to set this here because CMake currently doesn't provide hip_std_${VERSION} for
         # target_compile_features() and HIP_STANDARD isn't propagated by interface libraries.
-        set_target_properties(${In_Name} PROPERTIES 
+        set_target_properties(${In_Name} PROPERTIES
                               HIP_STANDARD ${alpaka_CXX_STANDARD}
                               HIP_STANDARD_REQUIRED ON)
     endif()

@@ -109,9 +109,7 @@ def get_compiler_versions(clang_cuda: bool = True) -> List[Tuple[str, str]]:
     compilers: List[Tuple[str, str]] = []
 
     # only use keys defined in sw_versions
-    for compiler_name in set(sw_versions.keys()).intersection(
-        [GCC, CLANG, NVCC, HIPCC, ICPX]
-    ):
+    for compiler_name in set(sw_versions.keys()).intersection([GCC, CLANG, NVCC, HIPCC, ICPX]):
         for version in sw_versions[compiler_name]:
             compilers.append((compiler_name, version))
             if clang_cuda and compiler_name == CLANG:
