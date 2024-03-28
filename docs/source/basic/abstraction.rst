@@ -272,4 +272,3 @@ They can be synchronized by using events.
 Blocks can not be synchronized and therefore can use the whole spectrum of parallelism ranging from fully parallel up to fully sequential execution depending on the device.
 Warps combine the execution of multiple threads in lock-step and can be synchronized implicitly by synchronizing the threads they contain.
 Threads within a block are executed in parallel warps and each thread computes a number of data elements sequentially.
-

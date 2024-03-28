@@ -50,7 +50,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wall")
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "-Wextra")
     # Turn off -pedantic when compiling CUDA code, otherwise the CI logs are flooded with warnings. gcc doesn't like nvcc's code transformations.
-    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-pedantic>" 
+    list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-pedantic>"
                                            "$<$<COMPILE_LANGUAGE:CUDA>:SHELL:-Xcompiler -Wno-pedantic>")
     if(alpaka_ENABLE_WERROR)
         list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-Werror>"
@@ -192,4 +192,3 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Inte
         endif()
     endif()
 endif()
-
