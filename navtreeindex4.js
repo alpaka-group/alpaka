@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1detail_1_1BufCpuImpl.html#adeb569361a4aefa3172e7ef8cd8515da":[3,0,0,4,6,1],
 "classalpaka_1_1detail_1_1BufCpuImpl.html#ae190997f7f7db148ae8d0ea325320cdd":[3,0,0,4,6,3],
 "classalpaka_1_1gb_1_1IdxGbLinear.html":[3,0,0,5,0],
 "classalpaka_1_1gb_1_1IdxGbLinear.html#a791d9d6fe298d20e614af5e9c6984aee":[3,0,0,5,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a643623c4547b6ee1bd99a242c7ebe29d":[3,0,0,13,1,2,0,5],
 "classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a7fad332308cb5c60e7874e6fc4d851dd":[3,0,0,13,1,2,0,8],
 "classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#a97cc0ece36d054043eb1ca987e0e76b7":[3,0,0,13,1,2,0,7],
-"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#ae5f6930a929b677d29d1a5c1154003ac":[3,0,0,13,1,2,0,2],
-"classalpaka_1_1test_1_1EventHostManualTriggerCpu.html":[3,0,0,14,5]
+"classalpaka_1_1rand_1_1engine_1_1uniform__cuda__hip_1_1Xor.html#ae5f6930a929b677d29d1a5c1154003ac":[3,0,0,13,1,2,0,2]
 };

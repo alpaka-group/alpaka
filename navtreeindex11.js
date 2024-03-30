@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1math_1_1ConceptMathTrunc.html":[3,0,0,9,61],
 "structalpaka_1_1math_1_1trait_1_1Abs.html":[3,0,0,9,0,0],
 "structalpaka_1_1math_1_1trait_1_1Abs.html#a33abf0c968519ff1620619e9bcea10e3":[3,0,0,9,0,0,0],
 "structalpaka_1_1math_1_1trait_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,9,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper.html":[3,0,0,11,0,5],
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01TList_3_4_01_4_00_01Ts_8_8_8_01_4.html":[3,0,0,11,0,6],
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01TList_3_4_01_4_00_01Ts_8_8_8_01_4.html#acb835539a8e1f860e3bd9112332f2c3c":[3,0,0,11,0,6,0],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01TList_3_4_00_01Rests_8_8_8_01_4.html":[3,0,0,11,0,8],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01TList_3_4_00_01Rests_8_8_8_01_4.html#a0ab5467e577ef3dce1e24beea9908d74":[3,0,0,11,0,8,0]
+"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01TList_3_4_00_01Rests_8_8_8_01_4.html":[3,0,0,11,0,8]
 };

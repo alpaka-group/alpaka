@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"QueueCudaRtNonBlocking_8hpp.html#ab1b1d2362f1b9fc854fc0ba4008c85e4":[4,0,0,0,18,9,0],
 "QueueCudaRtNonBlocking_8hpp_source.html":[4,0,0,0,18,9],
 "QueueFpgaSyclIntelBlocking_8hpp.html":[4,0,0,0,18,10],
 "QueueFpgaSyclIntelBlocking_8hpp_source.html":[4,0,0,0,18,10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "atomic_2Traits_8hpp.html#a87ead6541b9d6971fdbdc2d2e38e9676":[4,0,0,0,1,10,9],
 "atomic_2Traits_8hpp.html#ac8d44ae90fcfe2fdb973c49542fd0db5":[4,0,0,0,1,10,7],
 "atomic_2Traits_8hpp.html#af0db95671aafbe9c7fe480f45d226041":[4,0,0,0,1,10,17],
-"atomic_2Traits_8hpp.html#afc0cabb316d5524d381a35c8c67edf81":[4,0,0,0,1,10,16],
-"atomic_2Traits_8hpp.html#afcb672dfb9494d1e3907cc68ac9f6bdc":[4,0,0,0,1,10,8]
+"atomic_2Traits_8hpp.html#afc0cabb316d5524d381a35c8c67edf81":[4,0,0,0,1,10,16]
 };
