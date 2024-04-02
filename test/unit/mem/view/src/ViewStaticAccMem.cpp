@@ -16,9 +16,9 @@ using Elem = std::uint32_t;
 using Dim = alpaka::DimInt<2u>;
 using Idx = std::uint32_t;
 
-ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<TTag, Elem[3][2]> g_globalMemory2DUninitialized;
+ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<TAcc, Elem[3][2]> g_globalMemory2DUninitialized;
 
-ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<TTag, const Elem[3][2]> g_constantMemory2DUninitialized;
+ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<TAcc, const Elem[3][2]> g_constantMemory2DUninitialized;
 
 //! Uses static device memory on the accelerator defined globally for the whole compilation unit.
 struct StaticDeviceMemoryTestKernel
@@ -34,12 +34,7 @@ struct StaticDeviceMemoryTestKernel
         auto const offset = gridThreadExtent[1u] * gridThreadIdx[0u] + gridThreadIdx[1u];
         auto const val = offset;
 
-        ALPAKA_CHECK(
-            *success,
-            val
-                == *(
-                    (&g_globalMemory2DUninitialized<typename alpaka::trait::AccToTag<TAcc>::type>.get())[0][0]
-                    + offset));
+        ALPAKA_CHECK(*success, val == *((&g_globalMemory2DUninitialized<TAcc>.get())[0][0] + offset));
     }
 };
 
@@ -55,12 +50,7 @@ struct ConstantDeviceMemoryTestKernel
         auto const offset = gridThreadExtent[1u] * gridThreadIdx[0u] + gridThreadIdx[1u];
         auto const val = offset;
 
-        ALPAKA_CHECK(
-            *success,
-            val
-                == *(
-                    (&g_constantMemory2DUninitialized<typename alpaka::trait::AccToTag<TAcc>::type>.get())[0][0]
-                    + offset));
+        ALPAKA_CHECK(*success, val == *((&g_constantMemory2DUninitialized<TAcc>.get())[0][0] + offset));
     }
 };
 
@@ -106,22 +96,14 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAc
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
         auto bufHost = alpaka::createView(devHost, data.data(), extent);
 
-        alpaka::memcpy(
-            queueAcc,
-            g_globalMemory2DUninitialized<typename alpaka::trait::AccToTag<Acc>::type>,
-            bufHost,
-            extent);
+        alpaka::memcpy(queueAcc, g_globalMemory2DUninitialized<Acc>, bufHost, extent);
         alpaka::wait(queueAcc);
 
         REQUIRE(fixture(kernel));
 
         std::vector<Elem> data2(6, 0u);
         auto bufHost2 = alpaka::createView(devHost, data2.data(), extent);
-        alpaka::memcpy(
-            queueAcc,
-            bufHost2,
-            g_globalMemory2DUninitialized<typename alpaka::trait::AccToTag<Acc>::type>,
-            extent);
+        alpaka::memcpy(queueAcc, bufHost2, g_globalMemory2DUninitialized<Acc>, extent);
         alpaka::wait(queueAcc);
         REQUIRE(data == data2);
     }
@@ -152,20 +134,14 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
         auto bufHost = alpaka::createView(devHost, data.data(), extent);
 
-        alpaka::memcpy(
-            queueAcc,
-            g_constantMemory2DUninitialized<typename alpaka::trait::AccToTag<Acc>::type>,
-            bufHost);
+        alpaka::memcpy(queueAcc, g_constantMemory2DUninitialized<Acc>, bufHost);
         alpaka::wait(queueAcc);
 
         REQUIRE(fixture(kernel));
 
         std::vector<Elem> data2(6, 0u);
         auto bufHost2 = alpaka::createView(devHost, data2.data(), extent);
-        alpaka::memcpy(
-            queueAcc,
-            bufHost2,
-            g_constantMemory2DUninitialized<typename alpaka::trait::AccToTag<Acc>::type>);
+        alpaka::memcpy(queueAcc, bufHost2, g_constantMemory2DUninitialized<Acc>);
         alpaka::wait(queueAcc);
         REQUIRE(data == data2);
     }
