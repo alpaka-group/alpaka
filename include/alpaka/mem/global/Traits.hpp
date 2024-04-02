@@ -40,6 +40,6 @@ namespace alpaka
         };
     } // namespace detail
 
-    template<typename TTag, typename T>
-    using DevGlobal = typename detail::DevGlobalTrait<TTag, T>::Type;
+    template<typename TAcc, typename T>
+    using DevGlobal = typename detail::DevGlobalTrait<typename alpaka::trait::AccToTag<TAcc>::type, T>::Type;
 } // namespace alpaka
