@@ -168,7 +168,7 @@
 						// ============================================================================
 						// == ./include/alpaka/core/Common.hpp ==
 						// ==
-						/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci
+						/* Copyright 2024 Axel Hübl, Benjamin Worpitz, Matthias Werner, Jan Stephan, René Widera, Andrea Bocci, Aurora Perego
 						 * SPDX-License-Identifier: MPL-2.0
 						 */
 
@@ -349,12 +349,12 @@
 						//! This macro defines a variable lying in global accelerator device memory.
 						//!
 						//! Example:
-						//!   ALPAKA_STATIC_ACC_MEM_GLOBAL int i;
+						//!   ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<TAcc, int> variable;
 						//!
-						//! Those variables behave like ordinary variables when used in file-scope.
-						//! They have external linkage (are accessible from other compilation units).
-						//! If you want to access it from a different compilation unit, you have to declare it as extern:
-						//!   extern ALPAKA_STATIC_ACC_MEM_GLOBAL int i;
+						//! Those variables behave like ordinary variables when used in file-scope,
+						//! but inside kernels the get() method must be used to access the variable.
+						//! They are declared inline to resolve to a single instance across multiple
+						//! translation units.
 						//! Like ordinary variables, only one definition is allowed (ODR)
 						//! Failure to do so might lead to linker errors.
 						//!
@@ -363,36 +363,47 @@
 						//! because this is forbidden by CUDA.
 						//!
 						//! \attention It is not allowed to initialize the variable together with the declaration.
-						//!            To initialize the variable alpaka::createStaticDevMemView and alpaka::memcpy must be used.
+						//!            To initialize the variable alpaka::memcpy must be used.
 						//! \code{.cpp}
-						//! ALPAKA_STATIC_ACC_MEM_GLOBAL int foo;
+						//! ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<TAcc, int> foo;
+						//!
+						//! struct DeviceMemoryKernel
+						//! {
+						//!    ALPAKA_NO_HOST_ACC_WARNING
+						//!    template<typename TAcc>
+						//!    ALPAKA_FN_ACC void operator()(TAcc const& acc) const
+						//!    {
+						//!      auto a = foo<TAcc>.get();
+						//!    }
+						//!  }
 						//!
 						//! void initFoo() {
 						//!     auto extent = alpaka::Vec<alpaka::DimInt<1u>, size_t>{1};
-						//!     auto viewFoo = alpaka::createStaticDevMemView(&foo, device, extent);
 						//!     int initialValue = 42;
 						//!     alpaka::ViewPlainPtr<DevHost, int, alpaka::DimInt<1u>, size_t> bufHost(&initialValue, devHost, extent);
-						//!     alpaka::memcpy(queue, viewGlobalMemUninitialized, bufHost, extent);
+						//!     alpaka::memcpy(queue, foo<Acc>, bufHost, extent);
 						//! }
 						//! \endcode
 						#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
 						    || BOOST_LANG_HIP)
-						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
-						#elif defined(ALPAKA_ACC_SYCL_ENABLED)
-						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL _Pragma("GCC error \"The SYCL backend does not support global device variables.\""))
+						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL                                                                              \
+						        template<typename TAcc>                                                                                       \
+						        inline __device__
 						#else
-						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL
+						#    define ALPAKA_STATIC_ACC_MEM_GLOBAL                                                                              \
+						        template<typename TAcc>                                                                                       \
+						        inline
 						#endif
 
 						//! This macro defines a variable lying in constant accelerator device memory.
 						//!
 						//! Example:
-						//!   ALPAKA_STATIC_ACC_MEM_CONSTANT int i;
+						//!   ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<TAcc, const int> variable;
 						//!
-						//! Those variables behave like ordinary variables when used in file-scope.
-						//! They have external linkage (are accessible from other compilation units).
-						//! If you want to access it from a different compilation unit, you have to declare it as extern:
-						//!   extern ALPAKA_STATIC_ACC_MEM_CONSTANT int i;
+						//! Those variables behave like ordinary variables when used in file-scope,
+						//! but inside kernels the get() method must be used to access the variable.
+						//! They are declared inline to resolve to a single instance across multiple
+						//! translation units.
 						//! Like ordinary variables, only one definition is allowed (ODR)
 						//! Failure to do so might lead to linker errors.
 						//!
@@ -401,25 +412,36 @@
 						//! because this is forbidden by CUDA.
 						//!
 						//! \attention It is not allowed to initialize the variable together with the declaration.
-						//!            To initialize the variable alpaka::createStaticDevMemView and alpaka::memcpy must be used.
+						//!            To initialize the variable alpaka::memcpy must be used.
 						//! \code{.cpp}
-						//! ALPAKA_STATIC_ACC_MEM_CONSTANT int foo;
+						//! ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<TAcc, const int> foo;
+						//!
+						//! struct DeviceMemoryKernel
+						//! {
+						//!    ALPAKA_NO_HOST_ACC_WARNING
+						//!    template<typename TAcc>
+						//!    ALPAKA_FN_ACC void operator()(TAcc const& acc) const
+						//!    {
+						//!      auto a = foo<TAcc>.get();
+						//!    }
+						//!  }
 						//!
 						//! void initFoo() {
 						//!     auto extent = alpaka::Vec<alpaka::DimInt<1u>, size_t>{1};
-						//!     auto viewFoo = alpaka::createStaticDevMemView(&foo, device, extent);
 						//!     int initialValue = 42;
 						//!     alpaka::ViewPlainPtr<DevHost, int, alpaka::DimInt<1u>, size_t> bufHost(&initialValue, devHost, extent);
-						//!     alpaka::memcpy(queue, viewGlobalMemUninitialized, bufHost, extent);
+						//!     alpaka::memcpy(queue, foo<Acc>, bufHost, extent);
 						//! }
 						//! \endcode
 						#if((BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA) || (BOOST_LANG_CUDA && BOOST_COMP_NVCC && BOOST_ARCH_PTX)              \
 						    || BOOST_LANG_HIP)
-						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
-						#elif defined(ALPAKA_ACC_SYCL_ENABLED)
-						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT _Pragma("GCC error \"The SYCL backend does not support global device constants.\""))
+						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT                                                                            \
+						        template<typename TAcc>                                                                                       \
+						        inline __constant__
 						#else
-						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT
+						#    define ALPAKA_STATIC_ACC_MEM_CONSTANT                                                                            \
+						        template<typename TAcc>                                                                                       \
+						        inline
 						#endif
 
 						//! This macro disables memory optimizations for annotated device memory.
@@ -10987,7 +11009,8 @@
 				// ============================================================================
 				// == ./include/alpaka/mem/view/Traits.hpp ==
 				// ==
-				/* Copyright 2023 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber
+				/* Copyright 2024 Axel Hübl, Benjamin Worpitz, Matthias Werner, Andrea Bocci, Jan Stephan, Bernhard Manfred Gruber,
+				 *                Aurora Perego
 				 * SPDX-License-Identifier: MPL-2.0
 				 */
 
@@ -11342,10 +11365,6 @@
 				        template<typename TDim, typename TDevDst, typename TDevSrc, typename TSfinae = void>
 				        struct CreateTaskMemcpy;
 
-				        //! The static device memory view creation trait.
-				        template<typename TDev, typename TSfinae = void>
-				        struct CreateStaticDevMemView;
-
 				        //! The device memory view creation trait.
 				        template<typename TDev, typename TSfinae = void>
 				        struct CreateViewPlainPtr;
@@ -11647,13 +11666,6 @@
 				    ALPAKA_FN_HOST auto getPitchBytesVecEnd(TView const& view = TView()) -> Vec<TDim, Idx<TView>>
 				    {
 				        return subVecEnd<TDim>(getPitchesInBytes(view));
-				    }
-
-				    //! \return A view to static device memory.
-				    template<typename TElem, typename TDev, typename TExtent>
-				    auto createStaticDevMemView(TElem* pMem, TDev const& dev, TExtent const& extent)
-				    {
-				        return trait::CreateStaticDevMemView<TDev>::createStaticDevMemView(pMem, dev, extent);
 				    }
 
 				    //! Creates a view to a device pointer
@@ -14960,7 +14972,7 @@
 			    {
 			        static auto getMem(BlockSharedMemDynGenericSycl const& shared) -> T*
 			        {
-			            return reinterpret_cast<T*>(shared.m_accessor.get_pointer().get());
+			            return reinterpret_cast<T*>(shared.m_accessor.get_multi_ptr<sycl::access::decorated::no>().get());
 			        }
 			    };
 			} // namespace alpaka::trait
@@ -14998,7 +15010,7 @@
 			    public:
 			        BlockSharedMemStGenericSycl(sycl::local_accessor<std::byte> accessor)
 			            : BlockSharedMemStMemberImpl(
-			                reinterpret_cast<std::uint8_t*>(accessor.get_pointer().get()),
+			                reinterpret_cast<std::uint8_t*>(accessor.get_multi_ptr<sycl::access::decorated::no>().get()),
 			                accessor.size())
 			            , m_accessor{accessor}
 			        {
@@ -33643,6 +33655,698 @@
 // #include "alpaka/mem/fence/MemFenceOmp2Threads.hpp"    // amalgamate: file already inlined
 // #include "alpaka/mem/fence/MemFenceUniformCudaHipBuiltIn.hpp"    // amalgamate: file already inlined
 // #include "alpaka/mem/fence/Traits.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/mem/global/DeviceGlobalCpu.hpp ==
+	// ==
+	/* Copyright 2024 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/mem/buf/cpu/Copy.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/mem/global/Traits.hpp ==
+		// ==
+		/* Copyright 2024 Aurora Perego
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/core/Common.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
+
+		namespace alpaka
+		{
+
+		    namespace detail
+		    {
+		        template<typename TTag, typename T>
+		        struct DevGlobalImplGeneric
+		        {
+		            // does not make use of TTag
+		            using Type = std::remove_const_t<T>;
+		            Type value; // backend specific value
+
+		            ALPAKA_FN_HOST_ACC T* operator&()
+		            {
+		                return &value;
+		            }
+
+		            ALPAKA_FN_HOST_ACC T& get()
+		            {
+		                return value;
+		            }
+		        };
+
+		        template<typename TTag, typename T>
+		        struct DevGlobalTrait
+		        {
+		            static constexpr bool const IsImplementedFor = alpaka::meta::DependentFalseType<TTag>::value;
+
+		            static_assert(IsImplementedFor, "Error: device global variables are not implemented for the given Tag");
+		        };
+		    } // namespace detail
+
+		    template<typename TAcc, typename T>
+		    using DevGlobal = typename detail::DevGlobalTrait<typename alpaka::trait::AccToTag<TAcc>::type, T>::Type;
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/mem/global/Traits.hpp ==
+		// ============================================================================
+
+		// ============================================================================
+		// == ./include/alpaka/mem/view/ViewPlainPtr.hpp ==
+		// ==
+		/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber,
+		 *                Jan Stephan, Andrea Bocci, Aurora Perego
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
+		// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
+
+		// #include <type_traits>    // amalgamate: file already included
+		// #include <utility>    // amalgamate: file already included
+
+		namespace alpaka
+		{
+		    //! The memory view to wrap plain pointers.
+		    template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		    struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		    {
+		        static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
+
+		        template<typename TExtent>
+		        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent = TExtent())
+		            : ViewPlainPtr(pMem, std::move(dev), extent, detail::calculatePitchesFromExtents<TElem>(extent))
+		        {
+		        }
+
+		        template<typename TExtent, typename TPitch>
+		        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent, TPitch pitchBytes)
+		            : m_pMem(pMem)
+		            , m_dev(std::move(dev))
+		            , m_extentElements(extent)
+		            , m_pitchBytes(static_cast<Vec<TDim, TIdx>>(pitchBytes))
+		        {
+		        }
+
+		        TElem* m_pMem;
+		        TDev m_dev;
+		        Vec<TDim, TIdx> m_extentElements;
+		        Vec<TDim, TIdx> m_pitchBytes;
+		    };
+
+		    // Trait specializations for ViewPlainPtr.
+		    namespace trait
+		    {
+		        //! The ViewPlainPtr device type trait specialization.
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct DevType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            using type = alpaka::Dev<TDev>;
+		        };
+
+		        //! The ViewPlainPtr device get trait specialization.
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct GetDev<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            static auto getDev(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> alpaka::Dev<TDev>
+		            {
+		                return view.m_dev;
+		            }
+		        };
+
+		        //! The ViewPlainPtr dimension getter trait.
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct DimType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            using type = TDim;
+		        };
+
+		        //! The ViewPlainPtr memory element type get trait specialization.
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct ElemType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            using type = TElem;
+		        };
+		    } // namespace trait
+
+		    namespace trait
+		    {
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct GetExtents<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
+		            {
+		                return view.m_extentElements;
+		            }
+		        };
+
+		        //! The ViewPlainPtr native pointer get trait specialization.
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct GetPtrNative<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> TElem const*
+		            {
+		                return view.m_pMem;
+		            }
+
+		            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx>& view) -> TElem*
+		            {
+		                return view.m_pMem;
+		            }
+		        };
+
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct GetPitchesInBytes<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
+		            {
+		                return view.m_pitchBytes;
+		            }
+		        };
+
+		        //! The CPU device CreateViewPlainPtr trait specialization.
+		        template<>
+		        struct CreateViewPlainPtr<DevCpu>
+		        {
+		            template<typename TElem, typename TExtent, typename TPitch>
+		            static auto createViewPlainPtr(DevCpu const& dev, TElem* pMem, TExtent const& extent, TPitch pitch)
+		            {
+		                return alpaka::ViewPlainPtr<DevCpu, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+		                    pMem,
+		                    dev,
+		                    extent,
+		                    pitch);
+		            }
+		        };
+
+		#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+		        //! The CUDA/HIP RT device CreateViewPlainPtr trait specialization.
+		        template<typename TApi>
+		        struct CreateViewPlainPtr<DevUniformCudaHipRt<TApi>>
+		        {
+		            template<typename TElem, typename TExtent, typename TPitch>
+		            static auto createViewPlainPtr(
+		                DevUniformCudaHipRt<TApi> const& dev,
+		                TElem* pMem,
+		                TExtent const& extent,
+		                TPitch pitch)
+		            {
+		                return alpaka::
+		                    ViewPlainPtr<DevUniformCudaHipRt<TApi>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+		                        pMem,
+		                        dev,
+		                        extent,
+		                        pitch);
+		            }
+		        };
+		#endif
+
+		#if defined(ALPAKA_ACC_SYCL_ENABLED)
+		        //! The SYCL device CreateViewPlainPtr trait specialization.
+		        template<typename TPlatform>
+		        struct CreateViewPlainPtr<DevGenericSycl<TPlatform>>
+		        {
+		            template<typename TElem, typename TExtent, typename TPitch>
+		            static auto createViewPlainPtr(
+		                DevGenericSycl<TPlatform> const& dev,
+		                TElem* pMem,
+		                TExtent const& extent,
+		                TPitch pitch)
+		            {
+		                return alpaka::
+		                    ViewPlainPtr<DevGenericSycl<TPlatform>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+		                        pMem,
+		                        dev,
+		                        extent,
+		                        pitch);
+		            }
+		        };
+		#endif
+		        //! The ViewPlainPtr offset get trait specialization.
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct GetOffsets<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
+		            {
+		                return Vec<TDim, TIdx>::zeros();
+		            }
+		        };
+
+		        //! The ViewPlainPtr idx type trait specialization.
+		        template<typename TDev, typename TElem, typename TDim, typename TIdx>
+		        struct IdxType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+		        {
+		            using type = TIdx;
+		        };
+		    } // namespace trait
+		} // namespace alpaka
+		// ==
+		// == ./include/alpaka/mem/view/ViewPlainPtr.hpp ==
+		// ============================================================================
+
+
+	// #include <type_traits>    // amalgamate: file already included
+
+	// memcpy specialization for device global variables
+	namespace alpaka
+	{
+
+	    namespace detail
+	    {
+	        template<typename T>
+	        struct DevGlobalTrait<TagCpuOmp2Blocks, T>
+	        {
+	            using Type = detail::DevGlobalImplGeneric<TagCpuOmp2Blocks, T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagCpuOmp2Threads, T>
+	        {
+	            using Type = detail::DevGlobalImplGeneric<TagCpuOmp2Threads, T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagCpuSerial, T>
+	        {
+	            using Type = detail::DevGlobalImplGeneric<TagCpuSerial, T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagCpuTbbBlocks, T>
+	        {
+	            using Type = detail::DevGlobalImplGeneric<TagCpuTbbBlocks, T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagCpuThreads, T>
+	        {
+	            using Type = detail::DevGlobalImplGeneric<TagCpuThreads, T>;
+	        };
+	    } // namespace detail
+
+	    template<
+	        typename TTag,
+	        typename TViewSrc,
+	        typename TTypeDst,
+	        typename TQueue,
+	        typename std::enable_if_t<
+	            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+	                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+	                || std::is_same_v<TTag, TagCpuThreads>,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        TQueue& queue,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
+	        TViewSrc const& viewSrc) -> void
+	    {
+	        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
+	        auto extent = getExtents(viewSrc);
+	        auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<decltype(extent)>, alpaka::Idx<decltype(extent)>>(
+	            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TTypeDst>*>(&viewDst)),
+	            alpaka::getDev(queue),
+	            extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
+	    }
+
+	    template<
+	        typename TTag,
+	        typename TTypeSrc,
+	        typename TViewDstFwd,
+	        typename TQueue,
+	        typename std::enable_if_t<
+	            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+	                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+	                || std::is_same_v<TTag, TagCpuThreads>,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        TQueue& queue,
+	        TViewDstFwd&& viewDst,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc) -> void
+	    {
+	        using Type = std::remove_all_extents_t<TTypeSrc>;
+	        auto extent = getExtents(viewDst);
+	        auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<decltype(extent)>, alpaka::Idx<decltype(extent)>>(
+	            reinterpret_cast<Type*>(&viewSrc),
+	            alpaka::getDev(queue),
+	            extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), view, extent));
+	    }
+
+	    template<
+	        typename TTag,
+	        typename TExtent,
+	        typename TViewSrc,
+	        typename TTypeDst,
+	        typename TQueue,
+	        typename std::enable_if_t<
+	            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+	                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+	                || std::is_same_v<TTag, TagCpuThreads>,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        TQueue& queue,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
+	        TViewSrc const& viewSrc,
+	        TExtent const& extent) -> void
+	    {
+	        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
+	        auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+	            reinterpret_cast<Type*>(const_cast<std::remove_const_t<TTypeDst>*>(&viewDst)),
+	            alpaka::getDev(queue),
+	            extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
+	    }
+
+	    template<
+	        typename TTag,
+	        typename TExtent,
+	        typename TTypeSrc,
+	        typename TViewDstFwd,
+	        typename TQueue,
+	        typename std::enable_if_t<
+	            std::is_same_v<TTag, TagCpuOmp2Blocks> || std::is_same_v<TTag, TagCpuOmp2Threads>
+	                || std::is_same_v<TTag, TagCpuSerial> || std::is_same_v<TTag, TagCpuTbbBlocks>
+	                || std::is_same_v<TTag, TagCpuThreads>,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        TQueue& queue,
+	        TViewDstFwd&& viewDst,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc,
+	        TExtent const& extent) -> void
+	    {
+	        using Type = std::remove_all_extents_t<TTypeSrc>;
+	        auto view = alpaka::ViewPlainPtr<DevCpu, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+	            reinterpret_cast<Type*>(&viewSrc),
+	            alpaka::getDev(queue),
+	            extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<TViewDstFwd>(viewDst), view, extent));
+	    }
+	} // namespace alpaka
+	// ==
+	// == ./include/alpaka/mem/global/DeviceGlobalCpu.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/mem/global/DeviceGlobalGenericSycl.hpp ==
+	// ==
+	/* Copyright 2024 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/mem/global/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/sycl/QueueGenericSyclBase.hpp"    // amalgamate: file already inlined
+
+	#ifdef ALPAKA_ACC_SYCL_ENABLED
+
+	// #    include <sycl/sycl.hpp>    // amalgamate: file already included
+
+	namespace alpaka
+	{
+	    namespace detail
+	    {
+	        template<typename T>
+	        struct DevGlobalTrait<TagCpuSycl, T>
+	        {
+	            // SYCL CPU implementation
+	            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagGpuSyclIntel, T>
+	        {
+	            // SYCL GPU implementation
+	            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagFpgaSyclIntel, T>
+	        {
+	            // SYCL FPGA implementation
+	            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagGenericSycl, T>
+	        {
+	            // generic SYCL implementation
+	            using Type = sycl::ext::oneapi::experimental::device_global<T>;
+	        };
+	    } // namespace detail
+
+	    // from device to host
+	    template<typename TDev, bool TBlocking, typename TViewDst, typename TTypeSrc>
+	    ALPAKA_FN_HOST auto memcpy(
+	        detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
+	        TViewDst&& viewDst,
+	        sycl::ext::oneapi::experimental::device_global<TTypeSrc> const& viewSrc)
+	    {
+	        queue.getNativeHandle().memcpy(reinterpret_cast<void*>(getPtrNative(viewDst)), viewSrc);
+	    }
+
+	    // from host to device
+	    template<typename TDev, bool TBlocking, typename TTypeDst, typename TViewSrc>
+	    ALPAKA_FN_HOST auto memcpy(
+	        detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
+	        sycl::ext::oneapi::experimental::device_global<TTypeDst>& viewDst,
+	        TViewSrc const& viewSrc)
+	    {
+	        queue.getNativeHandle().memcpy(viewDst, reinterpret_cast<void const*>(getPtrNative(viewSrc)));
+	    }
+
+	    // from device to host
+	    template<typename TDev, bool TBlocking, typename TViewDst, typename TTypeSrc, typename TExtent>
+	    ALPAKA_FN_HOST auto memcpy(
+	        detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
+	        TViewDst&& viewDst,
+	        sycl::ext::oneapi::experimental::device_global<TTypeSrc> const& viewSrc,
+	        TExtent extent)
+	    {
+	        using Elem = alpaka::Elem<std::remove_reference_t<TViewDst>>;
+	        auto size = static_cast<std::size_t>(getHeight(extent)) * static_cast<std::size_t>(getDepth(extent))
+	                    * static_cast<std::size_t>(getWidth(extent)) * sizeof(Elem);
+	        queue.getNativeHandle().memcpy(reinterpret_cast<void*>(getPtrNative(viewDst)), viewSrc, size);
+	    }
+
+	    // from host to device
+	    template<typename TDev, bool TBlocking, typename TTypeDst, typename TViewSrc, typename TExtent>
+	    ALPAKA_FN_HOST auto memcpy(
+	        detail::QueueGenericSyclBase<TDev, TBlocking>& queue,
+	        sycl::ext::oneapi::experimental::device_global<TTypeDst>& viewDst,
+	        TViewSrc const& viewSrc,
+	        TExtent extent)
+	    {
+	        using Elem = alpaka::Elem<TViewSrc>;
+	        auto size = static_cast<std::size_t>(getHeight(extent)) * static_cast<std::size_t>(getDepth(extent))
+	                    * static_cast<std::size_t>(getWidth(extent)) * sizeof(Elem);
+	        queue.getNativeHandle().memcpy(viewDst, reinterpret_cast<void const*>(getPtrNative(viewSrc)), size);
+	    }
+	} // namespace alpaka
+	#endif
+	// ==
+	// == ./include/alpaka/mem/global/DeviceGlobalGenericSycl.hpp ==
+	// ============================================================================
+
+	// ============================================================================
+	// == ./include/alpaka/mem/global/DeviceGlobalUniformCudaHipBuiltIn.hpp ==
+	// ==
+	/* Copyright 2024 Aurora Perego
+	 * SPDX-License-Identifier: MPL-2.0
+	 */
+
+	// #pragma once
+	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/global/Traits.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/mem/view/ViewPlainPtr.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/queue/cuda_hip/QueueUniformCudaHipRt.hpp"    // amalgamate: file already inlined
+
+	#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+
+	namespace alpaka
+	{
+
+	    namespace detail
+	    {
+	        template<typename T>
+	        struct DevGlobalTrait<TagGpuCudaRt, T>
+	        {
+	            // CUDA implementation
+	            using Type = detail::DevGlobalImplGeneric<TagGpuCudaRt, T>;
+	        };
+
+	        template<typename T>
+	        struct DevGlobalTrait<TagGpuHipRt, T>
+	        {
+	            // HIP/ROCm implementation
+	            using Type = detail::DevGlobalImplGeneric<TagGpuHipRt, T>;
+	        };
+	    } // namespace detail
+
+	    // from device to host
+	    template<
+	        typename TTag,
+	        typename TApi,
+	        bool TBlocking,
+	        typename TViewDst,
+	        typename TTypeSrc,
+	        typename std::enable_if_t<
+	#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+	            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+	#    else
+	            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+	#    endif
+	                ,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
+	        TViewDst& viewDst,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc)
+	    {
+	        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeSrc>>;
+	        using TypeExt = std::remove_const_t<TTypeSrc>;
+	        auto extent = getExtents(viewDst);
+	        TypeExt* pMemAcc(nullptr);
+	        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+	            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewSrc))));
+
+	        auto view = alpaka::ViewPlainPtr<
+	            DevUniformCudaHipRt<TApi>,
+	            Type,
+	            alpaka::Dim<decltype(extent)>,
+	            alpaka::Idx<decltype(extent)>>(reinterpret_cast<Type*>(pMemAcc), alpaka::getDev(queue), extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<TViewDst>(viewDst), view, extent));
+	    }
+
+	    // from host to device
+	    template<
+	        typename TTag,
+	        typename TApi,
+	        bool TBlocking,
+	        typename TTypeDst,
+	        typename TViewSrc,
+	        typename std::enable_if_t<
+	#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+	            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+	#    else
+	            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+	#    endif
+	                ,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
+	        TViewSrc const& viewSrc)
+	    {
+	        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
+	        using TypeExt = std::remove_const_t<TTypeDst>;
+	        auto extent = getExtents(viewSrc);
+	        Type* pMemAcc(nullptr);
+	        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+	            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewDst))));
+
+	        auto view = alpaka::ViewPlainPtr<
+	            DevUniformCudaHipRt<TApi>,
+	            Type,
+	            alpaka::Dim<decltype(extent)>,
+	            alpaka::Idx<decltype(extent)>>(reinterpret_cast<Type*>(pMemAcc), alpaka::getDev(queue), extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
+	    }
+
+	    // from device to host
+	    template<
+	        typename TTag,
+	        typename TApi,
+	        bool TBlocking,
+	        typename TViewDst,
+	        typename TTypeSrc,
+	        typename TExtent,
+	        typename std::enable_if_t<
+	#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+	            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+	#    else
+	            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+	#    endif
+	                ,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
+	        TViewDst& viewDst,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeSrc>& viewSrc,
+	        TExtent extent)
+	    {
+	        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeSrc>>;
+	        using TypeExt = std::remove_const_t<TTypeSrc>;
+	        Type* pMemAcc(nullptr);
+	        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+	            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewSrc))));
+
+	        auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+	            reinterpret_cast<Type*>(pMemAcc),
+	            alpaka::getDev(queue),
+	            extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<TViewDst>(viewDst), view, extent));
+	    }
+
+	    // from host to device
+	    template<
+	        typename TTag,
+	        typename TApi,
+	        bool TBlocking,
+	        typename TTypeDst,
+	        typename TViewSrc,
+	        typename TExtent,
+	        typename std::enable_if_t<
+	#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+	            (std::is_same_v<TTag, TagGpuCudaRt> && std::is_same_v<TApi, ApiCudaRt>)
+	#    else
+	            (std::is_same_v<TTag, TagGpuHipRt> && std::is_same_v<TApi, ApiHipRt>)
+	#    endif
+	                ,
+	            int>
+	        = 0>
+	    ALPAKA_FN_HOST auto memcpy(
+	        uniform_cuda_hip::detail::QueueUniformCudaHipRt<TApi, TBlocking>& queue,
+	        alpaka::detail::DevGlobalImplGeneric<TTag, TTypeDst>& viewDst,
+	        TViewSrc const& viewSrc,
+	        TExtent extent)
+	    {
+	        using Type = std::remove_const_t<std::remove_all_extents_t<TTypeDst>>;
+	        using TypeExt = std::remove_const_t<TTypeDst>;
+	        Type* pMemAcc(nullptr);
+	        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+	            TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *(const_cast<TypeExt*>(&viewDst))));
+
+	        auto view = alpaka::ViewPlainPtr<DevUniformCudaHipRt<TApi>, Type, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
+	            reinterpret_cast<Type*>(pMemAcc),
+	            alpaka::getDev(queue),
+	            extent);
+	        enqueue(queue, createTaskMemcpy(std::forward<decltype(view)>(view), viewSrc, extent));
+	    }
+	} // namespace alpaka
+
+	#endif
+	// ==
+	// == ./include/alpaka/mem/global/DeviceGlobalUniformCudaHipBuiltIn.hpp ==
+	// ============================================================================
+
+// #include "alpaka/mem/global/Traits.hpp"    // amalgamate: file already inlined
 // #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/mem/view/ViewConst.hpp ==
@@ -33765,253 +34469,7 @@
 	// == ./include/alpaka/mem/view/ViewConst.hpp ==
 	// ============================================================================
 
-	// ============================================================================
-	// == ./include/alpaka/mem/view/ViewPlainPtr.hpp ==
-	// ==
-	/* Copyright 2023 Benjamin Worpitz, Matthias Werner, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber,
-	 *                Jan Stephan, Andrea Bocci, Aurora Perego
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/dev/DevCpu.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/dev/DevGenericSycl.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/dev/DevUniformCudaHipRt.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/mem/view/Traits.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/mem/view/ViewAccessOps.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
-	// #include "alpaka/vec/Vec.hpp"    // amalgamate: file already inlined
-
-	// #include <type_traits>    // amalgamate: file already included
-	// #include <utility>    // amalgamate: file already included
-
-	namespace alpaka
-	{
-	    //! The memory view to wrap plain pointers.
-	    template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	    struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	    {
-	        static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
-
-	        template<typename TExtent>
-	        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent = TExtent())
-	            : ViewPlainPtr(pMem, std::move(dev), extent, detail::calculatePitchesFromExtents<TElem>(extent))
-	        {
-	        }
-
-	        template<typename TExtent, typename TPitch>
-	        ALPAKA_FN_HOST ViewPlainPtr(TElem* pMem, TDev dev, TExtent const& extent, TPitch pitchBytes)
-	            : m_pMem(pMem)
-	            , m_dev(std::move(dev))
-	            , m_extentElements(extent)
-	            , m_pitchBytes(static_cast<Vec<TDim, TIdx>>(pitchBytes))
-	        {
-	        }
-
-	        TElem* m_pMem;
-	        TDev m_dev;
-	        Vec<TDim, TIdx> m_extentElements;
-	        Vec<TDim, TIdx> m_pitchBytes;
-	    };
-
-	    // Trait specializations for ViewPlainPtr.
-	    namespace trait
-	    {
-	        //! The ViewPlainPtr device type trait specialization.
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct DevType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            using type = alpaka::Dev<TDev>;
-	        };
-
-	        //! The ViewPlainPtr device get trait specialization.
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetDev<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            static auto getDev(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> alpaka::Dev<TDev>
-	            {
-	                return view.m_dev;
-	            }
-	        };
-
-	        //! The ViewPlainPtr dimension getter trait.
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct DimType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            using type = TDim;
-	        };
-
-	        //! The ViewPlainPtr memory element type get trait specialization.
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct ElemType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            using type = TElem;
-	        };
-	    } // namespace trait
-
-	    namespace trait
-	    {
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetExtents<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
-	            {
-	                return view.m_extentElements;
-	            }
-	        };
-
-	        //! The ViewPlainPtr native pointer get trait specialization.
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetPtrNative<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> TElem const*
-	            {
-	                return view.m_pMem;
-	            }
-
-	            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx>& view) -> TElem*
-	            {
-	                return view.m_pMem;
-	            }
-	        };
-
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetPitchesInBytes<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
-	            {
-	                return view.m_pitchBytes;
-	            }
-	        };
-
-	        //! The CPU device CreateStaticDevMemView trait specialization.
-	        template<>
-	        struct CreateStaticDevMemView<DevCpu>
-	        {
-	            template<typename TElem, typename TExtent>
-	            static auto createStaticDevMemView(TElem* pMem, DevCpu const& dev, TExtent const& extent)
-	            {
-	                return alpaka::ViewPlainPtr<DevCpu, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-	                    pMem,
-	                    dev,
-	                    extent);
-	            }
-	        };
-
-	#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-	        //! The CUDA/HIP RT device CreateStaticDevMemView trait specialization.
-	        template<typename TApi>
-	        struct CreateStaticDevMemView<DevUniformCudaHipRt<TApi>>
-	        {
-	            template<typename TElem, typename TExtent>
-	            static auto createStaticDevMemView(
-	                TElem* pMem,
-	                DevUniformCudaHipRt<TApi> const& dev,
-	                TExtent const& extent)
-	            {
-	                TElem* pMemAcc(nullptr);
-	                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(TApi::getSymbolAddress(reinterpret_cast<void**>(&pMemAcc), *pMem));
-
-	                return alpaka::
-	                    ViewPlainPtr<DevUniformCudaHipRt<TApi>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-	                        pMemAcc,
-	                        dev,
-	                        extent);
-	            }
-	        };
-	#endif
-
-	#if defined(ALPAKA_ACC_SYCL_ENABLED)
-	        //! The SYCL device CreateStaticDevMemView trait specialization.
-	        template<typename TPlatform>
-	        struct CreateStaticDevMemView<DevGenericSycl<TPlatform>>
-	        {
-	            static_assert(
-	                meta::DependentFalseType<TPlatform>::value,
-	                "The SYCL backend does not support global device variables.");
-	        };
-	#endif
-
-	        //! The CPU device CreateViewPlainPtr trait specialization.
-	        template<>
-	        struct CreateViewPlainPtr<DevCpu>
-	        {
-	            template<typename TElem, typename TExtent, typename TPitch>
-	            static auto createViewPlainPtr(DevCpu const& dev, TElem* pMem, TExtent const& extent, TPitch pitch)
-	            {
-	                return alpaka::ViewPlainPtr<DevCpu, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-	                    pMem,
-	                    dev,
-	                    extent,
-	                    pitch);
-	            }
-	        };
-
-	#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-	        //! The CUDA/HIP RT device CreateViewPlainPtr trait specialization.
-	        template<typename TApi>
-	        struct CreateViewPlainPtr<DevUniformCudaHipRt<TApi>>
-	        {
-	            template<typename TElem, typename TExtent, typename TPitch>
-	            static auto createViewPlainPtr(
-	                DevUniformCudaHipRt<TApi> const& dev,
-	                TElem* pMem,
-	                TExtent const& extent,
-	                TPitch pitch)
-	            {
-	                return alpaka::
-	                    ViewPlainPtr<DevUniformCudaHipRt<TApi>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-	                        pMem,
-	                        dev,
-	                        extent,
-	                        pitch);
-	            }
-	        };
-	#endif
-
-	#if defined(ALPAKA_ACC_SYCL_ENABLED)
-	        //! The SYCL device CreateViewPlainPtr trait specialization.
-	        template<typename TPlatform>
-	        struct CreateViewPlainPtr<DevGenericSycl<TPlatform>>
-	        {
-	            template<typename TElem, typename TExtent, typename TPitch>
-	            static auto createViewPlainPtr(
-	                DevGenericSycl<TPlatform> const& dev,
-	                TElem* pMem,
-	                TExtent const& extent,
-	                TPitch pitch)
-	            {
-	                return alpaka::
-	                    ViewPlainPtr<DevGenericSycl<TPlatform>, TElem, alpaka::Dim<TExtent>, alpaka::Idx<TExtent>>(
-	                        pMem,
-	                        dev,
-	                        extent,
-	                        pitch);
-	            }
-	        };
-	#endif
-	        //! The ViewPlainPtr offset get trait specialization.
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct GetOffsets<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
-	            {
-	                return Vec<TDim, TIdx>::zeros();
-	            }
-	        };
-
-	        //! The ViewPlainPtr idx type trait specialization.
-	        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-	        struct IdxType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-	        {
-	            using type = TIdx;
-	        };
-	    } // namespace trait
-	} // namespace alpaka
-	// ==
-	// == ./include/alpaka/mem/view/ViewPlainPtr.hpp ==
-	// ============================================================================
-
+// #include "alpaka/mem/view/ViewPlainPtr.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/mem/view/ViewStdArray.hpp ==
 	// ==
