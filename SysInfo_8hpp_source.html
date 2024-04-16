@@ -192,15 +192,15 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="comment">// Interpret CPU brand string and cache information.</span></div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">if</span>(i == 0x8000&#39;0002)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">std::memcpy</a>(cpuBrandString, ex, <span class="keyword">sizeof</span>(ex));</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <a class="code" href="namespacealpaka.html#a0a2af467e32e2d32a7c13d6706123b10">std::memcpy</a>(cpuBrandString, ex, <span class="keyword">sizeof</span>(ex));</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            }</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i == 0x8000&#39;0003)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">std::memcpy</a>(cpuBrandString + 16, ex, <span class="keyword">sizeof</span>(ex));</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <a class="code" href="namespacealpaka.html#a0a2af467e32e2d32a7c13d6706123b10">std::memcpy</a>(cpuBrandString + 16, ex, <span class="keyword">sizeof</span>(ex));</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(i == 0x8000&#39;0004)</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <a class="code" href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">std::memcpy</a>(cpuBrandString + 32, ex, <span class="keyword">sizeof</span>(ex));</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <a class="code" href="namespacealpaka.html#a0a2af467e32e2d32a7c13d6706123b10">std::memcpy</a>(cpuBrandString + 32, ex, <span class="keyword">sizeof</span>(ex));</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            }</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">return</span> std::string(cpuBrandString);</div>
@@ -334,14 +334,14 @@ $(document).ready(function(){initNavTree('SysInfo_8hpp_source.html',''); initRes
 <div class="ttc" id="anamespacealpaka_1_1cpu_1_1detail_html_abb8c51265e5de4cb525e1dbd924ff436"><div class="ttname"><a href="namespacealpaka_1_1cpu_1_1detail.html#abb8c51265e5de4cb525e1dbd924ff436">alpaka::cpu::detail::getFreeGlobalMemSizeBytes</a></div><div class="ttdeci">auto getFreeGlobalMemSizeBytes() -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="SysInfo_8hpp_source.html#l00209">SysInfo.hpp:209</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1cpu_1_1detail_html_af2ac645a7cbcea6b028b465a34943e94"><div class="ttname"><a href="namespacealpaka_1_1cpu_1_1detail.html#af2ac645a7cbcea6b028b465a34943e94">alpaka::cpu::detail::getPageSize</a></div><div class="ttdeci">size_t getPageSize()</div><div class="ttdef"><b>Definition:</b> <a href="SysInfo_8hpp_source.html#l00124">SysInfo.hpp:124</a></div></div>
 <div class="ttc" id="anamespacealpaka_1_1cpu_1_1detail_html_af5d9967fd07396367c4f477eef019918"><div class="ttname"><a href="namespacealpaka_1_1cpu_1_1detail.html#af5d9967fd07396367c4f477eef019918">alpaka::cpu::detail::getCpuName</a></div><div class="ttdeci">auto getCpuName() -&gt; std::string</div><div class="ttdef"><b>Definition:</b> <a href="SysInfo_8hpp_source.html#l00077">SysInfo.hpp:77</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a4764e4542b9f8f9bfe0d317f4aefd165"><div class="ttname"><a href="namespacealpaka.html#a4764e4542b9f8f9bfe0d317f4aefd165">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, TViewDstFwd &amp;&amp;viewDst, TViewSrc const &amp;viewSrc, TExtent const &amp;extent) -&gt; void</div><div class="ttdoc">Copies memory from a part of viewSrc to viewDst, described by extent. Possibly copies between differe...</div><div class="ttdef"><b>Definition:</b> <a href="mem_2view_2Traits_8hpp_source.html#l00297">Traits.hpp:297</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a0a2af467e32e2d32a7c13d6706123b10"><div class="ttname"><a href="namespacealpaka.html#a0a2af467e32e2d32a7c13d6706123b10">alpaka::memcpy</a></div><div class="ttdeci">ALPAKA_FN_HOST auto memcpy(TQueue &amp;queue, alpaka::detail::DevGlobalImplGeneric&lt; TTag, TTypeDst &gt; &amp;viewDst, TViewSrc const &amp;viewSrc) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="DeviceGlobalCpu_8hpp_source.html#l00061">DeviceGlobalCpu.hpp:61</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_978fff6d009a0eab698f51257fa3760a.html">dev</a></li><li class="navelem"><a class="el" href="dir_c201f7a35756f890108797586165839d.html">cpu</a></li><li class="navelem"><a class="el" href="SysInfo_8hpp.html">SysInfo.hpp</a></li>
-    <li class="footer">Generated on Sat Mar 30 2024 12:02:12 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Apr 16 2024 08:05:26 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

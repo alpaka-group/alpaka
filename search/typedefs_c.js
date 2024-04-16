@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['pitchedptr_5ft_4536',['PitchedPtr_t',['../structalpaka_1_1ApiCudaRt.html#a422a3fdd0aabb02eae6e856d32121a73',1,'alpaka::ApiCudaRt']]],
-  ['platform_4537',['Platform',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a9b475aa9fa9edfe76338eb7a00689695',1,'alpaka::test::KernelExecutionFixture::Platform()'],['../structalpaka_1_1test_1_1QueueTestFixture.html#afe725ccc8b78ff6e19f5aaf52160f42f',1,'alpaka::test::QueueTestFixture::Platform()'],['../namespacealpaka.html#aec2e8bbefd54fa3bcb2da600f5184f96',1,'alpaka::Platform()']]],
-  ['platformcudart_4538',['PlatformCudaRt',['../namespacealpaka.html#a17f73a8e41d00f3260749d87a13978df',1,'alpaka']]],
-  ['pos_5ft_4539',['Pos_t',['../structalpaka_1_1ApiCudaRt.html#a7d5a8c5fe6ac24ca7bcdecc99a63340e',1,'alpaka::ApiCudaRt']]]
+  ['pitchedptr_5ft_4563',['PitchedPtr_t',['../structalpaka_1_1ApiCudaRt.html#a422a3fdd0aabb02eae6e856d32121a73',1,'alpaka::ApiCudaRt']]],
+  ['platform_4564',['Platform',['../classalpaka_1_1test_1_1KernelExecutionFixture.html#a9b475aa9fa9edfe76338eb7a00689695',1,'alpaka::test::KernelExecutionFixture::Platform()'],['../structalpaka_1_1test_1_1QueueTestFixture.html#afe725ccc8b78ff6e19f5aaf52160f42f',1,'alpaka::test::QueueTestFixture::Platform()'],['../namespacealpaka.html#aec2e8bbefd54fa3bcb2da600f5184f96',1,'alpaka::Platform()']]],
+  ['platformcudart_4565',['PlatformCudaRt',['../namespacealpaka.html#a17f73a8e41d00f3260749d87a13978df',1,'alpaka']]],
+  ['pos_5ft_4566',['Pos_t',['../structalpaka_1_1ApiCudaRt.html#a7d5a8c5fe6ac24ca7bcdecc99a63340e',1,'alpaka::ApiCudaRt']]]
 ];

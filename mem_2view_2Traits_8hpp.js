@@ -5,7 +5,6 @@ var mem_2view_2Traits_8hpp =
     [ "GetPitchBytes", "structalpaka_1_1trait_1_1GetPitchBytes.html", "structalpaka_1_1trait_1_1GetPitchBytes" ],
     [ "GetPitchesInBytes", "structalpaka_1_1trait_1_1GetPitchesInBytes.html", "structalpaka_1_1trait_1_1GetPitchesInBytes" ],
     [ "calculatePitchesFromExtents", "mem_2view_2Traits_8hpp.html#a3b07818baa764a1d6df4fe203143a038", null ],
-    [ "createStaticDevMemView", "mem_2view_2Traits_8hpp.html#adedb8c0a11a3096bccbd7d37481798b0", null ],
     [ "createSubView", "mem_2view_2Traits_8hpp.html#a3e0cc673cdcdfc1f6b901a6bc09d975d", null ],
     [ "createTaskMemcpy", "mem_2view_2Traits_8hpp.html#a1f44bd5b99e7faa8d562aff41b4c8668", null ],
     [ "createTaskMemset", "mem_2view_2Traits_8hpp.html#ac88495b5e4861e9f4a7081ccfbf47594", null ],
