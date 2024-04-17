@@ -373,7 +373,44 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
             endif()
         endif()
 
+        # the CMake compiler detection of clang 17 and 18 as CUDA compiler is broken
+        # the detection try to compile an empty file with the default C++ standard of clang, which is -std=gnu++17
+        # but CUDA does not support the 128 bit float extension, therefore the test failes
+        # more details: https://gitlab.kitware.com/cmake/cmake/-/issues/25861
+        # this workaround disable the gnu extensions for the compiler detection
+        # the bug is fixed in clang 19: https://github.com/llvm/llvm-project/issues/88695
+        if("${CMAKE_CUDA_COMPILER}" MATCHES "clang*")
+            # get compiler version without enable_language()
+            execute_process(COMMAND ${CMAKE_CUDA_COMPILER} -dumpversion
+                   OUTPUT_VARIABLE _CLANG_CUDA_VERSION
+                   RESULT_VARIABLE _CLANG_CUDA_VERSION_ERROR_CODE)
+
+            if(NOT "${_CLANG_CUDA_VERSION_ERROR_CODE}" STREQUAL "0")
+                message(FATAL_ERROR "running '${CMAKE_CUDA_COMPILER} -dumpversion' failed: ${_CLANG_CUDA_VERSION_ERROR_CODE}")
+            endif()
+
+            string(STRIP ${_CLANG_CUDA_VERSION} _CLANG_CUDA_VERSION)
+            message(DEBUG "Workaround: manual checked Clang-CUDA version: ${_CLANG_CUDA_VERSION}")
+
+            if(${_CLANG_CUDA_VERSION} VERSION_GREATER_EQUAL 17 AND ${_CLANG_CUDA_VERSION} VERSION_LESS 19)
+                message(DEBUG "Workaround: apply -std=c++98 for clang as cuda compiler")
+                set(_CMAKE_CUDA_FLAGS_BEFORE ${CMAKE_CUDA_FLAGS})
+                # we need to use C++ 98 for the detection test, because from new, disabling the extension is ignored for C++ 98
+                set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -std=c++98")
+            endif()
+        endif()
+
         enable_language(CUDA)
+
+        if(DEFINED _CLANG_CUDA_VERSION)
+            message(DEBUG "Workaround: reset variables for clang as cuda compiler -std=c++98 fix")
+            # remove the flag compiler -std=c++98
+            set(CMAKE_CUDA_FLAGS ${_CMAKE_CUDA_FLAGS_BEFORE})
+            unset(_CMAKE_CUDA_FLAGS_BEFORE)
+            unset(_CLANG_CUDA_VERSION)
+            unset(_CLANG_CUDA_VERSION_ERROR_CODE)
+        endif()
+
         find_package(CUDAToolkit REQUIRED)
 
         target_compile_features(alpaka INTERFACE cuda_std_${alpaka_CXX_STANDARD})
