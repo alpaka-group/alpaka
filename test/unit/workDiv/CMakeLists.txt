@@ -12,8 +12,8 @@ alpaka_add_executable(
     ${_FILES_SOURCE})
 
 target_include_directories(
- ${_TARGET_NAME}
- PRIVATE "src")
+    ${_TARGET_NAME}
+    PRIVATE "src")
 
 target_link_libraries(
     ${_TARGET_NAME}
@@ -22,3 +22,4 @@ target_link_libraries(
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
 
 add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_alpaka_TEST_OPTIONS})
+
