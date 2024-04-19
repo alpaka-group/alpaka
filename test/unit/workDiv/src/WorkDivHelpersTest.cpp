@@ -65,6 +65,10 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
                 Vec{300, 600},
                 Vec{1, 1},
                 props,
+                // Upper bound for threads per block.
+                // Set threads per block upper bound value to zero. If zero, device properties (device hard limits) for
+                // threads per block is used as an upper bound.
+                static_cast<Idx>(0u),
                 false,
                 alpaka::GridBlockExtentSubDivRestrictions::EqualExtent)
             == WorkDiv{Vec{14, 28}, Vec{22, 22}, Vec{1, 1}});
@@ -73,6 +77,7 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
                 Vec{300, 600},
                 Vec{1, 1},
                 props,
+                static_cast<Idx>(0u),
                 false,
                 alpaka::GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
             == WorkDiv{Vec{19, 19}, Vec{16, 32}, Vec{1, 1}});
@@ -81,6 +86,7 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
                 Vec{300, 600},
                 Vec{1, 1},
                 props,
+                static_cast<Idx>(0u),
                 false,
                 alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)
             == WorkDiv{Vec{75, 5}, Vec{4, 128}, Vec{1, 1}});
@@ -90,14 +96,17 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
                 Vec{300, 600},
                 Vec{1, 1},
                 props,
+                static_cast<Idx>(0u),
                 true,
                 alpaka::GridBlockExtentSubDivRestrictions::EqualExtent)
-            == WorkDiv{Vec{1, 2}, Vec{300, 300}, Vec{1, 1}});
+            //  The max-extent vectors, which are in device-properties struct, limit the values along each axis
+            == WorkDiv{Vec{1, 2}, Vec{256, 128}, Vec{1, 1}});
         CHECK(
             alpaka::subDivideGridElems(
                 Vec{300, 600},
                 Vec{1, 1},
                 props,
+                static_cast<Idx>(0u),
                 true,
                 alpaka::GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
             == WorkDiv{Vec{20, 20}, Vec{15, 30}, Vec{1, 1}});
@@ -106,9 +115,95 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
                 Vec{300, 600},
                 Vec{1, 1},
                 props,
+                static_cast<Idx>(0u),
                 true,
                 alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)
             == WorkDiv{Vec{75, 5}, Vec{4, 120}, Vec{1, 1}});
+
+        // Tests with blockThreadCountMax argument non zero! This is an argument because it is determined beforehand,
+        // and it depends not only to the device hard properties, but depends on the kernel used. If this argument is
+        // zero device hard limits is used inside subDivideGridElems.
+        Idx blockThreadCountMax = 256;
+        bool blockThreadMustDivideGridThreadExtent = true;
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                // Give threads per block upper bound value explicitly. If zero, upper bound will be the default max
+                // value defined in the device properties value.
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)
+            == WorkDiv{Vec{150, 5}, Vec{2, 120}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
+            == WorkDiv{Vec{20, 40}, Vec{15, 15}, Vec{1, 1}});
+
+        // Test with non-zero blockThreadCountMax and false blockThreadMustDivideGridThreadExtent
+        blockThreadMustDivideGridThreadExtent = false;
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::EqualExtent)
+            == WorkDiv{Vec{19, 38}, Vec{16, 16}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)
+            == WorkDiv{Vec{150, 5}, Vec{2, 128}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{300, 600},
+                Vec{1, 1},
+                props,
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
+            == WorkDiv{Vec{19, 38}, Vec{16, 16}, Vec{1, 1}});
+
+        // change the gridElemExtent argument
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{1000, 600},
+                Vec{1, 1},
+                props,
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::EqualExtent)
+            == WorkDiv{Vec{63, 38}, Vec{16, 16}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{1000, 600},
+                Vec{1, 1},
+                props,
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)
+            == WorkDiv{Vec{500, 5}, Vec{2, 128}, Vec{1, 1}});
+        CHECK(
+            alpaka::subDivideGridElems(
+                Vec{1000, 600},
+                Vec{1, 1},
+                props,
+                blockThreadCountMax,
+                blockThreadMustDivideGridThreadExtent,
+                alpaka::GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
+            == WorkDiv{Vec{63, 38}, Vec{16, 16}, Vec{1, 1}});
     }
 }
 

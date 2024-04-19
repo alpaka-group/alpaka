@@ -16,6 +16,8 @@
 #include "alpaka/core/Decay.hpp"
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/idx/MapIdx.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
+#include "alpaka/kernel/KernelFunctionAttributes.hpp"
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/meta/NdLoop.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
@@ -148,6 +150,29 @@ namespace alpaka
         struct IdxType<TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TIdx;
+        };
+
+        //! \brief Specialisation of the class template FunctionAttributes
+        //! \tparam TDim The dimensionality of the accelerator device properties.
+        //! \tparam TIdx The idx type of the accelerator device properties.
+        //! \tparam TKernelFn Kernel function object type.
+        //! \tparam TArgs Kernel function object argument types as a parameter pack.
+        template<typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+        struct FunctionAttributes<AccCpuTbbBlocks<TDim, TIdx>, KernelBundle<TKernelFn, TArgs...>>
+        {
+            //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+            //! determined. Max threads per block is one of the attributes.
+            //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+            //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getFunctionAttributes(
+                [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
+                -> alpaka::KernelFunctionAttributes
+            {
+                alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+                kernelFunctionAttributes.maxThreadsPerBlock = 1u;
+                return kernelFunctionAttributes;
+            }
         };
     } // namespace trait
 } // namespace alpaka
