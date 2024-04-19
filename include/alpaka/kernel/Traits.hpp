@@ -27,16 +27,11 @@ namespace alpaka
     {
         //! The kernel execution task creation trait.
         template<
-            typename TKernelFnObj,
-            typename TSfinae = void>
-        struct MaxThreadsInBlockForKernel;
-
-        template<
             typename TAcc,
             typename TWorkDiv,
             typename TKernelFnObj,
             typename... TArgs/*,
-             typename TSfinae = void*/>
+            typename TSfinae = void*/>
         struct CreateTaskKernel;
 
         //! The trait for getting the size of the block shared dynamic memory of a kernel.

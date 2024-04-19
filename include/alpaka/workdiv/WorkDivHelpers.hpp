@@ -7,7 +7,6 @@
 #include "alpaka/acc/Traits.hpp"
 #include "alpaka/core/Assert.hpp"
 #include "alpaka/core/Common.hpp"
-#include "alpaka/core/RemoveRestrict.hpp"
 #include "alpaka/core/Utility.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/extent/Traits.hpp"
@@ -21,14 +20,13 @@
 #include <array>
 #include <cmath>
 #include <functional>
+#include <iostream>
 #include <set>
-#include <tuple>
 #include <type_traits>
 
 //! The alpaka library.
 namespace alpaka
 {
-
     //! The grid block extent subdivision restrictions.
     enum class GridBlockExtentSubDivRestrictions
     {
@@ -410,7 +408,6 @@ namespace alpaka
     //! \return If the work division is valid for the given accelerator device properties.
     template<typename TDim, typename TIdx, typename TWorkDiv>
     ALPAKA_FN_HOST auto isValidWorkDiv(AccDevProps<TDim, TIdx> const& accDevProps, TWorkDiv const& workDiv) -> bool
-
     {
         // Get the extents of grid, blocks and threads of the work division to check.
         auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);

@@ -4,7 +4,6 @@
 #
 
 set(_TARGET_NAME "workDivTest")
-set(_TARGET_NAME_2 "workDivKernelTest")
 
 append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
 
@@ -12,24 +11,12 @@ alpaka_add_executable(
     ${_TARGET_NAME}
     ${_FILES_SOURCE})
 
-alpaka_add_executable(
-    ${_TARGET_NAME_2}
-    ${_FILES_SOURCE})
-
 target_include_directories(
     ${_TARGET_NAME}
     PRIVATE "src")
 
-target_include_directories(
- ${_TARGET_NAME_2}
- PRIVATE "src")
-
 target_link_libraries(
     ${_TARGET_NAME}
-    PRIVATE common)
-
-target_link_libraries(
-    ${_TARGET_NAME_2}
     PRIVATE common)
 
 set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")

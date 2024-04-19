@@ -4,11 +4,6 @@
 
 #pragma once
 
-// Specialized traits.
-#include "alpaka/core/Common.hpp"
-#include "alpaka/kernel/Traits.hpp"
-#include "alpaka/platform/Traits.hpp"
-
 #include <alpaka/core/RemoveRestrict.hpp>
 
 #include <tuple>

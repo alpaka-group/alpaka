@@ -7,8 +7,6 @@
 
 #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
 #include "alpaka/acc/Traits.hpp"
-#include "alpaka/core/ApiCudaRt.hpp"
-#include "alpaka/core/ApiHipRt.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Decay.hpp"
@@ -421,11 +419,13 @@ namespace alpaka
                     TIdx,
                     remove_restrict_t<std::decay_t<TArgs>>...>;
 
-#        if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
-#            error "Device capability >= 2.0 is required!"
-#        endif
 
-                typename TApi::FuncAttributes_t funcAttrs;
+                #        if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
+                                            #            error "Device capability >= 2.0 is required!"
+                                             #        endif
+
+                                                             typename TApi::FuncAttributes_t funcAttrs;
+
 #        if BOOST_COMP_GNUC
                 // Disable and enable compile warnings for gcc
 #            pragma GCC diagnostic push

@@ -65,7 +65,6 @@ TEMPLATE_LIST_TEST_CASE("subDivideGridElems.2D.examples", "[workDiv]", alpaka::t
                 Vec{300, 600},
                 Vec{1, 1},
                 props,
-
                 // Upper bound for threads per block.
                 // Set threads per block upper bound value to zero. If zero, device properties (device hard limits) for
                 // threads per block is used as an upper bound.
