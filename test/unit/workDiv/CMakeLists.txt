@@ -12,8 +12,8 @@ alpaka_add_executable(
     ${_FILES_SOURCE})
 
 target_include_directories(
- ${_TARGET_NAME}
- PRIVATE "src")
+    ${_TARGET_NAME}
+    PRIVATE "src")
 
 target_link_libraries(
     ${_TARGET_NAME}
