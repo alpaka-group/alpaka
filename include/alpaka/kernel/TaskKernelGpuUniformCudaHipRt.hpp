@@ -7,6 +7,8 @@
 
 #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
 #include "alpaka/acc/Traits.hpp"
+#include "alpaka/core/ApiCudaRt.hpp"
+#include "alpaka/core/ApiHipRt.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Decay.hpp"
@@ -417,8 +419,7 @@ namespace alpaka
                     AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
                     TDim,
                     TIdx,
-                    remove_restrict_t<std::decay_t<TArgs>>...>;
-
+                    remove_restrict_t<std::decay_t<TArgs>>...>;  
 
 #        if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
 #            error "Device capability >= 2.0 is required!"

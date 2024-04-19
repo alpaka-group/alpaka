@@ -1,8 +1,14 @@
+
 /* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber, Mehmet
  * Yusufoglu SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
+
+// Specialized traits.
+#include "alpaka/core/Common.hpp"
+#include "alpaka/kernel/Traits.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 #include <alpaka/core/RemoveRestrict.hpp>
 
@@ -11,6 +17,7 @@
 
 namespace alpaka
 {
+
     //! \brief The class used to bind kernel function object and arguments together. Once an instance of this class is
     //! created, arguments are not needed to be separately given to functions who need kernel function and arguments.
     //! \tparam TKernelFn The kernel function object type.
@@ -34,6 +41,7 @@ namespace alpaka
             , m_args(std::forward<TArgs>(args)...)
         {
         }
+
 
         //! The function object type
         using KernelFn = TKernelFn;
