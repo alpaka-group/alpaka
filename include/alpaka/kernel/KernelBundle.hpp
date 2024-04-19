@@ -5,11 +5,6 @@
 
 #pragma once
 
-// Specialized traits.
-#include "alpaka/core/Common.hpp"
-#include "alpaka/kernel/Traits.hpp"
-#include "alpaka/platform/Traits.hpp"
-
 #include <alpaka/core/RemoveRestrict.hpp>
 
 #include <tuple>
@@ -42,7 +37,6 @@ namespace alpaka
         {
         }
 
-
         //! The function object type
         using KernelFn = TKernelFn;
         //! Tuple type to encapsulate kernel function argument types and argument values
@@ -57,6 +51,7 @@ namespace alpaka
 #    pragma clang diagnostic ignored "-Wdocumentation" // clang does not support the syntax for variadic template
                                                        // arguments "args,...". Ignore the error.
 #endif
+
     //! \tparam TKernelFn The kernel function object type.
     //! \tparam TArgs Kernel function object argument types as a parameter pack.
     //! \param kernelFn The kernel object

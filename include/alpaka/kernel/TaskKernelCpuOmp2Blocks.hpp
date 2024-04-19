@@ -955,6 +955,7 @@ namespace alpaka
         //! \tparam TKernelFn Kernel function object type.
         //! \tparam TArgs Kernel function object argument types as a parameter pack.
         template<typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+
         struct FunctionAttributes<AccCpuOmp2Blocks<TDim, TIdx>, KernelBundle<TKernelFn, TArgs...>>
         {
             //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be

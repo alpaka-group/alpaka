@@ -7,8 +7,6 @@
 
 #include "alpaka/acc/AccGpuUniformCudaHipRt.hpp"
 #include "alpaka/acc/Traits.hpp"
-#include "alpaka/core/ApiCudaRt.hpp"
-#include "alpaka/core/ApiHipRt.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/Cuda.hpp"
 #include "alpaka/core/Decay.hpp"
@@ -395,6 +393,7 @@ namespace alpaka
             }
         };
 
+
         //! \brief Specialisation of the class template FunctionAttributes
         //! \tparam TApi The type the API of the GPU accelerator backend. Currently Cuda or Hip.
         //! \tparam TDim The dimensionality of the accelerator device properties.
@@ -426,6 +425,7 @@ namespace alpaka
 #        endif
 
                 typename TApi::FuncAttributes_t funcAttrs;
+
 #        if BOOST_COMP_GNUC
                 // Disable and enable compile warnings for gcc
 #            pragma GCC diagnostic push
@@ -436,7 +436,6 @@ namespace alpaka
 #        if BOOST_COMP_GNUC
 #            pragma GCC diagnostic pop
 #        endif
-
                 alpaka::KernelFunctionAttributes kernelFunctionAttributes;
 
                 kernelFunctionAttributes.constSizeBytes = funcAttrs.constSizeBytes;
