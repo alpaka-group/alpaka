@@ -301,7 +301,6 @@ namespace alpaka
             }
         }
 
-
         return WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, clippedThreadElemExtent);
     }
 
