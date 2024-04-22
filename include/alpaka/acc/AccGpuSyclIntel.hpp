@@ -87,12 +87,6 @@ namespace alpaka::trait
     {
         using type = alpaka::AccGpuSyclIntel<TDim, TIdx>;
     };
-
-    template<typename TDim, typename TIdx>
-    struct MemVisibility<alpaka::AccCpuSerial<TDim, TIdx>>
-    {
-        using type = alpaka::MemVisibleGpuSyclIntel;
-    };
 } // namespace alpaka::trait
 
 #endif

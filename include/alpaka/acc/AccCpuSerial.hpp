@@ -33,7 +33,6 @@
 #include "alpaka/acc/Tag.hpp"
 #include "alpaka/core/Concepts.hpp"
 #include "alpaka/dev/DevCpu.hpp"
-#include "alpaka/mem/Visibility.hpp"
 
 #include <memory>
 #include <typeinfo>
@@ -214,12 +213,6 @@ namespace alpaka
         struct TagToAcc<alpaka::TagCpuSerial, TDim, TIdx>
         {
             using type = alpaka::AccCpuSerial<TDim, TIdx>;
-        };
-
-        template<typename TDim, typename TIdx>
-        struct MemVisibility<alpaka::AccCpuSerial<TDim, TIdx>>
-        {
-            using type = alpaka::MemVisibleCPU;
         };
     } // namespace trait
 } // namespace alpaka

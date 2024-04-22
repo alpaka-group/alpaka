@@ -12,6 +12,15 @@
 namespace alpaka
 {
     using DevGpuSyclIntel = DevGenericSycl<PlatformGpuSyclIntel>;
+
+    namespace trait
+    {
+        template<>
+        struct MemVisibility<DevGpuSyclIntel>
+        {
+            using type = alpaka::MemVisibleGpuSyclIntel;
+        };
+    } // namespace trait
 } // namespace alpaka
 
 #endif

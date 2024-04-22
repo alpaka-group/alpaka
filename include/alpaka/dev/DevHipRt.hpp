@@ -13,6 +13,15 @@ namespace alpaka
 {
     //! The HIP RT device handle.
     using DevHipRt = DevUniformCudaHipRt<ApiHipRt>;
+
+    namespace trait
+    {
+        template<>
+        struct MemVisibility<DevHipRt>
+        {
+            using type = alpaka::MemVisibleGpuHipRt;
+        };
+    } // namespace trait
 } // namespace alpaka
 
 #endif // ALPAKA_ACC_GPU_HIP_ENABLED

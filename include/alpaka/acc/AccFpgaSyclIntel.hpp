@@ -87,12 +87,6 @@ namespace alpaka::trait
     {
         using type = alpaka::AccFpgaSyclIntel<TDim, TIdx>;
     };
-
-    template<typename TDim, typename TIdx>
-    struct MemVisibility<alpaka::AccCpuSerial<TDim, TIdx>>
-    {
-        using type = alpaka::MemVisibleFpgaSyclIntel;
-    };
 } // namespace alpaka::trait
 
 #endif

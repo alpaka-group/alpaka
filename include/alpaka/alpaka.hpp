@@ -130,6 +130,7 @@
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"
 // mem
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/alloc/AllocCpuAligned.hpp"
 #include "alpaka/mem/alloc/AllocCpuNew.hpp"
 #include "alpaka/mem/alloc/Traits.hpp"
@@ -171,6 +172,7 @@
 #include "alpaka/meta/Integral.hpp"
 #include "alpaka/meta/IsArrayOrVector.hpp"
 #include "alpaka/meta/IsStrictBase.hpp"
+#include "alpaka/meta/IsTuple.hpp"
 #include "alpaka/meta/NdLoop.hpp"
 #include "alpaka/meta/NonZero.hpp"
 #include "alpaka/meta/Set.hpp"

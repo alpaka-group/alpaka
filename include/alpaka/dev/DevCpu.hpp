@@ -8,6 +8,7 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dev/common/QueueRegistry.hpp"
 #include "alpaka/dev/cpu/SysInfo.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Properties.hpp"
@@ -184,6 +185,12 @@ namespace alpaka
         struct PlatformType<DevCpu>
         {
             using type = PlatformCpu;
+        };
+
+        template<>
+        struct MemVisibility<DevCpu>
+        {
+            using type = alpaka::MemVisibleCPU;
         };
     } // namespace trait
 
