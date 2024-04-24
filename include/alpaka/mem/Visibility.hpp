@@ -53,7 +53,7 @@ namespace alpaka
     } // namespace detail
 
     template<typename TType>
-    static std::string getMemVisiblityName()
+    [[maybe_unused]] static std::string getMemVisiblityName()
     {
         using MemVisibilityType = typename alpaka::trait::MemVisibility<std::decay_t<TType>>::type;
         if constexpr(alpaka::meta::isTuple<MemVisibilityType>())
@@ -63,7 +63,7 @@ namespace alpaka
 
             std::stringstream ss;
             ss << "<";
-            for(auto i = 0; i < vs.size(); ++i)
+            for(std::size_t i = 0; i < vs.size(); ++i)
             {
                 if(i == (vs.size() - 1))
                 {
@@ -83,7 +83,7 @@ namespace alpaka
     }
 
     template<typename TType>
-    static std::string getMemVisiblityName(TType)
+    [[maybe_unused]] static std::string getMemVisiblityName(TType)
     {
         return getMemVisiblityName<TType>();
     }
