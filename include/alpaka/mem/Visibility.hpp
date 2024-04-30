@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #define CREATE_MEM_VISIBILITY(mem_name)                                                                               \
     struct mem_name                                                                                                   \
@@ -97,7 +98,7 @@ namespace alpaka
     }
 
     template<typename TDev, typename TBuf>
-    inline constexpr bool hasSameMemView(TDev, TBuf)
+    inline constexpr bool hasSameMemView(TDev&, TBuf&)
     {
         return hasSameMemView<std::decay_t<TDev>, std::decay_t<TBuf>>();
     }

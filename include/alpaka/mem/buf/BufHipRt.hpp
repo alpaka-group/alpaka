@@ -14,11 +14,14 @@ namespace alpaka
     template<typename TElem, typename TDim, typename TIdx>
     using BufHipRt = BufUniformCudaHipRt<ApiHipRt, TElem, TDim, TIdx>;
 
-    template<typename TElem, typename TDim, typename TIdx>
-    struct MemVisibility<BufUniformCudaHipRt<TElem, TDim, TIdx>>
+    namespace trait
     {
-        using type = std::tuple<alpaka::MemVisibleGpuHipRt>;
-    };
+        template<typename TElem, typename TDim, typename TIdx>
+        struct MemVisibility<BufHipRt<TElem, TDim, TIdx>>
+        {
+            using type = std::tuple<alpaka::MemVisibleGpuHipRt>;
+        };
+    } // namespace trait
 } // namespace alpaka
 
 #endif // ALPAKA_ACC_GPU_HIP_ENABLED
