@@ -40,12 +40,14 @@ struct Box
 
     PlatformHost hostPlatform;
     PlatformAcc accPlatform;
+
     // Default accelerator queue
     QueueAcc queue{alpaka::getDevByIdx(accPlatform, 0)};
 
     // Buffers holding the PRNG states
     using BufHostRand = alpaka::Buf<Host, RandomEngine, Dim, Idx>;
     using BufAccRand = alpaka::Buf<Acc, RandomEngine, Dim, Idx>;
+
     // Buffers holding the "simulation" results
     using BufHost = alpaka::Buf<Host, float, Dim, Idx>;
     using BufAcc = alpaka::Buf<Acc, float, Dim, Idx>;
