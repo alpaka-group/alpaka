@@ -259,7 +259,10 @@ namespace alpaka
             typename TWorkDiv,
             typename TKernelFnObj,
             typename... TArgs>
-        struct CreateTaskKernel<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        struct CreateTaskKernel<
+            AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
+            TWorkDiv,
+            KernelBundle<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,

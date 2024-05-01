@@ -130,6 +130,7 @@ auto main() -> int
     // Instantiate the kernel (gpu code) function-object
     ConvolutionKernel convolutionKernel;
 
+
     // Native pointers needed for the kernel execution function
     DataType* nativeFilterDeviceMemory = alpaka::getPtrNative(filterDeviceMemory);
     DataType* nativeInputDeviceMemory = alpaka::getPtrNative(inputDeviceMemory);

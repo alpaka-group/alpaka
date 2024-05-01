@@ -15,6 +15,7 @@
 #include "alpaka/idx/bt/IdxBtZero.hpp"
 #include "alpaka/idx/gb/IdxGbRef.hpp"
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/mem/fence/MemFenceCpuSerial.hpp"
 #include "alpaka/rand/RandDefault.hpp"
@@ -163,17 +164,28 @@ namespace alpaka
 
         //! The CPU serial accelerator execution task type trait specialization.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-        struct CreateTaskKernel<AccCpuSerial<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        struct CreateTaskKernel<
+            AccCpuSerial<TDim, TIdx>,
+            TWorkDiv,
+            KernelBundle<AccCpuSerial<TDim, TIdx>, TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,
-                TKernelFnObj const& kernelFnObj,
-                TArgs&&... args)
+                KernelBundle<AccCpuSerial<TDim, TIdx>, TKernelFnObj, TArgs...> const& kernelBundle)
             {
-                return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
-                    workDiv,
-                    kernelFnObj,
-                    std::forward<TArgs>(args)...);
+                // Get the size of the block shared dynamic memory.
+                return std::apply(
+                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
+                        return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
+                            workDiv,
+                            kernelBundle.m_kernelFnObj,
+                            args...);
+                    },
+                    kernelBundle.m_args);
+                // return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
+                //     workDiv,
+                //     kernelBundle.m_kernelFn,
+                //     std::forward<TArgs>(kernelBundle.m_args)...);
             }
         };
 

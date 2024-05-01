@@ -169,7 +169,10 @@ namespace alpaka
 
         //! The CPU OpenMP 2.0 block accelerator execution task type trait specialization.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-        struct CreateTaskKernel<AccCpuOmp2Blocks<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        struct CreateTaskKernel<
+            AccCpuOmp2Blocks<TDim, TIdx>,
+            TWorkDiv,
+            KernelBundle<AccCpuOmp2Blocks<TDim, TIdx>, TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,

@@ -29,8 +29,7 @@ namespace alpaka
         template<
             typename TAcc,
             typename TWorkDiv,
-            typename TKernelFnObj,
-            typename... TArgs/*,
+            typename TKernelBundle/*,
             typename TSfinae = void*/>
         struct CreateTaskKernel;
 
@@ -291,36 +290,35 @@ namespace alpaka
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
-    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+    template<typename TAcc, typename TWorkDiv, typename TKernelBundle>
+    ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const& workDiv, TKernelBundle const& kernelBundle)
     {
         // check for void return type
-        detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
+        //   detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
 
-#if BOOST_COMP_NVCC
-        static_assert(
-            std::is_trivially_copyable_v<TKernelFnObj> || __nv_is_extended_device_lambda_closure_type(TKernelFnObj)
-                || __nv_is_extended_host_device_lambda_closure_type(TKernelFnObj),
-            "Kernels must be trivially copyable or an extended CUDA lambda expression!");
-#else
-        static_assert(std::is_trivially_copyable_v<TKernelFnObj>, "Kernels must be trivially copyable!");
-#endif
-        (detail::assertKernelArgIsTriviallyCopyable<std::decay_t<TArgs>>(), ...);
-        static_assert(
-            Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
-            "The dimensions of TAcc and TWorkDiv have to be identical!");
-        static_assert(
-            std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
-            "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
+        // #if BOOST_COMP_NVCC
+        //         static_assert(
+        //             std::is_trivially_copyable_v<TKernelFnObj> ||
+        //             __nv_is_extended_device_lambda_closure_type(TKernelFnObj)
+        //                 || __nv_is_extended_host_device_lambda_closure_type(TKernelFnObj),
+        //             "Kernels must be trivially copyable or an extended CUDA lambda expression!");
+        // #else
+        //         static_assert(std::is_trivially_copyable_v<TKernelFnObj>, "Kernels must be trivially copyable!");
+        // #endif
+        //         (detail::assertKernelArgIsTriviallyCopyable<std::decay_t<TArgs>>(), ...);
+        //         static_assert(
+        //             Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
+        //             "The dimensions of TAcc and TWorkDiv have to be identical!");
+        //         static_assert(
+        //             std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
+        //             "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-        std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)>
-                  << std::endl;
-#endif
-        return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
-            workDiv,
-            kernelFnObj,
-            std::forward<TArgs>(args)...);
+        // #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+        //         std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " <<
+        //         core::demangled<decltype(kernelFnObj)>
+        //                   << std::endl;
+        // #endif
+        return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelBundle>::createTaskKernel(workDiv, kernelBundle);
     }
 
 #if BOOST_COMP_CLANG
@@ -338,10 +336,9 @@ namespace alpaka
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
-    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
-        -> void
+    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelBundle>
+    ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelBundle const& kernelBundle) -> void
     {
-        enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
+        enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelBundle));
     }
 } // namespace alpaka
