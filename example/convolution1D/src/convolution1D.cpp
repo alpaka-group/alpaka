@@ -130,7 +130,6 @@ auto main() -> int
     // Instantiate the kernel (gpu code) function-object
     ConvolutionKernel convolutionKernel;
 
-
     // Native pointers needed for the kernel execution function
     DataType* nativeFilterDeviceMemory = alpaka::getPtrNative(filterDeviceMemory);
     DataType* nativeInputDeviceMemory = alpaka::getPtrNative(inputDeviceMemory);
@@ -147,6 +146,7 @@ auto main() -> int
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv
         = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+
     // Run the kernel
     alpaka::exec<DevAcc>(
         queue,
