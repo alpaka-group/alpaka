@@ -16,7 +16,6 @@
 
 #include <vector>
 
-inline constexpr auto IMPLEMENTATION_STRING = "alpaka";
 
 using Dim = alpaka::DimInt<1>;
 using Idx = int;

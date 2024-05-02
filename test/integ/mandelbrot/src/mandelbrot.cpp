@@ -334,19 +334,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
               << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
               << std::endl;
 
-
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        std::data(bufColorAcc),
-        numRows,
-        numCols,
-        rowPitch,
-        fMinR,
-        fMaxR,
-        fMinI,
-        fMaxI,
-        maxIterations);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, bundeledKernel);
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"

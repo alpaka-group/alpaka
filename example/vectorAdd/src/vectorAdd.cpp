@@ -140,13 +140,7 @@ auto example(TAccTag const&) -> int
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, elementsPerThread);
 
     // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        std::data(bufAccA),
-        std::data(bufAccB),
-        std::data(bufAccC),
-        numElements);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, bundeledKernel);
 
     // Enqueue the kernel execution task
     {

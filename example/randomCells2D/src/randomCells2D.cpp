@@ -211,6 +211,7 @@ auto example(TAccTag const&) -> int
     alpaka::exec<Acc>(queue, workDivInitRandom, initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
     alpaka::wait(queue);
 
+    // execute the same kernel with different pointers
     alpaka::exec<Acc>(queue, workDivInitRandom, initRandomKernel, extent, ptrBufAccRandV, pitchBufAccRandV);
     alpaka::wait(queue);
 

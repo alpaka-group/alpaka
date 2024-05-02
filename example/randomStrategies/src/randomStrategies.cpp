@@ -29,7 +29,7 @@ template<typename TAccTag>
 struct Box
 {
     // accelerator, queue, and work division typedefs
-    using Dim = alpaka::DimInt<1>;
+    using Dim = alpaka::DimInt<1u>;
     using Idx = std::size_t;
     using Vec = alpaka::Vec<Dim, Idx>;
     using Acc = alpaka::TagToAcc<TAccTag, Dim, Idx>;
@@ -266,11 +266,7 @@ void runStrategy(Box<TAccTag>& box)
     alpaka::exec<typename Box<TAccTag>::Acc>(
         box.queue,
         workDivRand,
-        initRandomKernel,
-        box.extentRand,
-        ptrBufAccRand,
-        static_cast<unsigned>(
-            box.extentResult[0] / box.extentRand[0])); // == NUM_ROLLS; amount of work to be performed by each thread
+        bundeledKernel); // == NUM_ROLLS; amount of work to be performed by each thread
 
     alpaka::wait(box.queue);
 
@@ -305,13 +301,7 @@ void runStrategy(Box<TAccTag>& box)
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
 
-    alpaka::exec<typename Box<TAccTag>::Acc>(
-        box.queue,
-        workdivResult,
-        fillKernel,
-        box.extentResult,
-        ptrBufAccRand,
-        ptrBufAccResult);
+    alpaka::exec<typename Box<TAccTag>::Acc>(box.queue, workdivResult, bundeledKernelFill);
     alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult);
     alpaka::wait(box.queue);
 

@@ -152,15 +152,7 @@ auto example(TAccTag const&) -> int
     auto const workDiv
         = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
     // Run the kernel
-    alpaka::exec<DevAcc>(
-        queue,
-        workDiv,
-        convolutionKernel,
-        nativeInputDeviceMemory,
-        nativeFilterDeviceMemory,
-        nativeOutputDeviceMemory,
-        inputSize,
-        filterSize);
+    alpaka::exec<DevAcc>(queue, workDiv, bundeledKernel);
 
     // Allocate memory on host
     auto resultGpuHost = alpaka::allocBuf<DataType, Idx>(devHost, inputSize);

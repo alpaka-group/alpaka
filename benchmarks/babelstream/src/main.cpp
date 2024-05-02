@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
     {
         std::cout << "BabelStream" << std::endl
                   << "Version: " << VERSION_STRING << std::endl
-                  << "Implementation: " << IMPLEMENTATION_STRING << std::endl;
+                  << "Implementation: Alpaka " << std::endl;
     }
 
     if(use_float)

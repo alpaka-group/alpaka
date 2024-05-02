@@ -122,7 +122,7 @@ auto example(TAccTag const&) -> int
     auto const workDiv
         = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
-    alpaka::exec<Acc>(queue, workDiv, kernelLambda, nExclamationMarks);
+    alpaka::exec<Acc>(queue, workDiv, bundeledKernel);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

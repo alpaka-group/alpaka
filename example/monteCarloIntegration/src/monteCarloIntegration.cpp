@@ -121,7 +121,7 @@ auto example(TAccTag const&) -> int
         Vec(numThreads),
         Vec(numAlpakaElementsPerThread));
 
-    alpaka::exec<Acc>(queue, workDiv, kernel, numPoints, ptrBufAcc, Function{});
+    alpaka::exec<Acc>(queue, workDiv, bundeledKernel);
     alpaka::memcpy(queue, bufHost, bufAcc);
     alpaka::wait(queue);
 

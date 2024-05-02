@@ -149,11 +149,18 @@ auto example(TAccTag const&) -> int
     // The queue can be blocking or non-blocking
     // depending on the chosen queue type (see type definitions above).
     // Here it is synchronous which means that the kernel is directly executed.
-    alpaka::exec<Acc>(
-        queue,
-        workDiv,
-        helloWorldKernel
-        /* put kernel arguments here */);
+    alpaka::exec<Acc>(queue, workDiv, bundeledKernel);
+
+    // Alternative way for kernel execution (commented out deliberately)
+    // exec function can be called by directly using kernel instance and kernel arguments without bundling kernel in a
+    // KernelBundle. This might be usefull if getValidWorkDivForKernel is not needed before kernel execution and
+    // workdiv is determined directly instantiating the WorkDivMembers class with predetermined values.
+    // alpaka::exec<Acc>(
+    //     queue,
+    //     workDiv,
+    //     helloWorldKernel,
+    //     /* put kernel arguments here*/);
+
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

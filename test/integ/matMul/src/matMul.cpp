@@ -272,22 +272,8 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
               << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
               << std::endl;
 
-
     // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
-        kernel,
-        m,
-        n,
-        k,
-        static_cast<Val>(1),
-        std::data(bufAAcc),
-        lda,
-        std::data(bufBAcc),
-        ldb,
-        static_cast<Val>(1),
-        std::data(bufCAcc),
-        ldc);
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, bundeledKernel);
 
     // Profile the kernel execution.
     std::cout << "Execution time:   " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"

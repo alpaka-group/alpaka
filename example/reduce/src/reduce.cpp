@@ -75,27 +75,24 @@ auto reduce(
     WorkDiv workDiv1{static_cast<Extent>(blockCount), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
     WorkDiv workDiv2{static_cast<Extent>(1), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
 
-    // create main reduction kernel execution task
-    auto const taskKernelReduceMain = alpaka::createTaskKernel<Acc>(
+    //  main reduction kernel execution
+    alpaka::exec<Acc>(
+        queue,
         workDiv1,
         kernel1,
         std::data(sourceDeviceMemory),
         std::data(destinationDeviceMemory),
         n,
         func);
-
-    // create last block reduction kernel execution task
-    auto const taskKernelReduceLastBlock = alpaka::createTaskKernel<Acc>(
+    // last block reduction kernel execution
+    alpaka::exec<Acc>(
+        queue,
         workDiv2,
         kernel2,
         std::data(destinationDeviceMemory),
         std::data(destinationDeviceMemory),
         blockCount,
         func);
-
-    // enqueue both kernel execution tasks
-    alpaka::enqueue(queue, taskKernelReduceMain);
-    alpaka::enqueue(queue, taskKernelReduceLastBlock);
 
     //  download result from GPU
     T resultGpuHost;

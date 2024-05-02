@@ -12,6 +12,7 @@
 #include "alpaka/core/OmpSchedule.hpp"
 #include "alpaka/dim/Traits.hpp"
 #include "alpaka/idx/Traits.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/kernel/KernelFunctionAttributes.hpp"
 #include "alpaka/queue/Traits.hpp"
 #include "alpaka/vec/Vec.hpp"
@@ -22,6 +23,43 @@
 //! The alpaka accelerator library.
 namespace alpaka
 {
+
+    namespace detail
+    {
+
+        //! Check that the return of TKernelFnObj is void
+        template<typename TAcc, typename TSfinae = void>
+        struct CheckFnReturnType
+        {
+            template<typename TKernelFnObj, typename... TArgs>
+            void operator()(TKernelFnObj const&, TArgs const&...)
+            {
+                using Result = std::invoke_result_t<TKernelFnObj, TAcc const&, TArgs const&...>;
+                static_assert(std::is_same_v<Result, void>, "The TKernelFnObj is required to return void!");
+            }
+        };
+
+        // Function to check the return type using KernelBundle
+        template<typename TAcc, typename TKernelFnObj, typename Tuple>
+        void checkFnReturnTypeWithTuple(TKernelFnObj const& fnObj, Tuple const& argsTuple)
+        {
+            std::apply(
+                [&](auto&&... args)
+                {
+                    CheckFnReturnType<TAcc> checker;
+                    checker(fnObj, std::forward<decltype(args)>(args)...);
+                },
+                argsTuple);
+        }
+
+        // Function to check the return type using KernelBundle
+        template<typename TAcc, typename TKernelFn, typename... TArgs>
+        void checkKernelReturnType(KernelBundle<TKernelFn, TArgs...> const& bundle)
+        {
+            checkFnReturnTypeWithTuple<TAcc>(bundle.m_kernelFn, bundle.m_args);
+        }
+    } // namespace detail
+
     //! The kernel traits.
     namespace trait
     {
@@ -29,8 +67,7 @@ namespace alpaka
         template<
             typename TAcc,
             typename TWorkDiv,
-            typename TKernelFnObj,
-            typename... TArgs/*,
+            typename TKernelBundle/*,
             typename TSfinae = void*/>
         struct CreateTaskKernel;
 
@@ -236,109 +273,31 @@ namespace alpaka
             args...);
     }
 
+
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
-
-
-    //! Check if a type used as kernel argument is trivially copyable
-    //!
-    //! \attention In case this trait is specialized for a user type the user should be sure that the result of calling
-    //! the copy constructor is equal to use memcpy to duplicate the object. An existing destructor should be free
-    //! of side effects.
-    //!
-    //! It's implementation defined whether the closure type of a lambda is trivially copyable.
-    //! Therefor the default implementation is true for trivially copyable or empty (stateless) types.
-    //!
-    //! @tparam T type to check
-    //! @{
-    template<typename T, typename = void>
-    struct IsKernelArgumentTriviallyCopyable
-        : std::bool_constant<std::is_empty_v<T> || std::is_trivially_copyable_v<T>>
-    {
-    };
-
-    template<typename T>
-    inline constexpr bool isKernelArgumentTriviallyCopyable = IsKernelArgumentTriviallyCopyable<T>::value;
-
-    //! @}
-
-    namespace detail
-    {
-        //! Check that the return of TKernelFnObj is void
-        template<typename TAcc, typename TSfinae = void>
-        struct CheckFnReturnType
-        {
-            template<typename TKernelFnObj, typename... TArgs>
-            void operator()(TKernelFnObj const&, TArgs const&...)
-            {
-                using Result = std::invoke_result_t<TKernelFnObj, TAcc const&, TArgs const&...>;
-                static_assert(std::is_same_v<Result, void>, "The TKernelFnObj is required to return void!");
-            }
-        };
-
-        // asserts that T is trivially copyable. We put this in a separate function so we can see which T would fail
-        // the test, when called from a fold expression.
-        template<typename T>
-        inline void assertKernelArgIsTriviallyCopyable()
-        {
-            static_assert(isKernelArgumentTriviallyCopyable<T>, "The kernel argument T must be trivially copyable!");
-        }
-    } // namespace detail
-
-    //! Check if the kernel type is trivially copyable
-    //!
-    //! \attention In case this trait is specialized for a user type the user should be sure that the result of calling
-    //! the copy constructor is equal to use memcpy to duplicate the object. An existing destructor should be free
-    //! of side effects.
-    //!
-    //! The default implementation is true for trivially copyable types (or for extended lambda expressions for CUDA).
-    //!
-    //! @tparam T type to check
-    //! @{
-    template<typename T, typename = void>
-    struct IsKernelTriviallyCopyable
-#if BOOST_COMP_NVCC
-        : std::bool_constant<
-              std::is_trivially_copyable_v<T> || __nv_is_extended_device_lambda_closure_type(T)
-              || __nv_is_extended_host_device_lambda_closure_type(T)>
-#else
-        : std::is_trivially_copyable<T>
-#endif
-    {
-    };
-
-    template<typename T>
-    inline constexpr bool isKernelTriviallyCopyable = IsKernelTriviallyCopyable<T>::value;
-
-    //! @}
-
 //! Creates a kernel execution task.
 //!
 //! \tparam TAcc The accelerator type.
+//! \tparam TWorkDiv The type of the work division.
+//! \tparam TKernelFn Kernel function object type.
+//! \tparam TArgs Kernel function object argument types as a parameter pack.
 //! \param workDiv The index domain work division.
-//! \param kernelFnObj The kernel function object which should be executed.
-//! \param args,... The kernel invocation arguments.
-//! \return The kernel execution task.
+//! \param kernelBundle.
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
-    template<typename TAcc, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+    template<typename TAcc, typename TWorkDiv, typename TKernelFn, typename... TArgs>
+    ALPAKA_FN_HOST auto createTaskKernel(
+        TWorkDiv const& workDiv,
+        KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
     {
-        // check for void return type
-        detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
+        // verify that the return type is void
+        detail::checkKernelReturnType<TAcc>(kernelBundle);
 
-#if BOOST_COMP_NVCC
-        static_assert(
-            isKernelTriviallyCopyable<TKernelFnObj>,
-            "Kernels must be trivially copyable or an extended CUDA lambda expression!");
-#else
-        static_assert(isKernelTriviallyCopyable<TKernelFnObj>, "Kernels must be trivially copyable!");
-#endif
-        (detail::assertKernelArgIsTriviallyCopyable<std::decay_t<TArgs>>(), ...);
         static_assert(
             Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
             "The dimensions of TAcc and TWorkDiv have to be identical!");
@@ -346,14 +305,68 @@ namespace alpaka
             std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
             "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-        std::cout << __func__ << " workDiv: " << workDiv << ", kernelFnObj: " << core::demangled<decltype(kernelFnObj)>
-                  << std::endl;
-#endif
-        return trait::CreateTaskKernel<TAcc, TWorkDiv, TKernelFnObj, TArgs...>::createTaskKernel(
+        // Return the task kernel
+        return trait::CreateTaskKernel<TAcc, TWorkDiv, KernelBundle<TKernelFn, TArgs...>>::createTaskKernel(
             workDiv,
-            kernelFnObj,
-            std::forward<TArgs>(args)...);
+            kernelBundle);
+    }
+
+
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored                                                                                  \
+        "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
+#endif
+//! Creates a kernel execution task.
+//!
+//! \tparam TAcc The accelerator type.
+//! \tparam TWorkDiv The type of the work division.
+//! \tparam TKernelFn Kernel function object type.
+//! \tparam TArgs Kernel function object argument types as a parameter pack.
+//! \param workDiv The index domain work division.
+//! \param kernelFnObj The kernel function object which should be executed.
+//! \param args,... The kernel invocation arguments.
+//! \return The kernel execution task.
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
+    template<typename TAcc, typename TWorkDiv, typename TKernelFn, typename... TArgs>
+    ALPAKA_FN_HOST auto createTaskKernel(TWorkDiv const& workDiv, TKernelFn const& kernelFnObj, TArgs&&... args)
+    {
+        static_assert(
+            Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
+            "The dimensions of TAcc and TWorkDiv have to be identical!");
+        static_assert(
+            std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
+            "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
+        KernelBundle<TKernelFn, TArgs...> const& kernelBundle
+            = alpaka::KernelBundle(kernelFnObj, std::forward(args)...);
+        // Return the task kernel
+        return trait::CreateTaskKernel<TAcc, TWorkDiv, KernelBundle<TKernelFn, TArgs...>>::createTaskKernel(
+            workDiv,
+            kernelBundle);
+    }
+
+    //! Executes the given kernel in the given queue.
+    //!
+    //! \tparam TAcc The accelerator type.
+    //! \tparam TQueue The queue type for work to be submitted to.
+    //! \tparam TWorkDiv The type of the work division.
+    //! \tparam TKernelFn The kernel object type, which includes the kernel function object and it's invocation
+    //! arguments.
+    //! \tparam TArgs The kernel invocation argument types pack.
+    //! \param queue The queue to enqueue the view copy task into.
+    //! \param workDiv The index domain work division.
+    //! \param kernelBundle The kernel object instance, which includes the kernel function object and it's
+    //! invocation arguments.
+    //!
+    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFn, typename... TArgs>
+    ALPAKA_FN_HOST auto exec(
+        TQueue& queue,
+        TWorkDiv const& workDiv,
+        KernelBundle<TKernelFn, TArgs...> const& kernelBundle) -> void
+    {
+        enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelBundle));
     }
 
 #if BOOST_COMP_CLANG
@@ -361,9 +374,13 @@ namespace alpaka
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
-//! Executes the given kernel in the given queue.
-//!
+    //! Executes the given kernel in the given queue.
+    //!
 //! \tparam TAcc The accelerator type.
+//! \tparam TQueue The queue type for work to be submitted to.
+//! \tparam TWorkDiv The type of the work division.
+//! \tparam TKernelFn Kernel function object type.
+//! \tparam TArgs Kernel function object argument types as a parameter pack.
 //! \param queue The queue to enqueue the view copy task into.
 //! \param workDiv The index domain work division.
 //! \param kernelFnObj The kernel function object which should be executed.
@@ -371,10 +388,12 @@ namespace alpaka
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
-    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+    template<typename TAcc, typename TQueue, typename TWorkDiv, typename TKernelFn, typename... TArgs>
+    ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFn const& kernelFnObj, TArgs&&... args)
         -> void
     {
-        enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelFnObj, std::forward<TArgs>(args)...));
+        auto const& bundeledKernel = alpaka::KernelBundle(kernelFnObj, std::forward<TArgs>(args)...);
+        enqueue(queue, createTaskKernel<TAcc>(workDiv, bundeledKernel));
     }
+
 } // namespace alpaka

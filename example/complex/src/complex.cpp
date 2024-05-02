@@ -64,7 +64,7 @@ auto example(TAccTag const&) -> int
         = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
-    alpaka::exec<Acc>(queue, workDiv, complexKernel);
+    alpaka::exec<Acc>(queue, workDiv, bundeledKernel);
     alpaka::wait(queue);
 
     // Usage of alpaka::Complex<T> on the host side is the same as inside kernels, except math functions are not

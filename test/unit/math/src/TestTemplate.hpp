@@ -73,7 +73,6 @@ namespace mathtest
             // SETUP (defines and initialising)
             // DevAcc is defined in Buffer.hpp too.
             using DevAcc = alpaka::Dev<TAcc>;
-
             using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
             using TArgsItem = ArgsItem<TData, TFunctor::arity>;
 
@@ -123,8 +122,7 @@ namespace mathtest
             results.copyToDevice(queue);
 
             // Enqueue the kernel execution task.
-            auto const taskKernel
-                = alpaka::createTaskKernel<TAcc>(workDiv, kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
+            auto const taskKernel = alpaka::createTaskKernel<TAcc>(workDiv, bundeledKernel);
             alpaka::enqueue(queue, taskKernel);
 
             // Copy back the results (encapsulated in the buffer class).

@@ -79,10 +79,10 @@ namespace alpaka
         static_assert(TDim::value > 0 && TDim::value <= 3, "Invalid kernel dimensionality");
 
         template<typename TWorkDiv>
-        TaskKernelGenericSycl(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+        TaskKernelGenericSycl(TWorkDiv&& workDiv, KernelBundle<TKernelFnObj, TArgs...> const& KernelBundle)
             : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
-            , m_kernelFnObj{kernelFnObj}
-            , m_args{std::forward<TArgs>(args)...}
+            , m_kernelFnObj(KernelBundle.m_kernelFn)
+            , m_args(KernelBundle.m_args)
         {
         }
 
