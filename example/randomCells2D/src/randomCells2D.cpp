@@ -198,7 +198,11 @@ auto main() -> int
     auto pitchBufAccRandV = alpaka::getPitchesInBytes(bufAccRandV)[0];
 
     auto const& bundeledKernelInitRandom
+<<<<<<< HEAD
         = alpaka::KernelBundle(initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
+=======
+        = alpaka::makeKernelBundle<Acc>(initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
+>>>>>>> fa79d1e8cfb (change comments on examples)
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDivInitRandom
         = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernelInitRandom, extent, Vec(perThreadY, perThreadX));
@@ -234,11 +238,16 @@ auto main() -> int
         pitchBufAccS);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
+<<<<<<< HEAD
     auto const workDivRuntimeStep = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
         bundeledKernelRuntimeStep,
         extent,
         Vec(perThreadY, perThreadX));
+=======
+    auto const workDivRuntimeStep
+        = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernelRuntimeStep, extent, Vec(perThreadY, perThreadX));
+>>>>>>> fa79d1e8cfb (change comments on examples)
 
     alpaka::exec<Acc>(
         queue,
