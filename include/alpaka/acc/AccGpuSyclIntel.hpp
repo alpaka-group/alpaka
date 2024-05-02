@@ -11,6 +11,7 @@
 #include "alpaka/core/Sycl.hpp"
 #include "alpaka/dev/DevGpuSyclIntel.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/kernel/TaskKernelGpuSyclIntel.hpp"
 #include "alpaka/kernel/Traits.hpp"
 #include "alpaka/platform/PlatformGpuSyclIntel.hpp"
@@ -57,15 +58,31 @@ namespace alpaka::trait
     };
 
     //! The Intel GPU SYCL accelerator execution task type trait specialization.
+    //!
+    //! \tparam TDim The dimensionality of the accelerator device properties.
+    //! \tparam TIdx The idx type of the accelerator device properties.
+    //! \tparam TWorkDiv The type of the work division.
+    //! \tparam TKernelFnObj Kernel function object type.
+    //! \tparam TArgs Kernel function object argument types as a parameter pack.
     template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-    struct CreateTaskKernel<AccGpuSyclIntel<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+    struct CreateTaskKernel<
+        AccCpuSyclIntel<TDim, TIdx>,
+        TWorkDiv,
+        KernelBundle<AccCpuSyclIntel<TDim, TIdx>, TKernelFnObj, TArgs...>>
     {
-        static auto createTaskKernel(TWorkDiv const& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
+        ALPAKA_FN_HOST static auto createTaskKernel(
+            TWorkDiv const& workDiv,
+            KernelBundle<AccCpuSyclIntel<TDim, TIdx>, TKernelFnObj, TArgs...> const& kernelBundle)
         {
-            return TaskKernelGpuSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>{
-                workDiv,
-                kernelFnObj,
-                std::forward<TArgs>(args)...};
+            return std::apply(
+                [&](remove_restrict_t<std::decay_t<TArgs>>... args)
+                {
+                    return TaskKernelCpuSyclIntel<TDim, TIdx, TKernelFnObj, TArgs...>(
+                        workDiv,
+                        kernelBundle.m_kernelFn,
+                        std::forward<TArgs>(args)...);
+                },
+                kernelBundle.m_args);
         }
     };
 

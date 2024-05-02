@@ -116,7 +116,7 @@ auto main() -> int
 
     // Run the kernel setting no schedule explicitly.
     std::cout << "OpenMPScheduleDefaultKernel setting no schedule explicitly:\n";
-    alpaka::exec<Acc>(queue, workDiv, openMPScheduleDefaultKernel);
+    alpaka::exec<Acc>(queue, workDiv, bundeledKernel);
     alpaka::wait(queue);
 
     // Run the kernel setting the schedule via a trait

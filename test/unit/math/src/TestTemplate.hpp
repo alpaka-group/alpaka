@@ -76,7 +76,6 @@ namespace mathtest
 
             using Dim = alpaka::DimInt<1u>;
             using Idx = std::size_t;
-            using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
             using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
             using TArgsItem = ArgsItem<TData, TFunctor::arity>;
 
@@ -101,14 +100,6 @@ namespace mathtest
             Args args{devAcc};
             Results results{devAcc};
 
-            WorkDiv const workDiv = alpaka::getValidWorkDiv<TAcc>(
-                devAcc,
-                sizeExtent,
-                elementsPerThread,
-                false,
-                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
-            // SETUP COMPLETED.
-
             // Fill the buffer with random test-numbers.
             fillWithRndArgs<TData>(args, functor, seed);
             using Underlying = typename UnderlyingType<TData>::type;
@@ -119,9 +110,19 @@ namespace mathtest
             args.copyToDevice(queue);
             results.copyToDevice(queue);
 
+            auto const& bundeledKernel
+                = alpaka::makeKernelBundle<TAcc>(kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
+
+            auto const& workDiv = alpaka::getValidWorkDivForKernel(
+                devAcc,
+                bundeledKernel,
+                sizeExtent,
+                elementsPerThread,
+                false,
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
+
             // Enqueue the kernel execution task.
-            auto const taskKernel
-                = alpaka::createTaskKernel<TAcc>(workDiv, kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
+            auto const taskKernel = alpaka::createTaskKernel<TAcc>(workDiv, bundeledKernel);
             alpaka::enqueue(queue, taskKernel);
 
             // Copy back the results (encapsulated in the buffer class).

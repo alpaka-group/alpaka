@@ -15,6 +15,7 @@
 #include "alpaka/idx/bt/IdxBtZero.hpp"
 #include "alpaka/idx/gb/IdxGbRef.hpp"
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/mem/fence/MemFenceCpu.hpp"
 #include "alpaka/rand/RandDefault.hpp"
@@ -159,18 +160,31 @@ namespace alpaka
         };
 
         //! The CPU TBB block accelerator execution task type trait specialization.
+        //!
+        //! \tparam TDim The dimensionality of the accelerator device properties.
+        //! \tparam TIdx The idx type of the accelerator device properties.
+        //! \tparam TWorkDiv The type of the work division.
+        //! \tparam TKernelFnObj Kernel function object type.
+        //! \tparam TArgs Kernel function object argument types as a parameter pack.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-        struct CreateTaskKernel<AccCpuTbbBlocks<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        struct CreateTaskKernel<
+            AccCpuTbbBlocks<TDim, TIdx>,
+            TWorkDiv,
+            KernelBundle<AccCpuTbbBlocks<TDim, TIdx>, TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,
-                TKernelFnObj const& kernelFnObj,
-                TArgs&&... args)
+                KernelBundle<AccCpuTbbBlocks<TDim, TIdx>, TKernelFnObj, TArgs...> const& kernelBundle)
             {
-                return TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>(
-                    workDiv,
-                    kernelFnObj,
-                    std::forward<TArgs>(args)...);
+                return std::apply(
+                    [&](remove_restrict_t<std::decay_t<TArgs>>... args)
+                    {
+                        return TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>(
+                            workDiv,
+                            kernelBundle.m_kernelFn,
+                            std::forward<TArgs>(args)...);
+                    },
+                    kernelBundle.m_args);
             }
         };
 

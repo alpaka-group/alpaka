@@ -168,16 +168,8 @@ auto main() -> int
         = alpaka::getValidWorkDivForKernel<AccHost>(devHost, bundeledKernel2, extent, elementsPerThreadHost);
 
     // Create the kernel execution task.
-    auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(
-        workDivAcc,
-        CounterBasedRngKernel(),
-        alpaka::experimental::getMdSpan(bufAcc),
-        key);
-    auto const taskKernelHost = alpaka::createTaskKernel<AccHost>(
-        workDivHost,
-        CounterBasedRngKernel(),
-        alpaka::experimental::getMdSpan(bufHost),
-        key);
+    auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(workDivAcc, bundeledKernelAcc);
+    auto const taskKernelHost = alpaka::createTaskKernel<AccHost>(workDivHost, bundeledKernelHost);
 
     // Enqueue the kernel execution task
     alpaka::enqueue(queueHost, taskKernelHost);

@@ -91,21 +91,7 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
 
     // Get a queue on this device.
     QueueAcc queue(devAcc);
-
     alpaka::Vec<Dim, Idx> const extent(numElements);
-
-    // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        extent,
-        static_cast<Idx>(3u),
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
-
-    std::cout << "AxpyKernel("
-              << " numElements:" << numElements << ", accelerator: " << alpaka::getAccName<Acc>()
-              << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
-              << std::endl;
 
     // Allocate host memory buffers in pinned memory.
     auto memBufHostX = alpaka::allocMappedBufIfSupported<Val, Idx>(devHost, platformAcc, extent);
@@ -159,14 +145,29 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
     std::cout << std::endl;
 #endif
 
-    // Create the kernel execution task.
-    auto const taskKernel = alpaka::createTaskKernel<Acc>(
-        workDiv,
+    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
         kernel,
         numElements,
         alpha,
         alpaka::getPtrNative(memBufAccX),
         alpaka::getPtrNative(memBufAccY));
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent.
+    alpaka::WorkDivMembers<Dim, Idx> const& workDiv = alpaka::getValidWorkDivForKernel<DevAcc>(
+        devAcc,
+        bundeledKernel,
+        extent,
+        static_cast<Idx>(3u),
+        false,
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
+
+    std::cout << "AxpyKernel("
+              << " numElements:" << numElements << ", accelerator: " << alpaka::getAccName<Acc>()
+              << ", kernel: " << alpaka::core::demangled<decltype(kernel)> << ", workDiv: " << workDiv << ")"
+              << std::endl;
+
+    // Create the kernel execution task.
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, bundeledKernel);
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"

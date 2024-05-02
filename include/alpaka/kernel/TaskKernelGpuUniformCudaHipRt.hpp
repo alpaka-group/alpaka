@@ -228,7 +228,7 @@ namespace alpaka
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes = std::apply(
-                    [&](remove_restrict_t<std::decay_t<TArgs>> const&... args) {
+                    [&](remove_restrict_t<std::decay_t<TArgs>>... args) {
                         return getBlockSharedMemDynSizeBytes<TAcc>(
                             task.m_kernelFnObj,
                             blockThreadExtent,

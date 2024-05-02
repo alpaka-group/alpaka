@@ -141,8 +141,11 @@ auto main() -> int
 
     for(uint32_t step = 0; step < numTimeSteps; step++)
     {
+        auto const& tempBundeledKernel
+            = alpaka::makeKernelBundle<Acc>(heatEqKernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+
         // Compute next values
-        alpaka::exec<Acc>(queue, workDiv, heatEqKernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+        alpaka::exec<Acc>(queue, workDiv, tempBundeledKernel);
 
         // We assume the boundary conditions are constant and so these values
         // do not need to be updated.

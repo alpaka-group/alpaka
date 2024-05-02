@@ -75,23 +75,24 @@ auto reduce(
     WorkDiv workDiv1{static_cast<Extent>(blockCount), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
     WorkDiv workDiv2{static_cast<Extent>(1), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
 
-    // create main reduction kernel execution task
-    auto const taskKernelReduceMain = alpaka::createTaskKernel<Acc>(
-        workDiv1,
+    auto const& bundeledKernel1 = alpaka::makeKernelBundle<Acc>(
         kernel1,
         alpaka::getPtrNative(sourceDeviceMemory),
         alpaka::getPtrNative(destinationDeviceMemory),
         n,
         func);
 
-    // create last block reduction kernel execution task
-    auto const taskKernelReduceLastBlock = alpaka::createTaskKernel<Acc>(
-        workDiv2,
+    auto const& bundeledKernel2 = alpaka::makeKernelBundle<Acc>(
         kernel2,
         alpaka::getPtrNative(destinationDeviceMemory),
         alpaka::getPtrNative(destinationDeviceMemory),
         blockCount,
         func);
+    // create main reduction kernel execution task
+    auto const taskKernelReduceMain = alpaka::createTaskKernel<Acc>(workDiv1, bundeledKernel1);
+
+    // create last block reduction kernel execution task
+    auto const taskKernelReduceLastBlock = alpaka::createTaskKernel<Acc>(workDiv2, bundeledKernel2);
 
     // enqueue both kernel execution tasks
     alpaka::enqueue(queue, taskKernelReduceMain);

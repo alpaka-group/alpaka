@@ -315,18 +315,7 @@ auto main() -> int
     auto const workDiv = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, extent, Vec::ones());
 
     // Run the kernel
-    alpaka::exec<DevAcc>(
-        queueAcc,
-        workDiv,
-        convolutionKernel2D,
-        alpaka::getPtrNative(bufInputAcc),
-        alpaka::getPtrNative(outputDeviceMemory),
-        matrixWidth,
-        matrixHeight,
-        alpaka::getPtrNative(bufFilterAcc),
-        filterWidth,
-        intputWidthAllocated,
-        filterWidthAllocated);
+    alpaka::exec<DevAcc>(queueAcc, workDiv, bundeledKernel);
 
     // Allocate memory on host to receive the resulting matrix as an array
     auto resultGpuHost = alpaka::allocBuf<DataType, Idx>(devHost, extent1D);

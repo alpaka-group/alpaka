@@ -165,7 +165,7 @@ auto main() -> int
     alpaka::exec<Acc>(
         queue,
         workDiv,
-        helloWorldKernel
+        bundeledKernel
         /* put kernel arguments here */);
     alpaka::wait(queue);
 

@@ -250,11 +250,7 @@ void runStrategy(Box& box)
     alpaka::exec<Box::Acc>(
         box.queue,
         workdivRand,
-        initRandomKernel,
-        box.extentRand,
-        ptrBufAccRand,
-        static_cast<unsigned>(
-            box.extentResult[0] / box.extentRand[0])); // == NUM_ROLLS; amount of work to be performed by each thread
+        bundeledKernel); // == NUM_ROLLS; amount of work to be performed by each thread
 
     alpaka::wait(box.queue);
 
@@ -284,7 +280,7 @@ void runStrategy(Box& box)
         box.extentResult,
         Box::Vec(static_cast<Box::Idx>(NUM_ROLLS)));
 
-    alpaka::exec<Box::Acc>(box.queue, workdivResult, fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
+    alpaka::exec<Box::Acc>(box.queue, workdivResult, bundeledKernel2);
     alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult);
     alpaka::wait(box.queue);
 

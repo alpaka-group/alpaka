@@ -14,6 +14,7 @@
 #include "alpaka/idx/bt/IdxBtRefThreadIdMap.hpp"
 #include "alpaka/idx/gb/IdxGbRef.hpp"
 #include "alpaka/intrinsic/IntrinsicCpu.hpp"
+#include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/mem/fence/MemFenceCpu.hpp"
 #include "alpaka/rand/RandDefault.hpp"
@@ -186,19 +187,36 @@ namespace alpaka
             using type = TDim;
         };
 
-        //! The CPU threads accelerator execution task type trait specialization.
+        //! The CPU serial accelerator execution task type trait specialization.
+        //!
+        //! \tparam TDim The dimensionality of the accelerator device properties.
+        //! \tparam TIdx The idx type of the accelerator device properties.
+        //! \tparam TWorkDiv The type of the work division.
+        //! \tparam TKernelFnObj Kernel function object type.
+        //! \tparam TArgs Kernel function object argument types as a parameter pack.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-        struct CreateTaskKernel<AccCpuThreads<TDim, TIdx>, TWorkDiv, TKernelFnObj, TArgs...>
+        struct CreateTaskKernel<
+            AccCpuThreads<TDim, TIdx>,
+            TWorkDiv,
+            KernelBundle<AccCpuThreads<TDim, TIdx>, TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,
-                TKernelFnObj const& kernelFnObj,
-                TArgs&&... args)
+                KernelBundle<AccCpuThreads<TDim, TIdx>, TKernelFnObj, TArgs...> const& kernelBundle)
             {
-                return TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>(
-                    workDiv,
-                    kernelFnObj,
-                    std::forward<TArgs>(args)...);
+                return std::apply(
+                    [&](remove_restrict_t<std::decay_t<TArgs>>... args)
+                    {
+                        return TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>(
+                            workDiv,
+                            kernelBundle.m_kernelFn,
+                            std::forward<TArgs>(args)...);
+                    },
+                    kernelBundle.m_args);
+                // return TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>(
+                //     workDiv,
+                //     kernelBundle.m_kernelFn,
+                //     std::forward<TArgs>(kernelBundle.m_args)...);
             }
         };
 

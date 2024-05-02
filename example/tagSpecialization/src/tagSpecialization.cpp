@@ -115,10 +115,11 @@ auto main() -> int
         static_cast<std::size_t>(1),
         static_cast<std::size_t>(1)};
 
+    WrapperKernel wrapperKernel;
     // Run the wrapper kernel, which calls the actual specialized
     // Specializing the entry kernel with tags is not possible. Therefore pre processor guards are required, see
     // kernelSpecialization example.
-    alpaka::exec<Acc>(queue, workDiv, WrapperKernel{});
+    alpaka::exec<Acc>(queue, workDiv, wrapperKernel);
     alpaka::wait(queue);
     return EXIT_SUCCESS;
 }
