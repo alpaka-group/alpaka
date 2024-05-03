@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2024 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -122,6 +122,18 @@ namespace alpaka
         struct AccType<AccCpuThreads<TDim, TIdx>>
         {
             using type = AccCpuThreads<TDim, TIdx>;
+        };
+
+        //! The CPU threads single thread accelerator type trait specialization.
+        template<typename TDim, typename TIdx>
+        struct IsSingleThreadAcc<AccCpuThreads<TDim, TIdx>> : std::false_type
+        {
+        };
+
+        //! The CPU threads multi thread accelerator type trait specialization.
+        template<typename TDim, typename TIdx>
+        struct IsMultiThreadAcc<AccCpuThreads<TDim, TIdx>> : std::true_type
+        {
         };
 
         //! The CPU threads accelerator device properties get trait specialization.
