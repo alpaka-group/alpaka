@@ -2,13 +2,11 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #include <alpaka/acc/AccCpuSerial.hpp>
 #include <alpaka/acc/AccCpuTbbBlocks.hpp>
 #include <alpaka/acc/AccDevProps.hpp>
-
 #include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #include <alpaka/kernel/KernelBundle.hpp>
 #include <alpaka/kernel/KernelFunctionAttributes.hpp>

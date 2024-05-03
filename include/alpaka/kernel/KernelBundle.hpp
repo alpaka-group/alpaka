@@ -61,6 +61,7 @@ namespace alpaka
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif
+
     template<typename TKernelFn, typename... TArgs>
     inline auto makeKernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>
     {
