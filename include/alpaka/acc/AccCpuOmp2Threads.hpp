@@ -1,4 +1,4 @@
-/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+/* Copyright 2024 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -119,6 +119,18 @@ namespace alpaka
         struct AccType<AccCpuOmp2Threads<TDim, TIdx>>
         {
             using type = AccCpuOmp2Threads<TDim, TIdx>;
+        };
+
+        //! The CPU OpenMP 2.0 thread single thread accelerator type trait specialization.
+        template<typename TDim, typename TIdx>
+        struct IsSingleThreadAcc<AccCpuOmp2Threads<TDim, TIdx>> : std::false_type
+        {
+        };
+
+        //! The CPU OpenMP 2.0 thread multi thread accelerator type trait specialization.
+        template<typename TDim, typename TIdx>
+        struct IsMultiThreadAcc<AccCpuOmp2Threads<TDim, TIdx>> : std::true_type
+        {
         };
 
         //! The CPU OpenMP 2.0 thread accelerator device properties get trait specialization.
