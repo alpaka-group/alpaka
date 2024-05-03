@@ -117,19 +117,6 @@ auto main() -> int
     using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerGrid(Vec::all(static_cast<Idx>(10)));
-    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const devWorkDiv = alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        threadsPerGrid,
-        elementsPerThread,
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
-    WorkDiv const hostWorkDiv = alpaka::getValidWorkDiv<Host>(
-        devHost,
-        threadsPerGrid,
-        elementsPerThread,
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Create host and device buffers
     //
@@ -188,9 +175,12 @@ auto main() -> int
 
     FillBufferKernel fillBufferKernel;
 
+    auto const& bundeledFillBufferKernel = alpaka::makeKernelBundle<Host>(fillBufferKernel, hostViewPlainPtrMdSpan);
+    auto const hostWorkDiv
+        = alpaka::getValidWorkDivForKernel(devHost, bundeledFillBufferKernel, threadsPerGrid, elementsPerThread);
+
     alpaka::exec<Host>(hostQueue, hostWorkDiv, fillBufferKernel,
                        hostViewPlainPtrMdSpan); // 1st kernel argument
-
 
     // Copy host to device Buffer
     //
@@ -224,9 +214,14 @@ auto main() -> int
     auto deviceBufferMdSpan2 = alpaka::experimental::getMdSpan(deviceBuffer2);
 
     TestBufferKernel testBufferKernel;
+    auto const& bundeledTestBufferKernel = alpaka::makeKernelBundle<Acc>(testBufferKernel, deviceBufferMdSpan1);
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const devWorkDiv
+        = alpaka::getValidWorkDivForKernel(devAcc, bundeledTestBufferKernel, threadsPerGrid, elementsPerThread);
+
     alpaka::exec<Acc>(devQueue, devWorkDiv, testBufferKernel, deviceBufferMdSpan1);
     alpaka::exec<Acc>(devQueue, devWorkDiv, testBufferKernel, deviceBufferMdSpan2);
-
 
     // Print device Buffer
     //

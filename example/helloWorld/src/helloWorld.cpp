@@ -140,13 +140,6 @@ auto main() -> int
     using Vec = alpaka::Vec<Dim, Idx>;
     auto const elementsPerThread = Vec::all(static_cast<Idx>(1));
     auto const threadsPerGrid = Vec{4, 2, 4};
-    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv = alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        threadsPerGrid,
-        elementsPerThread,
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Instantiate the kernel function object
     //
@@ -154,6 +147,10 @@ auto main() -> int
     // callable operator() and takes the accelerator as first
     // argument. So a kernel can be a class or struct, a lambda, etc.
     HelloWorldKernel helloWorldKernel;
+
+    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(helloWorldKernel);
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDiv = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
     //

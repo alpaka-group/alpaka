@@ -162,7 +162,6 @@ auto main() -> int
     using BufAccRand = alpaka::Buf<Acc, RandomEngineSingle, Dim, Idx>;
     using BufHostRandVec = alpaka::Buf<Host, RandomEngineVector, Dim, Idx>;
     using BufAccRandVec = alpaka::Buf<Acc, RandomEngineVector, Dim, Idx>;
-    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
     constexpr Idx numX = NUM_X;
     constexpr Idx numY = NUM_Y;
@@ -171,13 +170,6 @@ auto main() -> int
 
     constexpr Idx perThreadX = 1;
     constexpr Idx perThreadY = 1;
-
-    WorkDiv workdiv{alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        extent,
-        Vec(perThreadY, perThreadX),
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
 
     // Setup buffer.
     BufHost bufHostS{alpaka::allocBuf<float, Idx>(devHost, extent)};
@@ -199,12 +191,22 @@ auto main() -> int
     RandomEngineVector* const ptrBufAccRandV{alpaka::getPtrNative(bufAccRandV)};
 
     InitRandomKernel initRandomKernel;
+
+
     auto pitchBufAccRandS = alpaka::getPitchesInBytes(bufAccRandS)[0];
-    alpaka::exec<Acc>(queue, workdiv, initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
-    alpaka::wait(queue);
 
     auto pitchBufAccRandV = alpaka::getPitchesInBytes(bufAccRandV)[0];
-    alpaka::exec<Acc>(queue, workdiv, initRandomKernel, extent, ptrBufAccRandV, pitchBufAccRandV);
+
+    auto const& bundeledKernelInitRandom
+        = alpaka::makeKernelBundle<Acc>(initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDivInitRandom
+        = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernelInitRandom, extent, Vec(perThreadY, perThreadX));
+
+    alpaka::exec<Acc>(queue, workDivInitRandom, initRandomKernel, extent, ptrBufAccRandS, pitchBufAccRandS);
+    alpaka::wait(queue);
+
+    alpaka::exec<Acc>(queue, workDivInitRandom, initRandomKernel, extent, ptrBufAccRandV, pitchBufAccRandV);
     alpaka::wait(queue);
 
     auto pitchHostS = alpaka::getPitchesInBytes(bufHostS)[0];
@@ -222,9 +224,22 @@ auto main() -> int
     auto pitchBufAccS = alpaka::getPitchesInBytes(bufAccS)[0];
     alpaka::memcpy(queue, bufAccS, bufHostS);
     RunTimestepKernelSingle runTimestepKernelSingle;
+
+    auto const& bundeledKernelRuntimeStep = alpaka::makeKernelBundle<Acc>(
+        runTimestepKernelSingle,
+        extent,
+        ptrBufAccRandS,
+        ptrBufAccS,
+        pitchBufAccRandS,
+        pitchBufAccS);
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDivRuntimeStep
+        = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernelRuntimeStep, extent, Vec(perThreadY, perThreadX));
+
     alpaka::exec<Acc>(
         queue,
-        workdiv,
+        workDivRuntimeStep,
         runTimestepKernelSingle,
         extent,
         ptrBufAccRandS,
@@ -238,7 +253,7 @@ auto main() -> int
     RunTimestepKernelVector runTimestepKernelVector;
     alpaka::exec<Acc>(
         queue,
-        workdiv,
+        workDivRuntimeStep,
         runTimestepKernelVector,
         extent,
         ptrBufAccRandV,

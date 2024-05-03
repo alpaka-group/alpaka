@@ -137,19 +137,6 @@ auto main() -> int
     alpaka::Vec<Dim, Idx> const elementsPerThread = {1, 1, 1};
     alpaka::Vec<Dim, Idx> const elementsPerThreadHost = {1, 1, 8};
 
-    // Let alpaka calculate good block and grid sizes given our full problem extent
-    alpaka::WorkDivMembers<Dim, Idx> const workDivAcc(alpaka::getValidWorkDiv<Acc>(
-        devAcc,
-        extent,
-        elementsPerThread,
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
-    alpaka::WorkDivMembers<Dim, Idx> const workDivHost(alpaka::getValidWorkDiv<AccHost>(
-        devHost,
-        extent,
-        elementsPerThreadHost,
-        false,
-        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     // Define the buffer element type
     using Data = std::uint32_t;
@@ -168,6 +155,16 @@ auto main() -> int
     // Allocate buffer on the accelerator
     using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;
     BufAcc bufAcc(alpaka::allocBuf<Data, Idx>(devAcc, extent));
+
+    CounterBasedRngKernel counterBasedRngKernel;
+    auto const& bundeledKernel
+        = alpaka::makeKernelBundle<Acc>(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufAcc), key);
+    auto const& bundeledKernel2
+        = alpaka::makeKernelBundle<AccHost>(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufHost), key);
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent
+    auto const workDivAcc = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, extent, elementsPerThread);
+    auto const workDivHost = alpaka::getValidWorkDivForKernel(devHost, bundeledKernel2, extent, elementsPerThreadHost);
 
     // Create the kernel execution task.
     auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(

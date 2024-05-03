@@ -37,52 +37,33 @@ struct Box
     using PlatformAcc = alpaka::Platform<Acc>;
     using QueueProperty = alpaka::Blocking;
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
-    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
     PlatformHost hostPlatform;
     PlatformAcc accPlatform;
-    QueueAcc queue; ///< default accelerator queue
+    // Default accelerator queue
+    QueueAcc queue{alpaka::getDevByIdx(accPlatform, 0)};
 
-    // buffers holding the PRNG states
+    // Buffers holding the PRNG states
     using BufHostRand = alpaka::Buf<Host, RandomEngine, Dim, Idx>;
     using BufAccRand = alpaka::Buf<Acc, RandomEngine, Dim, Idx>;
-
-    Vec const extentRand; ///< size of the buffer of PRNG states
-    WorkDiv workdivRand; ///< work division for PRNG buffer initialization
-    BufHostRand bufHostRand; ///< host side PRNG states buffer (can be used to check the state of the states)
-    BufAccRand bufAccRand; ///< device side PRNG states buffer
-
-    // buffers holding the "simulation" results
+    // Buffers holding the "simulation" results
     using BufHost = alpaka::Buf<Host, float, Dim, Idx>;
     using BufAcc = alpaka::Buf<Acc, float, Dim, Idx>;
 
-    Vec const extentResult; ///< size of the results buffer
-    WorkDiv workdivResult; ///< work division of the result calculation
-    BufHost bufHostResult; ///< host side results buffer
-    BufAcc bufAccResult; ///< device side results buffer
+    // Size of the buffer of PRNG states. One PRNG state per "point"
+    Vec const extentRand{static_cast<Idx>(NUM_POINTS)};
 
-    Box()
-        : queue{alpaka::getDevByIdx(accPlatform, 0)}
-        , extentRand{static_cast<Idx>(NUM_POINTS)} // One PRNG state per "point".
-        , workdivRand{alpaka::getValidWorkDiv<Acc>(
-              alpaka::getDevByIdx(accPlatform, 0),
-              extentRand,
-              Vec(Idx{1}),
-              false,
-              alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)}
-        , bufHostRand{alpaka::allocBuf<RandomEngine, Idx>(alpaka::getDevByIdx(hostPlatform, 0), extentRand)}
-        , bufAccRand{alpaka::allocBuf<RandomEngine, Idx>(alpaka::getDevByIdx(accPlatform, 0), extentRand)}
-        , extentResult{static_cast<Idx>((NUM_POINTS * NUM_ROLLS))} // Store all "rolls" for each "point"
-        , workdivResult{alpaka::getValidWorkDiv<Acc>(
-              alpaka::getDevByIdx(accPlatform, 0),
-              extentResult,
-              Vec(static_cast<Idx>(NUM_ROLLS)), // One thread per "point"; each performs NUM_ROLLS "rolls"
-              false,
-              alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)}
-        , bufHostResult{alpaka::allocBuf<float, Idx>(alpaka::getDevByIdx(hostPlatform, 0), extentResult)}
-        , bufAccResult{alpaka::allocBuf<float, Idx>(alpaka::getDevByIdx(accPlatform, 0), extentResult)}
-    {
-    }
+    // Host side PRNG states buffer (can be used to check the state of the states)
+    BufHostRand bufHostRand = alpaka::allocBuf<RandomEngine, Idx>(alpaka::getDevByIdx(hostPlatform, 0), extentRand);
+    // Device side PRNG states buffer
+    BufAccRand bufAccRand = alpaka::allocBuf<RandomEngine, Idx>(alpaka::getDevByIdx(accPlatform, 0), extentRand);
+
+    // Size of the results buffer
+    Vec const extentResult{static_cast<Idx>((NUM_POINTS * NUM_ROLLS))};
+    // Host side results buffer
+    BufHost bufHostResult = alpaka::allocBuf<float, Idx>(alpaka::getDevByIdx(hostPlatform, 0), extentResult);
+    // Device side results buffer
+    BufAcc bufAccResult = alpaka::allocBuf<float, Idx>(alpaka::getDevByIdx(accPlatform, 0), extentResult);
 };
 
 /// PRNG result space division strategy
@@ -248,13 +229,25 @@ void runStrategy(Box& box)
 
     // Initialize the PRNG and its states on the device
     InitRandomKernel<TStrategy> initRandomKernel;
+
+    auto const devAcc = alpaka::getDevByIdx(box.accPlatform, 0);
+    auto const& bundeledKernel = alpaka::makeKernelBundle<Box::Acc>(
+        initRandomKernel,
+        box.extentRand,
+        ptrBufAccRand,
+        static_cast<unsigned>(box.extentResult[0] / box.extentRand[0]));
+
+    ///< work division for PRNG buffer initialization
+    auto const workdivRand
+        = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, box.extentRand, Box::Vec(Box::Idx{1}));
+
     // The offset strategy needs an additional parameter for initialisation: the offset cannot be deduced form the size
     // of the PRNG buffer and has to be passed in explicitly. Other strategies ignore the last parameter, and deduce
     // the initial parameters solely from the thread index
 
     alpaka::exec<Box::Acc>(
         box.queue,
-        box.workdivRand,
+        workdivRand,
         initRandomKernel,
         box.extentRand,
         ptrBufAccRand,
@@ -279,7 +272,18 @@ void runStrategy(Box& box)
     // Run the "computation" kernel filling the results buffer with random numbers in parallel
     alpaka::memcpy(box.queue, box.bufAccResult, box.bufHostResult);
     FillKernel fillKernel;
-    alpaka::exec<Box::Acc>(box.queue, box.workdivResult, fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
+
+    auto const& bundeledKernel2
+        = alpaka::makeKernelBundle<Box::Acc>(fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
+    // Work division for PRNG buffer initialization
+    // Store all "rolls" for each "point". One thread per "point"; each performs NUM_ROLLS "rolls"
+    auto const workdivResult = alpaka::getValidWorkDivForKernel(
+        devAcc,
+        bundeledKernel2,
+        box.extentResult,
+        Box::Vec(static_cast<Box::Idx>(NUM_ROLLS)));
+
+    alpaka::exec<Box::Acc>(box.queue, workdivResult, fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
     alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult);
     alpaka::wait(box.queue);
 
