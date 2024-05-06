@@ -12337,7 +12337,7 @@
 					// ============================================================================
 					// == ./include/alpaka/core/Utility.hpp ==
 					// ==
-					/* Copyright 2022 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Jan Stephan
+					/* Copyright 2024 Benjamin Worpitz, René Widera, Bernhard Manfred Gruber, Jan Stephan, Andrea Bocci
 					 * SPDX-License-Identifier: MPL-2.0
 					 */
 					// #pragma once
@@ -12361,14 +12361,14 @@
 					#endif
 
 					    /// Returns the ceiling of a / b, as integer.
-					    template<typename Integral>
+					    template<typename Integral, typename = std::enable_if_t<std::is_integral_v<Integral>>>
 					    [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto divCeil(Integral a, Integral b) -> Integral
 					    {
 					        return (a + b - 1) / b;
 					    }
 
 					    /// Computes the nth power of base, in integers.
-					    template<typename Integral>
+					    template<typename Integral, typename = std::enable_if_t<std::is_integral_v<Integral>>>
 					    [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto intPow(Integral base, Integral n) -> Integral
 					    {
 					        if(n == 0)
@@ -12380,7 +12380,7 @@
 					    }
 
 					    /// Computes the floor of the nth root of value, in integers.
-					    template<typename Integral>
+					    template<typename Integral, typename = std::enable_if_t<std::is_integral_v<Integral>>>
 					    [[nodiscard]] ALPAKA_FN_HOST_ACC constexpr auto nthRootFloor(Integral value, Integral n) -> Integral
 					    {
 					        // adapted from: https://en.wikipedia.org/wiki/Integer_square_root
@@ -12396,6 +12396,7 @@
 					        }
 					        return L;
 					    }
+
 					} // namespace alpaka::core
 					// ==
 					// == ./include/alpaka/core/Utility.hpp ==
