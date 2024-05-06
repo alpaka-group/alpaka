@@ -25,5 +25,5 @@ var searchData=
   ['normalreal_3c_20float_20_3e_1720',['NormalReal&lt; float &gt;',['../classalpaka_1_1rand_1_1distribution_1_1uniform__cuda__hip_1_1NormalReal_3_01float_01_4.html',1,'alpaka::rand::distribution::uniform_cuda_hip']]],
   ['noschedule_1721',['NoSchedule',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aa05fff276295ef9d3de83d932cbc38e08',1,'alpaka::omp::Schedule']]],
   ['nrounds_1722',['nRounds',['../classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a7c7a11bf84cede072b5ccf1787cf3863',1,'alpaka::rand::engine::PhiloxStateless']]],
-  ['nthrootfloor_1723',['nthRootFloor',['../namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6',1,'alpaka::core']]]
+  ['nthrootfloor_1723',['nthRootFloor',['../namespacealpaka_1_1core.html#ae376d7c0b982c562705212bf3bbc44b9',1,'alpaka::core']]]
 ];

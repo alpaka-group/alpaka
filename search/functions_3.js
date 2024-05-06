@@ -12,6 +12,6 @@ var searchData=
   ['devicesynchronize_3967',['deviceSynchronize',['../structalpaka_1_1ApiCudaRt.html#a79aa3bf7b9090164164a6f9e59d6b4d8',1,'alpaka::ApiCudaRt']]],
   ['devuniformcudahiprt_3968',['DevUniformCudaHipRt',['../classalpaka_1_1DevUniformCudaHipRt.html#a491ef41ba88edbd760ed5c50c8d6e7bc',1,'alpaka::DevUniformCudaHipRt']]],
   ['discard_3969',['discard',['../structalpaka_1_1rand_1_1engine_1_1cpu_1_1TinyMTengine.html#affe0bfc6bca6e23f5a51bb2b6baa62e7',1,'alpaka::rand::engine::cpu::TinyMTengine']]],
-  ['divceil_3970',['divCeil',['../namespacealpaka_1_1core.html#a89a7ccb060549404a2a0b21e6a7061ee',1,'alpaka::core']]],
+  ['divceil_3970',['divCeil',['../namespacealpaka_1_1core.html#a4240613ea130f877a208baae1137b937',1,'alpaka::core']]],
   ['dynmembegin_3971',['dynMemBegin',['../classalpaka_1_1BlockSharedMemDynMember.html#a493693192b766fd681af2fa5fdd93010',1,'alpaka::BlockSharedMemDynMember']]]
 ];

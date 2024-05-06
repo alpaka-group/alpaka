@@ -9,5 +9,5 @@ var searchData=
   ['norm_4142',['norm',['../namespacealpaka.html#a52a183b4a85128a90c040667353b5294',1,'alpaka']]],
   ['normalreal_4143',['NormalReal',['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#ac2e350b91f7eeef2f6126425dfcfe1e9',1,'alpaka::rand::distribution::gpu::NormalReal::NormalReal(Acc const &amp;acc)'],['../classalpaka_1_1rand_1_1distribution_1_1gpu_1_1NormalReal.html#a92c7dbe0f0dfbc5d6eec724684c28c13',1,'alpaka::rand::distribution::gpu::NormalReal::NormalReal(NormalReal const &amp;other)']]],
   ['nrounds_4144',['nRounds',['../classalpaka_1_1rand_1_1engine_1_1PhiloxStateless.html#a7c7a11bf84cede072b5ccf1787cf3863',1,'alpaka::rand::engine::PhiloxStateless']]],
-  ['nthrootfloor_4145',['nthRootFloor',['../namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6',1,'alpaka::core']]]
+  ['nthrootfloor_4145',['nthRootFloor',['../namespacealpaka_1_1core.html#ae376d7c0b982c562705212bf3bbc44b9',1,'alpaka::core']]]
 ];

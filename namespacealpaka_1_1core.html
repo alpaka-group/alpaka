@@ -132,18 +132,18 @@ Functions</h2></td></tr>
 <tr class="memitem:aba50ad750855be306239699abe49ba28"><td class="memTemplParams" colspan="2">template&lt;typename T , typename V &gt; </td></tr>
 <tr class="memitem:aba50ad750855be306239699abe49ba28"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#aba50ad750855be306239699abe49ba28">clipCast</a> (V const &amp;val) -&gt; T</td></tr>
 <tr class="separator:aba50ad750855be306239699abe49ba28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89a7ccb060549404a2a0b21e6a7061ee"><td class="memTemplParams" colspan="2">template&lt;typename Integral &gt; </td></tr>
-<tr class="memitem:a89a7ccb060549404a2a0b21e6a7061ee"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a89a7ccb060549404a2a0b21e6a7061ee">divCeil</a> (Integral a, Integral b) -&gt; Integral</td></tr>
-<tr class="memdesc:a89a7ccb060549404a2a0b21e6a7061ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ceiling of a / b, as integer.  <a href="namespacealpaka_1_1core.html#a89a7ccb060549404a2a0b21e6a7061ee">More...</a><br /></td></tr>
-<tr class="separator:a89a7ccb060549404a2a0b21e6a7061ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab614807b48a014710f03374291017ec1"><td class="memTemplParams" colspan="2">template&lt;typename Integral &gt; </td></tr>
-<tr class="memitem:ab614807b48a014710f03374291017ec1"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#ab614807b48a014710f03374291017ec1">intPow</a> (Integral base, Integral n) -&gt; Integral</td></tr>
-<tr class="memdesc:ab614807b48a014710f03374291017ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the nth power of base, in integers.  <a href="namespacealpaka_1_1core.html#ab614807b48a014710f03374291017ec1">More...</a><br /></td></tr>
-<tr class="separator:ab614807b48a014710f03374291017ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac2bb0a1f1b3265e73de447928aacde6"><td class="memTemplParams" colspan="2">template&lt;typename Integral &gt; </td></tr>
-<tr class="memitem:aac2bb0a1f1b3265e73de447928aacde6"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6">nthRootFloor</a> (Integral value, Integral n) -&gt; Integral</td></tr>
-<tr class="memdesc:aac2bb0a1f1b3265e73de447928aacde6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the floor of the nth root of value, in integers.  <a href="namespacealpaka_1_1core.html#aac2bb0a1f1b3265e73de447928aacde6">More...</a><br /></td></tr>
-<tr class="separator:aac2bb0a1f1b3265e73de447928aacde6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4240613ea130f877a208baae1137b937"><td class="memTemplParams" colspan="2">template&lt;typename Integral , typename  = std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a4240613ea130f877a208baae1137b937"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a4240613ea130f877a208baae1137b937">divCeil</a> (Integral a, Integral b) -&gt; Integral</td></tr>
+<tr class="memdesc:a4240613ea130f877a208baae1137b937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the ceiling of a / b, as integer.  <a href="namespacealpaka_1_1core.html#a4240613ea130f877a208baae1137b937">More...</a><br /></td></tr>
+<tr class="separator:a4240613ea130f877a208baae1137b937"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eb5610187d76f8d566b031a5c015454"><td class="memTemplParams" colspan="2">template&lt;typename Integral , typename  = std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a7eb5610187d76f8d566b031a5c015454"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#a7eb5610187d76f8d566b031a5c015454">intPow</a> (Integral base, Integral n) -&gt; Integral</td></tr>
+<tr class="memdesc:a7eb5610187d76f8d566b031a5c015454"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the nth power of base, in integers.  <a href="namespacealpaka_1_1core.html#a7eb5610187d76f8d566b031a5c015454">More...</a><br /></td></tr>
+<tr class="separator:a7eb5610187d76f8d566b031a5c015454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae376d7c0b982c562705212bf3bbc44b9"><td class="memTemplParams" colspan="2">template&lt;typename Integral , typename  = std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ae376d7c0b982c562705212bf3bbc44b9"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="core_2Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1core.html#ae376d7c0b982c562705212bf3bbc44b9">nthRootFloor</a> (Integral value, Integral n) -&gt; Integral</td></tr>
+<tr class="memdesc:ae376d7c0b982c562705212bf3bbc44b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the floor of the nth root of value, in integers.  <a href="namespacealpaka_1_1core.html#ae376d7c0b982c562705212bf3bbc44b9">More...</a><br /></td></tr>
+<tr class="separator:ae376d7c0b982c562705212bf3bbc44b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -303,13 +303,13 @@ template&lt;typename T , typename V &gt; </div>
 
 </div>
 </div>
-<a id="a89a7ccb060549404a2a0b21e6a7061ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89a7ccb060549404a2a0b21e6a7061ee">&#9670;&nbsp;</a></span>divCeil()</h2>
+<a id="a4240613ea130f877a208baae1137b937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4240613ea130f877a208baae1137b937">&#9670;&nbsp;</a></span>divCeil()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Integral &gt; </div>
+template&lt;typename Integral , typename  = std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -346,13 +346,13 @@ template&lt;typename Integral &gt; </div>
 
 </div>
 </div>
-<a id="ab614807b48a014710f03374291017ec1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab614807b48a014710f03374291017ec1">&#9670;&nbsp;</a></span>intPow()</h2>
+<a id="a7eb5610187d76f8d566b031a5c015454"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eb5610187d76f8d566b031a5c015454">&#9670;&nbsp;</a></span>intPow()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Integral &gt; </div>
+template&lt;typename Integral , typename  = std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -389,13 +389,13 @@ template&lt;typename Integral &gt; </div>
 
 </div>
 </div>
-<a id="aac2bb0a1f1b3265e73de447928aacde6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac2bb0a1f1b3265e73de447928aacde6">&#9670;&nbsp;</a></span>nthRootFloor()</h2>
+<a id="ae376d7c0b982c562705212bf3bbc44b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae376d7c0b982c562705212bf3bbc44b9">&#9670;&nbsp;</a></span>nthRootFloor()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Integral &gt; </div>
+template&lt;typename Integral , typename  = std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -465,7 +465,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li>
-    <li class="footer">Generated on Wed Apr 17 2024 12:07:11 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon May 6 2024 14:19:33 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

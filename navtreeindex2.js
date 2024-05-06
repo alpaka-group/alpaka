@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
 "QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
 "QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
@@ -176,9 +177,9 @@ var NAVTREEINDEX2 =
 "Unroll_8hpp.html#a57dd84fb3aa4dccb871fa74c30a4fe2f":[4,0,0,0,3,24,0],
 "Unroll_8hpp_source.html":[4,0,0,0,3,24],
 "Utility_8hpp.html":[4,0,0,0,3,25],
-"Utility_8hpp.html#a89a7ccb060549404a2a0b21e6a7061ee":[4,0,0,0,3,25,0],
-"Utility_8hpp.html#aac2bb0a1f1b3265e73de447928aacde6":[4,0,0,0,3,25,2],
-"Utility_8hpp.html#ab614807b48a014710f03374291017ec1":[4,0,0,0,3,25,1],
+"Utility_8hpp.html#a4240613ea130f877a208baae1137b937":[4,0,0,0,3,25,0],
+"Utility_8hpp.html#a7eb5610187d76f8d566b031a5c015454":[4,0,0,0,3,25,1],
+"Utility_8hpp.html#ae376d7c0b982c562705212bf3bbc44b9":[4,0,0,0,3,25,2],
 "Utility_8hpp_source.html":[4,0,0,0,3,25],
 "Vec_8hpp.html":[4,0,0,0,23,1],
 "Vec_8hpp.html#a05ded3e1760e87f4b377803a98f98885":[4,0,0,0,23,1,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "acc_2Traits_8hpp_source.html":[4,0,0,0,0,14],
 "alpaka_8hpp.html":[4,0,0,0,27],
 "alpaka_8hpp_source.html":[4,0,0,0,27],
-"annotated.html":[3,0],
-"atomic_2Traits_8hpp.html":[4,0,0,0,1,10]
+"annotated.html":[3,0]
 };
