@@ -6,6 +6,7 @@
 
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/platform/PlatformGenericSycl.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_FPGA)
@@ -56,6 +57,12 @@ namespace alpaka::trait
     struct DevType<PlatformFpgaSyclIntel>
     {
         using type = DevGenericSycl<PlatformFpgaSyclIntel>; // = DevFpgaSyclIntel
+    };
+
+    template<>
+    struct MemVisibility<PlatformFpgaSyclIntel>
+    {
+        using type = alpaka::MemVisibleFpgaSyclIntel;
     };
 } // namespace alpaka::trait
 

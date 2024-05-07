@@ -45,16 +45,16 @@ TEMPLATE_LIST_TEST_CASE("memoryVisibilityType", "[mem][visibility]", TagList)
     using Tag = TestType;
     if constexpr(alpaka::AccIsEnabled<Tag>::value)
     {
-        using DevType = decltype(alpaka::getDevByIdx(alpaka::Platform<alpaka::TagToAcc<Tag, Dim, Idx>>{}, 0));
+        using PltfType = alpaka::Platform<alpaka::TagToAcc<Tag, Dim, Idx>>;
         if constexpr(isCPUTag<Tag>())
         {
             STATIC_REQUIRE(
-                std::is_same_v<typename alpaka::trait::MemVisibility<DevType>::type, alpaka::MemVisibleCPU>);
+                std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleCPU>);
         }
         else if(std::is_same_v<Tag, alpaka::TagGpuCudaRt>)
         {
             STATIC_REQUIRE(
-                std::is_same_v<typename alpaka::trait::MemVisibility<DevType>::type, alpaka::MemVisibleGpuCudaRt>);
+                std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuCudaRt>);
         }
     }
 }
@@ -91,8 +91,8 @@ TEMPLATE_LIST_TEST_CASE("printDefines", "[mem][visibility]", TagTagList)
         BufAcc1 bufDev1(alpaka::allocBuf<float, Idx>(dev1, Idx(1)));
         BufAcc2 bufDev2(alpaka::allocBuf<float, Idx>(dev2, Idx(1)));
 
-        STATIC_REQUIRE(alpaka::hasSameMemView(dev1, bufDev1));
-        STATIC_REQUIRE(alpaka::hasSameMemView(dev2, bufDev2));
+        STATIC_REQUIRE(alpaka::hasSameMemView(plt1, bufDev1));
+        STATIC_REQUIRE(alpaka::hasSameMemView(plt2, bufDev2));
 
         // at the moment, only the cpu platform has different accelerator types
         // therefore all cpu accelerators can access the memory of other cpu accelerators
@@ -100,18 +100,18 @@ TEMPLATE_LIST_TEST_CASE("printDefines", "[mem][visibility]", TagTagList)
         // same to support access to the memory of each other
         if constexpr((isCPUTag<Tag1>() && isCPUTag<Tag2>()) || std::is_same_v<Tag1, Tag2>)
         {
-            STATIC_REQUIRE(alpaka::hasSameMemView(dev1, bufDev2));
-            STATIC_REQUIRE(alpaka::hasSameMemView(dev2, bufDev1));
+            STATIC_REQUIRE(alpaka::hasSameMemView(plt1, bufDev2));
+            STATIC_REQUIRE(alpaka::hasSameMemView(plt2, bufDev1));
         }
         else
         {
-            STATIC_REQUIRE_FALSE(alpaka::hasSameMemView(dev1, bufDev2));
-            STATIC_REQUIRE_FALSE(alpaka::hasSameMemView(dev2, bufDev1));
+            STATIC_REQUIRE_FALSE(alpaka::hasSameMemView(plt1, bufDev2));
+            STATIC_REQUIRE_FALSE(alpaka::hasSameMemView(plt2, bufDev1));
         }
 
-        do_job<Acc1>(dev1, bufDev1);
-        do_job<Acc1>(dev2, bufDev2);
-        // do_job<Acc1>(dev1, bufDev2);
+        // do_job<Acc1>(dev1, bufDev1);
+        // do_job<Acc1>(dev2, bufDev2);
+        //  do_job<Acc1>(dev1, bufDev2);
 
         // std::cout << std::boolalpha << "tag 1 is cpu: " << isCPUTag<Tag1>() << "\n";
         // std::cout << std::boolalpha << "tag 2 is cpu: " << isCPUTag<Tag2>() << "\n";

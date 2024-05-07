@@ -12,15 +12,6 @@
 namespace alpaka
 {
     using DevFpgaSyclIntel = DevGenericSycl<PlatformFpgaSyclIntel>;
-
-    namespace trait
-    {
-        template<>
-        struct MemVisibility<DevFpgaSyclIntel>
-        {
-            using type = alpaka::MemVisibleFpgaSyclIntel;
-        };
-    } // namespace trait
 } // namespace alpaka
 
 #endif

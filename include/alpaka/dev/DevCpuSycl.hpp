@@ -12,15 +12,6 @@
 namespace alpaka
 {
     using DevCpuSycl = DevGenericSycl<PlatformCpuSycl>;
-
-    namespace trait
-    {
-        template<>
-        struct MemVisibility<DevCpuSycl>
-        {
-            using type = alpaka::MemVisibleCPU;
-        };
-    } // namespace trait
 } // namespace alpaka
 
 #endif
