@@ -33,7 +33,7 @@ if(MSVC)
     endif()
     # Improve debugging.
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CXX>>:SHELL:/Zo>"
-                                           "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CUDA>>:-Xcompiler /Zo>")
+                                           "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CUDA>>:SHELL:-Xcompiler /Zo>")
 
     # Flags added in Visual Studio 2013
     list(APPEND alpaka_DEV_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:SHELL:/Zc:throwingNew>"
