@@ -9,7 +9,7 @@
 
 cmake_minimum_required(VERSION 3.22)
 
-set(_TARGET_NAME "memTest")
+set(_TARGET_NAME "memVisibilityTest")
 
 append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
 

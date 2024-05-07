@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/ForEachType.hpp"
 #include "alpaka/meta/IsTuple.hpp"
 #include "alpaka/meta/TypeListOps.hpp"
@@ -53,10 +54,14 @@ namespace alpaka
         };
     } // namespace detail
 
-    template<typename TType>
+    template<
+        typename T,
+        typename = std::enable_if_t<
+            alpaka::isPlatform<std::decay_t<T>> || alpaka::isDevice<std::decay_t<T>>
+            || alpaka::isAccelerator<std::decay_t<T>> || alpaka::internal::isView<std::decay_t<T>>>>
     [[maybe_unused]] static std::string getMemVisiblityName()
     {
-        using MemVisibilityType = typename alpaka::trait::MemVisibility<std::decay_t<TType>>::type;
+        using MemVisibilityType = typename alpaka::trait::MemVisibility<std::decay_t<T>>::type;
         if constexpr(alpaka::meta::isTuple<MemVisibilityType>())
         {
             std::vector<std::string> vs;
@@ -89,12 +94,27 @@ namespace alpaka
         return getMemVisiblityName<TType>();
     }
 
-    template<typename TDev, typename TBuf>
+    template<
+        typename T,
+        typename TBuf,
+        typename = std::enable_if_t<
+            (alpaka::isPlatform<std::decay_t<T>> || alpaka::isDevice<std::decay_t<T>>
+             || alpaka::isAccelerator<std::decay_t<T>>) &&alpaka::internal::isView<std::decay_t<TBuf>>>>
     inline constexpr bool hasSameMemView()
     {
-        return alpaka::meta::Contains<
-            typename alpaka::trait::MemVisibility<TBuf>::type,
-            typename alpaka::trait::MemVisibility<TDev>::type>::value;
+        if constexpr(alpaka::isDevice<std::decay_t<T>> || alpaka::isAccelerator<std::decay_t<T>>)
+        {
+            using Platform = alpaka::Platform<T>;
+            return alpaka::meta::Contains<
+                typename alpaka::trait::MemVisibility<TBuf>::type,
+                typename alpaka::trait::MemVisibility<Platform>::type>::value;
+        }
+        else
+        {
+            return alpaka::meta::Contains<
+                typename alpaka::trait::MemVisibility<TBuf>::type,
+                typename alpaka::trait::MemVisibility<T>::type>::value;
+        }
     }
 
     template<typename TDev, typename TBuf>

@@ -20,6 +20,7 @@ namespace alpaka::internal
     inline constexpr bool isView = false;
 
     // TODO(bgruber): replace this by a concept in C++20
+    // TODO(simeonehrig): extend the trait by memory Visiblity type
     template<typename TView>
     inline constexpr bool isView<
         TView,
