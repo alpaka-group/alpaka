@@ -118,7 +118,7 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.1D.withIdx", "[workDivKernel]", T
         // block. The calculated value using kernel function is certainly less than device max limits. For a common AMD
         // GPU values are 1024 and 1024. Depending on the GPU or the compiler the test below might fail because
         // threadsPerBlock can be less than the threadsPerBlockLimit, which is the max device limit.
-        CHECK(threadsPerBlock == threadsPerBlockLimit);
+        CHECK(threadsPerBlock == static_cast<Idx>(threadsPerBlockLimit));
     }
     else if constexpr(alpaka::accMatchesTags<
                           Acc,
@@ -171,7 +171,7 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.2D.withIdx", "[workDivKernel]", T
         auto const threadsPerBlockLimit = kernelFunctionAttributes.maxThreadsPerBlock;
         // Depending on the GPU type or the compiler the test below might fail because threadsPerBlock can be equal to
         // threadsPerBlockLimit, which is the max device limit.
-        CHECK(threadsPerBlock <  static_cast<Idx>(threadsPerBlockLimit));
+        CHECK(threadsPerBlock < static_cast<Idx>(threadsPerBlockLimit));
     }
     else if constexpr(alpaka::accMatchesTags<Acc, alpaka::TagGpuHipRt>)
     {
@@ -185,7 +185,7 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.2D.withIdx", "[workDivKernel]", T
         auto const threadsPerBlockLimit = kernelFunctionAttributes.maxThreadsPerBlock;
         // Depending on the GPU type or the compiler this test might fail because threadsPerBlock can be equal to
         // threadsPerBlockLimit, which is the max device limit.
-        CHECK(threadsPerBlock == threadsPerBlockLimit);
+        CHECK(threadsPerBlock == static_cast<Idx>(threadsPerBlockLimit));
     }
     else if constexpr(alpaka::accMatchesTags<
                           Acc,
