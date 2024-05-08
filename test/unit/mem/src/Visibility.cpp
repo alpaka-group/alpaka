@@ -12,59 +12,42 @@
 using Dim = alpaka::DimInt<1>;
 using Idx = std::size_t;
 
-template<typename TTag>
-constexpr bool isCPUTag()
-{
-    if constexpr(
-        std::is_same_v<TTag, alpaka::TagCpuSerial> || std::is_same_v<TTag, alpaka::TagCpuThreads>
-        || std::is_same_v<TTag, alpaka::TagCpuTbbBlocks> || std::is_same_v<TTag, alpaka::TagCpuOmp2Blocks>
-        || std::is_same_v<TTag, alpaka::TagCpuOmp2Threads>)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-using AccTags = std::tuple<
-    alpaka::TagCpuSerial,
-    alpaka::TagCpuThreads,
-    alpaka::TagCpuTbbBlocks,
-    alpaka::TagCpuOmp2Blocks,
-    alpaka::TagCpuOmp2Threads,
-    alpaka::TagGpuCudaRt,
-    alpaka::TagGpuHipRt,
-    alpaka::TagCpuSycl,
-    alpaka::TagFpgaSyclIntel,
-    alpaka::TagGpuSyclIntel>;
-
-using EnabledAccTags = alpaka::meta::Filter<AccTags, alpaka::AccIsEnabled>;
-
-TEMPLATE_LIST_TEST_CASE("memoryVisibilityType", "[mem][visibility]", EnabledAccTags)
+TEMPLATE_LIST_TEST_CASE("memoryVisibilityType", "[mem][visibility]", alpaka::EnabledAccTags)
 {
     using Tag = TestType;
 
+
+    REQUIRE(true);
     using PltfType = alpaka::Platform<alpaka::TagToAcc<Tag, Dim, Idx>>;
-    if constexpr(isCPUTag<Tag>())
+
+    if constexpr(alpaka::isCpuTag<Tag>::value)
     {
-        STATIC_REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleCPU>);
+        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleCPU>);
     }
     else if(std::is_same_v<Tag, alpaka::TagGpuCudaRt>)
     {
-        STATIC_REQUIRE(
-            std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuCudaRt>);
+        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuCudaRt>);
+    }
+    else if(std::is_same_v<Tag, alpaka::TagGpuSyclIntel>)
+    {
+        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuSyclIntel>);
+    }
+    else if(std::is_same_v<Tag, alpaka::TagGpuHipRt>)
+    {
+        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuHipRt>);
+    }
+    else if(std::is_same_v<Tag, alpaka::TagGenericSycl>)
+    {
+        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGenericSycl>);
+    }
+    else if(std::is_same_v<Tag, alpaka::TagFpgaSyclIntel>)
+    {
+        REQUIRE(
+            std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleFpgaSyclIntel>);
     }
 }
 
-using EnabledTagTagList = alpaka::meta::CartesianProduct<std::tuple, EnabledAccTags, EnabledAccTags>;
-
-template<typename TAcc, typename TDev, typename TBuf>
-void do_job(TDev dev, TBuf buffer)
-{
-    STATIC_REQUIRE(alpaka::hasSameMemView(dev, buffer));
-}
+using EnabledTagTagList = alpaka::meta::CartesianProduct<std::tuple, alpaka::EnabledAccTags, alpaka::EnabledAccTags>;
 
 TEMPLATE_LIST_TEST_CASE("testHasSameMemView", "[mem][visibility]", EnabledTagTagList)
 {
@@ -99,7 +82,7 @@ TEMPLATE_LIST_TEST_CASE("testHasSameMemView", "[mem][visibility]", EnabledTagTag
     // therefore all cpu accelerators can access the memory of other cpu accelerators
     // if the accelerator is not a cpu accelerator, both accelerators needs to be the
     // same to support access to the memory of each other
-    if constexpr((isCPUTag<Tag1>() && isCPUTag<Tag2>()) || std::is_same_v<Tag1, Tag2>)
+    if constexpr((alpaka::isCpuTag<Tag1>::value && alpaka::isCpuTag<Tag2>::value) || std::is_same_v<Tag1, Tag2>)
     {
         STATIC_REQUIRE(alpaka::hasSameMemView(plt1, bufDev2));
         STATIC_REQUIRE(alpaka::hasSameMemView(plt2, bufDev1));
