@@ -12,38 +12,27 @@
 using Dim = alpaka::DimInt<1>;
 using Idx = std::size_t;
 
-TEMPLATE_LIST_TEST_CASE("memoryVisibilityType", "[mem][visibility]", alpaka::EnabledAccTags)
+using ExpectedTagsMemVisibilities = std::tuple<
+    std::tuple<alpaka::TagCpuSerial, alpaka::MemVisibleCPU>,
+    std::tuple<alpaka::TagCpuThreads, alpaka::MemVisibleCPU>,
+    std::tuple<alpaka::TagCpuTbbBlocks, alpaka::MemVisibleCPU>,
+    std::tuple<alpaka::TagCpuOmp2Blocks, alpaka::MemVisibleCPU>,
+    std::tuple<alpaka::TagCpuOmp2Threads, alpaka::MemVisibleCPU>,
+    std::tuple<alpaka::TagGpuCudaRt, alpaka::MemVisibleGpuCudaRt>,
+    std::tuple<alpaka::TagGpuHipRt, alpaka::MemVisibleGpuHipRt>,
+    std::tuple<alpaka::TagCpuSycl, alpaka::MemVisibleCPU>,
+    std::tuple<alpaka::TagFpgaSyclIntel, alpaka::MemVisibleFpgaSyclIntel>,
+    std::tuple<alpaka::TagGpuSyclIntel, alpaka::MemVisibleGpuSyclIntel>>;
+
+TEMPLATE_LIST_TEST_CASE("memoryVisibilityType", "[mem][visibility]", ExpectedTagsMemVisibilities)
 {
-    using Tag = TestType;
+    using Tag = std::tuple_element_t<0, TestType>;
+    using ExpectedMemVisibility = std::tuple_element_t<1, TestType>;
 
-
-    REQUIRE(true);
-    using PltfType = alpaka::Platform<alpaka::TagToAcc<Tag, Dim, Idx>>;
-
-    if constexpr(alpaka::isCpuTag<Tag>::value)
+    if constexpr(alpaka::AccIsEnabled<Tag>::value)
     {
-        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleCPU>);
-    }
-    else if(std::is_same_v<Tag, alpaka::TagGpuCudaRt>)
-    {
-        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuCudaRt>);
-    }
-    else if(std::is_same_v<Tag, alpaka::TagGpuSyclIntel>)
-    {
-        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuSyclIntel>);
-    }
-    else if(std::is_same_v<Tag, alpaka::TagGpuHipRt>)
-    {
-        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGpuHipRt>);
-    }
-    else if(std::is_same_v<Tag, alpaka::TagGenericSycl>)
-    {
-        REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleGenericSycl>);
-    }
-    else if(std::is_same_v<Tag, alpaka::TagFpgaSyclIntel>)
-    {
-        REQUIRE(
-            std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, alpaka::MemVisibleFpgaSyclIntel>);
+        using PltfType = alpaka::Platform<alpaka::TagToAcc<Tag, Dim, Idx>>;
+        STATIC_REQUIRE(std::is_same_v<typename alpaka::trait::MemVisibility<PltfType>::type, ExpectedMemVisibility>);
     }
 }
 
