@@ -1,5 +1,5 @@
 /* Copyright 2022 Benjamin Worpitz, Erik Zenker, Matthias Werner, René Widera, Jan Stephan, Andrea Bocci, Bernhard
- * Manfred Gruber, Antonio Di Pilato
+ * Manfred Gruber, Antonio Di Pilato, Mehmet Yusufoglu
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -393,6 +393,7 @@ namespace alpaka
             }
         };
 
+        //! \brief Specialisation of the class template FunctionAttributes
         //! \tparam TApi The type the API of the GPU accelerator backend. Currently Cuda or Hip.
         //! \tparam TDim The dimensionality of the accelerator device properties.
         //! \tparam TIdx The idx type of the accelerator device properties.

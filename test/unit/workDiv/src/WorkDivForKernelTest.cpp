@@ -83,41 +83,41 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.1D.withIdx", "[workDivKernel]", T
     auto const platform = alpaka::Platform<Acc>{};
     auto const dev = alpaka::getDevByIdx(platform, 0);
 
-    // Kernel allows less than 1024 threads (which is the max value for a typical GPU) per block if it uses a high
-    // number of registers
     TestKernelWithManyRegisters kernel;
     auto const& bundeledKernel = alpaka::KernelBundle(kernel, 200ul);
 
     // Test getValidWorkDivForKernel for 1024 threads per grid
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(dev, bundeledKernel, Vec{1024}, Vec{1});
-    // Test isValidWorkDivKernel function
+    // Test validity
     auto const isValid = alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, workDiv);
     CHECK(isValid == true);
 
     if constexpr(alpaka::accMatchesTags<Acc, alpaka::TagGpuCudaRt>)
     {
-        // Get calculated threads per block from the workDiv
+        // Get threads per block from the workDiv found by examining the kernel function
         auto const threadsPerBlock = workDiv.m_blockThreadExtent[0];
         // Get hard limits
         auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(bundeledKernel);
         auto const threadsPerBlockLimit = kernelFunctionAttributes.maxThreadsPerBlock;
         // Compare the workdiv value calculated using the kernel function to the device max limits for threads per
-        // block. The calculated value using kernel function is certainly less than the device max limits. For a common
-        // Nvidia GPU, expected values are 512 and 1024. Depending on the GPU or the compiler the test below might fail
-        // because threadsPerBlock can be equal to threadsPerBlockLimit, which is the max device limit.
+        // block. The calculated value using kernel function is certainly less than or equal to the device max limits.
+        // For a common Nvidia GPU, expected values for threadsPerBlock and threadsPerBlockLimit are 512 and 1024.
+        // Depending on the GPU or the compiler the test below might fail because threadsPerBlock can be equal to
+        // threadsPerBlockLimit, which is the max device limit.
         CHECK(threadsPerBlock < static_cast<Idx>(threadsPerBlockLimit));
     }
     else if constexpr(alpaka::accMatchesTags<Acc, alpaka::TagGpuHipRt>)
     {
-        // Get calculated threads per block from the workDiv
+        // Get threads per block from the workDiv found by examining the kernel function
         auto const threadsPerBlock = workDiv.m_blockThreadExtent[0];
         // Get hard limits
         auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(bundeledKernel);
         auto const threadsPerBlockLimit = kernelFunctionAttributes.maxThreadsPerBlock;
         // Compare the workdiv value calculated using the kernel function to the device max limits for threads per
-        // block. The calculated value using kernel function is certainly less than device max limits. For a common AMD
-        // GPU values are 1024 and 1024. Depending on the GPU or the compiler the test below might fail because
-        // threadsPerBlock can be less than the threadsPerBlockLimit, which is the max device limit.
+        // block. The calculated value using kernel function is certainly less than or equal to the device max limits.
+        // For a common AMD GPU, expected values for threadsPerBlock and threadsPerBlockLimit are 1024 and 1024.
+        // Depending on the GPU or the compiler the test below might fail because threadsPerBlock can be less than
+        // threadsPerBlockLimit, which is the max device limit.
         CHECK(threadsPerBlock == static_cast<Idx>(threadsPerBlockLimit));
     }
     else if constexpr(alpaka::accMatchesTags<
@@ -164,7 +164,7 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.2D.withIdx", "[workDivKernel]", T
         // Expected valid workdiv for this kernel. These values might change depending on the GPU type and compiler
         // therefore commented out. CHECK(workDiv == WorkDiv{Vec{4, 1}, Vec{256, 2}, Vec{1, 1}});
 
-        // Get calculated threads per block from the workDiv
+        // Get calculated threads per block from the workDiv found by examining kernel function
         auto const threadsPerBlock = workDiv.m_blockThreadExtent.prod();
         // Get hard limits
         auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(bundeledKernel);
@@ -178,12 +178,12 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.2D.withIdx", "[workDivKernel]", T
         // Expected valid workdiv for this kernel. These values might change depending on the GPU type and compiler
         // therefore commented out. CHECK(workDiv == WorkDiv{Vec{2, 1}, Vec{512, 2}, Vec{1, 1}});
 
-        // Get calculated threads per block from the workDiv
+        // Get calculated threads per block from the workDiv found by examining the kernel function
         auto const threadsPerBlock = workDiv.m_blockThreadExtent.prod();
         // Get hard limits
         auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<Acc>(bundeledKernel);
         auto const threadsPerBlockLimit = kernelFunctionAttributes.maxThreadsPerBlock;
-        // Depending on the GPU type or the compiler this test might fail because threadsPerBlock can be equal to
+        // Depending on the GPU type or the compiler this test might fail because threadsPerBlock can be less than
         // threadsPerBlockLimit, which is the max device limit.
         CHECK(threadsPerBlock == static_cast<Idx>(threadsPerBlockLimit));
     }

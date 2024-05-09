@@ -1,5 +1,5 @@
-/* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber
- * SPDX-License-Identifier: MPL-2.0
+/* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber, Mehmet
+ * Yusufoglu SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
@@ -35,7 +35,9 @@ namespace alpaka
         {
         }
 
+        //! The function object type
         using KernelFn = TKernelFn;
+        //! Tuple type to encapsulate kernel function argument types and argument values
         using ArgTuple = std::tuple<remove_restrict_t<std::decay_t<TArgs>>...>;
 
         KernelFn m_kernelFn;
@@ -62,7 +64,13 @@ namespace alpaka
         return KernelBundle<TKernelFn, TArgs...>(kernelFn, std::forward<TArgs>(args)...);
     }
 
-    // additional deduction guide
+    //! \brief User defined deduction guide with trailing return type. For CTAD during the construction.
+    //! \tparam TKernelFn The kernel function object type.
+    //! \tparam TArgs Kernel function object argument types as a parameter pack.
+    //! \param kernelFn The kernel object
+    //! \param args,... The kernel invocation arguments.
+    //! \return Kernel function bundle. An instance of KernelBundle which consists the kernel function object and its
+    //! arguments.
     template<typename TKernelFn, typename... TArgs>
     KernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>;
 

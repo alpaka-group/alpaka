@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Bert Wesarg, René Widera, Sergei Bastrakov, Bernhard Manfred Gruber
+/* Copyright 2022 René Widera, Mehmet Yusufoglu
  * SPDX-License-Identifier: MPL-2.0
  */
 

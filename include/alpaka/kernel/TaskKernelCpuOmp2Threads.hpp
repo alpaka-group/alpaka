@@ -195,6 +195,7 @@ namespace alpaka
             using type = TIdx;
         };
 
+        //! \brief Specialisation of the class template FunctionAttributes
         //! \tparam TDim The dimensionality of the accelerator device properties.
         //! \tparam TIdx The idx type of the accelerator device properties.
         //! \tparam TKernelFn Kernel function object type.

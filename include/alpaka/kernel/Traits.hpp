@@ -1,5 +1,5 @@
 /* Copyright 2023 Axel Huebl, Benjamin Worpitz, René Widera, Sergei Bastrakov, Jan Stephan, Bernhard Manfred Gruber,
- *                Andrea Bocci, Aurora Perego
+ *                Andrea Bocci, Aurora Perego, Mehmet Yusufoglu
  * SPDX-License-Identifier: MPL-2.0
  */
 
@@ -70,7 +70,8 @@ namespace alpaka
             }
         };
 
-        //! \brief The structure to access to the functions attributes of a kernel function object.
+        //! \brief The structure template to access to the functions attributes of a kernel function object.
+        //! \tparam TAcc The accelerator type
         //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and it's invocation
         //! arguments.
         template<typename TAcc, typename TKernelBundle>
