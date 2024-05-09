@@ -130,7 +130,7 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.1D.withIdx", "[workDivKernel]", T
         // CPU must have only 1 thread per block. In other words, number of blocks is equal to number of threads.
         CHECK(workDiv == WorkDiv{Vec{1024}, Vec{1}, Vec{1}});
         // Test a new 1D workdiv. Threads per block can not be larger than 1 for CPU. Hence 2 is not valid.
-        auto const& workDiv1DUsingInitList = alpaka::WorkDivMembers{Vec{1024}, Vec{2}, Vec{1}};
+        auto const& workDiv1DUsingInitList = WorkDiv{Vec{1024}, Vec{2}, Vec{1}};
         auto const isWorkDivValidForCpu
             = alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, workDiv1DUsingInitList);
         CHECK(isWorkDivValidForCpu == false);
@@ -197,7 +197,7 @@ TEMPLATE_LIST_TEST_CASE("getFunctionAttributes.2D.withIdx", "[workDivKernel]", T
         // CPU must have only 1 thread per block. In other words, number of blocks is equal to number of threads.
         CHECK(workDiv == WorkDiv{Vec{1024, 2}, Vec{1, 1}, Vec{1, 1}});
         // Test a new 2D workdiv. Threads per block can not be larger than 1 for CPU. Hence 2x1 threads is not valid.
-        auto const& invalidWorkDiv2D = alpaka::WorkDivMembers{Vec{2048, 1}, Vec{2, 1}, Vec{1, 1}};
+        auto const& invalidWorkDiv2D = WorkDiv{Vec{2048, 1}, Vec{2, 1}, Vec{1, 1}};
         auto const isWorkDivValidForCpu = alpaka::isValidWorkDivKernel<Acc>(dev, bundeledKernel, invalidWorkDiv2D);
         CHECK(isWorkDivValidForCpu == false);
     }
