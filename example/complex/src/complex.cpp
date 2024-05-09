@@ -70,9 +70,10 @@ auto main() -> int
 
     ComplexKernel complexKernel;
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(complexKernel);
+    auto const& bundeledKernel = alpaka::KernelBundle(complexKernel);
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+    auto const workDiv
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
     alpaka::exec<Acc>(queue, workDiv, complexKernel);

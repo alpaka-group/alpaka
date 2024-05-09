@@ -300,7 +300,7 @@ auto main() -> int
     //  ConvolutionKernel2DSharedMemory
     ConvolutionKernel2DSharedMemory convolutionKernel2D;
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<DevAcc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         convolutionKernel2D,
         alpaka::getPtrNative(bufInputAcc),
         alpaka::getPtrNative(outputDeviceMemory),
@@ -312,7 +312,7 @@ auto main() -> int
         filterWidthAllocated);
 
     //   Let alpaka calculate good block and grid sizes given our full problem extent.
-    auto const workDiv = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, extent, Vec::ones());
+    auto const workDiv = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, extent, Vec::ones());
 
     // Run the kernel
     alpaka::exec<DevAcc>(

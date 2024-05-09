@@ -135,7 +135,7 @@ auto main() -> int
     DataType* nativeInputDeviceMemory = alpaka::getPtrNative(inputDeviceMemory);
     DataType* nativeOutputDeviceMemory = alpaka::getPtrNative(outputDeviceMemory);
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<DevAcc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         convolutionKernel,
         nativeInputDeviceMemory,
         nativeFilterDeviceMemory,
@@ -144,7 +144,8 @@ auto main() -> int
         filterSize);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+    auto const workDiv
+        = alpaka::getValidWorkDivForKernel<DevAcc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
     // Run the kernel
     alpaka::exec<DevAcc>(
         queue,

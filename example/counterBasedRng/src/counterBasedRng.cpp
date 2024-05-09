@@ -158,13 +158,14 @@ auto main() -> int
 
     CounterBasedRngKernel counterBasedRngKernel;
     auto const& bundeledKernel
-        = alpaka::makeKernelBundle<Acc>(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufAcc), key);
+        = alpaka::KernelBundle(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufAcc), key);
     auto const& bundeledKernel2
-        = alpaka::makeKernelBundle<AccHost>(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufHost), key);
+        = alpaka::KernelBundle(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufHost), key);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDivAcc = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, extent, elementsPerThread);
-    auto const workDivHost = alpaka::getValidWorkDivForKernel(devHost, bundeledKernel2, extent, elementsPerThreadHost);
+    auto const workDivAcc = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, elementsPerThread);
+    auto const workDivHost
+        = alpaka::getValidWorkDivForKernel<AccHost>(devHost, bundeledKernel2, extent, elementsPerThreadHost);
 
     // Create the kernel execution task.
     auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(

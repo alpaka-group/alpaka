@@ -109,9 +109,10 @@ auto main() -> int
     Idx const elementsPerThread = 1u;
 
     OpenMPScheduleDefaultKernel openMPScheduleDefaultKernel;
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(openMPScheduleDefaultKernel);
+    auto const& bundeledKernel = alpaka::KernelBundle(openMPScheduleDefaultKernel);
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+    auto const workDiv
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
     // Run the kernel setting no schedule explicitly.
     std::cout << "OpenMPScheduleDefaultKernel setting no schedule explicitly:\n";

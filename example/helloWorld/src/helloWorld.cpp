@@ -148,9 +148,10 @@ auto main() -> int
     // argument. So a kernel can be a class or struct, a lambda, etc.
     HelloWorldKernel helloWorldKernel;
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(helloWorldKernel);
+    auto const& bundeledKernel = alpaka::KernelBundle(helloWorldKernel);
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+    auto const workDiv
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
     //

@@ -231,7 +231,7 @@ void runStrategy(Box& box)
     InitRandomKernel<TStrategy> initRandomKernel;
 
     auto const devAcc = alpaka::getDevByIdx(box.accPlatform, 0);
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Box::Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         initRandomKernel,
         box.extentRand,
         ptrBufAccRand,
@@ -239,7 +239,7 @@ void runStrategy(Box& box)
 
     ///< work division for PRNG buffer initialization
     auto const workdivRand
-        = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, box.extentRand, Box::Vec(Box::Idx{1}));
+        = alpaka::getValidWorkDivForKernel<Box::Acc>(devAcc, bundeledKernel, box.extentRand, Box::Vec(Box::Idx{1}));
 
     // The offset strategy needs an additional parameter for initialisation: the offset cannot be deduced form the size
     // of the PRNG buffer and has to be passed in explicitly. Other strategies ignore the last parameter, and deduce
@@ -273,11 +273,10 @@ void runStrategy(Box& box)
     alpaka::memcpy(box.queue, box.bufAccResult, box.bufHostResult);
     FillKernel fillKernel;
 
-    auto const& bundeledKernel2
-        = alpaka::makeKernelBundle<Box::Acc>(fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
+    auto const& bundeledKernel2 = alpaka::KernelBundle(fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
     // Work division for PRNG buffer initialization
     // Store all "rolls" for each "point". One thread per "point"; each performs NUM_ROLLS "rolls"
-    auto const workdivResult = alpaka::getValidWorkDivForKernel(
+    auto const workdivResult = alpaka::getValidWorkDivForKernel<Box::Acc>(
         devAcc,
         bundeledKernel2,
         box.extentResult,

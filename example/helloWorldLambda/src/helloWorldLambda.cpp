@@ -122,9 +122,10 @@ auto main() -> int
         printf("\n");
     };
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(kernelLambda, nExclamationMarks);
+    auto const& bundeledKernel = alpaka::KernelBundle(kernelLambda, nExclamationMarks);
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDiv = alpaka::getValidWorkDivForKernel(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
+    auto const workDiv
+        = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
     alpaka::exec<Acc>(queue, workDiv, kernelLambda, nExclamationMarks);
     alpaka::wait(queue);
