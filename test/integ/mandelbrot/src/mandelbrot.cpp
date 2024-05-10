@@ -307,7 +307,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
     auto const [rowPitch, _] = alpaka::getPitchesInBytes(bufColorAcc);
     CHECK(rowPitch % sizeof(Val) == 0);
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         kernel,
         alpaka::getPtrNative(bufColorAcc),
         numRows,
@@ -320,7 +320,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
         maxIterations);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDivForKernel(
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
         bundeledKernel,
         extent,

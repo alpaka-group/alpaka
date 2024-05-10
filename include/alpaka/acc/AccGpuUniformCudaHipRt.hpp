@@ -270,12 +270,12 @@ namespace alpaka
         struct CreateTaskKernel<
             AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
             TWorkDiv,
-            KernelBundle<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TKernelFnObj, TArgs...>>
+            KernelBundle<TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,
 
-                KernelBundle<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TKernelFnObj, TArgs...> const& kernelBundle)
+                KernelBundle<TKernelFnObj, TArgs...> const& kernelBundle)
             {
                 return std::apply(
                     [&](remove_restrict_t<std::decay_t<TArgs>>... args)

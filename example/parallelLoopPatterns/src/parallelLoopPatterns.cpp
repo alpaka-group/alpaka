@@ -117,7 +117,7 @@ void naiveCudaStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
               << "alpaka element layer not used\n";
     NaiveCudaStyleKernel naiveCudaStyleKernel;
     auto bufAccPtr = alpaka::getPtrNative(bufAcc);
-    auto const& bundeledKernel = alpaka::makeKernelBundle<TAcc>(naiveCudaStyleKernel, bufAccPtr, n);
+    auto const& bundeledKernel = alpaka::KernelBundle(naiveCudaStyleKernel, bufAccPtr, n);
 
     alpaka::exec<TAcc>(queue, workDiv, bundeledKernel);
     testResult(queue, bufAcc);
@@ -185,7 +185,7 @@ void gridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 
     GridStridedLoopKernel gridStridedLoopKernel;
     auto bufAccPtr = alpaka::getPtrNative(bufAcc);
-    auto const& bundeledKernel = alpaka::makeKernelBundle<TAcc>(gridStridedLoopKernel, bufAccPtr, n);
+    auto const& bundeledKernel = alpaka::KernelBundle(gridStridedLoopKernel, bufAccPtr, n);
     alpaka::exec<TAcc>(queue, workDiv, bundeledKernel);
     testResult(queue, bufAcc);
 }
@@ -264,7 +264,7 @@ void chunkedGridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 
     ChunkedGridStridedLoopKernel chunkedGridStridedLoopKernel;
     auto bufAccPtr = alpaka::getPtrNative(bufAcc);
-    auto const& bundeledKernel = alpaka::makeKernelBundle<TAcc>(chunkedGridStridedLoopKernel, bufAccPtr, n);
+    auto const& bundeledKernel = alpaka::KernelBundle(chunkedGridStridedLoopKernel, bufAccPtr, n);
     alpaka::exec<TAcc>(queue, workDiv, bundeledKernel);
     testResult(queue, bufAcc);
 }
@@ -334,7 +334,7 @@ void naiveOpenMPStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
 
     NaiveOpenMPStyleKernel naiveOpenMPStyleKernel;
     auto bufAccPtr = alpaka::getPtrNative(bufAcc);
-    auto const& bundeledKernel = alpaka::makeKernelBundle<TAcc>(naiveOpenMPStyleKernel, bufAccPtr, n);
+    auto const& bundeledKernel = alpaka::KernelBundle(naiveOpenMPStyleKernel, bufAccPtr, n);
 
     alpaka::exec<TAcc>(queue, workDiv, bundeledKernel);
     testResult(queue, bufAcc);
@@ -416,7 +416,7 @@ void openMPSimdStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
               << elementsPerThread << " alpaka elements per thread\n";
     OpenMPSimdStyleKernel openMPSimdStyleKernel;
     auto bufAccPtr = alpaka::getPtrNative(bufAcc);
-    auto const& bundeledKernel = alpaka::makeKernelBundle<TAcc>(openMPSimdStyleKernel, bufAccPtr, n);
+    auto const& bundeledKernel = alpaka::KernelBundle(openMPSimdStyleKernel, bufAccPtr, n);
 
     alpaka::exec<TAcc>(queue, workDiv, bundeledKernel);
     testResult(queue, bufAcc);

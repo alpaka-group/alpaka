@@ -154,7 +154,7 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
     auto blockRetValsAcc = alpaka::allocBuf<Val, Idx>(devAcc, resultElemCount);
     alpaka::memcpy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(kernel, alpaka::getPtrNative(blockRetValsAcc));
+    auto const& bundeledKernel = alpaka::KernelBundle(kernel, alpaka::getPtrNative(blockRetValsAcc));
 
     // Create the kernel execution task.
     auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, bundeledKernel);

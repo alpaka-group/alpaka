@@ -239,8 +239,8 @@ namespace alpaka
 
     //! Trait used for overload type ambiguity of exec function.
     //!
-    template<typename TAcc, typename TKernelFn, typename... TArgs>
-    struct is_kernel_bundle<KernelBundle<TAcc, TKernelFn, TArgs...>>
+    template<typename TKernelFn, typename... TArgs>
+    struct is_kernel_bundle<KernelBundle<TKernelFn, TArgs...>>
     {
         static bool const value = true;
     };
@@ -262,7 +262,7 @@ namespace alpaka
     template<typename TAcc, typename TWorkDiv, typename TKernelFn, typename... TArgs>
     ALPAKA_FN_HOST auto createTaskKernel(
         TWorkDiv const& workDiv,
-        KernelBundle<TAcc, TKernelFn, TArgs...> const& kernelBundle)
+        KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
     {
         static_assert(
             Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
@@ -272,7 +272,7 @@ namespace alpaka
             "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
         // Return the task kernel
-        return trait::CreateTaskKernel<TAcc, TWorkDiv, KernelBundle<TAcc, TKernelFn, TArgs...>>::createTaskKernel(
+        return trait::CreateTaskKernel<TAcc, TWorkDiv, KernelBundle<TKernelFn, TArgs...>>::createTaskKernel(
             workDiv,
             kernelBundle);
     }
@@ -302,10 +302,9 @@ namespace alpaka
         static_assert(
             std::is_same_v<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>,
             "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
-        KernelBundle<TAcc, TKernelFn, TArgs...> const& kernelBundle
-            = alpaka::makeKernelBundle<TAcc>(kernelFnObj, args...);
+        KernelBundle<TKernelFn, TArgs...> const& kernelBundle = alpaka::KernelBundle(kernelFnObj, args...);
         // Return the task kernel
-        return trait::CreateTaskKernel<TAcc, TWorkDiv, KernelBundle<TAcc, TKernelFn, TArgs...>>::createTaskKernel(
+        return trait::CreateTaskKernel<TAcc, TWorkDiv, KernelBundle<TKernelFn, TArgs...>>::createTaskKernel(
             workDiv,
             kernelBundle);
     }
@@ -315,8 +314,8 @@ namespace alpaka
     //! \tparam TAcc The accelerator type.
     //! \tparam TQueue The queue type for work to be submitted to.
     //! \tparam TWorkDiv The type of the work division.
-    //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and it's invocation
-    //! arguments.
+    //! \tparam TKernelFn Kernel function object type.
+    //! \tparam TArgs Kernel function object argument types as a parameter pack.
     //! \param queue The queue to enqueue the view copy task into.
     //! \param workDiv The index domain work division.
     //! \param kernelBundle The kernel object instance, which includes the kernel function object and it's
@@ -326,7 +325,7 @@ namespace alpaka
     ALPAKA_FN_HOST auto exec(
         TQueue& queue,
         TWorkDiv const& workDiv,
-        KernelBundle<TAcc, TKernelFn, TArgs...> const& kernelBundle) -> void
+        KernelBundle<TKernelFn, TArgs...> const& kernelBundle) -> void
     {
         enqueue(queue, createTaskKernel<TAcc>(workDiv, kernelBundle));
     }
@@ -341,7 +340,7 @@ namespace alpaka
 //! \tparam TAcc The accelerator type.
 //! \tparam TQueue The queue type for work to be submitted to.
 //! \tparam TWorkDiv The type of the work division.
-//! \tparam TKernelFnObj Kernel function object type.
+//! \tparam TKernelFn Kernel function object type.
 //! \tparam TArgs Kernel function object argument types as a parameter pack.
 //! \param queue The queue to enqueue the view copy task into.
 //! \param workDiv The index domain work division.
@@ -354,7 +353,7 @@ namespace alpaka
     ALPAKA_FN_HOST auto exec(TQueue& queue, TWorkDiv const& workDiv, TKernelFn const& kernelFnObj, TArgs... args)
         -> void
     {
-        auto const& bundeledKernel = alpaka::makeKernelBundle<TAcc>(kernelFnObj, args...);
+        auto const& bundeledKernel = alpaka::KernelBundle(kernelFnObj, args...);
         enqueue(queue, createTaskKernel<TAcc>(workDiv, bundeledKernel));
     }
 

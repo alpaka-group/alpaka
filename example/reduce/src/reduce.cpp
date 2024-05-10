@@ -75,14 +75,14 @@ auto reduce(
     WorkDiv workDiv1{static_cast<Extent>(blockCount), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
     WorkDiv workDiv2{static_cast<Extent>(1), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
 
-    auto const& bundeledKernel1 = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel1 = alpaka::KernelBundle(
         kernel1,
         alpaka::getPtrNative(sourceDeviceMemory),
         alpaka::getPtrNative(destinationDeviceMemory),
         n,
         func);
 
-    auto const& bundeledKernel2 = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel2 = alpaka::KernelBundle(
         kernel2,
         alpaka::getPtrNative(destinationDeviceMemory),
         alpaka::getPtrNative(destinationDeviceMemory),

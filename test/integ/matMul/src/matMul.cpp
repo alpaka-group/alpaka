@@ -243,7 +243,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     std::cout << "pitchesB " << alpaka::getPitchesInBytes(bufBAcc) << " ldb: " << ldb << "\n";
     std::cout << "pitchesC " << alpaka::getPitchesInBytes(bufCAcc) << " ldc: " << ldc << "\n";
 
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         kernel,
         m,
         n,
@@ -258,7 +258,7 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
         ldc);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDivForKernel(
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
         bundeledKernel,
         extentC,

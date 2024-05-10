@@ -113,10 +113,10 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     alpaka::memcpy(queueAcc, memBufAccB, memBufHostB);
 
     auto const& bundeledKernel
-        = alpaka::makeKernelBundle<Acc>(kernel, memBufAccA.data(), memBufAccB.data(), memBufAccC.data(), numElements);
+        = alpaka::KernelBundle(kernel, memBufAccA.data(), memBufAccB.data(), memBufAccC.data(), numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<alpaka::DimInt<1u>, Idx> const workDiv(alpaka::getValidWorkDivForKernel(
+    alpaka::WorkDivMembers<alpaka::DimInt<1u>, Idx> const workDiv(alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,
         bundeledKernel,
         extent,

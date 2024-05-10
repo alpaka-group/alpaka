@@ -92,7 +92,7 @@ auto main() -> int
         = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, threadsPerGrid, elementsPerThread);
 
     // Run the kernel
-    alpaka::exec<Acc>(queue, workDiv, kernel);
+    alpaka::exec<Acc>(queue, workDiv, bundeledKernel);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

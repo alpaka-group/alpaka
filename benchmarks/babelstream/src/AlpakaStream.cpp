@@ -53,7 +53,7 @@ void AlpakaStream<T>::init_arrays(T initA, T initB, T initC)
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
 
     InitKernel kernel;
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         kernel,
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
@@ -90,7 +90,7 @@ void AlpakaStream<T>::copy()
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
     CopyKernel copyKernel;
     auto const& bundeledKernel
-        = alpaka::makeKernelBundle<Acc>(copyKernel, alpaka::getPtrNative(d_a), alpaka::getPtrNative(d_c));
+        = alpaka::KernelBundle(copyKernel, alpaka::getPtrNative(d_a), alpaka::getPtrNative(d_c));
     alpaka::exec<Acc>(queue, workdiv, bundeledKernel);
     alpaka::wait(queue);
 }
@@ -112,8 +112,7 @@ void AlpakaStream<T>::mul()
     auto const workdiv = WorkDiv{arraySize / blockSize, blockSize, 1};
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
     MulKernel mulKernel;
-    auto const& bundeledKernel
-        = alpaka::makeKernelBundle<Acc>(mulKernel, alpaka::getPtrNative(d_b), alpaka::getPtrNative(d_c));
+    auto const& bundeledKernel = alpaka::KernelBundle(mulKernel, alpaka::getPtrNative(d_b), alpaka::getPtrNative(d_c));
     alpaka::exec<Acc>(queue, workdiv, bundeledKernel);
     alpaka::wait(queue);
 }
@@ -135,7 +134,7 @@ void AlpakaStream<T>::add()
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
 
     AddKernel kernel;
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         kernel,
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
@@ -164,7 +163,7 @@ void AlpakaStream<T>::triad()
 
 
     TriadKernel kernel;
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         kernel,
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
@@ -193,7 +192,7 @@ void AlpakaStream<T>::nstream()
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, arraySize);
 
     NstreamKernel kernel;
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         kernel,
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),
@@ -243,7 +242,7 @@ auto AlpakaStream<T>::dot() -> T
     // auto const workdiv = alpaka::getValidWorkDiv(devAcc, dotBlockSize * blockSize);
 
     DotKernel kernel;
-    auto const& bundeledKernel = alpaka::makeKernelBundle<Acc>(
+    auto const& bundeledKernel = alpaka::KernelBundle(
         kernel,
         alpaka::getPtrNative(d_a),
         alpaka::getPtrNative(d_b),

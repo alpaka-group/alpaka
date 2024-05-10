@@ -108,7 +108,8 @@ auto main() -> int
     alpaka::memcpy(queue, bufAcc, bufHost);
 
     Kernel kernel;
-    auto const& bundeledKernel = alpaka::KernelBundle(kernel, numPoints, ptrBufAcc, Function{});
+    auto func = Function{};
+    auto const& bundeledKernel = alpaka::KernelBundle(kernel, numPoints, ptrBufAcc, func);
     // Let alpaka calculate good block and grid sizes given our full problem extent
     auto const workDiv = alpaka::getValidWorkDivForKernel<Acc>(
         devAcc,

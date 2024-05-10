@@ -141,8 +141,7 @@ auto main() -> int
 
     for(uint32_t step = 0; step < numTimeSteps; step++)
     {
-        auto const& tempBundeledKernel
-            = alpaka::makeKernelBundle<Acc>(heatEqKernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+        auto const& tempBundeledKernel = alpaka::KernelBundle(heatEqKernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
 
         // Compute next values
         alpaka::exec<Acc>(queue, workDiv, tempBundeledKernel);

@@ -170,14 +170,11 @@ namespace alpaka
         //! \tparam TKernelFnObj Kernel function object type.
         //! \tparam TArgs Kernel function object argument types as a parameter pack.
         template<typename TDim, typename TIdx, typename TWorkDiv, typename TKernelFnObj, typename... TArgs>
-        struct CreateTaskKernel<
-            AccCpuSerial<TDim, TIdx>,
-            TWorkDiv,
-            KernelBundle<AccCpuSerial<TDim, TIdx>, TKernelFnObj, TArgs...>>
+        struct CreateTaskKernel<AccCpuSerial<TDim, TIdx>, TWorkDiv, KernelBundle<TKernelFnObj, TArgs...>>
         {
             ALPAKA_FN_HOST static auto createTaskKernel(
                 TWorkDiv const& workDiv,
-                KernelBundle<AccCpuSerial<TDim, TIdx>, TKernelFnObj, TArgs...> const& kernelBundle)
+                KernelBundle<TKernelFnObj, TArgs...> const& kernelBundle)
             {
                 return std::apply(
                     [&](remove_restrict_t<std::decay_t<TArgs>>... args)

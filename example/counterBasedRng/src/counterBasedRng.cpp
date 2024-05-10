@@ -157,19 +157,19 @@ auto main() -> int
     BufAcc bufAcc(alpaka::allocBuf<Data, Idx>(devAcc, extent));
 
     CounterBasedRngKernel counterBasedRngKernel;
-    auto const& bundeledKernel
+    auto const& bundeledKernel1
         = alpaka::KernelBundle(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufAcc), key);
     auto const& bundeledKernel2
         = alpaka::KernelBundle(counterBasedRngKernel, alpaka::experimental::getMdSpan(bufHost), key);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    auto const workDivAcc = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel, extent, elementsPerThread);
+    auto const workDivAcc = alpaka::getValidWorkDivForKernel<Acc>(devAcc, bundeledKernel1, extent, elementsPerThread);
     auto const workDivHost
         = alpaka::getValidWorkDivForKernel<AccHost>(devHost, bundeledKernel2, extent, elementsPerThreadHost);
 
     // Create the kernel execution task.
-    auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(workDivAcc, bundeledKernelAcc);
-    auto const taskKernelHost = alpaka::createTaskKernel<AccHost>(workDivHost, bundeledKernelHost);
+    auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(workDivAcc, bundeledKernel1);
+    auto const taskKernelHost = alpaka::createTaskKernel<AccHost>(workDivHost, bundeledKernel2);
 
     // Enqueue the kernel execution task
     alpaka::enqueue(queueHost, taskKernelHost);

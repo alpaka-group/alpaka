@@ -83,9 +83,6 @@ namespace alpaka
             : m_kernelFn(kernelFn)
             , m_args(std::forward<TArgs>(args)...)
         {
-            // check for void return type
-            detail::CheckFnReturnType<TAcc>{}(kernelFn, args...);
-
 #if BOOST_COMP_NVCC
             static_assert(
                 std::is_trivially_copyable_v<TKernelFn> || __nv_is_extended_device_lambda_closure_type(TKernelFn)

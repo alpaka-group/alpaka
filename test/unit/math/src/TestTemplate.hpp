@@ -111,9 +111,9 @@ namespace mathtest
             results.copyToDevice(queue);
 
             auto const& bundeledKernel
-                = alpaka::makeKernelBundle<TAcc>(kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
+                = alpaka::KernelBundle(kernel, results.pDevBuffer, wrappedFunctor, args.pDevBuffer);
 
-            auto const& workDiv = alpaka::getValidWorkDivForKernel(
+            auto const& workDiv = alpaka::getValidWorkDivForKernel<TAcc>(
                 devAcc,
                 bundeledKernel,
                 sizeExtent,
