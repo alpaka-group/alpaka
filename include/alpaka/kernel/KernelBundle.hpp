@@ -82,4 +82,7 @@ namespace alpaka
     template<typename TKernelFn, typename... TArgs>
     KernelBundle(TKernelFn const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn, TArgs...>;
 
+    template<template<class> typename TKernelFn, typename T, typename... TArgs>
+    KernelBundle(TKernelFn<T> const& kernelFn, TArgs&&... args) -> KernelBundle<TKernelFn<T>, TArgs...>;
+
 } // namespace alpaka
