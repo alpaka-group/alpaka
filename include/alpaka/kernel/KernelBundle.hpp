@@ -68,7 +68,15 @@ namespace alpaka
     //! \tparam TKernelFn The kernel function object type.
     //! \tparam TArgs Kernel function object argument types as a parameter pack.
     //! \param kernelFn The kernel object
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdocumentation" // clang does not support the syntax for variadic template
+                                                       // arguments "args,...". Ignore the error.
+#endif
     //! \param args,... The kernel invocation arguments.
+#if BOOST_COMP_CLANG
+#    pragma clang diagnostic pop
+#endif
     //! \return Kernel function bundle. An instance of KernelBundle which consists the kernel function object and its
     //! arguments.
     template<typename TKernelFn, typename... TArgs>
