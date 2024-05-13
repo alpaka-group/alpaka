@@ -10657,20 +10657,34 @@
 		        struct TagToAcc;
 		    } // namespace trait
 
-		    /// @brief maps an acc type to a tag type
-		    /// @tparam TAcc alpaka acc type
+		    //! \brief maps an acc type to a tag type
+		    //! \tparam TAcc alpaka acc type
 		    template<typename TAcc>
 		    using AccToTag = typename trait::AccToTag<TAcc>::type;
 
-		    /// @brief maps a tag type to an acc type
-		    /// @tparam TTag alpaka tag type
-		    /// @tparam TDim dimension of the mapped acc type
-		    /// @tparam TIdx index type of the mapped acc type
+		    //! \brief maps a tag type to an acc type
+		    //! \tparam TTag alpaka tag type
+		    //! \tparam TDim dimension of the mapped acc type
+		    //! \tparam TIdx index type of the mapped acc type
 		    template<typename TTag, typename TDim, typename TIdx>
 		    using TagToAcc = typename trait::TagToAcc<TTag, TDim, TIdx>::type;
 
 		    template<typename TAcc, typename... TTag>
 		    inline constexpr bool accMatchesTags = (std::is_same_v<alpaka::AccToTag<TAcc>, TTag> || ...);
+
+		    //! list of all available tags
+		    using AccTags = std::tuple<
+		        alpaka::TagCpuSerial,
+		        alpaka::TagCpuThreads,
+		        alpaka::TagCpuTbbBlocks,
+		        alpaka::TagCpuOmp2Blocks,
+		        alpaka::TagCpuOmp2Threads,
+		        alpaka::TagGpuCudaRt,
+		        alpaka::TagGpuHipRt,
+		        alpaka::TagCpuSycl,
+		        alpaka::TagFpgaSyclIntel,
+		        alpaka::TagGpuSyclIntel>;
+
 		} // namespace alpaka
 		// ==
 		// == ./include/alpaka/acc/Tag.hpp ==
@@ -26401,6 +26415,97 @@
 	// ============================================================================
 
 // #include "alpaka/acc/Tag.hpp"    // amalgamate: file already inlined
+	// ============================================================================
+	// == ./include/alpaka/acc/TagAccIsEnabled.hpp ==
+	// ==
+	// #pragma once
+	// include all Acc's because of the struct AccIsEnabled
+	// if an acc is not include, it will be not enabled independent of the compiler flags
+	// #include "alpaka/acc/AccCpuOmp2Blocks.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccCpuOmp2Threads.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccCpuSerial.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccCpuSycl.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccCpuTbbBlocks.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccCpuThreads.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccFpgaSyclIntel.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccGpuCudaRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/acc/AccGpuHipRt.hpp"    // amalgamate: file already inlined
+	// #include "alpaka/dim/DimIntegralConst.hpp"    // amalgamate: file already inlined
+		// ============================================================================
+		// == ./include/alpaka/meta/Filter.hpp ==
+		// ==
+		/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
+		 * SPDX-License-Identifier: MPL-2.0
+		 */
+
+		// #pragma once
+		// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
+
+		// #include <type_traits>    // amalgamate: file already included
+
+		namespace alpaka::meta
+		{
+		    namespace detail
+		    {
+		        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
+		        struct FilterImplHelper;
+
+		        template<template<typename...> class TList, template<typename> class TPred>
+		        struct FilterImplHelper<TList, TPred>
+		        {
+		            using type = TList<>;
+		        };
+
+		        template<template<typename...> class TList, template<typename> class TPred, typename T, typename... Ts>
+		        struct FilterImplHelper<TList, TPred, T, Ts...>
+		        {
+		            using type = std::conditional_t<
+		                TPred<T>::value,
+		                Concatenate<TList<T>, typename FilterImplHelper<TList, TPred, Ts...>::type>,
+		                typename FilterImplHelper<TList, TPred, Ts...>::type>;
+		        };
+
+		        template<typename TList, template<typename> class TPred>
+		        struct FilterImpl;
+
+		        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
+		        struct FilterImpl<TList<Ts...>, TPred>
+		        {
+		            using type = typename detail::FilterImplHelper<TList, TPred, Ts...>::type;
+		        };
+		    } // namespace detail
+		    template<typename TList, template<typename> class TPred>
+		    using Filter = typename detail::FilterImpl<TList, TPred>::type;
+		} // namespace alpaka::meta
+		// ==
+		// == ./include/alpaka/meta/Filter.hpp ==
+		// ============================================================================
+
+
+	// #include <type_traits>    // amalgamate: file already included
+
+	namespace alpaka
+	{
+	    //! \brief check if the accelerator is enabled for a given tag
+	    //! \tparam TTag alpaka tag type
+	    template<typename TTag, typename = void>
+	    struct AccIsEnabled : std::false_type
+	    {
+	    };
+
+	    template<typename TTag>
+	    struct AccIsEnabled<TTag, std::void_t<TagToAcc<TTag, alpaka::DimInt<1>, int>>> : std::true_type
+	    {
+	    };
+
+	    //! list of all tags where the related accelerator is enabled
+	    using EnabledAccTags = alpaka::meta::Filter<AccTags, alpaka::AccIsEnabled>;
+
+	} // namespace alpaka
+	// ==
+	// == ./include/alpaka/acc/TagAccIsEnabled.hpp ==
+	// ============================================================================
+
 // #include "alpaka/acc/Traits.hpp"    // amalgamate: file already inlined
 // atomic
 // #include "alpaka/atomic/AtomicCpu.hpp"    // amalgamate: file already inlined
@@ -35013,56 +35118,7 @@
 
 // #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
 // #include "alpaka/meta/DependentFalseType.hpp"    // amalgamate: file already inlined
-	// ============================================================================
-	// == ./include/alpaka/meta/Filter.hpp ==
-	// ==
-	/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
-	 * SPDX-License-Identifier: MPL-2.0
-	 */
-
-	// #pragma once
-	// #include "alpaka/meta/Concatenate.hpp"    // amalgamate: file already inlined
-
-	// #include <type_traits>    // amalgamate: file already included
-
-	namespace alpaka::meta
-	{
-	    namespace detail
-	    {
-	        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
-	        struct FilterImplHelper;
-
-	        template<template<typename...> class TList, template<typename> class TPred>
-	        struct FilterImplHelper<TList, TPred>
-	        {
-	            using type = TList<>;
-	        };
-
-	        template<template<typename...> class TList, template<typename> class TPred, typename T, typename... Ts>
-	        struct FilterImplHelper<TList, TPred, T, Ts...>
-	        {
-	            using type = std::conditional_t<
-	                TPred<T>::value,
-	                Concatenate<TList<T>, typename FilterImplHelper<TList, TPred, Ts...>::type>,
-	                typename FilterImplHelper<TList, TPred, Ts...>::type>;
-	        };
-
-	        template<typename TList, template<typename> class TPred>
-	        struct FilterImpl;
-
-	        template<template<typename...> class TList, template<typename> class TPred, typename... Ts>
-	        struct FilterImpl<TList<Ts...>, TPred>
-	        {
-	            using type = typename detail::FilterImplHelper<TList, TPred, Ts...>::type;
-	        };
-	    } // namespace detail
-	    template<typename TList, template<typename> class TPred>
-	    using Filter = typename detail::FilterImpl<TList, TPred>::type;
-	} // namespace alpaka::meta
-	// ==
-	// == ./include/alpaka/meta/Filter.hpp ==
-	// ============================================================================
-
+// #include "alpaka/meta/Filter.hpp"    // amalgamate: file already inlined
 // #include "alpaka/meta/Fold.hpp"    // amalgamate: file already inlined
 	// ============================================================================
 	// == ./include/alpaka/meta/ForEachType.hpp ==
