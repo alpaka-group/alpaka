@@ -1098,6 +1098,8 @@ var annotated_dup =
       [ "AccCpuThreads", "classalpaka_1_1AccCpuThreads.html", "classalpaka_1_1AccCpuThreads" ],
       [ "AccDevProps", "structalpaka_1_1AccDevProps.html", "structalpaka_1_1AccDevProps" ],
       [ "AccGpuUniformCudaHipRt", "classalpaka_1_1AccGpuUniformCudaHipRt.html", "classalpaka_1_1AccGpuUniformCudaHipRt" ],
+      [ "AccIsEnabled", "structalpaka_1_1AccIsEnabled.html", null ],
+      [ "AccIsEnabled< TTag, std::void_t< TagToAcc< TTag, alpaka::DimInt< 1 >, int > > >", "structalpaka_1_1AccIsEnabled_3_01TTag_00_01std_1_1void__t_3_01TagToAcc_3_01TTag_00_01alpaka_1_1D473bae86b2996702d97c9b5b18a64298.html", null ],
       [ "AllocCpuAligned", "classalpaka_1_1AllocCpuAligned.html", null ],
       [ "AllocCpuNew", "classalpaka_1_1AllocCpuNew.html", null ],
       [ "ApiCudaRt", "structalpaka_1_1ApiCudaRt.html", "structalpaka_1_1ApiCudaRt" ],

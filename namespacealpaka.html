@@ -171,6 +171,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator.  <a href="classalpaka_1_1AccGpuUniformCudaHipRt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1AccIsEnabled.html">AccIsEnabled</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if the accelerator is enabled for a given tag  <a href="structalpaka_1_1AccIsEnabled.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1AccIsEnabled_3_01TTag_00_01std_1_1void__t_3_01TagToAcc_3_01TTag_00_01alpaka_1_1D473bae86b2996702d97c9b5b18a64298.html">AccIsEnabled&lt; TTag, std::void_t&lt; TagToAcc&lt; TTag, alpaka::DimInt&lt; 1 &gt;, int &gt; &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1AllocCpuAligned.html">AllocCpuAligned</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU boost aligned allocator.  <a href="classalpaka_1_1AllocCpuAligned.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -428,6 +433,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ac41d3de7aa83e26273d7f08f8e76fe1d"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:ac41d3de7aa83e26273d7f08f8e76fe1d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d">AccGpuCudaRt</a> = <a class="el" href="classalpaka_1_1AccGpuUniformCudaHipRt.html">AccGpuUniformCudaHipRt</a>&lt; <a class="el" href="structalpaka_1_1ApiCudaRt.html">ApiCudaRt</a>, TDim, TIdx &gt;</td></tr>
 <tr class="separator:ac41d3de7aa83e26273d7f08f8e76fe1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b85a9de90c7f79392c2914e648d74e0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">AccTags</a> = std::tuple&lt; <a class="el" href="structalpaka_1_1TagCpuSerial.html">alpaka::TagCpuSerial</a>, <a class="el" href="structalpaka_1_1TagCpuThreads.html">alpaka::TagCpuThreads</a>, <a class="el" href="structalpaka_1_1TagCpuTbbBlocks.html">alpaka::TagCpuTbbBlocks</a>, <a class="el" href="structalpaka_1_1TagCpuOmp2Blocks.html">alpaka::TagCpuOmp2Blocks</a>, <a class="el" href="structalpaka_1_1TagCpuOmp2Threads.html">alpaka::TagCpuOmp2Threads</a>, <a class="el" href="structalpaka_1_1TagGpuCudaRt.html">alpaka::TagGpuCudaRt</a>, <a class="el" href="structalpaka_1_1TagGpuHipRt.html">alpaka::TagGpuHipRt</a>, <a class="el" href="structalpaka_1_1TagCpuSycl.html">alpaka::TagCpuSycl</a>, <a class="el" href="structalpaka_1_1TagFpgaSyclIntel.html">alpaka::TagFpgaSyclIntel</a>, <a class="el" href="structalpaka_1_1TagGpuSyclIntel.html">alpaka::TagGpuSyclIntel</a> &gt;</td></tr>
+<tr class="memdesc:a5b85a9de90c7f79392c2914e648d74e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of all available tags  <a href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">More...</a><br /></td></tr>
+<tr class="separator:a5b85a9de90c7f79392c2914e648d74e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
 <tr class="memitem:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">AccToTag</a> = typename <a class="el" href="structalpaka_1_1trait_1_1AccToTag.html">trait::AccToTag</a>&lt; TAcc &gt;::type</td></tr>
 <tr class="memdesc:af5f5caddacfd0c5a7584d88a0a6c85dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps an acc type to a tag type  <a href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">More...</a><br /></td></tr>
@@ -469,6 +477,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a807188d82118e5a640469d676853a195"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a807188d82118e5a640469d676853a195">Elem</a> = std::remove_volatile_t&lt; typename <a class="el" href="structalpaka_1_1trait_1_1ElemType.html">trait::ElemType</a>&lt; TView &gt;::type &gt;</td></tr>
 <tr class="memdesc:a807188d82118e5a640469d676853a195"><td class="mdescLeft">&#160;</td><td class="mdescRight">The element type trait alias template to remove the ::type.  <a href="namespacealpaka.html#a807188d82118e5a640469d676853a195">More...</a><br /></td></tr>
 <tr class="separator:a807188d82118e5a640469d676853a195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7fe7b86aaefe48cb13cedd33fe24a0c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad7fe7b86aaefe48cb13cedd33fe24a0c">EnabledAccTags</a> = <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">alpaka::meta::Filter</a>&lt; <a class="el" href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">AccTags</a>, <a class="el" href="structalpaka_1_1AccIsEnabled.html">alpaka::AccIsEnabled</a> &gt;</td></tr>
+<tr class="memdesc:ad7fe7b86aaefe48cb13cedd33fe24a0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of all tags where the related accelerator is enabled  <a href="namespacealpaka.html#ad7fe7b86aaefe48cb13cedd33fe24a0c">More...</a><br /></td></tr>
+<tr class="separator:ad7fe7b86aaefe48cb13cedd33fe24a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a097911074293c18d5a37aac3266f9a24"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a097911074293c18d5a37aac3266f9a24"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a097911074293c18d5a37aac3266f9a24">Event</a> = typename <a class="el" href="structalpaka_1_1trait_1_1EventType.html">trait::EventType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a097911074293c18d5a37aac3266f9a24"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event type trait alias template to remove the ::type.  <a href="namespacealpaka.html#a097911074293c18d5a37aac3266f9a24">More...</a><br /></td></tr>
@@ -1253,6 +1264,24 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 
 </div>
 </div>
+<a id="a5b85a9de90c7f79392c2914e648d74e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b85a9de90c7f79392c2914e648d74e0">&#9670;&nbsp;</a></span>AccTags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">alpaka::AccTags</a> = typedef std::tuple&lt; <a class="el" href="structalpaka_1_1TagCpuSerial.html">alpaka::TagCpuSerial</a>, <a class="el" href="structalpaka_1_1TagCpuThreads.html">alpaka::TagCpuThreads</a>, <a class="el" href="structalpaka_1_1TagCpuTbbBlocks.html">alpaka::TagCpuTbbBlocks</a>, <a class="el" href="structalpaka_1_1TagCpuOmp2Blocks.html">alpaka::TagCpuOmp2Blocks</a>, <a class="el" href="structalpaka_1_1TagCpuOmp2Threads.html">alpaka::TagCpuOmp2Threads</a>, <a class="el" href="structalpaka_1_1TagGpuCudaRt.html">alpaka::TagGpuCudaRt</a>, <a class="el" href="structalpaka_1_1TagGpuHipRt.html">alpaka::TagGpuHipRt</a>, <a class="el" href="structalpaka_1_1TagCpuSycl.html">alpaka::TagCpuSycl</a>, <a class="el" href="structalpaka_1_1TagFpgaSyclIntel.html">alpaka::TagFpgaSyclIntel</a>, <a class="el" href="structalpaka_1_1TagGpuSyclIntel.html">alpaka::TagGpuSyclIntel</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>list of all available tags </p>
+
+<p class="definition">Definition at line <a class="el" href="Tag_8hpp_source.html#l00060">60</a> of file <a class="el" href="Tag_8hpp_source.html">Tag.hpp</a>.</p>
+
+</div>
+</div>
 <a id="af5f5caddacfd0c5a7584d88a0a6c85dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af5f5caddacfd0c5a7584d88a0a6c85dc">&#9670;&nbsp;</a></span>AccToTag</h2>
 
@@ -1482,6 +1511,24 @@ template&lt;typename TView &gt; </div>
 <p>The element type trait alias template to remove the ::type. </p>
 
 <p class="definition">Definition at line <a class="el" href="elem_2Traits_8hpp_source.html#l00021">21</a> of file <a class="el" href="elem_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ad7fe7b86aaefe48cb13cedd33fe24a0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7fe7b86aaefe48cb13cedd33fe24a0c">&#9670;&nbsp;</a></span>EnabledAccTags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#ad7fe7b86aaefe48cb13cedd33fe24a0c">alpaka::EnabledAccTags</a> = typedef <a class="el" href="namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6">alpaka::meta::Filter</a>&lt;<a class="el" href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">AccTags</a>, <a class="el" href="structalpaka_1_1AccIsEnabled.html">alpaka::AccIsEnabled</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>list of all tags where the related accelerator is enabled </p>
+
+<p class="definition">Definition at line <a class="el" href="TagAccIsEnabled_8hpp_source.html#l00034">34</a> of file <a class="el" href="TagAccIsEnabled_8hpp_source.html">TagAccIsEnabled.hpp</a>.</p>
 
 </div>
 </div>
@@ -8762,7 +8809,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Mon May 13 2024 08:57:45 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon May 13 2024 14:39:39 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

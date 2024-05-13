@@ -1,5 +1,12 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1trait_1_1Sqrt.html":[3,0,0,9,0,97],
+"structalpaka_1_1math_1_1trait_1_1Sqrt.html#af77153a4d14461b62de56cb5c03054b4":[3,0,0,9,0,97,0],
+"structalpaka_1_1math_1_1trait_1_1Sqrt_3_01SqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,9,0,98],
+"structalpaka_1_1math_1_1trait_1_1Sqrt_3_01SqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#aa6781c9b33b017918b118f28dc662da1":[3,0,0,9,0,98,0],
+"structalpaka_1_1math_1_1trait_1_1Sqrt_3_01SqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enableeba4806433d092fc5faaadb4ed75179e.html":[3,0,0,9,0,99],
+"structalpaka_1_1math_1_1trait_1_1Sqrt_3_01SqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enableeba4806433d092fc5faaadb4ed75179e.html#a5c1851fa44beee2c625088ae07693bc3":[3,0,0,9,0,99,0],
+"structalpaka_1_1math_1_1trait_1_1Tan.html":[3,0,0,9,0,100],
 "structalpaka_1_1math_1_1trait_1_1Tan.html#ab10dfe9d85bd2ae48ff059e4d78e25dc":[3,0,0,9,0,100,0],
 "structalpaka_1_1math_1_1trait_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,9,0,101],
 "structalpaka_1_1math_1_1trait_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#a47e2329b2a47dd6b668c455a85f7337d":[3,0,0,9,0,101,0],
@@ -207,10 +214,10 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01RandomDevice_01_4.html#af0f9d56d7c6edb37835f2fa9dff868db":[3,0,0,13,1,1,3,0],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html":[3,0,0,13,1,1,5],
 "structalpaka_1_1rand_1_1engine_1_1trait_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html#a16d9091f608e8fd9228e123c7dcf07cc":[3,0,0,13,1,1,5,0],
-"structalpaka_1_1remove__restrict.html":[3,0,0,92],
-"structalpaka_1_1remove__restrict.html#a233efb391b9f8e5682ea92b7e3cbf9bc":[3,0,0,92,0],
-"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html":[3,0,0,93],
-"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html#a971c39c6152c1229ed7290d50b25f0f2":[3,0,0,93,0],
+"structalpaka_1_1remove__restrict.html":[3,0,0,94],
+"structalpaka_1_1remove__restrict.html#a233efb391b9f8e5682ea92b7e3cbf9bc":[3,0,0,94,0],
+"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html":[3,0,0,95],
+"structalpaka_1_1remove__restrict_3_01T_01_5____restrict_____01_4.html#a971c39c6152c1229ed7290d50b25f0f2":[3,0,0,95,0],
 "structalpaka_1_1test_1_1Array.html":[3,0,0,14,4],
 "structalpaka_1_1test_1_1Array.html#a04628f2285009616a68d1498cfe7e9ec":[3,0,0,14,4,2],
 "structalpaka_1_1test_1_1Array.html#a6cf2b8d9e5fbbb2ab22f6bb12e97893c":[3,0,0,14,4,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCpu_01_4.html#a58168bc0f5f6591b26ec277083804aa1":[3,0,0,14,2,6,0],
 "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html":[3,0,0,14,2,7],
 "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html#a403f5da96f2198dbae6200ce78bc8526":[3,0,0,14,2,7,0],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html":[3,0,0,14,2,8],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html":[3,0,0,14,2,9],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html":[3,0,0,14,2,10],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html#aff4200216d2667b2797236e90dafe915":[3,0,0,14,2,10,0],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html":[3,0,0,14,2,11],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html#add67a36538f8c7951ac73db36ccd507f":[3,0,0,14,2,11,0],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_01_4.html":[3,0,0,14,2,12],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueUniformCudaHipRtBlocking_3_01TApi_01_4_01_4.html#a29f4cd2065ced1528e1b77271d39d2dc":[3,0,0,14,2,12,0]
+"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html":[3,0,0,14,2,8]
 };

@@ -1,5 +1,12 @@
 var NAVTREEINDEX16 =
 {
+"structalpaka_1_1trait_1_1MemFence.html":[3,0,0,15,382],
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01TMemScope_01_4.html":[3,0,0,15,386],
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01TMemScope_01_4.html#a50177f580ceaf411f6bd8f33f2ade4d7":[3,0,0,15,386,0],
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01memory__scope_1_1Block_01_4.html":[3,0,0,15,384],
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01memory__scope_1_1Block_01_4.html#abfd0c9cef19a19ce08a551c3f9e55a29":[3,0,0,15,384,0],
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01memory__scope_1_1Grid_01_4.html":[3,0,0,15,385],
+"structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpuSerial_00_01memory__scope_1_1Grid_01_4.html#ae74ef59c90190fde47f09be055408596":[3,0,0,15,385,0],
 "structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpu_00_01TMemScope_01_4.html":[3,0,0,15,383],
 "structalpaka_1_1trait_1_1MemFence_3_01MemFenceCpu_00_01TMemScope_01_4.html#aa23ac86d13f9626908887303258a6869":[3,0,0,15,383,0],
 "structalpaka_1_1trait_1_1MemFence_3_01MemFenceOmp2Blocks_00_01memory__scope_1_1Block_01_4.html":[3,0,0,15,387],
@@ -242,12 +249,5 @@ var NAVTREEINDEX16 =
 "tinymt32_8h.html#ac2ed41a6a750e977cb1c2d575d7379cd":[4,0,0,0,19,1,1,4],
 "tinymt32_8h.html#ac4cfc7b0d8b92f8e74e03d8ff90397bc":[4,0,0,0,19,1,1,3],
 "tinymt32_8h.html#ad76f76a71e9ffc13963ee895d1828b2c":[4,0,0,0,19,1,1,9],
-"tinymt32_8h.html#ad7a4b73a72fafba00138f2491676c498":[4,0,0,0,19,1,1,1],
-"tinymt32_8h.html#ae3012cf9080c25d473c7c05b65621e2d":[4,0,0,0,19,1,1,7],
-"tinymt32_8h.html#ae3691626ade6db3de17c3be3b1be9556":[4,0,0,0,19,1,1,20],
-"tinymt32_8h.html#af2516d35e6ae124e36329938b301746d":[4,0,0,0,19,1,1,19],
-"tinymt32_8h.html#af724b08a8515e73937958824e75c1b3f":[4,0,0,0,19,1,1,16],
-"tinymt32_8h.html#afd98615284615a93e4d5dd3ed52052ac":[4,0,0,0,19,1,1,27],
-"tinymt32_8h.html#afe0e4e5727d9188f5ae1632da731d412":[4,0,0,0,19,1,1,12],
-"tinymt32_8h.html#afef739214ca5da19c60be86f0cf94f0c":[4,0,0,0,19,1,1,14]
+"tinymt32_8h.html#ad7a4b73a72fafba00138f2491676c498":[4,0,0,0,19,1,1,1]
 };

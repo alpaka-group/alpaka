@@ -75,5 +75,6 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "PlatformType< AccGpuUniformCudaHipRt< TApi, TDim, TIdx > >", "structalpaka_1_1trait_1_1PlatformType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1trait_1_1PlatformType_3_01AccGpuUniformCudaHipRt_3_01TApi_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "Tag.hpp", "Tag_8hpp.html", "Tag_8hpp" ],
+    [ "TagAccIsEnabled.hpp", "TagAccIsEnabled_8hpp.html", "TagAccIsEnabled_8hpp" ],
     [ "Traits.hpp", "acc_2Traits_8hpp.html", "acc_2Traits_8hpp" ]
 ];

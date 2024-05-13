@@ -130,24 +130,39 @@ $(document).ready(function(){initNavTree('Tag_8hpp_source.html',''); initResizab
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structalpaka_1_1trait_1_1TagToAcc.html">   41</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1trait_1_1TagToAcc.html">TagToAcc</a>;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    } <span class="comment">// namespace trait</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">    /// @brief maps an acc type to a tag type</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">    /// @tparam TAcc alpaka acc type</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">    //! \brief maps an acc type to a tag type</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">    //! \tparam TAcc alpaka acc type</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAcc&gt;</div>
 <div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">   47</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">AccToTag</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1AccToTag.html">trait::AccToTag&lt;TAcc&gt;::type</a>;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">    /// @brief maps a tag type to an acc type</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">    /// @tparam TTag alpaka tag type</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">    /// @tparam TDim dimension of the mapped acc type</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    /// @tparam TIdx index type of the mapped acc type</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">    //! \brief maps a tag type to an acc type</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">    //! \tparam TTag alpaka tag type</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">    //! \tparam TDim dimension of the mapped acc type</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    //! \tparam TIdx index type of the mapped acc type</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TTag, <span class="keyword">typename</span> TDim, <span class="keyword">typename</span> TIdx&gt;</div>
 <div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">   54</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">TagToAcc</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1trait_1_1TagToAcc.html">trait::TagToAcc&lt;TTag, TDim, TIdx&gt;::type</a>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAcc, <span class="keyword">typename</span>... TTag&gt;</div>
 <div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1">   57</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1">accMatchesTags</a> = (std::is_same_v&lt;alpaka::AccToTag&lt;TAcc&gt;, TTag&gt; || ...);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">    //! list of all available tags</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">   60</a></span>&#160;<span class="comment"></span>    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">AccTags</a> = std::tuple&lt;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="structalpaka_1_1TagCpuSerial.html">alpaka::TagCpuSerial</a>,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="structalpaka_1_1TagCpuThreads.html">alpaka::TagCpuThreads</a>,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="structalpaka_1_1TagCpuTbbBlocks.html">alpaka::TagCpuTbbBlocks</a>,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="structalpaka_1_1TagCpuOmp2Blocks.html">alpaka::TagCpuOmp2Blocks</a>,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="structalpaka_1_1TagCpuOmp2Threads.html">alpaka::TagCpuOmp2Threads</a>,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="structalpaka_1_1TagGpuCudaRt.html">alpaka::TagGpuCudaRt</a>,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="structalpaka_1_1TagGpuHipRt.html">alpaka::TagGpuHipRt</a>,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <a class="code" href="structalpaka_1_1TagCpuSycl.html">alpaka::TagCpuSycl</a>,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <a class="code" href="structalpaka_1_1TagFpgaSyclIntel.html">alpaka::TagFpgaSyclIntel</a>,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="structalpaka_1_1TagGpuSyclIntel.html">alpaka::TagGpuSyclIntel</a>&gt;;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
 <div class="ttc" id="aTag_8hpp_html_ab81964c6c549b86595784601aa5181d5"><div class="ttname"><a href="Tag_8hpp.html#ab81964c6c549b86595784601aa5181d5">CREATE_ACC_TAG</a></div><div class="ttdeci">#define CREATE_ACC_TAG(tag_name)</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00012">Tag.hpp:12</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka accelerator library.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuOmp2Blocks_8hpp_source.html#l00047">AccCpuOmp2Blocks.hpp:48</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a5b85a9de90c7f79392c2914e648d74e0"><div class="ttname"><a href="namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0">alpaka::AccTags</a></div><div class="ttdeci">std::tuple&lt; alpaka::TagCpuSerial, alpaka::TagCpuThreads, alpaka::TagCpuTbbBlocks, alpaka::TagCpuOmp2Blocks, alpaka::TagCpuOmp2Threads, alpaka::TagGpuCudaRt, alpaka::TagGpuHipRt, alpaka::TagCpuSycl, alpaka::TagFpgaSyclIntel, alpaka::TagGpuSyclIntel &gt; AccTags</div><div class="ttdoc">list of all available tags</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00060">Tag.hpp:70</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_ac7dc6f9301a777fe3a25be17ac1d60b1"><div class="ttname"><a href="namespacealpaka.html#ac7dc6f9301a777fe3a25be17ac1d60b1">alpaka::accMatchesTags</a></div><div class="ttdeci">constexpr bool accMatchesTags</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00057">Tag.hpp:57</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_af5f5caddacfd0c5a7584d88a0a6c85dc"><div class="ttname"><a href="namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc">alpaka::AccToTag</a></div><div class="ttdeci">typename trait::AccToTag&lt; TAcc &gt;::type AccToTag</div><div class="ttdoc">maps an acc type to a tag type</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00047">Tag.hpp:47</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_affc8849a6a5b20ced64d3f1248e24a0a"><div class="ttname"><a href="namespacealpaka.html#affc8849a6a5b20ced64d3f1248e24a0a">alpaka::TagToAcc</a></div><div class="ttdeci">typename trait::TagToAcc&lt; TTag, TDim, TIdx &gt;::type TagToAcc</div><div class="ttdoc">maps a tag type to an acc type</div><div class="ttdef"><b>Definition:</b> <a href="Tag_8hpp_source.html#l00054">Tag.hpp:54</a></div></div>
@@ -170,7 +185,7 @@ $(document).ready(function(){initNavTree('Tag_8hpp_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="Tag_8hpp.html">Tag.hpp</a></li>
-    <li class="footer">Generated on Mon May 13 2024 08:57:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon May 13 2024 14:39:38 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
