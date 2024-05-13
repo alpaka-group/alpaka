@@ -23,6 +23,7 @@
 #include "alpaka/acc/AccGpuHipRt.hpp"
 #include "alpaka/acc/AccGpuSyclIntel.hpp"
 #include "alpaka/acc/Tag.hpp"
+#include "alpaka/acc/TagAccIsEnabled.hpp"
 #include "alpaka/acc/Traits.hpp"
 // atomic
 #include "alpaka/atomic/AtomicCpu.hpp"
