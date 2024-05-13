@@ -73,9 +73,6 @@ namespace mathtest
             // SETUP (defines and initialising)
             // DevAcc is defined in Buffer.hpp too.
             using DevAcc = alpaka::Dev<TAcc>;
-
-            using Dim = alpaka::DimInt<1u>;
-            using Idx = std::size_t;
             using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
             using TArgsItem = ArgsItem<TData, TFunctor::arity>;
 

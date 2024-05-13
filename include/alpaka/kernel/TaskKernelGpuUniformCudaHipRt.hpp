@@ -393,7 +393,6 @@ namespace alpaka
             }
         };
 
-
         //! \brief Specialisation of the class template FunctionAttributes
         //! \tparam TApi The type the API of the GPU accelerator backend. Currently Cuda or Hip.
         //! \tparam TDim The dimensionality of the accelerator device properties.
@@ -418,7 +417,7 @@ namespace alpaka
                     AccGpuUniformCudaHipRt<TApi, TDim, TIdx>,
                     TDim,
                     TIdx,
-                    remove_restrict_t<std::decay_t<TArgs>>...>;  
+                    remove_restrict_t<std::decay_t<TArgs>>...>;
 
 #        if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
 #            error "Device capability >= 2.0 is required!"
