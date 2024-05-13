@@ -194,6 +194,13 @@ else()
         endif()
     endif()
 
+    # C++17 relaxed template template argument matching is disabled by default until Clang 19
+    # https://github.com/llvm/llvm-project/commit/b86e0992bfa6
+    # https://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#150
+    # for example, is required to create alpaka::EnabledAccTags
+    # the feature is implemented since Clang 4
+    alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<AND:$<CXX_COMPILER_ID:Clang,AppleClang,IntelLLVM>>:SHELL:-frelaxed-template-template-args>")
+
     # Add debug optimization levels. CMake doesn't do this by default.
     # Note that -Og is the recommended gcc optimization level for debug mode but is equivalent to -O1 for clang (and its derivates).
     alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:GNU>,$<COMPILE_LANGUAGE:CXX>>:SHELL:-Og>"
@@ -570,6 +577,13 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
             alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<COMPILE_LANGUAGE:CXX>:-D__HIP_PLATFORM_HCC__>")
         endif()
 
+        # C++17 relaxed template template argument matching is disabled by default until Clang 19
+        # https://github.com/llvm/llvm-project/commit/b86e0992bfa6
+        # https://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#150
+        # for example, is required to create alpaka::EnabledAccTags
+        # TODO(SimeonEhrig): restict HIP version, if first HIP version is release using Clang 19 
+        alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-frelaxed-template-template-args>")
+
         alpaka_compiler_option(HIP_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" OFF)
         if(alpaka_HIP_KEEP_FILES)
             alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-save-temps>")
@@ -630,6 +644,7 @@ if(alpaka_ACC_SYCL_ENABLE)
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl")
         target_link_options(alpaka INTERFACE "-fsycl")
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-sycl-std=2020")
+        alpaka_set_compiler_options(HOST_DEVICE target alpaka "-frelaxed-template-template-args")
 
         #-----------------------------------------------------------------------------------------------------------------
         # Determine SYCL targets
