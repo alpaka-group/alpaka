@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"namespacealpaka_1_1math_1_1constants.html#aa5c27246c5cd910f35c5584c2091bdb6":[2,0,0,10,0,3],
 "namespacealpaka_1_1math_1_1constants.html#adb265600b531d553d78f95ebc98c40a2":[2,0,0,10,0,13],
 "namespacealpaka_1_1math_1_1constants.html#add06099c9dca88df3bcbb471baa84ff3":[2,0,0,10,0,6],
 "namespacealpaka_1_1math_1_1constants.html#af8ab5729dca9ebd236d7e93022b2dddb":[2,0,0,10,0,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicDec_00_01T_00_01alpaka_1_1hierarche1c7bdba35bffa9a0b66f70390e13e35.html#a3aae3ee5a8401bd8d91519290ecb9eff":[3,0,1,7,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicExch_00_01T_00_01THierarchy_00_01t2453b96579dfe9ced020db2611c09ee2.html":[3,0,1,10],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicExch_00_01T_00_01THierarchy_00_01t2453b96579dfe9ced020db2611c09ee2.html":[3,0,13],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicExch_00_01T_00_01THierarchy_00_01t2453b96579dfe9ced020db2611c09ee2.html#ae7a820f198b172324541e1df617593dc":[3,0,1,10,0],
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicExch_00_01T_00_01THierarchy_00_01t2453b96579dfe9ced020db2611c09ee2.html#ae7a820f198b172324541e1df617593dc":[3,0,13,0]
+"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicExch_00_01T_00_01THierarchy_00_01t2453b96579dfe9ced020db2611c09ee2.html#ae7a820f198b172324541e1df617593dc":[3,0,1,10,0]
 };

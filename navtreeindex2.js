@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
 "QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
 "QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "acc_2Traits_8hpp_source.html":[4,0,0,0,0,14],
 "alpaka_8hpp.html":[4,0,0,0,27],
 "alpaka_8hpp_source.html":[4,0,0,0,27],
-"annotated.html":[3,0],
-"atomic_2Traits_8hpp.html":[4,0,0,0,1,10]
+"annotated.html":[3,0]
 };

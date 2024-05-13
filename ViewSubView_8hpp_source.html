@@ -142,23 +142,23 @@ $(document).ready(function(){initNavTree('ViewSubView_8hpp_source.html',''); ini
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="stringliteral">&quot;The dev type of TView and the Dev template parameter have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                std::is_same_v&lt;TIdx, Idx&lt;View&gt;&gt;,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                std::is_same_v&lt;TIdx, <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">alpaka::Idx&lt;View&gt;</a>&gt;,</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="stringliteral">&quot;The idx type of TView and the TIdx template parameter have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                std::is_same_v&lt;TIdx, Idx&lt;TExtent&gt;&gt;,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                std::is_same_v&lt;TIdx, <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">alpaka::Idx&lt;TExtent&gt;</a>&gt;,</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="stringliteral">&quot;The idx type of TExtent and the TIdx template parameter have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                std::is_same_v&lt;TIdx, Idx&lt;TOffsets&gt;&gt;,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                std::is_same_v&lt;TIdx, <a class="code" href="namespacealpaka.html#a0163f6f6c406d381013f117fdbe7ef70">alpaka::Idx&lt;TOffsets&gt;</a>&gt;,</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="stringliteral">&quot;The idx type of TOffsets and the TIdx template parameter have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                std::is_same_v&lt;TDim, Dim&lt;View&gt;&gt;,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                std::is_same_v&lt;TDim, <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim&lt;View&gt;</a>&gt;,</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="stringliteral">&quot;The dim type of TView and the TDim template parameter have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                std::is_same_v&lt;TDim, Dim&lt;TExtent&gt;&gt;,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                std::is_same_v&lt;TDim, <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim&lt;TExtent&gt;</a>&gt;,</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="stringliteral">&quot;The dim type of TExtent and the TDim template parameter have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            static_assert(</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                std::is_same_v&lt;TDim, Dim&lt;TOffsets&gt;&gt;,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                std::is_same_v&lt;TDim, <a class="code" href="namespacealpaka.html#aee3fb80b82e8f3e9601195afb0b8c34c">alpaka::Dim&lt;TOffsets&gt;</a>&gt;,</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="stringliteral">&quot;The dim type of TOffsets and the TDim template parameter have to be identical!&quot;</span>);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="Assert_8hpp.html#a73eef5bdf73d2c61db1fced592d0ca16">ALPAKA_ASSERT</a>(((<a class="code" href="classalpaka_1_1ViewSubView.html#afdd2dfc473543716e7cf157dee9cce2f">m_offsetsElements</a> + <a class="code" href="classalpaka_1_1ViewSubView.html#a3066c6d259011259ae851633738d35a7">m_extentElements</a>) &lt;= <a class="code" href="namespacealpaka.html#a474dbbe33477452e10d16908da9f58b0">getExtents</a>(view)).<a class="code" href="namespacealpaka_1_1warp.html#a0b2d83334bcd2540baca4256ab378672">all</a>());</div>
@@ -369,7 +369,7 @@ $(document).ready(function(){initNavTree('ViewSubView_8hpp_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_b55c73c2961c280bf97a43e56b19244f.html">view</a></li><li class="navelem"><a class="el" href="ViewSubView_8hpp.html">ViewSubView.hpp</a></li>
-    <li class="footer">Generated on Tue May 7 2024 09:06:31 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon May 13 2024 08:57:44 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
