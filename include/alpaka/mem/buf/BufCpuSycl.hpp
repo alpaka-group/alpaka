@@ -14,11 +14,14 @@ namespace alpaka
     template<typename TElem, typename TDim, typename TIdx>
     using BufCpuSycl = BufGenericSycl<TElem, TDim, TIdx, PlatformCpuSycl>;
 
-    template<typename TElem, typename TDim, typename TIdx>
-    struct MemVisibility<BufCpuSycl<TElem, TDim, TIdx>>
+    namespace trait
     {
-        using type = std::tuple<alpaka::MemVisibleCPU>;
-    };
+        template<typename TElem, typename TDim, typename TIdx>
+        struct MemVisibility<BufCpuSycl<TElem, TDim, TIdx>>
+        {
+            using type = std::tuple<alpaka::MemVisibleCPU>;
+        };
+    } // namespace trait
 } // namespace alpaka
 
 #endif

@@ -148,10 +148,6 @@ TEMPLATE_LIST_TEST_CASE("testMemView", "[mem][visibility]", EnabledTagTagMemVisi
 
     std::array<int, data_size> data;
 
-    // STATIC_REQUIRE(std::is_same_v<typename alpaka::meta::toTuple<std::tuple<int, int>>::type, std::tuple<int,
-    // int>>); STATIC_REQUIRE(std::is_same_v<typename alpaka::meta::toTuple<int>::type, std::tuple<int>>);
-    // STATIC_REQUIRE(std::is_same_v<typename alpaka::meta::toTuple<int, float>::type, std::tuple<int, float>>);
-
     auto data_view1 = alpaka::createView(dev1, data.data(), extents);
     STATIC_REQUIRE(std::is_same_v<
                    typename alpaka::trait::MemVisibility<decltype(data_view1)>::type,

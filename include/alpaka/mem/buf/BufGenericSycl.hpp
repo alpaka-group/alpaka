@@ -259,8 +259,8 @@ namespace alpaka::trait
         }
     };
 
-    template<typename TElem, typename TDim, typename TIdx>
-    struct MemVisibility<BufGenericSycl<TElem, TDim, TIdx>>
+    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
+    struct MemVisibility<BufGenericSycl<TElem, TDim, TIdx, TPlatform>>
     {
         using type = std::tuple<alpaka::MemVisibleGenericSycl>;
     };
