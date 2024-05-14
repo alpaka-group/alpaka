@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1TagCpuTbbBlocks.html#ab19af20726e6457e21e90e1f76036226":[3,0,0,100,0],
+"structalpaka_1_1TagCpuThreads.html":[3,0,0,101],
+"structalpaka_1_1TagCpuThreads.html#a0e70cbb5e39d9a334b82401cfbac95e3":[3,0,0,101,0],
+"structalpaka_1_1TagFpgaSyclIntel.html":[3,0,0,102],
 "structalpaka_1_1TagFpgaSyclIntel.html#ad99868a5e100a239473d7b1fa2a64fa2":[3,0,0,102,0],
 "structalpaka_1_1TagGenericSycl.html":[3,0,0,103],
 "structalpaka_1_1TagGenericSycl.html#a8208407cd2b4d7de6be4b20a7319b4df":[3,0,0,103,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,57],
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#a11a97e7bc8047d9af67c4adef2c54965":[3,0,0,4,57,1],
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#a92fac71e2d137e7d7185f1130588c22d":[3,0,0,4,57,0],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,58],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html#a92514385eb61349e9f522c7865a2d681":[3,0,0,4,58,0],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html#ad6ad9f67fa9a363b2047c6e2eae17e30":[3,0,0,4,58,1],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,59],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TView_00_01TExtent_01_4.html#ab896587ca8ce59d658226dfa1b18fc62":[3,0,0,4,59,0]
+"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,58]
 };

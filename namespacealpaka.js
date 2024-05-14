@@ -337,8 +337,10 @@ var namespacealpaka =
     [ "isAccelerator", "namespacealpaka.html#a28ea3e39a125aaf90a97b1f75d91f0dd", null ],
     [ "isDevice", "namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf", null ],
     [ "isKernelArgumentTriviallyCopyable", "namespacealpaka.html#afb384c5764c94bb1f66b4eee1908cfd9", null ],
+    [ "isMultiThreadAcc", "namespacealpaka.html#a8b9738d9422291b856f55a20d6605299", null ],
     [ "isPlatform", "namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4", null ],
     [ "isQueue", "namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa", null ],
+    [ "isSingleThreadAcc", "namespacealpaka.html#a59a2ac6be1d358d9602a57982175c4cc", null ],
     [ "isVec", "namespacealpaka.html#a6703cc95ff0ca87f388b702c93018b95", null ],
     [ "isVec< Vec< TDim, TVal > >", "namespacealpaka.html#af4ebdbe15a3b59640abcfb7bd5a82d85", null ]
 ];

@@ -1,5 +1,9 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCpu_01_4.html#a58168bc0f5f6591b26ec277083804aa1":[3,0,0,14,2,6,0],
+"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html":[3,0,0,14,2,7],
+"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html#a403f5da96f2198dbae6200ce78bc8526":[3,0,0,14,2,7,0],
+"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html":[3,0,0,14,2,8],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html":[3,0,0,14,2,9],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html":[3,0,0,14,2,10],
 "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html#aff4200216d2667b2797236e90dafe915":[3,0,0,14,2,10,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX13 =
 "structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpaka768cc64386dfad5eb5e9f345e94d83c8.html":[3,0,0,15,136],
 "structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpaka768cc64386dfad5eb5e9f345e94d83c8.html#a2fbe65dafe07af9d447e4663cad4b635":[3,0,0,15,136,0],
 "structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpaka9174fac269d77705a235d5bdf51a8635.html":[3,0,0,15,133],
-"structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpaka9174fac269d77705a235d5bdf51a8635.html#ad074835413d09d71b2b57f96ccff588c":[3,0,0,15,133,0],
-"structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpakabea8cc0153b5e0664e43c82efcf9fa03.html":[3,0,0,15,134],
-"structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpakabea8cc0153b5e0664e43c82efcf9fa03.html#a3600ad39dbcc9c42f229d63cf98122a4":[3,0,0,15,134,0],
-"structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpakad249dd440810fe4c0e5b9a5e9ded990b.html":[3,0,0,15,135],
-"structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpakad249dd440810fe4c0e5b9a5e9ded990b.html#a9d46859358d33de933b5542b325d9933":[3,0,0,15,135,0]
+"structalpaka_1_1trait_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01meta_1_1Contains_3_01alpaka9174fac269d77705a235d5bdf51a8635.html#ad074835413d09d71b2b57f96ccff588c":[3,0,0,15,133,0]
 };

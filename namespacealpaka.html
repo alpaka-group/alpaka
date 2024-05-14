@@ -1203,6 +1203,10 @@ Variables</h2></td></tr>
 <tr class="memitem:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">isDevice</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptDev, TDev&gt;::value</td></tr>
 <tr class="memdesc:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TDev is a device, i.e. if it implements the ConceptDev concept.  <a href="namespacealpaka.html#ac46c96dc95e8410d4ae3ef85e79d8dbf">More...</a><br /></td></tr>
 <tr class="separator:ac46c96dc95e8410d4ae3ef85e79d8dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b9738d9422291b856f55a20d6605299"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a8b9738d9422291b856f55a20d6605299"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8b9738d9422291b856f55a20d6605299">isMultiThreadAcc</a> = <a class="el" href="structalpaka_1_1trait_1_1IsMultiThreadAcc.html">trait::IsMultiThreadAcc</a>&lt;TAcc&gt;::value</td></tr>
+<tr class="memdesc:a8b9738d9422291b856f55a20d6605299"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TAcc is an accelerator that supports multiple threads per block, false otherwise.  <a href="namespacealpaka.html#a8b9738d9422291b856f55a20d6605299">More...</a><br /></td></tr>
+<tr class="separator:a8b9738d9422291b856f55a20d6605299"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplParams" colspan="2">template&lt;typename TPlatform &gt; </td></tr>
 <tr class="memitem:a87d64705ec25ad0c9a25a218118c0ad4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">isPlatform</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;<a class="el" href="structalpaka_1_1ConceptPlatform.html">ConceptPlatform</a>, TPlatform&gt;::value</td></tr>
 <tr class="memdesc:a87d64705ec25ad0c9a25a218118c0ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TPlatform is a platform, i.e. if it implements the <a class="el" href="structalpaka_1_1ConceptPlatform.html">ConceptPlatform</a> concept.  <a href="namespacealpaka.html#a87d64705ec25ad0c9a25a218118c0ad4">More...</a><br /></td></tr>
@@ -1211,6 +1215,10 @@ Variables</h2></td></tr>
 <tr class="memitem:a8b01aa67d992572f8812a47813269bfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">isQueue</a> = <a class="el" href="structalpaka_1_1concepts_1_1ImplementsConcept.html">concepts::ImplementsConcept</a>&lt;ConceptQueue, TQueue&gt;::value</td></tr>
 <tr class="memdesc:a8b01aa67d992572f8812a47813269bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TQueue is a queue, i.e. if it implements the ConceptQueue concept.  <a href="namespacealpaka.html#a8b01aa67d992572f8812a47813269bfa">More...</a><br /></td></tr>
 <tr class="separator:a8b01aa67d992572f8812a47813269bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59a2ac6be1d358d9602a57982175c4cc"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a59a2ac6be1d358d9602a57982175c4cc"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a59a2ac6be1d358d9602a57982175c4cc">isSingleThreadAcc</a> = <a class="el" href="structalpaka_1_1trait_1_1IsSingleThreadAcc.html">trait::IsSingleThreadAcc</a>&lt;TAcc&gt;::value</td></tr>
+<tr class="memdesc:a59a2ac6be1d358d9602a57982175c4cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if TAcc is an accelerator that supports only a single thread per block, false otherwise.  <a href="namespacealpaka.html#a59a2ac6be1d358d9602a57982175c4cc">More...</a><br /></td></tr>
+<tr class="separator:a59a2ac6be1d358d9602a57982175c4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6703cc95ff0ca87f388b702c93018b95"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a6703cc95ff0ca87f388b702c93018b95"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6703cc95ff0ca87f388b702c93018b95">isVec</a> = false</td></tr>
 <tr class="separator:a6703cc95ff0ca87f388b702c93018b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1242,7 +1250,7 @@ template&lt;typename T &gt; </div>
 
 <p>The accelerator type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00058">58</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00078">78</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4301,7 +4309,7 @@ template&lt;typename TAcc , typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The acceleration properties on the given device. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00062">62</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00090">90</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4330,7 +4338,7 @@ template&lt;typename TAcc &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00100">100</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8695,6 +8703,34 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a8b9738d9422291b856f55a20d6605299"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b9738d9422291b856f55a20d6605299">&#9670;&nbsp;</a></span>isMultiThreadAcc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool alpaka::isMultiThreadAcc = <a class="el" href="structalpaka_1_1trait_1_1IsMultiThreadAcc.html">trait::IsMultiThreadAcc</a>&lt;TAcc&gt;::value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if TAcc is an accelerator that supports multiple threads per block, false otherwise. </p>
+
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00086">86</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a87d64705ec25ad0c9a25a218118c0ad4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87d64705ec25ad0c9a25a218118c0ad4">&#9670;&nbsp;</a></span>isPlatform</h2>
 
@@ -8748,6 +8784,34 @@ template&lt;typename TQueue &gt; </div>
 <p>True if TQueue is a queue, i.e. if it implements the ConceptQueue concept. </p>
 
 <p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00020">20</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a59a2ac6be1d358d9602a57982175c4cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a2ac6be1d358d9602a57982175c4cc">&#9670;&nbsp;</a></span>isSingleThreadAcc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool alpaka::isSingleThreadAcc = <a class="el" href="structalpaka_1_1trait_1_1IsSingleThreadAcc.html">trait::IsSingleThreadAcc</a>&lt;TAcc&gt;::value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if TAcc is an accelerator that supports only a single thread per block, false otherwise. </p>
+
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00082">82</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -8809,7 +8873,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Mon May 13 2024 14:39:39 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue May 14 2024 15:25:10 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

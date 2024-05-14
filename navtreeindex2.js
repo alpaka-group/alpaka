@@ -245,9 +245,9 @@ var NAVTREEINDEX2 =
 "WorkDivUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,26,4],
 "WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,26,4],
 "acc_2Traits_8hpp.html":[4,0,0,0,0,15],
-"acc_2Traits_8hpp.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[4,0,0,0,0,15,6],
-"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,15,4],
-"acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,15,5],
-"acc_2Traits_8hpp.html#ae3a0f745fcf8e6ac0125e5ba7911e11a":[4,0,0,0,0,15,3],
-"acc_2Traits_8hpp_source.html":[4,0,0,0,0,15]
+"acc_2Traits_8hpp.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[4,0,0,0,0,15,8],
+"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,15,6],
+"acc_2Traits_8hpp.html#a59a2ac6be1d358d9602a57982175c4cc":[4,0,0,0,0,15,10],
+"acc_2Traits_8hpp.html#a8b9738d9422291b856f55a20d6605299":[4,0,0,0,0,15,9],
+"acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,15,7]
 };

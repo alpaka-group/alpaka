@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1math_1_1trait_1_1Sinh_3_01SinhUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,9,0,95],
+"structalpaka_1_1math_1_1trait_1_1Sinh_3_01SinhUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html#ad329e87e0893f2d3a87ab7e2dc1e61e4":[3,0,0,9,0,95,0],
+"structalpaka_1_1math_1_1trait_1_1Sinh_3_01SinhUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablef0370496006151f9b54cf18e585e9534.html":[3,0,0,9,0,96],
+"structalpaka_1_1math_1_1trait_1_1Sinh_3_01SinhUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablef0370496006151f9b54cf18e585e9534.html#abd8468ecd3d73df1304886e757eef7da":[3,0,0,9,0,96,0],
 "structalpaka_1_1math_1_1trait_1_1Sqrt.html":[3,0,0,9,0,97],
 "structalpaka_1_1math_1_1trait_1_1Sqrt.html#af77153a4d14461b62de56cb5c03054b4":[3,0,0,9,0,97,0],
 "structalpaka_1_1math_1_1trait_1_1Sqrt_3_01SqrtUniformCudaHipBuiltIn_00_01Complex_3_01T_01_4_01_4.html":[3,0,0,9,0,98],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1test_1_1trait_1_1End.html":[3,0,0,14,2,4],
 "structalpaka_1_1test_1_1trait_1_1End.html#a76872d40bb44a9b3b6c5acbeca685fde":[3,0,0,14,2,4,0],
 "structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType.html":[3,0,0,14,2,5],
-"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCpu_01_4.html":[3,0,0,14,2,6],
-"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCpu_01_4.html#a58168bc0f5f6591b26ec277083804aa1":[3,0,0,14,2,6,0],
-"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html":[3,0,0,14,2,7],
-"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCudaRt_01_4.html#a403f5da96f2198dbae6200ce78bc8526":[3,0,0,14,2,7,0],
-"structalpaka_1_1test_1_1trait_1_1IsBlockingQueue.html":[3,0,0,14,2,8]
+"structalpaka_1_1test_1_1trait_1_1EventHostManualTriggerType_3_01DevCpu_01_4.html":[3,0,0,14,2,6]
 };
