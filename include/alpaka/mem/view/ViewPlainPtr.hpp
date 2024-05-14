@@ -8,9 +8,18 @@
 #include "alpaka/dev/DevCpu.hpp"
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/DevUniformCudaHipRt.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/view/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
+#include "alpaka/meta/TypeListOps.hpp"
+#include "alpaka/platform/PlatformCpu.hpp"
+#include "alpaka/platform/PlatformCpuSycl.hpp"
+#include "alpaka/platform/PlatformCudaRt.hpp"
+#include "alpaka/platform/PlatformFpgaSyclIntel.hpp"
+#include "alpaka/platform/PlatformGenericSycl.hpp"
+#include "alpaka/platform/PlatformGpuSyclIntel.hpp"
+#include "alpaka/platform/PlatformHipRt.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <type_traits>
@@ -19,8 +28,14 @@
 namespace alpaka
 {
     //! The memory view to wrap plain pointers.
-    template<typename TDev, typename TElem, typename TDim, typename TIdx>
-    struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+    template<
+        typename TDev,
+        typename TElem,
+        typename TDim,
+        typename TIdx,
+        typename TMemVisibility =
+            typename alpaka::meta::toTuple<typename alpaka::trait::MemVisibility<alpaka::Platform<TDev>>::type>::type>
+    struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
     {
         static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");
 
@@ -49,15 +64,21 @@ namespace alpaka
     namespace trait
     {
         //! The ViewPlainPtr device type trait specialization.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct DevType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct DevType<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = alpaka::Dev<TDev>;
         };
 
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct MemVisibility<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
+        {
+            using type = TMemVisibility;
+        };
+
         //! The ViewPlainPtr device get trait specialization.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetDev<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetDev<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
             static auto getDev(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> alpaka::Dev<TDev>
             {
@@ -66,15 +87,15 @@ namespace alpaka
         };
 
         //! The ViewPlainPtr dimension getter trait.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct DimType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct DimType<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = TDim;
         };
 
         //! The ViewPlainPtr memory element type get trait specialization.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct ElemType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct ElemType<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = TElem;
         };
@@ -82,32 +103,32 @@ namespace alpaka
 
     namespace trait
     {
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetExtents<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetExtents<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
-            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
+            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility> const& view) const
             {
                 return view.m_extentElements;
             }
         };
 
         //! The ViewPlainPtr native pointer get trait specialization.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetPtrNative<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetPtrNative<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
-            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) -> TElem const*
+            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility> const& view) -> TElem const*
             {
                 return view.m_pMem;
             }
 
-            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx>& view) -> TElem*
+            static auto getPtrNative(ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>& view) -> TElem*
             {
                 return view.m_pMem;
             }
         };
 
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetPitchesInBytes<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetPitchesInBytes<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
             ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const& view) const
             {
@@ -174,18 +195,19 @@ namespace alpaka
         };
 #endif
         //! The ViewPlainPtr offset get trait specialization.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct GetOffsets<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetOffsets<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
-            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx> const&) const -> Vec<TDim, TIdx>
+            ALPAKA_FN_HOST auto operator()(ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility> const&) const
+                -> Vec<TDim, TIdx>
             {
                 return Vec<TDim, TIdx>::zeros();
             }
         };
 
         //! The ViewPlainPtr idx type trait specialization.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx>
-        struct IdxType<ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct IdxType<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = TIdx;
         };

@@ -4,10 +4,12 @@
 
 #pragma once
 
+#include "alpaka/acc/Traits.hpp"
+#include "alpaka/dev/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/ForEachType.hpp"
-#include "alpaka/meta/IsTuple.hpp"
 #include "alpaka/meta/TypeListOps.hpp"
+#include "alpaka/platform/Traits.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -17,7 +19,7 @@
 #define CREATE_MEM_VISIBILITY(mem_name)                                                                               \
     struct mem_name                                                                                                   \
     {                                                                                                                 \
-        static std::string name()                                                                                     \
+        static std::string get_name()                                                                                 \
         {                                                                                                             \
             return #mem_name;                                                                                         \
         }                                                                                                             \
@@ -49,7 +51,7 @@ namespace alpaka
             template<typename TTYPE>
             void operator()(std::vector<std::string>& vs)
             {
-                vs.push_back(TTYPE::name());
+                vs.push_back(TTYPE::get_name());
             }
         };
     } // namespace detail
@@ -84,7 +86,7 @@ namespace alpaka
         }
         else
         {
-            return MemVisibilityType::name();
+            return MemVisibilityType::get_name();
         }
     }
 
@@ -115,6 +117,7 @@ namespace alpaka
                 typename alpaka::trait::MemVisibility<TBuf>::type,
                 typename alpaka::trait::MemVisibility<T>::type>::value;
         }
+        ALPAKA_UNREACHABLE({});
     }
 
     template<typename TDev, typename TBuf>
