@@ -167,16 +167,16 @@ namespace alpaka
         };
     } // namespace trait
 
-    template<typename TElem, typename TDim, typename TIdx>
+    template<typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
     class BufCpu;
 
     namespace trait
     {
         //! The CPU device memory buffer type trait specialization.
-        template<typename TElem, typename TDim, typename TIdx>
-        struct BufType<DevCpu, TElem, TDim, TIdx>
+        template<typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct BufType<DevCpu, TElem, TDim, TIdx, TMemVisibility>
         {
-            using type = BufCpu<TElem, TDim, TIdx>;
+            using type = BufCpu<TElem, TDim, TIdx, TMemVisibility>;
         };
 
         //! The CPU device platform type trait specialization.
