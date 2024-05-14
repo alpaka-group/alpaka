@@ -36,7 +36,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuOmp2Blocks.hpp ==
 	// ==
-	/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2024 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -9692,7 +9692,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/Traits.hpp ==
 		// ==
-		/* Copyright 2022 Benjamin Worpitz, Bernhard Manfred Gruber
+		/* Copyright 2024 Benjamin Worpitz, Bernhard Manfred Gruber, Andrea Bocci
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -10555,6 +10555,26 @@
 		        template<typename T, typename TSfinae = void>
 		        struct AccType;
 
+		        //! The single thread accelerator trait.
+		        //!
+		        //! If TAcc is an accelerator that supports only a single thread per block, inherit from std::true_type.
+		        //! If TAcc is not an accelerator, or an accelerator that supports multiple threads per block, inherit from
+		        //! std::false_type.
+		        template<typename TAcc, typename TSfinae = void>
+		        struct IsSingleThreadAcc : std::false_type
+		        {
+		        };
+
+		        //! The multi thread accelerator trait.
+		        //!
+		        //! If TAcc is an accelerator that supports multiple threads per block, inherit from std::true_type.
+		        //! If TAcc is not an accelerator, or an accelerator that supports only a single thread per block, inherit from
+		        //! std::false_type.
+		        template<typename TAcc, typename TSfinae = void>
+		        struct IsMultiThreadAcc : std::false_type
+		        {
+		        };
+
 		        //! The device properties get trait.
 		        template<typename TAcc, typename TSfinae = void>
 		        struct GetAccDevProps;
@@ -10575,6 +10595,14 @@
 		    //! The accelerator type trait alias template to remove the ::type.
 		    template<typename T>
 		    using Acc = typename trait::AccType<T>::type;
+
+		    //! True if TAcc is an accelerator that supports only a single thread per block, false otherwise.
+		    template<typename TAcc>
+		    inline constexpr bool isSingleThreadAcc = trait::IsSingleThreadAcc<TAcc>::value;
+
+		    //! True if TAcc is an accelerator that supports multiple threads per block, false otherwise.
+		    template<typename TAcc>
+		    inline constexpr bool isMultiThreadAcc = trait::IsMultiThreadAcc<TAcc>::value;
 
 		    //! \return The acceleration properties on the given device.
 		    template<typename TAcc, typename TDev>
@@ -10600,7 +10628,9 @@
 		        {
 		            using type = typename QueueType<typename alpaka::trait::PlatformType<TAcc>::type, TProperty>::type;
 		        };
+
 		    } // namespace trait
+
 		} // namespace alpaka
 		// ==
 		// == ./include/alpaka/acc/Traits.hpp ==
@@ -13469,6 +13499,18 @@
 	            using type = AccCpuOmp2Blocks<TDim, TIdx>;
 	        };
 
+	        //! The CPU OpenMP 2.0 block single thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsSingleThreadAcc<AccCpuOmp2Blocks<TDim, TIdx>> : std::true_type
+	        {
+	        };
+
+	        //! The CPU OpenMP 2.0 block multi thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsMultiThreadAcc<AccCpuOmp2Blocks<TDim, TIdx>> : std::false_type
+	        {
+	        };
+
 	        //! The CPU OpenMP 2.0 block accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuOmp2Blocks<TDim, TIdx>>
@@ -13572,7 +13614,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuOmp2Threads.hpp ==
 	// ==
-	/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2024 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -14217,6 +14259,18 @@
 	            using type = AccCpuOmp2Threads<TDim, TIdx>;
 	        };
 
+	        //! The CPU OpenMP 2.0 thread single thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsSingleThreadAcc<AccCpuOmp2Threads<TDim, TIdx>> : std::false_type
+	        {
+	        };
+
+	        //! The CPU OpenMP 2.0 thread multi thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsMultiThreadAcc<AccCpuOmp2Threads<TDim, TIdx>> : std::true_type
+	        {
+	        };
+
 	        //! The CPU OpenMP 2.0 thread accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuOmp2Threads<TDim, TIdx>>
@@ -14326,7 +14380,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuSerial.hpp ==
 	// ==
-	/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2024 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -14491,6 +14545,18 @@
 	            using type = AccCpuSerial<TDim, TIdx>;
 	        };
 
+	        //! The CPU serial single thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsSingleThreadAcc<AccCpuSerial<TDim, TIdx>> : std::true_type
+	        {
+	        };
+
+	        //! The CPU serial multi thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsMultiThreadAcc<AccCpuSerial<TDim, TIdx>> : std::false_type
+	        {
+	        };
+
 	        //! The CPU serial accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuSerial<TDim, TIdx>>
@@ -14602,7 +14668,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/AccGenericSycl.hpp ==
 		// ==
-		/* Copyright 2023 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
+		/* Copyright 2024 Jan Stephan, Antonio Di Pilato, Andrea Bocci, Luca Ferragina, Aurora Perego
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -18214,6 +18280,22 @@
 		        using type = TAcc<TDim, TIdx>;
 		    };
 
+		    //! The SYCL single thread accelerator type trait specialization.
+		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
+		    struct IsSingleThreadAcc<
+		        TAcc<TDim, TIdx>,
+		        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>> : std::false_type
+		    {
+		    };
+
+		    //! The SYCL multi thread accelerator type trait specialization.
+		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
+		    struct IsMultiThreadAcc<
+		        TAcc<TDim, TIdx>,
+		        std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>> : std::true_type
+		    {
+		    };
+
 		    //! The SYCL accelerator device properties get trait specialization.
 		    template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
 		    struct GetAccDevProps<
@@ -19580,7 +19662,8 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuTbbBlocks.hpp ==
 	// ==
-	/* Copyright 2022 Axel Huebl, Benjamin Worpitz, Erik Zenker, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2024 Axel Huebl, Benjamin Worpitz, Erik Zenker, René Widera, Jan Stephan, Bernhard Manfred Gruber,
+	 *                Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -19754,6 +19837,18 @@
 	            using type = AccCpuTbbBlocks<TDim, TIdx>;
 	        };
 
+	        //! The CPU TBB block single thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsSingleThreadAcc<AccCpuTbbBlocks<TDim, TIdx>> : std::true_type
+	        {
+	        };
+
+	        //! The CPU TBB block multi thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsMultiThreadAcc<AccCpuTbbBlocks<TDim, TIdx>> : std::false_type
+	        {
+	        };
+
 	        //! The CPU TBB block accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuTbbBlocks<TDim, TIdx>>
@@ -19857,7 +19952,7 @@
 	// ============================================================================
 	// == ./include/alpaka/acc/AccCpuThreads.hpp ==
 	// ==
-	/* Copyright 2022 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber
+	/* Copyright 2024 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan, Bernhard Manfred Gruber, Andrea Bocci
 	 * SPDX-License-Identifier: MPL-2.0
 	 */
 
@@ -20304,6 +20399,18 @@
 	            using type = AccCpuThreads<TDim, TIdx>;
 	        };
 
+	        //! The CPU threads single thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsSingleThreadAcc<AccCpuThreads<TDim, TIdx>> : std::false_type
+	        {
+	        };
+
+	        //! The CPU threads multi thread accelerator type trait specialization.
+	        template<typename TDim, typename TIdx>
+	        struct IsMultiThreadAcc<AccCpuThreads<TDim, TIdx>> : std::true_type
+	        {
+	        };
+
 	        //! The CPU threads accelerator device properties get trait specialization.
 	        template<typename TDim, typename TIdx>
 	        struct GetAccDevProps<AccCpuThreads<TDim, TIdx>>
@@ -20641,7 +20748,7 @@
 		// ============================================================================
 		// == ./include/alpaka/acc/AccGpuUniformCudaHipRt.hpp ==
 		// ==
-		/* Copyright 2022 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
+		/* Copyright 2024 Benjamin Worpitz, René Widera, Jan Stephan, Andrea Bocci, Bernhard Manfred Gruber, Antonio Di Pilato
 		 * SPDX-License-Identifier: MPL-2.0
 		 */
 
@@ -25501,6 +25608,18 @@
 		        struct AccType<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>>
 		        {
 		            using type = AccGpuUniformCudaHipRt<TApi, TDim, TIdx>;
+		        };
+
+		        //! The GPU CUDA single thread accelerator type trait specialization.
+		        template<typename TApi, typename TDim, typename TIdx>
+		        struct IsSingleThreadAcc<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>> : std::false_type
+		        {
+		        };
+
+		        //! The GPU CUDA multi thread accelerator type trait specialization.
+		        template<typename TApi, typename TDim, typename TIdx>
+		        struct IsMultiThreadAcc<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>> : std::true_type
+		        {
 		        };
 
 		        //! The GPU CUDA accelerator device properties get trait specialization.
