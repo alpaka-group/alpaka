@@ -54,7 +54,7 @@ using ExpectedTagsMemVisibilities = alpaka::meta::Filter<
         std::tuple<alpaka::TagCpuOmp2Threads, alpaka::MemVisibleCPU>,
         std::tuple<alpaka::TagGpuCudaRt, alpaka::MemVisibleGpuCudaRt>,
         std::tuple<alpaka::TagGpuHipRt, alpaka::MemVisibleGpuHipRt>,
-        std::tuple<alpaka::TagCpuSycl, alpaka::MemVisibleCPU>,
+        std::tuple<alpaka::TagCpuSycl, alpaka::MemVisibleCpuSycl>,
         std::tuple<alpaka::TagFpgaSyclIntel, alpaka::MemVisibleFpgaSyclIntel>,
         std::tuple<alpaka::TagGpuSyclIntel, alpaka::MemVisibleGpuSyclIntel>>,
     AccIsEnabledMemVisibilities>;

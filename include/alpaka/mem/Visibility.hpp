@@ -30,6 +30,7 @@ namespace alpaka
     CREATE_MEM_VISIBILITY(MemVisibleCPU);
     CREATE_MEM_VISIBILITY(MemVisibleFpgaSyclIntel);
     CREATE_MEM_VISIBILITY(MemVisibleGenericSycl);
+    CREATE_MEM_VISIBILITY(MemVisibleCpuSycl);
     CREATE_MEM_VISIBILITY(MemVisibleGpuCudaRt);
     CREATE_MEM_VISIBILITY(MemVisibleGpuHipRt);
     CREATE_MEM_VISIBILITY(MemVisibleGpuSyclIntel);

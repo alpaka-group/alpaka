@@ -44,7 +44,7 @@ namespace alpaka::trait
     template<>
     struct MemVisibility<PlatformCpuSycl>
     {
-        using type = alpaka::MemVisibleCPU;
+        using type = alpaka::MemVisibleCpuSycl;
     };
 } // namespace alpaka::trait
 
