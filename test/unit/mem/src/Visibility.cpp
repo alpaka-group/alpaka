@@ -83,11 +83,14 @@ TEMPLATE_LIST_TEST_CASE("testHasSameMemView", "[mem][visibility]", EnabledTagTag
     auto const plt1 = alpaka::Platform<Acc1>{};
     auto const plt2 = alpaka::Platform<Acc2>{};
 
+    using Plt1 = decltype(plt1);
+    using Plt2 = decltype(plt2);
+
     auto const dev1 = alpaka::getDevByIdx(plt1, 0);
     auto const dev2 = alpaka::getDevByIdx(plt2, 0);
 
-    using BufAcc1 = alpaka::Buf<Acc1, float, Dim, Idx>;
-    using BufAcc2 = alpaka::Buf<Acc2, float, Dim, Idx>;
+    using BufAcc1 = alpaka::Buf<Acc1, float, Dim, Idx, alpaka::MemVisibilityTypeList<Plt1>>;
+    using BufAcc2 = alpaka::Buf<Acc2, float, Dim, Idx, alpaka::MemVisibilityTypeList<Plt2>>;
 
     BufAcc1 bufDev1(alpaka::allocBuf<float, Idx>(dev1, Idx(1)));
     BufAcc2 bufDev2(alpaka::allocBuf<float, Idx>(dev2, Idx(1)));

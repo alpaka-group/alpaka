@@ -65,7 +65,7 @@ namespace alpaka
     [[maybe_unused]] static std::string getMemVisiblityName()
     {
         using MemVisibilityType = typename alpaka::trait::MemVisibility<std::decay_t<T>>::type;
-        if constexpr(alpaka::meta::isTuple<MemVisibilityType>())
+        if constexpr(alpaka::meta::isList<MemVisibilityType>)
         {
             std::vector<std::string> vs;
             alpaka::meta::forEachType<MemVisibilityType>(detail::AppendMemTypeName{}, vs);
@@ -126,4 +126,27 @@ namespace alpaka
     {
         return hasSameMemView<std::decay_t<TDev>, std::decay_t<TBuf>>();
     }
+
+    namespace detail
+    {
+        template<typename T, typename = void>
+        struct MemVisibilityHelper
+        {
+            using type = typename alpaka::trait::MemVisibility<T>::type;
+        };
+
+        template<typename T>
+        struct MemVisibilityHelper<
+            T,
+            std::enable_if_t<alpaka::isDevice<std::decay_t<T>> || alpaka::isAccelerator<std::decay_t<T>>>>
+        {
+            using type = typename alpaka::trait::MemVisibility<alpaka::Platform<std::decay_t<T>>>::type;
+        };
+    } // namespace detail
+
+    template<typename T>
+    using MemVisibility = typename alpaka::detail::MemVisibilityHelper<std::decay_t<T>>::type;
+
+    template<typename T>
+    using MemVisibilityTypeList = alpaka::meta::toTuple<alpaka::MemVisibility<std::decay_t<T>>>;
 } // namespace alpaka

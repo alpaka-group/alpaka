@@ -111,8 +111,8 @@ auto main() -> int
     auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
     // Allocate 3 host memory buffers
-    using BufHost = alpaka::Buf<DevHost, Data, Dim, Idx>;
-    BufHost bufHostA(alpaka::allocBuf<Data, Idx>(devHost, extent));
+    auto bufHostA(alpaka::allocBuf<Data, Idx>(devHost, extent));
+    using BufHost = decltype(bufHostA);
     BufHost bufHostB(alpaka::allocBuf<Data, Idx>(devHost, extent));
     BufHost bufHostC(alpaka::allocBuf<Data, Idx>(devHost, extent));
 
@@ -129,8 +129,8 @@ auto main() -> int
     }
 
     // Allocate 3 buffers on the accelerator
-    using BufAcc = alpaka::Buf<DevAcc, Data, Dim, Idx>;
-    BufAcc bufAccA(alpaka::allocBuf<Data, Idx>(devAcc, extent));
+    auto bufAccA(alpaka::allocBuf<Data, Idx>(devAcc, extent));
+    using BufAcc = decltype(bufAccA);
     BufAcc bufAccB(alpaka::allocBuf<Data, Idx>(devAcc, extent));
     BufAcc bufAccC(alpaka::allocBuf<Data, Idx>(devAcc, extent));
 

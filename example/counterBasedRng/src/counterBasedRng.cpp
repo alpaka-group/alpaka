@@ -162,8 +162,7 @@ auto main() -> int
     CounterBasedRngKernel::Key key = {rd(), rd()};
 
     // Allocate buffer on the accelerator
-    using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;
-    BufAcc bufAcc(alpaka::allocBuf<Data, Idx>(devAcc, extent));
+    auto bufAcc(alpaka::allocBuf<Data, Idx>(devAcc, extent));
 
     // Create the kernel execution task.
     auto const taskKernelAcc = alpaka::createTaskKernel<Acc>(

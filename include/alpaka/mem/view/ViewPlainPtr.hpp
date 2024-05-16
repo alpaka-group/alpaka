@@ -33,8 +33,7 @@ namespace alpaka
         typename TElem,
         typename TDim,
         typename TIdx,
-        typename TMemVisibility =
-            typename alpaka::meta::toTuple<typename alpaka::trait::MemVisibility<alpaka::Platform<TDev>>::type>::type>
+        typename TMemVisibility = alpaka::meta::toTuple<alpaka::MemVisibility<TDev>>>
     struct ViewPlainPtr final : internal::ViewAccessOps<ViewPlainPtr<TDev, TElem, TDim, TIdx, TMemVisibility>>
     {
         static_assert(!std::is_const_v<TIdx>, "The idx type of the view can not be const!");

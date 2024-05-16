@@ -88,8 +88,6 @@ auto main() -> int
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
     QueueAcc queue{devAcc};
 
-    using BufHost = alpaka::Buf<Host, uint32_t, Dim, Idx>;
-    using BufAcc = alpaka::Buf<Acc, uint32_t, Dim, Idx>;
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     // Problem parameter.
     constexpr size_t numPoints = 1'000'000u;
@@ -104,8 +102,8 @@ auto main() -> int
         alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
 
     // Setup buffer.
-    BufHost bufHost{alpaka::allocBuf<uint32_t, Idx>(devHost, extent)};
-    BufAcc bufAcc{alpaka::allocBuf<uint32_t, Idx>(devAcc, extent)};
+    auto bufHost{alpaka::allocBuf<uint32_t, Idx>(devHost, extent)};
+    auto bufAcc{alpaka::allocBuf<uint32_t, Idx>(devAcc, extent)};
     uint32_t* const ptrBufAcc{std::data(bufAcc)};
 
     // Initialize the global count to 0.

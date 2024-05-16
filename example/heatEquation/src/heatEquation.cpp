@@ -121,9 +121,8 @@ auto main() -> int
     double* const pNextHost = std::data(uNextBufHost);
 
     // Accelerator buffer
-    using BufAcc = alpaka::Buf<Acc, double, Dim, Idx>;
-    auto uNextBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
-    auto uCurrBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
+    auto uNextBufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
+    auto uCurrBufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
 
     double* pCurrAcc = std::data(uCurrBufAcc);
     double* pNextAcc = std::data(uNextBufAcc);

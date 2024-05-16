@@ -16,6 +16,7 @@
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
+#include "alpaka/meta/Unique.hpp"
 #include "alpaka/platform/PlatformCpu.hpp"
 #include "alpaka/vec/Vec.hpp"
 
@@ -198,7 +199,7 @@ namespace alpaka
         {
             template<typename TExtent>
             ALPAKA_FN_HOST static auto allocBuf(DevCpu const& dev, TExtent const& extent)
-                -> BufCpu<TElem, TDim, TIdx, typename alpaka::trait::MemVisibility<alpaka::Platform<DevCpu>>::type>
+                -> BufCpu<TElem, TDim, TIdx, std::tuple<alpaka::MemVisibility<DevCpu>>>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -220,11 +221,7 @@ namespace alpaka
                 auto* memPtr = alpaka::malloc<TElem>(Allocator{}, static_cast<std::size_t>(getExtentProduct(extent)));
                 auto deleter = [](TElem* ptr) { alpaka::free(Allocator{}, ptr); };
 
-                return BufCpu<
-                    TElem,
-                    TDim,
-                    TIdx,
-                    typename alpaka::trait::MemVisibility<alpaka::Platform<DevCpu>>::type>(
+                return BufCpu<TElem, TDim, TIdx, std::tuple<alpaka::MemVisibility<DevCpu>>>(
                     dev,
                     memPtr,
                     std::move(deleter),
@@ -238,7 +235,7 @@ namespace alpaka
         {
             template<typename TQueue, typename TExtent>
             ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, TExtent const& extent)
-                -> BufCpu<TElem, TDim, TIdx, typename alpaka::trait::MemVisibility<alpaka::Platform<DevCpu>>::type>
+                -> BufCpu<TElem, TDim, TIdx, std::tuple<alpaka::MemVisibility<DevCpu>>>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -274,11 +271,7 @@ namespace alpaka
                         });
                 };
 
-                return BufCpu<
-                    TElem,
-                    TDim,
-                    TIdx,
-                    typename alpaka::trait::MemVisibility<alpaka::Platform<DevCpu>>::type>(
+                return BufCpu<TElem, TDim, TIdx, std::tuple<alpaka::MemVisibility<DevCpu>>>(
                     dev,
                     memPtr,
                     std::move(deleter),
@@ -300,8 +293,13 @@ namespace alpaka
             ALPAKA_FN_HOST static auto allocMappedBuf(
                 DevCpu const& host,
                 PlatformCpu const& /*platform*/,
-                // TODO: needs to Visibility of DevCpu and PlatformCpu
-                TExtent const& extent) -> BufCpu<TElem, TDim, TIdx, alpaka::trait::MemVisibility<PlatformCpu>::type>
+                TExtent const& extent)
+                -> BufCpu<
+                    TElem,
+                    TDim,
+                    TIdx,
+                    alpaka::meta::Unique<
+                        std::tuple<alpaka::MemVisibility<DevCpu>, alpaka::MemVisibility<PlatformCpu>>>>
             {
                 // Allocate standard host memory.
                 return allocBuf<TElem, TIdx>(host, extent);

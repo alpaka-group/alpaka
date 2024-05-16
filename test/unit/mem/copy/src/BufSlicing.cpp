@@ -28,8 +28,8 @@ struct TestContainer
     using DevHost = alpaka::DevCpu;
     using PlatformHost = alpaka::Platform<DevHost>;
 
-    using BufHost = alpaka::Buf<DevHost, TData, TDim, TIdx>;
-    using BufDevice = alpaka::Buf<DevAcc, TData, TDim, TIdx>;
+    using BufHost = alpaka::Buf<DevHost, TData, TDim, TIdx, alpaka::MemVisibilityTypeList<PlatformHost>>;
+    using BufDevice = alpaka::Buf<DevAcc, TData, TDim, TIdx, alpaka::MemVisibilityTypeList<PlatformAcc>>;
 
     using SubView = alpaka::ViewSubView<DevAcc, TData, TDim, TIdx>;
 

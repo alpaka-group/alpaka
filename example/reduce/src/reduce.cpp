@@ -49,7 +49,7 @@ auto reduce(
     DevAcc devAcc,
     QueueAcc queue,
     uint64_t n,
-    alpaka::Buf<DevHost, T, Dim, Idx> hostMemory,
+    alpaka::Buf<DevHost, T, Dim, Idx, alpaka::MemVisibilityTypeList<DevHost>> hostMemory,
     TFunc func) -> T
 {
     static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
@@ -62,10 +62,11 @@ auto reduce(
     if(blockCount > maxBlockCount)
         blockCount = maxBlockCount;
 
-    alpaka::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory = alpaka::allocBuf<T, Idx>(devAcc, n);
+    using DevBuf = alpaka::Buf<DevAcc, T, Dim, Extent, alpaka::MemVisibilityTypeList<DevAcc>>;
 
-    alpaka::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory
-        = alpaka::allocBuf<T, Idx>(devAcc, static_cast<Extent>(blockCount));
+    DevBuf sourceDeviceMemory = alpaka::allocBuf<T, Idx>(devAcc, n);
+
+    DevBuf destinationDeviceMemory = alpaka::allocBuf<T, Idx>(devAcc, static_cast<Extent>(blockCount));
 
     // copy the data to the GPU
     alpaka::memcpy(queue, sourceDeviceMemory, hostMemory, n);
