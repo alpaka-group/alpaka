@@ -158,10 +158,6 @@ auto main() -> int
     auto bufHost(alpaka::allocBuf<Data, Idx>(devHost, extent));
     auto bufHostDev(alpaka::allocBuf<Data, Idx>(devHost, extent));
 
-    // Initialize the host input vectors A and B
-    Data* const pBufHost(alpaka::getPtrNative(bufHost));
-    Data* const pBufHostDev(alpaka::getPtrNative(bufHostDev));
-
     std::random_device rd{};
     CounterBasedRngKernel::Key key = {rd(), rd()};
 

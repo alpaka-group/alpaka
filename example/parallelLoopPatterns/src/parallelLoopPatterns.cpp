@@ -45,10 +45,9 @@ void testResult(TQueue& queue, TBufAcc& bufAcc)
     auto const byte(static_cast<uint8_t>(0u));
     alpaka::memset(queue, bufAcc, byte);
     // Test that all elements were processed
-    auto const* result = alpaka::getPtrNative(bufHost);
     bool testPassed = true;
     for(uint32_t i = 0u; i < n; i++)
-        testPassed = testPassed && (std::abs(result[i] - process(i)) < 1e-3);
+        testPassed = testPassed && (std::abs(bufHost[i] - process(i)) < 1e-3);
     std::cout << (testPassed ? "Test passed.\n" : "Test failed.\n");
 }
 
