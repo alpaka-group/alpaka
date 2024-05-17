@@ -114,7 +114,7 @@ void naiveCudaStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     std::cout << "\nNaive CUDA style processing - each thread processes one data point:\n";
     std::cout << "   " << blocksPerGrid << " blocks, " << threadsPerBlock << " threads per block, "
               << "alpaka element layer not used\n";
-    alpaka::exec<TAcc>(queue, workDiv, NaiveCudaStyleKernel{}, alpaka::getPtrNative(bufAcc), n);
+    alpaka::exec<TAcc>(queue, workDiv, NaiveCudaStyleKernel{}, std::data(bufAcc), n);
     testResult(queue, bufAcc);
 }
 
@@ -177,7 +177,7 @@ void gridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     std::cout << "\nGrid strided loop processing - fixed number of threads and blocks:\n";
     std::cout << "   " << blocksPerGrid << " blocks, " << threadsPerBlock << " threads per block, "
               << "alpaka element layer not used\n";
-    alpaka::exec<TAcc>(queue, workDiv, GridStridedLoopKernel{}, alpaka::getPtrNative(bufAcc), n);
+    alpaka::exec<TAcc>(queue, workDiv, GridStridedLoopKernel{}, std::data(bufAcc), n);
     testResult(queue, bufAcc);
 }
 
@@ -252,7 +252,7 @@ void chunkedGridStridedLoop(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     std::cout << "\nChunked grid strided loop processing - fixed number of threads and blocks:\n";
     std::cout << "   " << blocksPerGrid << " blocks, " << threadsPerBlock << " threads per block, "
               << elementsPerThread << " alpaka elements per thread\n";
-    alpaka::exec<TAcc>(queue, workDiv, ChunkedGridStridedLoopKernel{}, alpaka::getPtrNative(bufAcc), n);
+    alpaka::exec<TAcc>(queue, workDiv, ChunkedGridStridedLoopKernel{}, std::data(bufAcc), n);
     testResult(queue, bufAcc);
 }
 
@@ -318,7 +318,7 @@ void naiveOpenMPStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     std::cout << "\nNaive OpenMP style processing - each thread processes a single consecutive range of elements:\n";
     std::cout << "   " << blocksPerGrid << " blocks, " << threadsPerBlock << " threads per block, "
               << "alpaka element layer not used\n";
-    alpaka::exec<TAcc>(queue, workDiv, NaiveOpenMPStyleKernel{}, alpaka::getPtrNative(bufAcc), n);
+    alpaka::exec<TAcc>(queue, workDiv, NaiveOpenMPStyleKernel{}, std::data(bufAcc), n);
     testResult(queue, bufAcc);
 }
 
@@ -396,7 +396,7 @@ void openMPSimdStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     std::cout << "\nOpenMP SIMD style processing - each thread processes a single consecutive range of elements:\n";
     std::cout << "   " << blocksPerGrid << " blocks, " << threadsPerBlock << " threads per block, "
               << elementsPerThread << " alpaka elements per thread\n";
-    alpaka::exec<TAcc>(queue, workDiv, OpenMPSimdStyleKernel{}, alpaka::getPtrNative(bufAcc), n);
+    alpaka::exec<TAcc>(queue, workDiv, OpenMPSimdStyleKernel{}, std::data(bufAcc), n);
     testResult(queue, bufAcc);
 }
 

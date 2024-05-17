@@ -138,9 +138,9 @@ auto main() -> int
     ConvolutionKernel convolutionKernel;
 
     // Native pointers needed for the kernel execution function
-    DataType* nativeFilterDeviceMemory = alpaka::getPtrNative(filterDeviceMemory);
-    DataType* nativeInputDeviceMemory = alpaka::getPtrNative(inputDeviceMemory);
-    DataType* nativeOutputDeviceMemory = alpaka::getPtrNative(outputDeviceMemory);
+    DataType* nativeFilterDeviceMemory = std::data(filterDeviceMemory);
+    DataType* nativeInputDeviceMemory = std::data(inputDeviceMemory);
+    DataType* nativeOutputDeviceMemory = std::data(outputDeviceMemory);
 
     // Run the kernel
     alpaka::exec<DevAcc>(

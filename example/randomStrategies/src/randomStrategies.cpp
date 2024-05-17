@@ -244,7 +244,7 @@ template<Strategy TStrategy>
 void runStrategy(Box& box)
 {
     // Set up the pointer to the PRNG states buffer
-    RandomEngine* const ptrBufAccRand{alpaka::getPtrNative(box.bufAccRand)};
+    RandomEngine* const ptrBufAccRand{std::data(box.bufAccRand)};
 
     // Initialize the PRNG and its states on the device
     InitRandomKernel<TStrategy> initRandomKernel;
@@ -264,13 +264,13 @@ void runStrategy(Box& box)
     alpaka::wait(box.queue);
 
     // OPTIONAL: copy the the initial states to host if you want to check them yourself
-    // alpaka_rand::Philox4x32x10<Box::Acc>* const ptrBufHostRand{alpaka::getPtrNative(box.bufHostRand)};
+    // alpaka_rand::Philox4x32x10<Box::Acc>* const ptrBufHostRand{std::data(box.bufHostRand)};
     // alpaka::memcpy(box.queue, box.bufHostRand, box.bufAccRand);
     // alpaka::wait(box.queue);
 
     // Set up the pointers to the results buffers
-    float* const ptrBufHostResult{alpaka::getPtrNative(box.bufHostResult)};
-    float* const ptrBufAccResult{alpaka::getPtrNative(box.bufAccResult)};
+    float* const ptrBufHostResult{std::data(box.bufHostResult)};
+    float* const ptrBufAccResult{std::data(box.bufAccResult)};
 
     // Initialise the results buffer to zero
     for(Box::Idx i = 0; i < box.extentResult[0]; ++i)

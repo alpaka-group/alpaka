@@ -106,7 +106,7 @@ auto main() -> int
     // Setup buffer.
     BufHost bufHost{alpaka::allocBuf<uint32_t, Idx>(devHost, extent)};
     BufAcc bufAcc{alpaka::allocBuf<uint32_t, Idx>(devAcc, extent)};
-    uint32_t* const ptrBufAcc{alpaka::getPtrNative(bufAcc)};
+    uint32_t* const ptrBufAcc{std::data(bufAcc)};
 
     // Initialize the global count to 0.
     bufHost[0] = 0.0f;

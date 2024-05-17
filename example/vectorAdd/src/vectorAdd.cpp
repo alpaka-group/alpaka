@@ -146,9 +146,9 @@ auto main() -> int
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::getPtrNative(bufAccA),
-        alpaka::getPtrNative(bufAccB),
-        alpaka::getPtrNative(bufAccC),
+        std::data(bufAccA),
+        std::data(bufAccB),
+        std::data(bufAccC),
         numElements);
 
     // Enqueue the kernel execution task
