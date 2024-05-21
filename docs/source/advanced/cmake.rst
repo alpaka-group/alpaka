@@ -117,6 +117,11 @@ alpaka_BUILD_EXAMPLES
 
      Build the examples.
 
+alpaka_BUILD_BENCHMARKS
+  .. code-block::
+
+     Build the benchmarks.
+
 BUILD_TESTING
   .. code-block::
 
