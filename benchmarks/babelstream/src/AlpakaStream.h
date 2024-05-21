@@ -42,8 +42,8 @@ struct AlpakaStream : Stream<T>
     using DevHost = alpaka::Dev<PlatformHost>;
     using PlatformAcc = alpaka::Platform<Acc>;
     using DevAcc = alpaka::Dev<Acc>;
-    using BufHost = alpaka::Buf<alpaka::DevCpu, T, Dim, Idx>;
-    using BufAcc = alpaka::Buf<Acc, T, Dim, Idx>;
+    using BufHost = alpaka::Buf<alpaka::DevCpu, T, Dim, Idx, alpaka::MemVisibilityTypeList<alpaka::DevCpu>>;
+    using BufAcc = alpaka::Buf<Acc, T, Dim, Idx, alpaka::MemVisibilityTypeList<Acc>>;
     using Queue = alpaka::Queue<Acc, alpaka::Blocking>;
 
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
