@@ -14,6 +14,7 @@
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
+#include "alpaka/meta/Unique.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <cstddef>
