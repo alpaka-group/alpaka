@@ -9,9 +9,11 @@
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
 #include "alpaka/dim/Traits.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/buf/BufCpu.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
+#include "alpaka/meta/Unique.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <memory>
@@ -232,7 +234,7 @@ namespace alpaka::trait
             TElem,
             TDim,
             TIdx,
-            alpaka::meta::Unique<std::tuple<alpaka::MemVisibility<DevCpu>, alpaka::MemVisibility<TPlatform>>>>
+            alpaka::meta::Unique<std::tuple<alpaka::MemVisibleCPU, alpaka::MemVisibility<TPlatform>>>>
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -246,7 +248,7 @@ namespace alpaka::trait
                 TElem,
                 TDim,
                 TIdx,
-                alpaka::meta::Unique<std::tuple<alpaka::MemVisibility<DevCpu>, alpaka::MemVisibility<TPlatform>>>>(
+                alpaka::meta::Unique<std::tuple<alpaka::MemVisibleCPU, alpaka::MemVisibility<TPlatform>>>>(
                 host,
                 memPtr,
                 std::move(deleter),

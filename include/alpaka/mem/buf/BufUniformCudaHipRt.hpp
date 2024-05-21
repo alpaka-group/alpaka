@@ -11,6 +11,7 @@
 #include "alpaka/dev/DevUniformCudaHipRt.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
@@ -360,9 +361,8 @@ namespace alpaka
                     TElem,
                     TDim,
                     TIdx,
-                    alpaka::meta::Unique<std::tuple<
-                        alpaka::MemVisibility<DevCpu>,
-                        alpaka::MemVisibility<PlatformUniformCudaHipRt<TApi>>>>>
+                    alpaka::meta::Unique<
+                        std::tuple<alpaka::MemVisibleCPU, alpaka::MemVisibility<PlatformUniformCudaHipRt<TApi>>>>>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -379,9 +379,8 @@ namespace alpaka
                     TElem,
                     TDim,
                     TIdx,
-                    alpaka::meta::Unique<std::tuple<
-                        alpaka::MemVisibility<DevCpu>,
-                        alpaka::MemVisibility<PlatformUniformCudaHipRt<TApi>>>>>(
+                    alpaka::meta::Unique<
+                        std::tuple<alpaka::MemVisibleCPU, alpaka::MemVisibility<PlatformUniformCudaHipRt<TApi>>>>>(
                     host,
                     memPtr,
                     std::move(deleter),
