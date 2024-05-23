@@ -11,14 +11,14 @@ Platform
 - A ``platform`` contains information about the system, e.g. the available devices. 
 - Depending on the platform, it also contains a runtime context.
 - A ``platform`` has a least one device but it can also has many device.
-- Each ``platform`` can be used with N ``accelerator``. ``platforms`` and ``accelerator`` cannot freely combined. An ``accelerator`` supports only a specific ``platform``.
+- Each ``platform`` can be used with any number of ``accelerator``. ``platforms`` and ``accelerator`` cannot freely combined. An ``accelerator`` supports only a specific ``platform``.
  
 Device
 ------
 
 - A ``device`` represent a compute unit, such as a CPU or a GPU.
 - Each ``device`` is bounded to a specific ``platform``.
-- Each ``device`` can have N ``queues``.
+- Each ``device`` can have any number of ``queues``.
 
 Accelerator
 -----------
@@ -31,13 +31,21 @@ Queue
 -----
 
 - Stores operations which should be executed on a ``device``.
-- Operations can be ``TaskKernels``, ``Events``, ``Sets`` and ``Copies``.
+- Operations can be ``TaskKernels``, ``HostTasks``, ``Events``, ``Sets`` and ``Copies``.
 - Each ``queue`` is bounded to a specific ``device``.
+- A Queue can be ``Blocking`` (host thread is waiting for finishing the API call) or ``NonBlocking`` (host thread continues after calling the API independent if the call finished or not).
+- All operations in a queue will be executed sequentiell.
+- Operations in different queues runs in parallel.
 
 TaskKernel
 ----------
 
 - A ``TaskKernel`` contains the algorithm which should be executed on a ``device``.
+
+HostTasks
+---------
+
+- A ``HostTask`` is a functor without ``acc`` argument, which can be enqueued and is always executed on the host device. 
 
 Event
 -----
