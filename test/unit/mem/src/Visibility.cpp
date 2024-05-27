@@ -174,3 +174,70 @@ TEMPLATE_LIST_TEST_CASE("testMemView", "[mem][visibility]", EnabledTagTagMemVisi
         STATIC_REQUIRE_FALSE(alpaka::hasSameMemView(plt2, data_view1));
     }
 }
+
+TEMPLATE_LIST_TEST_CASE("testMemBuf", "[mem][visibility]", EnabledTagTagMemVisibilityList)
+{
+    using Tag1 = std::tuple_element_t<0, std::tuple_element_t<0, TestType>>;
+    using ExpectedMemVisibilityForTag1 = std::tuple_element_t<1, std::tuple_element_t<0, TestType>>;
+    using Tag2 = std::tuple_element_t<0, std::tuple_element_t<1, TestType>>;
+    using ExpectedMemVisibilityForTag2 = std::tuple_element_t<1, std::tuple_element_t<1, TestType>>;
+
+    SUCCEED(
+        "Tag1: " << Tag1::get_name() << " + " << ExpectedMemVisibilityForTag1::get_name()
+                 << "\nTag2: " << Tag2::get_name() << " + " << ExpectedMemVisibilityForTag1::get_name());
+
+    constexpr Idx data_size = 10;
+
+    using Acc1 = alpaka::TagToAcc<Tag1, Dim, Idx>;
+    using Acc2 = alpaka::TagToAcc<Tag2, Dim, Idx>;
+
+    auto const plt1 = alpaka::Platform<Acc1>{};
+    auto const plt2 = alpaka::Platform<Acc2>{};
+
+    auto const dev1 = alpaka::getDevByIdx(plt1, 0);
+    auto const dev2 = alpaka::getDevByIdx(plt2, 0);
+
+    using Vec1D = alpaka::Vec<alpaka::DimInt<1>, Idx>;
+    Vec1D const extents(Vec1D::all(data_size));
+
+    // we need only to test the first tag, because the second tag contains the same acc's
+    auto buf1 = alpaka::allocBuf<float, Idx>(dev1, extents);
+
+    STATIC_REQUIRE(std::is_same_v<
+                   typename alpaka::trait::MemVisibility<decltype(buf1)>::type,
+                   std::tuple<ExpectedMemVisibilityForTag1>>);
+
+    STATIC_REQUIRE(alpaka::hasSameMemView(plt1, buf1));
+
+    if constexpr(!std::is_same_v<Tag1, alpaka::TagGpuSyclIntel>)
+    {
+        alpaka::Queue<Acc1, alpaka::NonBlocking> queue1(dev1);
+
+        auto buf1Async = alpaka::allocAsyncBuf<float, Idx>(queue1, extents);
+
+        alpaka::wait(queue1);
+
+        STATIC_REQUIRE(std::is_same_v<
+                       typename alpaka::trait::MemVisibility<decltype(buf1Async)>::type,
+                       std::tuple<ExpectedMemVisibilityForTag1>>);
+
+        STATIC_REQUIRE(alpaka::hasSameMemView(plt1, buf1Async));
+    }
+
+    if constexpr(isCpuTag<Tag1>::value && alpaka::hasMappedBufSupport<alpaka::Platform<Acc2>>)
+    {
+        auto mappedBuffer = alpaka::allocMappedBuf<alpaka::Platform<Acc2>, float, Idx>(dev1, plt2, extents);
+
+        using expectedMappedBufferMemView
+            = alpaka::meta::Unique<std::tuple<ExpectedMemVisibilityForTag1, ExpectedMemVisibilityForTag2>>;
+
+        STATIC_REQUIRE(std::is_same_v<
+                       typename alpaka::trait::MemVisibility<decltype(mappedBuffer)>::type,
+                       expectedMappedBufferMemView>);
+
+        STATIC_REQUIRE(alpaka::hasSameMemView(plt1, mappedBuffer));
+        STATIC_REQUIRE(alpaka::hasSameMemView(plt2, mappedBuffer));
+        STATIC_REQUIRE(alpaka::hasSameMemView(dev1, mappedBuffer));
+        STATIC_REQUIRE(alpaka::hasSameMemView(dev2, mappedBuffer));
+    }
+}

@@ -31,6 +31,7 @@ namespace alpaka
     CREATE_ACC_TAG(TagGpuCudaRt);
     CREATE_ACC_TAG(TagGpuHipRt);
     CREATE_ACC_TAG(TagGpuSyclIntel);
+#undef CREATE_ACC_TAG
 
     namespace trait
     {

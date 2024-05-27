@@ -34,6 +34,7 @@ namespace alpaka
     CREATE_MEM_VISIBILITY(MemVisibleGpuCudaRt);
     CREATE_MEM_VISIBILITY(MemVisibleGpuHipRt);
     CREATE_MEM_VISIBILITY(MemVisibleGpuSyclIntel);
+#undef CREATE_MEM_VISIBILITY
 
     namespace trait
     {
@@ -62,7 +63,7 @@ namespace alpaka
         typename = std::enable_if_t<
             alpaka::isPlatform<std::decay_t<T>> || alpaka::isDevice<std::decay_t<T>>
             || alpaka::isAccelerator<std::decay_t<T>> || alpaka::internal::isView<std::decay_t<T>>>>
-    [[maybe_unused]] static std::string getMemVisiblityName()
+    inline std::string getMemVisiblityName()
     {
         using MemVisibilityType = typename alpaka::trait::MemVisibility<std::decay_t<T>>::type;
         if constexpr(alpaka::meta::isList<MemVisibilityType>)
