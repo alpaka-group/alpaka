@@ -19,7 +19,13 @@ namespace alpaka
     namespace trait
     {
         //! The memory buffer type trait.
-        template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TSfinae = void>
+        template<
+            typename TDev,
+            typename TElem,
+            typename TDim,
+            typename TIdx,
+            typename TMemVisibility,
+            typename TSfinae = void>
         struct BufType;
 
         //! The memory allocator trait.
@@ -48,8 +54,8 @@ namespace alpaka
     } // namespace trait
 
     //! The memory buffer type trait alias template to remove the ::type.
-    template<typename TDev, typename TElem, typename TDim, typename TIdx>
-    using Buf = typename trait::BufType<alpaka::Dev<TDev>, TElem, TDim, TIdx>::type;
+    template<typename TDev, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+    using Buf = typename trait::BufType<alpaka::Dev<TDev>, TElem, TDim, TIdx, TMemVisibility>::type;
 
     //! Allocates memory on the given device.
     //!

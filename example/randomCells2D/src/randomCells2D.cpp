@@ -156,12 +156,12 @@ auto main() -> int
     using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
     QueueAcc queue{devAcc};
 
-    using BufHost = alpaka::Buf<Host, float, Dim, Idx>;
-    using BufAcc = alpaka::Buf<Acc, float, Dim, Idx>;
-    using BufHostRand = alpaka::Buf<Host, RandomEngineSingle, Dim, Idx>;
-    using BufAccRand = alpaka::Buf<Acc, RandomEngineSingle, Dim, Idx>;
-    using BufHostRandVec = alpaka::Buf<Host, RandomEngineVector, Dim, Idx>;
-    using BufAccRandVec = alpaka::Buf<Acc, RandomEngineVector, Dim, Idx>;
+    using BufHost = alpaka::Buf<Host, float, Dim, Idx, alpaka::MemVisibilityTypeList<Host>>;
+    using BufAcc = alpaka::Buf<Acc, float, Dim, Idx, alpaka::MemVisibilityTypeList<Acc>>;
+    using BufHostRand = alpaka::Buf<Host, RandomEngineSingle, Dim, Idx, alpaka::MemVisibilityTypeList<Host>>;
+    using BufAccRand = alpaka::Buf<Acc, RandomEngineSingle, Dim, Idx, alpaka::MemVisibilityTypeList<Acc>>;
+    using BufHostRandVec = alpaka::Buf<Host, RandomEngineVector, Dim, Idx, alpaka::MemVisibilityTypeList<Host>>;
+    using BufAccRandVec = alpaka::Buf<Acc, RandomEngineVector, Dim, Idx, alpaka::MemVisibilityTypeList<Acc>>;
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
     constexpr Idx numX = NUM_X;

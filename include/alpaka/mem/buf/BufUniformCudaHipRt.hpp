@@ -11,9 +11,11 @@
 #include "alpaka/dev/DevUniformCudaHipRt.hpp"
 #include "alpaka/dev/Traits.hpp"
 #include "alpaka/dim/DimIntegralConst.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/buf/Traits.hpp"
 #include "alpaka/mem/view/ViewAccessOps.hpp"
 #include "alpaka/meta/DependentFalseType.hpp"
+#include "alpaka/meta/Unique.hpp"
 #include "alpaka/vec/Vec.hpp"
 
 #include <cstddef>
@@ -29,7 +31,7 @@ namespace alpaka
     struct ApiCudaRt;
     struct ApiHipRt;
 
-    template<typename TElem, typename TDim, typename TIdx>
+    template<typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
     class BufCpu;
 
     namespace detail
@@ -50,10 +52,10 @@ namespace alpaka
     } // namespace detail
 
     //! The CUDA/HIP memory buffer.
-    template<typename TApi, typename TElem, typename TDim, typename TIdx>
+    template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
     struct BufUniformCudaHipRt
         : detail::PitchHolder<TDim>
-        , internal::ViewAccessOps<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        , internal::ViewAccessOps<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
     {
         static_assert(!std::is_const_v<TElem>, "The elem type of the buffer must not be const");
         static_assert(!std::is_const_v<TIdx>, "The idx type of the buffer must not be const!");
@@ -90,17 +92,17 @@ namespace alpaka
     namespace trait
     {
         //! The BufUniformCudaHipRt device type trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct DevType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct DevType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = DevUniformCudaHipRt<TApi>;
         };
 
         //! The BufUniformCudaHipRt device get trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct GetDev<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetDev<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
-            ALPAKA_FN_HOST static auto getDev(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
+            ALPAKA_FN_HOST static auto getDev(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility> const& buf)
                 -> DevUniformCudaHipRt<TApi>
             {
                 return buf.m_dev;
@@ -108,51 +110,53 @@ namespace alpaka
         };
 
         //! The BufUniformCudaHipRt dimension getter trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct DimType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct DimType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = TDim;
         };
 
         //! The BufUniformCudaHipRt memory element type get trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct ElemType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct ElemType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = TElem;
         };
 
         //! The BufUniformCudaHipRt extent get trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct GetExtents<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetExtents<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
-            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buffer) const
+            ALPAKA_FN_HOST auto operator()(
+                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility> const& buffer) const
             {
                 return buffer.m_extentElements;
             }
         };
 
         //! The BufUniformCudaHipRt native pointer get trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct GetPtrNative<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetPtrNative<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
-            ALPAKA_FN_HOST static auto getPtrNative(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf)
-                -> TElem const*
+            ALPAKA_FN_HOST static auto getPtrNative(
+                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility> const& buf) -> TElem const*
             {
                 return buf.m_spMem.get();
             }
 
-            ALPAKA_FN_HOST static auto getPtrNative(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf) -> TElem*
+            ALPAKA_FN_HOST static auto getPtrNative(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>& buf)
+                -> TElem*
             {
                 return buf.m_spMem.get();
             }
         };
 
         //! The BufUniformCudaHipRt pointer on device get trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct GetPtrDev<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>, DevUniformCudaHipRt<TApi>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetPtrDev<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>, DevUniformCudaHipRt<TApi>>
         {
             ALPAKA_FN_HOST static auto getPtrDev(
-                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf,
+                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility> const& buf,
                 DevUniformCudaHipRt<TApi> const& dev) -> TElem const*
             {
                 if(dev == getDev(buf))
@@ -166,7 +170,7 @@ namespace alpaka
             }
 
             ALPAKA_FN_HOST static auto getPtrDev(
-                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>& buf,
+                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>& buf,
                 DevUniformCudaHipRt<TApi> const& dev) -> TElem*
             {
                 if(dev == getDev(buf))
@@ -180,11 +184,11 @@ namespace alpaka
             }
         };
 
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct GetPitchesInBytes<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetPitchesInBytes<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
-            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const& buf) const
-                -> Vec<TDim, TIdx>
+            ALPAKA_FN_HOST auto operator()(
+                BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility> const& buf) const -> Vec<TDim, TIdx>
             {
                 Vec<TDim, TIdx> v{};
                 if constexpr(TDim::value > 0)
@@ -207,7 +211,12 @@ namespace alpaka
         {
             template<typename TExtent>
             ALPAKA_FN_HOST static auto allocBuf(DevUniformCudaHipRt<TApi> const& dev, TExtent const& extent)
-                -> BufUniformCudaHipRt<TApi, TElem, Dim, TIdx>
+                -> BufUniformCudaHipRt<
+                    TApi,
+                    TElem,
+                    Dim,
+                    TIdx,
+                    alpaka::MemVisibilityTypeList<DevUniformCudaHipRt<TApi>>>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -289,7 +298,12 @@ namespace alpaka
 
             template<typename TQueue, typename TExtent>
             ALPAKA_FN_HOST static auto allocAsyncBuf(TQueue queue, [[maybe_unused]] TExtent const& extent)
-                -> BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>
+                -> BufUniformCudaHipRt<
+                    TApi,
+                    TElem,
+                    TDim,
+                    TIdx,
+                    alpaka::MemVisibilityTypeList<DevUniformCudaHipRt<TApi>>>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -342,7 +356,13 @@ namespace alpaka
             ALPAKA_FN_HOST static auto allocMappedBuf(
                 DevCpu const& host,
                 PlatformUniformCudaHipRt<TApi> const& /*platform*/,
-                TExtent const& extent) -> BufCpu<TElem, TDim, TIdx>
+                TExtent const& extent)
+                -> BufCpu<
+                    TElem,
+                    TDim,
+                    TIdx,
+                    alpaka::meta::Unique<
+                        std::tuple<alpaka::MemVisibleCPU, alpaka::MemVisibility<PlatformUniformCudaHipRt<TApi>>>>>
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -355,7 +375,16 @@ namespace alpaka
                     TApi::hostMallocMapped | TApi::hostMallocPortable));
                 auto deleter = [](TElem* ptr) { ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_NOEXCEPT(TApi::hostFree(ptr)); };
 
-                return BufCpu<TElem, TDim, TIdx>(host, memPtr, std::move(deleter), extent);
+                return BufCpu<
+                    TElem,
+                    TDim,
+                    TIdx,
+                    alpaka::meta::Unique<
+                        std::tuple<alpaka::MemVisibleCPU, alpaka::MemVisibility<PlatformUniformCudaHipRt<TApi>>>>>(
+                    host,
+                    memPtr,
+                    std::move(deleter),
+                    extent);
             }
         };
 
@@ -366,10 +395,10 @@ namespace alpaka
         };
 
         //! The BufUniformCudaHipRt offset get trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct GetOffsets<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetOffsets<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
-            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx> const&) const
+            ALPAKA_FN_HOST auto operator()(BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility> const&) const
                 -> Vec<TDim, TIdx>
             {
                 return Vec<TDim, TIdx>::zeros();
@@ -377,18 +406,24 @@ namespace alpaka
         };
 
         //! The BufUniformCudaHipRt idx type trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct IdxType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct IdxType<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
         {
             using type = TIdx;
         };
 
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct MemVisibility<BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>>
+        {
+            using type = alpaka::meta::toTuple<TMemVisibility>;
+        };
+
         //! The BufCpu pointer on CUDA/HIP device get trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct GetPtrDev<BufCpu<TElem, TDim, TIdx>, DevUniformCudaHipRt<TApi>>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct GetPtrDev<BufCpu<TElem, TDim, TIdx, TMemVisibility>, DevUniformCudaHipRt<TApi>>
         {
             ALPAKA_FN_HOST static auto getPtrDev(
-                BufCpu<TElem, TDim, TIdx> const& buf,
+                BufCpu<TElem, TDim, TIdx, TMemVisibility> const& buf,
                 DevUniformCudaHipRt<TApi> const&) -> TElem const*
             {
                 // TODO: Check if the memory is mapped at all!
@@ -402,8 +437,9 @@ namespace alpaka
                 return pDev;
             }
 
-            ALPAKA_FN_HOST static auto getPtrDev(BufCpu<TElem, TDim, TIdx>& buf, DevUniformCudaHipRt<TApi> const&)
-                -> TElem*
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufCpu<TElem, TDim, TIdx, TMemVisibility>& buf,
+                DevUniformCudaHipRt<TApi> const&) -> TElem*
             {
                 // TODO: Check if the memory is mapped at all!
                 TElem* pDev(nullptr);

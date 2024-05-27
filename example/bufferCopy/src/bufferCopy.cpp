@@ -148,8 +148,7 @@ auto main() -> int
     //
     // The `alloc` method returns a reference counted buffer handle.
     // When the last such handle is destroyed, the memory is freed automatically.
-    using BufHost = alpaka::Buf<Host, Data, Dim, Idx>;
-    BufHost hostBuffer(alpaka::allocBuf<Data, Idx>(devHost, extents));
+    auto hostBuffer(alpaka::allocBuf<Data, Idx>(devHost, extents));
     // You can also use already allocated memory and wrap it within a view (irrespective of the device type).
     // The view does not own the underlying memory. So you have to make sure that
     // the view does not outlive its underlying memory.
@@ -159,7 +158,7 @@ auto main() -> int
     // Allocate accelerator memory buffers
     //
     // The interface to allocate a buffer is the same on the host and on the device.
-    using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;
+    using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx, alpaka::MemVisibilityTypeList<Acc>>;
     BufAcc deviceBuffer1(alpaka::allocBuf<Data, Idx>(devAcc, extents));
     BufAcc deviceBuffer2(alpaka::allocBuf<Data, Idx>(devAcc, extents));
 

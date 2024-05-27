@@ -6,6 +6,7 @@
 
 #include "alpaka/dev/DevGenericSycl.hpp"
 #include "alpaka/dev/Traits.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/platform/PlatformGenericSycl.hpp"
 
 #include <string>
@@ -38,6 +39,12 @@ namespace alpaka::trait
     struct DevType<PlatformCpuSycl>
     {
         using type = DevGenericSycl<PlatformCpuSycl>; // = DevCpuSycl
+    };
+
+    template<>
+    struct MemVisibility<PlatformCpuSycl>
+    {
+        using type = alpaka::MemVisibleCpuSycl;
     };
 } // namespace alpaka::trait
 

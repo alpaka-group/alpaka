@@ -11,8 +11,8 @@
 
 namespace alpaka
 {
-    template<typename TElem, typename TDim, typename TIdx>
-    using BufFpgaSyclIntel = BufGenericSycl<TElem, TDim, TIdx, DevFpgaSyclIntel>;
+    template<typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+    using BufFpgaSyclIntel = BufGenericSycl<TElem, TDim, TIdx, DevFpgaSyclIntel, TMemVisibility>;
 } // namespace alpaka
 
 #endif

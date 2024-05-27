@@ -6,12 +6,36 @@
 
 #include "Defines.hpp"
 
+#include <alpaka/meta/TypeListOps.hpp>
+#include <alpaka/meta/Unique.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 
 #include <ostream>
 
 namespace mathtest
 {
+    namespace detail
+    {
+        template<typename THost, typename TPlatform, typename = void>
+        struct MemVisibilityMappedBufferImpl
+        {
+            using type = typename alpaka::MemVisibilityTypeList<THost>;
+        };
+
+        template<typename THost, typename TPlatform>
+        struct MemVisibilityMappedBufferImpl<
+            THost,
+            TPlatform,
+            std::enable_if_t<alpaka::hasMappedBufSupport<TPlatform>>>
+        {
+            using type = typename alpaka::meta::Unique<
+                std::tuple<alpaka::MemVisibility<THost>, alpaka::MemVisibility<TPlatform>>>;
+        };
+    } // namespace detail
+
+    template<typename THost, typename TPlatform>
+    using MemVisibilityMappedBuffer = typename detail::MemVisibilityMappedBufferImpl<THost, TPlatform>::type;
+
     //! Provides alpaka-style buffer with arguments' data.
     //! TData can be a plain value or a complex data-structure.
     //! The operator() is overloaded and returns the value from the correct Buffer,
@@ -32,11 +56,12 @@ namespace mathtest
         // Defines using's for alpaka-buffer.
         using DevHost = alpaka::DevCpu;
         using PlatformHost = alpaka::Platform<DevHost>;
-        using BufHost = alpaka::Buf<DevHost, TData, Dim, Idx>;
 
         using DevAcc = alpaka::Dev<TAcc>;
         using PlatformAcc = alpaka::Platform<DevAcc>;
-        using BufAcc = alpaka::Buf<DevAcc, TData, Dim, Idx>;
+
+        using BufHost = alpaka::Buf<DevHost, TData, Dim, Idx, MemVisibilityMappedBuffer<DevHost, PlatformAcc>>;
+        using BufAcc = alpaka::Buf<DevAcc, TData, Dim, Idx, alpaka::MemVisibilityTypeList<PlatformAcc>>;
 
         PlatformHost platformHost;
         DevHost devHost;

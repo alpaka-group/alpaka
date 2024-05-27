@@ -6,6 +6,7 @@
 
 #include "alpaka/core/Concepts.hpp"
 #include "alpaka/dev/DevCpu.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/platform/Traits.hpp"
 
 #include <sstream>
@@ -64,6 +65,12 @@ namespace alpaka
 
                 return {};
             }
+        };
+
+        template<>
+        struct MemVisibility<PlatformCpu>
+        {
+            using type = alpaka::MemVisibleCPU;
         };
     } // namespace trait
 } // namespace alpaka

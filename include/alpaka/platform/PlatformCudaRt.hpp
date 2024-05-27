@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alpaka/core/ApiCudaRt.hpp"
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/platform/PlatformUniformCudaHipRt.hpp"
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
@@ -13,6 +14,15 @@ namespace alpaka
 {
     //! The CUDA RT platform.
     using PlatformCudaRt = PlatformUniformCudaHipRt<ApiCudaRt>;
+
+    namespace trait
+    {
+        template<>
+        struct MemVisibility<PlatformCudaRt>
+        {
+            using type = alpaka::MemVisibleGpuCudaRt;
+        };
+    } // namespace trait
 } // namespace alpaka
 
 #endif // ALPAKA_ACC_GPU_CUDA_ENABLED

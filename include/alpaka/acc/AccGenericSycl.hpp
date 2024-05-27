@@ -118,6 +118,11 @@ namespace alpaka::trait
     {
     };
 
+    struct MemVisibility<alpaka::AccCpuSerial<TDim, TIdx>>
+    {
+        using type = alpaka::MemVisibleGenericSycl;
+    };
+
     //! The SYCL accelerator device properties get trait specialization.
     template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
     struct GetAccDevProps<

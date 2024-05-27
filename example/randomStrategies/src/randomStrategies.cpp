@@ -44,8 +44,8 @@ struct Box
     QueueAcc queue; ///< default accelerator queue
 
     // buffers holding the PRNG states
-    using BufHostRand = alpaka::Buf<Host, RandomEngine, Dim, Idx>;
-    using BufAccRand = alpaka::Buf<Acc, RandomEngine, Dim, Idx>;
+    using BufHostRand = alpaka::Buf<Host, RandomEngine, Dim, Idx, alpaka::MemVisibilityTypeList<PlatformHost>>;
+    using BufAccRand = alpaka::Buf<Acc, RandomEngine, Dim, Idx, alpaka::MemVisibilityTypeList<PlatformAcc>>;
 
     Vec const extentRand; ///< size of the buffer of PRNG states
     WorkDiv workdivRand; ///< work division for PRNG buffer initialization
@@ -53,8 +53,8 @@ struct Box
     BufAccRand bufAccRand; ///< device side PRNG states buffer
 
     // buffers holding the "simulation" results
-    using BufHost = alpaka::Buf<Host, float, Dim, Idx>;
-    using BufAcc = alpaka::Buf<Acc, float, Dim, Idx>;
+    using BufHost = alpaka::Buf<Host, float, Dim, Idx, alpaka::MemVisibilityTypeList<PlatformHost>>;
+    using BufAcc = alpaka::Buf<Acc, float, Dim, Idx, alpaka::MemVisibilityTypeList<PlatformAcc>>;
 
     Vec const extentResult; ///< size of the results buffer
     WorkDiv workdivResult; ///< work division of the result calculation

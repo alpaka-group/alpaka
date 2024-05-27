@@ -83,7 +83,7 @@ auto main() -> int
     using DevAcc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using QueueProperty = alpaka::Blocking;
     using QueueAcc = alpaka::Queue<DevAcc, QueueProperty>;
-    using BufAcc = alpaka::Buf<DevAcc, DataType, Dim, Idx>;
+    using BufAcc = alpaka::Buf<DevAcc, DataType, Dim, Idx, alpaka::MemVisibilityTypeList<DevAcc>>;
 
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<DevAcc>() << '\n';
 

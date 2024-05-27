@@ -48,7 +48,7 @@ namespace alpaka
     template<typename TApi>
     struct PlatformUniformCudaHipRt;
 
-    template<typename TApi, typename TElem, typename TDim, typename TIdx>
+    template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
     struct BufUniformCudaHipRt;
 
     //! The CUDA/HIP RT device handle.
@@ -222,10 +222,10 @@ namespace alpaka
         };
 
         //! The CUDA/HIP RT device memory buffer type trait specialization.
-        template<typename TApi, typename TElem, typename TDim, typename TIdx>
-        struct BufType<DevUniformCudaHipRt<TApi>, TElem, TDim, TIdx>
+        template<typename TApi, typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+        struct BufType<DevUniformCudaHipRt<TApi>, TElem, TDim, TIdx, TMemVisibility>
         {
-            using type = BufUniformCudaHipRt<TApi, TElem, TDim, TIdx>;
+            using type = BufUniformCudaHipRt<TApi, TElem, TDim, TIdx, TMemVisibility>;
         };
 
         //! The CUDA/HIP RT device platform type trait specialization.

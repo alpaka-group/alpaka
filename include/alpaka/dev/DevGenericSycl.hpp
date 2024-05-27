@@ -32,7 +32,7 @@
 
 namespace alpaka
 {
-    template<typename TElem, typename TDim, typename TIdx, typename TDev>
+    template<typename TElem, typename TDim, typename TIdx, typename TPlatform, typename TMemVisibility>
     class BufGenericSycl;
 
     namespace detail
@@ -219,10 +219,10 @@ namespace alpaka::trait
     };
 
     //! The SYCL device memory buffer type trait specialization.
-    template<typename TElem, typename TDim, typename TIdx, typename TPlatform>
-    struct BufType<DevGenericSycl<TPlatform>, TElem, TDim, TIdx>
+    template<typename TElem, typename TDim, typename TIdx, typename TPlatform, typename TMemVisibility>
+    struct BufType<DevGenericSycl<TPlatform>, TElem, TDim, TIdx, TMemVisibility>
     {
-        using type = BufGenericSycl<TElem, TDim, TIdx, TPlatform>;
+        using type = BufGenericSycl<TElem, TDim, TIdx, TPlatform, TMemVisibility>;
     };
 
     //! The SYCL device platform type trait specialization.

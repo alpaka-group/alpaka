@@ -130,6 +130,7 @@
 #include "alpaka/math/MathStdLib.hpp"
 #include "alpaka/math/MathUniformCudaHipBuiltIn.hpp"
 // mem
+#include "alpaka/mem/Visibility.hpp"
 #include "alpaka/mem/alloc/AllocCpuAligned.hpp"
 #include "alpaka/mem/alloc/AllocCpuNew.hpp"
 #include "alpaka/mem/alloc/Traits.hpp"

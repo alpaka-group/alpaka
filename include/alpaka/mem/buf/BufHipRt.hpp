@@ -11,8 +11,8 @@
 
 namespace alpaka
 {
-    template<typename TElem, typename TDim, typename TIdx>
-    using BufHipRt = BufUniformCudaHipRt<ApiHipRt, TElem, TDim, TIdx>;
+    template<typename TElem, typename TDim, typename TIdx, typename TMemVisibility>
+    using BufHipRt = BufUniformCudaHipRt<ApiHipRt, TElem, TDim, TIdx, TMemVisibility>;
 } // namespace alpaka
 
 #endif // ALPAKA_ACC_GPU_HIP_ENABLED
