@@ -181,22 +181,22 @@ auto main() -> int
 
     // Setup buffer.
     BufHost bufHostS{alpaka::allocBuf<float, Idx>(devHost, extent)};
-    float* const ptrBufHostS{alpaka::getPtrNative(bufHostS)};
+    float* const ptrBufHostS{std::data(bufHostS)};
     BufAcc bufAccS{alpaka::allocBuf<float, Idx>(devAcc, extent)};
-    float* const ptrBufAccS{alpaka::getPtrNative(bufAccS)};
+    float* const ptrBufAccS{std::data(bufAccS)};
 
     BufHost bufHostV{alpaka::allocBuf<float, Idx>(devHost, extent)};
-    float* const ptrBufHostV{alpaka::getPtrNative(bufHostV)};
+    float* const ptrBufHostV{std::data(bufHostV)};
     BufAcc bufAccV{alpaka::allocBuf<float, Idx>(devAcc, extent)};
-    float* const ptrBufAccV{alpaka::getPtrNative(bufAccV)};
+    float* const ptrBufAccV{std::data(bufAccV)};
 
     BufHostRand bufHostRandS{alpaka::allocBuf<RandomEngineSingle, Idx>(devHost, extent)};
     BufAccRand bufAccRandS{alpaka::allocBuf<RandomEngineSingle, Idx>(devAcc, extent)};
-    RandomEngineSingle* const ptrBufAccRandS{alpaka::getPtrNative(bufAccRandS)};
+    RandomEngineSingle* const ptrBufAccRandS{std::data(bufAccRandS)};
 
     BufHostRandVec bufHostRandV{alpaka::allocBuf<RandomEngineVector, Idx>(devHost, extent)};
     BufAccRandVec bufAccRandV{alpaka::allocBuf<RandomEngineVector, Idx>(devAcc, extent)};
-    RandomEngineVector* const ptrBufAccRandV{alpaka::getPtrNative(bufAccRandV)};
+    RandomEngineVector* const ptrBufAccRandV{std::data(bufAccRandV)};
 
     InitRandomKernel initRandomKernel;
     auto pitchBufAccRandS = alpaka::getPitchesInBytes(bufAccRandS)[0];

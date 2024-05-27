@@ -57,6 +57,7 @@ public:
 auto main() -> int
 {
     // Define the index domain
+    // Set the number of dimensions as an integral constant. Set to 1 for 1D.
     using Dim = alpaka::DimInt<1u>;
     using Idx = std::size_t;
 
@@ -115,11 +116,6 @@ auto main() -> int
     BufHost bufHostB(alpaka::allocBuf<Data, Idx>(devHost, extent));
     BufHost bufHostC(alpaka::allocBuf<Data, Idx>(devHost, extent));
 
-    // Initialize the host input vectors A and B
-    Data* const pBufHostA(alpaka::getPtrNative(bufHostA));
-    Data* const pBufHostB(alpaka::getPtrNative(bufHostB));
-    Data* const pBufHostC(alpaka::getPtrNative(bufHostC));
-
     // C++14 random generator for uniformly distributed numbers in {1,..,42}
     std::random_device rd{};
     std::default_random_engine eng{rd()};
@@ -127,9 +123,9 @@ auto main() -> int
 
     for(Idx i(0); i < numElements; ++i)
     {
-        pBufHostA[i] = dist(eng);
-        pBufHostB[i] = dist(eng);
-        pBufHostC[i] = 0;
+        bufHostA[i] = dist(eng);
+        bufHostB[i] = dist(eng);
+        bufHostC[i] = 0;
     }
 
     // Allocate 3 buffers on the accelerator
@@ -150,9 +146,9 @@ auto main() -> int
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::getPtrNative(bufAccA),
-        alpaka::getPtrNative(bufAccB),
-        alpaka::getPtrNative(bufAccC),
+        std::data(bufAccA),
+        std::data(bufAccB),
+        std::data(bufAccC),
         numElements);
 
     // Enqueue the kernel execution task
@@ -179,8 +175,8 @@ auto main() -> int
     static constexpr int MAX_PRINT_FALSE_RESULTS = 20;
     for(Idx i(0u); i < numElements; ++i)
     {
-        Data const& val(pBufHostC[i]);
-        Data const correctResult(pBufHostA[i] + pBufHostB[i]);
+        Data const& val(bufHostC[i]);
+        Data const correctResult(bufHostA[i] + bufHostB[i]);
         if(val != correctResult)
         {
             if(falseResults < MAX_PRINT_FALSE_RESULTS)

@@ -105,12 +105,11 @@ auto main() -> int
 
     // Setup buffer.
     BufHost bufHost{alpaka::allocBuf<uint32_t, Idx>(devHost, extent)};
-    uint32_t* const ptrBufHost{alpaka::getPtrNative(bufHost)};
     BufAcc bufAcc{alpaka::allocBuf<uint32_t, Idx>(devAcc, extent)};
-    uint32_t* const ptrBufAcc{alpaka::getPtrNative(bufAcc)};
+    uint32_t* const ptrBufAcc{std::data(bufAcc)};
 
     // Initialize the global count to 0.
-    ptrBufHost[0] = 0.0f;
+    bufHost[0] = 0.0f;
     alpaka::memcpy(queue, bufAcc, bufHost);
 
     Kernel kernel;
@@ -119,7 +118,7 @@ auto main() -> int
     alpaka::wait(queue);
 
     // Check the result.
-    uint32_t globalCount = *ptrBufHost;
+    uint32_t globalCount = bufHost[0];
 
     // Final result.
     float finalResult = globalCount / static_cast<float>(numPoints);

@@ -117,16 +117,16 @@ auto main() -> int
     // This buffer will hold the current values (used for the next step)
     auto uCurrBufHost = alpaka::allocBuf<double, Idx>(devHost, extent);
 
-    double* const pCurrHost = alpaka::getPtrNative(uCurrBufHost);
-    double* const pNextHost = alpaka::getPtrNative(uNextBufHost);
+    double* const pCurrHost = std::data(uCurrBufHost);
+    double* const pNextHost = std::data(uNextBufHost);
 
     // Accelerator buffer
     using BufAcc = alpaka::Buf<Acc, double, Dim, Idx>;
     auto uNextBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
     auto uCurrBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
 
-    double* pCurrAcc = alpaka::getPtrNative(uCurrBufAcc);
-    double* pNextAcc = alpaka::getPtrNative(uNextBufAcc);
+    double* pCurrAcc = std::data(uCurrBufAcc);
+    double* pNextAcc = std::data(uNextBufAcc);
 
     // Apply initial conditions for the test problem
     for(uint32_t i = 0; i < numNodesX; i++)
