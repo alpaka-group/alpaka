@@ -1,6 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"structalpaka_1_1trait_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynMember_3_01TStaticAllocKiB_01_4_01_4.html#a1f3a810c3454f9db8ef2a8f54be14232":[3,0,0,15,252,0],
 "structalpaka_1_1trait_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html":[3,0,0,15,253],
 "structalpaka_1_1trait_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html#a6e6b58ce19643cd2a95289a82afb8c16":[3,0,0,15,253,0],
 "structalpaka_1_1trait_1_1GetExtent.html":[3,0,0,15,254],
@@ -249,5 +248,6 @@ var NAVTREEINDEX15 =
 "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html":[3,0,0,15,377],
 "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCpu_3_01TDev_01_4_01_4.html#af4e4f2e03fc1f659d39e3fad2fcfb4d9":[3,0,0,15,377,0],
 "structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html":[3,0,0,15,378],
-"structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html#aeb1f0fd9cac817fad01903aca034c744":[3,0,0,15,378,0]
+"structalpaka_1_1trait_1_1IsComplete_3_01test_1_1EventHostManualTriggerCuda_01_4.html#aeb1f0fd9cac817fad01903aca034c744":[3,0,0,15,378,0],
+"structalpaka_1_1trait_1_1IsMultiThreadAcc.html":[3,0,0,15,379]
 };

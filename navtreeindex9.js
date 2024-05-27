@@ -1,6 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicDec_00_01T_00_01THierarchy_00_01ty6272f6dc3f3bf5f995fbc874ee90ac15.html":[3,0,11],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicDec_00_01T_00_01THierarchy_00_01ty6272f6dc3f3bf5f995fbc874ee90ac15.html#ae61d33e9848a1e8e23863c36d754577c":[3,0,11,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicDec_00_01T_00_01THierarchy_00_01ty6272f6dc3f3bf5f995fbc874ee90ac15.html#ae61d33e9848a1e8e23863c36d754577c":[3,0,1,8,0],
 "structalpakaGlobal_1_1AlpakaBuiltInAtomic_3_01alpaka_1_1AtomicDec_00_01T_00_01alpaka_1_1hierarche1c7bdba35bffa9a0b66f70390e13e35.html":[3,0,10],
@@ -249,5 +248,6 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1TagCpuSerial.html":[3,0,0,98],
 "structalpaka_1_1TagCpuSerial.html#aa11e502832092a209ef0bf798011a172":[3,0,0,98,0],
 "structalpaka_1_1TagCpuSycl.html":[3,0,0,99],
-"structalpaka_1_1TagCpuSycl.html#a32ca9baec0c3fe2253e69db97cbfadb7":[3,0,0,99,0]
+"structalpaka_1_1TagCpuSycl.html#a32ca9baec0c3fe2253e69db97cbfadb7":[3,0,0,99,0],
+"structalpaka_1_1TagCpuTbbBlocks.html":[3,0,0,100]
 };
