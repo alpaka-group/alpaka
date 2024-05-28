@@ -86,12 +86,14 @@ $(document).ready(function(){initNavTree('TypeListOps_8hpp.html',''); initResiza
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">TypeListOps.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
+<div class="textblock"><code>#include &lt;tuple&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="TypeListOps_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -104,6 +106,18 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1Front.html">alpaka::meta::detail::Front&lt; List &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1Front_3_01List_3_01Head_00_01Tail_8_8_8_01_4_01_4.html">alpaka::meta::detail::Front&lt; List&lt; Head, Tail... &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1ToListImpl.html">alpaka::meta::detail::ToListImpl&lt; TListType, TType, typename &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1detail_1_1ToListImpl_3_01TListType_00_01TList_00_01std_1_1enable__if__t_ddfb50b4828b063769e944d0a700badb.html">alpaka::meta::detail::ToListImpl&lt; TListType, TList, std::enable_if_t&lt; alpaka::meta::isList&lt; TList &gt; &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1IsList.html">alpaka::meta::IsList&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1IsList_3_01TList_3_01TTypes_8_8_8_01_4_01_4.html">alpaka::meta::IsList&lt; TList&lt; TTypes... &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_01_4.html">alpaka::meta::ToList&lt; TListType, T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_00_01Ts_8_8_8_01_4.html">alpaka::meta::ToList&lt; TListType, T, Ts... &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -121,6 +135,17 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aa022767003bdbdb48057be42318fa982"><td class="memTemplParams" colspan="2">template&lt;typename List &gt; </td></tr>
 <tr class="memitem:aa022767003bdbdb48057be42318fa982"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#aa022767003bdbdb48057be42318fa982">alpaka::meta::Front</a> = typename detail::Front&lt; List &gt;::type</td></tr>
 <tr class="separator:aa022767003bdbdb48057be42318fa982"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26fd28a38cfe469c090015c6aaf79a98"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
+<tr class="memitem:a26fd28a38cfe469c090015c6aaf79a98"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a26fd28a38cfe469c090015c6aaf79a98">alpaka::meta::ToTuple</a> = typename ToList&lt; std::tuple, T... &gt;::type</td></tr>
+<tr class="memdesc:a26fd28a38cfe469c090015c6aaf79a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">If T is a single argument and a type list (fullfil <a class="el" href="namespacealpaka_1_1meta.html#a45dfe9bab48635f934c589c347768ffd" title="Checks whether the specified type is a list. List is a type with a variadic number of template types.">alpaka::meta::isList</a>), the return type is T. Otherwise, std::tuple is returned with T types as template parameters.  <a href="namespacealpaka_1_1meta.html#a26fd28a38cfe469c090015c6aaf79a98">More...</a><br /></td></tr>
+<tr class="separator:a26fd28a38cfe469c090015c6aaf79a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a45dfe9bab48635f934c589c347768ffd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a45dfe9bab48635f934c589c347768ffd"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a45dfe9bab48635f934c589c347768ffd">alpaka::meta::isList</a> = IsList&lt;std::decay_t&lt;T&gt;&gt;::value</td></tr>
+<tr class="memdesc:a45dfe9bab48635f934c589c347768ffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the specified type is a list. List is a type with a variadic number of template types.  <a href="namespacealpaka_1_1meta.html#a45dfe9bab48635f934c589c347768ffd">More...</a><br /></td></tr>
+<tr class="separator:a45dfe9bab48635f934c589c347768ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -128,7 +153,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_9b06e2d5421d26ecb89f5fc8cf901459.html">meta</a></li><li class="navelem"><a class="el" href="TypeListOps_8hpp.html">TypeListOps.hpp</a></li>
-    <li class="footer">Generated on Mon May 27 2024 05:53:56 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue May 28 2024 07:59:19 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

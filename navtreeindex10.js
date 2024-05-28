@@ -1,5 +1,10 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1TagCpuSerial.html":[3,0,0,98],
+"structalpaka_1_1TagCpuSerial.html#aa11e502832092a209ef0bf798011a172":[3,0,0,98,0],
+"structalpaka_1_1TagCpuSycl.html":[3,0,0,99],
+"structalpaka_1_1TagCpuSycl.html#a32ca9baec0c3fe2253e69db97cbfadb7":[3,0,0,99,0],
+"structalpaka_1_1TagCpuTbbBlocks.html":[3,0,0,100],
 "structalpaka_1_1TagCpuTbbBlocks.html#ab19af20726e6457e21e90e1f76036226":[3,0,0,100,0],
 "structalpaka_1_1TagCpuThreads.html":[3,0,0,101],
 "structalpaka_1_1TagCpuThreads.html#a0e70cbb5e39d9a334b82401cfbac95e3":[3,0,0,101,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase.html#aa58e0d0d72e20bb7a2db25daab4a59f8":[3,0,0,4,60,1],
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHipBase.html#aaecd89fddaa666bb64775b87ab8a1dcc":[3,0,0,4,60,3],
 "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,56],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a121d489ebd36e54dc03c8b2e3d0a02b4":[3,0,0,4,56,1],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a3d50bf81e4d378944807d788d1018326":[3,0,0,4,56,0],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,57],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#a11a97e7bc8047d9af67c4adef2c54965":[3,0,0,4,57,1],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#a92fac71e2d137e7d7185f1130588c22d":[3,0,0,4,57,0],
-"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_012u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,4,58]
+"structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_010u_01_4_00_01TView_00_01TExtent_01_4.html#a121d489ebd36e54dc03c8b2e3d0a02b4":[3,0,0,4,56,1]
 };

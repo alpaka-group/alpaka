@@ -330,6 +330,8 @@ var hierarchy =
     [ "alpaka::meta::detail::MakeIntegerSequenceHelper< TisSizeNegative, TbIsBegin, T, Tbegin, TIntCon, TIntSeq >", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html", null ],
     [ "alpaka::meta::detail::MakeIntegerSequenceHelper< false, false, T, Tbegin, std::integral_constant< T, TIdx >, std::integer_sequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01false_00_01T_00_01Tbe2226ebc67c6afc7587e3108b88049dfe.html", null ],
     [ "alpaka::meta::detail::MakeIntegerSequenceHelper< false, true, T, Tbegin, std::integral_constant< T, Tbegin >, std::integer_sequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01true_00_01T_00_01Tbeg466ec65af3249a9f6f5c982e7153affc.html", null ],
+    [ "alpaka::meta::detail::ToListImpl< TListType, TType, typename >", "structalpaka_1_1meta_1_1detail_1_1ToListImpl.html", null ],
+    [ "alpaka::meta::detail::ToListImpl< TListType, TList, std::enable_if_t< alpaka::meta::isList< TList > > >", "structalpaka_1_1meta_1_1detail_1_1ToListImpl_3_01TListType_00_01TList_00_01std_1_1enable__if__t_ddfb50b4828b063769e944d0a700badb.html", null ],
     [ "alpaka::meta::detail::TransformImpl< Ts, TOp >", "structalpaka_1_1meta_1_1detail_1_1TransformImpl.html", null ],
     [ "alpaka::meta::detail::TransformImpl< TList< Ts... >, TOp >", "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4.html", null ],
     [ "alpaka::meta::detail::UniqueHelper< T, Ts >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper.html", null ],
@@ -352,6 +354,8 @@ var hierarchy =
     [ "alpaka::meta::IntegralValuesUnique< T, Tvals >", "structalpaka_1_1meta_1_1IntegralValuesUnique.html", null ],
     [ "alpaka::meta::max< T >", "structalpaka_1_1meta_1_1max.html", null ],
     [ "alpaka::meta::min< T >", "structalpaka_1_1meta_1_1min.html", null ],
+    [ "alpaka::meta::ToList< TListType, T >", "structalpaka_1_1meta_1_1ToList.html", null ],
+    [ "alpaka::meta::ToList< TListType, T, Ts... >", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_00_01Ts_8_8_8_01_4.html", null ],
     [ "alpaka::omp::Schedule", "structalpaka_1_1omp_1_1Schedule.html", null ],
     [ "alpaka::rand::ConceptRand", "structalpaka_1_1rand_1_1ConceptRand.html", null ],
     [ "alpaka::rand::distribution::cpu::NormalReal< T >", "structalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal.html", null ],
@@ -1666,6 +1670,7 @@ var hierarchy =
       [ "alpaka::meta::Contains< List, Value >", "structalpaka_1_1meta_1_1Contains.html", null ],
       [ "alpaka::meta::DependentFalseType< T >", "structalpaka_1_1meta_1_1DependentFalseType.html", null ],
       [ "alpaka::meta::IsArrayOrVector< T >", "structalpaka_1_1meta_1_1IsArrayOrVector.html", null ],
+      [ "alpaka::meta::IsList< T >", "structalpaka_1_1meta_1_1IsList.html", null ],
       [ "alpaka::meta::detail::NonZeroImpl< T >", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl.html", null ],
       [ "alpaka::trait::HasAsyncBufSupport< TDim, TDev >", "structalpaka_1_1trait_1_1HasAsyncBufSupport.html", null ],
       [ "alpaka::trait::HasMappedBufSupport< TPlatform >", "structalpaka_1_1trait_1_1HasMappedBufSupport.html", null ],
@@ -1692,6 +1697,7 @@ var hierarchy =
       [ "alpaka::meta::IsArrayOrVector< alpaka::Vec< N, T > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01alpaka_1_1Vec_3_01N_00_01T_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
       [ "alpaka::meta::IsArrayOrVector< std::vector< T, A > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1vector_3_01T_00_01A_01_4_01_4.html", null ],
+      [ "alpaka::meta::IsList< TList< TTypes... > >", "structalpaka_1_1meta_1_1IsList_3_01TList_3_01TTypes_8_8_8_01_4_01_4.html", null ],
       [ "alpaka::test::trait::IsBlockingQueue< QueueCpuOmp2Collective >", "structalpaka_1_1test_1_1trait_1_1IsBlockingQueue_3_01QueueCpuOmp2Collective_01_4.html", null ],
       [ "alpaka::trait::HasAsyncBufSupport< TDim, DevCpu >", "structalpaka_1_1trait_1_1HasAsyncBufSupport_3_01TDim_00_01DevCpu_01_4.html", null ],
       [ "alpaka::trait::HasMappedBufSupport< PlatformCpu >", "structalpaka_1_1trait_1_1HasMappedBufSupport_3_01PlatformCpu_01_4.html", null ],
@@ -1744,6 +1750,9 @@ var hierarchy =
       [ "alpaka::detail::TaskSetUniformCudaHip< TApi, DimInt< 3u >, TView, TExtent >", "structalpaka_1_1detail_1_1TaskSetUniformCudaHip_3_01TApi_00_01DimInt_3_013u_01_4_00_01TView_00_01TExtent_01_4.html", null ]
     ] ],
     [ "TINYMT32_T", "structTINYMT32__T.html", null ],
+    [ "alpaka::meta::detail::ToListImpl< TListType, T >", "structalpaka_1_1meta_1_1detail_1_1ToListImpl.html", [
+      [ "alpaka::meta::ToList< TListType, T >", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_01_4.html", null ]
+    ] ],
     [ "alpaka::Vec< Dim, Idx >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, DstSize >", "classalpaka_1_1Vec.html", null ],
     [ "alpaka::Vec< TDim, ExtentSize >", "classalpaka_1_1Vec.html", null ],

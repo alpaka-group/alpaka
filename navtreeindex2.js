@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
 "QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
 "QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
@@ -158,7 +159,9 @@ var NAVTREEINDEX2 =
 "Transform_8hpp.html#a4d6e5b453ca068f43742cf89a32593dd":[4,0,0,0,15,16,1],
 "Transform_8hpp_source.html":[4,0,0,0,15,16],
 "TypeListOps_8hpp.html":[4,0,0,0,15,17],
-"TypeListOps_8hpp.html#aa022767003bdbdb48057be42318fa982":[4,0,0,0,15,17,4],
+"TypeListOps_8hpp.html#a26fd28a38cfe469c090015c6aaf79a98":[4,0,0,0,15,17,11],
+"TypeListOps_8hpp.html#a45dfe9bab48635f934c589c347768ffd":[4,0,0,0,15,17,12],
+"TypeListOps_8hpp.html#aa022767003bdbdb48057be42318fa982":[4,0,0,0,15,17,10],
 "TypeListOps_8hpp_source.html":[4,0,0,0,15,17],
 "UniformCudaHip_8hpp.html":[4,0,0,0,3,22],
 "UniformCudaHip_8hpp.html#a1133404607a47b93d80cd9a0312272bd":[4,0,0,0,3,22,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,26,4],
 "acc_2Traits_8hpp.html":[4,0,0,0,0,15],
 "acc_2Traits_8hpp.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[4,0,0,0,0,15,8],
-"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,15,6],
-"acc_2Traits_8hpp.html#a59a2ac6be1d358d9602a57982175c4cc":[4,0,0,0,0,15,10],
-"acc_2Traits_8hpp.html#a8b9738d9422291b856f55a20d6605299":[4,0,0,0,0,15,9],
-"acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df":[4,0,0,0,0,15,7]
+"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,15,6]
 };

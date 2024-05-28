@@ -418,6 +418,8 @@ var annotated_dup =
           [ "MakeIntegerSequenceHelper< false, true, T, Tbegin, std::integral_constant< T, Tbegin >, std::integer_sequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01true_00_01T_00_01Tbeg466ec65af3249a9f6f5c982e7153affc.html", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01true_00_01T_00_01Tbeg466ec65af3249a9f6f5c982e7153affc" ],
           [ "NonZeroImpl", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl.html", null ],
           [ "NonZeroImpl< std::integral_constant< T, TValue > >", "structalpaka_1_1meta_1_1detail_1_1NonZeroImpl_3_01std_1_1integral__constant_3_01T_00_01TValue_01_4_01_4.html", null ],
+          [ "ToListImpl", "structalpaka_1_1meta_1_1detail_1_1ToListImpl.html", "structalpaka_1_1meta_1_1detail_1_1ToListImpl" ],
+          [ "ToListImpl< TListType, TList, std::enable_if_t< alpaka::meta::isList< TList > > >", "structalpaka_1_1meta_1_1detail_1_1ToListImpl_3_01TListType_00_01TList_00_01std_1_1enable__if__t_ddfb50b4828b063769e944d0a700badb.html", "structalpaka_1_1meta_1_1detail_1_1ToListImpl_3_01TListType_00_01TList_00_01std_1_1enable__if__t_ddfb50b4828b063769e944d0a700badb" ],
           [ "TransformImpl", "structalpaka_1_1meta_1_1detail_1_1TransformImpl.html", null ],
           [ "TransformImpl< TList< Ts... >, TOp >", "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4.html", "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4" ],
           [ "UniqueHelper", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper.html", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper" ],
@@ -443,8 +445,13 @@ var annotated_dup =
         [ "IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
         [ "IsArrayOrVector< std::vector< T, A > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1vector_3_01T_00_01A_01_4_01_4.html", null ],
         [ "IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ],
+        [ "IsList", "structalpaka_1_1meta_1_1IsList.html", null ],
+        [ "IsList< TList< TTypes... > >", "structalpaka_1_1meta_1_1IsList_3_01TList_3_01TTypes_8_8_8_01_4_01_4.html", null ],
         [ "max", "structalpaka_1_1meta_1_1max.html", "structalpaka_1_1meta_1_1max" ],
-        [ "min", "structalpaka_1_1meta_1_1min.html", "structalpaka_1_1meta_1_1min" ]
+        [ "min", "structalpaka_1_1meta_1_1min.html", "structalpaka_1_1meta_1_1min" ],
+        [ "ToList", "structalpaka_1_1meta_1_1ToList.html", null ],
+        [ "ToList< TListType, T >", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_01_4.html", null ],
+        [ "ToList< TListType, T, Ts... >", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_00_01Ts_8_8_8_01_4.html", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_00_01Ts_8_8_8_01_4" ]
       ] ],
       [ "omp", "namespacealpaka_1_1omp.html", [
         [ "Schedule", "structalpaka_1_1omp_1_1Schedule.html", "structalpaka_1_1omp_1_1Schedule" ]

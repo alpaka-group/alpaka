@@ -19,8 +19,13 @@ var namespacealpaka_1_1meta =
     [ "IsArrayOrVector< std::array< T, N > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html", null ],
     [ "IsArrayOrVector< std::vector< T, A > >", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01std_1_1vector_3_01T_00_01A_01_4_01_4.html", null ],
     [ "IsArrayOrVector< T[N]>", "structalpaka_1_1meta_1_1IsArrayOrVector_3_01T_0fN_0e_4.html", null ],
+    [ "IsList", "structalpaka_1_1meta_1_1IsList.html", null ],
+    [ "IsList< TList< TTypes... > >", "structalpaka_1_1meta_1_1IsList_3_01TList_3_01TTypes_8_8_8_01_4_01_4.html", null ],
     [ "max", "structalpaka_1_1meta_1_1max.html", "structalpaka_1_1meta_1_1max" ],
     [ "min", "structalpaka_1_1meta_1_1min.html", "structalpaka_1_1meta_1_1min" ],
+    [ "ToList", "structalpaka_1_1meta_1_1ToList.html", null ],
+    [ "ToList< TListType, T >", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_01_4.html", null ],
+    [ "ToList< TListType, T, Ts... >", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_00_01Ts_8_8_8_01_4.html", "structalpaka_1_1meta_1_1ToList_3_01TListType_00_01T_00_01Ts_8_8_8_01_4" ],
     [ "Apply", "namespacealpaka_1_1meta.html#ad0cbe491078fbefb5d6c6908dd4d799e", null ],
     [ "CartesianProduct", "namespacealpaka_1_1meta.html#a912098ffc7a3de7e5b522a451e81da24", null ],
     [ "Concatenate", "namespacealpaka_1_1meta.html#a8ec9f76ad5048e654936626c56845f2c", null ],
@@ -37,11 +42,13 @@ var namespacealpaka_1_1meta =
     [ "LowerMin", "namespacealpaka_1_1meta.html#af9bb8645940302e4f6477058666856fa", null ],
     [ "MakeIntegerSequenceOffset", "namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b", null ],
     [ "NonZero", "namespacealpaka_1_1meta.html#a8cc18e1b72c5071da369d80b8f0569a7", null ],
+    [ "ToTuple", "namespacealpaka_1_1meta.html#a26fd28a38cfe469c090015c6aaf79a98", null ],
     [ "Transform", "namespacealpaka_1_1meta.html#a4d6e5b453ca068f43742cf89a32593dd", null ],
     [ "Unique", "namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c", null ],
     [ "foldr", "namespacealpaka_1_1meta.html#a0cef95a955740a85417c93cee0a99d0e", null ],
     [ "foldr", "namespacealpaka_1_1meta.html#acbbc58bde0ebd68f42808ae663e6047d", null ],
     [ "forEachType", "namespacealpaka_1_1meta.html#a84fa9b71d57092b3d9da78ee5eea68b4", null ],
     [ "ndLoop", "namespacealpaka_1_1meta.html#a7261a133bf3b52a94cc2e289f0c73497", null ],
-    [ "ndLoopIncIdx", "namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750", null ]
+    [ "ndLoopIncIdx", "namespacealpaka_1_1meta.html#a85354683c329835d1fa3e4da7de4c750", null ],
+    [ "isList", "namespacealpaka_1_1meta.html#a45dfe9bab48635f934c589c347768ffd", null ]
 ];
