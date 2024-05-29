@@ -115,6 +115,7 @@ Create a CPU device for memory allocation on the host side
 
 Allocate a buffer in host memory
   .. code-block:: c++
+
      // Use alpaka vector as a static array for the extents
      alpaka::Vec<Dim, Idx> extent = value;
      // Allocate memory for the alpaka buffer, which is a dynamic array
@@ -161,6 +162,7 @@ Allocate a buffer in device memory
 Enqueue a memory copy from host to device
   .. code-block:: c++
 
+     // arguments can be also alpaka::View instances instead of alpaka::Buf
      memcpy(queue, bufDevice, bufHost, extent);
 
 Enqueue a memory copy from device to host
