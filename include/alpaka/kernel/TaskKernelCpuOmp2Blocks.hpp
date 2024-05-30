@@ -20,6 +20,7 @@
 #include "alpaka/kernel/KernelBundle.hpp"
 #include "alpaka/kernel/KernelFunctionAttributes.hpp"
 #include "alpaka/kernel/Traits.hpp"
+#include "alpaka/platform/PlatformCpu.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
 
 #include <functional>
@@ -961,13 +962,17 @@ namespace alpaka
             //! determined. Max threads per block is one of the attributes.
             //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
             //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto getFunctionAttributes(
+            ALPAKA_FN_HOST static auto getFunctionAttributes(
                 [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
                 -> alpaka::KernelFunctionAttributes
             {
                 alpaka::KernelFunctionAttributes kernelFunctionAttributes;
-                kernelFunctionAttributes.maxThreadsPerBlock = 1u;
+                using Acc = AccCpuOmp2Blocks<TDim, TIdx>;
+                auto const platformAcc = alpaka::Platform<Acc>{};
+                auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+                // set function properties to device properties
+                auto const& props = alpaka::getAccDevProps<Acc>(dev);
+                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
                 return kernelFunctionAttributes;
             }
         };

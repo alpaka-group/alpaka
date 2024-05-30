@@ -119,11 +119,14 @@ namespace alpaka::trait
     };
 
     //! The SYCL accelerator device properties get trait specialization.
+    ALPAKA_NO_HOST_ACC_WARNING
+
     template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
     struct GetAccDevProps<
         TAcc<TDim, TIdx>,
         std::enable_if_t<std::is_base_of_v<AccGenericSycl<TDim, TIdx>, TAcc<TDim, TIdx>>>>
     {
+        ALPAKA_NO_HOST_ACC_WARNING
         static auto getAccDevProps(typename DevType<TAcc<TDim, TIdx>>::type const& dev) -> AccDevProps<TDim, TIdx>
         {
             auto const device = dev.getNativeHandle().first;

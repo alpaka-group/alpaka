@@ -13,6 +13,7 @@
 #include "alpaka/idx/Traits.hpp"
 #include "alpaka/kernel/SyclSubgroupSize.hpp"
 #include "alpaka/kernel/Traits.hpp"
+#include "alpaka/platform/PlatformGenericSycl.hpp"
 #include "alpaka/platform/Traits.hpp"
 #include "alpaka/queue/Traits.hpp"
 #include "alpaka/workdiv/WorkDivMembers.hpp"
@@ -276,6 +277,34 @@ namespace alpaka::trait
     {
         using type = TIdx;
     };
+
+    //! \brief Specialisation of the class template FunctionAttributes
+    //! \tparam TDim The dimensionality of the accelerator device properties.
+    //! \tparam TIdx The idx type of the accelerator device properties.
+    //! \tparam TKernelFn Kernel function object type.
+    //! \tparam TArgs Kernel function object argument types as a parameter pack.
+    template<typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+    struct FunctionAttributes<AccGenericSycl<TDim, TIdx>, KernelBundle<TKernelFn, TArgs...>>
+    {
+        //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+        //! determined. Max threads per block is one of the attributes.
+        //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
+        //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
+        ALPAKA_NO_HOST_ACC_WARNING
+        ALPAKA_FN_HOST static auto getFunctionAttributes(
+            [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle) -> alpaka::KernelFunctionAttributes
+        {
+            alpaka::KernelFunctionAttributes kernelFunctionAttributes;
+            using Acc = AccGenericSycl<TDim, TIdx>;
+            auto const platformAcc = alpaka::Platform<Acc>{};
+            auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+            // set function properties to device properties
+            auto const& props = alpaka::getAccDevProps<Acc>(dev);
+            kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+            return kernelFunctionAttributes;
+        }
+    };
+
 } // namespace alpaka::trait
 
 #    undef LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS

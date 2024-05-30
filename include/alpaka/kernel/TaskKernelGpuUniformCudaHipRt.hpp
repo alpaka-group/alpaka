@@ -403,7 +403,7 @@ namespace alpaka
             //! \return KernelFunctionAttributes instance. For GPU backend, all values are set by calling the
             //! corresponding API functions. The default version always returns an instance with zero fields. For CPU,
             //! the field of max threads allowed by kernel function for the block is 1.
-            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC static auto getFunctionAttributes(
+            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST static auto getFunctionAttributes(
                 [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
                 -> alpaka::KernelFunctionAttributes
             {
@@ -436,7 +436,7 @@ namespace alpaka
 
                 kernelFunctionAttributes.numRegs = funcAttrs.numRegs;
                 kernelFunctionAttributes.asmVersion = funcAttrs.ptxVersion;
-                kernelFunctionAttributes.maxThreadsPerBlock = funcAttrs.maxThreadsPerBlock;
+                kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(funcAttrs.maxThreadsPerBlock);
 
 #        if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 printf("Kernel Function Attributes: \n");

@@ -82,7 +82,7 @@ namespace alpaka
             //! \return KernelFunctionAttributes data structure instance. The default version always returns the
             //! instance with fields which are set to zero.
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto getFunctionAttributes([[maybe_unused]] TKernelBundle const& kernelBundle)
+            ALPAKA_FN_HOST static auto getFunctionAttributes([[maybe_unused]] TKernelBundle const& kernelBundle)
                 -> alpaka::KernelFunctionAttributes
             {
                 return alpaka::KernelFunctionAttributes();
@@ -187,15 +187,19 @@ namespace alpaka
             args...);
     }
 
+    //! \tparam TAcc The accelerator type.
+    //! \tparam TDev The device type.
     //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and it's invocation
+    //! arguments.
+    //! \param dev The device instance
+    //! \param kernelBundle The kernel object, which includes the kernel function object and it's invocation
     //! arguments.
     //! \return KernelFunctionAttributes instance. Instance is filled with values returned by the accelerator API
     //! depending on the specific kernel. The default version always returns the instance with fields which are set to
     //! zero.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc, typename TKernelBundle>
-    ALPAKA_FN_HOST_ACC auto getFunctionAttributes(TKernelBundle const& kernelBundle)
-        -> alpaka::KernelFunctionAttributes
+    ALPAKA_FN_HOST auto getFunctionAttributes(TKernelBundle const& kernelBundle) -> alpaka::KernelFunctionAttributes
     {
         return trait::FunctionAttributes<TAcc, TKernelBundle>::getFunctionAttributes(kernelBundle);
     }
