@@ -384,17 +384,16 @@ namespace alpaka
         typename TAcc,
         typename TDev,
         typename TKernelBundle,
-        typename TGridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>,
-        typename TThreadElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>>
+        typename TGridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>,
+        typename TThreadElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>>
     ALPAKA_FN_HOST auto getValidWorkDivForKernel(
         [[maybe_unused]] TDev const& dev,
         TKernelBundle const& kernelBundle,
-        [[maybe_unused]] TGridElemExtent const& gridElemExtent = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
-        [[maybe_unused]] TThreadElemExtent const& threadElemExtents = Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        [[maybe_unused]] TGridElemExtent const& gridElemExtent = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
+        [[maybe_unused]] TThreadElemExtent const& threadElemExtents = alpaka::Vec<Dim<TAcc>, Idx<TAcc>>::ones(),
         [[maybe_unused]] bool blockThreadMustDivideGridThreadExtent = true,
         [[maybe_unused]] GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions
-        = GridBlockExtentSubDivRestrictions::Unrestricted)
-        -> WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>
+        = GridBlockExtentSubDivRestrictions::Unrestricted) -> WorkDivMembers<Dim<TAcc>, Idx<TAcc>>
     {
         using Acc = TAcc;
 
@@ -417,6 +416,7 @@ namespace alpaka
         // threads per block defined by device properties.
         auto const kernelFunctionAttributes = getFunctionAttributes<Acc>(kernelBundle);
         auto const threadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
+        // printf("%lu", std::get<0>(kernelBundle.m_args));
         if constexpr(Dim<TGridElemExtent>::value == 0)
         {
             auto const zero = Vec<DimInt<0>, Idx<Acc>>{};
@@ -432,6 +432,7 @@ namespace alpaka
                 static_cast<Idx<Acc>>(threadsPerBlock),
                 blockThreadMustDivideGridThreadExtent,
                 gridBlockExtentSubDivRestrictions);
+
         using V [[maybe_unused]] = Vec<Dim<TGridElemExtent>, Idx<TGridElemExtent>>;
         ALPAKA_UNREACHABLE(WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>{V{}, V{}, V{}});
     }
