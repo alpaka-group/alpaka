@@ -68,6 +68,7 @@
 #include "alpaka/core/OmpSchedule.hpp"
 #include "alpaka/core/Positioning.hpp"
 #include "alpaka/core/RemoveRestrict.hpp"
+#include "alpaka/core/RuntimeMacros.hpp"
 #include "alpaka/core/Sycl.hpp"
 #include "alpaka/core/ThreadPool.hpp"
 #include "alpaka/core/Unreachable.hpp"
