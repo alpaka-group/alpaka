@@ -7,7 +7,7 @@ Please review our more detailed [Coding Guidelines](https://alpaka.readthedocs.i
 This project is set up for use with [pre-commit](https://pre-commit.com). Using it will make your code conform with most
 of our (easily automatable) code style guidelines automatically.
 In very short (for anything further see [pre-commit](https://pre-commit.com)), after running the following in your
-working clone of Alpaka
+working clone of alpaka
 ```bash
 # if not yet done, install the pre-commit executable following https://pre-commit.com
 cd /path/to/alpaka-working-clone
@@ -28,7 +28,7 @@ the repository root. If you were using `pre-commit` during your changes, this ha
 not, find further instructions below.
 
 ### Visual Studio and CLion
-Suport for clang-format is built-in since Visual Studio 2017 15.7 and CLion 2019.1.
+Support for clang-format is built-in since Visual Studio 2017 15.7 and CLion 2019.1.
 The .clang-format file in the repository will be automatically detected and formatting is done as you type, or triggered when pressing the format hotkey.
 
 ### Bash

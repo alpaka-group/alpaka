@@ -10,7 +10,7 @@ This project is set up for use with `pre-commit <https://pre-commit.com>`_. Usin
 of our (easily automatable) code style guidelines automatically. Pre-commit is a tool that manages
 `git hooks <https://git-scm.com/docs/githooks>`_ conveniently for you.
 In very short (for anything further see `pre-commit <https://pre-commit.com>`_), after running the following in your
-working clone of Alpaka
+working clone of alpaka
 
 .. code-block:: bash
 
@@ -26,7 +26,7 @@ with the necessary changes such that
 
   git add -u
 
-will make the next commit pass. Although disencouraged, in urgent cases it might be needed to be able to commit even if
+will make the next commit pass. Although discouraged, in urgent cases it might be needed to be able to commit even if
 the checks fail. For such cases, you can either use
 
 .. code-block:: bash
