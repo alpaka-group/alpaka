@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
 "QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4],
 "QueueCpuNonBlocking_8hpp.html":[4,0,0,0,18,5],
 "QueueCpuNonBlocking_8hpp_source.html":[4,0,0,0,18,5],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,26,4],
 "acc_2Traits_8hpp.html":[4,0,0,0,0,15],
 "acc_2Traits_8hpp.html#a28ea3e39a125aaf90a97b1f75d91f0dd":[4,0,0,0,0,15,8],
-"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,15,6]
+"acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0":[4,0,0,0,0,15,6],
+"acc_2Traits_8hpp.html#a59a2ac6be1d358d9602a57982175c4cc":[4,0,0,0,0,15,10]
 };
