@@ -167,7 +167,7 @@ alpaka_FTZ
 alpaka_DEBUG_OFFLOAD_ASSUME_HOST
   .. code-block::
 
-     Allow host-only contructs like assert in offload code in debug mode.
+     Allow host-only constructs like assert in offload code in debug mode.
 
 alpaka_USE_MDSPAN
   .. code-block::

@@ -189,7 +189,7 @@ Control flow statements result in a predicate and only in those threads where it
 Not only *CUDA* GPUs support the execution of multiple threads in a warp.
 Full blown vector processors with good compilers are capable of combining multiple loop iterations containing complex control flow statements in a similar manner as *CUDA*.
 
-Due to the synchronitiy of threads within a warp, memory operations will always occur at the same time in all threads.
+Due to the synchronization of threads within a warp, memory operations will always occur at the same time in all threads.
 This allows to coalesce memory accesses.
 Different *CUDA* devices support different levels of memory coalescing.
 Older ones only supported combining multiple memory accesses if they were aligned and sequential in the order of thread indices.

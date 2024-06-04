@@ -97,7 +97,7 @@ These can be used interchangeably (some restrictions apply - see below) with the
   See [Intel's FAQ](https://github.com/intel/compute-runtime/blob/master/opencl/doc/FAQ.md#feature-double-precision-emulation-fp64) for more information.
 * The FPGA back-end does not support atomics. alpaka will not check this.
 * Shared memory works but on the GPU it is very slow.
-* The latest Intel OpenCL CPU runtime does not work properly. Some tests (`atomicTest`, `blockSharedTest`, `blockSharedSharingTest` and `warpTest`) fail with a `PI_ERROR_OUT_OF_RESOURCES`. The only runtime version that seems to work is 2022.14.8.0.04 (can be downloaded [here](https://github.com/intel/llvm/releases/download/2022-WW33/oclcpuexp-2022.14.8.0.04_rel.tar.gz) apart from a bug with `all_of_group` / `any_of_group` that requires the warp size being equal to the block size as a workaround.
+* The latest Intel OpenCL CPU runtime does not work properly. Some tests (`atomicTest`, `blockSharedTest`, `blockSharedSharingTest` and `warpTest`) fail with a `PI_ERROR_OUT_OF_RESOURCES`. The only runtime version that seems to work is 2022.14.8.0.04 (can be downloaded [here](https://github.com/intel/llvm/releases/download/2022-WW33/oclcpuexp-2022.14.8.0.04_rel.tar.gz)) apart from a bug with `all_of_group` / `any_of_group` that requires the warp size being equal to the block size as a workaround.
 
 ### Choosing the sub-group size (warp size)
 
