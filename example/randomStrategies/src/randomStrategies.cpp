@@ -3,7 +3,7 @@
  */
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/example/ExampleDefaultAcc.hpp>
+#include <alpaka/example/ExecuteForEachAccTag.hpp>
 
 #include <chrono>
 #include <cstdint>
@@ -25,13 +25,14 @@ using RandomEngine = alpaka::rand::Philox4x32x10;
 
 
 /// Parameters to set up the default accelerator, queue, and buffers
+template<typename TAccTag>
 struct Box
 {
     // accelerator, queue, and work division typedefs
     using Dim = alpaka::DimInt<1>;
     using Idx = std::size_t;
     using Vec = alpaka::Vec<Dim, Idx>;
-    using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
+    using Acc = alpaka::TagToAcc<TAccTag, Dim, Idx>;
     using PlatformHost = alpaka::PlatformCpu;
     using Host = alpaka::Dev<PlatformHost>;
     using PlatformAcc = alpaka::Platform<Acc>;
@@ -194,13 +195,14 @@ struct FillKernel
  *
  *  File is in TSV format. One line for each "point"; line length is the number of "rolls".
  */
-void saveDataAndShowAverage(std::string filename, float const* buffer, Box const& box)
+template<typename TAccTag>
+void saveDataAndShowAverage(std::string filename, float const* buffer, Box<TAccTag> const& box)
 {
     std::ofstream output(filename);
     std::cout << "Writing " << filename << " ... " << std::flush;
     auto const lineLength = box.extentResult[0] / box.extentRand[0];
     double average = 0;
-    for(Box::Idx i = 0; i < box.extentResult[0]; ++i)
+    for(typename Box<TAccTag>::Idx i = 0; i < box.extentResult[0]; ++i)
     {
         output << buffer[i] << ((i + 1) % lineLength ? "\t" : "\n");
         average += buffer[i];
@@ -216,7 +218,8 @@ struct Writer;
 template<>
 struct Writer<Strategy::seed>
 {
-    static void save(float const* buffer, Box const& box)
+    template<typename TAccTag>
+    static void save(float const* buffer, Box<TAccTag> const& box)
     {
         saveDataAndShowAverage("out_seed.csv", buffer, box);
     }
@@ -225,7 +228,8 @@ struct Writer<Strategy::seed>
 template<>
 struct Writer<Strategy::subsequence>
 {
-    static void save(float const* buffer, Box const& box)
+    template<typename TAccTag>
+    static void save(float const* buffer, Box<TAccTag> const& box)
     {
         saveDataAndShowAverage("out_subsequence.csv", buffer, box);
     }
@@ -234,14 +238,15 @@ struct Writer<Strategy::subsequence>
 template<>
 struct Writer<Strategy::offset>
 {
-    static void save(float const* buffer, Box const& box)
+    template<typename TAccTag>
+    static void save(float const* buffer, Box<TAccTag> const& box)
     {
         saveDataAndShowAverage("out_offset.csv", buffer, box);
     }
 };
 
-template<Strategy TStrategy>
-void runStrategy(Box& box)
+template<Strategy TStrategy, typename TAccTag>
+void runStrategy(Box<TAccTag>& box)
 {
     // Set up the pointer to the PRNG states buffer
     RandomEngine* const ptrBufAccRand{std::data(box.bufAccRand)};
@@ -252,7 +257,7 @@ void runStrategy(Box& box)
     // of the PRNG buffer and has to be passed in explicitly. Other strategies ignore the last parameter, and deduce
     // the initial parameters solely from the thread index
 
-    alpaka::exec<Box::Acc>(
+    alpaka::exec<typename Box<TAccTag>::Acc>(
         box.queue,
         box.workdivRand,
         initRandomKernel,
@@ -273,13 +278,19 @@ void runStrategy(Box& box)
     float* const ptrBufAccResult{std::data(box.bufAccResult)};
 
     // Initialise the results buffer to zero
-    for(Box::Idx i = 0; i < box.extentResult[0]; ++i)
+    for(typename Box<TAccTag>::Idx i = 0; i < box.extentResult[0]; ++i)
         ptrBufHostResult[i] = 0;
 
     // Run the "computation" kernel filling the results buffer with random numbers in parallel
     alpaka::memcpy(box.queue, box.bufAccResult, box.bufHostResult);
     FillKernel fillKernel;
-    alpaka::exec<Box::Acc>(box.queue, box.workdivResult, fillKernel, box.extentResult, ptrBufAccRand, ptrBufAccResult);
+    alpaka::exec<typename Box<TAccTag>::Acc>(
+        box.queue,
+        box.workdivResult,
+        fillKernel,
+        box.extentResult,
+        ptrBufAccRand,
+        ptrBufAccResult);
     alpaka::memcpy(box.queue, box.bufHostResult, box.bufAccResult);
     alpaka::wait(box.queue);
 
@@ -287,13 +298,34 @@ void runStrategy(Box& box)
     Writer<TStrategy>::save(ptrBufHostResult, box);
 }
 
-auto main() -> int
+// In standard projects, you typically do not execute the code with any available accelerator.
+// Instead, a single accelerator is selected once from the active accelerators and the kernels are executed with the
+// selected accelerator only. If you use the example as the starting point for your project, you can rename the
+// example() function to main() and move the accelerator tag to the function body.
+template<typename TAccTag>
+auto example(TAccTag const&) -> int
 {
-    Box box; // Initialize the box
+    Box<TAccTag> box; // Initialize the box
 
     runStrategy<Strategy::seed>(box); // threads start from different seeds
     runStrategy<Strategy::subsequence>(box); // threads use different subsequences
     runStrategy<Strategy::offset>(box); // threads start form an offset equal to the amount of work per thread
 
     return 0;
+}
+
+auto main() -> int
+{
+    // Execute the example once for each enabled accelerator.
+    // If you would like to execute it for a single accelerator only you can use the following code.
+    //  \code{.cpp}
+    //  auto tag = TagCpuSerial;
+    //  return example(tag);
+    //  \endcode
+    //
+    // valid tags:
+    //   TagCpuSerial, TagGpuHipRt, TagGpuCudaRt, TagCpuOmp2Blocks, TagCpuTbbBlocks,
+    //   TagCpuOmp2Threads, TagCpuSycl, TagCpuTbbBlocks, TagCpuThreads,
+    //   TagFpgaSyclIntel, TagGenericSycl, TagGpuSyclIntel
+    return alpaka::executeForEachAccTag([=](auto const& tag) { return example(tag); });
 }

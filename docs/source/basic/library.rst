@@ -124,7 +124,7 @@ Kernels can also be defined via lambda expressions.
 
       int main() {
           // ...
-	  using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
+	  using Acc = alpaka::AccGpuCudaRt<Dim, Idx>;
 
 	  auto kernel = [] ALPAKA_FN_ACC (Acc const & acc /* , ... */) -> void {
 	      // ...

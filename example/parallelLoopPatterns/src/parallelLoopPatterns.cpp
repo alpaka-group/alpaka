@@ -3,7 +3,7 @@
  */
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/example/ExampleDefaultAcc.hpp>
+#include <alpaka/example/ExecuteForEachAccTag.hpp>
 
 #include <iostream>
 #include <typeinfo>
@@ -73,7 +73,7 @@ struct NaiveCudaStyleKernel
     template<typename TAcc>
     ALPAKA_FN_ACC void operator()(TAcc const& acc, float* result, uint32_t n) const
     {
-        auto const globalThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
         // Cuf off threads that have nothing to do
         if(globalThreadIdx < n)
         {
@@ -140,8 +140,8 @@ struct GridStridedLoopKernel
     template<typename TAcc>
     ALPAKA_FN_ACC void operator()(TAcc const& acc, float* result, uint32_t n) const
     {
-        auto const globalThreadExtent(alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        auto const globalThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u];
+        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
         for(uint32_t dataDomainIdx = globalThreadIdx; dataDomainIdx < n; dataDomainIdx += globalThreadExtent)
         {
             auto const memoryIdx = dataDomainIdx;
@@ -205,9 +205,9 @@ struct ChunkedGridStridedLoopKernel
     template<typename TAcc>
     ALPAKA_FN_ACC void operator()(TAcc const& acc, float* result, uint32_t n) const
     {
-        auto const numElements(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
-        auto const globalThreadExtent(alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        auto const globalThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const numElements = alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u];
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u];
+        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
         // Additionally could split the loop into peeled and remainder
         for(uint32_t chunkStart = globalThreadIdx * numElements; chunkStart < n;
             chunkStart += globalThreadExtent * numElements)
@@ -277,8 +277,8 @@ struct NaiveOpenMPStyleKernel
     template<typename TAcc>
     ALPAKA_FN_ACC void operator()(TAcc const& acc, float* result, uint32_t n) const
     {
-        auto const globalThreadExtent(alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        auto const globalThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u];
+        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
         auto const processPerThread = (n + globalThreadExtent - 1) / globalThreadExtent;
         for(uint32_t dataDomainIdx = globalThreadIdx * processPerThread;
             (dataDomainIdx < (globalThreadIdx + 1) * processPerThread) && (dataDomainIdx < n);
@@ -342,9 +342,9 @@ struct OpenMPSimdStyleKernel
     template<typename TAcc>
     ALPAKA_FN_ACC void operator()(TAcc const& acc, float* result, uint32_t n) const
     {
-        auto const numElements(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
-        auto const globalThreadExtent(alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        auto const globalThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const numElements = alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u];
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)[0u];
+        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
         // This is the number for naive OpenMP style
         auto const naiveProcessPerThread = (n + globalThreadExtent - 1) / globalThreadExtent;
         // Round up to multiple of numElements
@@ -400,24 +400,18 @@ void openMPSimdStyle(TDev& dev, TQueue& queue, TBufAcc& bufAcc)
     testResult(queue, bufAcc);
 }
 
-auto main() -> int
+// In standard projects, you typically do not execute the code with any available accelerator.
+// Instead, a single accelerator is selected once from the active accelerators and the kernels are executed with the
+// selected accelerator only. If you use the example as the starting point for your project, you can rename the
+// example() function to main() and move the accelerator tag to the function body.
+template<typename TAccTag>
+auto example(TAccTag const&) -> int
 {
     // Define the index domain, this example is only for 1d
     using Dim = alpaka::DimInt<1u>;
 
     // Define the accelerator
-    //
-    // It is possible to choose from a set of accelerators:
-    // - AccGpuCudaRt
-    // - AccGpuHipRt
-    // - AccCpuThreads
-    // - AccCpuFibers
-    // - AccCpuOmp2Threads
-    // - AccCpuOmp2Blocks
-    // - AccCpuTbbBlocks
-    // - AccCpuSerial
-    // using Acc = alpaka::AccCpuSerial<Dim, uint32_t>;
-    using Acc = alpaka::ExampleDefaultAcc<Dim, uint32_t>;
+    using Acc = alpaka::TagToAcc<TAccTag, Dim, uint32_t>;
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
     // Select a device and create queue for it
@@ -435,4 +429,22 @@ auto main() -> int
     chunkedGridStridedLoop<Acc>(devAcc, queue, bufAcc);
     naiveOpenMPStyle<Acc>(devAcc, queue, bufAcc);
     openMPSimdStyle<Acc>(devAcc, queue, bufAcc);
+
+    return EXIT_SUCCESS;
+}
+
+auto main() -> int
+{
+    // Execute the example once for each enabled accelerator.
+    // If you would like to execute it for a single accelerator only you can use the following code.
+    //  \code{.cpp}
+    //  auto tag = TagCpuSerial;
+    //  return example(tag);
+    //  \endcode
+    //
+    // valid tags:
+    //   TagCpuSerial, TagGpuHipRt, TagGpuCudaRt, TagCpuOmp2Blocks, TagCpuTbbBlocks,
+    //   TagCpuOmp2Threads, TagCpuSycl, TagCpuTbbBlocks, TagCpuThreads,
+    //   TagFpgaSyclIntel, TagGenericSycl, TagGpuSyclIntel
+    return alpaka::executeForEachAccTag([=](auto const& tag) { return example(tag); });
 }

@@ -143,7 +143,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getAccDevProps(DevCpu const& dev) -> AccDevProps<TDim, TIdx>
             {
 #    ifdef ALPAKA_CI
-                auto const blockThreadCountMax(static_cast<TIdx>(8));
+                auto const blockThreadCountMax = static_cast<TIdx>(8);
 #    else
                 // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation
                 // defined maximum where the creation of a new thread crashes. std::thread::hardware_concurrency can
