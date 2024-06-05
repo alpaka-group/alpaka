@@ -21611,6 +21611,7 @@
 			// #include "alpaka/core/BoostPredef.hpp"    // amalgamate: file already inlined
 			// #include "alpaka/core/Concepts.hpp"    // amalgamate: file already inlined
 
+			// #include <cstddef>    // amalgamate: file already included
 			// #include <type_traits>    // amalgamate: file already included
 
 			#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
@@ -21641,10 +21642,12 @@
 			            __device__ static auto getMem(BlockSharedMemDynUniformCudaHipBuiltIn const&) -> T*
 			            {
 			                // Because unaligned access to variables is not allowed in device code,
-			                // we have to use the widest possible type to have all types aligned correctly.
-			                // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
-			                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
-			                extern __shared__ float4 shMem[];
+			                // we use the widest possible alignment supported by CUDA types to have
+			                // all types aligned correctly.
+			                // See:
+			                //   - http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
+			                //   - http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
+			                extern __shared__ std::byte shMem alignas(std::max_align_t)[];
 			                return reinterpret_cast<T*>(shMem);
 			            }
 			        };
