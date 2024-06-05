@@ -3,7 +3,7 @@
  */
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/example/ExampleDefaultAcc.hpp>
+#include <alpaka/example/ExecuteForEachAccTag.hpp>
 
 #include <cmath>
 #include <iomanip>
@@ -64,7 +64,12 @@ auto FuzzyEqual(float a, float b) -> bool
     return std::fabs(a - b) < std::numeric_limits<float>::epsilon() * 10.0f;
 }
 
-auto main() -> int
+// In standard projects, you typically do not execute the code with any available accelerator.
+// Instead, a single accelerator is selected once from the active accelerators and the kernels are executed with the
+// selected accelerator only. If you use the example as the starting point for your project, you can rename the
+// example() function to main() and move the accelerator tag to the function body.
+template<typename TAccTag>
+auto example(TAccTag const&) -> int
 {
     // Size of 1D arrays to be used in convolution integral
     // Here instead of "convolution kernel" the term "filter" is used because kernel has a different meaning in GPU
@@ -80,7 +85,7 @@ auto main() -> int
     using Idx = std::size_t;
 
     // Define the accelerator
-    using DevAcc = alpaka::ExampleDefaultAcc<Dim, Idx>;
+    using DevAcc = alpaka::TagToAcc<TAccTag, Dim, Idx>;
     using QueueProperty = alpaka::Blocking;
     using QueueAcc = alpaka::Queue<DevAcc, QueueProperty>;
     using BufAcc = alpaka::Buf<DevAcc, DataType, Dim, Idx>;
@@ -175,4 +180,20 @@ auto main() -> int
     }
     std::cout << "All results are correct!\n";
     return EXIT_SUCCESS;
+}
+
+auto main() -> int
+{
+    // Execute the example once for each enabled accelerator.
+    // If you would like to execute it for a single accelerator only you can use the following code.
+    //  \code{.cpp}
+    //  auto tag = TagCpuSerial;
+    //  return example(tag);
+    //  \endcode
+    //
+    // valid tags:
+    //   TagCpuSerial, TagGpuHipRt, TagGpuCudaRt, TagCpuOmp2Blocks, TagCpuTbbBlocks,
+    //   TagCpuOmp2Threads, TagCpuSycl, TagCpuTbbBlocks, TagCpuThreads,
+    //   TagFpgaSyclIntel, TagGenericSycl, TagGpuSyclIntel
+    return alpaka::executeForEachAccTag([=](auto const& tag) { return example(tag); });
 }

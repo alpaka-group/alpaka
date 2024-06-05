@@ -3,7 +3,7 @@
  */
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/example/ExampleDefaultAcc.hpp>
+#include <alpaka/example/ExecuteForEachAccTag.hpp>
 
 #include <iomanip>
 #include <iostream>
@@ -208,7 +208,12 @@ auto FuzzyEqual(float a, float b) -> bool
     return std::fabs(a - b) < std::numeric_limits<float>::epsilon() * 1000.0f;
 }
 
-auto main() -> int
+// In standard projects, you typically do not execute the code with any available accelerator.
+// Instead, a single accelerator is selected once from the active accelerators and the kernels are executed with the
+// selected accelerator only. If you use the example as the starting point for your project, you can rename the
+// example() function to main() and move the accelerator tag to the function body.
+template<typename TAccTag>
+auto example(TAccTag const&) -> int
 {
     // Define the index domain
     using Dim = alpaka::DimInt<2>;
@@ -216,7 +221,7 @@ auto main() -> int
     using Idx = std::uint32_t;
     using Vec = alpaka::Vec<Dim, Idx>;
     // Define the accelerator
-    using DevAcc = alpaka::ExampleDefaultAcc<Dim, Idx>;
+    using DevAcc = alpaka::TagToAcc<TAccTag, Dim, Idx>;
     using QueueAcc = alpaka::Queue<DevAcc, alpaka::NonBlocking>;
 
     using DataType = float;
@@ -378,4 +383,20 @@ auto main() -> int
     }
     std::cout << "Sampled result checks are correct!\n";
     return EXIT_SUCCESS;
+}
+
+auto main() -> int
+{
+    // Execute the example once for each enabled accelerator.
+    // If you would like to execute it for a single accelerator only you can use the following code.
+    //  \code{.cpp}
+    //  auto tag = TagCpuSerial;
+    //  return example(tag);
+    //  \endcode
+    //
+    // valid tags:
+    //   TagCpuSerial, TagGpuHipRt, TagGpuCudaRt, TagCpuOmp2Blocks, TagCpuTbbBlocks,
+    //   TagCpuOmp2Threads, TagCpuSycl, TagCpuTbbBlocks, TagCpuThreads,
+    //   TagFpgaSyclIntel, TagGenericSycl, TagGpuSyclIntel
+    return alpaka::executeForEachAccTag([=](auto const& tag) { return example(tag); });
 }

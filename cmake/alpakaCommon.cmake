@@ -581,7 +581,7 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
         # https://github.com/llvm/llvm-project/commit/b86e0992bfa6
         # https://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#150
         # for example, is required to create alpaka::EnabledAccTags
-        # TODO(SimeonEhrig): restict HIP version, if first HIP version is release using Clang 19 
+        # TODO(SimeonEhrig): restict HIP version, if first HIP version is release using Clang 19
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-frelaxed-template-template-args>")
 
         alpaka_compiler_option(HIP_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" OFF)
