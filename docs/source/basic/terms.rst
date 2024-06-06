@@ -3,8 +3,6 @@ Terms
 
 This page provides an overview of the terms used in ``alpaka`` and the relationships between them.
 
-.. image:: /images/alpaka_terms.svg
-
 Platform
 --------
 
