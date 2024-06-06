@@ -209,6 +209,25 @@ TEST_CASE("WorkDivMembers", "[workDiv]")
     CHECK(ref2D == workDiv2DUsingFooVec);
 }
 
+using TestAccs1D = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::uint32_t>;
+
+TEMPLATE_LIST_TEST_CASE("testVectorCreation", "[workDiv]", TestAccs1D)
+{
+    using Acc = TestType;
+    using Idx = alpaka::Idx<Acc>;
+    printf("%u", static_cast<Idx>(1u));
+
+    // using Dim = alpaka::Dim<Acc>;
+    // using Vec = alpaka::Vec<Dim, Idx>;
+    using Dim = alpaka::Dim<Acc>;
+    using Vec = alpaka::Vec<Dim, Idx>;
+
+
+    // Vec const gridThreadExtent(static_cast<Idx>(1), static_cast<Idx>(threadsPerGridTestValue / 8));
+    Vec const gridThreadExtent(static_cast<Idx>(1));
+    printf("%u", gridThreadExtent[0]);
+}
+
 using TestAccs2D = alpaka::test::EnabledAccs<alpaka::DimInt<2u>, std::uint32_t>;
 
 TEMPLATE_LIST_TEST_CASE("testVectorCreation", "[workDiv]", TestAccs2D)
