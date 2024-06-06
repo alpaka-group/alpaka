@@ -306,7 +306,7 @@ TEMPLATE_LIST_TEST_CASE("testVectorCreation", "[workDiv]", TestAccs2D)
     // auto blocksPerGrid3D = Vec{1u, 2u};
 
 
-    TestKernelWithManyRegisters kernel;
+    //TestKernelWithManyRegisters kernel;
 
 
     // Get hard limits for test
