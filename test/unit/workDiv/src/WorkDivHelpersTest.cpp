@@ -303,7 +303,7 @@ TEMPLATE_LIST_TEST_CASE("testVectorCreation", "[workDiv]", TestAccs2D)
     // Vec const gridThreadExtent(static_cast<Idx>(1), static_cast<Idx>(threadsPerGridTestValue / 8));
     Vec const gridThreadExtent(static_cast<Idx>(1), static_cast<Idx>(800 / 8));
     printf("%u", gridThreadExtent[0]);
-    auto blocksPerGrid3D = Vec{1u, 2u};
+    // auto blocksPerGrid3D = Vec{1u, 2u};
 
 
     TestKernelWithManyRegisters kernel;
