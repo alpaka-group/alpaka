@@ -219,7 +219,14 @@ namespace alpaka
                 T result;
                 do
                 {
+#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wfloat-equal"
+#    endif
                     result = ((old == compare) ? value : old);
+#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG
+#        pragma GCC diagnostic pop
+#    endif
                 } while(!ref.compare_exchange_weak(old, result));
                 return old;
             }
