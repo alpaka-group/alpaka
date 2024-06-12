@@ -617,7 +617,7 @@ if(alpaka_ACC_GPU_HIP_ENABLE)
         endif()
 
         if(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL ON)
-            alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL-fgpu-rdc>")
+            alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-fgpu-rdc>")
             target_link_options(alpaka INTERFACE "$<$<LINK_LANGUAGE:HIP>:SHELL:-fgpu-rdc --hip-link>")
         elseif(alpaka_RELOCATABLE_DEVICE_CODE STREQUAL OFF)
             alpaka_set_compiler_options(DEVICE target alpaka "$<$<COMPILE_LANGUAGE:HIP>:SHELL:-fno-gpu-rdc>")
