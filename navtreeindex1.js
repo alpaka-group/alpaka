@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"DependentFalseType_8hpp_source.html":[4,0,0,0,15,3],
 "DevCpuSycl_8hpp.html":[4,0,0,0,4,3],
 "DevCpuSycl_8hpp_source.html":[4,0,0,0,4,3],
 "DevCpu_8hpp.html":[4,0,0,0,4,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "Positioning_8hpp_source.html":[4,0,0,0,3,18],
 "Properties_8hpp.html":[4,0,0,0,18,3],
 "Properties_8hpp_source.html":[4,0,0,0,18,3],
-"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4]
+"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4],
+"QueueCpuBlocking_8hpp_source.html":[4,0,0,0,18,4]
 };

@@ -67,8 +67,7 @@ var NAVTREEINDEX0 =
 "AtomicAtomicRef_8hpp.html#ae9234c08c7824fc7b5a9a73e6a11fbd1":[4,0,0,0,1,0,13],
 "AtomicAtomicRef_8hpp_source.html":[4,0,0,0,1,0],
 "AtomicCpu_8hpp.html":[4,0,0,0,1,1],
-"AtomicCpu_8hpp.html#a0bad0e6d480fa2fafe60330f304067b5":[4,0,0,0,1,1,1],
-"AtomicCpu_8hpp.html#aee56292192a1faa6f6ad0666aa3cfac0":[4,0,0,0,1,1,0],
+"AtomicCpu_8hpp.html#a179c2203b0e2bdf8a153a5593eac78ee":[4,0,0,0,1,1,0],
 "AtomicCpu_8hpp_source.html":[4,0,0,0,1,1],
 "AtomicGenericSycl_8hpp.html":[4,0,0,0,1,2],
 "AtomicGenericSycl_8hpp_source.html":[4,0,0,0,1,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "DemangleTypeNames_8hpp.html":[4,0,0,0,3,15],
 "DemangleTypeNames_8hpp.html#a02c3471af40bf64c77e9d599f0007954":[4,0,0,0,3,15,0],
 "DemangleTypeNames_8hpp_source.html":[4,0,0,0,3,15],
-"DependentFalseType_8hpp.html":[4,0,0,0,15,3]
+"DependentFalseType_8hpp.html":[4,0,0,0,15,3],
+"DependentFalseType_8hpp_source.html":[4,0,0,0,15,3]
 };

@@ -126,7 +126,7 @@ var namespacealpaka =
     [ "AccGpuCudaRt", "namespacealpaka.html#ac41d3de7aa83e26273d7f08f8e76fe1d", null ],
     [ "AccTags", "namespacealpaka.html#a5b85a9de90c7f79392c2914e648d74e0", null ],
     [ "AccToTag", "namespacealpaka.html#af5f5caddacfd0c5a7584d88a0a6c85dc", null ],
-    [ "AtomicCpu", "namespacealpaka.html#a0bad0e6d480fa2fafe60330f304067b5", null ],
+    [ "AtomicCpu", "namespacealpaka.html#a179c2203b0e2bdf8a153a5593eac78ee", null ],
     [ "AtomicHierarchy", "namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff", null ],
     [ "AtomicHierarchyConcept", "namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52", null ],
     [ "Buf", "namespacealpaka.html#ac9381e9159626b8969f257249c4c9386", null ],

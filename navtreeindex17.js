@@ -1,6 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpSingleThread_01_4.html#ab1f2e55e7615d3f3b0e7963e4cde9ea4":[3,0,0,17,0,16,0],
 "structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,0,17],
 "structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#a030628d5d8d045dbe0030256560bb9bf":[3,0,0,17,0,17,0],
 "structstd_1_1tuple__element_3_01I_00_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html":[3,0,2,0],
