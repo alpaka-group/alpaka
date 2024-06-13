@@ -88,7 +88,7 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.1D", "[workDivKernel]", TestAc
     auto const& bundeledKernel = alpaka::KernelBundle(kernel, 200ul);
 
     // Get hard limits for test
-    auto const& props = alpaka::getAccDevProps<Acc>(dev);
+    auto const& props = alpaka::getAccDevProps<Acc, decltype(dev)>(dev);
     Idx const threadsPerGridTestValue = props.m_blockThreadCountMax * props.m_gridBlockCountMax;
 
     // Test getValidWorkDivForKernel for threadsPerGridTestValue threads per grid
