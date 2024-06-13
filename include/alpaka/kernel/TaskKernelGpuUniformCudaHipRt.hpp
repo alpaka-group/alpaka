@@ -395,15 +395,16 @@ namespace alpaka
         //! \tparam TIdx The idx type of the accelerator device properties.
         //! \tparam TKernelFn Kernel function object type.
         //! \tparam TArgs Kernel function object argument types as a parameter pack.
-        template<typename TApi, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
-        struct FunctionAttributes<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, KernelBundle<TKernelFn, TArgs...>>
+        template<typename TApi, typename TDev, typename TDim, typename TIdx, typename TKernelFn, typename... TArgs>
+        struct FunctionAttributes<AccGpuUniformCudaHipRt<TApi, TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
         {
             //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
             //! determined. Max threads per block is one of the attributes.
             //! \return KernelFunctionAttributes instance. For GPU backend, all values are set by calling the
             //! corresponding API functions. The default version always returns an instance with zero fields. For CPU,
             //! the field of max threads allowed by kernel function for the block is 1.
-            ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST static auto getFunctionAttributes(
+            ALPAKA_FN_HOST static auto getFunctionAttributes(
+                TDev const&,
                 [[maybe_unused]] KernelBundle<TKernelFn, TArgs...> const& kernelBundle)
                 -> alpaka::KernelFunctionAttributes
             {

@@ -74,16 +74,16 @@ namespace alpaka
         //! \tparam TAcc The accelerator type
         //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and it's invocation
         //! arguments.
-        template<typename TAcc, typename TKernelBundle>
+        template<typename TAcc, typename TDev, typename TKernelBundle>
         struct FunctionAttributes
         {
             //! \param kernelBundle The kernel object instance, which includes the kernel function object and it's
             //! invocation arguments.
             //! \return KernelFunctionAttributes data structure instance. The default version always returns the
             //! instance with fields which are set to zero.
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST static auto getFunctionAttributes([[maybe_unused]] TKernelBundle const& kernelBundle)
-                -> alpaka::KernelFunctionAttributes
+            ALPAKA_FN_HOST static auto getFunctionAttributes(
+                TDev const&,
+                [[maybe_unused]] TKernelBundle const& kernelBundle) -> alpaka::KernelFunctionAttributes
             {
                 return alpaka::KernelFunctionAttributes();
             }
@@ -198,10 +198,11 @@ namespace alpaka
     //! depending on the specific kernel. The default version always returns the instance with fields which are set to
     //! zero.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename TKernelBundle>
-    ALPAKA_FN_HOST auto getFunctionAttributes(TKernelBundle const& kernelBundle) -> alpaka::KernelFunctionAttributes
+    template<typename TAcc, typename TDev, typename TKernelBundle>
+    ALPAKA_FN_HOST auto getFunctionAttributes(TDev const& dev, TKernelBundle const& kernelBundle)
+        -> alpaka::KernelFunctionAttributes
     {
-        return trait::FunctionAttributes<TAcc, TKernelBundle>::getFunctionAttributes(kernelBundle);
+        return trait::FunctionAttributes<TAcc, TDev, TKernelBundle>::getFunctionAttributes(dev, kernelBundle);
     }
 
 #if BOOST_COMP_CLANG

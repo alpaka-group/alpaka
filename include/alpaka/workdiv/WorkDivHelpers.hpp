@@ -414,7 +414,7 @@ namespace alpaka
         // For GPU backend; number of registers used by the kernel, local and shared memory usage of the kernel
         // determines the max number of threads per block. This number could be equal or less than the max number of
         // threads per block defined by device properties.
-        auto const kernelFunctionAttributes = getFunctionAttributes<Acc>(kernelBundle);
+        auto const kernelFunctionAttributes = getFunctionAttributes<Acc>(dev, kernelBundle);
         auto const threadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
         // printf("%lu", std::get<0>(kernelBundle.m_args));
         if constexpr(Dim<TGridElemExtent>::value == 0)
@@ -506,12 +506,15 @@ namespace alpaka
         TWorkDiv const& workDiv) -> bool
 
     {
+        auto const platformAcc = alpaka::Platform<TAcc>{};
+        auto const dev = alpaka::getDevByIdx(platformAcc, 0);
+
         // Get the extents of grid, blocks and threads of the work division to check.
         auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(workDiv);
         auto const blockThreadExtent = getWorkDiv<Block, Threads>(workDiv);
         auto const threadElemExtent = getWorkDiv<Thread, Elems>(workDiv);
         // Use kernel properties to find the max threads per block for the kernel
-        auto const kernelFunctionAttributes = getFunctionAttributes<TAcc>(kernelBundle);
+        auto const kernelFunctionAttributes = alpaka::getFunctionAttributes<TAcc>(dev, kernelBundle);
         auto const threadsPerBlockForKernel = kernelFunctionAttributes.maxThreadsPerBlock;
         // Select the minimum to find the upper bound for the threads per block
         auto const allowedThreadsPerBlock = std::min(
