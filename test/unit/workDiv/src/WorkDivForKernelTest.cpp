@@ -11,6 +11,7 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/kernel/KernelBundle.hpp>
 #include <alpaka/kernel/KernelFunctionAttributes.hpp>
+#include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/workdiv/WorkDivHelpers.hpp>
 
@@ -20,7 +21,7 @@
 struct TestKernelWithManyRegisters
 {
     template<typename TAcc>
-    [[maybe_unused]] ALPAKA_FN_ACC auto operator()(TAcc const&, std::size_t val) const -> void
+    [[maybe_unused]] ALPAKA_FN_ACC auto operator()(TAcc const& acc, std::size_t val) const -> void
     {
         double var0 = 1.0;
         double var1 = 2.0;
@@ -31,39 +32,39 @@ struct TestKernelWithManyRegisters
         // threads per block while this kernel is being run.
 
         // TODO: Use function templates to parametrize and shorten the code!
-        double var3 = var2 + fmod(var2, 5);
-        double var4 = var3 + fmod(var3, 5);
-        double var5 = var4 + fmod(var4, 5);
-        double var6 = var5 + fmod(var5, 5);
-        double var7 = var6 + fmod(var6, 5);
-        double var8 = var7 + fmod(var7, 5);
-        double var9 = var8 + fmod(var8, 5);
-        double var10 = var9 + fmod(var9, 5);
-        double var11 = var10 + fmod(var10, 5);
-        double var12 = var11 + fmod(var11, 5);
-        double var13 = var12 + fmod(var12, 5);
-        double var14 = var13 + fmod(var13, 5);
-        double var15 = var14 + fmod(var14, 5);
-        double var16 = var15 + fmod(var15, 5);
-        double var17 = var16 + fmod(var16, 5);
-        double var18 = var17 + fmod(var17, 5);
-        double var19 = var18 + fmod(var18, 5);
-        double var20 = var19 + fmod(var19, 5);
-        double var21 = var20 + fmod(var20, 5);
-        double var22 = var21 + fmod(var21, 5);
-        double var23 = var22 + fmod(var22, 5);
-        double var24 = var23 + fmod(var23, 5);
-        double var25 = var24 + fmod(var24, 5);
-        double var26 = var25 + fmod(var25, 5);
-        double var27 = var26 + fmod(var26, 5);
-        double var28 = var27 + fmod(var27, 5);
-        double var29 = var28 + fmod(var28, 5);
-        double var30 = var29 + fmod(var29, 5);
-        double var31 = var30 + fmod(var30, 5);
-        double var32 = var31 + fmod(var31, 5);
-        double var33 = var32 + fmod(var32, 5);
-        double var34 = var33 + fmod(var33, 5);
-        double var35 = var34 + fmod(var34, 5);
+        double var3 = var2 + alpaka::math::fmod(acc, var2, 5);
+        double var4 = var3 + alpaka::math::fmod(acc, var3, 5);
+        double var5 = var4 + alpaka::math::fmod(acc, var4, 5);
+        double var6 = var5 + alpaka::math::fmod(acc, var5, 5);
+        double var7 = var6 + alpaka::math::fmod(acc, var6, 5);
+        double var8 = var7 + alpaka::math::fmod(acc, var7, 5);
+        double var9 = var8 + alpaka::math::fmod(acc, var8, 5);
+        double var10 = var9 + alpaka::math::fmod(acc, var9, 5);
+        double var11 = var10 + alpaka::math::fmod(acc, var10, 5);
+        double var12 = var11 + alpaka::math::fmod(acc, var11, 5);
+        double var13 = var12 + alpaka::math::fmod(acc, var12, 5);
+        double var14 = var13 + alpaka::math::fmod(acc, var13, 5);
+        double var15 = var14 + alpaka::math::fmod(acc, var14, 5);
+        double var16 = var15 + alpaka::math::fmod(acc, var15, 5);
+        double var17 = var16 + alpaka::math::fmod(acc, var16, 5);
+        double var18 = var17 + alpaka::math::fmod(acc, var17, 5);
+        double var19 = var18 + alpaka::math::fmod(acc, var18, 5);
+        double var20 = var19 + alpaka::math::fmod(acc, var19, 5);
+        double var21 = var20 + alpaka::math::fmod(acc, var20, 5);
+        double var22 = var21 + alpaka::math::fmod(acc, var21, 5);
+        double var23 = var22 + alpaka::math::fmod(acc, var22, 5);
+        double var24 = var23 + alpaka::math::fmod(acc, var23, 5);
+        double var25 = var24 + alpaka::math::fmod(acc, var24, 5);
+        double var26 = var25 + alpaka::math::fmod(acc, var25, 5);
+        double var27 = var26 + alpaka::math::fmod(acc, var26, 5);
+        double var28 = var27 + alpaka::math::fmod(acc, var27, 5);
+        double var29 = var28 + alpaka::math::fmod(acc, var28, 5);
+        double var30 = var29 + alpaka::math::fmod(acc, var29, 5);
+        double var31 = var30 + alpaka::math::fmod(acc, var30, 5);
+        double var32 = var31 + alpaka::math::fmod(acc, var31, 5);
+        double var33 = var32 + alpaka::math::fmod(acc, var32, 5);
+        double var34 = var33 + alpaka::math::fmod(acc, var33, 5);
+        double var35 = var34 + alpaka::math::fmod(acc, var34, 5);
 
         double sum = var0 + var1 + var2 + var3 + var4 + var5 + var6 + var7 + var8 + var9 + var10 + var11 + var12
                      + var13 + var14 + var15 + var16 + var17 + var18 + var19 + var20 + var21 + var22 + var23 + var24
