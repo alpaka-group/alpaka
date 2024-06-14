@@ -221,6 +221,8 @@ namespace alpaka
                 // properties function.
                 auto const& props = alpaka::getAccDevProps<AccCpuOmp2Threads<TDim, TIdx>>(dev);
                 kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(props.m_blockThreadCountMax);
+                kernelFunctionAttributes.maxDynamicSharedSizeBytes
+                    = static_cast<int>(alpaka::BlockSharedDynMemberAllocKiB * 1024);
                 return kernelFunctionAttributes;
             }
         };
