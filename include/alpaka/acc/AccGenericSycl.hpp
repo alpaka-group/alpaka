@@ -119,7 +119,6 @@ namespace alpaka::trait
     };
 
     //! The SYCL accelerator device properties get trait specialization.
-
     template<template<typename, typename> typename TAcc, typename TDim, typename TIdx>
     struct GetAccDevProps<
         TAcc<TDim, TIdx>,

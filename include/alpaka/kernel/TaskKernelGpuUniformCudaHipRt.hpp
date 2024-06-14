@@ -429,12 +429,10 @@ namespace alpaka
 #        endif
 
                 alpaka::KernelFunctionAttributes kernelFunctionAttributes;
-
                 kernelFunctionAttributes.constSizeBytes = funcAttrs.constSizeBytes;
                 kernelFunctionAttributes.localSizeBytes = funcAttrs.localSizeBytes;
                 kernelFunctionAttributes.sharedSizeBytes = funcAttrs.sharedSizeBytes;
                 kernelFunctionAttributes.maxDynamicSharedSizeBytes = funcAttrs.maxDynamicSharedSizeBytes;
-
                 kernelFunctionAttributes.numRegs = funcAttrs.numRegs;
                 kernelFunctionAttributes.asmVersion = funcAttrs.ptxVersion;
                 kernelFunctionAttributes.maxThreadsPerBlock = static_cast<int>(funcAttrs.maxThreadsPerBlock);
