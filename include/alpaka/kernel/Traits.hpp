@@ -85,7 +85,9 @@ namespace alpaka
                 TDev const&,
                 [[maybe_unused]] TKernelBundle const& kernelBundle) -> alpaka::KernelFunctionAttributes
             {
-                return alpaka::KernelFunctionAttributes();
+                std::string const str
+                    = std::string(__func__) + " function is not specialised for the given arguments.\n";
+                throw std::invalid_argument{str};
             }
         };
 
