@@ -36,9 +36,7 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     ] ],
     [ "RemoveRestrict.hpp", "RemoveRestrict_8hpp.html", "RemoveRestrict_8hpp" ],
     [ "Sycl.hpp", "Sycl_8hpp.html", null ],
-    [ "ThreadPool.hpp", "ThreadPool_8hpp.html", [
-      [ "ThreadPool", "structalpaka_1_1core_1_1detail_1_1ThreadPool.html", "structalpaka_1_1core_1_1detail_1_1ThreadPool" ]
-    ] ],
+    [ "ThreadPool.hpp", "ThreadPool_8hpp.html", "ThreadPool_8hpp" ],
     [ "UniformCudaHip.hpp", "UniformCudaHip_8hpp.html", "UniformCudaHip_8hpp" ],
     [ "Unreachable.hpp", "Unreachable_8hpp.html", "Unreachable_8hpp" ],
     [ "Unroll.hpp", "Unroll_8hpp.html", "Unroll_8hpp" ],

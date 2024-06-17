@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ompschedule_3352',['OmpSchedule',['../structalpaka_1_1trait_1_1OmpSchedule.html',1,'alpaka::trait']]],
-  ['optimalalignment_3353',['OptimalAlignment',['../structalpaka_1_1core_1_1align_1_1OptimalAlignment.html',1,'alpaka::core::align']]]
+  ['ompschedule_3355',['OmpSchedule',['../structalpaka_1_1trait_1_1OmpSchedule.html',1,'alpaka::trait']]],
+  ['optimalalignment_3356',['OptimalAlignment',['../structalpaka_1_1core_1_1align_1_1OptimalAlignment.html',1,'alpaka::core::align']]]
 ];

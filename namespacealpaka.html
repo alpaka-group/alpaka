@@ -688,6 +688,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aba309bace6bd6e1cf4c564bbe396a9ba">exec</a> (TQueue &amp;queue, TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args) -&gt; void</td></tr>
 <tr class="memdesc:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given kernel in the given queue.  <a href="namespacealpaka.html#aba309bace6bd6e1cf4c564bbe396a9ba">More...</a><br /></td></tr>
 <tr class="separator:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a002efd6d4f2a7baea419305201ca77b6"><td class="memTemplParams" colspan="2">template&lt;typename TCallable &gt; </td></tr>
+<tr class="memitem:a002efd6d4f2a7baea419305201ca77b6"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a002efd6d4f2a7baea419305201ca77b6">executeForEachAccTag</a> (TCallable &amp;&amp;callable)</td></tr>
+<tr class="memdesc:a002efd6d4f2a7baea419305201ca77b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">execute a callable for each active accelerator tag  <a href="namespacealpaka.html#a002efd6d4f2a7baea419305201ca77b6">More...</a><br /></td></tr>
+<tr class="separator:a002efd6d4f2a7baea419305201ca77b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b0054207293a75e2187ebcd2dc1c7fd"><td class="memTemplParams" colspan="2">template&lt;typename TIntrinsic &gt; </td></tr>
 <tr class="memitem:a8b0054207293a75e2187ebcd2dc1c7fd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="core_2Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8b0054207293a75e2187ebcd2dc1c7fd">ffs</a> (TIntrinsic const &amp;intrinsic, std::int32_t value) -&gt; std::int32_t</td></tr>
 <tr class="memdesc:a8b0054207293a75e2187ebcd2dc1c7fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the 1-based position of the least significant bit set to 1 in the given 32-bit value. Returns 0 for input value 0.  <a href="namespacealpaka.html#a8b0054207293a75e2187ebcd2dc1c7fd">More...</a><br /></td></tr>
@@ -4086,6 +4090,38 @@ template&lt;typename TAcc , typename TQueue , typename TWorkDiv , typename TKern
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00309">309</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a002efd6d4f2a7baea419305201ca77b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a002efd6d4f2a7baea419305201ca77b6">&#9670;&nbsp;</a></span>executeForEachAccTag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TCallable &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto alpaka::executeForEachAccTag </td>
+          <td>(</td>
+          <td class="paramtype">TCallable &amp;&amp;&#160;</td>
+          <td class="paramname"><em>callable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>execute a callable for each active accelerator tag </p>
+
+<p class="definition">Definition at line <a class="el" href="ExecuteForEachAccTag_8hpp_source.html#l00021">21</a> of file <a class="el" href="ExecuteForEachAccTag_8hpp_source.html">ExecuteForEachAccTag.hpp</a>.</p>
 
 </div>
 </div>
@@ -8873,7 +8909,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Mon Jun 17 2024 08:39:23 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jun 17 2024 15:58:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['offset_4503',['offset',['../namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106',1,'alpaka::test']]]
+  ['offset_4508',['offset',['../namespacealpaka_1_1test.html#ac57b0d74f76c2d03f10f7871408b4106',1,'alpaka::test']]]
 ];

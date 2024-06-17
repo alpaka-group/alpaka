@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"DependentFalseType_8hpp_source.html":[4,0,0,0,15,3],
 "DevCpuSycl_8hpp.html":[4,0,0,0,4,3],
 "DevCpuSycl_8hpp_source.html":[4,0,0,0,4,3],
 "DevCpu_8hpp.html":[4,0,0,0,4,2],
@@ -74,6 +73,9 @@ var NAVTREEINDEX1 =
 "ExampleDefaultAcc_8hpp.html":[4,0,0,0,8,0],
 "ExampleDefaultAcc_8hpp.html#a8aec9660f2a0dd2e01db1edd34e4cafa":[4,0,0,0,8,0,0],
 "ExampleDefaultAcc_8hpp_source.html":[4,0,0,0,8,0],
+"ExecuteForEachAccTag_8hpp.html":[4,0,0,0,8,1],
+"ExecuteForEachAccTag_8hpp.html#a002efd6d4f2a7baea419305201ca77b6":[4,0,0,0,8,1,0],
+"ExecuteForEachAccTag_8hpp_source.html":[4,0,0,0,8,1],
 "Extent_8hpp.html":[4,0,0,0,21,8],
 "Extent_8hpp.html#aa4fb1480c3db6660b29bb8025b067e92":[4,0,0,0,21,8,0],
 "Extent_8hpp.html#ab3a43d26dbc8c59dcad7569f56f9e425":[4,0,0,0,21,8,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "PlatformUniformCudaHipRt_8hpp_source.html":[4,0,0,0,17,7],
 "Positioning_8hpp.html":[4,0,0,0,3,18],
 "Positioning_8hpp_source.html":[4,0,0,0,3,18],
-"Properties_8hpp.html":[4,0,0,0,18,3],
-"Properties_8hpp_source.html":[4,0,0,0,18,3],
-"QueueCpuBlocking_8hpp.html":[4,0,0,0,18,4]
+"Properties_8hpp.html":[4,0,0,0,18,3]
 };
