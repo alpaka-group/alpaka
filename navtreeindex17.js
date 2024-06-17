@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpSingleThread_01_4.html#ab1f2e55e7615d3f3b0e7963e4cde9ea4":[3,0,0,17,0,16,0],
 "structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html":[3,0,0,17,0,17],
 "structalpaka_1_1warp_1_1trait_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html#a030628d5d8d045dbe0030256560bb9bf":[3,0,0,17,0,17,0],
 "structstd_1_1tuple__element_3_01I_00_01alpaka_1_1Vec_3_01TDim_00_01TVal_01_4_01_4.html":[3,0,2,0],
@@ -75,6 +76,5 @@ var NAVTREEINDEX17 =
 "warp_2Traits_8hpp_source.html":[4,0,0,0,25,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,26,0],
 "workdiv_2Traits_8hpp.html#a2a811570d2074f237f89c9910b82b44c":[4,0,0,0,26,0,4],
-"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0],
-"":[2,0,2]
+"workdiv_2Traits_8hpp_source.html":[4,0,0,0,26,0]
 };
