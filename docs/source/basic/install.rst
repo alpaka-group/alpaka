@@ -113,4 +113,3 @@ If user is going to create her/his own project/example outside the source tree a
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=/install/ ..
   cmake --install .
-
