@@ -61,7 +61,11 @@ namespace alpaka::uniform_cuda_hip::detail
             if(std::find(std::cbegin(ignoredErrorCodes), std::cend(ignoredErrorCodes), error)
                == std::cend(ignoredErrorCodes))
             {
-                rtCheck<TApi, TThrow>(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
+                rtCheck<TApi, TThrow>(
+                    error,
+                    (std::string("'") + std::string(cmd) + "' returned error ").c_str(),
+                    file,
+                    line);
             }
             else
             {
