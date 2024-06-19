@@ -95,27 +95,28 @@ $(document).ready(function(){initNavTree('AtomicCpu_8hpp_source.html',''); initR
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="BoostPredef_8hpp.html">alpaka/core/BoostPredef.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// clang 9 fails at compile time when using boost::atomic_ref</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// clang 9/10/11 together with nvcc&lt;11.6.0 as host compiler fails at compile time when using boost::atomic_ref</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#ifdef BOOST_COMP_CLANG_AVAILABLE</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#    if BOOST_COMP_CLANG &lt; BOOST_VERSION_NUMBER(11, 0, 0)</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#        ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#            define ALPAKA_DISABLE_ATOMIC_ATOMICREF</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#        endif</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// BOOST_COMP_CLANG_AVAILABLE</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="AtomicAtomicRef_8hpp.html">alpaka/atomic/AtomicAtomicRef.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="AtomicStdLibLock_8hpp.html">alpaka/atomic/AtomicStdLibLock.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a179c2203b0e2bdf8a153a5593eac78ee">   24</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AtomicAtomicRef.html">AtomicCpu</a> = <a class="code" href="classalpaka_1_1AtomicAtomicRef.html">AtomicAtomicRef</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AtomicAtomicRef.html">AtomicCpu</a> = AtomicStdLibLock&lt;16&gt;;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ALPAKA_DISABLE_ATOMIC_ATOMICREF</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#    if(BOOST_COMP_CLANG &lt; BOOST_VERSION_NUMBER(12, 0, 0) &amp;&amp; BOOST_COMP_NVCC                                          \</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">        &amp;&amp; BOOST_COMP_NVCC &lt; BOOST_VERSION_NUMBER(11, 6, 0))</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#        if !defined(ALPAKA_DISABLE_ATOMIC_ATOMICREF)</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#            define ALPAKA_DISABLE_ATOMIC_ATOMICREF</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#        endif</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// BOOST_COMP_CLANG_AVAILABLE</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="AtomicAtomicRef_8hpp.html">alpaka/atomic/AtomicAtomicRef.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="AtomicStdLibLock_8hpp.html">alpaka/atomic/AtomicStdLibLock.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifndef ALPAKA_DISABLE_ATOMIC_ATOMICREF</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a179c2203b0e2bdf8a153a5593eac78ee">   25</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AtomicAtomicRef.html">AtomicCpu</a> = <a class="code" href="classalpaka_1_1AtomicAtomicRef.html">AtomicAtomicRef</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">using</span> <a class="code" href="classalpaka_1_1AtomicAtomicRef.html">AtomicCpu</a> = AtomicStdLibLock&lt;16&gt;;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ALPAKA_DISABLE_ATOMIC_ATOMICREF</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 <div class="ttc" id="aAtomicAtomicRef_8hpp_html"><div class="ttname"><a href="AtomicAtomicRef_8hpp.html">AtomicAtomicRef.hpp</a></div></div>
 <div class="ttc" id="aAtomicStdLibLock_8hpp_html"><div class="ttname"><a href="AtomicStdLibLock_8hpp.html">AtomicStdLibLock.hpp</a></div></div>
 <div class="ttc" id="aBoostPredef_8hpp_html"><div class="ttname"><a href="BoostPredef_8hpp.html">BoostPredef.hpp</a></div></div>
@@ -127,7 +128,7 @@ $(document).ready(function(){initNavTree('AtomicCpu_8hpp_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="AtomicCpu_8hpp.html">AtomicCpu.hpp</a></li>
-    <li class="footer">Generated on Mon Jun 17 2024 15:58:53 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jun 19 2024 13:23:57 for alpaka by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
