@@ -167,8 +167,8 @@ struct ConvolutionKernel2DSharedMemory
                         }
                     }
                 }
-                output[row * matrixWidth + col] = pValue;
             }
+            output[row * matrixWidth + col] = pValue;
         } // if
     }
 };
