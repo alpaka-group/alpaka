@@ -182,9 +182,8 @@ TEMPLATE_LIST_TEST_CASE("getValidWorkDivForKernel.2D", "[workDivKernel]", TestAc
 
     if constexpr(alpaka::accMatchesTags<Acc, alpaka::TagGpuCudaRt>)
     {
-        // Expected valid workdiv for this kernel. These values might change depending on the GPU type and compiler
-        // therefore commented out. Number of registers used by kernel might limit threads per block value differently
-        // for different GPUs. CHECK(workDiv == WorkDiv{Vec{8, 729444}, Vec{1, 736}, Vec{1, 1}});
+        // Expected valid workdiv values for this kernel might change depending on the GPU type and compiler. Therefore
+        // generated workdiv is not compared to a specific workdiv in this test.
 
         // Get calculated threads per block from the workDiv that was found by examining kernel function
         auto const threadsPerBlock = workDiv.m_blockThreadExtent.prod();

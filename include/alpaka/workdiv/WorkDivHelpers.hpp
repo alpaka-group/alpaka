@@ -416,7 +416,7 @@ namespace alpaka
         // threads per block defined by device properties.
         auto const kernelFunctionAttributes = getFunctionAttributes<Acc>(dev, kernelBundle);
         auto const threadsPerBlock = kernelFunctionAttributes.maxThreadsPerBlock;
-        // printf("%lu", std::get<0>(kernelBundle.m_args));
+
         if constexpr(Dim<TGridElemExtent>::value == 0)
         {
             auto const zero = Vec<DimInt<0>, Idx<Acc>>{};
