@@ -22,7 +22,7 @@ public:
         if(globalThreadIdx == Vec::zeros())
         {
             // Throw abort or std::runtime_error depending on acc type
-            ALPAKA_DEVICE_THROW("Exception thrown by the kernel.");
+            ALPAKA_THROW_ACC("Exception thrown by the kernel.");
         }
         alpaka::syncBlockThreads(acc);
     }
