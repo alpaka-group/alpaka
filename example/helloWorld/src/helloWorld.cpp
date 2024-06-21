@@ -44,6 +44,9 @@ struct HelloWorldKernel
             static_cast<unsigned>(globalThreadIdx[1u]),
             static_cast<unsigned>(globalThreadIdx[2u]),
             static_cast<unsigned>(linearizedGlobalThreadIdx[0u]));
+
+        if(static_cast<unsigned>(globalThreadIdx[0u]) == 0)
+            ALPAKA_THROW_ACC("THROW INSIDE KERNEL\n");
     }
 };
 
