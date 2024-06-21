@@ -29,7 +29,7 @@
             printf(                                                                                                   \
                 "alpaka encountered a user-defined error condition while running on the HIP back-end:\n%s",           \
                 (MSG));                                                                                               \
-            abort();                                                                                                  \
+            assert(false);                                                                                            \
         }
 #elif defined(ALPAKA_ACC_SYCL_ENABLED) && defined(__SYCL_DEVICE_ONLY__)
 #    define ALPAKA_DEVICE_THROW(MSG)                                                                                  \
