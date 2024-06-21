@@ -22322,7 +22322,8 @@
 					            if(std::find(std::cbegin(ignoredErrorCodes), std::cend(ignoredErrorCodes), error)
 					               == std::cend(ignoredErrorCodes))
 					            {
-					                rtCheck<TApi, TThrow>(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
+					                using namespace std::literals;
+					                rtCheck<TApi, TThrow>(error, ("'"s + std::string(cmd) + "' returned error "s).c_str(), file, line);
 					            }
 					            else
 					            {
