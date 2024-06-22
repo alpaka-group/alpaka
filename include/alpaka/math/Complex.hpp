@@ -14,6 +14,8 @@
 
 namespace alpaka
 {
+	namespace internal
+	{
     //! Implementation of a complex number useable on host and device.
     //!
     //! It follows the layout of std::complex and so array-oriented access.
@@ -569,5 +571,6 @@ namespace alpaka
     }
 
     //! @}
-
+}
+using internal::Complex;
 } // namespace alpaka
